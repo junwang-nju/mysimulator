@@ -38,7 +38,7 @@ namespace std {
   void vector_scale(double* v, const double& d, long nscale,
                     int offset=iZero, int soffset=iZero,
                     long step=lOne, long sstep=lZero) {
-    assert((soffset==iZero)&&(sstep=lZero));
+    assert((soffset==iZero)&&(sstep==lZero));
     dscal_(&nscale,const_cast<double*>(&d),v+offset,&step);
   }
   
@@ -60,9 +60,29 @@ namespace std {
   void vector_shift(double* v, const double& s, const double* sfv, long nshift,
                     int offset=iZero, int soffset=iZero, int sfoffset=iZero,
                     long step=lOne, long sstep=lZero, long sfstep=lOne) {
-    assert((soffset==iZero)&&(sstep=lZero));
+    assert((soffset==iZero)&&(sstep==lZero));
     daxpy_(&nshift,const_cast<double*>(&s),const_cast<double*>(sfv)+sfoffset,
            &sfstep,v+offset,&step);
+  }
+  
+  template <typename T>
+  void vector_scaleshift(T* v, const T& s, const T& sf, const T* sfv,
+                         const T* sv, long nscaleshift, int offset=iZero,
+                         int sfoffset=iZero, int soffset=iZero,
+                         long step=lOne, long sfstep=lOne, long sstep=lOne) {
+    myError("Scaled Shift for generic type is not available!");
+  }
+  
+  void vector_scaleshift(double* v, const double& s, const double& sf,
+                         const double* sfv, const double* sv, long nscaleshift,
+                         int offset=iZero, int sfoffset=iZero,
+                         int soffset=iZero, long step=lOne,
+                         long sfstep=lOne, long sstep=lOne) {
+    static char flag[]="L";
+    dsbmv_(flag,&nscaleshift,&lZero,const_cast<double*>(&sf),
+           const_cast<double*>(sfv)+sfoffset,&sfstep,
+           const_cast<double*>(sv)+soffset,&sstep,const_cast<double*>(&s),
+           v+offset,&step);
   }
 
 }
