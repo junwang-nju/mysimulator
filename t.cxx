@@ -1,5 +1,6 @@
 
 #include "var-vector-double.h"
+#include "fix-vector.h"
 #include <iostream>
 using namespace std;
 

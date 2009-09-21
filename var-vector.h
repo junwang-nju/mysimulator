@@ -43,7 +43,12 @@ namespace std {
 
       varVector(const Type& v) { myError("vector copier is prohibited!"); }
 
-      ~varVector() { safe_delete(Data); }
+      ~varVector() {
+        safe_delete(Data);
+        nData=0;
+        head_ptr=NULL;
+        tail_ptr=NULL;
+      }
 
       Type& allocate(const uint& n) {
         nData=n;
@@ -117,8 +122,7 @@ namespace std {
                    int voffset=iZero, long vstep=lOne,
                    int offset=iZero, long step=lOne) {
         assert(static_cast<uint>(voffset+vstep*ncopy)<=ND);
-        assign(v.data(),ncopy,voffset,vstep,offset,step);
-        return *this;
+        return assign(v.data(),ncopy,voffset,vstep,offset,step);
       }
 
       template <uint ND>
@@ -174,6 +178,24 @@ namespace std {
       Type& scale(const fixVector<T,ND>& v) {
         long n=(nData<ND?nData:ND);
         return scale(v,n);
+      }
+
+      Type& scale(const pair<const T&,const Type&>& sp) {
+        return scale(sp.first).scale(sp.second);
+      }
+
+      Type& scale(const pair<const Type&,const T&>& sp) {
+        return scale(sp.first).scale(sp.second);
+      }
+
+      template <uint ND>
+      Type& scale(const pair<const T&,const fixVector<T,ND>&>& sp) {
+        return scale(sp.first).scale(sp.second);
+      }
+
+      template <uint ND>
+      Type& scale(const pair<const fixVector<T,ND>&,const T&>& sp) {
+        return scale(sp.first).scale(sp.second);
       }
 
       template <typename ScaleT>
