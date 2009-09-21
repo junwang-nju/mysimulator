@@ -82,7 +82,12 @@ namespace std {
 
       const uint& size() const { return nData; }
 
-      T& operator[](const uint i) const {
+      T& operator[](const uint i) {
+        assert(i<nData);
+        return *(Data+i);
+      }
+
+      const T& operator[](const uint i) const {
         assert(i<nData);
         return *(Data+i);
       }

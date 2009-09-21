@@ -21,6 +21,18 @@ namespace std {
       T* tail_ptr;
     public:
       fixVector() : Data(), head_ptr(Data), tail_ptr(Data+ND) {}
+
+      T& operator[](const uint i) {
+        assert(i<ND);
+        return *(Data+i);
+      }
+
+      const T& operator[](const uint i) const {
+        assert(i<ND);
+        return *(Data+i);
+      }
+
+      const uint& size() const { return nData; }
   };
 
 }
