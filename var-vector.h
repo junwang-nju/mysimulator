@@ -2,9 +2,9 @@
 #ifndef _Variable_Vector_H_
 #define _Variable_Vector_H_
 
-#include <tr1/tuple>
 #include "vector-impl.cc"
 #include "memory.h"
+#include <tr1/tuple>
 
 namespace std {
 

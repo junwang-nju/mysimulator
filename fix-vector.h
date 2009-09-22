@@ -3,6 +3,7 @@
 #define _Fixed_Vector_H_
 
 #include "vector-impl.cc"
+#include <tr1/tuple>
 
 namespace std {
 
@@ -186,6 +187,166 @@ namespace std {
         assert(static_cast<uint>(voffset+vstep*nshift)<=NDV);
         return shift(value,v.data(),nshift,
                      iZero,lZero,voffset,vstep,offset,step);
+      }
+
+      template <uint NDV>
+      Type& shift(const T& value, const fixVector<T,NDV>& v) {
+        long n=(ND<NDV?ND:NDV);
+        return shift(value,v,n);
+      }
+
+      template <uint NDV>
+      Type& shift(const pair<const T&,const fixVector<T,NDV>&>& sp) {
+        return shift(sp.first,sp.second);
+      }
+
+      template <uint NDV>
+      Type& shift(const pair<const fixVector<T,NDV>&,const T&>& sp) {
+        return shift(sp.second,sp.first);
+      }
+
+      Type& shift(const T& value, const varVector<T>& v, long nshift,
+                  int voffset=iZero, long vstep=lOne,
+                  int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(voffset+vstep*nshift)<=v.data());
+        return shift(value,v.data(),nshift,
+                     iZero,lZero,voffset,vstep,offset,step);
+      }
+
+      Type& shift(const T& value, const varVector<T>& v) {
+        long n=(ND<v.data()?ND:v.data());
+        return shift(value,v,n);
+      }
+
+      Type& shift(const pair<const T&,const varVector<T>&>& sp) {
+        return shift(sp.first,sp.second);
+      }
+
+      Type& shift(const pair<const varVector<T>&,const T&>& sp) {
+        return shift(sp.second,sp.first);
+      }
+
+      Type& shift(const T& value) {
+        myError("shift with a value for generic type is not available!");
+        return *this;
+      }
+
+      template <uint NDV>
+      Type& shift(const fixVector<T,NDV>& v) {
+        myError("Shift with a fix-vector for generic type is not available!");
+        return *this;
+      }
+
+      Type& shift(const varVector<T>& v) {
+        myError("Shift with a var-vector for generic type is not available!");
+        return *this;
+      }
+
+      template <uint NDV1, uint NDV2>
+      Type& shift(
+          const pair<const fixVector<T,NDV1>&,const fixVector<T,NDV2>&>& sp) {
+        myError("Shift with vector-factors for generic type is not available!");
+        return *this;
+      }
+
+      template <uint NDV>
+      Type& shift(const pair<const varVector<T>&,const fixVector<T,NDV>&>& sp){
+        myError("Shift with vector-factors for generic type is not available!");
+        return *this;
+      }
+
+      template <uint NDV>
+      Type& shift(const pair<const fixVector<T,NDV>&,const varVector<T>&>& sp){
+        myError("Shift with vector-factors for generic type is not available!");
+        return *this;
+      }
+
+      Type& shift(const pair<const varVector<T>&,const varVector<T>&>& sp) {
+        myError("Shift with vector-factors for generic type is not available!");
+        return *this;
+      }
+
+      template <uint NDV1, uint NDV2>
+      Type& shift(const tr1::tuple<const T&,const fixVector<T,NDV1>&,
+                                   const fixVector<T,NDV2>&>& st) {
+        myError("Shift with vector-factors for generic type is not available!");
+        return *this;
+      }
+
+      template <uint NDV>
+      Type& shift(const tr1::tuple<const T&,const fixVector<T,NDV>&,
+                                   const varVector<T>&>& st) {
+        myError("Shift with vector-factors for generic type is not available!");
+        return *this;
+      }
+
+      template <uint NDV>
+      Type& shift(const tr1::tuple<const T&,const varVector<T>&,
+                                   const fixVector<T,NDV>&>& st) {
+        myError("Shift with vector-factors for generic type is not available!");
+        return *this;
+      }
+
+      Type& shift(const tr1::tuple<const T&,const varVector<T>&,
+                                   const varVector<T>&>& st) {
+        myError("Shift with vector-factors for generic type is not available!");
+        return *this;
+      }
+
+      Type& scaleshift(const T& ScaleF, const T& ShiftF, const T* ShiftFv,
+                       const T* v, long nscaleshift,
+                       int sfoffset=iZero, long sfstep=lOne,
+                       int voffset=iZero, long vstep=lOne,
+                       int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(offset+step*nscaleshift)<=ND);
+        vector_scaleshift(Data,ScaleF,ShiftF,ShiftFv,v,nscaleshift,
+                          offset,sfoffset,voffset,step,sfstep,vstep);
+        return *this;
+      }
+
+      template <uint NSS, uint NSV>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF,
+                       const fixVector<T,NSS>& ShiftFv,
+                       const fixVector<T,NSV>& v, long nscaleshift,
+                       int sfoffset=iZero, long sfstep=lOne,
+                       int voffset=iZero, long vstep=lOne,
+                       int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(sfoffset+sfstep*nscaleshift)<=NSS);
+        assert(static_cast<uint>(voffset+vstep*nscaleshift)<NSV);
+        return scaleshift(ScaleF,ShiftF,ShiftFv.data(),v.data(),nscaleshift,
+                          sfoffset,sfstep,voffset,vstep,offset,step);
+      }
+
+      template <uint NSS, uint NSV>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF,
+                       const fixVector<T,NSS>& ShiftFv,
+                       const fixVector<T,NSV>& v) {
+        long n;
+        n=(ND<NSS?ND:NSS);
+        n=(n<NSV?n:NSV);
+        return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
+      }
+
+      template <uint NS>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF,
+                       const fixVector<T,NS>& ShiftFv,
+                       const varVector<T>& v, long nscaleshift,
+                       int sfoffset=iZero, long sfstep=lOne,
+                       int voffset=iZero, long vstep=lOne,
+                       int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(sfoffset+sfstep*nscaleshift)<=NS);
+        assert(static_cast<uint>(voffset+vstep*nscaleshift)<v.size());
+        return scaleshift(ScaleF,ShiftF,ShiftFv.data(),v.data(),nscaleshift,
+                          sfoffset,sfstep,voffset,vstep,offset,step);
+      }
+
+      template <uint NS>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF,
+                       const fixVector<T,NS>& ShiftFv, const varVector<T>& v) {
+        long n;
+        n=(ND<ND?ND:NS);
+        n=(n<v.size()?n:v.size());
+        return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
       }
 
   };
