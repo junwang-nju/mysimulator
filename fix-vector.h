@@ -169,6 +169,25 @@ namespace std {
         return scale(sp.first).scale(sp.second);
       }
 
+      template <typename ScaleT>
+      Type& shift(const ScaleT& sv, const T* v, long nshift,
+                  int soffset=iZero, long sstep=lOne,
+                  int voffset=iZero, long vstep=lOne,
+                  int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(offset+step*nshift)<=ND);
+        vector_shift(Data,sv,v,nshift,offset,soffset,voffset,step,sstep,vstep);
+        return *this;
+      }
+
+      template <uint NDV>
+      Type& shift(const T& value, const fixVector<T,NDV>& v, long nshift,
+                  int voffset=iZero, long vstep=lOne,
+                  int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(voffset+vstep*nshift)<=NDV);
+        return shift(value,v.data(),nshift,
+                     iZero,lZero,voffset,vstep,offset,step);
+      }
+
   };
 
 }
