@@ -349,6 +349,28 @@ namespace std {
         return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
       }
 
+      template <uint NS>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF,
+                       const varVector<T>& ShiftFv,
+                       const fixVector<T,NS>& v, long nscaleshift,
+                       int sfoffset=iZero, long sfstep=lOne,
+                       int voffset=iZero, long vstep=lOne,
+                       int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(sfoffset+sfstep*nscaleshift)<=ShiftFv.size());
+        assert(static_cast<uint>(voffset+vstep*nscaleshift)<NS);
+        return scaleshift(ScaleF,ShiftF,ShiftFv.data(),v.data(),nscaleshift,
+                          sfoffset,sfstep,voffset,vstep,offset,step);
+      }
+
+      template <uint NS>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF,
+                       const varVector<T>& ShiftFv, const fixVector<T,NS>& v) {
+        long n;
+        n=(ND<ND?ND:NS);
+        n=(n<ShiftFv.size()?n:ShiftFv.size());
+        return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
+      }
+
   };
 
 }
