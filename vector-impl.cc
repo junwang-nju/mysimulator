@@ -85,6 +85,26 @@ namespace std {
            v+offset,&step);
   }
 
+  template <typename T>
+  void vector_swap(T* va, T* vb, long nswap,
+                   int aoffset=iZero, long astep=lOne,
+                   int boffset=iZero, long bstep=lOne) {
+    T tmT, *pa, *pb;
+    pa=va+aoffset;
+    pb=vb+boffset;
+    for(int i=0;i<nswap;++i) {
+      tmT=*pa;    *pa=*pb;    *pb=tmT;
+      pa+=astep;
+      pb+=bstep;
+    }
+  }
+
+  void vector_swap(double* va, double* vb, long nswap,
+                   int aoffset=iZero, int boffset=iZero,
+                   long astep=lOne, long bstep=lOne) {
+    dswap_(&nswap,va+aoffset,&astep,vb+boffset,&bstep);
+  }
+
 }
 
 #endif
