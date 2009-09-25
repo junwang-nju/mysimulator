@@ -1,6 +1,6 @@
 
-#include "var-vector-double.h"
-#include "fix-vector-double.h"
+#include "var-vector.h"
+#include "fix-vector.h"
 #include <iostream>
 using namespace std;
 
@@ -16,12 +16,13 @@ int main() {
   v1=5.;
   v1.scaleshift(1.2,5,v2,v2);
   v1=5.;
-  v1+=pair<const double&,const varDVector&>(5.,v2);
+  v1+=pair<const double&,const varVector<double>&>(5.,v2);
   for(int i=0;i<10;++i)
     cout<<v1[i]<<"  ";
   cout<<endl;
   v1=5.;
-  v1+=tr1::tuple<const double&,const varDVector&,const varDVector&>(5.,v2,v2);
+  v1+=tr1::tuple<const double&,const varVector<double>&,
+                 const varVector<double>&>(5.,v2,v2);
   for(int i=0;i<10;++i)
     cout<<v1[i]<<"  ";
   cout<<endl;

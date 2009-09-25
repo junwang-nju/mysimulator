@@ -255,62 +255,51 @@ namespace std {
       }
 
       Type& shift(const T& value) {
-        myError("Shift with a value for generic type is not available!");
-        return *this;
+        return (value,&dOne,nData,iZero,lZero,iZero,lZero,iZero,lOne);
       }
 
-      Type& shift(const Type& v) {
-        myError("Shift with a var-vector for generic type is not available!");
-        return *this;
-      }
+      Type& shift(const Type& v) { return shift(dOne,v); }
 
       template <uint ND>
-      Type& shift(const fixVector<T,ND>& v) {
-        myError("Shift with a fix-vector for generic type is not available!");
-        return *this;
-      }
+      Type& shift(const fixVector<T,ND>& v) { return shift(dOne,v); }
 
       Type& shift(const pair<const Type&,const Type&>& sp) {
-        myError("Shift with vector-factors for generic type is not available!");
-        return *this;
+        return scaleshift(dOne,dOne,sp.first,sp.second);
       }
 
       template <uint ND>
       Type& shift(const pair<const fixVector<T,ND>&,const Type&>& sp) {
-        myError("Shift with vector-factors for generic type is not available!");
-        return *this;
+        return scaleshift(dOne,dOne,sp.first,sp.second);
       }
 
       template <uint ND>
       Type& shift(const pair<const Type&,const fixVector<T,ND>&>& sp) {
-        myError("Shift with vector-factors for generic type is not available!");
-        return *this;
+        return scaleshift(dOne,dOne,sp.first,sp.second);
       }
 
       template <uint ND1, uint ND2>
       Type& shift(const pair<const fixVector<T,ND1>&,const fixVector<T,ND2>&>&
                         sp) {
-        myError("Shift with vector-factors for generic type is not available!");
-        return *this;
+        return scaleshift(dOne,dOne,sp.first,sp.second);
       }
       
       Type& shift(const tr1::tuple<const T&,const Type&,const Type&>& st) {
-        myError("Shift with vector-factors for generic type is not available!");
-        return *this;
+        return
+          scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
 
       template <uint ND>
       Type& shift(
           const tr1::tuple<const T&,const fixVector<T,ND>&,const Type&>& st) {
-        myError("Shift with vector-factors for generic type is not available!");
-        return *this;
+        return
+          scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
 
       template <uint ND>
       Type& shift(
           const tr1::tuple<const T&,const Type&,const fixVector<T,ND>&>& st) {
-        myError("Shift with vector-factors for generic type is not available!");
-        return *this;
+        return
+          scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
 
       template <uint ND1, uint ND2>
@@ -318,8 +307,8 @@ namespace std {
           const tr1::tuple<const T&,
                            const fixVector<T,ND1>&,const fixVector<T,ND2>&>&
                 st) {
-        myError("Shift with vector-factors for generic type is not available!");
-        return *this;
+        return
+          scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
 
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const T* ShiftFv,
