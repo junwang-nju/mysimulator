@@ -5,6 +5,7 @@
 #include "vector-impl.cc"
 #include "memory.h"
 #include <tr1/tuple>
+#include <cstring>
 
 namespace std {
 
@@ -19,6 +20,8 @@ namespace std {
       typedef T               DataType;
 
       typedef varVector<T>    Type;
+
+      static const char*      TypeTag;
 
     private:
 
@@ -58,7 +61,9 @@ namespace std {
         return *this;
       }
 
-      Type& allocate(const Type& v) {
+      template <typename vType>
+      Type& allocate(const vType& v) {
+        assert(isVector<vType>());
         nData=v.nData;
         Data=new T[nData];
         head_ptr=Data;
@@ -66,7 +71,8 @@ namespace std {
         return *this;
       }
 
-      Type& Duplicate(const Type& v) { return allocate(v).assign(v); }
+      template <typename vType>
+      Type& Duplicate(const vType& v) { return allocate(v).assign(v); }
 
       template <typename inputT>
       Type& operator=(const inputT& v) { return assign(v); }
@@ -104,30 +110,20 @@ namespace std {
         return *this;
       }
 
-      Type& assign(const Type& v, long ncopy,
+      template <typename vType>
+      Type& assign(const vType& v, long ncopy,
                    int voffset=iZero, long vstep=lOne,
                    int offset=iZero, long step=lOne) {
+        assert(isVector<vType>());
         assert(static_cast<uint>(voffset+vstep*ncopy)<=v.nData);
         assign(v.data(),ncopy,voffset,vstep,offset,step);
         return *this;
       }
 
+      template <typename vType>
       Type& assign(const Type& v) {
+        assert(isVector<vType>());
         long n=(nData<v.nData?nData:v.nData);
-        return assign(v,n);
-      }
-
-      template <uint ND>
-      Type& assign(const fixVector<T,ND>& v, long ncopy,
-                   int voffset=iZero, long vstep=lOne,
-                   int offset=iZero, long step=lOne) {
-        assert(static_cast<uint>(voffset+vstep*ncopy)<=ND);
-        return assign(v.data(),ncopy,voffset,vstep,offset,step);
-      }
-
-      template <uint ND>
-      Type& assign(const fixVector<T,ND>& v) {
-        long n=(nData<ND?nData:ND);
         return assign(v,n);
       }
 
@@ -138,8 +134,7 @@ namespace std {
       
       Type& assign(const T& value) { return assign(value,nData); }
 
-      template <typename inputT>
-      Type& scale(const inputT& v, long nscale,
+      Type& scale(const T* v, long nscale,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
         assert(static_cast<uint>(offset+step*nscale)<=nData);
@@ -149,52 +144,38 @@ namespace std {
 
       Type& scale(const T& d, long nscale,
                   int offset=iZero, long step=lOne) {
-        return scale(d,nscale,iZero,lZero,offset,step);
+        assert(static_cast<uint>(offset+step*nscale)<=nData);
+        vector_scale(Data,d,nscale,offset,iZero,step,lZero);
+        return *this;
       }
 
       Type& scale(const T& d) { return scale(d,nData); }
 
-      Type& scale(const Type& v, long nscale,
+      template <typename vType>
+      Type& scale(const vType& v, long nscale,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
+        assert(isVector<vType>());
         assert(static_cast<uint>(voffset+vstep*nscale)<=v.nData);
         return scale(v.data(),nscale,voffset,vstep,offset,step);
       }
 
-      Type& scale(const Type& v) {
+      template <typename vType>
+      Type& scale(const vType& v) {
+        assert(isVector<vType>());
         long n=(nData<v.nData?nData:v.nData);
         return scale(v,n);
       }
 
-      template <uint ND>
-      Type& scale(const fixVector<T,ND>& v, long nscale,
-                  int voffset=iZero, long vstep=lOne,
-                  int offset=iZero, long step=lOne) {
-        assert(static_cast<uint>(voffset+vstep*nscale)<=ND);
-        return scale(v.data(),nscale,voffset,vstep,offset,step);
-      }
-
-      template <uint ND>
-      Type& scale(const fixVector<T,ND>& v) {
-        long n=(nData<ND?nData:ND);
-        return scale(v,n);
-      }
-
-      Type& scale(const pair<const T&,const Type&>& sp) {
+      template <typename vType>
+      Type& scale(const pair<const T&,const vType&>& sp) {
+        assert(isVector<vType>());
         return scale(sp.first).scale(sp.second);
       }
 
-      Type& scale(const pair<const Type&,const T&>& sp) {
-        return scale(sp.first).scale(sp.second);
-      }
-
-      template <uint ND>
-      Type& scale(const pair<const T&,const fixVector<T,ND>&>& sp) {
-        return scale(sp.first).scale(sp.second);
-      }
-
-      template <uint ND>
-      Type& scale(const pair<const fixVector<T,ND>&,const T&>& sp) {
+      template <typename vType>
+      Type& scale(const pair<const vType&,const T&>& sp) {
+        assert(isVector<vType>());
         return scale(sp.first).scale(sp.second);
       }
 
@@ -208,49 +189,32 @@ namespace std {
         return *this;
       }
 
-      Type& shift(const T& value, const Type& v, long nshift,
+      template <typename vType>
+      Type& shift(const T& value, const vType& v, long nshift,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
+        assert(isVector<vType>());
         assert(static_cast<uint>(voffset+vstep*nshift)<=v.nData);
         return shift(value,v.data(),nshift,
                      iZero,lZero,voffset,vstep,offset,step);
       }
       
-      Type& shift(const T& value, const Type& v) {
+      template <typename vType>
+      Type& shift(const T& value, const vType& v) {
+        assert(isVector<vType>());
         long n=(nData<v.nData?nData:v.nData);
         return shift(value,v,n);
       }
       
-      Type& shift(const pair<const T&,const Type&>& sp) {
+      template <typename vType>
+      Type& shift(const pair<const T&,const vType&>& sp) {
+        assert(isVector<vType>());
         return shift(sp.first,sp.second);
       }
 
+      template <typename vType>
       Type& shift(const pair<const Type&,const T&>& sp) {
-        return shift(sp.second,sp.first);
-      }
-
-      template <uint ND>
-      Type& shift(const T& value, const fixVector<T,ND>& v, long nshift,
-                  int voffset=iZero, long vstep=lOne,
-                  int offset=iZero, long step=lOne) {
-        assert(static_cast<uint>(voffset+vstep*nshift)<=ND);
-        return shift(value,v.data(),nshift,
-                     iZero,lZero,voffset,vstep,offset,step);
-      }
-
-      template <uint ND>
-      Type& shift(const T& value, const fixVector<T,ND>& v) {
-        long n=(nData<ND?nData:ND);
-        return shift(value,v,n);
-      }
-
-      template <uint ND>
-      Type& shift(const pair<const T&,const fixVector<T,ND>&>& sp) {
-        return shift(sp.first,sp.second);
-      }
-
-      template <uint ND>
-      Type& shift(const pair<const fixVector<T,ND>&,const T&>& sp) {
+        assert(isVector<vType>());
         return shift(sp.second,sp.first);
       }
 
@@ -258,55 +222,21 @@ namespace std {
         return (value,&dOne,nData,iZero,lZero,iZero,lZero,iZero,lOne);
       }
 
-      Type& shift(const Type& v) { return shift(dOne,v); }
+      template <typename vType>
+      Type& shift(const vType& v) {
+        assert(isVector<vType>());
+        return shift(dOne,v);
+      }
 
-      template <uint ND>
-      Type& shift(const fixVector<T,ND>& v) { return shift(dOne,v); }
-
-      Type& shift(const pair<const Type&,const Type&>& sp) {
+      template <typename vTypeA, typename vTypeB>
+      Type& shift(const pair<const vTypeA&,const vTypeB&>& sp) {
+        assert(isVector<vTypeA>()&&isVector<vTypeB>());
         return scaleshift(dOne,dOne,sp.first,sp.second);
       }
 
-      template <uint ND>
-      Type& shift(const pair<const fixVector<T,ND>&,const Type&>& sp) {
-        return scaleshift(dOne,dOne,sp.first,sp.second);
-      }
-
-      template <uint ND>
-      Type& shift(const pair<const Type&,const fixVector<T,ND>&>& sp) {
-        return scaleshift(dOne,dOne,sp.first,sp.second);
-      }
-
-      template <uint ND1, uint ND2>
-      Type& shift(const pair<const fixVector<T,ND1>&,const fixVector<T,ND2>&>&
-                        sp) {
-        return scaleshift(dOne,dOne,sp.first,sp.second);
-      }
-      
-      Type& shift(const tr1::tuple<const T&,const Type&,const Type&>& st) {
-        return
-          scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
-      }
-
-      template <uint ND>
-      Type& shift(
-          const tr1::tuple<const T&,const fixVector<T,ND>&,const Type&>& st) {
-        return
-          scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
-      }
-
-      template <uint ND>
-      Type& shift(
-          const tr1::tuple<const T&,const Type&,const fixVector<T,ND>&>& st) {
-        return
-          scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
-      }
-
-      template <uint ND1, uint ND2>
-      Type& shift(
-          const tr1::tuple<const T&,
-                           const fixVector<T,ND1>&,const fixVector<T,ND2>&>&
-                st) {
+      template <typename vTypeA, typename vTypeB>
+      Type& shift(const tr1::tuple<const T&,const vTypeA&,const vTypeB&>& st) {
+        assert(isVector<vTypeA>()&&isVector<vTypeB>());
         return
           scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
@@ -322,117 +252,42 @@ namespace std {
         return *this;
       }
 
-      Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& ShiftFv,
-                       const Type& v, long nscaleshift,
+      template <typename vTypeA, typename vTypeB>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF, const vTypeA& ShiftFv,
+                       const vTypeB& v, long nscaleshift,
                        int sfoffset=iZero, long sfstep=lOne,
                        int voffset=iZero, long vstep=lOne,
                        int offset=iZero, long step=lOne) {
+        assert(isVector<vTypeA>()&&isVector<vTypeB>());
         assert(static_cast<uint>(sfoffset+sfstep*nscaleshift)<=ShiftFv.nData);
         assert(static_cast<uint>(voffset+vstep*nscaleshift)<=v.nData);
         return scaleshift(ScaleF,ShiftF,ShiftFv.data(),v.data(),nscaleshift,
                           sfoffset,sfstep,voffset,vstep,offset,step);
       }
       
-      Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& ShiftFv,
-                       const Type& v) {
+      template <typename vTypeA, typename vTypeB>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF, const vTypeA& ShiftFv,
+                       const vTypeB& v) {
+        assert(isVector<vTypeA>()&&isVector<vTypeB>());
         long n;
         n=(nData<ShiftFv.nData?nData:ShiftFv.nData);
         n=(static_cast<uint>(n)<v.nData?n:v.nData);
         return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
       }
 
-      template <uint ND>
-      Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& ShiftFv,
-                       const fixVector<T,ND>& v, long nscaleshift,
-                       int sfoffset=iZero, long sfstep=lOne,
-                       int voffset=iZero, long vstep=lOne,
-                       int offset=iZero, long step=lOne) {
-        assert(static_cast<uint>(sfoffset+sfstep*nscaleshift)<=ShiftFv.nData);
-        assert(static_cast<uint>(voffset+vstep*nscaleshift)<=ND);
-        return scaleshift(ScaleF,ShiftF,ShiftFv.data(),v.data(),nscaleshift,
-                          sfoffset,sfstep,voffset,vstep,offset,step);
-      }
-
-      template <uint ND>
-      Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& ShiftFv,
-                       const fixVector<T,ND>& v) {
-        long n;
-        n=(nData<ShiftFv.nData?nData:ShiftFv.nData);
-        n=(n<ND?n:ND);
-        return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
-      }
-
-      template <uint ND>
-      Type& scaleshift(const T& ScaleF, const T& ShiftF,
-                       const fixVector<T,ND>& ShiftFv,
-                       const Type& v, long nscaleshift,
-                       int sfoffset=iZero, long sfstep=lOne,
-                       int voffset=iZero, long vstep=lOne,
-                       int offset=iZero, long step=lOne) {
-        assert(static_cast<uint>(sfoffset+sfstep*nscaleshift)<=ND);
-        assert(static_cast<uint>(voffset+vstep*nscaleshift)<=v.nData);
-        return scaleshift(ScaleF,ShiftF,ShiftFv.data(),v.data(),nscaleshift,
-                          sfoffset,sfstep,voffset,vstep,offset,step);
-      }
-
-      template <uint ND>
-      Type& scaleshift(const T& ScaleF, const T& ShiftF,
-                       const fixVector<T,ND>& ShiftFv, const Type& v) {
-        long n;
-        n=(nData<ND?nData:ND);
-        n=(n<v.nData?n:v.nData);
-        return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
-      }
-
-      template <uint ND1, uint ND2>
-      Type& scaleshift(const T& ScaleF, const T& ShiftF,
-                       const fixVector<T,ND1>& ShiftFv,
-                       const fixVector<T,ND2>& v, long nscaleshift,
-                       int sfoffset=iZero, long sfstep=lOne,
-                       int voffset=iZero, long vstep=lOne,
-                       int offset=iZero, long step=lOne) {
-        assert(static_cast<uint>(sfoffset+sfstep*nscaleshift)<=ND1);
-        assert(static_cast<uint>(voffset+vstep*nscaleshift)<=ND2);
-        return scaleshift(ScaleF,ShiftF,ShiftFv.data(),v.data(),nscaleshift,
-                          sfoffset,sfstep,voffset,vstep,offset,step);
-      }
-
-      template <uint ND1, uint ND2>
-      Type& scaleshift(const T& ScaleF, const T& ShiftF,
-                       const fixVector<T,ND1>& ShiftFv,
-                       const fixVector<T,ND2>& v) {
-        long n;
-        n=(nData<ND1?nData:ND1);
-        n=(n<ND2?n:ND2);
-        return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
-      }
-
-      Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& v,
+      template <typename vType>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF, const vType& v,
                        long nscaleshift,
                        int voffset=iZero, long vstep=lOne,
                        int offset=iZero, long step=lOne) {
+        assert(isVector<vType>());
         scale(ScaleF,nscaleshift,offset,step);
         return shift(ShiftF,v,nscaleshift,voffset,vstep,offset,step);
       }
       
-      Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& v) {
+      template <typename vType>
+      Type& scaleshift(const T& ScaleF, const T& ShiftF, const vType& v) {
         long n=(nData<v.nData?nData:v.nData);
-        return scaleshift(ScaleF,ShiftF,v,n);
-      }
-
-      template <uint ND>
-      Type& scaleshift(const T& ScaleF, const T& ShiftF,
-                       const fixVector<T,ND>& v, long nscaleshift,
-                       int voffset=iZero, long vstep=lOne,
-                       int offset=iZero, long step=lOne) {
-        scale(ScaleF,nscaleshift,offset,step);
-        return shift(ShiftF,v,nscaleshift,voffset,vstep,offset,step);
-      }
-      
-      template <uint ND>
-      Type& scaleshift(const T& ScaleF, const T& ShiftF,
-                       const fixVector<T,ND>& v) {
-        long n=(nData<ND?nData:ND);
         return scaleshift(ScaleF,ShiftF,v,n);
       }
 
@@ -453,33 +308,26 @@ namespace std {
         return *this;
       }
 
-      Type& swap_content(Type& v, long nswap,
+      template <typename vType>
+      Type& swap_content(vType& v, long nswap,
                          int voffset=iZero, long vstep=lOne,
                          int offset=iZero, long step=lOne) {
+        assert(isVector<vType>());
         assert(static_cast<uint>(voffset+vstep*nswap)<=v.nData);
         return swap_content(v.data(),nswap,voffset,vstep,offset,step);
       }
 
-      Type& swap_content(Type& v) {
+      template <typename vType>
+      Type& swap_content(vType& v) {
+        assert(isVector<vType>());
         long n=(nData<v.nData?nData:v.nData);
         return swap_content(v,n);
       }
 
-      template <uint ND>
-      Type& swap_content(fixVector<T,ND>& v, long nswap,
-                         int voffset=iZero, long vstep=lOne,
-                         int offset=iZero, long step=lOne) {
-        assert(static_cast<uint>(voffset+vstep*nswap)<=ND);
-        return swap_content(v.data(),nswap,voffset,vstep,offset,step);
-      }
-
-      template <uint ND>
-      Type& swap_content(fixVector<T,ND>& v) {
-        long n=(nData<ND?nData:ND);
-        return swap_content(v,n);
-      }
-
   };
+
+  template <typename T>
+  const char* varVector<T>::TypeTag="varVector";
 
 }
 

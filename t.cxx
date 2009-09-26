@@ -1,10 +1,17 @@
 
 #include "var-vector.h"
 #include "fix-vector.h"
+#include "vector-op.h"
 #include <iostream>
 using namespace std;
 
+class A{
+  public:
+    static const int aaa=10;
+};
+
 int main() {
+  cout<<varVector<double>::TypeTag<<endl;
   varVector<double> v1;
   varVector<double> v2(1000000);
   v1.allocate(v2);
@@ -40,6 +47,8 @@ int main() {
   fv1+=tr1::tuple<const double&,const fixVector<double,1000>&,
                   const fixVector<double,1000>&>(5.,fv2,fv2);
   fv2=fv1.swap_content(fv2);
+
+  cout<<dot(v1,fv1)<<endl;
   return 1;
 }
 
