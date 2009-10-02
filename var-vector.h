@@ -46,7 +46,9 @@ namespace std {
 
       varVector(const Type& v) { myError("vector copier is prohibited!"); }
 
-      ~varVector() {
+      ~varVector() {  clear();  }
+
+      void clear() {
         safe_delete(Data);
         nData=0;
         head_ptr=NULL;
@@ -54,6 +56,7 @@ namespace std {
       }
 
       Type& allocate(const uint& n) {
+        if(Data!=NULL) clear();
         nData=n;
         Data=new T[nData];
         head_ptr=Data;
@@ -61,9 +64,12 @@ namespace std {
         return *this;
       }
 
+      Type& allocate(const int& n) { return allocate(static_cast<uint>(n)); }
+
       template <typename vType>
       Type& allocate(const vType& v) {
         assert(isVector<vType>());
+        if(Data!=NULL) clear();
         nData=v.nData;
         Data=new T[nData];
         head_ptr=Data;
@@ -121,7 +127,7 @@ namespace std {
       }
 
       template <typename vType>
-      Type& assign(const Type& v) {
+      Type& assign(const vType& v) {
         assert(isVector<vType>());
         long n=(nData<v.nData?nData:v.nData);
         return assign(v,n);
