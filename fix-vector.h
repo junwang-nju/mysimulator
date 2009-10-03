@@ -288,6 +288,19 @@ namespace std {
   template <typename T, uint ND>
   const char* fixVector<T,ND>::TypeTag="fixVector";
 
+  template <typename T, uint N>
+  istream& operator>>(istream& is, fixVector<T,N>& v) {
+    for(uint i=0;i<N;++i) is>>v[i];
+    return is;
+  }
+
+  template <typename T, uint N>
+  ostream& operator<<(ostream& os, const fixVector<T,N>& v) {
+    os<<v[0];
+    for(uint i=1;i<N;++i) os<<"\t"<<v[i];
+    return os;
+  }
+
 }
 
 #endif

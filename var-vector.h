@@ -335,6 +335,24 @@ namespace std {
   template <typename T>
   const char* varVector<T>::TypeTag="varVector";
 
+  template <typename T>
+  istream& operator>>(istream& is, varVector<T>& v) {
+    uint n;
+    is>>n;
+    v.allocate(n);
+    for(uint i=0;i<n;++i) is>>v[i];
+    return is;
+  }
+
+  template <typename T>
+  ostream& operator<<(ostream& os, const varVector<T>& v) {
+    uint n=v.size();
+    assert(n>0);
+    os<<v[0];
+    for(uint i=1;i<n;++i) os<<"\t"<<v[i];
+    return os;
+  }
+
 }
 
 #endif
