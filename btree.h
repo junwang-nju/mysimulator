@@ -36,6 +36,23 @@ namespace std {
       typedef btree_node<KeyType,ValueType>   NodeType;
       NodeType root;
       btree() : root() {}
+      ~btree() {
+        NodeType *present=&root, *tofree;
+        while(true) {
+          if(present->left!=NULL) present=present->left;
+          else if(present->right!=NULL) present=present->right;
+          else {
+            if(present==&root)  break;
+            else {
+              tofree=present;
+              present=present->parent;
+              delete tofree;
+            }
+          }
+        }
+        root.left=NULL;
+        root.right=NULL;
+      }
       bool insert(const KeyType& K, const ValueType& V) {
         if(root.key==NULL) {
           root.key=const_cast<KeyType*>(&K);

@@ -4,6 +4,7 @@
 
 #include "var-vector.h"
 #include "fix-vector.h"
+#include <iostream>
 
 namespace std {
 
@@ -97,6 +98,37 @@ namespace std {
     cross_prod(va.data(),vb.data(),v.data(),
                aoffset,astep,boffset,bstep,offset,step);
     return v;
+  }
+
+  template <typename T>
+  istream& operator>>(istream& is, varVector<T>& v) {
+    uint n;
+    is>>n;
+    v.allocate(n);
+    for(uint i=0;i<n;++i) is>>v[i];
+    return is;
+  }
+
+  template <typename T, uint N>
+  istream& operator>>(istream& is, fixVector<T,N>& v) {
+    for(uint i=0;i<N;++i) is>>v[i];
+    return is;
+  }
+
+  template <typename T>
+  ostream& operator<<(ostream& os, const varVector<T>& v) {
+    uint n=v.size();
+    assert(n>0);
+    os<<v[0];
+    for(uint i=1;i<n;++i) os<<"\t"<<v[i];
+    return os;
+  }
+
+  template <typename T, uint N>
+  ostream& operator<<(ostream& os, const fixVector<T,N>& v) {
+    os<<v[0];
+    for(uint i=1;i<N;++i) os<<"\t"<<v[i];
+    return os;
   }
 
 }

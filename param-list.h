@@ -4,6 +4,7 @@
 
 #include "var-vector.h"
 #include "fix-vector.h"
+#include "vector-op.h"
 #include "btree.h"
 #include "hash_func.h"
 
@@ -26,18 +27,19 @@ namespace std {
 
   };
 
+  istream& operator>>(istream& is, ParamKey& K) {
+    is>>K.Index;
+    K.BuildHash();
+    return is;
+  }
+
   int compare(const ParamKey& K1, const ParamKey& K2) {
-    if(K1.hash[0]>K2.hash[0])           return 1;
-    else if(K1.hash[0]<K2.hash[0])      return -1;
-    else {
-      if(K1.hash[1]>K2.hash[1])         return 1;
-      else if(K1.hash[1]<K2.hash[1])    return -1;
-      else {
-        if(K1.hash[2]>K2.hash[2])       return 1;
-        else if(K1.hash[2]<K2.hash[2])  return -1;
-        else                            return 0;
-      }
-    }
+    if(K1.hash[0]==K2.hash[0])
+      if(K1.hash[1]==K2.hash[1])
+        if(K1.hash[2]==K2.hash[2])      return 0;
+        else                            return (K1.hash[2]>K2.hash[2]?1:-1);
+      else                              return (K1.hash[1]>K2.hash[1]?1:-1);
+    else                                return (K1.hash[0]>K2.hash[0]?1:-1);
   }
 
   class ParamList {
@@ -75,6 +77,17 @@ namespace std {
       }
 
   };
+
+  istream& operator>>(istream& is, ParamList& PL) {
+    uint n;
+    is>>n;
+    PL.KeyList.allocate(n);
+    PL.ValueList.allocate(n);
+    for(uint i=0;i<n;++i)   is>>PL.KeyList[i]>>PL.ValueList[i];
+    PL.UpdateHashTree();
+    return is;
+  }
+
 }
 
 #endif
