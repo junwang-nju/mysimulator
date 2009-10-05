@@ -12,6 +12,9 @@
 #include "interaction-parpar-lj612.h"
 #include "id-list.h"
 #include "interaction-4list.h"
+#include "interaction-parpar-lj1012.h"
+#include "interaction-parpar-harmonic.h"
+#include "interaction-parpar-lj612cut.h"
 #include <iostream>
 using namespace std;
 
