@@ -5,6 +5,11 @@
 #include "btree.h"
 #include "hash_func.h"
 #include "param-list.h"
+#include "property.h"
+#include "particle.h"
+#include "distance-storage.h"
+#include "distance-evaluation.h"
+#include "interaction-parpar-lj612.h"
 #include <iostream>
 using namespace std;
 
@@ -87,6 +92,29 @@ int main() {
   varVector<double>* vo=PL.get(PL.KeyList[2].Index);
   cout<<(*vo)[0]<<endl;
   cout<<(*vo)[1]<<endl;
+
+  Property Pa,Pb;
+  allocate_as_Particle(Pa,3);
+  allocate_as_Particle(Pb,3);
+  Pa.Coordinate[0]=0;
+  Pa.Coordinate[1]=0;
+  Pa.Coordinate[2]=0;
+  Pa.Index=0;
+  Pb.Coordinate[0]=0;
+  Pb.Coordinate[1]=0;
+  Pb.Coordinate[2]=3;
+  Pb.Index=2;
+  FreeSpace FS;
+  DistanceEvalwStorage<3> DEval;
+  DEval.allocate_storage(3);
+  varVector<double> prm(4);
+  prm[0]=3.;
+  prm[1]=1.;
+  prm[2]=9.;
+  prm[3]=12.;
+  double Energy=0.;
+  E_ParPar_LJ612(Pa,Pb,prm,DEval,FS,Energy);
+  cout<<Energy<<endl;
   return 1;
 }
 
