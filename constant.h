@@ -12,8 +12,6 @@ namespace std {
 
   static int    iZero=0;
 
-  static double dZero=0.;
-
   static double dOne=1.;
 
 }

@@ -19,7 +19,7 @@ namespace std {
 
       typedef fixVector<T,ND>    Type;
 
-      static const uint nData=ND;
+      static const uint nData;
 
       static const char* TypeTag;
 
@@ -287,6 +287,9 @@ namespace std {
 
   template <typename T, uint ND>
   const char* fixVector<T,ND>::TypeTag="fixVector";
+
+  template <typename T, uint ND>
+  const uint fixVector<T,ND>::nData=ND;
 
   template <typename T, uint N>
   istream& operator>>(istream& is, fixVector<T,N>& v) {

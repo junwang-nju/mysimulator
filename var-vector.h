@@ -56,6 +56,7 @@ namespace std {
       }
 
       Type& allocate(const uint& n) {
+        if(nData==n)  return *this;
         if(Data!=NULL) clear();
         nData=n;
         Data=new T[nData];
@@ -69,12 +70,7 @@ namespace std {
       template <typename vType>
       Type& allocate(const vType& v) {
         assert(isVector<vType>());
-        if(Data!=NULL) clear();
-        nData=v.nData;
-        Data=new T[nData];
-        head_ptr=Data;
-        tail_ptr=head_ptr+nData;
-        return *this;
+        return allocate(v.nData);
       }
 
       template <typename vType>
