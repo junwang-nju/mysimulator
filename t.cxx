@@ -10,6 +10,8 @@
 #include "distance-storage.h"
 #include "distance-evaluation.h"
 #include "interaction-parpar-lj612.h"
+#include "id-list.h"
+#include "interaction-4list.h"
 #include <iostream>
 using namespace std;
 
@@ -113,8 +115,32 @@ int main() {
   prm[2]=9.;
   prm[3]=12.;
   double Energy=0.;
-  E_ParPar_LJ612(Pa,Pb,prm,DEval,FS,Energy);
+  varVector<Property*> P(2);
+  P[0]=&Pa;
+  P[1]=&Pb;
+  E_ParPar_LJ612(P,prm,DEval,FS,Energy);
   cout<<Energy<<endl;
+
+  varVector<Property> PropSet(3);
+  allocate_as_Particle(PropSet[0],3);
+  allocate_as_Particle(PropSet[1],3);
+  allocate_as_Particle(PropSet[2],3);
+  PropSet[0].Coordinate[0]=0;
+  PropSet[0].Coordinate[1]=0;
+  PropSet[0].Coordinate[2]=0;
+  PropSet[0].Index=0;
+  PropSet[2].Coordinate[0]=0;
+  PropSet[2].Coordinate[1]=0;
+  PropSet[2].Coordinate[2]=3;
+  PropSet[2].Index=2;
+  IDList<DistanceEvalwStorage<3>,FreeSpace> idl;
+  idl.allocate(1,2);
+  idl.List[0][0]=0;
+  idl.List[0][1]=2;
+  idl.efunc=E_ParPar_LJ612;
+  E_List(PropSet,prm,idl,DEval,FS,Energy);
+  cout<<Energy<<endl;
+
   return 1;
 }
 
