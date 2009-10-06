@@ -94,7 +94,7 @@ int main() {
     PL.ValueList[i][1]=i+2;
   }
   PL.UpdateHashTree();
-  varVector<double>* vo=PL.get(PL.KeyList[2].Index);
+  const varVector<double>* vo=PL.get(PL.KeyList[2].Index);
   cout<<(*vo)[0]<<endl;
   cout<<(*vo)[1]<<endl;
 
@@ -104,19 +104,44 @@ int main() {
   Pa.Coordinate[0]=0;
   Pa.Coordinate[1]=0;
   Pa.Coordinate[2]=0;
+  Pa.MonomerKindID=0;
   Pa.Index=0;
   Pb.Coordinate[0]=0;
   Pb.Coordinate[1]=0;
   Pb.Coordinate[2]=3;
+  Pb.MonomerKindID=0;
   Pb.Index=2;
   FreeSpace FS;
   DistanceEvalwStorage<3> DEval;
   DEval.allocate_storage(3);
-  varVector<double> prm(4);
-  prm[0]=3.;
-  prm[1]=1.;
-  prm[2]=9.;
-  prm[3]=12.;
+  
+  ParamList prm;
+  prm.KeyList.allocate(3);
+  for(uint i=0;i<3U;++i)
+    prm.KeyList[i].Index.allocate(2);
+  prm.KeyList[0].Index[0]=0;  prm.KeyList[0].Index[1]=0;
+  prm.KeyList[1].Index[0]=0;  prm.KeyList[1].Index[1]=1;
+  prm.KeyList[2].Index[0]=1;  prm.KeyList[2].Index[1]=1;
+  for(uint i=0;i<3U;++i)
+    prm.KeyList[i].BuildHash();
+  prm.ValueList.allocate(3);
+  for(uint i=0;i<3U;++i)
+    prm.ValueList[i].allocate(4);
+  varVector<double> vprm;
+  vprm.allocate(4);
+  vprm[0]=3.;
+  vprm[1]=1.;
+  vprm[2]=9.;
+  vprm[3]=12.;
+  prm.ValueList[0]=vprm;
+  prm.ValueList[1]=vprm;
+  prm.ValueList[1][0]=2;
+  prm.ValueList[1][2]=4;
+  prm.ValueList[2]=vprm;
+  prm.ValueList[2][0]=4;
+  prm.ValueList[2][2]=16;
+  prm.UpdateHashTree();
+
   double Energy=0.;
   varVector<Property*> P(2);
   P[0]=&Pa;

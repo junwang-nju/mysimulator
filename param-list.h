@@ -69,7 +69,7 @@ namespace std {
       }
 
       template <typename vType>
-      ParamValueType* get(const vType& Index) {
+      const ParamValueType* get(const vType& Index) const {
         ParamKey tKey;
         tKey.Index.Duplicate(Index);
         tKey.BuildHash();

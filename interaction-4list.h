@@ -9,7 +9,7 @@ namespace std {
 
   template <typename DistEvalObj, typename GeomType>
   void E_List(const varVector<Property>& PropSet,
-              const varVector<double>& Parm,
+              const ParamList& PList,
               IDList<DistEvalObj,GeomType>& IDL,
               DistEvalObj& DEval, const GeomType& Geo,
               double& Energy){
@@ -18,7 +18,7 @@ namespace std {
     for(uint i=0;i<nl;++i) {
       for(uint k=0;k<nid;++k)
         IDL.runProperty[k]=const_cast<Property*>(&PropSet[IDL.List[i][k]]);
-      IDL.efunc(IDL.runProperty,Parm,DEval,Geo,Energy);
+      IDL.efunc(IDL.runProperty,PList,DEval,Geo,Energy);
     }
   }
 

@@ -3,6 +3,7 @@
 #define _ID_List_H_
 
 #include "property.h"
+#include "param-list.h"
 
 namespace std {
 
@@ -11,13 +12,13 @@ namespace std {
 
     public:
 
-      void (*efunc)(const varVector<Property*>&, const varVector<double>&,
+      void (*efunc)(const varVector<Property*>&, const ParamList&,
                     DistEvalObj&, const GeomType&,double&);
 
-      void (*gfunc)(const varVector<Property*>&, const varVector<double>&,
+      void (*gfunc)(const varVector<Property*>&, const ParamList&,
                     DistEvalObj&, const GeomType&);
 
-      void (*bfunc)(const varVector<Property*>&, const varVector<double>&,
+      void (*bfunc)(const varVector<Property*>&, const ParamList&,
                     DistEvalObj&, const GeomType&, double&);
 
       varVector<varVector<uint> > List;

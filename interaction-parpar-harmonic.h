@@ -9,25 +9,25 @@ namespace std {
 
   template <typename DistEvalObj, typename GeomType>
   void E_ParPar_harmonic(const varVector<Property*>& P,
-                         const varVector<double>& Parm,
+                         const ParamList& PList,
                          DistEvalObj& DEval, const GeomType& Geo,
                          double& Energy) {
-    E_ParPar_Base(P,Parm,DEval,Geo,Energy,FuncFactor_harmonic);
+    E_ParPar_Base(P,PList,DEval,Geo,Energy,FuncFactor_harmonic);
   } 
 
   template <typename DistEvalObj, typename GeomType>
   void G_ParPar_harmonic(varVector<Property*>& P,
-                         const varVector<double>& Parm,
+                         const ParamList& PList,
                          DistEvalObj& DEval, const GeomType& Geo) {
-    G_ParPar_Base(P,Parm,DEval,Geo,DiffFactor_harmonic);
+    G_ParPar_Base(P,PList,DEval,Geo,DiffFactor_harmonic);
   }
 
   template <typename DistEvalObj, typename GeomType>
   void EG_ParPar_harmonic(varVector<Property*>& P,
-                          const varVector<double>& Parm,
+                          const ParamList& PList,
                           DistEvalObj& DEval, const GeomType& Geo,
                           double& Energy) {
-    EG_ParPar_Base(P,Parm,DEval,Geo,Energy,BothFactor_harmonic);
+    EG_ParPar_Base(P,PList,DEval,Geo,Energy,BothFactor_harmonic);
   }
 
 }

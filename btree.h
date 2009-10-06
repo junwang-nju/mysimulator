@@ -80,9 +80,9 @@ namespace std {
         }
         return true;
       }
-      ValueType* get(const KeyType& K) {
+      const ValueType* get(const KeyType& K) const {
         if(root.key==NULL)  return NULL;
-        NodeType* present=&root;
+        NodeType* present=const_cast<NodeType*>(&root);
         int cmp;
         while(true) {
           cmp=compare(*(present->key),K);

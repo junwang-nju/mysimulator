@@ -45,6 +45,8 @@ namespace std {
         assign(v);
       }
 
+      Type& operator=(const Type& v) { return assign(v); }
+
       template <typename inputT>
       Type& operator=(const inputT& v) { return assign(v); }
 

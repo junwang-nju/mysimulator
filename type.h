@@ -2,10 +2,6 @@
 #ifndef _Type_H_
 #define _Type_H_
 
-namespace std {
-
-  typedef unsigned int uint;
-
-}
+#include <sys/types.h>
 
 #endif

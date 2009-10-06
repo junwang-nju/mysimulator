@@ -76,6 +76,8 @@ namespace std {
       template <typename vType>
       Type& Duplicate(const vType& v) { return allocate(v).assign(v); }
 
+      Type& operator=(const Type& v) { return assign(v); }
+
       template <typename inputT>
       Type& operator=(const inputT& v) { return assign(v); }
 
