@@ -15,6 +15,8 @@
 #include "interaction-parpar-lj1012.h"
 #include "interaction-parpar-harmonic.h"
 #include "interaction-parpar-lj612cut.h"
+#include "interaction-4listset.h"
+#include "propagator-format.h"
 #include <iostream>
 using namespace std;
 

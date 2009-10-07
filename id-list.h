@@ -33,6 +33,11 @@ namespace std {
 
       IDList(const Type& IDL) { myError("copier for IDList is disabled!"); }
 
+      Type& operator=(const Type& IDL) {
+        List=IDL.List;
+        return *this;
+      }
+
       template <typename runDistEvalObj, typename runGeomType>
       Type& operator=(const IDList<runDistEvalObj,runGeomType>& IDL) {
         List=IDL.List;
