@@ -5,6 +5,7 @@
 #include "property.h"
 #include "param-list.h"
 #include "id-list-set.h"
+#include "interaction-4listset.h"
 
 namespace std {
 
@@ -16,7 +17,9 @@ namespace std {
       IDListSet<DistEvalObj,GeomType>& IDLS,
       const varVector<varVector<double> >& mvParm,
       DistEvalObj& DEval, const GeomType& Geo) {
-    nowProp.Coordinate.shift(mvParm[1][0],nowProp.Velocity);
+    nowProp.Coordinate.shift(mvParm[0][0],nowProp.Velocity);
+    nowProp.Velocity.shift(mvParm[1][0],nowProp.Gradient);
+    G_ListSet(PropSet,PList,IDLS,mvParm,DEval,Geo);
   }
 
 }
