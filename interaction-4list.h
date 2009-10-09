@@ -24,28 +24,28 @@ namespace std {
 
   template <typename DistEvalObj, typename GeomType>
   void G_List(varVector<Property>& PropSet,
-              const varVector<double>& Parm,
-              const IDList<DistEvalObj,GeomType>& IDL,
+              const ParamList& PList,
+              IDList<DistEvalObj,GeomType>& IDL,
               DistEvalObj& DEval, const GeomType& Geo) {
     uint nl=IDL.List.size();
     uint nid=IDL.runProperty.size();
     for(uint i=0;i<nl;++i) {
       for(uint k=0;k<nid;++k) IDL.runProperty[k]=&PropSet[IDL.List[i][k]];
-      IDL.gfunc(IDL.runProperty,Parm,DEval,Geo);
+      IDL.gfunc(IDL.runProperty,PList,DEval,Geo);
     }
   }
 
   template <typename DistEvalObj, typename GeomType>
   void EG_List(varVector<Property>& PropSet,
-               const varVector<double>& Parm,
-               const IDList<DistEvalObj,GeomType>& IDL,
+               const ParamList& PList,
+               IDList<DistEvalObj,GeomType>& IDL,
                DistEvalObj& DEval, const GeomType& Geo,
                double& Energy) {
     uint nl=IDL.List.size();
     uint nid=IDL.runProperty.size();
     for(uint i=0;i<nl;++i) {
       for(uint k=0;k<nid;++k) IDL.runProperty[k]=&PropSet[IDL.List[i][k]];
-      IDL.bfunc(IDL.runProperty,Parm,DEval,Geo,Energy);
+      IDL.bfunc(IDL.runProperty,PList,DEval,Geo,Energy);
     }
   }
 

@@ -47,9 +47,33 @@ namespace std {
         return operator()(pa.Coordinate,pb.Coordinate);
       }
 
-      template <typename vTypeA, typename vTypeB>
-      fixVector<double,N>& operator()(const vTypeA& va, const vTypeB& vb,
+      fixVector<double,N>& operator()(const varVector<double>& va,
+                                      const varVector<double>& vb,
                                       const FreeSpace& FS) {
+        return operator()(va,vb);
+      }
+
+      template <uint NN>
+      fixVector<double,N>& operator()(const fixVector<double,NN>& va,
+                                      const varVector<double>& vb,
+                                      const FreeSpace& FS) {
+        assert(NN>=N);
+        return operator()(va,vb);
+      }
+
+      template <uint NN>
+      fixVector<double,N>& operator()(const varVector<double>& va,
+                                      const fixVector<double,NN>& vb,
+                                      const FreeSpace& FS) {
+        assert(NN>=N);
+        return operator()(va,vb);
+      }
+
+      template <uint NA, uint NB>
+      fixVector<double,N>& operator()(const fixVector<double,NA>& va,
+                                      const fixVector<double,NB>& vb,
+                                      const FreeSpace& FS) {
+        assert((NA>=N)&&(NB>=N));
         return operator()(va,vb);
       }
 
@@ -174,7 +198,7 @@ namespace std {
       DistanceEvalwStorage(const DistanceEvalwStorage<N>& DEval) {
         myError("copier for storage-base DistanceEval is disabled!");
       }
-      
+
       const double& DistanceSQ() { return nowDistSQ; }
       
       const fixVector<double,N>& DisplaceVector() { return nowDisp; }

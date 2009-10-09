@@ -233,16 +233,25 @@ namespace std {
       }
 
       template <typename vTypeA, typename vTypeB>
-      Type& shift(const pair<const vTypeA&,const vTypeB&>& sp) {
+      Type& shift(const vTypeA& ShiftFv, const vTypeB& v) {
         assert(isVector<vTypeA>()&&isVector<vTypeB>());
-        return scaleshift(dOne,dOne,sp.first,sp.second);
+        return scaleshift(dOne,dOne,ShiftFv,v);
+      }
+
+      template <typename vTypeA, typename vTypeB>
+      Type& shift(const pair<const vTypeA&,const vTypeB&>& sp) {
+        return shift(sp.first,sp.second);
+      }
+
+      template <typename vTypeA, typename vTypeB>
+      Type& shift(const T& ShiftF, const vTypeA& ShiftFv, const vTypeB& v) {
+        assert(isVector<vTypeA>()&&isVector<vTypeB>());
+        return scaleshift(dOne,ShiftF,ShiftFv,v);
       }
 
       template <typename vTypeA, typename vTypeB>
       Type& shift(const tr1::tuple<const T&,const vTypeA&,const vTypeB&>& st) {
-        assert(isVector<vTypeA>()&&isVector<vTypeB>());
-        return
-          scaleshift(dOne,tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
+        return shift(tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
 
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const T* ShiftFv,

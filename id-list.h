@@ -15,10 +15,10 @@ namespace std {
       void (*efunc)(const varVector<Property*>&, const ParamList&,
                     DistEvalObj&, const GeomType&,double&);
 
-      void (*gfunc)(const varVector<Property*>&, const ParamList&,
+      void (*gfunc)(varVector<Property*>&, const ParamList&,
                     DistEvalObj&, const GeomType&);
 
-      void (*bfunc)(const varVector<Property*>&, const ParamList&,
+      void (*bfunc)(varVector<Property*>&, const ParamList&,
                     DistEvalObj&, const GeomType&, double&);
 
       varVector<varVector<uint> > List;

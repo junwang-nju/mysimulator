@@ -14,9 +14,17 @@ namespace std {
 
       void (*mvfunc)(Property&,
                      varVector<Property>&,const ParamList&,
-                     IDListSet<DistEvalObj,GeomType>&,
+                     varVector<IDList<DistEvalObj,GeomType> >&,
                      const varVector<varVector<double> >&,
                      DistEvalObj&, const GeomType&);
+
+      void (*allocfunc)(varVector<varVector<double> >&,const uint&);
+
+      void (*setstep)(varVector<varVector<double> >&,const double&);
+
+      void (*setrelax)(varVector<varVector<double> >&,const double&);
+
+      void (*sync)(const Property&,varVector<varVector<double> >&);
 
       varVector<varVector<double> > PropagatorParam;
 

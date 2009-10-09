@@ -17,6 +17,8 @@
 #include "interaction-parpar-lj612cut.h"
 #include "interaction-4listset.h"
 #include "propagator-format.h"
+#include "propagator-particle-conste-vverlet.h"
+#include "propagator.h"
 #include <iostream>
 using namespace std;
 
@@ -171,6 +173,67 @@ int main() {
   E_List(PropSet,prm,idl,DEval,FS,Energy);
   cout<<Energy<<endl;
 
+  PropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt;
+  PgFmt.mvfunc=Particle_ConstE_VelVerlet_Move;
+  PgFmt.allocfunc=Particle_ConstE_VelVerlet_Allocate;
+  PgFmt.setstep=Particle_ConstE_VelVerlet_SetTimeStep;
+  PgFmt.sync=Particle_ConstE_VelVerlet_Synchronize;
+
+  PgFmt.allocfunc(PgFmt.PropagatorParam,3);
+  PgFmt.setstep(PgFmt.PropagatorParam,0.01);
+  PgFmt.sync(PropSet[0],PgFmt.PropagatorParam);
+
+  varVector<Property> PS(2);
+  for(uint i=0;i<2U;++i)  allocate_as_Particle(PS[i],3,
+      Particle_VelocityEnable&Particle_GradientEnable&Particle_MassEnable);
+  PS[0].Coordinate=0.;
+  PS[1].Coordinate=0.; PS[1].Coordinate[0]=1.;
+  PS[0].Index=0;
+  PS[1].Index=1;
+  PS[0].MonomerKindID=0;
+  PS[1].MonomerKindID=1;
+
+  varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> > IDLS(1);
+  IDLS[0].allocate(1,2);
+  IDLS[0].List[0][0]=0;
+  IDLS[0].List[0][0]=1;
+  Energy=0.;
+  IDLS[0].efunc=E_ParPar_Harmonic;
+  IDLS[0].gfunc=G_ParPar_Harmonic;
+  IDLS[0].bfunc=EG_ParPar_Harmonic;
+
+  ParamList HPList;
+  HPList.KeyList.allocate(4);
+  for(uint i=0;i<4U;++i)    HPList.KeyList[i].Index.allocate(2);
+  HPList.KeyList[0].Index[0]=0;     HPList.KeyList[0].Index[1]=0;
+  HPList.KeyList[1].Index[0]=0;     HPList.KeyList[1].Index[1]=1;
+  HPList.KeyList[2].Index[0]=1;     HPList.KeyList[2].Index[1]=0;
+  HPList.KeyList[3].Index[0]=1;     HPList.KeyList[3].Index[1]=1;
+  for(uint i=0;i<4U;++i)    HPList.KeyList[i].BuildHash();
+  HPList.ValueList.allocate(4);
+  for(uint i=0;i<4U;++i)    HPList.ValueList[i].allocate(3);
+  HPList.ValueList[0][0]=1.;  HPList.ValueList[0][1]=100.;
+  HPList.ValueList[1][0]=2.;  HPList.ValueList[1][1]=1000.;
+  HPList.ValueList[2][0]=2.;  HPList.ValueList[2][1]=1000.;
+  HPList.ValueList[3][0]=3.;  HPList.ValueList[3][1]=10.;
+  for(uint i=0;i<4U;++i)    HPList.ValueList[i][2]=2*HPList.ValueList[i][1];
+  HPList.UpdateHashTree();
+
+  DistanceEvalwStorage<3> DEval2;
+  DEval2.allocate_storage(2);
+
+  Energy=0.;
+  EG_ListSet(PS,HPList,IDLS,DEval2,FS,Energy);
+  cout<<Energy<<endl;
+
+  PropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt2;
+  PgFmt2.mvfunc=Particle_ConstE_VelVerlet_Move;
+  PgFmt2.allocfunc=Particle_ConstE_VelVerlet_Allocate;
+  PgFmt2.setstep=Particle_ConstE_VelVerlet_SetTimeStep;
+  PgFmt2.sync=Particle_ConstE_VelVerlet_Synchronize;
+
+  PgFmt2.allocfunc(PgFmt.PropagatorParam,3);
+  PgFmt2.setstep(PgFmt.PropagatorParam,0.01);
   return 1;
 }
 
