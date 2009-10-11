@@ -13,18 +13,19 @@ namespace std {
     public:
 
       typedef void (* MyFuncType)(Property&,
-                     varVector<Property>&,const ParamList&,
-                     varVector<IDList<DistEvalObj,GeomType> >&,
-                     const varVector<varVector<double> >&,
-                     DistEvalObj&, const GeomType&);
+                                  varVector<Property>&,const ParamList&,
+                                  varVector<IDList<DistEvalObj,GeomType> >&,
+                                  const varVector<varVector<double> >&,
+                                  DistEvalObj&, const GeomType&);
+
+      typedef void (* SetFuncType)(varVector<varVector<double> >&,
+                                   const double*, const uint&);
 
       varVector<MyFuncType> mvfunc;
 
+      varVector<SetFuncType>  setfunc;
+
       void (*allocfunc)(varVector<varVector<double> >&,const uint&);
-
-      void (*setstep)(varVector<varVector<double> >&,const double&);
-
-      void (*setrelax)(varVector<varVector<double> >&,const double&);
 
       void (*sync)(const Property&,varVector<varVector<double> >&);
 
