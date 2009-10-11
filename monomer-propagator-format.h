@@ -1,6 +1,6 @@
 
-#ifndef _Propagator_Format_H_
-#define _Propagator_Format_H_
+#ifndef _Monomer_Propagator_Format_H_
+#define _Monomer_Propagator_Format_H_
 
 #include "property.h"
 #include "interaction-4listset.h"
@@ -8,15 +8,17 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  class PropagatorFormat {
+  class MonomerPropagatorFormat {
 
     public:
 
-      void (*mvfunc)(Property&,
+      typedef void (* MyFuncType)(Property&,
                      varVector<Property>&,const ParamList&,
                      varVector<IDList<DistEvalObj,GeomType> >&,
                      const varVector<varVector<double> >&,
                      DistEvalObj&, const GeomType&);
+
+      varVector<MyFuncType> mvfunc;
 
       void (*allocfunc)(varVector<varVector<double> >&,const uint&);
 
@@ -28,9 +30,9 @@ namespace std {
 
       varVector<varVector<double> > PropagatorParam;
 
-      typedef PropagatorFormat<DistEvalObj,GeomType>  Type;
+      typedef MonomerPropagatorFormat<DistEvalObj,GeomType>  Type;
 
-      PropagatorFormat() : mvfunc(NULL), PropagatorParam() {}
+      MonomerPropagatorFormat() : PropagatorParam() {}
 
   };
 

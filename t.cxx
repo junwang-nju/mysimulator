@@ -16,9 +16,8 @@
 #include "interaction-parpar-harmonic.h"
 #include "interaction-parpar-lj612cut.h"
 #include "interaction-4listset.h"
-#include "propagator-format.h"
+#include "monomer-propagator-format.h"
 #include "propagator-particle-conste-vverlet.h"
-#include "propagator.h"
 #include <iostream>
 using namespace std;
 
@@ -173,8 +172,9 @@ int main() {
   E_List(PropSet,prm,idl,DEval,FS,Energy);
   cout<<Energy<<endl;
 
+  /*
   PropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt;
-  PgFmt.mvfunc=Particle_ConstE_VelVerlet_Move;
+  PgFmt.mvfunc[0]=Particle_ConstE_VelVerlet_Move;
   PgFmt.allocfunc=Particle_ConstE_VelVerlet_Allocate;
   PgFmt.setstep=Particle_ConstE_VelVerlet_SetTimeStep;
   PgFmt.sync=Particle_ConstE_VelVerlet_Synchronize;
@@ -182,6 +182,7 @@ int main() {
   PgFmt.allocfunc(PgFmt.PropagatorParam,3);
   PgFmt.setstep(PgFmt.PropagatorParam,0.01);
   PgFmt.sync(PropSet[0],PgFmt.PropagatorParam);
+  */
 
   varVector<Property> PS(2);
   for(uint i=0;i<2U;++i)  allocate_as_Particle(PS[i],3,
@@ -226,14 +227,16 @@ int main() {
   EG_ListSet(PS,HPList,IDLS,DEval2,FS,Energy);
   cout<<Energy<<endl;
 
+  /*
   PropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt2;
-  PgFmt2.mvfunc=Particle_ConstE_VelVerlet_Move;
+  PgFmt2.mvfunc[0]=Particle_ConstE_VelVerlet_Move;
   PgFmt2.allocfunc=Particle_ConstE_VelVerlet_Allocate;
   PgFmt2.setstep=Particle_ConstE_VelVerlet_SetTimeStep;
   PgFmt2.sync=Particle_ConstE_VelVerlet_Synchronize;
 
   PgFmt2.allocfunc(PgFmt.PropagatorParam,3);
   PgFmt2.setstep(PgFmt.PropagatorParam,0.01);
+  */
   return 1;
 }
 
