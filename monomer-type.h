@@ -12,7 +12,7 @@ namespace std {
 
     TTableTerminus,
 
-    NumberType=TTableTerminus-2
+    NumberTypes=TTableTerminus-1
 
   };
 

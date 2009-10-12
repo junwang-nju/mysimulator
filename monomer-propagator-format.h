@@ -13,10 +13,7 @@ namespace std {
     public:
 
       typedef void (* MyFuncType)(Property&,
-                                  varVector<Property>&,const ParamList&,
-                                  varVector<IDList<DistEvalObj,GeomType> >&,
-                                  const varVector<varVector<double> >&,
-                                  DistEvalObj&, const GeomType&);
+                                  const varVector<varVector<double> >&);
 
       typedef void (* SetFuncType)(varVector<varVector<double> >&,
                                    const double*, const uint&);
@@ -25,7 +22,7 @@ namespace std {
 
       varVector<SetFuncType>  setfunc;
 
-      void (*allocfunc)(varVector<varVector<double> >&,const uint&);
+      void (*alloc)(varVector<varVector<double> >&,const uint*,const uint&);
 
       void (*sync)(const Property&,varVector<varVector<double> >&);
 

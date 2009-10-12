@@ -18,6 +18,8 @@
 #include "interaction-4listset.h"
 #include "monomer-propagator-format.h"
 #include "propagator-particle-conste-vverlet.h"
+#include "propagator-conste-vverlet.h"
+#include "propagator.h"
 #include <iostream>
 using namespace std;
 
@@ -172,27 +174,21 @@ int main() {
   E_List(PropSet,prm,idl,DEval,FS,Energy);
   cout<<Energy<<endl;
 
-  /*
-  PropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt;
-  PgFmt.mvfunc[0]=Particle_ConstE_VelVerlet_Move;
-  PgFmt.allocfunc=Particle_ConstE_VelVerlet_Allocate;
-  PgFmt.setstep=Particle_ConstE_VelVerlet_SetTimeStep;
-  PgFmt.sync=Particle_ConstE_VelVerlet_Synchronize;
-
-  PgFmt.allocfunc(PgFmt.PropagatorParam,3);
-  PgFmt.setstep(PgFmt.PropagatorParam,0.01);
-  PgFmt.sync(PropSet[0],PgFmt.PropagatorParam);
-  */
-
   varVector<Property> PS(2);
   for(uint i=0;i<2U;++i)  allocate_as_Particle(PS[i],3,
-      Particle_VelocityEnable&Particle_GradientEnable&Particle_MassEnable);
+      Particle_VelocityEnable|Particle_GradientEnable|Particle_MassEnable);
   PS[0].Coordinate=0.;
   PS[1].Coordinate=0.; PS[1].Coordinate[0]=1.;
+  PS[0].Velocity=0.;
+  PS[1].Velocity=0.;
   PS[0].Index=0;
   PS[1].Index=1;
   PS[0].MonomerKindID=0;
   PS[1].MonomerKindID=1;
+  PS[0].Mass=1.;
+  PS[1].Mass=1.;
+  PS[0].ivMass=1.;
+  PS[1].ivMass=1.;
 
   varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> > IDLS(1);
   IDLS[0].allocate(1,2);
@@ -226,17 +222,27 @@ int main() {
   Energy=0.;
   EG_ListSet(PS,HPList,IDLS,DEval2,FS,Energy);
   cout<<Energy<<endl;
+  cout<<PS[0].Gradient<<endl;
 
-  /*
-  PropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt2;
-  PgFmt2.mvfunc[0]=Particle_ConstE_VelVerlet_Move;
-  PgFmt2.allocfunc=Particle_ConstE_VelVerlet_Allocate;
-  PgFmt2.setstep=Particle_ConstE_VelVerlet_SetTimeStep;
-  PgFmt2.sync=Particle_ConstE_VelVerlet_Synchronize;
+  MonomerPropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt2;
+  SetAs_ParticleConstEVelVerlet(PgFmt2);
+  uint md=3;
+  PgFmt2.alloc(PgFmt2.PropagatorParam,&md,1);
+  double dt=0.001;
+  PgFmt2.setfunc[0](PgFmt2.PropagatorParam,&dt,1);
+  PgFmt2.sync(PS[0],PgFmt2.PropagatorParam);
 
-  PgFmt2.allocfunc(PgFmt.PropagatorParam,3);
-  PgFmt2.setstep(PgFmt.PropagatorParam,0.01);
-  */
+  varVector<MonomerPropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> > PgS;
+  SetAs_VelVerlet(PS,PgS);
+  for(uint i=0;i<PgS.size();++i) {
+    PgS[i].alloc(PgS[i].PropagatorParam,&md,1);
+    PgS[i].setfunc[0](PgS[i].PropagatorParam,&dt,1);
+    PgS[i].sync(PS[i],PgS[i].PropagatorParam);
+  }
+  Propagate_ConstEVelVerlet(PS,HPList,IDLS,PgS,DEval2,FS);
+  cout<<PS[0].Coordinate<<endl;
+  cout<<PS[1].Coordinate<<endl;
+
   return 1;
 }
 

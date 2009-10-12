@@ -10,7 +10,7 @@ namespace std {
 
     KTableTerminus,
 
-    NumberKinds=KTableTerminus-2
+    NumberKinds=KTableTerminus-1
 
   };
 
