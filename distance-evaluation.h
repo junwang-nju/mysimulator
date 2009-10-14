@@ -35,7 +35,8 @@ namespace std {
 
       template <typename vTypeA, typename vTypeB>
       fixVector<double,N>& operator()(const vTypeA& va, const vTypeB& vb) {
-        assert(isVector<vTypeA>()&&isVector<vTypeB>());
+        assert(vTypeA::IsVector);
+        assert(vTypeB::IsVector);
         assert(va.size()==vb.size());
         assert(this->size()>=va.size());
         static_cast<ParentType*>(this)->operator=(va);

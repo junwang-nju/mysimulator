@@ -10,12 +10,6 @@
 
 namespace std {
 
-  template <typename vType>
-  bool isVector() {
-    return (strcmp(vType::TypeTag,"varVector")==0)||
-           (strcmp(vType::TypeTag,"fixVector")==0);
-  }
-
   template <typename T>
   void vector_assign(T* v, const T* iv, long ncopy,
                      int offset=iZero,int ioffset=iZero,

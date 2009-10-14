@@ -21,7 +21,7 @@ namespace std {
 
       typedef varVector<T>    Type;
 
-      static const char*      TypeTag;
+      static const uint       IsVector;
 
     private:
 
@@ -69,8 +69,8 @@ namespace std {
 
       template <typename vType>
       Type& allocate(const vType& v) {
-        assert(isVector<vType>());
-        return allocate(v.nData);
+        assert(v.IsVector);
+        return allocate(v.size());
       }
 
       template <typename vType>
@@ -118,7 +118,7 @@ namespace std {
       Type& assign(const vType& v, long ncopy,
                    int voffset=iZero, long vstep=lOne,
                    int offset=iZero, long step=lOne) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         assert(static_cast<uint>(voffset+vstep*ncopy)<=v.nData);
         assign(v.data(),ncopy,voffset,vstep,offset,step);
         return *this;
@@ -126,7 +126,7 @@ namespace std {
 
       template <typename vType>
       Type& assign(const vType& v) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         long n=(nData<v.nData?nData:v.nData);
         return assign(v,n);
       }
@@ -159,27 +159,27 @@ namespace std {
       Type& scale(const vType& v, long nscale,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         assert(static_cast<uint>(voffset+vstep*nscale)<=v.nData);
         return scale(v.data(),nscale,voffset,vstep,offset,step);
       }
 
       template <typename vType>
       Type& scale(const vType& v) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         long n=(nData<v.nData?nData:v.nData);
         return scale(v,n);
       }
 
       template <typename vType>
       Type& scale(const pair<const T&,const vType&>& sp) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         return scale(sp.first).scale(sp.second);
       }
 
       template <typename vType>
       Type& scale(const pair<const vType&,const T&>& sp) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         return scale(sp.first).scale(sp.second);
       }
 
@@ -197,7 +197,7 @@ namespace std {
       Type& shift(const T& value, const vType& v, long nshift,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         assert(static_cast<uint>(voffset+vstep*nshift)<=v.nData);
         return shift(value,v.data(),nshift,
                      iZero,lZero,voffset,vstep,offset,step);
@@ -205,20 +205,20 @@ namespace std {
       
       template <typename vType>
       Type& shift(const T& value, const vType& v) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         long n=(nData<v.nData?nData:v.nData);
         return shift(value,v,n);
       }
       
       template <typename vType>
       Type& shift(const pair<const T&,const vType&>& sp) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         return shift(sp.first,sp.second);
       }
 
       template <typename vType>
       Type& shift(const pair<const Type&,const T&>& sp) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         return shift(sp.second,sp.first);
       }
 
@@ -228,13 +228,14 @@ namespace std {
 
       template <typename vType>
       Type& shift(const vType& v) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         return shift(dOne,v);
       }
 
       template <typename vTypeA, typename vTypeB>
       Type& shift(const vTypeA& ShiftFv, const vTypeB& v) {
-        assert(isVector<vTypeA>()&&isVector<vTypeB>());
+        assert(vTypeA::IsVector);
+        assert(vTypeB::IsVector);
         return scaleshift(dOne,dOne,ShiftFv,v);
       }
 
@@ -245,7 +246,8 @@ namespace std {
 
       template <typename vTypeA, typename vTypeB>
       Type& shift(const T& ShiftF, const vTypeA& ShiftFv, const vTypeB& v) {
-        assert(isVector<vTypeA>()&&isVector<vTypeB>());
+        assert(vTypeA::IsVector);
+        assert(vTypeB::IsVector);
         return scaleshift(dOne,ShiftF,ShiftFv,v);
       }
 
@@ -271,7 +273,8 @@ namespace std {
                        int sfoffset=iZero, long sfstep=lOne,
                        int voffset=iZero, long vstep=lOne,
                        int offset=iZero, long step=lOne) {
-        assert(isVector<vTypeA>()&&isVector<vTypeB>());
+        assert(vTypeA::IsVector);
+        assert(vTypeB::IsVector);
         assert(static_cast<uint>(sfoffset+sfstep*nscaleshift)<=ShiftFv.nData);
         assert(static_cast<uint>(voffset+vstep*nscaleshift)<=v.nData);
         return scaleshift(ScaleF,ShiftF,ShiftFv.data(),v.data(),nscaleshift,
@@ -281,7 +284,8 @@ namespace std {
       template <typename vTypeA, typename vTypeB>
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const vTypeA& ShiftFv,
                        const vTypeB& v) {
-        assert(isVector<vTypeA>()&&isVector<vTypeB>());
+        assert(vTypeA::IsVector);
+        assert(vTypeB::IsVector);
         long n;
         n=(nData<ShiftFv.nData?nData:ShiftFv.nData);
         n=(static_cast<uint>(n)<v.nData?n:v.nData);
@@ -293,7 +297,7 @@ namespace std {
                        long nscaleshift,
                        int voffset=iZero, long vstep=lOne,
                        int offset=iZero, long step=lOne) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         scale(ScaleF,nscaleshift,offset,step);
         return shift(ShiftF,v,nscaleshift,voffset,vstep,offset,step);
       }
@@ -325,14 +329,14 @@ namespace std {
       Type& swap_content(vType& v, long nswap,
                          int voffset=iZero, long vstep=lOne,
                          int offset=iZero, long step=lOne) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         assert(static_cast<uint>(voffset+vstep*nswap)<=v.nData);
         return swap_content(v.data(),nswap,voffset,vstep,offset,step);
       }
 
       template <typename vType>
       Type& swap_content(vType& v) {
-        assert(isVector<vType>());
+        assert(vType::IsVector);
         long n=(nData<v.nData?nData:v.nData);
         return swap_content(v,n);
       }
@@ -340,7 +344,7 @@ namespace std {
   };
 
   template <typename T>
-  const char* varVector<T>::TypeTag="varVector";
+  const uint varVector<T>::IsVector=1;
 
   template <typename T>
   istream& operator>>(istream& is, varVector<T>& v) {

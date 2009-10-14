@@ -28,8 +28,16 @@ class A{
     static const int aaa=10;
 };
 
+void OutputFunc(
+    ostream& os,
+    const varVector<Property>& PropSet, const ParamList&,
+    varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> >&,
+    DistanceEvalwStorage<3>&, const FreeSpace&) {
+  os<<PropSet[0].Coordinate<<endl;
+}
+
+
 int main() {
-  cout<<varVector<double>::TypeTag<<endl;
   varVector<double> v1;
   varVector<double> v2(1000000);
   v1.allocate(v2);
@@ -242,6 +250,19 @@ int main() {
   Propagate_ConstEVelVerlet(PS,HPList,IDLS,PgS,DEval2,FS);
   cout<<PS[0].Coordinate<<endl;
   cout<<PS[1].Coordinate<<endl;
+
+  Propagator<DistanceEvalwStorage<3>,FreeSpace> Pg;
+  Pg.SetStructure=SetAs_VelVerlet;
+  Pg.Step=Propagate_ConstEVelVerlet;
+  Pg.AllocStructure(PS);
+  Pg.AllocParam(&md,1);
+  Pg.SetTimeStep(0.001);
+  Pg.SetTotalTime(0.01);
+  Pg.SetStartTime(0);
+  Pg.SetOutputTimeInterval(0.001);
+  Pg.Synchronize(PS);
+  Pg.Output=OutputFunc;
+  Pg.Run(PS,HPList,IDLS,DEval2,FS);
 
   return 1;
 }

@@ -23,8 +23,9 @@ namespace std {
     
       varVector<MonomerPropagatorFormat<DistEvalObj,GeomType> > MerMove;
       
-      void (*SetStructure)(const varVector<Property>&,
-                           MonomerPropagatorFormat<DistEvalObj,GeomType>&);
+      void (*SetStructure)(
+          const varVector<Property>&,
+          varVector<MonomerPropagatorFormat<DistEvalObj,GeomType> >&);
 
       void (*Step)(
           varVector<Property>&, const ParamList&,
@@ -34,8 +35,12 @@ namespace std {
 
       varVector<double> GlobalPropagatorParam;
       
+      void AllocStructure(const varVector<Property>& PropSet) {
+        SetStructure(PropSet,MerMove);
+      }
+      
       void AllocParam(const uint*propdim, const uint& n) {
-        GlobalPropagatorParam.allocate(NumberGPParam);
+        GlobalPropagatorParam.allocate(static_cast<uint>(NumberGPParam));
         uint m=MerMove.size();
         for(uint i=0;i<m;++i)
           MerMove[i].alloc(MerMove[i].PropagatorParam,propdim,n);
@@ -47,8 +52,26 @@ namespace std {
         for(uint i=0;i<n;++i)
           MerMove[i].setfunc[0](MerMove[i].PropagatorParam,&dt,1);
       }
+
+      void SetStartTime(const double& st) {
+        GlobalPropagatorParam[StartTime]=st;
+      }
+
+      void SetTotalTime(const double& tt) {
+        GlobalPropagatorParam[TotalTime]=tt;
+      }
+
+      void SetOutputTimeInterval(const double& ot) {
+        GlobalPropagatorParam[OutputInterval]=ot;
+      }
       
       void Synchronize(const varVector<Property>& PropSet) {
+        GlobalPropagatorParam[NumberOutput]=
+          GlobalPropagatorParam[TotalTime]/
+          GlobalPropagatorParam[OutputInterval];
+        GlobalPropagatorParam[NumberStep4OneOutput]=
+          GlobalPropagatorParam[OutputInterval]/
+          GlobalPropagatorParam[GDeltaTime];
         uint n=MerMove.size();
         for(uint i=0;i<n;++i)
           MerMove[i].sync(PropSet[i],MerMove[i].PropagatorParam);
@@ -58,7 +81,6 @@ namespace std {
           ostream&,
           const varVector<Property>&, const ParamList&,
           varVector<IDList<DistEvalObj,GeomType> >&,
-          varVector<MonomerPropagatorFormat<DistEvalObj,GeomType> >&,
           DistEvalObj&, const GeomType&);
 
       void Run(
@@ -66,8 +88,9 @@ namespace std {
           varVector<IDList<DistEvalObj,GeomType> >& IDLS,
           DistEvalObj& DEval, const GeomType& Geo,
           ostream& os=cout) {
-        int no=GlobalPropagatorParam[NumberOutput];
-        int ns=GlobalPropagatorParam[NumberStep4OneOutput];
+        uint no=static_cast<int>(GlobalPropagatorParam[NumberOutput]+0.5);
+        uint ns=
+          static_cast<int>(GlobalPropagatorParam[NumberStep4OneOutput]+0.5);
         for(uint i=0;i<no;++i) {
           for(uint j=0;j<ns;++j)
             Step(PropSet,PList,IDLS,MerMove,DEval,Geo);
