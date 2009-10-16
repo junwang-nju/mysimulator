@@ -29,6 +29,8 @@ namespace std {
       DistEvalObj& DEval, const GeomType& Geo) {
     uint n=PropSet.size();
     for(uint i=0;i<n;++i) mv[i].mvfunc[0](PropSet[i],mv[i].PropagatorParam);
+    DEval.Update();
+    for(uint i=0;i<n;++i) PropSet[i].Gradient=0.;
     G_ListSet(PropSet,PList,IDLS,DEval,Geo);
     for(uint i=0;i<n;++i) mv[i].mvfunc[1](PropSet[i],mv[i].PropagatorParam);
   }
