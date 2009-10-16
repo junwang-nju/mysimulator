@@ -242,7 +242,7 @@ int main() {
   PgFmt2.sync(PS[0],PgFmt2.PropagatorParam);
 
   varVector<MonomerPropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> > PgS;
-  SetAs_VelVerlet(PS,PgS);
+  SetAs_ConstEVelVerlet(PS,PgS);
   for(uint i=0;i<PgS.size();++i) {
     PgS[i].alloc(PgS[i].PropagatorParam,&md,1);
     PgS[i].setfunc[0](PgS[i].PropagatorParam,&dt,1);
@@ -253,7 +253,7 @@ int main() {
   cout<<PS[1].Coordinate<<endl;
 
   Propagator<DistanceEvalwStorage<3>,FreeSpace> Pg;
-  Pg.SetStructure=SetAs_VelVerlet;
+  Pg.SetStructure=SetAs_ConstEVelVerlet;
   Pg.Step=Propagate_ConstEVelVerlet;
   Pg.AllocStructure(PS);
   Pg.AllocParam(&md,1);

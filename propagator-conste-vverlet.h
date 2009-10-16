@@ -8,7 +8,7 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void SetAs_VelVerlet(
+  void SetAs_ConstEVelVerlet(
       const varVector<Property>& PropSet,
       varVector<MonomerPropagatorFormat<DistEvalObj,GeomType> >& MvSet) {
     uint n=PropSet.size(),mType;
