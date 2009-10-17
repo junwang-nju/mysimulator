@@ -21,6 +21,7 @@
 #include "propagator-conste-vverlet.h"
 #include "propagator.h"
 #include "propagator-particle-Berendsen-vverlet.h"
+#include "propagator-Berendsen-vverlet.h"
 #include <iostream>
 using namespace std;
 

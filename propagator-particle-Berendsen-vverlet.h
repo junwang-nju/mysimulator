@@ -25,6 +25,7 @@ namespace std {
     NumberMoveFunc_4PBV,
     SetTimeStep_4PBV=0,
     SetRelaxTime_4PBV,
+    SetScaleFac_4PBV,
     NumberSetFunc_4PBV
   };
 
@@ -75,6 +76,12 @@ namespace std {
     param[Basic_4PBV][DeltaT_ivRelaxT_4PBV]=
         param[Basic_4PBV][DeltaTime_4PBV]/
         param[Basic_4PBV][RelaxTime_4PBV];
+  }
+
+  void ParticleBerendsenVelVerlet_SetScaleFac(
+      varVector<varVector<double> >& param,
+      const double* ddata, const uint& n=1) {
+    param[TScaleFac_4PBV][0]=*ddata;
   }
 
   void ParticleBerendsenVelVerlet_Synchronize(
