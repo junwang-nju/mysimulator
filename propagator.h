@@ -105,9 +105,13 @@ namespace std {
                DistEvalObj& DEval, const GeomType& Geo, ostream& os) {
         uint no=static_cast<uint>(CmnGbParam[BasicCommon][CountOutput]+0.5);
         uint ns=static_cast<uint>(CmnGbParam[BasicCommon][CountStepInOne]+0.5);
+        double ot=ns*CmnGbParam[BasicCommon][DeltaTime];
+        CmnGbParam[BasicCommon][NowTime]=CmnGbParam[BasicCommon][StartTime];
+        OutFunc(os,*this,PropSet,PList,IDLS,DEval,Geo);
         for(uint i=0;i<no;++i) {
           for(uint j=0;j<ns;++j)
-            Step(PropSet,PList,IDLS,UnitMove,CmnGbParam,GbParam,DEval,Geo);
+            Step(PropSet,PList,IDLS,UnitMove,GbParam,CmnGbParam,DEval,Geo);
+          CmnGbParam[BasicCommon][NowTime]+=ot;
           OutFunc(os,*this,PropSet,PList,IDLS,DEval,Geo);
         }
       }

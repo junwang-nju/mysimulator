@@ -31,11 +31,11 @@ class A{
 };
 
 void OutputFunc(
-    ostream& os,
+    ostream& os, const Propagator<DistanceEvalwStorage<3>,FreeSpace>& Pg,
     const varVector<Property>& PropSet, const ParamList&,
     varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> >&,
     DistanceEvalwStorage<3>&, const FreeSpace&) {
-  os<<PropSet[0].Coordinate<<endl;
+  os<<Pg.CmnGbParam[BasicCommon][NowTime]<<"\t"<<PropSet[0].Coordinate<<endl;
 }
 
 
@@ -252,40 +252,8 @@ int main() {
   PgS.CmnGbSetFunc[SetCmnStartTime](PgS.CmnGbParam,&st,1);
   PgS.CmnGbSetFunc[SetCmnOutputInterval](PgS.CmnGbParam,&ot,1);
   PgS.SyncAll(PS);
-
-  /*
-  MonomerPropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt2;
-  SetAs_ParticleConstEVelVerlet(PgFmt2);
-  uint md=3;
-  PgFmt2.alloc(PgFmt2.PropagatorParam,&md,1);
-  double dt=0.001;
-  PgFmt2.setfunc[0](PgFmt2.PropagatorParam,&dt,1);
-  PgFmt2.sync(PS[0],PgFmt2.PropagatorParam);
-
-  varVector<MonomerPropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> > PgS;
-  SetAs_ConstEVelVerlet(PS,PgS);
-  for(uint i=0;i<PgS.size();++i) {
-    PgS[i].alloc(PgS[i].PropagatorParam,&md,1);
-    PgS[i].setfunc[0](PgS[i].PropagatorParam,&dt,1);
-    PgS[i].sync(PS[i],PgS[i].PropagatorParam);
-  }
-  Propagate_ConstEVelVerlet(PS,HPList,IDLS,PgS,DEval2,FS);
-  cout<<PS[0].Coordinate<<endl;
-  cout<<PS[1].Coordinate<<endl;
-
-  Propagator<DistanceEvalwStorage<3>,FreeSpace> Pg;
-  Pg.SetStructure=SetAs_ConstEVelVerlet;
-  Pg.Step=Propagate_ConstEVelVerlet;
-  Pg.AllocStructure(PS);
-  Pg.AllocParam(&md,1);
-  Pg.SetTimeStep(0.001);
-  Pg.SetTotalTime(0.01);
-  Pg.SetStartTime(0);
-  Pg.SetOutputTimeInterval(0.001);
-  Pg.Synchronize(PS);
-  Pg.Output=OutputFunc;
-  Pg.Run(PS,HPList,IDLS,DEval2,FS);
-  */
+  PgS.OutFunc=OutputFunc;
+  PgS.Run(PS,HPList,IDLS,DEval2,FS,cout);
 
   return 1;
 }

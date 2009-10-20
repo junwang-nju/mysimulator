@@ -13,6 +13,7 @@ namespace std {
     DeltaTime=0,
     HalfDeltaTime,
     StartTime,
+    NowTime,
     TotalTime,
     OutputInterval,
     CountOutput,
