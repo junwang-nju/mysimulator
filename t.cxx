@@ -16,12 +16,12 @@
 #include "interaction-parpar-harmonic.h"
 #include "interaction-parpar-lj612cut.h"
 #include "interaction-4listset.h"
-#include "monomer-propagator-format.h"
+#include "monomer-propagator.h"
 #include "propagator-particle-conste-vverlet.h"
 #include "propagator-conste-vverlet.h"
 #include "propagator.h"
-#include "propagator-particle-Berendsen-vverlet.h"
-#include "propagator-Berendsen-vverlet.h"
+//#include "propagator-particle-berendsen-vverlet.h"
+//#include "propagator-berendsen-vverlet.h"
 #include <iostream>
 using namespace std;
 
@@ -234,6 +234,7 @@ int main() {
   cout<<Energy<<endl;
   cout<<PS[0].Gradient<<endl;
 
+  /*
   MonomerPropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt2;
   SetAs_ParticleConstEVelVerlet(PgFmt2);
   uint md=3;
@@ -265,6 +266,7 @@ int main() {
   Pg.Synchronize(PS);
   Pg.Output=OutputFunc;
   Pg.Run(PS,HPList,IDLS,DEval2,FS);
+  */
 
   return 1;
 }

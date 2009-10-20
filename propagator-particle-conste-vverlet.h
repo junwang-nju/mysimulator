@@ -1,76 +1,50 @@
 
-#ifndef _Propagator_Particle_ConstE_vverlet_H_
-#define _Propagator_Particle_ConstE_vverlet_H_
+#ifndef _Propagator_Particle_ConstE_VelVerlet_H_
+#define _Propagator_Particle_ConstE_VelVerlet_H_
 
 #include "property.h"
-#include "param-list.h"
-#include "interaction-4listset.h"
-#include "monomer-propagator-format.h"
+#include "monomer-propagator.h"
+#include "propagator-particle-conste-vverlet-index.h"
+#include "propagator-conste-vverlet-index.h"
+#include "propagator-common-index.h"
+#include "propagator-op.h"
 
 namespace std {
 
-  enum PropagatorParam_4ParticleConstEVelVerlet {
-    Basic_4PEV=0,
-    HfDeltaT_ivM_4PEV,
-    NumberParam_4PEV,
-    DeltaTime_4PEV=0,
-    HalfDeltaTime_4PEV,
-    NumberBasicParam_4PEV,
-    BeforeG_4PEV=0,
-    AfterG_4PEV,
-    NumberMoveFunc_4PEV,
-    SetTimeStep_4PEV=0,
-    NumberSetFunc_4PEV
-  };
-
-  void ParticleConstEVelVerlet_Move_BeforeG(
-        Property& nowProp,
-        const varVector<varVector<double> >& mvParm) {
-    nowProp.Velocity.shift(-1.,mvParm[HfDeltaT_ivM_4PEV],nowProp.Gradient);
-    nowProp.Coordinate.shift(mvParm[Basic_4PEV][DeltaTime_4PEV],
-                             nowProp.Velocity);
+  void PEV_Move_BeforeG(Property& nProp, const ParamPackType& mnPrm,
+                        const ParamPackType& gbPrm,
+                        const ParamPackType& cgbPrm) {
+    nProp.Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],nProp.Gradient);
+    nProp.Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],nProp.Velocity);
   }
 
-  void ParticleConstEVelVerlet_Move_AfterG(
-        Property& nowProp,
-        const varVector<varVector<double> >& mvParm) {
-    nowProp.Velocity.shift(-1.,mvParm[HfDeltaT_ivM_4PEV],nowProp.Gradient);
+  void PEV_Move_AfterG(Property& nProp, const ParamPackType& mnPrm,
+                       const ParamPackType& gbPrm,
+                       const ParamPackType& cgbPrm) {
+    nProp.Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],nProp.Gradient);
   }
 
-  void ParticleConstEVelVerlet_AllocateParam(
-      varVector<varVector<double> >& param,const uint* propdim,const uint& n) {
-    param.allocate(static_cast<uint>(NumberParam_4PEV));
-    param[Basic_4PEV].allocate(static_cast<uint>(NumberBasicParam_4PEV));
-    param[HfDeltaT_ivM_4PEV].allocate(*propdim);
+  void PEV_AllocParam(ParamPackType& mnPrm, const Property& Prop) {
+    PropagatorParamAllocate(mnPrm,static_cast<uint>(NumberParamPEV));
+    PropagatorParamAllocate(mnPrm[BasicPEV],
+                            static_cast<uint>(NumberBasicPEV));
   }
 
-  void ParticleConstEVelVerlet_SetTimeStep(
-      varVector<varVector<double> >& param,
-      const double* tstep, const uint& n=1) {
-    param[Basic_4PEV][DeltaTime_4PEV]=*tstep;
-    param[Basic_4PEV][HalfDeltaTime_4PEV]=
-        0.5*param[Basic_4PEV][DeltaTime_4PEV];
+  void PEV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
+                       const ParamPackType& cgbPrm, ParamPackType& mnPrm) {
+    mnPrm[BasicPEV][HfDeltaTIvMPEV]=cgbPrm[BasicCommon][HalfDeltaTime]*
+                                    nProp.ivMass[0];
   }
 
-  void ParticleConstEVelVerlet_Synchronize(
-      const Property& nowProp, varVector<varVector<double> >& param) {
-    param[HfDeltaT_ivM_4PEV]=nowProp.ivMass[0];
-    param[HfDeltaT_ivM_4PEV].scale(param[Basic_4PEV][HalfDeltaTime_4PEV]);
-  }
-
-  template <typename DistEvalObj, typename GeomType>
-  void SetAs_ParticleConstEVelVerlet(
-      MonomerPropagatorFormat<DistEvalObj,GeomType>& MPF) {
-    MPF.mvfunc.allocate(static_cast<uint>(NumberMoveFunc_4PEV));
-    MPF.setfunc.allocate(static_cast<uint>(NumberSetFunc_4PEV));
-    MPF.mvfunc[BeforeG_4PEV]=ParticleConstEVelVerlet_Move_BeforeG;
-    MPF.mvfunc[AfterG_4PEV]=ParticleConstEVelVerlet_Move_AfterG;
-    MPF.setfunc[SetTimeStep_4PEV]=ParticleConstEVelVerlet_SetTimeStep;
-    MPF.alloc=ParticleConstEVelVerlet_AllocateParam;
-    MPF.sync=ParticleConstEVelVerlet_Synchronize;
+  void SetAsPEV(MonomerPropagator& MP) {
+    PropagatorParamAllocate(MP.MvFunc,static_cast<uint>(NumberMoveEV));
+    MP.MvFunc[BeforeGEV]=PEV_Move_BeforeG;
+    MP.MvFunc[AfterGEV]=PEV_Move_AfterG;
+    PropagatorParamAllocate(MP.SetFunc,static_cast<uint>(NumberSetPEV));
+    MP.Alloc=PEV_AllocParam;
+    MP.Sync=PEV_Synchronize;
   }
 
 }
 
 #endif
-

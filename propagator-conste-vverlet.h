@@ -3,38 +3,56 @@
 #define _Propagator_ConstE_VelVerlet_H_
 
 #include "propagator-particle-conste-vverlet.h"
+#include "param-list.h"
 #include "interaction-4listset.h"
+#include "propagator.h"
 
 namespace std {
 
-  template <typename DistEvalObj, typename GeomType>
-  void SetAs_ConstEVelVerlet(
-      const varVector<Property>& PropSet,
-      varVector<MonomerPropagatorFormat<DistEvalObj,GeomType> >& MvSet) {
-    uint n=PropSet.size(),mType;
-    MvSet.allocate(n);
-    for(uint i=0;i<n;++i) {
-      mType=PropSet[i].MonomerType;
-      if(mType==Particle)
-        SetAs_ParticleConstEVelVerlet(MvSet[i]);
-      else if(mType>NumberTypes) myError("Unknown monomer type!");
-    }
+  void EV_AllocGbParam(ParamPackType& gbPrm,const varVector<Property>& PSet) {
+    PropagatorParamAllocate(gbPrm,static_cast<uint>(NumberParamEV));
   }
-
+  
   template <typename DistEvalObj, typename GeomType>
-  void Propagate_ConstEVelVerlet(
-      varVector<Property>& PropSet, const ParamList& PList,
-      varVector<IDList<DistEvalObj,GeomType> >& IDLS,
-      varVector<MonomerPropagatorFormat<DistEvalObj,GeomType> >& mv,
-      DistEvalObj& DEval, const GeomType& Geo) {
+  void EV_Step(varVector<Property>& PropSet, const ParamList& PList,
+               varVector<IDList<DistEvalObj,GeomType> >& IDLS,
+               varVector<MonomerPropagator>& Mv, ParamPackType& gbPrm,
+               ParamPackType& cgbPrm,
+               DistEvalObj& DEval, const GeomType& Geo) {
     uint n=PropSet.size();
-    for(uint i=0;i<n;++i) mv[i].mvfunc[0](PropSet[i],mv[i].PropagatorParam);
+    for(uint i=0;i<n;++i) Mv[i].MvFunc[BeforeGEV](PropSet[i],Mv[i].runParam,
+                                                  gbPrm,cgbPrm);
     DEval.Update();
     for(uint i=0;i<n;++i) PropSet[i].Gradient=0.;
     G_ListSet(PropSet,PList,IDLS,DEval,Geo);
-    for(uint i=0;i<n;++i) mv[i].mvfunc[1](PropSet[i],mv[i].PropagatorParam);
+    for(uint i=0;i<n;++i) Mv[i].MvFunc[AfterGEV](PropSet[i],Mv[i].runParam,
+                                                 gbPrm,cgbPrm);
   }
 
+  void EV_Synchronize(const varVector<Property>& PropSet,
+                      varVector<MonomerPropagator>& Mv,ParamPackType& gbPrm,
+                      ParamPackType& cgbPrm){
+    uint n=PropSet.size();
+    for(uint i=0;i<n;++i) Mv[i].Sync(PropSet[i],Mv[i].runParam,gbPrm,cgbPrm);
+  }
+
+  template <typename DistEvalObj, typename GeomType>
+  void SetAsEV(const varVector<Property>& PropSet,
+               Propagator<DistEvalObj,GeomType>& Pg) {
+    Pg.GbAlloc=EV_AllocGbParam;
+    PropagatorParamAllocate(Pg.GbSetFunc,static_cast<uint>(NumberSetEV));
+    Pg.Step=EV_Step;
+    Pg.Sync=EV_Synchronize;
+    uint n=PropSet.size();
+    PropagatorParamAllocate(Pg.UnitMove,n);
+    uint mType;
+    for(uint i=0;i<n;++i) {
+      mType=PropSet[i].MonomerType;
+      if(mType==Particle) SetAsPEV(Pg.UnitMove[i]);
+      else if(mType>NumberTypes)  myError("Unknown Monomer Types!");
+    }
+  }
+  
 }
 
 #endif

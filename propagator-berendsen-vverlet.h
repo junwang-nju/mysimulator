@@ -2,7 +2,7 @@
 #ifndef _Propagator_Berendsen_VelVerlet_H_
 #define _Propagator_Berendsen_VelVerlet_H_
 
-#include "propagator-particle-Berendsen-vverlet.h"
+#include "propagator-particle-berendsen-vverlet.h"
 #include "interaction-4listset.h"
 
 namespace std {
@@ -39,6 +39,7 @@ namespace std {
     fac=0;
     for(uint i=0;i<n;++i)
       fac+=normSQ(PropSet[i].Velocity)*PropSet[i].Mass[0];
+    
     for(uint i=0;i<n;++i) mv[i].setfunc[SetScaleFac_4PBV](
         mv[i].PropagatorParam,&fac,1);
     for(uint i=0;i<n;++i) mv[i].mvfunc[PostProcess_4PBV](

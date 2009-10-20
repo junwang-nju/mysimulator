@@ -100,6 +100,7 @@ namespace std {
     MPF.setfunc.allocate(static_cast<uint>(NumberSetFunc_4PBV));
     MPF.setfunc[SetTimeStep_4PBV]=ParticleBerendsenVelVerlet_SetTimeStep;
     MPF.setfunc[SetRelaxTime_4PBV]=ParticleBerendsenVelVerlet_SetRelaxTime;
+    MPF.setfunc[SetScaleFac_4PBV]=ParticleBerendsenVelVerlet_SetScaleFac;
     MPF.alloc=ParticleBerendsenVelVerlet_AllocateParam;
     MPF.sync=ParticleBerendsenVelVerlet_Synchronize;
   }
