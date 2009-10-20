@@ -8,7 +8,7 @@ namespace std {
     NumberParamEV=0
   };
 
-  enum MoveTypeCommonEV {
+  enum MoveTypeEV {
     BeforeGEV=0,
     AfterGEV,
     NumberMoveEV

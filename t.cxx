@@ -20,8 +20,8 @@
 #include "propagator-particle-conste-vverlet.h"
 #include "propagator-conste-vverlet.h"
 #include "propagator.h"
-//#include "propagator-particle-berendsen-vverlet.h"
-//#include "propagator-berendsen-vverlet.h"
+#include "propagator-particle-berendsen-vverlet.h"
+#include "propagator-berendsen-vverlet.h"
 #include <iostream>
 using namespace std;
 
