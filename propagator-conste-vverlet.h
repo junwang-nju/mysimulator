@@ -33,7 +33,7 @@ namespace std {
                       varVector<MonomerPropagator>& Mv,ParamPackType& gbPrm,
                       ParamPackType& cgbPrm){
     uint n=PropSet.size();
-    for(uint i=0;i<n;++i) Mv[i].Sync(PropSet[i],Mv[i].runParam,gbPrm,cgbPrm);
+    for(uint i=0;i<n;++i) Mv[i].Sync(PropSet[i],gbPrm,cgbPrm,Mv[i].runParam);
   }
 
   template <typename DistEvalObj, typename GeomType>

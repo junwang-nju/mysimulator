@@ -234,6 +234,25 @@ int main() {
   cout<<Energy<<endl;
   cout<<PS[0].Gradient<<endl;
 
+  MonomerPropagator PgFmt;
+  SetAsPEV(PgFmt);
+  PgFmt.Alloc(PgFmt.runParam,PS[0]);
+
+  Propagator<DistanceEvalwStorage<3>,FreeSpace> PgS;
+  SetAsEV(PS,PgS);
+  double dt=0.001;
+  PgS.CmnGbSetFunc[SetCmnTimeStep](PgS.CmnGbParam,&dt,1);
+
+  PgFmt.Sync(PS[0],PgS.GbParam,PgS.CmnGbParam,PgFmt.runParam);
+  
+  PgS.AllocAll(PS);
+  
+  double tt=0.01,st=0.,ot=0.001;
+  PgS.CmnGbSetFunc[SetCmnTotalTime](PgS.CmnGbParam,&tt,1);
+  PgS.CmnGbSetFunc[SetCmnStartTime](PgS.CmnGbParam,&st,1);
+  PgS.CmnGbSetFunc[SetCmnOutputInterval](PgS.CmnGbParam,&ot,1);
+  PgS.SyncAll(PS);
+
   /*
   MonomerPropagatorFormat<DistanceEvalwStorage<3>,FreeSpace> PgFmt2;
   SetAs_ParticleConstEVelVerlet(PgFmt2);

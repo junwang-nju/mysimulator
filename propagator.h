@@ -77,7 +77,14 @@ namespace std {
       AllocFuncType CmnGbAlloc;
       
       AllocFuncType GbAlloc;
-      
+
+      void AllocAll(const varVector<Property>& PropSet) {
+        GbAlloc(GbParam,PropSet);
+        uint n=PropSet.size();
+        for(uint i=0;i<n;++i)
+          UnitMove[i].Alloc(UnitMove[i].runParam,PropSet[i]);
+      }
+
       varVector<SetFuncType> CmnGbSetFunc;
 
       varVector<SetFuncType> GbSetFunc;
@@ -86,10 +93,9 @@ namespace std {
       
       SyncFuncType Sync;
 
-      void SyncAll(const varVector<Property>& PropSet, UnitMovePackType& UMP,
-                   ParamPackType& gbPrm, ParamPackType& cgbPrm) {
-        SynchronizeCommon(cgbPrm);
-        Sync(PropSet,UMP,gbPrm,cgbPrm);
+      void SyncAll(const varVector<Property>& PropSet) {
+        SynchronizeCommon(CmnGbParam);
+        Sync(PropSet,UnitMove,GbParam,CmnGbParam);
       }
 
       OutputType OutFunc;
