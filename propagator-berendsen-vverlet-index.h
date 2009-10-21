@@ -4,7 +4,7 @@
 
 namespace std {
 
-  enum PropagatorParamBV {
+  enum PropagatorParamTypeBV {
     BasicBV=0,
     NumberParamBV
   };

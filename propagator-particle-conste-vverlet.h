@@ -2,7 +2,7 @@
 #ifndef _Propagator_Particle_ConstE_VelVerlet_H_
 #define _Propagator_Particle_ConstE_VelVerlet_H_
 
-#include "property.h"
+#include "particle.h"
 #include "monomer-propagator.h"
 #include "propagator-particle-conste-vverlet-index.h"
 #include "propagator-conste-vverlet-index.h"

@@ -2,7 +2,7 @@
 #ifndef _Propagator_Particle_Berendsen_VelVerlet_H_
 #define _Propagator_Particle_Berendsen_VelVerlet_H_
 
-#include "property.h"
+#include "particle.h"
 #include "monomer-propagator.h"
 #include "propagator-particle-berendsen-vverlet-index.h"
 #include "propagator-berendsen-vverlet-index.h"
