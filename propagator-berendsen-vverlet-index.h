@@ -26,7 +26,8 @@ namespace std {
   };
 
   enum SetTypeBV {
-    SetTemperature=0,
+    SetTemperatureBV=0,
+    SetRelaxTimeBV,
     NumberSetBV
   };
 
