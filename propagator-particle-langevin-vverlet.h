@@ -10,6 +10,14 @@
 #include "propagator-op.h"
 
 namespace std {
+
+  void PLV_Move_BeforeG(Property& nProp, const ParamPackType& mnPrm,
+                        const ParamPackType& gbPrm,
+                        const ParamPackType& cgbPrm) {
+    nProp.Velocity.scaleshift(mnPrm[BasicPLV][FactorBeforeGPLV],
+                              -mnPrm[BasicPLV][HfDeltaTIvMPLV],nProp.Gradient);
+  }
+
 }
 
 #endif

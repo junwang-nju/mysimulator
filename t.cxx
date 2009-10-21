@@ -22,6 +22,9 @@
 #include "propagator.h"
 #include "propagator-particle-berendsen-vverlet.h"
 #include "propagator-berendsen-vverlet.h"
+#include "propagator-particle-langevin-vverlet.h"
+#include "propagator-langevin-vverlet.h"
+#include "random-generator-mt-dsfmt.h"
 #include <iostream>
 using namespace std;
 

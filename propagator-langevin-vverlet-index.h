@@ -5,6 +5,15 @@
 namespace std {
 
   enum PropagatorParamTypeLV {
+    BasicLV=0,
+    NumberParamLV
+  };
+
+  enum BasicTypeLV {
+    ViscosityCoefLV=0,
+    TemperatureLV,
+    TempeDeltaTLV,
+    NumberBasicLV
   };
 
 }
