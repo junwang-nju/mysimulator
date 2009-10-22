@@ -24,7 +24,7 @@
 #include "propagator-berendsen-vverlet.h"
 #include "propagator-particle-langevin-vverlet.h"
 #include "propagator-langevin-vverlet.h"
-#include "random-generator-mt-dsfmt.h"
+#include "random-generator.h"
 #include <iostream>
 using namespace std;
 

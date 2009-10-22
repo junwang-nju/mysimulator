@@ -5,7 +5,8 @@
 namespace std {
 
   enum RegionBoundaryType {
-    Close0_Open1=0,
+    Close1_Open2=0,
+    Close0_Open1,
     Open0_Close1,
     Open0_Open1,
     Close0_Close1

@@ -12,6 +12,10 @@ namespace std {
   template <typename RandGeneratorType, typename T>
   class RandGenerator : public RandGeneratorType {
 
+    private:
+
+      T tmTData;
+
     public:
 
       typedef RandGenerator<RandGeneratorType,T>    Type;
@@ -30,7 +34,7 @@ namespace std {
 
       void SetWithTime() { SetWithSeed(static_cast<uint>(time(0))); }
 
-      const T& operator()() { return this->Default<T>(); }
+      const T& operator()() { return this->Default(tmTData); }
 
   };
 }
