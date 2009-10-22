@@ -3,6 +3,7 @@
 #define _Random_Generator_MT_DSFMT_H_
 
 #include "type.h"
+#include "region-boundary-type.h"
 
 #ifdef HAVE_SSE2
 #include <emmintrin.h>
@@ -168,9 +169,111 @@ namespace std {
         status[N]=lung;
       }
 
+      uint32_t init_func1(const uint32_t& x) {
+        return (x^(x>>27))*static_cast<uint32_t>(1664525UL);
+      }
+
+      uint32_t init_func2(const uint32_t& x) {
+        return (x^(x>>27))*static_cast<uint32_t>(1566083941UL);
+      }
+
+      uint32_t init_mask() {
+        uint64_t *pSFMT;
+        pSFMT=&(status[0].u[0]);
+        for(uint i=0;i<N+N;++i) pSFMT[i]=(pSFMT[i]&LowMask)|HighConst;
+      }
+
+      void PeriodCertification() {
+        uint64_t pcv[2]={Pcv1,Pcv2};
+        uint64_t tmp[2];
+        uint64_t inner;
+        int i;
+        tmp[0]=status[N].u[0]^Fix1;
+        tmp[1]=status[N].u[1]^Fix2;
+        inner=tmp[0]&pcv[0];
+        inner^=tmp[1]&pcv[1];
+        for(i=32;i>0;i>>=1)   inner^=inner>>i;
+        inner&=1;
+        if(inner==1)    return;
+        status[N].u[1]^=1;
+        return;
+      } // Here assuming Pcv2&1==1
+
+      void GenRandAll() {
+        uint32_t i;
+        W128_T lung;
+        DoRecursion(status[0],status[Pos1],status[0],lung);
+        for(i=1;i<N-Pos1;++i)
+          DoRecursion(status[i],status[i+Pos1],status[i],lung);
+        for(;i<N;++i)
+          DoRecursion(status[i],status[i+Pos1-N],status[i],lung);
+        status[N]=lung;
+      }
+
     public:
 
+      typedef dSFMT<LoopFac>    Type;
+
       dSFMT() {}
+
+      dSFMT(const Type& DR) { assert(false); }
+
+      dSFMT(const uint32_t& seed) { Init(seed); }
+
+      const char* IDString() { return IDStr; }
+
+      int GetMinArraySize() { return N64; }
+
+      template <uint BoundaryType>
+      void FillArray(double *Array, int Size) {
+        assert((Size&1)==0);
+        assert(Size>=N64);
+        GenRandArray<BoundaryType>(static_cast<W128_T*>(Array),Size>>1);
+      }
+
+      template <typename vType, uint BoundaryType>
+      void FillArray(vType& V) {
+        assert(vType::isVector);
+        FillArray<BoundaryType>(V.data(),V.size());
+      }
+
+      void Init(const uint32_t& seed) {
+        uint32_t *pSFMT;
+        pSFMT=&status[0].u32[0];
+        pSFMT[idxof(0)]=seed;
+        uint sz=(N+1)*4;
+        for(uint i=1;i<sz;++i)
+          pSFMT[idxof(i)]=
+            1812433253UL*(pSFMT[idxof(i-1)]^(pSFMT[idxof(i-1)]>>30))+i;
+        init_mask();
+        PeriodCertification();
+        idx=N64;
+#ifdef HAVE_SSE2
+        SetupConst();
+#endif
+      }
+
+      void Init(uint32_t* init_key, int key_length) {
+        uint32_t r, *pSFMT32;
+        int i,j,count,lag,mid,tmid;
+        int size=(N+1)*4;
+        if(size>=623)         lag=11;
+        else if(size>=68)     lag=7;
+        else if(size>=39)     lag=5;
+        else                  lag=3;
+        mid=(size-lag)/2;
+        pSFMT32=&status[0].u32[0];
+        memset(status,0x8B,sizeof(status));
+        count=(key_length+1>size?key_length+1:size);
+        tmid=mid%size;
+        r=init_func1(pSFMT32[idxof(0)]^pSFMT32[idxof(tmid)]
+                     ^pSFMT32[idxof(size-1)]);
+        pSFMT32[idxof(tmid)]+=r;
+        r+=key_length;
+        pSFMT32[idxof((mid+lag)%size)]+=r;
+        pSFMT32[idxof(0)]=r;
+        --count;
+      }
 
   };
 
