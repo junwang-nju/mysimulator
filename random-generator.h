@@ -7,6 +7,7 @@
 #include "random-generator-derived.h"
 
 namespace std {
+  typedef RandGenerator<dSFMT<216091>,double> UniformDbRNG;
 }
 
 #endif

@@ -322,7 +322,7 @@ namespace std {
       }
 
       const double& GenRand_Close1Open2() {
-        double *pSFMT64=*status[0].d[0];
+        double *pSFMT64=&status[0].d[0];
         if(static_cast<uint32_t>(idx)>=N64) {
           GenRandAll();
           idx=0;

@@ -258,6 +258,17 @@ int main() {
   PgS.OutFunc=OutputFunc;
   PgS.Run(PS,HPList,IDLS,DEval2,FS,cout);
 
+  fixVector<uint,100000> hist;
+  hist=0U;
+  UniformDbRNG urng;
+  urng.SetWithSeed(123337961);
+  for(uint i=0;i<100000000;++i)  hist[static_cast<uint>(urng()*100000)]++;
+  //for(uint i=0;i<100000;++i)  cout<<i*0.001<<"\t"<<hist[i]<<endl;
+  fixVector<uint,400> hhist;
+  hhist=0U;
+  for(int i=0;i<100000;++i)   hhist[hist[i]-800]++;
+  for(int i=0;i<400;++i)   cout<<i-200<<"\t"<<hhist[i]<<endl;
+
   return 1;
 }
 
