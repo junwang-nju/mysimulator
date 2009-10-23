@@ -3,6 +3,7 @@
 #define _Random_Generator_MT_DSFMT_H_
 
 #include "type.h"
+#include <tr1/cstdint>
 #include "region-boundary-type.h"
 
 #ifdef HAVE_SSE2
@@ -11,7 +12,79 @@
 
 namespace std {
 
-  template <uint> class Convertor;
+  union W128_T {
+
+#ifdef HAVE_SSE2
+
+    __m128i   si;
+
+    __m128d   sd;
+
+#endif
+
+    uint64_t  u[2];
+
+    uint32_t  u32[4];
+
+    double    d[2];
+
+  };
+
+  template <uint BoundaryType>
+  void Convert(W128_T& w) { assert(false); }
+      
+  template <>
+  void Convert<Close1_Open2>(W128_T& w) {}
+
+#ifdef HAVE_SSE2
+
+  __m128i   SSE2_ParamMask;
+
+  __m128i   SSE2_IntOne;
+
+  __m128d   SSE2_DoubleTwo;
+
+  __m128d   SSE2_DoubleMOne;
+
+  template <>
+  void Convert<Close0_Open1>(W128_T& w) {
+    w.sd=_mm_add_pd(w.sd,SSE2_DoubleMOne);
+  }
+
+  template <>
+  void Convert<Open0_Close1>(W128_T& w) {
+    w.sd=_mm_sub_pd(SSE2_DoubleTwo,w.sd);
+  }
+
+  template <>
+  void Convert<Open0_Open1>(W128_T& w) {
+    w.si=_mm_or_si128(w.si,SSE2_IntOne);
+    w.sd=_mm_add_pd(w.sd,SSE2_DoubleMOne);
+  }
+
+#else
+
+  template <>
+  void Convert<Close0_Open1>(W128_T& w) {
+    w.d[0]-=1.0;
+    w.d[1]-=1.0;
+  }
+
+  template <>
+  void Convert<Open0_Close1>(W128_T& w) {
+    w.d[0]=2.0-w.d[0];
+    w.d[1]=2.0-w.d[1];
+  }
+
+  template <>
+  void Convert<Open0_Open1>(W128_T& w) {
+    w.u[0]|=1;
+    w.u[1]|=1;
+    w.d[0]-=1.0;
+    w.d[1]-=1.0;
+  }
+
+#endif
 
   template <uint LoopFac=19937>
   class dSFMT {
@@ -64,24 +137,6 @@ namespace std {
 
       static const char* IDStr;
 
-      union W128_T {
-
-#ifdef HAVE_SSE2
-
-        __m128i   si;
-
-        __m128d   sd;
-
-#endif
-
-        uint64_t  u[2];
-
-        uint32_t  u32[4];
-
-        double    d[2];
-
-      };
-
       W128_T  status[(LoopFac-128)/104+2];    /// namely N+1
 
       int idx;
@@ -93,14 +148,6 @@ namespace std {
       const uint& idxof(const uint& I) { return I; }
 
 #ifdef HAVE_SSE2
-
-      __m128i   SSE2_ParamMask;
-
-      __m128i   SSE2_IntOne;
-
-      __m128d   SSE2_DoubleTwo;
-
-      __m128d   SSE2_DoubleMOne;
 
       void SetupConst() {
         static int first=1;
@@ -145,27 +192,26 @@ namespace std {
 #endif
 
       template <int BoundaryType>
-      void GenRandArray(W128_T& Array, int Size) {
-        int i,j;
+      void GenRandArray(W128_T* Array, uint Size) {
+        uint i,j;
         W128_T lung;
-        static Convertor<BoundaryType> Convert;
         lung=status[N];
         DoRecursion(status[0],status[Pos1],Array[0],lung);
         for(i=0;i<N-Pos1;++i)
           DoRecursion(status[i],status[i+Pos1],Array[i],lung);
-        for(;i<Size-N;++i)
+        for(;i<N;++i)
           DoRecursion(status[i],Array[i+Pos1-N],Array[i],lung);
-        for(;i<Size-N;++i) {
+        for(;i+N<Size;++i) {
           DoRecursion(Array[i-N],Array[i+Pos1-N],Array[i],lung);
-          Convert(Array[i-N]);
+          Convert<BoundaryType>(Array[i-N]);
         }
-        for(j=0;j<N+N-Size;++j) status[j]=Array[j+Size-N];
+        for(j=0;j+Size<N+N;++j) status[j]=Array[j+Size-N];
         for(;i<Size;++i,++j) {
           DoRecursion(Array[i-N],Array[i+Pos1-N],Array[i],lung);
           status[j]=Array[i];
-          Convert(Array[i-N]);
+          Convert<BoundaryType>(Array[i-N]);
         }
-        for(i=Size-N;i<Size;++i)  Convert(Array[i]);
+        for(i=Size-N;i<Size;++i)  Convert<BoundaryType>(Array[i]);
         status[N]=lung;
       }
 
@@ -225,15 +271,15 @@ namespace std {
       int GetMinArraySize() { return N64; }
 
       template <uint BoundaryType>
-      void FillArray(double *Array, int Size) {
+      void FillArray(double *Array, uint Size) {
         assert((Size&1)==0);
         assert(Size>=N64);
-        GenRandArray<BoundaryType>(static_cast<W128_T*>(Array),Size>>1);
+        GenRandArray<BoundaryType>(reinterpret_cast<W128_T*>(Array),Size>>1);
       }
 
       template <typename vType, uint BoundaryType>
       void FillArray(vType& V) {
-        assert(vType::isVector);
+        assert(vType::IsVector);
         FillArray<BoundaryType>(V.data(),V.size());
       }
 
@@ -886,81 +932,6 @@ namespace std {
   
   template <>
   dSFMT<216091>::dSFMT(const uint32_t& seed) { Init(seed); }
-
-  template <uint BoundaryType>
-  class Convertor { public: Convertor() { assert(false); } };
-  
-  template <>
-  class Convertor<Close1_Open2> {
-    public:
-      template <uint LoopFac>
-      void operator()(typename dSFMT<LoopFac>::W128_T& w) {}
-  };
-  
-#ifdef HAVE_SSE2
-
-  template <>
-  class Convertor<Close0_Open1> {
-    public:
-      template <uint LoopFac>
-      void operator()(typename dSFMT<LoopFac>::W128_T& w) {
-        w.sd=_mm_add_pd(w.sd,dSFMT<LoopFac>::SSE2_DoubleMOne);
-      }
-  };
-  
-  template <>
-  class Convertor<Open0_Close1> {
-    public:
-      template <uint LoopFac>
-      void operator()(typename dSFMT<LoopFac>::W128_T& w) {
-        w.sd=_mm_sub_pd(dSFMT<LoopFac>::SSE2_DoubleTwo,w.sd);
-      }
-  };
-
-  template <>
-  class Convertor<Open0_Open1> {
-    public:
-      template <uint LoopFac>
-      void operator()(typename dSFMT<LoopFac>::W128_T& w) {
-        w.si=_mm_or_si128(w.si,dSFMT<LoopFac>::SSE2_IntOne);
-        w.sd=_mm_add_pd(w.sd,dSFMT<LoopFac>::SSE2_DoubleMOne);
-      }
-  };
-
-#else
-
-  template <>
-  class Convertor<Close0_Open1> {
-    public:
-      template <uint LoopFac>
-      void operator()(typename dSFMT<LoopFac>::W128_T& w) {
-        w.d[0]-=1.0;
-        w.d[1]-=1.0;
-      }
-  };
-  
-  template <>
-  class Convertor<Open0_Close1> {
-    template <uint LoopFac>
-    void operator()(typename dSFMT<LoopFac>::W128_T& w) {
-      w.d[0]=2.0-w.d[0];
-      w.d[1]=2.0-w.d[1];
-    }
-  };
-
-  template <>
-  class Convertor<Open0_Open1> {
-    public:
-      template <uint LoopFac>
-      void operator()(typename dSFMT<LoopFac>::W128_T& w) {
-        w.u[0]|=1;
-        w.u[1]|=1;
-        w.d[0]-=1.0;
-        w.d[1]-=1.0;
-      }
-  };
-
-#endif
 
 }
 
