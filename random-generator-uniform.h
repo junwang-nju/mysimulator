@@ -3,6 +3,7 @@
 #define _Random_Generator_Uniform_H_
 
 #include "random-generator-mt-dsfmt.h"
+#include "random-generator-mt-sfmt.h"
 
 #endif
 

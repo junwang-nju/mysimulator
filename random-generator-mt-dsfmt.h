@@ -12,7 +12,7 @@
 
 namespace std {
 
-  union W128_T {
+  union W128_DSFMT {
 
 #ifdef HAVE_SSE2
 
@@ -31,10 +31,10 @@ namespace std {
   };
 
   template <uint BoundaryType>
-  void Convert(W128_T& w) { assert(false); }
+  void Convert(W128_DSFMT& w) { assert(false); }
       
   template <>
-  void Convert<Close1_Open2>(W128_T& w) {}
+  void Convert<Close1_Open2>(W128_DSFMT& w) {}
 
 #ifdef HAVE_SSE2
 
@@ -47,17 +47,17 @@ namespace std {
   __m128d   SSE2_DoubleMOne;
 
   template <>
-  void Convert<Close0_Open1>(W128_T& w) {
+  void Convert<Close0_Open1>(W128_DSFMT& w) {
     w.sd=_mm_add_pd(w.sd,SSE2_DoubleMOne);
   }
 
   template <>
-  void Convert<Open0_Close1>(W128_T& w) {
+  void Convert<Open0_Close1>(W128_DSFMT& w) {
     w.sd=_mm_sub_pd(SSE2_DoubleTwo,w.sd);
   }
 
   template <>
-  void Convert<Open0_Open1>(W128_T& w) {
+  void Convert<Open0_Open1>(W128_DSFMT& w) {
     w.si=_mm_or_si128(w.si,SSE2_IntOne);
     w.sd=_mm_add_pd(w.sd,SSE2_DoubleMOne);
   }
@@ -65,19 +65,19 @@ namespace std {
 #else
 
   template <>
-  void Convert<Close0_Open1>(W128_T& w) {
+  void Convert<Close0_Open1>(W128_DSFMT& w) {
     w.d[0]-=1.0;
     w.d[1]-=1.0;
   }
 
   template <>
-  void Convert<Open0_Close1>(W128_T& w) {
+  void Convert<Open0_Close1>(W128_DSFMT& w) {
     w.d[0]=2.0-w.d[0];
     w.d[1]=2.0-w.d[1];
   }
 
   template <>
-  void Convert<Open0_Open1>(W128_T& w) {
+  void Convert<Open0_Open1>(W128_DSFMT& w) {
     w.u[0]|=1;
     w.u[1]|=1;
     w.d[0]-=1.0;
@@ -137,7 +137,7 @@ namespace std {
 
       static const char* IDStr;
 
-      W128_T  status[(LoopFac-128)/104+2];    /// namely N+1
+      W128_DSFMT  status[(LoopFac-128)/104+2];    /// namely N+1
 
       int idx;
 
@@ -159,7 +159,8 @@ namespace std {
         first=0;
       }
 
-      void DoRecursion(const W128_T& a, const W128_T& b, W128_T& r, W128_T& u){
+      void DoRecursion(const W128_DSFMT& a, const W128_DSFMT& b,
+                       W128_DSFMT& r, W128_DSFMT& u){
         __m128i v,w,x,y,z;
         x=a.si;
         z=_mm_slli_epi64(x,SL1);
@@ -176,8 +177,8 @@ namespace std {
 
 #else
 
-      void DoRecursion(const W128_T& a, const W128_T& b,
-                       W128_T& r, W128_T& lung) {
+      void DoRecursion(const W128_DSFMT& a, const W128_DSFMT& b,
+                       W128_DSFMT& r, W128_DSFMT& lung) {
         uint64_t t0,t1,L0,L1;
         t0=a.u[0];
         t1=a.u[1];
@@ -192,9 +193,9 @@ namespace std {
 #endif
 
       template <int BoundaryType>
-      void GenRandArray(W128_T* Array, uint Size) {
+      void GenRandArray(W128_DSFMT* Array, uint Size) {
         uint i,j;
-        W128_T lung;
+        W128_DSFMT lung;
         lung=status[N];
         DoRecursion(status[0],status[Pos1],Array[0],lung);
         for(i=0;i<N-Pos1;++i)
@@ -247,7 +248,7 @@ namespace std {
 
       void GenRandAll() {
         uint32_t i;
-        W128_T lung;
+        W128_DSFMT lung;
         DoRecursion(status[0],status[Pos1],status[0],lung);
         for(i=1;i<N-Pos1;++i)
           DoRecursion(status[i],status[i+Pos1],status[i],lung);
@@ -274,7 +275,8 @@ namespace std {
       void FillArray(double *Array, uint Size) {
         assert((Size&1)==0);
         assert(Size>=N64);
-        GenRandArray<BoundaryType>(reinterpret_cast<W128_T*>(Array),Size>>1);
+        GenRandArray<BoundaryType>(
+            reinterpret_cast<W128_DSFMT*>(Array),Size>>1);
       }
 
       template <typename vType, uint BoundaryType>
