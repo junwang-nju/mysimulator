@@ -4,6 +4,7 @@
 
 #include "random-generator-mt-dsfmt.h"
 #include "random-generator-mt-sfmt.h"
+#include "random-generator-mt-standard.h"
 
 #endif
 
