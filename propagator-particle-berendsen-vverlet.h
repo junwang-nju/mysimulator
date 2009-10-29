@@ -11,20 +11,20 @@
 
 namespace std {
 
-  void PBV_Move_BeforeG(Property& nProp, const ParamPackType& mnPrm,
+  void PBV_Move_BeforeG(Property& nProp, ParamPackType& mnPrm,
                         const ParamPackType& gbPrm,
                         const ParamPackType& cgbPrm) {
     nProp.Velocity.shift(-mnPrm[BasicPBV][HfDeltaTIvMPBV],nProp.Gradient);
     nProp.Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],nProp.Velocity);
   }
 
-  void PBV_Move_AfterG(Property& nProp, const ParamPackType& mnPrm,
+  void PBV_Move_AfterG(Property& nProp, ParamPackType& mnPrm,
                        const ParamPackType& gbPrm,
                        const ParamPackType& cgbPrm) {
     nProp.Velocity.shift(-mnPrm[BasicPBV][HfDeltaTIvMPBV],nProp.Gradient);
   }
 
-  void PBV_Move_PostProcess(Property& nProp, const ParamPackType& mnPrm,
+  void PBV_Move_PostProcess(Property& nProp, ParamPackType& mnPrm,
                             const ParamPackType& gbPrm,
                             const ParamPackType& cgbPrm) {
     nProp.Velocity.scale(gbPrm[BasicBV][ScaleFacBV]);

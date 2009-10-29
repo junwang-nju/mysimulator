@@ -11,14 +11,14 @@
 
 namespace std {
 
-  void PEV_Move_BeforeG(Property& nProp, const ParamPackType& mnPrm,
+  void PEV_Move_BeforeG(Property& nProp, ParamPackType& mnPrm,
                         const ParamPackType& gbPrm,
                         const ParamPackType& cgbPrm) {
     nProp.Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],nProp.Gradient);
     nProp.Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],nProp.Velocity);
   }
 
-  void PEV_Move_AfterG(Property& nProp, const ParamPackType& mnPrm,
+  void PEV_Move_AfterG(Property& nProp, ParamPackType& mnPrm,
                        const ParamPackType& gbPrm,
                        const ParamPackType& cgbPrm) {
     nProp.Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],nProp.Gradient);

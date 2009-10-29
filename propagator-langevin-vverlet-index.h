@@ -6,6 +6,7 @@ namespace std {
 
   enum PropagatorParamTypeLV {
     BasicLV=0,
+    RandPointerLV,
     NumberParamLV
   };
 
@@ -14,6 +15,24 @@ namespace std {
     TemperatureLV,
     TempeDeltaTLV,
     NumberBasicLV
+  };
+
+  enum RandPointerTypeLV {
+    GaussianRNGPointerLV=0,
+    NumberRandPointerLV
+  };
+
+  enum MoveTypeLV {
+    BeforeGLV=0,
+    AfterGLV,
+    NumberMoveLV
+  };
+
+  enum SetTypeLV {
+    SetTemperatureLV=0,
+    SetViscosityLV,
+    SetGRNGPointerLV,
+    NumberSetLV
   };
 
 }

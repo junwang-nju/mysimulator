@@ -7,7 +7,11 @@
 #include "random-generator-derived.h"
 
 namespace std {
+
   typedef RandGenerator<dSFMT<216091>,double> UniformDbRNG;
+
+  typedef RandGenerator<BoxMuller<UniformDbRNG>,double> GaussianRNG;
+
 }
 
 #endif

@@ -12,7 +12,7 @@ namespace std {
 
     public:
     
-      typedef void (*MoveFuncType)(Property&,const ParamPackType&,
+      typedef void (*MoveFuncType)(Property&, ParamPackType&,
                                    const ParamPackType&,const ParamPackType&);
       
       typedef void (*SetFuncType)(ParamPackType&,const double*,const uint&);

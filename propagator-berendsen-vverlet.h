@@ -11,6 +11,7 @@ namespace std {
 
   void BV_AllocGbParam(ParamPackType& gbPrm, const varVector<Property>& PSet){
     PropagatorParamAllocate(gbPrm,static_cast<uint>(NumberParamBV));
+    PropagatorParamAllocate(gbPrm[BasicBV],static_cast<uint>(NumberBasicBV));
   }
 
   template <typename DistEvalObj, typename GeomType>

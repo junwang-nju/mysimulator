@@ -21,7 +21,8 @@ namespace std {
   };
 
   enum SetTypePLV {
-    NumberSetPLV=0
+    SetHydrodynamicRadiusPLV=0,
+    NumberSetPLV
   };
 
 }
