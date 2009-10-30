@@ -37,8 +37,43 @@ namespace std {
   }
 
   void LV_SetViscosity(ParamPackType& gbPrm, const double* data, const uint&) {
-    gbPrm[BasicLV]
+    gbPrm[BasicLV][ViscosityCoefLV]=*data;
   }
+
+  void LV_SetGRNGPointer(ParamPackType& gbPrm,const double* data,const uint&){
+    gbPrm[RandPointerLV][GaussianRNGPointerLV]=
+        static_cast<double>(reinterpret_cast<long long>(data));
+  }
+
+  void LV_Synchronize(const varVector<Property>& PropSet,
+                      varVector<MonomerPropagator>& Mv, ParamPackType& gbPrm,
+                      ParamPackType& cgbPrm) {
+    gbPrm[BasicLV][TempeDeltaTLV]=gbPrm[BasicLV][TemperatureLV]*
+                                  cgbPrm[BasicCommon][DeltaTime];
+    uint n=PropSet.size();
+    for(uint i=0;i<n;++i) Mv[i].Sync(PropSet[i],gbPrm,cgbPrm,Mv[i].runParam);
+  }
+  
+  template <typename DistEvalObj, typename GeomType>
+  void SetAsLV(const varVector<Property>& PropSet,
+               Propagator<DistEvalObj,GeomType>& Pg) {
+    Pg.GbAlloc=LV_AllocGbParam;
+    PropagatorParamAllocate(Pg.GbSetFunc,static_cast<uint>(NumberSetLV));
+    Pg.GbSetFunc[SetTemperatureLV]=LV_SetTemperature;
+    Pg.GbSetFunc[SetViscosityLV]=LV_SetViscosity;
+    Pg.GbSetFunc[SetGRNGPointerLV]=LV_SetGRNGPointer;
+    Pg.Step=LV_Step;
+    Pg.Sync=LV_Synchronize;
+    uint n=PropSet.size();
+    PropagatorParamAllocate(Pg.UnitMove,n);
+    uint mType;
+    for(uint i=0;i<mType;++i) {
+      mType=PropSet[i].MonomerType;
+      if(mType==Particle)   SetAsPLV(Pg.UnitMove[i]);
+      else if(mType>NumberTypes)  myError("Unknown Monomer Types!");
+    }
+  }
+
 }
 
 #endif
