@@ -32,7 +32,7 @@ namespace std {
       BoxMuller(const Type& BM) { assert(false); }
 
       void Init(const uint& seed) {
-        urng.SetAsSeed(seed);
+        urng.SetWithSeed(seed);
         isSecond=true;
         od=0.;
       }
@@ -56,6 +56,7 @@ namespace std {
             Y=urng();   Y+=Y;   Y-=1.;
             R2=X*X+Y*Y;
           } while( (R2>1.)||(R2==0) );
+          R2=sqrt(-2.0*log(R2)/R2);
           od=X*R2;
         }
         return od;

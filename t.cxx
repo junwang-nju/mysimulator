@@ -258,6 +258,8 @@ int main() {
   PgS.OutFunc=OutputFunc;
   PgS.Run(PS,HPList,IDLS,DEval2,FS,cout);
 
+  /// the test for random generator is commented to speed the test
+  /*
   fixVector<uint,100000> hist;
   hist=0U;
   UniformDbRNG urng;
@@ -268,6 +270,46 @@ int main() {
   hhist=0U;
   for(int i=0;i<100000;++i)   hhist[hist[i]-800]++;
   for(int i=0;i<400;++i)   cout<<i-200<<"\t"<<hhist[i]<<endl;
+
+  cout<<endl;
+  GaussianRNG grng;
+  fixVector<uint,20000> histg;
+  histg=0U;
+  grng.SetWithSeed(123337961);
+  for(uint i=0;i<100000000;++i) histg[static_cast<uint>((grng()+10)*1000)]++;
+  for(uint i=0;i<20000;++i)
+    cout<<(i-10000.)*0.001<<"\t"<<histg[i]<<endl;
+  */
+
+  GaussianRNG grng;
+  grng.SetWithSeed(123337961);
+
+  cout<<"========================"<<endl;
+  Propagator<DistanceEvalwStorage<3>,FreeSpace> PgL;
+  SetAsLV(PS,PgL);
+  cout<<"========================"<<endl;
+  PgL.CmnGbSetFunc[SetCmnTimeStep](PgS.CmnGbParam,&dt,1);
+  cout<<"========================"<<endl;
+  PgL.AllocAll(PS);
+
+  cout<<"========================"<<endl;
+  PgL.CmnGbSetFunc[SetCmnTotalTime](PgL.CmnGbParam,&tt,1);
+  PgL.CmnGbSetFunc[SetCmnStartTime](PgL.CmnGbParam,&st,1);
+  PgL.CmnGbSetFunc[SetCmnOutputInterval](PgL.CmnGbParam,&ot,1);
+  cout<<"========================"<<endl;
+  double Temp=1.,Visco=1., hRadius=1.;
+  PgL.GbSetFunc[SetTemperatureLV](PgL.GbParam,&Temp,1);
+  PgL.GbSetFunc[SetViscosityLV](PgL.GbParam,&Visco,1);
+  PgL.GbSetFunc[SetGRNGPointerLV](
+      PgL.GbParam,reinterpret_cast<double*>(&grng),1);
+  cout<<"========================"<<endl;
+  for(uint i=0;i<PS.size();++i)
+    PgL.UnitMove[i].SetFunc[SetHydrodynamicRadiusPLV](
+        PgL.UnitMove[i].runParam,&hRadius,1);
+  cout<<"========================"<<endl;
+  PgL.SyncAll(PS);
+  PgL.OutFunc=OutputFunc;
+  //PgL.Run(PS,HPList,IDLS,DEval2,FS,cout);
 
   return 1;
 }
