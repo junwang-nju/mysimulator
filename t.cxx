@@ -284,32 +284,39 @@ int main() {
   GaussianRNG grng;
   grng.SetWithSeed(123337961);
 
-  cout<<"========================"<<endl;
+  PS[0].Coordinate=0.;
+  PS[1].Coordinate=0.; PS[1].Coordinate[0]=1.;
+  PS[0].Velocity=0.;
+  PS[1].Velocity=0.;
+
   Propagator<DistanceEvalwStorage<3>,FreeSpace> PgL;
   SetAsLV(PS,PgL);
-  cout<<"========================"<<endl;
-  PgL.CmnGbSetFunc[SetCmnTimeStep](PgS.CmnGbParam,&dt,1);
-  cout<<"========================"<<endl;
+  PgL.CmnGbSetFunc[SetCmnTimeStep](PgL.CmnGbParam,&dt,1);
   PgL.AllocAll(PS);
 
-  cout<<"========================"<<endl;
   PgL.CmnGbSetFunc[SetCmnTotalTime](PgL.CmnGbParam,&tt,1);
   PgL.CmnGbSetFunc[SetCmnStartTime](PgL.CmnGbParam,&st,1);
   PgL.CmnGbSetFunc[SetCmnOutputInterval](PgL.CmnGbParam,&ot,1);
-  cout<<"========================"<<endl;
   double Temp=1.,Visco=1., hRadius=1.;
   PgL.GbSetFunc[SetTemperatureLV](PgL.GbParam,&Temp,1);
   PgL.GbSetFunc[SetViscosityLV](PgL.GbParam,&Visco,1);
   PgL.GbSetFunc[SetGRNGPointerLV](
       PgL.GbParam,reinterpret_cast<double*>(&grng),1);
-  cout<<"========================"<<endl;
   for(uint i=0;i<PS.size();++i)
     PgL.UnitMove[i].SetFunc[SetHydrodynamicRadiusPLV](
         PgL.UnitMove[i].runParam,&hRadius,1);
-  cout<<"========================"<<endl;
   PgL.SyncAll(PS);
   PgL.OutFunc=OutputFunc;
-  //PgL.Run(PS,HPList,IDLS,DEval2,FS,cout);
+  DEval2.Update();
+  Energy=0;
+  PS[0].Gradient=0.;
+  PS[1].Gradient=0.;
+  EG_ListSet(PS,HPList,IDLS,DEval2,FS,Energy);
+  for(uint i=0;i<PS.size();++i) {
+    cout<<i<<"\t";
+    cout<<PgL.UnitMove[i].runParam[BasicPLV][RandomVelocitySizePLV]<<endl;
+  }
+  PgL.Run(PS,HPList,IDLS,DEval2,FS,cout);
 
   return 1;
 }

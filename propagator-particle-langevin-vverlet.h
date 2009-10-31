@@ -24,7 +24,7 @@ namespace std {
     (*pgrng).FillArray(mnPrm[RandomVelocityPLV]);
     nProp.Velocity.shift(mnPrm[BasicPLV][RandomVelocitySizePLV],
                          mnPrm[RandomVelocityPLV]);
-    nProp.Coordinate.shift(cgbPrm[BasicCommon][HalfDeltaTime],nProp.Velocity);
+    nProp.Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],nProp.Velocity);
   }
 
   void PLV_Move_AfterG(Property& nProp, ParamPackType& mnPrm,
@@ -49,7 +49,7 @@ namespace std {
 
   void PLV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
                        const ParamPackType& cgbPrm, ParamPackType& mnPrm) {
-    mnPrm[BasicPLV][HfDeltaTIvMPBV]=cgbPrm[BasicCommon][HalfDeltaTime]*
+    mnPrm[BasicPLV][HfDeltaTIvMPLV]=cgbPrm[BasicCommon][HalfDeltaTime]*
                                     nProp.ivMass[0];
     mnPrm[BasicPLV][FrictionCoefPLV]=mnPrm[BasicPLV][HydrodynamicRadiusPLV]*
                                      gbPrm[BasicLV][ViscosityCoefLV];

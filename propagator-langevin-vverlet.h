@@ -67,7 +67,7 @@ namespace std {
     uint n=PropSet.size();
     PropagatorParamAllocate(Pg.UnitMove,n);
     uint mType;
-    for(uint i=0;i<mType;++i) {
+    for(uint i=0;i<n;++i) {
       mType=PropSet[i].MonomerType;
       if(mType==Particle)   SetAsPLV(Pg.UnitMove[i]);
       else if(mType>NumberTypes)  myError("Unknown Monomer Types!");
