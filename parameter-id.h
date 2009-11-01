@@ -24,7 +24,8 @@ namespace std {
     lj1012_EqRadius=0,
     lj1012_EqStrength,
     lj1012_EqRadiusSQ,
-    lj1012_SixtyEqStrength
+    lj1012_SixtyEqStrength,
+    coulomb_Strength
   };
 
 }
