@@ -4,11 +4,13 @@
 
 #include "var-vector.h"
 #include "parameter-id.h"
+#include <cmath>
 
 namespace std {
 
   void FuncFactor_quadrupalharmonic(
-      const double& d, const varVector<double>& parm, double& funcfac) {
+      const double& dsq, const varVector<double>& parm, double& funcfac) {
+    double d=sqrt(dsq);
     double Dd=d-parm[quadharm_EqLength];
     double sqDd=Dd*Dd;
     funcfac=sqDd*(parm[quadharm_EqQuadStrength]*sqDd+
@@ -16,15 +18,17 @@ namespace std {
   }
 
   void DiffFactor_quadrupalharmonic(
-      const double& d, const varVector<double>& parm, double& difffac) {
+      const double& dsq, const varVector<double>& parm, double& difffac) {
+    double d=sqrt(dsq);
     double Dd=d-parm[quadharm_EqLength];
     difffac=Dd*(parm[quadharm_FourEqQuadStrength]*Dd*Dd+
                 parm[quadharm_DualEqHarmStrength])/d;
   }
 
   void BothFactor_quadrupalharmonic(
-      const double& d, const varVector<double>& parm,
+      const double& dsq, const varVector<double>& parm,
       double& funcfac, double& difffac) {
+    double d=sqrt(dsq);
     double Dd=d-parm[quadharm_EqLength];
     double sqDd=Dd*Dd;
     funcfac=sqDd*(parm[quadharm_EqQuadStrength]*sqDd+
