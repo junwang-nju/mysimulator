@@ -33,15 +33,19 @@ namespace std {
 
       T* tail_ptr;
 
+      uint ref_state;
+
     public:
 
-      varVector() : Data(NULL), nData(0), head_ptr(NULL), tail_ptr(NULL) {}
+      varVector()
+        : Data(NULL), nData(0), head_ptr(NULL), tail_ptr(NULL), ref_state(0) {}
 
       varVector(const uint& n) : nData(n) {
         assert(nData>0);
         Data=new T[nData];
         head_ptr=Data;
         tail_ptr=Data+nData;
+        ref_state=0;
       }
 
       varVector(const Type& v) { myError("vector copier is prohibited!"); }
@@ -49,15 +53,16 @@ namespace std {
       ~varVector() {  clear();  }
 
       void clear() {
-        safe_delete(Data);
+        if(ref_state==0)  safe_delete(Data);
+        else              Data=NULL;
         nData=0;
         head_ptr=NULL;
         tail_ptr=NULL;
       }
 
       Type& allocate(const uint& n) {
-        if(nData==n)  return *this;
-        if(Data!=NULL) clear();
+        if((ref_state==0)&&(nData==n))  return *this;
+        clear();
         nData=n;
         Data=new T[nData];
         head_ptr=Data;
@@ -96,6 +101,10 @@ namespace std {
       const T* end() const { return tail_ptr; }
 
       const uint& size() const { return nData; }
+
+      const uint& state() const { return ref_state; }
+
+      void set_state(const uint& state) { ref_state=state; }
 
       T& operator[](const uint i) {
         assert(i<nData);
@@ -311,10 +320,11 @@ namespace std {
       Type& swap(Type& v) {
         T* tptr;
         uint tmn;
-        tptr=Data;        Data=v.Data;          v.Data=tptr;
-        tmn=nData;        nData=v.nData;        v.nData=tmn;
-        tptr=head_ptr;    head_ptr=v.head_ptr;  v.head_ptr=tptr;
-        tptr=tail_ptr;    tail_ptr=v.tail_ptr;  v.tail_ptr=tptr;
+        tptr=Data;        Data=v.Data;            v.Data=tptr;
+        tmn=nData;        nData=v.nData;          v.nData=tmn;
+        tptr=head_ptr;    head_ptr=v.head_ptr;    v.head_ptr=tptr;
+        tptr=tail_ptr;    tail_ptr=v.tail_ptr;    v.tail_ptr=tptr;
+        tmn=ref_state;    ref_state=v.ref_state;  v.ref_state=tmn;
         return *this;
       }
 
