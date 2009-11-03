@@ -22,7 +22,7 @@ namespace std {
   void BothFactor_coulomb(const double& dsq, const varVector<double>& parm,
                           double& funcfac, double& difffac) {
     double d=sqrt(dsq);
-    funcfac=parameter[coulomb_Strength]/d;
+    funcfac=parm[coulomb_Strength]/d;
     difffac=-funcfac/dsq;
   }
 

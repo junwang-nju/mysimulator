@@ -14,7 +14,7 @@ namespace std {
 
   void DiffFactor_coulomb_wde(const double& dsq, const varVector<double>& parm,
                               double& difffac) {
-    difffac=-param[coulombwde_DualStrength]/(dsq*dsq);
+    difffac=-parm[coulombwde_DualStrength]/(dsq*dsq);
   }
 
   void BothFactor_coulomb_wde(const double& dsq, const varVector<double>& parm,

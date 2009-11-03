@@ -25,6 +25,8 @@
 #include "propagator-particle-langevin-vverlet.h"
 #include "propagator-langevin-vverlet.h"
 #include "random-generator.h"
+#include "interaction-parpar-coulomb.h"
+#include "interaction-parpar-coulomb-wde.h"
 #include <iostream>
 using namespace std;
 
