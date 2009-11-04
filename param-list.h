@@ -60,6 +60,23 @@ namespace std {
 
       ParamList() : KeyList(), ValueList(), HashTree() {}
 
+      ParamList& operator=(const ParamList& PList) {
+        KeyList=PList.KeyList;
+        ValueList=PList.ValueList;
+        HashTree=PList.HashTree;
+        return *this;
+      }
+
+      ParamList& allocate(const uint& N) {
+        KeyList.allocate(N);
+        ValueList.allocate(N);
+        return *this;
+      }
+
+      ParamList& Duplicate(const ParamList& PList) {
+        return allocate(PList.KeyList.size()).operator=(PList);
+      }
+
       void UpdateHashTree() {
         assert(KeyList.size()==ValueList.size());
         uint n=KeyList.size();
@@ -81,8 +98,7 @@ namespace std {
   istream& operator>>(istream& is, ParamList& PL) {
     uint n;
     is>>n;
-    PL.KeyList.allocate(n);
-    PL.ValueList.allocate(n);
+    PL.allocate(n);
     for(uint i=0;i<n;++i)   is>>PL.KeyList[i]>>PL.ValueList[i];
     PL.UpdateHashTree();
     return is;

@@ -45,6 +45,22 @@ namespace std {
           ivMass() {
       }
 
+      Property& operator=(const Property& P) {
+        MonomerType=P.MonomerType;
+        MonomerKindID=P.MonomerKindID;
+        Info=P.Info;
+        Coordinate=P.Coordinate;
+        Velocity=P.Velocity;
+        Gradient=P.Gradient;
+        Mask=P.Mask;
+        Mass=P.Mass;
+        internalCoordinate=P.internalCoordinate;
+        internalVelocity=P.internalVelocity;
+        internalGradient=P.internalGradient;
+        ivMass=P.ivMass;
+        return *this;
+      }
+
   };
 
 }

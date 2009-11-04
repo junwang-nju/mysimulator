@@ -23,6 +23,8 @@ namespace std {
       }
 
       FreeSpace& operator=(const FreeSpace& FS) { return *this; }
+
+      FreeSpace& Duplicate(const FreeSpace& FS) { return *this; }
     
   };
 

@@ -14,6 +14,8 @@ namespace std {
 
   static double dOne=1.;
 
+  static double DRelDelta=1.1107651257113993e-16;
+
 }
 
 #endif
