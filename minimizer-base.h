@@ -97,7 +97,7 @@ namespace std {
 
       double Step;
       
-      static const uint DefaultMaxIter=20;
+      static const uint DefaultMaxIter;
       
     private:
     
@@ -195,6 +195,9 @@ namespace std {
       }
 
   };
+
+  template <typename DistEvalObj, typename GeomType>
+  const uint CoarseMinimizerKern<DistEvalObj,GeomType>::DefaultMaxIter=20;
 
 }
 
