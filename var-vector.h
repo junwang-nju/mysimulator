@@ -351,6 +351,16 @@ namespace std {
         return swap_content(v,n);
       }
 
+      Type& refer(const Type& v) {
+        if(ref_state==0)  clear();
+        Data=v.Data;
+        nData=v.nData;
+        head_ptr=v.head_ptr;
+        tail_ptr=v.tail_ptr;
+        ref_state=1;
+        return *this;
+      }
+
   };
 
   template <typename T>

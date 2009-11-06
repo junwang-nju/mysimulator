@@ -16,16 +16,44 @@ namespace std {
     } else myError("Unknown Monomer Type!");
   }
 
+  void copy_data(Property& P, const Property& iP) {
+    P.Mask=iP.Mask;
+    P.Coordinate=iP.Coordinate;
+    if(iP.MonomerType==Particle) {
+      if(iP.Velocity.data()!=NULL)  P.Velocity=iP.Velocity;
+      if(iP.Gradient.data()!=NULL)  P.Gradient=iP.Gradient;
+      if(iP.Mass.data()!=NULL)  {
+        P.Mass=iP.Mass;
+        P.ivMass=iP.ivMass;
+      }
+    } else myError("Unknown Monomer Type!");
+  }
+
   void copy_basic_structure(Property& P, const Property& iP) {
     if(iP.MonomerType==Particle)
       allocate_as_Particle(P,iP.Coordinate.size());
     else myError("Unknown Monomer Type!");
   }
 
+  void copy_basic_data(Property& P, const Property& iP) {
+    P.Mask=iP.Mask;
+    P.Coordinate=iP.Coordinate;
+    if(iP.MonomerType==Particle) {
+    } else myError("Unknown Monomer Type!");
+  }
+
   void copy_minimize_structure(Property& P, const Property& iP) {
     if(iP.MonomerType==Particle)
       allocate_as_Particle(P,iP.Coordinate.size(),Particle_GradientEnable);
     else myError("Unknown Monomer Type!");
+  }
+
+  void copy_minimize_data(Property& P, const Property& iP) {
+    P.Mask=iP.Mask;
+    P.Coordinate=iP.Coordinate;
+    if(iP.MonomerType==Particle) {
+      P.Gradient=iP.Gradient;
+    } else myError("Unknown Monomer Type!");
   }
 
 }
