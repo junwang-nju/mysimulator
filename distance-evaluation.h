@@ -202,12 +202,6 @@ namespace std {
         myError("copier for storage-base DistanceEval is disabled!");
       }
 
-      Type& operator=(const Type& DEwS) {
-        assert(DistSQPack.DLevel.size()==DEwS.DistSQPack.DLevel.size());
-        DistSQPack=DEwS.DistSQPack;
-        return *this;
-      }
-
       const double& DistanceSQ() { return nowDistSQ; }
       
       const fixVector<double,N>& DisplaceVector() { return nowDisp; }
@@ -242,11 +236,6 @@ namespace std {
 
       void allocate_storage(const uint& NS) { DistSQPack.allocate(NS); }
 
-      Type& Duplicate(const Type& DEwS) {
-        allocate_storage(DEwS.DLevel.size());
-        return operator=(DEwS);
-      }
-      
   };
 
 }

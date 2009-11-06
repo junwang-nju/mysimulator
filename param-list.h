@@ -60,21 +60,10 @@ namespace std {
 
       ParamList() : KeyList(), ValueList(), HashTree() {}
 
-      ParamList& operator=(const ParamList& PList) {
-        KeyList=PList.KeyList;
-        ValueList=PList.ValueList;
-        HashTree=PList.HashTree;
-        return *this;
-      }
-
       ParamList& allocate(const uint& N) {
         KeyList.allocate(N);
         ValueList.allocate(N);
         return *this;
-      }
-
-      ParamList& Duplicate(const ParamList& PList) {
-        return allocate(PList.KeyList.size()).operator=(PList);
       }
 
       void UpdateHashTree() {

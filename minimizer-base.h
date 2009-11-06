@@ -4,26 +4,31 @@
 
 #include "var-vector.h"
 #include "property.h"
+#include "property-op.h"
 #include "param-list.h"
 #include <cmath>
 
 namespace std {
 
-  double MinimalStep4(const varVector<Property>& PropSet) {
-    uint nprop=PropSet.size();
-    uint dim=PropSet[0].Coordinate.size();
-    double MinStep=0, tmd;
+  double MinimalStep4(const varVector<Property>& PropSet,
+                      const varVector<varVector<double> >& Dirc) {
+    uint n=PropSet.size(),dn;
+    long ndeg=0;
     Property const *nowP;
-    for(uint i=0;i<nprop;++i) {
+    double MinStep=0, tmd, tmdc;
+    for(uint i=0;i<n;++i) {
       nowP=&PropSet[i];
-      for(uint j=0;j<dim;++j) {
-        if(fabs(nowP->Mask[j])<1e-16)  continue;
+      dn=Dirc[i].size();
+      for(uint j=0;j<dn;++j) {
+        if((nowP->Mask[j]<1e-16)&&(nowP->Mask[j]>-1e-16)) continue;
         tmd=fabs(nowP->Coordinate[j]);
-        tmd=(tmd<1.0?nowP->Velocity[j]:nowP->Velocity[i]/tmd);
+        tmdc=Dirc[i][j];
+        tmd=(tmd<1.0?tmdc:tmdc/tmd);
         MinStep+=tmd*tmd;
       }
+      ndeg+=dn;
     }
-    return DRelDelta*sqrt(dim*nprop/MinStep); 
+    return DRelDelta*sqrt(static_cast<double>(ndeg)/MinStep); 
   }
 
   template <typename DistEvalObj, typename GeomType>
@@ -37,11 +42,11 @@ namespace std {
       
       double              MinY;
       
-      ParamList           runParam;
+      ParamList           *runParamPtr;
       
-      DistEvalObj         runDEval;
+      DistEvalObj         *runDEvalPtr;
       
-      GeomType            runGeo;
+      GeomType            *runGeoPtr;
       
       double              MinPrj;
       
@@ -52,24 +57,25 @@ namespace std {
       double              MinScale;
       
       MinimizerKern()
-        : runSys(), MinSys(), MinY(0.), runParam(), runDEval(),
-          runGeo(), MinPrj(0.), MinMove(0.), MinGCount(0), MinScale(0.1) {
+        : runSys(), MinSys(), MinY(0.), runParamPtr(NULL), runDEvalPtr(NULL),
+          runGeoPtr(NULL), MinPrj(0.), MinMove(0.), MinGCount(0),
+          MinScale(0.1) {
       } 
 
-      void Import(const varVector<Property>& vProp){ runSys.Duplicate(vProp); }
-      
-      void Import(const ParamList& PList) { runParam.Duplicate(PList); }
-      
-      void Import(const GeomType& Geo) { runGeo.Duplicate(Geo); }
-      
       void Import(const varVector<Property>& vProp, const DistEvalObj& DEval,
                   const ParamList& PList, const GeomType& Geo,
                   const double& E) {
-        Import(vProp);
-        runDEval.Duplicate(DEval);
-        Import(PList);
-        Import(Geo);
-        MinSys.Duplicate(vProp);
+        uint n=vProp.size();
+        for(uint i=0;i<n;++i) {
+          copy_structure(runSys[i],vProp[i]);
+          copy_structure(MinSys[i],vProp[i]);
+          runSys[i].Mask=vProp[i].Mask;
+          MinSys[i].Coordinate=vProp[i].Coordinate;
+          MinSys[i].Gradient=
+        }
+        runDEvalPtr=const_cast<DistEvalObj*>(&DEval);
+        runParamPtr=const_cast<ParamList*>(&PList);
+        runGeoPtr=const_cast<GeomType*>(&Geo);
         MinY=E;
       }
 
@@ -90,7 +96,8 @@ namespace std {
       
     private:
     
-      void Update(const double& runStep,)
+      void Update(const double& runStep) {
+      }
 
   };
 
