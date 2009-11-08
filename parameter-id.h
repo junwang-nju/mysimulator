@@ -27,7 +27,12 @@ namespace std {
     lj1012_SixtyEqStrength,
     coulomb_Strength,
     coulombwde_Strength,
-    coulombwde_DualStrength
+    coulombwde_DualStrength,
+    quadharm_EqLength=0,
+    quadharm_EqQuadStrength,
+    quadharm_EqHarmStrength,
+    quadharm_FourEqQuadStrength,
+    quadharm_DualEqHarmStrength
   };
 
 }

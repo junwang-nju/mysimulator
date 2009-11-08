@@ -27,6 +27,7 @@
 #include "random-generator.h"
 #include "interaction-parpar-coulomb.h"
 #include "interaction-parpar-coulomb-wde.h"
+#include "interaction-parpar-quad-harm.h"
 #include "minimizer.h"
 #include "property-op.h"
 #include <iostream>
