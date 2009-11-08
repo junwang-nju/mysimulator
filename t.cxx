@@ -420,6 +420,14 @@ int main() {
   cout<<SDM.MinE<<endl;
   cout<<SDM.MinGCount<<endl;
 
+  ConjGradientMin<DistanceEvalwStorage<3>,FreeSpace>  CGM;
+  CGM.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
+  CGM.Go();
+  cout<<CGM.MinSys[0].Coordinate<<endl;
+  cout<<CGM.MinSys[1].Coordinate<<endl;
+  cout<<CGM.MinE<<endl;
+  cout<<CGM.MinGCount<<endl;
+
   return 1;
 }
 
