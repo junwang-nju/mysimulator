@@ -4,5 +4,6 @@
 
 #include "minimizer-steep.h"
 #include "minimizer-conjg.h"
+#include "minimizer-lbfgs.h"
 
 #endif
