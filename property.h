@@ -26,7 +26,9 @@ namespace std {
 
       varVector<double> Gradient;
 
-      varVector<double> Mask;
+      varVector<uint> Mask;
+
+      varVector<double> dMask;
 
       varVector<double> Mass;
 
@@ -40,10 +42,18 @@ namespace std {
 
       Property()
         : MonomerType(UnknownType), MonomerKindID(UnknownKind), Index(-1),
-          Info(), Coordinate(), Velocity(), Gradient(), Mask(), Mass(),
-          internalCoordinate(), internalVelocity(), internalGradient(),
+          Info(), Coordinate(), Velocity(), Gradient(), Mask(), dMask(), 
+          Mass(), internalCoordinate(), internalVelocity(), internalGradient(),
           ivMass() {
       }
+
+      void Activate() { Mask=1U; dMask=1.; }
+
+      void Activate(const uint& idx) { Mask[idx]=1U; dMask[idx]=1.; }
+
+      void DeAvtivate() { Mask=0U; dMask=0.; }
+
+      void DeActivate(const uint& idx) { Mask[idx]=0U; dMask[idx]=0.; }
 
   };
 

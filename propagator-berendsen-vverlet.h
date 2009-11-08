@@ -51,7 +51,7 @@ namespace std {
                       ParamPackType& cgbPrm) {
     double dof=0.;
     uint n=PropSet.size();
-    for(uint i=0;i<n;++i) dof+=sumABS(PropSet[i].Mask);
+    for(uint i=0;i<n;++i) dof+=sumABS(PropSet[i].dMask);
     gbPrm[BasicBV][DegreeFreedomBV]=dof;
     gbPrm[BasicBV][DeltaTIvRelaxTBV]=cgbPrm[BasicCommon][DeltaTime]/
                                      gbPrm[BasicBV][RelaxTimeBV];

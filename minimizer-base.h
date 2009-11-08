@@ -18,7 +18,7 @@ namespace std {
       nowP=&PropSet[i];
       dn=Dirc[i].size();
       for(uint j=0;j<dn;++j) {
-        if((nowP->Mask[j]<1e-16)&&(nowP->Mask[j]>-1e-16)) continue;
+        if(nowP->Mask[j]==0) continue;
         tmd=fabs(nowP->Coordinate[j]);
         tmdc=Dirc[i][j];
         tmd=(tmd<1.0?tmdc:tmdc/tmd);
@@ -73,7 +73,7 @@ namespace std {
         for(uint i=0;i<n;++i) {
           copy_minimize_structure(runSys[i],vProp[i]);
           copy_minimize_structure(MinSys[i],vProp[i]);
-          copy_basic_data(runSys[i],vProp[i]);
+          copy_minimize_data(runSys[i],vProp[i]);
           copy_minimize_data(MinSys[i],vProp[i]);
         }
         runDEvalPtr=const_cast<DistEvalObj*>(&DEval);
@@ -143,6 +143,9 @@ namespace std {
           copy_minimize_structure(UppSys[i],vProp[i]);
           copy_minimize_structure(LowSys[i],vProp[i]);
           copy_minimize_structure(MidSys[i],vProp[i]);
+          copy_minimize_data(UppSys[i],vProp[i]);
+          copy_minimize_data(LowSys[i],vProp[i]);
+          copy_minimize_data(MidSys[i],vProp[i]);
         }
       }
 

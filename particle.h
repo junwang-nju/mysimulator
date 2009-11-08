@@ -22,6 +22,7 @@ namespace std {
     Prop.Info[0]=Dimen;
     Prop.Coordinate.allocate(Dimen);
     Prop.Mask.allocate(Dimen);
+    Prop.dMask.allocate(Dimen);
     if(Flag&Particle_VelocityEnable)   Prop.Velocity.allocate(Dimen);
     if(Flag&Particle_GradientEnable)   Prop.Gradient.allocate(Dimen);
     if(Flag&Particle_MassEnable) {

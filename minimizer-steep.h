@@ -7,7 +7,7 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType,
-            template <typename,typename> class MinKern>
+            template <typename,typename> class MinKern=CoarseMinimizerKern>
   class SteepestDescentMin : public MinKern<DistEvalObj,GeomType> {
 
     public:
@@ -62,7 +62,7 @@ namespace std {
           tmd=0.;
           for(uint i=0;i<n;++i) {
             Dirc[i]=this->MinSys[i].Gradient;
-            Dirc[i].scale(-1);
+            Dirc[i].scale(-1.);
             tmd+=normSQ(Dirc[i]);
           }
           this->MinPrj=-tmd;

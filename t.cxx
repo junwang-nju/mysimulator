@@ -322,6 +322,104 @@ int main() {
   }
   PgL.Run(PS,HPList,IDLS,DEval2,FS,cout);
 
+  varVector<Property> PSM(2);
+  for(uint i=0;i<2U;++i)
+    allocate_as_Particle(PSM[i],3,Particle_GradientEnable);
+  PSM[0].Coordinate=0.;
+  PSM[1].Coordinate=0.;   PSM[1].Coordinate[0]=1.;
+  for(uint i=0;i<2U;++i)  PSM[i].Activate();
+  PSM[0].Index=0;
+  PSM[1].Index=1;
+  PSM[0].MonomerKindID=0;
+  PSM[1].MonomerKindID=1;
+
+  varVector<varVector<double> > Drc(2);
+  for(uint i=0;i<2U;++i)  Drc[i].allocate(3);
+  Drc[0]=0.;
+  Drc[1]=0.;
+  Drc[0][0]=-1.;
+  Drc[1][1]=1.;
+
+  cout<<MinimalStep4(PSM,Drc)<<endl;
+
+  ParamList MPList;
+  MPList.KeyList.allocate(4);
+  for(uint i=0;i<4U;++i)    MPList.KeyList[i].Index.allocate(2);
+  MPList.KeyList[0].Index[0]=0;     MPList.KeyList[0].Index[1]=0;
+  MPList.KeyList[1].Index[0]=0;     MPList.KeyList[1].Index[1]=1;
+  MPList.KeyList[2].Index[0]=1;     MPList.KeyList[2].Index[1]=0;
+  MPList.KeyList[3].Index[0]=1;     MPList.KeyList[3].Index[1]=1;
+  for(uint i=0;i<4U;++i)    MPList.KeyList[i].BuildHash();
+  MPList.ValueList.allocate(4);
+  for(uint i=0;i<4U;++i)    MPList.ValueList[i].allocate(3);
+  MPList.ValueList[0][0]=1.;  MPList.ValueList[0][1]=100.;
+  MPList.ValueList[1][0]=2.;  MPList.ValueList[1][1]=1000.;
+  MPList.ValueList[2][0]=2.;  MPList.ValueList[2][1]=1000.;
+  MPList.ValueList[3][0]=3.;  MPList.ValueList[3][1]=10.;
+  for(uint i=0;i<4U;++i)    MPList.ValueList[i][2]=2*MPList.ValueList[i][1];
+  MPList.UpdateHashTree();
+
+  varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> > MIDLS(1);
+  MIDLS[0].allocate(1,2);
+  MIDLS[0].List[0][0]=0;
+  MIDLS[0].List[0][0]=1;
+  MIDLS[0].efunc=E_ParPar_Harmonic;
+  MIDLS[0].gfunc=G_ParPar_Harmonic;
+  MIDLS[0].bfunc=EG_ParPar_Harmonic;
+
+  Energy=0.;
+  for(uint i=0;i<2U;++i)  PSM[i].Gradient=0.;
+  DEval2.Update();
+  EG_ListSet(PSM,MPList,MIDLS,DEval2,FS,Energy);
+  cout<<PSM[0].Gradient<<endl;
+  cout<<Energy<<endl;
+
+  MinimizerKern<DistanceEvalwStorage<3>,FreeSpace>  tMK;
+
+  tMK.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
+
+  cout<<tMK.runSys.size()<<endl;
+  cout<<tMK.runSys[0].Coordinate.size()<<endl;
+  cout<<tMK.runSys[1].Gradient.size()<<endl;
+  cout<<tMK.MinSys.size()<<endl;
+  cout<<tMK.MinSys[0].Coordinate.size()<<endl;
+  cout<<tMK.MinSys[1].Gradient.size()<<endl;
+  cout<<tMK.MinE<<endl;
+  cout<<tMK.runParamPtr<<endl;
+  cout<<tMK.runGeoPtr<<endl;
+  cout<<tMK.runDEvalPtr<<endl;
+  cout<<tMK.runIDLSPtr<<endl;
+
+  CoarseMinimizerKern<DistanceEvalwStorage<3>,FreeSpace>  CMK;
+
+  cout<<CMK.DefaultMaxIter<<endl;
+
+  CMK.SetStep(0.01);
+  cout<<CMK.Step<<endl;
+
+  CMK.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
+
+  /*
+  CMK.Update(0.01,PSM,Drc,CMK.MinSys,CMK.MinE,CMK.MinPrj);
+  cout<<CMK.MinSys[0].Coordinate<<endl;
+  cout<<CMK.MinSys[1].Coordinate<<endl;
+  cout<<CMK.MinE<<endl;
+  cout<<CMK.MinPrj<<endl;
+  */
+
+  CMK.MinimizeAlongLine(Drc);
+  cout<<CMK.MinSys[0].Coordinate<<endl;
+  cout<<CMK.MinSys[1].Coordinate<<endl;
+  cout<<CMK.MinE<<endl;
+
+  SteepestDescentMin<DistanceEvalwStorage<3>,FreeSpace> SDM;
+  SDM.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
+  SDM.Go();
+  cout<<SDM.MinSys[0].Coordinate<<endl;
+  cout<<SDM.MinSys[1].Coordinate<<endl;
+  cout<<SDM.MinE<<endl;
+  cout<<SDM.MinGCount<<endl;
+
   return 1;
 }
 
