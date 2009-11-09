@@ -32,11 +32,11 @@ namespace std {
 
       varVector<double> Mass;
 
-      varVector<double> internalCoordinate;
+      varVector<varVector<double> > internalCoordinate;
 
-      varVector<double> internalVelocity;
+      varVector<varVector<double> > internalVelocity;
 
-      varVector<double> internalGradient;
+      varVector<varVector<double> > internalGradient;
 
       varVector<double> ivMass;
 

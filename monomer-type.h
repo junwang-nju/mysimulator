@@ -10,6 +10,8 @@ namespace std {
 
     Particle,
 
+    SphericShell,
+
     TTableTerminus,
 
     NumberTypes=TTableTerminus-1
