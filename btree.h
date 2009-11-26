@@ -24,8 +24,16 @@ namespace std {
           parent(const_cast<Type*>(p)), left(const_cast<Type*>(l)),
           right(const_cast<Type*>(r)) {
       }
+      ~btree_node() {
+        key=NULL;     value=NULL;
+        parent=NULL;  left=NULL;    right=NULL;
+      }
       btree_node(Type& node) {
         myError("copier is disable for nodes of btree");
+      }
+      Type& operator=(const Type& bnode) {
+        myError("assignment is disable for nodes of btree");
+        return *this;
       }
   };
 
@@ -52,6 +60,13 @@ namespace std {
         }
         root.left=NULL;
         root.right=NULL;
+      }
+      btree(const Type& bt) {
+        myError("assignment is disable for btree");
+      }
+      Type& operator=(const Type& bt) {
+        myError("assignment is disable for btree");
+        return *this;
       }
       bool insert(const KeyType& K, const ValueType& V) {
         if(root.key==NULL) {
