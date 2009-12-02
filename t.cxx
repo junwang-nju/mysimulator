@@ -30,6 +30,8 @@
 #include "interaction-parpar-quad-harm.h"
 #include "minimizer.h"
 #include "property-op.h"
+
+#include "vector-base.h"
 #include <iostream>
 using namespace std;
 
