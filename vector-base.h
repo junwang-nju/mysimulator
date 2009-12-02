@@ -220,6 +220,8 @@ namespace std {
         return *(Data+i);
       }
 
+      const char* type() = 0;
+
   };
 
   template <typename T>
