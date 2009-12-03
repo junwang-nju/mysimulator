@@ -95,6 +95,8 @@ namespace std {
         return *this;
       }
 
+      bool isAvailable() const { return this->Data!=NULL; }
+
   };
 
   template <typename T>

@@ -8,7 +8,7 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_List(const varVector<Property>& PropSet,
+  void E_List(const VectorBase<Property>& PropSet,
               const ParamList& PList,
               IDList<DistEvalObj,GeomType>& IDL,
               DistEvalObj& DEval, const GeomType& Geo,
@@ -23,7 +23,7 @@ namespace std {
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_List(varVector<Property>& PropSet,
+  void G_List(VectorBase<Property>& PropSet,
               const ParamList& PList,
               IDList<DistEvalObj,GeomType>& IDL,
               DistEvalObj& DEval, const GeomType& Geo) {
@@ -36,7 +36,7 @@ namespace std {
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_List(varVector<Property>& PropSet,
+  void EG_List(VectorBase<Property>& PropSet,
                const ParamList& PList,
                IDList<DistEvalObj,GeomType>& IDL,
                DistEvalObj& DEval, const GeomType& Geo,

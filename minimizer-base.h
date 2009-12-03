@@ -4,6 +4,7 @@
 
 #include "property-op.h"
 #include "interaction-4listset.h"
+#include "ref-vector.h"
 #include <cmath>
 
 namespace std {
@@ -34,7 +35,7 @@ namespace std {
 
     public:
 
-      varVector<Property> runSys;
+      refVector<Property> runSys;
 
       varVector<Property> MinSys;      
       
@@ -68,12 +69,9 @@ namespace std {
                   const varVector<IDList<DistEvalObj,GeomType> >& IDLS,
                   const GeomType& Geo, const double& E) {
         uint n=vProp.size();
-        runSys.allocate(n);
         MinSys.allocate(n);
         for(uint i=0;i<n;++i) {
-          copy_minimize_structure(runSys[i],vProp[i]);
           copy_minimize_structure(MinSys[i],vProp[i]);
-          copy_minimize_data(runSys[i],vProp[i]);
           copy_minimize_data(MinSys[i],vProp[i]);
         }
         runDEvalPtr=const_cast<DistEvalObj*>(&DEval);

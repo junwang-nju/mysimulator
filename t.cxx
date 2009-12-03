@@ -32,6 +32,7 @@
 #include "property-op.h"
 
 #include "vector-base.h"
+#include "ref-vector.h"
 #include <iostream>
 using namespace std;
 
@@ -381,9 +382,6 @@ int main() {
 
   tMK.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
 
-  cout<<tMK.runSys.size()<<endl;
-  cout<<tMK.runSys[0].Coordinate.size()<<endl;
-  cout<<tMK.runSys[1].Gradient.size()<<endl;
   cout<<tMK.MinSys.size()<<endl;
   cout<<tMK.MinSys[0].Coordinate.size()<<endl;
   cout<<tMK.MinSys[1].Gradient.size()<<endl;
