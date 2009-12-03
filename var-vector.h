@@ -3,12 +3,10 @@
 #define _Variable_Vector_H_
 
 #include "memory.h"
+#include "refer-table.h"
 #include "vector-base.h"
 
 namespace std {
-
-  template <typename T, uint NT>
-  class fixVector;
 
   template <typename T>
   class varVector : public VectorBase<T> {
@@ -21,28 +19,31 @@ namespace std {
 
       typedef VectorBase<T>   ParentType;
 
-      uint ref_state;
+      ReferTable<T> rTable;
 
-      varVector() : ParentType(), ref_state(0) {}
+      varVector() : ParentType(), rTable() {}
 
-      varVector(const uint& n) : ParentType() { allocate(n); }
+      varVector(const uint& n) : ParentType(), rTable() { allocate(n); }
 
       varVector(const Type& v) { myError("vector copier is prohibited!"); }
 
-      ~varVector() {  clear();  }
+      ~varVector() {  clear(); }
 
       void clear() {
-        if(ref_state==0)  safe_delete(this->Data);
+        if(!this->isAvailable())  return;
+        rTable.clear();
+        safe_delete(this->Data);
         static_cast<ParentType*>(this)->clear();
       }
 
       Type& allocate(const uint& n) {
-        if((ref_state==0)&&(this->nData==n))  return *this;
-        clear();
-        this->nData=n;
-        this->Data=new T[this->nData];
-        this->set_HeadTail();
-        ref_state=0;
+        rTable.clear();
+        if(this->nData!=n) {
+          safe_delete(this->Data);
+          this->nData=n;
+          this->Data=new T[this->nData];
+          this->set_HeadTail();
+        }
         return *this;
       }
 
@@ -68,10 +69,6 @@ namespace std {
       template <typename inputT>
       Type& operator+=(const inputT& v) { this->shift(v); return *this; }
 
-      const uint& state() const { return ref_state; }
-
-      void set_state(const uint& state) { ref_state=state; }
-
       virtual const char* type() { return "Variable Vector"; }
 
       Type& swap(Type& v) {
@@ -79,23 +76,12 @@ namespace std {
         uint tmn;
         tptr=this->Data;        this->Data=v.Data;            v.Data=tptr;
         tmn=this->nData;        this->nData=v.nData;          v.nData=tmn;
-        tptr=this->head_ptr;    this->head_ptr=v.head_ptr;    v.head_ptr=tptr;
-        tptr=this->tail_ptr;    this->tail_ptr=v.tail_ptr;    v.tail_ptr=tptr;
-        tmn=ref_state;    ref_state=v.ref_state;  v.ref_state=tmn;
+        this->set_HeadTail();
+        v.set_HeadTail();
+        rTable.clear();
+        v.rTable.clear();
         return *this;
       }
-
-      Type& refer(const Type& v) {
-        if(ref_state==0)  clear();
-        this->Data=v.Data;
-        this->nData=v.nData;
-        this->head_ptr=v.head_ptr;
-        this->tail_ptr=v.tail_ptr;
-        ref_state=1;
-        return *this;
-      }
-
-      bool isAvailable() const { return this->Data!=NULL; }
 
   };
 

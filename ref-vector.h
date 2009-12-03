@@ -3,6 +3,7 @@
 #define _Reference_Vector_H_
 
 #include "vector-base.h"
+#include "refer-table.h"
 
 namespace std {
 
@@ -17,9 +18,21 @@ namespace std {
 
       typedef VectorBase<T> ParentType;
 
-      refVector() : ParentType() {}
+      ReferTable<T>* pTable;
+
+      int inTable;
+
+      refVector() : ParentType(), pTable(NULL), inTable(-1) {}
 
       refVector(const Type&) { myError("vector copier is prohibited!"); }
+
+      ~refVector() { clear(); }
+
+      void clear() {
+        static_cast<ParentType*>(this)->clear();
+        pTable=NULL;
+        inTable=-1;
+      }
 
       Type& operator=(const Type& v) { this->assign(v); return *this; }
 
@@ -37,13 +50,23 @@ namespace std {
       template <typename vType>
       Type& refer(const vType& v) {
         assert(vType::IsVector);
+        assert(v.rTable.count()<ReferTable<T>::MaxRefInstance);
+        if(this->isAvailable()) {
+          if(inTable!=static_cast<int>(pTable->count())-1)
+            pTable->refinst[inTable]=pTable->refinst[pTable->count()-1];
+          pTable->dec();
+          pTable=NULL;
+          inTable=-1;
+        }
         this->Data=const_cast<T*>(v.data());
         this->nData=v.size();
         this->set_HeadTail();
+        pTable=const_cast<ReferTable<T>*>(&(v.rTable));
+        pTable->refinst[pTable->count()]=this;
+        inTable=pTable->count();
+        pTable->inc();
         return *this;
       }
-
-      bool isAvailable() const { return this->Data==NULL; }
 
       Type& swap(Type& v) {
         T* tptr;
@@ -52,6 +75,9 @@ namespace std {
         m=this->nData;    this->nData=v.nData;  v.nData=m;
         this->set_HeadTail();
         v.set_HeadTail();
+        ReferTable<T>* rptr;
+        rptr=pTable;      pTable=v.pTable;      v.pTable=rptr;
+        m=inTable;        inTable=v.inTable;    v.inTable=m;
         return *this;
       }
 

@@ -3,6 +3,7 @@
 #define _Fixed_Vector_H_
 
 #include "vector-base.h"
+#include "refer-table.h"
 
 namespace std {
 
@@ -21,7 +22,9 @@ namespace std {
 
       typedef VectorBase<T>       ParentType;
 
-      fixVector() : ParentType() {
+      ReferTable<T> rTable;
+
+      fixVector() : ParentType(), rTable() {
         this->Data=runData;
         this->nData=ND;
         this->set_HeadTail();
@@ -29,7 +32,7 @@ namespace std {
 
       fixVector(const Type& v) { myError("vector copier is prohibited!"); }
 
-      ~fixVector() {}
+      ~fixVector() { rTable.clear(); }
 
       template <typename vType>
       Type& Duplicate(const vType& v) {

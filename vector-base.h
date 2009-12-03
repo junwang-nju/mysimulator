@@ -258,6 +258,8 @@ namespace std {
         return exchange(v,n);
       }
 
+      bool isAvailable() const { return Data!=NULL; }
+
       virtual const char* type() = 0;
 
   };
