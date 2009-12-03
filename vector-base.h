@@ -3,6 +3,7 @@
 #define _Vector_Base_H_
 
 #include "vector-impl.cc"
+#include <tr1/tuple>
 
 namespace std {
 
@@ -31,7 +32,11 @@ namespace std {
 
       VectorBase(const Type&) { myError("vector copier is prohibited!"); }
 
-      ~VectorBase() { Data=NULL; nData=0; head_ptr=NULL; tail_ptr=NULL; }
+      ~VectorBase() { clear(); }
+
+      void clear() { Data=NULL; nData=0; head_ptr=NULL; tail_ptr=NULL; }
+
+      void set_HeadTail() { head_ptr=Data; tail_ptr=Data+nData; }
 
       Type& operator=(const Type& vb) { assign(vb); }
 
@@ -96,11 +101,15 @@ namespace std {
         return scale(v,n);
       }
 
-      Type& scale(const pair<const T&,const Type&>& sp) {
+      template <typename vType>
+      Type& scale(const pair<const T&,const vType&>& sp) {
+        assert(vType::IsVector);
         return scale(sp.first).scale(sp.second);
       }
 
+      template <typename vType>
       Type& scale(const pair<const Type&,const T&>& sp) {
+        assert(vType::IsVector);
         return scale(sp.first).scale(sp.second);
       }
 
@@ -127,16 +136,20 @@ namespace std {
         return shift(value,v,n);
       }
       
-      Type& shift(const pair<const T&,const Type&>& sp) {
+      template <typename vType>
+      Type& shift(const pair<const T&,const vType&>& sp) {
+        assert(vType::IsVector);
         return shift(sp.first,sp.second);
       }
 
-      Type& shift(const pair<const Type&,const T&>& sp) {
+      template <typename vType>
+      Type& shift(const pair<const vType&,const T&>& sp) {
+        assert(vType::IsVector);
         return shift(sp.second,sp.first);
       }
 
       Type& shift(const T& value) {
-        return (value,&dOne,nData,iZero,lZero,iZero,lZero,iZero,lOne);
+        return shift(value,&dOne,nData,iZero,lZero,iZero,lZero,iZero,lOne);
       }
 
       Type& shift(const Type& v) { return shift(dOne,v); }
@@ -145,7 +158,10 @@ namespace std {
         return scaleshift(dOne,dOne,ShiftFv,v);
       }
 
-      Type& shift(const pair<const Type&,const Type&>& sp) {
+      template <typename vTypeA, typename vTypeB>
+      Type& shift(const pair<const vTypeA&,const vTypeB&>& sp) {
+        assert(vTypeA::IsVector);
+        assert(vTypeB::IsVector);
         return shift(sp.first,sp.second);
       }
 
@@ -153,7 +169,10 @@ namespace std {
         return scaleshift(dOne,ShiftF,ShiftFv,v);
       }
 
-      Type& shift(const tr1::tuple<const T&,const Type&,const Type&>& st) {
+      template <typename vTypeA, typename vTypeB>
+      Type& shift(const tr1::tuple<const T&,const vTypeA&,const vTypeB&>& st) {
+        assert(vTypeA::IsVector);
+        assert(vTypeB::IsVector);
         return shift(tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
 
@@ -220,9 +239,33 @@ namespace std {
         return *(Data+i);
       }
 
-      const char* type() = 0;
+      Type& exchange(T* v, long nswap, int voffset=iZero, long vstep=lOne,
+                     int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(offset+step*nswap)<=nData);
+        vector_swap(Data,v,nswap,offset,voffset,step,vstep);
+        return *this;
+      }
+
+      Type& exchange(Type& v, long nswap,
+                     int voffset=iZero, long vstep=lOne,
+                     int offset=iZero, long step=lOne) {
+        assert(static_cast<uint>(voffset+vstep*nswap)<=v.nData);
+        return exchange(v.Data,nswap,voffset,vstep,offset,step);
+      }
+
+      Type& exchange(Type& v) {
+        long n=(nData<v.nData?nData:v.nData);
+        return exchange(v,n);
+      }
+
+      virtual const char* type() = 0;
 
   };
+
+  template <typename T>
+  void exchange(VectorBase<T>& va, VectorBase<T>& vb) {
+    va.exchange(vb);
+  }
 
   template <typename T>
   const uint VectorBase<T>::IsVector=1;

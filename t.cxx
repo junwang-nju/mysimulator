@@ -84,7 +84,7 @@ int main() {
   fv1.shift(1.2,fv2);
   fv1+=tr1::tuple<const double&,const fixVector<double,1000>&,
                   const fixVector<double,1000>&>(5.,fv2,fv2);
-  fv2=fv1.swap_content(fv2);
+  fv2=fv1.exchange(fv2);
 
   cout<<dot(v1,fv1)<<endl;
 
