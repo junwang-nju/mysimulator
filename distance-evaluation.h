@@ -33,10 +33,8 @@ namespace std {
         return *static_cast<ParentType*>(this);
       }
 
-      template <typename vTypeA, typename vTypeB>
-      fixVector<double,N>& operator()(const vTypeA& va, const vTypeB& vb) {
-        assert(vTypeA::IsVector);
-        assert(vTypeB::IsVector);
+      fixVector<double,N>& operator()(const VectorBase<double>& va,
+                                      const VectorBase<double>& vb) {
         assert(va.size()==vb.size());
         assert(this->size()>=va.size());
         static_cast<ParentType*>(this)->operator=(va);
@@ -48,33 +46,9 @@ namespace std {
         return operator()(pa.Coordinate,pb.Coordinate);
       }
 
-      fixVector<double,N>& operator()(const varVector<double>& va,
-                                      const varVector<double>& vb,
+      fixVector<double,N>& operator()(const VectorBase<double>& va,
+                                      const VectorBase<double>& vb,
                                       const FreeSpace& FS) {
-        return operator()(va,vb);
-      }
-
-      template <uint NN>
-      fixVector<double,N>& operator()(const fixVector<double,NN>& va,
-                                      const varVector<double>& vb,
-                                      const FreeSpace& FS) {
-        assert(NN>=N);
-        return operator()(va,vb);
-      }
-
-      template <uint NN>
-      fixVector<double,N>& operator()(const varVector<double>& va,
-                                      const fixVector<double,NN>& vb,
-                                      const FreeSpace& FS) {
-        assert(NN>=N);
-        return operator()(va,vb);
-      }
-
-      template <uint NA, uint NB>
-      fixVector<double,N>& operator()(const fixVector<double,NA>& va,
-                                      const fixVector<double,NB>& vb,
-                                      const FreeSpace& FS) {
-        assert((NA>=N)&&(NB>=N));
         return operator()(va,vb);
       }
 
@@ -112,8 +86,8 @@ namespace std {
         return *static_cast<const ParentType*>(this);
       }
 
-      template <typename vTypeA, typename vTypeB>
-      double operator()(const vTypeA& va, const vTypeB& vb) {
+      double operator()(const VectorBase<double>& va,
+                        const VectorBase<double>& vb) {
         return normSQ(Direction()(va,vb)); 
       }
 
@@ -121,8 +95,9 @@ namespace std {
         return operator()(pa.Coordinate,pb.Coordinate);
       }
 
-      template <typename vTypeA, typename vTypeB, typename GeomType>
-      double operator()(const vTypeA& va, const vTypeB& vb,
+      template <typename GeomType>
+      double operator()(const VectorBase<double>& va,
+                        const VectorBase<double>& vb,
                         const GeomType& Geo) {
         return normSQ(Direction()(va,vb,Geo));
       }

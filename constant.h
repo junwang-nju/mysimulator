@@ -14,6 +14,8 @@ namespace std {
 
   static double dOne=1.;
 
+  static uint   uZero=0U;
+
   static const double DRelDelta=1.1107651257113993e-16;
 
   static const double DSqrtRelDelta=1.0539284253265965e-8;

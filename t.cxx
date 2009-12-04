@@ -3,7 +3,7 @@
 #include "fix-vector.h"
 #include "vector-op.h"
 #include "btree.h"
-#include "hash_func.h"
+#include "hash-func.h"
 #include "param-list.h"
 #include "property.h"
 #include "particle.h"
@@ -123,6 +123,7 @@ int main() {
   const varVector<double>* vo=PL.get(PL.KeyList[2].Index);
   cout<<(*vo)[0]<<endl;
   cout<<(*vo)[1]<<endl;
+  cout<<"======================="<<endl;
 
   Property Pa,Pb;
   allocate_as_Particle(Pa,3);
@@ -140,14 +141,17 @@ int main() {
   FreeSpace FS;
   DistanceEvalwStorage<3> DEval;
   DEval.allocate_storage(3);
+  cout<<"======================="<<endl;
   
   ParamList prm;
   prm.KeyList.allocate(3);
   for(uint i=0;i<3U;++i)
-    prm.KeyList[i].Index.allocate(2);
-  prm.KeyList[0].Index[0]=0;  prm.KeyList[0].Index[1]=0;
-  prm.KeyList[1].Index[0]=0;  prm.KeyList[1].Index[1]=1;
-  prm.KeyList[2].Index[0]=1;  prm.KeyList[2].Index[1]=1;
+    prm.KeyList[i].Index.allocate(3);
+  for(uint i=0;i<3U;++i)
+    prm.KeyList[i].Index[0]=ParticleParticle_LJ612;
+  prm.KeyList[0].Index[1]=0;  prm.KeyList[0].Index[2]=0;
+  prm.KeyList[1].Index[1]=0;  prm.KeyList[1].Index[2]=1;
+  prm.KeyList[2].Index[1]=1;  prm.KeyList[2].Index[2]=1;
   for(uint i=0;i<3U;++i)
     prm.KeyList[i].BuildHash();
   prm.ValueList.allocate(3);
@@ -188,10 +192,10 @@ int main() {
   PropSet[2].Coordinate[2]=3;
   PropSet[2].Index=2;
   IDList<DistanceEvalwStorage<3>,FreeSpace> idl;
+  idl.set_interaction(ParticleParticle_LJ612);
   idl.allocate(1,2);
   idl.List[0][0]=0;
   idl.List[0][1]=2;
-  idl.efunc=E_ParPar_LJ612;
   E_List(PropSet,prm,idl,DEval,FS,Energy);
   cout<<Energy<<endl;
 
@@ -212,21 +216,20 @@ int main() {
   PS[1].ivMass=1.;
 
   varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> > IDLS(1);
+  IDLS[0].set_interaction(ParticleParticle_Harmonic);
   IDLS[0].allocate(1,2);
   IDLS[0].List[0][0]=0;
   IDLS[0].List[0][0]=1;
   Energy=0.;
-  IDLS[0].efunc=E_ParPar_Harmonic;
-  IDLS[0].gfunc=G_ParPar_Harmonic;
-  IDLS[0].bfunc=EG_ParPar_Harmonic;
 
   ParamList HPList;
   HPList.KeyList.allocate(4);
-  for(uint i=0;i<4U;++i)    HPList.KeyList[i].Index.allocate(2);
-  HPList.KeyList[0].Index[0]=0;     HPList.KeyList[0].Index[1]=0;
-  HPList.KeyList[1].Index[0]=0;     HPList.KeyList[1].Index[1]=1;
-  HPList.KeyList[2].Index[0]=1;     HPList.KeyList[2].Index[1]=0;
-  HPList.KeyList[3].Index[0]=1;     HPList.KeyList[3].Index[1]=1;
+  for(uint i=0;i<4U;++i)  HPList.KeyList[i].Index.allocate(3);
+  for(uint i=0;i<4U;++i)  HPList.KeyList[i].Index[0]=ParticleParticle_Harmonic;
+  HPList.KeyList[0].Index[1]=0;     HPList.KeyList[0].Index[2]=0;
+  HPList.KeyList[1].Index[1]=0;     HPList.KeyList[1].Index[2]=1;
+  HPList.KeyList[2].Index[1]=1;     HPList.KeyList[2].Index[2]=0;
+  HPList.KeyList[3].Index[1]=1;     HPList.KeyList[3].Index[2]=1;
   for(uint i=0;i<4U;++i)    HPList.KeyList[i].BuildHash();
   HPList.ValueList.allocate(4);
   for(uint i=0;i<4U;++i)    HPList.ValueList[i].allocate(3);
@@ -348,11 +351,12 @@ int main() {
 
   ParamList MPList;
   MPList.KeyList.allocate(4);
-  for(uint i=0;i<4U;++i)    MPList.KeyList[i].Index.allocate(2);
-  MPList.KeyList[0].Index[0]=0;     MPList.KeyList[0].Index[1]=0;
-  MPList.KeyList[1].Index[0]=0;     MPList.KeyList[1].Index[1]=1;
-  MPList.KeyList[2].Index[0]=1;     MPList.KeyList[2].Index[1]=0;
-  MPList.KeyList[3].Index[0]=1;     MPList.KeyList[3].Index[1]=1;
+  for(uint i=0;i<4U;++i)  MPList.KeyList[i].Index.allocate(3);
+  for(uint i=0;i<4U;++i)  MPList.KeyList[i].Index[0]=ParticleParticle_Harmonic;
+  MPList.KeyList[0].Index[1]=0;     MPList.KeyList[0].Index[2]=0;
+  MPList.KeyList[1].Index[1]=0;     MPList.KeyList[1].Index[2]=1;
+  MPList.KeyList[2].Index[1]=1;     MPList.KeyList[2].Index[2]=0;
+  MPList.KeyList[3].Index[1]=1;     MPList.KeyList[3].Index[2]=1;
   for(uint i=0;i<4U;++i)    MPList.KeyList[i].BuildHash();
   MPList.ValueList.allocate(4);
   for(uint i=0;i<4U;++i)    MPList.ValueList[i].allocate(3);
@@ -364,12 +368,10 @@ int main() {
   MPList.UpdateHashTree();
 
   varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> > MIDLS(1);
+  MIDLS[0].set_interaction(ParticleParticle_Harmonic);
   MIDLS[0].allocate(1,2);
   MIDLS[0].List[0][0]=0;
   MIDLS[0].List[0][0]=1;
-  MIDLS[0].efunc=E_ParPar_Harmonic;
-  MIDLS[0].gfunc=G_ParPar_Harmonic;
-  MIDLS[0].bfunc=EG_ParPar_Harmonic;
 
   Energy=0.;
   for(uint i=0;i<2U;++i)  PSM[i].Gradient=0.;

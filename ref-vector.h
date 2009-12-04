@@ -48,9 +48,10 @@ namespace std {
       virtual const char* type() { return "Reference Vector"; }
 
       template <typename vType>
-      Type& refer(const vType& v) {
+      Type& refer(const vType& v, const uint& offset, const uint& sz) {
         assert(vType::IsVector);
         assert(v.rTable.count()<ReferTable<T>::MaxRefInstance);
+        assert(offset+sz<=v.size());
         if(this->isAvailable()) {
           if(inTable!=static_cast<int>(pTable->count())-1)
             pTable->refinst[inTable]=pTable->refinst[pTable->count()-1];
@@ -58,8 +59,8 @@ namespace std {
           pTable=NULL;
           inTable=-1;
         }
-        this->Data=const_cast<T*>(v.data());
-        this->nData=v.size();
+        this->Data=const_cast<T*>(v.data()+offset);
+        this->nData=sz;
         this->set_HeadTail();
         pTable=const_cast<ReferTable<T>*>(&(v.rTable));
         pTable->refinst[pTable->count()]=this;
@@ -67,6 +68,9 @@ namespace std {
         pTable->inc();
         return *this;
       }
+
+      template <typename vType>
+      Type& refer(const vType& v) { return refer(v,uZero,v.size()); }
 
       Type& swap(Type& v) {
         T* tptr;

@@ -4,30 +4,34 @@
 
 #include "interaction-parpar-base.h"
 #include "functional-lj612cut.h"
+#include "interaction-type.h"
 
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_ParPar_LJ612Cut(const varVector<Property*>& P,
+  void E_ParPar_LJ612Cut(const VectorBase<Property*>& P,
                          const ParamList& PList,
                          DistEvalObj& DEval, const GeomType& Geo,
                          double& Energy) {
-    E_ParPar_Base(P,PList,DEval,Geo,Energy,FuncFactor_lj612cut);
+    E_ParPar_Base(P,PList,DEval,Geo,Energy,
+                  ParticleParticle_LJ612Cut,FuncFactor_lj612cut);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_ParPar_LJ612Cut(varVector<Property*>& P,
+  void G_ParPar_LJ612Cut(VectorBase<Property*>& P,
                          const ParamList& PList,
                          DistEvalObj& DEval, const GeomType& Geo) {
-    G_ParPar_Base(P,PList,DEval,Geo,DiffFactor_lj612cut);
+    G_ParPar_Base(P,PList,DEval,Geo,
+                  ParticleParticle_LJ612Cut,DiffFactor_lj612cut);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_ParPar_LJ612Cut(const varVector<Property*>& P,
+  void EG_ParPar_LJ612Cut(VectorBase<Property*>& P,
                           const ParamList& PList,
                           DistEvalObj& DEval, const GeomType& Geo,
                           double& Energy) {
-    EG_ParPar_Base(P,PList,DEval,Geo,Energy,BothFactor_lj612cut);
+    EG_ParPar_Base(P,PList,DEval,Geo,Energy,
+                   ParticleParticle_LJ612Cut,BothFactor_lj612cut);
   }
 
 }

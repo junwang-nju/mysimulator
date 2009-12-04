@@ -9,16 +9,18 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_ParPar_Base(const varVector<Property*>& P,
+  void E_ParPar_Base(const VectorBase<Property*>& P,
                      const ParamList& PList,
                      DistEvalObj& DEval, const GeomType& Geo,
                      double& Energy,
+                     const uint& iTag, 
                      void (*func)(const double&,
-                                  const varVector<double>&,
+                                  const VectorBase<double>&,
                                   double&)) {
-    static fixVector<uint,2>  prmKey;
-    prmKey[0]=P[0]->MonomerKindID;
-    prmKey[1]=P[1]->MonomerKindID;
+    static fixVector<uint,3>  prmKey;
+    prmKey[0]=iTag;
+    prmKey[1]=P[0]->MonomerKindID;
+    prmKey[2]=P[1]->MonomerKindID;
     const varVector<double>* Parm=PList.get(prmKey);
     double DistSQ=DEval(*P[0],*P[1],Geo);
     double ee;
@@ -27,15 +29,17 @@ namespace std {
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_ParPar_Base(varVector<Property*>& P,
+  void G_ParPar_Base(VectorBase<Property*>& P,
                      const ParamList& PList,
                      DistEvalObj& DEval, const GeomType& Geo,
+                     const uint& iTag, 
                      void (*func)(const double&,
-                                  const varVector<double>&,
+                                  const VectorBase<double>&,
                                   double&)) {
-    static fixVector<uint,2>  prmKey;
-    prmKey[0]=P[0]->MonomerKindID;
-    prmKey[1]=P[1]->MonomerKindID;
+    static fixVector<uint,3>  prmKey;
+    prmKey[0]=iTag;
+    prmKey[1]=P[0]->MonomerKindID;
+    prmKey[2]=P[1]->MonomerKindID;
     const varVector<double>* Parm=PList.get(prmKey);
     double DistSQ=DEval(*P[0],*P[1],Geo,' ');
     double ef;
@@ -45,16 +49,18 @@ namespace std {
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_ParPar_Base(varVector<Property*>& P,
+  void EG_ParPar_Base(VectorBase<Property*>& P,
                       const ParamList& PList,
                       DistEvalObj& DEval, const GeomType& Geo,
                       double& Energy,
+                      const uint& iTag, 
                       void (*func)(const double&,
-                                   const varVector<double>&,
+                                   const VectorBase<double>&,
                                    double&,double&)) {
-    static fixVector<uint,2>  prmKey;
-    prmKey[0]=P[0]->MonomerKindID;
-    prmKey[1]=P[1]->MonomerKindID;
+    static fixVector<uint,3>  prmKey;
+    prmKey[0]=iTag;
+    prmKey[1]=P[0]->MonomerKindID;
+    prmKey[2]=P[1]->MonomerKindID;
     const varVector<double>* Parm=PList.get(prmKey);
     double DistSQ=DEval(*P[0],*P[1],Geo,' ');
     double ee,ef;

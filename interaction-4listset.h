@@ -9,7 +9,7 @@ namespace std {
   template <typename DistEvalObj, typename GeomType>
   void E_ListSet(const VectorBase<Property>& PropSet,
                  const ParamList& PList,
-                 varVector<IDList<DistEvalObj,GeomType> >& IDLS,
+                 VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                  DistEvalObj& DEval, const GeomType& Geo,
                  double& Energy){
     uint n=IDLS.size();
@@ -19,7 +19,7 @@ namespace std {
   template <typename DistEvalObj, typename GeomType>
   void G_ListSet(VectorBase<Property>& PropSet,
                  const ParamList& PList,
-                 varVector<IDList<DistEvalObj,GeomType> >& IDLS,
+                 VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                  DistEvalObj& DEval, const GeomType& Geo) {
     uint n=IDLS.size();
     for(uint i=0;i<n;++i) G_List(PropSet,PList,IDLS[i],DEval,Geo);
@@ -28,7 +28,7 @@ namespace std {
   template <typename DistEvalObj, typename GeomType>
   void EG_ListSet(VectorBase<Property>& PropSet,
                   const ParamList& PList,
-                  varVector<IDList<DistEvalObj,GeomType> >& IDLS,
+                  VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                   DistEvalObj& DEval, const GeomType& Geo,
                   double& Energy){
     uint n=IDLS.size();

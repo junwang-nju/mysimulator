@@ -3,6 +3,7 @@
 #define _Distance_Storage_H_
 
 #include "var-vector.h"
+#include "ref-vector.h"
 
 namespace std {
 
@@ -34,12 +35,12 @@ namespace std {
     
       varVector<Item> Data;
       
-      varVector<Item*> DLevel;
+      varVector<refVector<Item> > DLevel;
       
       void SetLevel(const uint& N) {
-        assert(Data.data()!=NULL);
-        DLevel[0]=Data.data();
-        for(uint i=1,j=N-1;i<N;++i,--j) DLevel[i]=DLevel[i-1]+j;
+        assert(Data.isAvailable());
+        DLevel[0].refer(Data,0,N-1);
+        for(uint i=1,j=N-1,n=j;i<N;++i,--j,n+=j) DLevel[i].refer(Data,n,j-1);
       }       
 
     public:
@@ -82,14 +83,14 @@ namespace std {
         assert(I!=J);
         uint rI=I,rJ=J;
         if(rI>rJ) { rI=J; rJ=I; }
-        return *(DLevel[rI]+rJ-rI-1);
+        return DLevel[rI][rJ-rI-1];
       }
 
       const Item& operator()(const uint I, const uint J) const {
         assert(I!=J);
         uint rI=I,rJ=J;
         if(rI>rJ) { rI=J; rJ=I; }
-        return *(DLevel[rI]+rJ-rI-1);
+        return DLevel[rI][rJ-rI-1];
       }
 
       void Inc() { ++GStatus; }
@@ -121,3 +122,4 @@ namespace std {
 }
 
 #endif
+

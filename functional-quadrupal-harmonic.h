@@ -2,14 +2,14 @@
 #ifndef _Functional_Quadrupal_Harmonic_H_
 #define _Functional_Quadrupal_Harmonic_H_
 
-#include "var-vector.h"
+#include "vector-base.h"
 #include "parameter-id.h"
 #include <cmath>
 
 namespace std {
 
   void FuncFactor_quadrupalharmonic(
-      const double& dsq, const varVector<double>& parm, double& funcfac) {
+      const double& dsq, const VectorBase<double>& parm, double& funcfac) {
     double d=sqrt(dsq);
     double Dd=d-parm[quadharm_EqLength];
     double sqDd=Dd*Dd;
@@ -18,7 +18,7 @@ namespace std {
   }
 
   void DiffFactor_quadrupalharmonic(
-      const double& dsq, const varVector<double>& parm, double& difffac) {
+      const double& dsq, const VectorBase<double>& parm, double& difffac) {
     double d=sqrt(dsq);
     double Dd=d-parm[quadharm_EqLength];
     difffac=Dd*(parm[quadharm_FourEqQuadStrength]*Dd*Dd+
@@ -26,7 +26,7 @@ namespace std {
   }
 
   void BothFactor_quadrupalharmonic(
-      const double& dsq, const varVector<double>& parm,
+      const double& dsq, const VectorBase<double>& parm,
       double& funcfac, double& difffac) {
     double d=sqrt(dsq);
     double Dd=d-parm[quadharm_EqLength];

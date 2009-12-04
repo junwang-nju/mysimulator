@@ -6,7 +6,7 @@
 #include "fix-vector.h"
 #include "vector-op.h"
 #include "btree.h"
-#include "hash_func.h"
+#include "hash-func.h"
 
 namespace std {
 

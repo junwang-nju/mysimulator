@@ -2,13 +2,13 @@
 #ifndef _Functional_LJ612Cut_H_
 #define _Functional_LJ612Cut_H_
 
-#include "var-vector.h"
+#include "vector-base.h"
 #include "parameter-id.h"
 #include <cmath>
 
 namespace std {
 
-  void FuncFactor_lj612cut(const double& dsq, const varVector<double>& parm,
+  void FuncFactor_lj612cut(const double& dsq, const VectorBase<double>& parm,
                            double& funcfac) {
     double d=sqrt(dsq);
     double d6=dsq*dsq*dsq;
@@ -17,7 +17,7 @@ namespace std {
            -parm[lj612cut_Vc]-parm[lj612cut_Kc]*(d-parm[lj612cut_CutR]);
   }
 
-  void DiffFactor_lj612cut(const double& dsq, const varVector<double>& parm,
+  void DiffFactor_lj612cut(const double& dsq, const VectorBase<double>& parm,
                            double& difffac) {
     double ivd2=1./dsq;
     double ivd=sqrt(ivd2);
@@ -26,7 +26,7 @@ namespace std {
            -parm[lj612cut_Kc]*ivd;
   }
 
-  void BothFactor_lj612cut(const double& dsq, const varVector<double>& parm,
+  void BothFactor_lj612cut(const double& dsq, const VectorBase<double>& parm,
                            double& funcfac, double& difffac) {
     double ivd2=1./dsq;
     double ivd=sqrt(ivd2);

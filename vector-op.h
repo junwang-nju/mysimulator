@@ -15,63 +15,45 @@ namespace std {
                        const_cast<double*>(vb)+boffset,&bstep);
   }
 
-  template <typename vTypeA, typename vTypeB>
-  double dot(const vTypeA& va, const vTypeB& vb, long ndot,
+  double dot(const VectorBase<double>& va, const VectorBase<double>& vb,
+             long ndot,
              int aoffset=iZero, long astep=lOne,
              int boffset=iZero, long bstep=lOne) {
-    assert(vTypeA::IsVector);
-    assert(vTypeB::IsVector);
     assert(static_cast<uint>(aoffset+astep*ndot)<=va.size());
     assert(static_cast<uint>(boffset+bstep*ndot)<=vb.size());
     return dot(va.data(),vb.data(),ndot,aoffset,astep,boffset,bstep);
   }
 
-  template <typename vTypeA, typename vTypeB>
-  double dot(const vTypeA& va, const vTypeB& vb) {
-    assert(vTypeA::IsVector);
-    assert(vTypeB::IsVector);
+  double dot(const VectorBase<double>& va, const VectorBase<double>& vb) {
     long n=(va.size()<vb.size()?va.size():vb.size());
     return dot(va,vb,n);
   }
 
-  template <typename vType>
-  double normSQ(const vType& v) { assert(vType::IsVector); return dot(v,v); }
+  double normSQ(const VectorBase<double>& v) { return dot(v,v); }
 
   double norm(const double* v, long nnorm, int offset=iZero, long step=lOne) {
     return dnrm2_(&nnorm,const_cast<double*>(v)+offset,&step);
   }
 
-  template <typename vType>
-  double norm(const vType& v, long nnorm, int offset=iZero, long step=lOne) {
-    assert(vType::IsVector);
+  double norm(const VectorBase<double>& v, long nnorm,
+              int offset=iZero, long step=lOne) {
     assert(static_cast<uint>(offset+step*nnorm)<=v.size());
     return norm(v.data(),nnorm,offset,step);
   }
 
-  template <typename vType>
-  double norm(const vType& v) {
-    assert(vType::IsVector);
-    long n=v.size();
-    return norm(v,n);
-  }
+  double norm(const VectorBase<double>& v) { return norm(v,v.size()); }
 
   double sumABS(const double* v, long nsum, int offset=iZero, long step=lOne) {
     return dasum_(&nsum,const_cast<double*>(v)+offset,&step);
   }
 
-  template <typename vType>
-  double sumABS(const vType& v, long nsum, int offset=iZero, long step=lOne) {
-    assert(vType::IsVector);
+  double sumABS(const VectorBase<double>& v, long nsum,
+                int offset=iZero, long step=lOne) {
     assert(static_cast<uint>(offset+step*nsum)<=v.size());
     return sumABS(v.data(),nsum,offset,step);
   }
 
-  template <typename vType>
-  double sumABS(const vType& v) {
-    assert(vType::IsVector);
-    long n=v.size();
-    return sumABS(v,n);
-  }
+  double sumABS(const VectorBase<double>& v) { return sumABS(v,v.size()); }
 
   void cross_prod(const double* va, const double* vb, double* v,
                   int aoffset=iZero, long astep=lOne,
@@ -88,20 +70,17 @@ namespace std {
                 -pa[astep]      *pb[0];
   }
 
-  template <typename vTypeA, typename vTypeB, typename vType>
-  vType& cross_prod(const vTypeA& va, const vTypeB& vb, vType& v,
-                    int aoffset=iZero, long astep=lOne,
-                    int boffset=iZero, long bstep=lOne,
-                    int offset=iZero, long step=lOne) {
-    assert(vTypeA::IsVector);
-    assert(vTypeB::IsVector);
-    assert(vType::IsVector);
+  void cross_prod(const VectorBase<double>& va,
+                  const VectorBase<double>& vb,
+                  VectorBase<double>& v,
+                  int aoffset=iZero, long astep=lOne,
+                  int boffset=iZero, long bstep=lOne,
+                  int offset=iZero, long step=lOne) {
     assert(static_cast<uint>(aoffset+astep*3)<=va.size());
     assert(static_cast<uint>(boffset+bstep*3)<=vb.size());
     assert(static_cast<uint>(offset+step*3)<=v.size());
     cross_prod(va.data(),vb.data(),v.data(),
                aoffset,astep,boffset,bstep,offset,step);
-    return v;
   }
 
 }

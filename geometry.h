@@ -58,9 +58,7 @@ namespace std {
         return *this;
       }
 
-      template <typename vType>
-      void Set(const vType& pbBox, const uint& fg=1) {
-        assert(vType::IsVector);
+      void Set(const VectorBase<double>& pbBox, const uint& fg=1) {
         assert(pbBox.size()>=Dim);
         Box=pbBox;
         EdgeFlag=fg;
@@ -68,10 +66,8 @@ namespace std {
         halfBox.scale(0.5);
       }
 
-      template <typename vType, typename vIType>
-      void Set(const vType& pbBox, const vIType& fgBox) {
-        assert(vType::IsVector);
-        assert(vIType::IsVector);
+      void Set(const VectorBase<double>& pbBox,
+               const VectorBase<uint>& fgBox) {
         assert(pbBox.size()>=Dim);
         assert(fgBox.size()>=Dim);
         Box=pbBox;
@@ -80,9 +76,7 @@ namespace std {
         halfBox.scale(0.5);
       }
 
-      template <typename vType>
-      vType& Shift2Main(vType& v) const {
-        assert(vType::IsVector);
+      void Shift2Main(VectorBase<double>& v) const {
         double *it=v.begin();
         double *bt=const_cast<double*>(Box.data());
         double *be;
@@ -95,7 +89,6 @@ namespace std {
           while(*nowtmd<-tmd)  *nowtmd+=tmd;
           while(*nowtmd>=tmd)  *nowtmd-=tmd;
         }
-        return v;
       }
 
   };
