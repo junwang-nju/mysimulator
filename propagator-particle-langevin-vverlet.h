@@ -7,7 +7,6 @@
 #include "propagator-particle-langevin-vverlet-index.h"
 #include "propagator-langevin-vverlet-index.h"
 #include "propagator-common-index.h"
-#include "propagator-op.h"
 #include "random-generator.h"
 #include <cmath>
 
@@ -41,10 +40,9 @@ namespace std {
   }
 
   void PLV_AllocParam(ParamPackType& mnPrm, const Property& nProp) {
-    PropagatorParamAllocate(mnPrm,static_cast<uint>(NumberParamPLV));
-    PropagatorParamAllocate(mnPrm[BasicPLV],
-                            static_cast<uint>(NumberBasicPLV));
-    PropagatorParamAllocate(mnPrm[RandomVelocityPLV],nProp.Gradient.size());
+    mnPrm.allocate(NumberParamPLV);
+    mnPrm[BasicPLV].allocate(NumberBasicPLV);
+    mnPrm[RandomVelocityPLV].allocate(nProp.Gradient.size());
   }
 
   void PLV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
@@ -68,10 +66,10 @@ namespace std {
   }
 
   void SetAsPLV(MonomerPropagator& MP) {
-    PropagatorParamAllocate(MP.MvFunc,static_cast<uint>(NumberMoveLV));
+    MP.MvFunc.allocate(NumberMoveLV);
     MP.MvFunc[BeforeGLV]=PLV_Move_BeforeG;
     MP.MvFunc[AfterGLV]=PLV_Move_AfterG;
-    PropagatorParamAllocate(MP.SetFunc,static_cast<uint>(NumberSetPLV));
+    MP.SetFunc.allocate(NumberSetPLV);
     MP.SetFunc[SetHydrodynamicRadiusPLV]=PLV_SetHydrodynamicRadius;
     MP.Alloc=PLV_AllocParam;
     MP.Sync=PLV_Synchronize;

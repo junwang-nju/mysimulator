@@ -74,8 +74,7 @@ namespace std {
               KeyList[i],ValueList[i]);
       }
 
-      template <typename vType>
-      const ParamValueType* get(const vType& Index) const {
+      const ParamValueType* get(const VectorBase<uint>& Index) const {
         ParamKey tKey;
         tKey.Index.Duplicate(Index);
         tKey.BuildHash();

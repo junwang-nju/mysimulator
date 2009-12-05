@@ -7,7 +7,6 @@
 #include "propagator-particle-berendsen-vverlet-index.h"
 #include "propagator-berendsen-vverlet-index.h"
 #include "propagator-common-index.h"
-#include "propagator-op.h"
 
 namespace std {
 
@@ -31,9 +30,8 @@ namespace std {
   }
 
   void PBV_AllocParam(ParamPackType& mnPrm, const Property& nProp) {
-    PropagatorParamAllocate(mnPrm,static_cast<uint>(NumberParamPBV));
-    PropagatorParamAllocate(mnPrm[BasicPBV],
-                            static_cast<uint>(NumberBasicPBV));
+    mnPrm.allocate(NumberParamPBV);
+    mnPrm[BasicPBV].allocate(NumberBasicPBV);
   }
 
   void PBV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
@@ -43,11 +41,11 @@ namespace std {
   }
 
   void SetAsPBV(MonomerPropagator& MP) {
-    PropagatorParamAllocate(MP.MvFunc,static_cast<uint>(NumberMoveBV));
+    MP.MvFunc.allocate(NumberMoveBV);
     MP.MvFunc[BeforeGBV]=PBV_Move_BeforeG;
     MP.MvFunc[AfterGBV]=PBV_Move_AfterG;
     MP.MvFunc[PostProcessBV]=PBV_Move_PostProcess;
-    PropagatorParamAllocate(MP.SetFunc,static_cast<uint>(NumberSetPBV));
+    MP.SetFunc.allocate(NumberSetPBV);
     MP.Alloc=PBV_AllocParam;
     MP.Sync=PBV_Synchronize;
   }

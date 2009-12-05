@@ -9,15 +9,15 @@
 
 namespace std {
 
-  void BV_AllocGbParam(ParamPackType& gbPrm, const varVector<Property>& PSet){
-    PropagatorParamAllocate(gbPrm,static_cast<uint>(NumberParamBV));
-    PropagatorParamAllocate(gbPrm[BasicBV],static_cast<uint>(NumberBasicBV));
+  void BV_AllocGbParam(ParamPackType& gbPrm, const VectorBase<Property>& PSet){
+    gbPrm.allocate(NumberParamBV);
+    gbPrm[BasicBV].allocate(NumberBasicBV);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void BV_Step(varVector<Property>& PropSet, const ParamList& PList,
-               varVector<IDList<DistEvalObj,GeomType> >& IDLS,
-               varVector<MonomerPropagator>& Mv, ParamPackType& gbPrm,
+  void BV_Step(VectorBase<Property>& PropSet, const ParamList& PList,
+               VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
+               VectorBase<MonomerPropagator>& Mv, ParamPackType& gbPrm,
                ParamPackType& cgbPrm,
                DistEvalObj& DEval, const GeomType& Geo) {
     uint n=PropSet.size();
@@ -46,8 +46,8 @@ namespace std {
     gbPrm[BasicBV][RelaxTimeBV]=*data;
   }
 
-  void BV_Synchronize(const varVector<Property>& PropSet,
-                      varVector<MonomerPropagator>& Mv, ParamPackType& gbPrm,
+  void BV_Synchronize(const VectorBase<Property>& PropSet,
+                      VectorBase<MonomerPropagator>& Mv, ParamPackType& gbPrm,
                       ParamPackType& cgbPrm) {
     double dof=0.;
     uint n=PropSet.size();
@@ -59,16 +59,16 @@ namespace std {
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void SetAsBV(const varVector<Property>& PropSet,
+  void SetAsBV(const VectorBase<Property>& PropSet,
                Propagator<DistEvalObj,GeomType>& Pg) {
     Pg.GbAlloc=BV_AllocGbParam;
-    PropagatorParamAllocate(Pg.GbSetFunc,static_cast<uint>(NumberSetBV));
+    Pg.GbSetFunc.allocate(NumberSetBV);
     Pg.GbSetFunc[SetTemperatureBV]=BV_SetTemperature;
     Pg.GbSetFunc[SetRelaxTimeBV]=BV_SetRelaxTime;
     Pg.Step=BV_Step;
     Pg.Sync=BV_Synchronize;
     uint n=PropSet.size();
-    PropagatorParamAllocate(Pg.UnitMove,n);
+    Pg.UnitMove.allocate(n);
     uint mType;
     for(uint i=0;i<n;++i) {
       mType=PropSet[i].MonomerType;

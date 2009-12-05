@@ -9,14 +9,14 @@
 
 namespace std {
 
-  void EV_AllocGbParam(ParamPackType& gbPrm,const varVector<Property>& PSet) {
-    PropagatorParamAllocate(gbPrm,static_cast<uint>(NumberParamEV));
+  void EV_AllocGbParam(ParamPackType& gbPrm,const VectorBase<Property>& PSet) {
+    gbPrm.allocate(NumberParamEV);
   }
   
   template <typename DistEvalObj, typename GeomType>
-  void EV_Step(varVector<Property>& PropSet, const ParamList& PList,
-               varVector<IDList<DistEvalObj,GeomType> >& IDLS,
-               varVector<MonomerPropagator>& Mv, ParamPackType& gbPrm,
+  void EV_Step(VectorBase<Property>& PropSet, const ParamList& PList,
+               VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
+               VectorBase<MonomerPropagator>& Mv, ParamPackType& gbPrm,
                ParamPackType& cgbPrm,
                DistEvalObj& DEval, const GeomType& Geo) {
     uint n=PropSet.size();
@@ -29,22 +29,22 @@ namespace std {
                                                  gbPrm,cgbPrm);
   }
 
-  void EV_Synchronize(const varVector<Property>& PropSet,
-                      varVector<MonomerPropagator>& Mv,ParamPackType& gbPrm,
+  void EV_Synchronize(const VectorBase<Property>& PropSet,
+                      VectorBase<MonomerPropagator>& Mv,ParamPackType& gbPrm,
                       ParamPackType& cgbPrm){
     uint n=PropSet.size();
     for(uint i=0;i<n;++i) Mv[i].Sync(PropSet[i],gbPrm,cgbPrm,Mv[i].runParam);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void SetAsEV(const varVector<Property>& PropSet,
+  void SetAsEV(const VectorBase<Property>& PropSet,
                Propagator<DistEvalObj,GeomType>& Pg) {
     Pg.GbAlloc=EV_AllocGbParam;
-    PropagatorParamAllocate(Pg.GbSetFunc,static_cast<uint>(NumberSetEV));
+    Pg.GbSetFunc.allocate(NumberSetEV);
     Pg.Step=EV_Step;
     Pg.Sync=EV_Synchronize;
     uint n=PropSet.size();
-    PropagatorParamAllocate(Pg.UnitMove,n);
+    Pg.UnitMove.allocate(n);
     uint mType;
     for(uint i=0;i<n;++i) {
       mType=PropSet[i].MonomerType;

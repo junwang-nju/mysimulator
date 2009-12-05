@@ -7,7 +7,6 @@
 #include "propagator-particle-conste-vverlet-index.h"
 #include "propagator-conste-vverlet-index.h"
 #include "propagator-common-index.h"
-#include "propagator-op.h"
 
 namespace std {
 
@@ -25,9 +24,8 @@ namespace std {
   }
 
   void PEV_AllocParam(ParamPackType& mnPrm, const Property& Prop) {
-    PropagatorParamAllocate(mnPrm,static_cast<uint>(NumberParamPEV));
-    PropagatorParamAllocate(mnPrm[BasicPEV],
-                            static_cast<uint>(NumberBasicPEV));
+    mnPrm.allocate(NumberParamPEV);
+    mnPrm[BasicPEV].allocate(NumberBasicPEV);
   }
 
   void PEV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
@@ -37,10 +35,10 @@ namespace std {
   }
 
   void SetAsPEV(MonomerPropagator& MP) {
-    PropagatorParamAllocate(MP.MvFunc,static_cast<uint>(NumberMoveEV));
+    MP.MvFunc.allocate(NumberMoveEV);
     MP.MvFunc[BeforeGEV]=PEV_Move_BeforeG;
     MP.MvFunc[AfterGEV]=PEV_Move_AfterG;
-    PropagatorParamAllocate(MP.SetFunc,static_cast<uint>(NumberSetPEV));
+    MP.SetFunc.allocate(NumberSetPEV);
     MP.Alloc=PEV_AllocParam;
     MP.Sync=PEV_Synchronize;
   }

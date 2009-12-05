@@ -9,16 +9,16 @@
 
 namespace std {
 
-  void LV_AllocGbParam(ParamPackType& gbPrm, const varVector<Property>& PSet){
-    PropagatorParamAllocate(gbPrm,static_cast<uint>(NumberParamLV));
-    PropagatorParamAllocate(gbPrm[BasicLV],static_cast<uint>(NumberBasicLV));
-    PropagatorParamAllocate(gbPrm[RandPointerLV],1U);
+  void LV_AllocGbParam(ParamPackType& gbPrm, const VectorBase<Property>& PSet){
+    gbPrm.allocate(NumberParamLV);
+    gbPrm[BasicLV].allocate(NumberBasicLV);
+    gbPrm[RandPointerLV].allocate(1U);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void LV_Step(varVector<Property>& PropSet, const ParamList& PList,
-               varVector<IDList<DistEvalObj,GeomType> >& IDLS,
-               varVector<MonomerPropagator>& Mv, ParamPackType& gbPrm,
+  void LV_Step(VectorBase<Property>& PropSet, const ParamList& PList,
+               VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
+               VectorBase<MonomerPropagator>& Mv, ParamPackType& gbPrm,
                ParamPackType& cgbPrm,
                DistEvalObj& DEval, const GeomType& Geo) {
     uint n=PropSet.size();
@@ -45,8 +45,8 @@ namespace std {
         static_cast<double>(reinterpret_cast<long long>(data));
   }
 
-  void LV_Synchronize(const varVector<Property>& PropSet,
-                      varVector<MonomerPropagator>& Mv, ParamPackType& gbPrm,
+  void LV_Synchronize(const VectorBase<Property>& PropSet,
+                      VectorBase<MonomerPropagator>& Mv, ParamPackType& gbPrm,
                       ParamPackType& cgbPrm) {
     gbPrm[BasicLV][TempeDeltaTLV]=gbPrm[BasicLV][TemperatureLV]*
                                   cgbPrm[BasicCommon][DeltaTime];
@@ -55,17 +55,17 @@ namespace std {
   }
   
   template <typename DistEvalObj, typename GeomType>
-  void SetAsLV(const varVector<Property>& PropSet,
+  void SetAsLV(const VectorBase<Property>& PropSet,
                Propagator<DistEvalObj,GeomType>& Pg) {
     Pg.GbAlloc=LV_AllocGbParam;
-    PropagatorParamAllocate(Pg.GbSetFunc,static_cast<uint>(NumberSetLV));
+    Pg.GbSetFunc.allocate(NumberSetLV);
     Pg.GbSetFunc[SetTemperatureLV]=LV_SetTemperature;
     Pg.GbSetFunc[SetViscosityLV]=LV_SetViscosity;
     Pg.GbSetFunc[SetGRNGPointerLV]=LV_SetGRNGPointer;
     Pg.Step=LV_Step;
     Pg.Sync=LV_Synchronize;
     uint n=PropSet.size();
-    PropagatorParamAllocate(Pg.UnitMove,n);
+    Pg.UnitMove.allocate(n);
     uint mType;
     for(uint i=0;i<n;++i) {
       mType=PropSet[i].MonomerType;

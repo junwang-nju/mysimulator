@@ -29,7 +29,6 @@
 #include "interaction-parpar-coulomb-wde.h"
 #include "interaction-parpar-quad-harm.h"
 #include "minimizer.h"
-#include "property-op.h"
 
 #include "vector-base.h"
 #include "ref-vector.h"
@@ -43,8 +42,8 @@ class A{
 
 void OutputFunc(
     ostream& os, const Propagator<DistanceEvalwStorage<3>,FreeSpace>& Pg,
-    const varVector<Property>& PropSet, const ParamList&,
-    varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> >&,
+    const VectorBase<Property>& PropSet, const ParamList&,
+    VectorBase<IDList<DistanceEvalwStorage<3>,FreeSpace> >&,
     DistanceEvalwStorage<3>&, const FreeSpace&) {
   os<<Pg.CmnGbParam[BasicCommon][NowTime]<<"\t"<<PropSet[0].Coordinate<<endl;
 }

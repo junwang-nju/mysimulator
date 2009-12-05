@@ -6,14 +6,12 @@
 #include "param-list.h"
 #include "id-list.h"
 #include "propagator-common-index.h"
-#include "propagator-op.h"
 
 namespace std {
 
-  void AllocCommonParameter(ParamPackType& cgbPrm, const varVector<Property>&){
-    PropagatorParamAllocate(cgbPrm,static_cast<uint>(NumberCommonParam));
-    PropagatorParamAllocate(cgbPrm[BasicCommon],
-                            static_cast<uint>(NumberBasicCommon));
+  void AllocCommonParameter(ParamPackType& cgbPrm,const VectorBase<Property>&){
+    cgbPrm.allocate(NumberCommonParam);
+    cgbPrm[BasicCommon].allocate(NumberBasicCommon);
   } 
 
   void SetTimeStep(ParamPackType& cgbPrm, const double* data,const uint&) {
@@ -47,28 +45,27 @@ namespace std {
     
       typedef Propagator<DistEvalObj,GeomType>  Type;
     
-      typedef varVector<MonomerPropagator>  UnitMovePackType;
-      
-      typedef void (*AllocFuncType)(ParamPackType&,const varVector<Property>&);
+      typedef void (*AllocFuncType)(ParamPackType&,
+                                    const VectorBase<Property>&);
 
       typedef void (*SetFuncType)(ParamPackType&,const double*,const uint&);
       
-      typedef void (*StepFuncType)(varVector<Property>&,const ParamList&,
-                                   varVector<IDList<DistEvalObj,GeomType> >&,
-                                   UnitMovePackType&, ParamPackType&,
-                                   ParamPackType&,
+      typedef void (*StepFuncType)(VectorBase<Property>&,const ParamList&,
+                                   VectorBase<IDList<DistEvalObj,GeomType> >&,
+                                   VectorBase<MonomerPropagator>&,
+                                   ParamPackType&, ParamPackType&,
                                    DistEvalObj&, const GeomType&);
 
-      typedef void (*SyncFuncType)(const varVector<Property>&,
-                                   UnitMovePackType&,ParamPackType&,
-                                   ParamPackType&);
+      typedef void (*SyncFuncType)(const VectorBase<Property>&,
+                                   VectorBase<MonomerPropagator>&,
+                                   ParamPackType&,ParamPackType&);
 
       typedef void (*OutputType)(ostream&, const Type&,
-                                 const varVector<Property>&, const ParamList&,
-                                 varVector<IDList<DistEvalObj,GeomType> >&,
+                                 const VectorBase<Property>&, const ParamList&,
+                                 VectorBase<IDList<DistEvalObj,GeomType> >&,
                                  DistEvalObj&, const GeomType&);
 
-      UnitMovePackType UnitMove;
+      varVector<MonomerPropagator> UnitMove;
       
       ParamPackType CmnGbParam;
       
@@ -78,7 +75,7 @@ namespace std {
       
       AllocFuncType GbAlloc;
 
-      void AllocAll(const varVector<Property>& PropSet) {
+      void AllocAll(const VectorBase<Property>& PropSet) {
         GbAlloc(GbParam,PropSet);
         uint n=PropSet.size();
         for(uint i=0;i<n;++i)
@@ -93,15 +90,15 @@ namespace std {
       
       SyncFuncType Sync;
 
-      void SyncAll(const varVector<Property>& PropSet) {
+      void SyncAll(const VectorBase<Property>& PropSet) {
         SynchronizeCommon(CmnGbParam);
         Sync(PropSet,UnitMove,GbParam,CmnGbParam);
       }
 
       OutputType OutFunc;
 
-      void Run(varVector<Property>& PropSet, const ParamList& PList,
-               varVector<IDList<DistEvalObj,GeomType> >& IDLS,
+      void Run(VectorBase<Property>& PropSet, const ParamList& PList,
+               VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                DistEvalObj& DEval, const GeomType& Geo, ostream& os) {
         uint no=static_cast<uint>(CmnGbParam[BasicCommon][CountOutput]+0.5);
         uint ns=static_cast<uint>(CmnGbParam[BasicCommon][CountStepInOne]+0.5);
@@ -117,8 +114,7 @@ namespace std {
       }
 
       Propagator() : CmnGbAlloc(AllocCommonParameter) {
-        PropagatorParamAllocate(CmnGbSetFunc,
-                                static_cast<uint>(NumberSetCommon));
+        CmnGbSetFunc.allocate(NumberSetCommon);
         CmnGbSetFunc[SetCmnTimeStep]=SetTimeStep;
         CmnGbSetFunc[SetCmnStartTime]=SetStartTime;
         CmnGbSetFunc[SetCmnTotalTime]=SetTotalTime;

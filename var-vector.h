@@ -49,11 +49,8 @@ namespace std {
 
       Type& allocate(const int& n) { return allocate(static_cast<uint>(n)); }
 
-      template <typename vType>
-      Type& allocate(const vType& v) {
-        assert(vType::IsVector);
-        return allocate(v.size());
-      }
+      template <typename rT>
+      Type& allocate(const VectorBase<rT>& v) { return allocate(v.size()); }
 
       template <typename vType>
       Type& Duplicate(const vType& v) { allocate(v).assign(v); return *this; }
