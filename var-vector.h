@@ -3,13 +3,12 @@
 #define _Variable_Vector_H_
 
 #include "memory.h"
-#include "refer-table.h"
-#include "vector-base.h"
+#include "referable-vector.h"
 
 namespace std {
 
   template <typename T>
-  class varVector : public VectorBase<T> {
+  class varVector : public referableVector<T> {
 
     public:
 
@@ -17,13 +16,11 @@ namespace std {
 
       typedef varVector<T>    Type;
 
-      typedef VectorBase<T>   ParentType;
+      typedef referableVector<T>   ParentType;
 
-      ReferTable<T> rTable;
+      varVector() : ParentType() {}
 
-      varVector() : ParentType(), rTable() {}
-
-      varVector(const uint& n) : ParentType(), rTable() { allocate(n); }
+      varVector(const uint& n) : ParentType() { allocate(n); }
 
       varVector(const Type& v) { myError("vector copier is prohibited!"); }
 
@@ -31,13 +28,12 @@ namespace std {
 
       void clear() {
         if(!this->isAvailable())  return;
-        rTable.clear();
         safe_delete(this->Data);
         static_cast<ParentType*>(this)->clear();
       }
 
       Type& allocate(const uint& n) {
-        rTable.clear();
+        this->rTable.clear();
         if(this->nData!=n) {
           safe_delete(this->Data);
           this->nData=n;
@@ -75,7 +71,7 @@ namespace std {
         tmn=this->nData;        this->nData=v.nData;          v.nData=tmn;
         this->set_HeadTail();
         v.set_HeadTail();
-        rTable.clear();
+        this->rTable.clear();
         v.rTable.clear();
         return *this;
       }

@@ -2,13 +2,12 @@
 #ifndef _Fixed_Vector_H_
 #define _Fixed_Vector_H_
 
-#include "vector-base.h"
-#include "refer-table.h"
+#include "referable-vector.h"
 
 namespace std {
 
   template <typename T, uint ND>
-  class fixVector : public VectorBase<T> {
+  class fixVector : public referableVector<T> {
 
     private:
 
@@ -16,15 +15,13 @@ namespace std {
 
     public:
 
-      typedef T                   DataType;
+      typedef T                         DataType;
 
-      typedef fixVector<T,ND>     Type;
+      typedef fixVector<T,ND>           Type;
 
-      typedef VectorBase<T>       ParentType;
+      typedef referableVector<T>        ParentType;
 
-      ReferTable<T> rTable;
-
-      fixVector() : ParentType(), rTable() {
+      fixVector() : ParentType() {
         this->Data=runData;
         this->nData=ND;
         this->set_HeadTail();
@@ -32,11 +29,9 @@ namespace std {
 
       fixVector(const Type& v) { myError("vector copier is prohibited!"); }
 
-      ~fixVector() { rTable.clear(); }
+      ~fixVector() { this->clear(); }
 
-      template <typename vType>
-      Type& Duplicate(const vType& v) {
-        assert(vType::IsVector);
+      Type& Duplicate(const VectorBase<T>& v) {
         this->assign(v);
         return *this;
       }

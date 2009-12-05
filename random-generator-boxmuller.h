@@ -41,11 +41,7 @@ namespace std {
         for(uint i=0;i<size;++i)  Array[i]=GenRandNormal();
       }
 
-      template <typename vType>
-      void FillArray(vType& v) {
-        assert(v.IsVector);
-        FillArray(v.data(),v.size());
-      }
+      void FillArray(VectorBase<double>& v) { FillArray(v.data(),v.size()); }
 
       const double& GenRandNormal() {
         isSecond=!isSecond;

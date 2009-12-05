@@ -279,9 +279,8 @@ namespace std {
             reinterpret_cast<W128_DSFMT*>(Array),Size>>1);
       }
 
-      template <typename vType, uint BoundaryType>
-      void FillArray(vType& V) {
-        assert(vType::IsVector);
+      template <uint BoundaryType>
+      void FillArray(VectorBase<double>& V) {
         FillArray<BoundaryType>(V.data(),V.size());
       }
 

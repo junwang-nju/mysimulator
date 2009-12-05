@@ -2,8 +2,7 @@
 #ifndef _Reference_Vector_H_
 #define _Reference_Vector_H_
 
-#include "vector-base.h"
-#include "refer-table.h"
+#include "referable-vector.h"
 
 namespace std {
 
@@ -11,6 +10,8 @@ namespace std {
   class refVector : public VectorBase<T> {
 
     public:
+
+      static const uint IsReferable;
 
       typedef T             DataType;
 
@@ -47,9 +48,8 @@ namespace std {
 
       virtual const char* type() { return "Reference Vector"; }
 
-      template <typename vType>
-      Type& refer(const vType& v, const uint& offset, const uint& sz) {
-        assert(vType::IsVector);
+      Type& refer(const referableVector<T>& v,
+                  const uint& offset, const uint& sz) {
         assert(v.rTable.count()<ReferTable<T>::MaxRefInstance);
         assert(offset+sz<=v.size());
         if(this->isAvailable()) {
@@ -69,8 +69,9 @@ namespace std {
         return *this;
       }
 
-      template <typename vType>
-      Type& refer(const vType& v) { return refer(v,uZero,v.size()); }
+      Type& refer(const referableVector<T>& v) {
+        return refer(v,uZero,v.size());
+      }
 
       Type& swap(Type& v) {
         T* tptr;
@@ -86,6 +87,9 @@ namespace std {
       }
 
   };
+
+  template <typename T>
+  const uint refVector<T>::IsReferable=0;
 
   template <typename T>
   void swap(refVector<T>& va, refVector<T>& vb) { va.swap(vb); }
