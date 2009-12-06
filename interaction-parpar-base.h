@@ -2,7 +2,7 @@
 #ifndef _Interaction_ParticleParticle_Base_H_
 #define _Interaction_ParticleParticle_Base_H_
 
-#include "property.h"
+#include "property-frame.h"
 #include "param-list.h"
 #include "distance-evaluation.h"
 
@@ -19,8 +19,8 @@ namespace std {
                                   double&)) {
     static fixVector<uint,3>  prmKey;
     prmKey[0]=iTag;
-    prmKey[1]=P[0]->MonomerKindID;
-    prmKey[2]=P[1]->MonomerKindID;
+    prmKey[1]=P[0]->Info[MonomerKindID];
+    prmKey[2]=P[1]->Info[MonomerKindID];
     const varVector<double>* Parm=PList.get(prmKey);
     double DistSQ=DEval(*P[0],*P[1],Geo);
     double ee;
@@ -38,8 +38,8 @@ namespace std {
                                   double&)) {
     static fixVector<uint,3>  prmKey;
     prmKey[0]=iTag;
-    prmKey[1]=P[0]->MonomerKindID;
-    prmKey[2]=P[1]->MonomerKindID;
+    prmKey[1]=P[0]->Info[MonomerKindID];
+    prmKey[2]=P[1]->Info[MonomerKindID];
     const varVector<double>* Parm=PList.get(prmKey);
     double DistSQ=DEval(*P[0],*P[1],Geo,' ');
     double ef;
@@ -59,8 +59,8 @@ namespace std {
                                    double&,double&)) {
     static fixVector<uint,3>  prmKey;
     prmKey[0]=iTag;
-    prmKey[1]=P[0]->MonomerKindID;
-    prmKey[2]=P[1]->MonomerKindID;
+    prmKey[1]=P[0]->Info[MonomerKindID];
+    prmKey[2]=P[1]->Info[MonomerKindID];
     const varVector<double>* Parm=PList.get(prmKey);
     double DistSQ=DEval(*P[0],*P[1],Geo,' ');
     double ee,ef;

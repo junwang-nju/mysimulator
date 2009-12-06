@@ -51,7 +51,7 @@ namespace std {
                       ParamPackType& cgbPrm) {
     double dof=0.;
     uint n=PropSet.size();
-    for(uint i=0;i<n;++i) dof+=sumABS(PropSet[i].dMask);
+    for(uint i=0;i<n;++i) dof+=sumABS(PropSet[i].DMask);
     gbPrm[BasicBV][DegreeFreedomBV]=dof;
     gbPrm[BasicBV][DeltaTIvRelaxTBV]=cgbPrm[BasicCommon][DeltaTime]/
                                      gbPrm[BasicBV][RelaxTimeBV];
@@ -71,7 +71,7 @@ namespace std {
     Pg.UnitMove.allocate(n);
     uint mType;
     for(uint i=0;i<n;++i) {
-      mType=PropSet[i].MonomerType;
+      mType=PropSet[i].Info[MonomerTypeID];
       if(mType==Particle) SetAsPBV(Pg.UnitMove[i]);
       else if(mType>NumberTypes)  myError("Unknown Monomer Types!");
     }

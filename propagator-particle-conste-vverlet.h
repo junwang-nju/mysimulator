@@ -31,7 +31,7 @@ namespace std {
   void PEV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
                        const ParamPackType& cgbPrm, ParamPackType& mnPrm) {
     mnPrm[BasicPEV][HfDeltaTIvMPEV]=cgbPrm[BasicCommon][HalfDeltaTime]*
-                                    nProp.ivMass[0];
+                                    nProp.IMass[0];
   }
 
   void SetAsPEV(MonomerPropagator& MP) {

@@ -2,7 +2,7 @@
 #ifndef _Monomer_Propagator_H_
 #define _Monomer_Propagator_H_
 
-#include "property.h"
+#include "property-frame.h"
 
 namespace std {
 

@@ -65,7 +65,23 @@ namespace std {
     daxpy_(&nshift,const_cast<double*>(&s),const_cast<double*>(sfv)+sfoffset,
            &sfstep,v+offset,&step);
   }
-  
+
+  void vector_shift(uint* v, const uint& s, const uint* sfv, long nshift,
+                    int offset=iZero, int soffset=iZero, int sfoffset=iZero,
+                    long step=lOne, long sstep=lZero, long sfstep=lOne) {
+    assert((soffset==iZero)&&(sstep==lZero));
+    for(int i=0,iv=offset,ifv=sfoffset;i<nshift;++i,iv+=step,ifv+=sfstep)
+      v[iv]+=s*sfv[ifv];
+  }
+
+  void vector_shift(uint* v, const uint* s, const uint* sfv, long nshift,
+                    int offset=iZero, int soffset=iZero, int sfoffset=iZero,
+                    long step=lOne, long sstep=lZero, long sfstep=lOne) {
+    for(int i=0,iv=offset,isv=soffset,ifv=sfoffset;i<nshift;
+        ++i,iv+=step,isv+=sstep,ifv+=sfstep)
+      v[iv]+=s[isv]*sfv[ifv];
+  }
+
   template <typename T>
   void vector_scaleshift(T* v, const T& s, const T& sf, const T* sfv,
                          const T* sv, long nscaleshift, int offset=iZero,

@@ -48,12 +48,12 @@ namespace std {
   void PLV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
                        const ParamPackType& cgbPrm, ParamPackType& mnPrm) {
     mnPrm[BasicPLV][HfDeltaTIvMPLV]=cgbPrm[BasicCommon][HalfDeltaTime]*
-                                    nProp.ivMass[0];
+                                    nProp.IMass[0];
     mnPrm[BasicPLV][FrictionCoefPLV]=mnPrm[BasicPLV][HydrodynamicRadiusPLV]*
                                      gbPrm[BasicLV][ViscosityCoefLV];
     mnPrm[BasicPLV][RandomVelocitySizePLV]=
         sqrt(mnPrm[BasicPLV][FrictionCoefPLV]*gbPrm[BasicLV][TempeDeltaTLV])*
-        nProp.ivMass[0];
+        nProp.IMass[0];
     double tmd;
     tmd=mnPrm[BasicPLV][HfDeltaTIvMPLV]*mnPrm[BasicPLV][FrictionCoefPLV];
     mnPrm[BasicPLV][FactorBeforeGPLV]=1.-tmd;

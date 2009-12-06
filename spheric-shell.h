@@ -2,7 +2,7 @@
 #ifndef _Spheric_Shell_H_
 #define _Spheric_Shell_H_
 
-#include  "property.h"
+#include  "property-frame.h"
 
 namespace std {
 
@@ -16,6 +16,7 @@ namespace std {
 
   };
 
+  /*
   Property& allocate_as_SphericShell(Property& Prop, uint Dim, uint Flag=0U) {
     Prop.MonomerType=SphericShell;
     Prop.Info.allocate(1);
@@ -31,6 +32,7 @@ namespace std {
       Prop.ivMass.allocate(2);
     }
   }
+  */
 
 }
 

@@ -2,7 +2,7 @@
 #ifndef _Interaction_for_List_H_
 #define _Interaction_for_List_H_
 
-#include "property.h"
+#include "property-frame.h"
 #include "id-list.h"
 
 namespace std {

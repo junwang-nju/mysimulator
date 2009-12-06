@@ -5,7 +5,8 @@
 #include "btree.h"
 #include "hash-func.h"
 #include "param-list.h"
-#include "property.h"
+#include "property-frame.h"
+#include "property-list.h"
 #include "particle.h"
 #include "distance-storage.h"
 #include "distance-evaluation.h"
@@ -28,7 +29,7 @@
 #include "interaction-parpar-coulomb.h"
 #include "interaction-parpar-coulomb-wde.h"
 #include "interaction-parpar-quad-harm.h"
-#include "minimizer.h"
+//#include "minimizer.h"
 
 #include "vector-base.h"
 #include "ref-vector.h"
@@ -122,25 +123,26 @@ int main() {
   const varVector<double>* vo=PL.get(PL.KeyList[2].Index);
   cout<<(*vo)[0]<<endl;
   cout<<(*vo)[1]<<endl;
-  cout<<"======================="<<endl;
 
-  Property Pa,Pb;
-  allocate_as_Particle(Pa,3);
-  allocate_as_Particle(Pb,3);
-  Pa.Coordinate[0]=0;
-  Pa.Coordinate[1]=0;
-  Pa.Coordinate[2]=0;
-  Pa.MonomerKindID=0;
-  Pa.Index=0;
-  Pb.Coordinate[0]=0;
-  Pb.Coordinate[1]=0;
-  Pb.Coordinate[2]=3;
-  Pb.MonomerKindID=0;
-  Pb.Index=2;
+  PropertyList Pa,Pb;
+  fixVector<uint,1> mType,mFlag;
+  mType[0]=Particle;
+  mFlag[0]=0U;
+  Pa.gAllocate(mType,mFlag,3);
+  Pb.gAllocate(mType,mFlag,3);
+  Pa[0].Coordinate[0]=0;
+  Pa[0].Coordinate[1]=0;
+  Pa[0].Coordinate[2]=0;
+  Pa[0].Info[MonomerKindID]=0;
+  Pa[0].Info[MonomerIndex]=0;
+  Pb[0].Coordinate[0]=0;
+  Pb[0].Coordinate[1]=0;
+  Pb[0].Coordinate[2]=3;
+  Pb[0].Info[MonomerKindID]=0;
+  Pb[0].Info[MonomerIndex]=2;
   FreeSpace FS;
   DistanceEvalwStorage<3> DEval;
   DEval.allocate_storage(3);
-  cout<<"======================="<<endl;
   
   ParamList prm;
   prm.KeyList.allocate(3);
@@ -172,24 +174,26 @@ int main() {
   prm.UpdateHashTree();
 
   double Energy=0.;
+
   varVector<Property*> P(2);
-  P[0]=&Pa;
-  P[1]=&Pb;
+  P[0]=&Pa[0];
+  P[1]=&Pb[0];
   E_ParPar_LJ612(P,prm,DEval,FS,Energy);
   cout<<Energy<<endl;
 
-  varVector<Property> PropSet(3);
-  allocate_as_Particle(PropSet[0],3);
-  allocate_as_Particle(PropSet[1],3);
-  allocate_as_Particle(PropSet[2],3);
+  PropertyList PropSet;
+  fixVector<uint,3> MSType,MSFlag;
+  MSType=Particle;
+  MSFlag=0U;
+  PropSet.gAllocate(MSType,MSFlag,3);
   PropSet[0].Coordinate[0]=0;
   PropSet[0].Coordinate[1]=0;
   PropSet[0].Coordinate[2]=0;
-  PropSet[0].Index=0;
+  PropSet[0].Info[MonomerIndex]=0;
   PropSet[2].Coordinate[0]=0;
   PropSet[2].Coordinate[1]=0;
   PropSet[2].Coordinate[2]=3;
-  PropSet[2].Index=2;
+  PropSet[2].Info[MonomerIndex]=2;
   IDList<DistanceEvalwStorage<3>,FreeSpace> idl;
   idl.set_interaction(ParticleParticle_LJ612);
   idl.allocate(1,2);
@@ -198,27 +202,29 @@ int main() {
   E_List(PropSet,prm,idl,DEval,FS,Energy);
   cout<<Energy<<endl;
 
-  varVector<Property> PS(2);
-  for(uint i=0;i<2U;++i)  allocate_as_Particle(PS[i],3,
-      Particle_VelocityEnable|Particle_GradientEnable|Particle_MassEnable);
+  PropertyList PS;
+  fixVector<uint,2> PSType,PSFlag;
+  PSType=Particle;
+  PSFlag=(Particle_VelocityEnable|Particle_GradientEnable|Particle_MassEnable);
+  PS.gAllocate(PSType,PSFlag,3);
   PS[0].Coordinate=0.;
   PS[1].Coordinate=0.; PS[1].Coordinate[0]=1.;
   PS[0].Velocity=0.;
   PS[1].Velocity=0.;
-  PS[0].Index=0;
-  PS[1].Index=1;
-  PS[0].MonomerKindID=0;
-  PS[1].MonomerKindID=1;
+  PS[0].Info[MonomerIndex]=0;
+  PS[1].Info[MonomerIndex]=1;
+  PS[0].Info[MonomerKindID]=0;
+  PS[1].Info[MonomerKindID]=1;
   PS[0].Mass=1.;
   PS[1].Mass=1.;
-  PS[0].ivMass=1.;
-  PS[1].ivMass=1.;
+  PS[0].IMass=1.;
+  PS[1].IMass=1.;
 
   varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> > IDLS(1);
   IDLS[0].set_interaction(ParticleParticle_Harmonic);
   IDLS[0].allocate(1,2);
   IDLS[0].List[0][0]=0;
-  IDLS[0].List[0][0]=1;
+  IDLS[0].List[0][1]=1;
   Energy=0.;
 
   ParamList HPList;
@@ -267,6 +273,7 @@ int main() {
   PgS.SyncAll(PS);
   PgS.OutFunc=OutputFunc;
   PgS.Run(PS,HPList,IDLS,DEval2,FS,cout);
+
 
   /// the test for random generator is commented to speed the test
   /*
@@ -328,6 +335,7 @@ int main() {
   }
   PgL.Run(PS,HPList,IDLS,DEval2,FS,cout);
 
+  /*
   varVector<Property> PSM(2);
   for(uint i=0;i<2U;++i)
     allocate_as_Particle(PSM[i],3,Particle_GradientEnable);
@@ -401,14 +409,6 @@ int main() {
 
   CMK.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
 
-  /*
-  CMK.Update(0.01,PSM,Drc,CMK.MinSys,CMK.MinE,CMK.MinPrj);
-  cout<<CMK.MinSys[0].Coordinate<<endl;
-  cout<<CMK.MinSys[1].Coordinate<<endl;
-  cout<<CMK.MinE<<endl;
-  cout<<CMK.MinPrj<<endl;
-  */
-
   CMK.MinimizeAlongLine(Drc);
   cout<<CMK.MinSys[0].Coordinate<<endl;
   cout<<CMK.MinSys[1].Coordinate<<endl;
@@ -429,6 +429,7 @@ int main() {
   cout<<CGM.MinSys[1].Coordinate<<endl;
   cout<<CGM.MinE<<endl;
   cout<<CGM.MinGCount<<endl;
+  */
 
   return 1;
 }

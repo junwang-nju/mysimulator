@@ -37,7 +37,7 @@ namespace std {
   void PBV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
                        const ParamPackType& cgbPrm, ParamPackType& mnPrm) {
     mnPrm[BasicPBV][HfDeltaTIvMPBV]=cgbPrm[BasicCommon][HalfDeltaTime]*
-                                    nProp.ivMass[0];
+                                    nProp.IMass[0];
   }
 
   void SetAsPBV(MonomerPropagator& MP) {

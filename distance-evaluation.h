@@ -2,7 +2,7 @@
 #ifndef _Distance_Evaluation_H_
 #define _Distance_Evaluation_H_
 
-#include "property.h"
+#include "property-frame.h"
 #include "geometry.h"
 #include "vector-op.h"
 #include "distance-storage.h"
@@ -184,7 +184,8 @@ namespace std {
       template <typename GeomType>
       double operator()(const Property& pa, const Property& pb,
                         const GeomType& Geo) {
-        DistanceSqStorage::Item &DItem=DistSQPack(pa.Index,pb.Index);
+        DistanceSqStorage::Item &DItem=DistSQPack(pa.Info[MonomerIndex],
+                                                  pb.Info[MonomerIndex]);
         if(DItem.Status!=DistSQPack.GStatus) {
           DItem.DistanceSQ=GetDistSQ(pa,pb,Geo);
           DItem.Status=DistSQPack.GStatus;
@@ -196,7 +197,8 @@ namespace std {
       template <typename GeomType>
       double operator()(const Property& pa, const Property& pb,
                         const GeomType& Geo, const char) {
-        DistanceSqStorage::Item &DItem=DistSQPack(pa.Index,pb.Index);
+        DistanceSqStorage::Item &DItem=DistSQPack(pa.Info[MonomerIndex],
+                                                  pb.Info[MonomerIndex]);
         if(DItem.Status!=DistSQPack.GStatus) {
           DItem.DistanceSQ=GetDistSQ(pa,pb,Geo);
           DItem.Status=DistSQPack.GStatus;
