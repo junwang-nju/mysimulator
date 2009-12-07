@@ -9,6 +9,12 @@
 
 namespace std {
 
+  enum PropertyFlag {
+    VelocityEnable=1U,
+    GradientEnable=2U,
+    MassEnable=4U
+  };
+  
   enum PropertyFeatureList {
       property_info=0,
       property_coordinate,
@@ -27,7 +33,8 @@ namespace std {
   enum PropertyInfoFeature {
     MonomerTypeID=0,
     MonomerKindID,
-    MonomerIndex
+    MonomerIndex,
+    MonomerDimension
   };
 
   class Property {
@@ -56,6 +63,14 @@ namespace std {
         myError("property copier is prohibited!");
         return *this;
       }
+
+      void Activate() { Mask=1U; DMask=1.; }
+
+      void DeActivate() { Mask=0U; DMask=0.; }
+
+      void Activate(const uint& I) { Mask[I]=1U;  DMask[I]=1.; }
+
+      void DeActivate(const uint& I) { Mask[I]=0U;  DMask[I]=0.; }
 
   };
 

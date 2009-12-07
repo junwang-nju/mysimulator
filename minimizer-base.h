@@ -2,13 +2,31 @@
 #ifndef _Minimizer_Base_H_
 #define _Minimizer_Base_H_
 
-#include "property-op.h"
+#include "property-list.h"
 #include "interaction-4listset.h"
 #include "ref-vector.h"
 #include <cmath>
 
 namespace std {
 
+  double MinimalStep4(const VectorBase<double>& X,
+                      const VectorBase<double>& Dirc,
+                      const VectorBase<uint>& Fg) {
+    uint n=X.size();
+    assert(n==Dirc.size());
+    assert(n==Fg.size());
+    double MinStep=0.,tmd,ndeg=0.;
+    for(uint i=0;i<n;++i) {
+      if(Fg[i]==0)  continue;
+      tmd=fabs(X[i]);
+      tmd=(tmd<1.0?Dirc[i]:Dirc[i]/tmd);
+      MinStep+=tmd*tmd;
+      ndeg+=1.;
+    }
+    return DRelDelta*sqrt(ndeg/MinStep); 
+  }
+
+  /*
   double MinimalStep4(const varVector<Property>& PropSet,
                       const varVector<varVector<double> >& Dirc) {
     uint n=PropSet.size(),dn;
@@ -29,26 +47,53 @@ namespace std {
     }
     return DRelDelta*sqrt(static_cast<double>(ndeg)/MinStep); 
   }
+  */
 
   template <typename DistEvalObj, typename GeomType>
   class MinimizerKern {
 
+    protected:
+      void allocateSystem4Minimize(PropertyList& PList,
+                                   const VectorBase<Property>& iPList) {
+        uint n=iPList.size();
+        varVector<uint> MType(n),MFlag(n);
+        for(uint i=0;i<n;++i) {
+          MType[i]=iPList[i].Info[MonomerTypeID];
+          MFlag[i]=GradientEnable;
+        }
+        PList.gAllocate(MType,MFlag,iPList[0].Info[MonomerDimension]);
+      }
+
+      void copySystem4Minimization(PropertyList& PList,
+                                   const PropertyList& iPList) {
+        // here assume that PList and iPList have the same structure
+        PList.gInfo=iPList.gInfo;
+        PList.gCoordinate=iPList.gCoordinate;
+        PList.gMask=iPList.gMask;
+        PList.gDMask=iPList.gDMask;
+        PList.gGradient=iPList.gGradient;
+        if(PList.gInCoordinate.isAvailable())
+          PList.gInCoordinate=iPList.gInCoordinate;
+        if(PList.gInGradient.isAvailable())
+          PList.gInGradient=iPList.gInGradient;
+      }
+
     public:
 
-      refVector<Property> runSys;
+      PropertyList*       runSys;
 
-      varVector<Property> MinSys;      
+      PropertyList        MinSys;      
       
       double              MinE;
       
-      ParamList           *runParamPtr;
+      ParamList*          runParamPtr;
 
-      varVector<IDList<DistEvalObj,GeomType> >
-                          *runIDLSPtr;
+      varVector<IDList<DistEvalObj,GeomType> >*
+                          runIDLSPtr;
       
-      DistEvalObj         *runDEvalPtr;
+      DistEvalObj*        runDEvalPtr;
       
-      GeomType            *runGeoPtr;
+      GeomType*           runGeoPtr;
       
       double              MinPrj;
       
@@ -64,16 +109,12 @@ namespace std {
           MinScale(0.1) {
       } 
 
-      void Import(const varVector<Property>& vProp, const DistEvalObj& DEval,
+      void Import(const PropertyList& iPList, const DistEvalObj& DEval,
                   const ParamList& PList,
                   const varVector<IDList<DistEvalObj,GeomType> >& IDLS,
                   const GeomType& Geo, const double& E) {
-        uint n=vProp.size();
-        MinSys.allocate(n);
-        for(uint i=0;i<n;++i) {
-          copy_minimize_structure(MinSys[i],vProp[i]);
-          copy_minimize_data(MinSys[i],vProp[i]);
-        }
+        allocateSystem4Minimize(MinSys,iPList);
+        copySystem4Minimization(MinSys,iPList);
         runDEvalPtr=const_cast<DistEvalObj*>(&DEval);
         runParamPtr=const_cast<ParamList*>(&PList);
         runIDLSPtr
@@ -99,52 +140,41 @@ namespace std {
       
     private:
     
-      void Update(const double& runStep, const varVector<Property>& Orig,
-                  const varVector<varVector<double> >& Dirc,
-                  varVector<Property>& rSys, double& E, double& Prj) {
-        uint n=rSys.size();
-        for(uint i=0;i<n;++i) {
-          rSys[i].Coordinate=Orig[i].Coordinate;
-          rSys[i].Coordinate.shift(runStep,Dirc[i]);
-          rSys[i].Gradient=0.;
-        }
-        this->runSys.refer(rSys);
+      void Update(const double& runStep, const VectorBase<double>& Orig,
+                  const VectorBase<double>& Dirc,
+                  PropertyList& rSys, double& E, double& Prj) {
+        rSys.gCoordinate=Orig;
+        rSys.gCoordinate.shift(runStep,Dirc);
+        rSys.gGradient=0.;
         this->runDEvalPtr->Update();
         E=0.;
-        EG_ListSet(this->runSys,*(this->runParamPtr),*(this->runIDLSPtr),
+        EG_ListSet(rSys,*(this->runParamPtr),*(this->runIDLSPtr),
                    *(this->runDEvalPtr),*(this->runGeoPtr),E);
         ++(this->MinGCount);
-        Prj=0.;
-        for(uint i=0;i<n;++i) Prj+=dot(rSys[i].Gradient,Dirc[i]);
+        Prj=dot(rSys.gGradient,Dirc);
       }
 
-      varVector<Property> UppSys, LowSys, MidSys;
+      PropertyList  UppSys, LowSys, MidSys;
 
-      double              UppE,   LowE,   MidE;
+      double        UppE,   LowE,   MidE;
 
-      double              UppP,   LowP,   MidP;
+      double        UppP,   LowP,   MidP;
 
     public:
 
       void SetStep(const double& step) { Step=step; }
 
-      void Import(const varVector<Property>& vProp, const DistEvalObj& DEval,
+      void Import(const PropertyList& iPList, const DistEvalObj& DEval,
                   const ParamList& PList,
                   const varVector<IDList<DistEvalObj,GeomType> >& IDLS,
                   const GeomType& Geo, const double& E) {
-        static_cast<ParentType*>(this)->Import(vProp,DEval,PList,IDLS,Geo,E);
-        uint n=vProp.size();
-        UppSys.allocate(n);
-        LowSys.allocate(n);
-        MidSys.allocate(n);
-        for(uint i=0;i<n;++i) {
-          copy_minimize_structure(UppSys[i],vProp[i]);
-          copy_minimize_structure(LowSys[i],vProp[i]);
-          copy_minimize_structure(MidSys[i],vProp[i]);
-          copy_minimize_data(UppSys[i],vProp[i]);
-          copy_minimize_data(LowSys[i],vProp[i]);
-          copy_minimize_data(MidSys[i],vProp[i]);
-        }
+        static_cast<ParentType*>(this)->Import(iPList,DEval,PList,IDLS,Geo,E);
+        this->allocateSystem4Minimize(UppSys,iPList);
+        this->allocateSystem4Minimize(LowSys,iPList);
+        this->allocateSystem4Minimize(MidSys,iPList);
+        this->copySystem4Minimization(UppSys,iPList);
+        this->copySystem4Minimization(LowSys,iPList);
+        this->copySystem4Minimization(MidSys,iPList);
       }
 
       int MinimizeAlongLine(const varVector<varVector<double> >& Dirc) {

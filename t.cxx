@@ -29,7 +29,7 @@
 #include "interaction-parpar-coulomb.h"
 #include "interaction-parpar-coulomb-wde.h"
 #include "interaction-parpar-quad-harm.h"
-//#include "minimizer.h"
+#include "minimizer-base.h"
 
 #include "vector-base.h"
 #include "ref-vector.h"
@@ -205,7 +205,7 @@ int main() {
   PropertyList PS;
   fixVector<uint,2> PSType,PSFlag;
   PSType=Particle;
-  PSFlag=(Particle_VelocityEnable|Particle_GradientEnable|Particle_MassEnable);
+  PSFlag=(VelocityEnable|GradientEnable|MassEnable);
   PS.gAllocate(PSType,PSFlag,3);
   PS[0].Coordinate=0.;
   PS[1].Coordinate=0.; PS[1].Coordinate[0]=1.;
@@ -335,18 +335,20 @@ int main() {
   }
   PgL.Run(PS,HPList,IDLS,DEval2,FS,cout);
 
-  /*
-  varVector<Property> PSM(2);
-  for(uint i=0;i<2U;++i)
-    allocate_as_Particle(PSM[i],3,Particle_GradientEnable);
+  PropertyList PSM;
+  fixVector<uint,2> PSMType, PSMFlag;
+  PSMType=Particle;
+  PSMFlag=GradientEnable;
+  PSM.gAllocate(PSMType,PSMFlag,3);
   PSM[0].Coordinate=0.;
   PSM[1].Coordinate=0.;   PSM[1].Coordinate[0]=1.;
   for(uint i=0;i<2U;++i)  PSM[i].Activate();
-  PSM[0].Index=0;
-  PSM[1].Index=1;
-  PSM[0].MonomerKindID=0;
-  PSM[1].MonomerKindID=1;
+  PSM[0].Info[MonomerIndex]=0;
+  PSM[1].Info[MonomerIndex]=1;
+  PSM[0].Info[MonomerKindID]=0;
+  PSM[1].Info[MonomerKindID]=1;
 
+  /*
   varVector<varVector<double> > Drc(2);
   for(uint i=0;i<2U;++i)  Drc[i].allocate(3);
   Drc[0]=0.;

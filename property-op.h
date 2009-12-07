@@ -2,10 +2,11 @@
 #ifndef _Property_Operation_H_
 #define _Property_Operation_H_
 
-#include "particle.h"
+//#include "particle.h"
 
 namespace std {
 
+  /*
   void copy_structure(Property& P, const Property& iP) {
     uint flag=0;
     if(iP.MonomerType==Particle) {
@@ -70,6 +71,7 @@ namespace std {
       P.Gradient=iP.Gradient;
     } else myError("Unknown Monomer Type!");
   }
+  */
 
 }
 

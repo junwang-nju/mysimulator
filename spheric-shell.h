@@ -6,16 +6,6 @@
 
 namespace std {
 
-  enum SphericShellPropertyFlag {
-
-    SphericShell_VelocityEnable=1U,
-
-    SphericShell_GradientEnable=2U,
-
-    SphericShell_MassEnable=4U
-
-  };
-
   /*
   Property& allocate_as_SphericShell(Property& Prop, uint Dim, uint Flag=0U) {
     Prop.MonomerType=SphericShell;

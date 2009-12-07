@@ -50,9 +50,9 @@ namespace std {
             size[i][property_coordinate]=Dim;
             size[i][property_mask]=Dim;
             size[i][property_dmask]=Dim;
-            if(m&Particle_VelocityEnable) size[i][property_velocity]=Dim;
-            if(m&Particle_GradientEnable) size[i][property_gradient]=Dim;
-            if(m&Particle_MassEnable) {
+            if(m&VelocityEnable) size[i][property_velocity]=Dim;
+            if(m&GradientEnable) size[i][property_gradient]=Dim;
+            if(m&MassEnable) {
               size[i][property_mass]=particle_mass_size;
               size[i][property_imass]=particle_imass_size;
             }
@@ -118,8 +118,10 @@ namespace std {
             nowProp->IMass.refer(gIMass,offset[i][property_imass],
                                         size[i][property_imass]);
         }
-        for(uint i=0;i<n;++i)
+        for(uint i=0;i<n;++i) {
           this->operator[](i).Info[MonomerTypeID]=MerTypeList[i];
+          this->operator[](i).Info[MonomerDimension]=Dim;
+        }
         return *this;
       }
 
