@@ -26,29 +26,6 @@ namespace std {
     return DRelDelta*sqrt(ndeg/MinStep); 
   }
 
-  /*
-  double MinimalStep4(const varVector<Property>& PropSet,
-                      const varVector<varVector<double> >& Dirc) {
-    uint n=PropSet.size(),dn;
-    long ndeg=0;
-    Property const *nowP;
-    double MinStep=0, tmd, tmdc;
-    for(uint i=0;i<n;++i) {
-      nowP=&PropSet[i];
-      dn=Dirc[i].size();
-      for(uint j=0;j<dn;++j) {
-        if(nowP->Mask[j]==0) continue;
-        tmd=fabs(nowP->Coordinate[j]);
-        tmdc=Dirc[i][j];
-        tmd=(tmd<1.0?tmdc:tmdc/tmd);
-        MinStep+=tmd*tmd;
-      }
-      ndeg+=dn;
-    }
-    return DRelDelta*sqrt(static_cast<double>(ndeg)/MinStep); 
-  }
-  */
-
   template <typename DistEvalObj, typename GeomType>
   class MinimizerKern {
 
@@ -80,8 +57,6 @@ namespace std {
 
     public:
 
-      PropertyList*       runSys;
-
       PropertyList        MinSys;      
       
       double              MinE;
@@ -104,7 +79,7 @@ namespace std {
       double              MinScale;
       
       MinimizerKern()
-        : runSys(), MinSys(), MinE(0.), runParamPtr(NULL), runDEvalPtr(NULL),
+        : MinSys(), MinE(0.), runParamPtr(NULL), runDEvalPtr(NULL),
           runGeoPtr(NULL), MinPrj(0.), MinMove(0.), MinGCount(0),
           MinScale(0.1) {
       } 
