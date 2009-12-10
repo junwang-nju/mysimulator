@@ -20,42 +20,35 @@ namespace std {
 
     private:
 
-      varVector<varVector<double> > Dirc;
+      varVector<double> Dirc;
 
-      varVector<varVector<double> > OldMinG;
+      varVector<double> OldMinG;
 
     public:
 
-      void Import(const varVector<Property>& vProp, const DistEvalObj& DEval,
+      void Import(const PropertyList& vProp, const DistEvalObj& DEval,
                   const ParamList& PList,
                   const varVector<IDList<DistEvalObj,GeomType> >& IDLS,
                   const GeomType& Geo, const double& E) {
         static_cast<ParentType*>(this)->Import(vProp,DEval,PList,IDLS,Geo,E);
-        uint n=vProp.size();
+        uint n=vProp.gDProperty[gCoordinate].size();
         Dirc.allocate(n);
         OldMinG.allocate(n);
-        for(uint i=0;i<n;++i) {
-          Dirc[i].allocate(vProp[i].Coordinate.size());
-          OldMinG[i].allocate(vProp[i].Coordinate.size());
-        }
       }
 
       int Go(const uint& MaxIter=DefaultMaxIter) {
         this->MinGCount=0;
-        uint n=Dirc.size();
-        for(uint i=0;i<n;++i) Dirc[i]=0.;
+        Dirc=0.;
         bool isSteep=true;
         double beta=0.;
         double fnorm2,tmd;
-        fnorm2=0;
-        for(uint i=0;i<n;++i) fnorm2+=normSQ(this->MinSys[i].Gradient);
+        fnorm2=normSQ(this->MinSys.gDProperty[gGradient]);
         if(fnorm2<=0.)  return 1;
         double oldfnorm2;
         this->Step=this->MinScale/sqrt(fnorm2);
         uint mStatus=0;
         for(uint nEval=0;nEval<MaxIter;++nEval) {
-          for(uint i=0;i<n;++i)
-            Dirc[i].scaleshift(beta,-1.,this->MinSys[i].Gradient);
+          Dirc.scaleshift(beta,-1.,this->MinSys.gDProperty[gGradient]);
           if(this->MinPrj>0) {
             isSteep=true;
             beta=0.;
@@ -63,12 +56,13 @@ namespace std {
             continue;
           }
           if(this->Step<=0) {
-            tmd=0;
-            for(uint i=0;i<n;++i) tmd+=normSQ(Dirc[i]);
+            tmd=normSQ(Dirc);
             this->Step=this->MinScale/sqrt(tmd);
           }
-          if(this->Step<MinimalStep4(this->MinSys,Dirc))  return 1;
-          for(uint i=0;i<n;++i) OldMinG[i]=this->MinSys[i].Gradient;
+          if(this->Step<MinimalStep4(this->MinSys.gDProperty[gCoordinate],
+                                     Dirc,this->MinSys.gIProperty[gMask]))
+            return 1;
+          OldMinG=this->MinSys.gDProperty[gGradient];
           mStatus=this->MinimizeAlongLine(Dirc);
           if(mStatus==2) {
             if(isSteep)   return 1;
@@ -79,12 +73,8 @@ namespace std {
             }
           }
           oldfnorm2=fnorm2;
-          fnorm2=0.;
-          tmd=0;
-          for(uint i=0;i<n;++i) {
-            fnorm2+=normSQ(this->MinSys[i].Gradient);
-            tmd+=dot(this->MinSys[i].Gradient,OldMinG[i]);
-          }
+          fnorm2=normSQ(this->MinSys.gDProperty[gGradient]);
+          tmd=dot(this->MinSys.gDProperty[gGradient],OldMinG);
           beta=(fnorm2-tmd)/oldfnorm2;
           isSteep=false;
           if(fabs(beta)>5.0) {

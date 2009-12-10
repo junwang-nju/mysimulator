@@ -31,6 +31,7 @@
 #include "interaction-parpar-quad-harm.h"
 #include "minimizer-base.h"
 #include "minimizer-steep.h"
+#include "minimizer-conjg.h"
 
 #include "vector-base.h"
 #include "ref-vector.h"
@@ -424,7 +425,6 @@ int main() {
   cout<<SDM.MinE<<endl;
   cout<<SDM.MinGCount<<endl;
 
-  /*
   ConjGradientMin<DistanceEvalwStorage<3>,FreeSpace>  CGM;
   CGM.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
   CGM.Go();
@@ -432,7 +432,6 @@ int main() {
   cout<<CGM.MinSys[1].Coordinate<<endl;
   cout<<CGM.MinE<<endl;
   cout<<CGM.MinGCount<<endl;
-  */
 
   return 1;
 }
