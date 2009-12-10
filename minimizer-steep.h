@@ -20,51 +20,40 @@ namespace std {
 
     private:
 
-      varVector<varVector<double> >   Dirc;
+      varVector<double>   Dirc;
 
     public:
 
-      void Import(const varVector<Property>& vProp, const DistEvalObj& DEval,
+      void Import(const PropertyList& vProp, const DistEvalObj& DEval,
                   const ParamList& PList,
                   const varVector<IDList<DistEvalObj,GeomType> >& IDLS,
                   const GeomType& Geo, const double& E) {
         static_cast<ParentType*>(this)->Import(vProp,DEval,PList,IDLS,Geo,E);
-        uint n=vProp.size();
-        Dirc.allocate(n);
-        for(uint i=0;i<n;++i) Dirc[i].allocate(vProp[i].Coordinate.size());
+        Dirc.allocate(vProp.gDProperty[gCoordinate].size());
       }
 
       int Go(const uint& MaxIter=DefaultMaxIter) {
         this->MinGCount=0;
         uint mStatus;
         double tmd;
-        tmd=0;
-        uint n=Dirc.size();
-        for(uint i=0;i<n;++i) {
-          Dirc[i]=this->MinSys[i].Gradient;
-          Dirc[i].scale(-1.);
-          tmd+=normSQ(Dirc[i]);
-        }
-        tmd=sqrt(tmd);
+        Dirc=this->MinSys.gDProperty[gGradient];
+        Dirc*=-1.;
+        tmd=normSQ(Dirc);
         if(tmd<=0)    return 1;
-        this->MinPrj=-tmd*tmd;
-        this->Step=this->MinScale/tmd;
+        this->MinPrj=-tmd;
+        this->Step=this->MinScale/sqrt(tmd);
         mStatus=0;
         for(uint nEval=0;nEval<MaxIter;++nEval) {
-          if(this->Step<=0) {
-            tmd=0.;
-            for(uint i=0;i<n;++i)   tmd+=normSQ(Dirc[i]);
+          if(this->Step<=0)
             this->Step=this->MinScale/sqrt(tmd);
-          }
-          if(this->Step<MinimalStep4(this->MinSys,Dirc))  return 1;
+          if(this->Step<MinimalStep4(this->MinSys.gDProperty[gCoordinate],
+                                     Dirc,this->MinSys.gIProperty[gMask]))
+            return 1;
           mStatus=this->MinimizeAlongLine(Dirc);
           if(mStatus==2)    return  1;
-          tmd=0.;
-          for(uint i=0;i<n;++i) {
-            Dirc[i]=this->MinSys[i].Gradient;
-            Dirc[i].scale(-1.);
-            tmd+=normSQ(Dirc[i]);
-          }
+          Dirc=this->MinSys.gDProperty[gGradient];
+          Dirc*=-1.;
+          tmd=normSQ(Dirc);
           this->MinPrj=-tmd;
         }
         return 0;

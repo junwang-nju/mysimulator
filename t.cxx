@@ -30,6 +30,7 @@
 #include "interaction-parpar-coulomb-wde.h"
 #include "interaction-parpar-quad-harm.h"
 #include "minimizer-base.h"
+#include "minimizer-steep.h"
 
 #include "vector-base.h"
 #include "ref-vector.h"
@@ -348,15 +349,14 @@ int main() {
   PSM[0].Info[MonomerKindID]=0;
   PSM[1].Info[MonomerKindID]=1;
 
-  /*
-  varVector<varVector<double> > Drc(2);
-  for(uint i=0;i<2U;++i)  Drc[i].allocate(3);
-  Drc[0]=0.;
-  Drc[1]=0.;
-  Drc[0][0]=-1.;
-  Drc[1][1]=1.;
+  cout<<PSM.gDProperty[gCoordinate]<<endl;
 
-  cout<<MinimalStep4(PSM,Drc)<<endl;
+  fixVector<double,6> Drc;
+  Drc=0.;
+  Drc[0]=-1.;
+  Drc[4]=1.;
+
+  cout<<MinimalStep4(PSM.gDProperty[gCoordinate],Drc,PSM.gIProperty[gMask])<<endl;
 
   ParamList MPList;
   MPList.KeyList.allocate(4);
@@ -383,7 +383,7 @@ int main() {
   MIDLS[0].List[0][0]=1;
 
   Energy=0.;
-  for(uint i=0;i<2U;++i)  PSM[i].Gradient=0.;
+  PSM.gDProperty[gGradient]=0.;
   DEval2.Update();
   EG_ListSet(PSM,MPList,MIDLS,DEval2,FS,Energy);
   cout<<PSM[0].Gradient<<endl;
@@ -424,6 +424,7 @@ int main() {
   cout<<SDM.MinE<<endl;
   cout<<SDM.MinGCount<<endl;
 
+  /*
   ConjGradientMin<DistanceEvalwStorage<3>,FreeSpace>  CGM;
   CGM.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
   CGM.Go();

@@ -44,15 +44,17 @@ namespace std {
       void copySystem4Minimization(PropertyList& PList,
                                    const PropertyList& iPList) {
         // here assume that PList and iPList have the same structure
-        PList.gInfo=iPList.gInfo;
-        PList.gCoordinate=iPList.gCoordinate;
-        PList.gMask=iPList.gMask;
-        PList.gDMask=iPList.gDMask;
-        PList.gGradient=iPList.gGradient;
-        if(PList.gInCoordinate.isAvailable())
-          PList.gInCoordinate=iPList.gInCoordinate;
-        if(PList.gInGradient.isAvailable())
-          PList.gInGradient=iPList.gInGradient;
+        PList.gIProperty[gInfo]=iPList.gIProperty[gInfo];
+        PList.gDProperty[gCoordinate]=iPList.gDProperty[gCoordinate];
+        PList.gIProperty[gMask]=iPList.gIProperty[gMask];
+        PList.gDProperty[gDMask]=iPList.gDProperty[gDMask];
+        PList.gDProperty[gGradient]=iPList.gDProperty[gGradient];
+        if(PList.gDProperty[gInCoordinate].isAvailable())
+          PList.gDProperty[gInCoordinate]=
+              iPList.gDProperty[gInCoordinate];
+        if(PList.gDProperty[gInGradient].isAvailable())
+          PList.gDProperty[gInGradient]=
+              iPList.gDProperty[gInGradient];
       }
 
     public:
@@ -118,15 +120,15 @@ namespace std {
       void Update(const double& runStep, const VectorBase<double>& Orig,
                   const VectorBase<double>& Dirc,
                   PropertyList& rSys, double& E, double& Prj) {
-        rSys.gCoordinate=Orig;
-        rSys.gCoordinate.shift(runStep,Dirc);
-        rSys.gGradient=0.;
+        rSys.gDProperty[gCoordinate]=Orig;
+        rSys.gDProperty[gCoordinate].shift(runStep,Dirc);
+        rSys.gDProperty[gGradient]=0.;
         this->runDEvalPtr->Update();
         E=0.;
         EG_ListSet(rSys,*(this->runParamPtr),*(this->runIDLSPtr),
                    *(this->runDEvalPtr),*(this->runGeoPtr),E);
         ++(this->MinGCount);
-        Prj=dot(rSys.gGradient,Dirc);
+        Prj=dot(rSys.gDProperty[gGradient],Dirc);
       }
 
       PropertyList  UppSys, LowSys, MidSys;
@@ -152,9 +154,10 @@ namespace std {
         this->copySystem4Minimization(MidSys,iPList);
       }
 
-      int MinimizeAlongLine(const varVector<varVector<double> >& Dirc) {
+      int MinimizeAlongLine(const VectorBase<double>& Dirc) {
         double a=0., b, c=Step;
-        Update(Step,this->MinSys,Dirc,UppSys,UppE,UppP);
+        Update(Step,this->MinSys.gDProperty[gCoordinate],Dirc,
+               UppSys,UppE,UppP);
         double tmd;
         tmd=DSqrtRelDelta*fabs(this->MinE);
         if( (UppE<this->MinE) || ((UppP<0)&&(UppE<this->MinE+tmd)) ) {
@@ -165,15 +168,15 @@ namespace std {
           return 1;
         } else  Step*=Gold;
         uint nEval=0;
-        uint n=this->MinSys.size();
-        for(uint i=0;i<n;++i) copy_minimize_data(LowSys[i],this->MinSys[i]);
+        this->copySystem4Minimization(LowSys,this->MinSys);
         LowE=this->MinE;
         LowP=this->MinPrj;
         do {
           if( (LowP<0)&&(UppP>0) )  b=a+LowP*(a-c)/(UppP-LowP);
           else                      b=0.5*(a+c);
           if( (b<=a)||(b>=c) )      b=0.5*(a+c);
-          Update(b,this->MinSys,Dirc,MidSys,MidE,MidP);
+          Update(b,this->MinSys.gDProperty[gCoordinate],Dirc,
+                 MidSys,MidE,MidP);
           if(MidP>0) {
             c=b;
             UppSys.swap(MidSys);
