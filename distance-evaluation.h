@@ -2,7 +2,7 @@
 #ifndef _Distance_Evaluation_H_
 #define _Distance_Evaluation_H_
 
-#include "property-frame.h"
+#include "property.h"
 #include "geometry.h"
 #include "vector-op.h"
 #include "distance-storage.h"
@@ -42,8 +42,12 @@ namespace std {
         return operator()();
       }
 
-      fixVector<double,N>& operator()(const Property& pa, const Property& pb) {
-        return operator()(pa.Coordinate,pb.Coordinate);
+      template <template <typename> class VecTypeA,
+                template <typename> class VecTypeB>
+      fixVector<double,N>& operator()(const PropertyComponent<VecTypeA>& pa,
+                                      const PropertyComponent<VecTypeB>& pb) {
+        return operator()(static_cast<const VectorBase<double>&>(pa),
+                          static_cast<const VectorBase<double>&>(pb));
       }
 
       fixVector<double,N>& operator()(const VectorBase<double>& va,
@@ -52,10 +56,13 @@ namespace std {
         return operator()(va,vb);
       }
 
-      template <typename GeomType>
-      fixVector<double,N>& operator()(const Property& pa, const Property& pb,
+      template <template <typename> class VecTypeA,
+                template <typename> class VecTypeB, typename GeomType>
+      fixVector<double,N>& operator()(const PropertyComponent<VecTypeA>& pa,
+                                      const PropertyComponent<VecTypeB>& pb,
                                       const GeomType& Geo) {
-        return operator()(pa.Coordinate,pb.Coordinate,Geo);
+        return operator()(static_cast<const VectorBase<double>&>(pa),
+                          static_cast<const VectorBase<double>&>(pb),Geo);
       }
 
   };
@@ -91,8 +98,12 @@ namespace std {
         return normSQ(Direction()(va,vb)); 
       }
 
-      double operator()(const Property& pa, const Property& pb) {
-        return operator()(pa.Coordinate,pb.Coordinate);
+      template <template <typename> class VecTypeA,
+                template <typename> class VecTypeB>
+      double operator()(const PropertyComponent<VecTypeA>& pa,
+                        const PropertyComponent<VecTypeB>& pb) {
+        return operator()(static_cast<const VectorBase<double>&>(pa),
+                          static_cast<const VectorBase<double>&>(pb));
       }
 
       template <typename GeomType>
@@ -102,10 +113,13 @@ namespace std {
         return normSQ(Direction()(va,vb,Geo));
       }
 
-      template <typename GeomType>
-      double operator()(const Property& pa, const Property& pb,
+      template <template <typename> class VecTypeA,
+                template <typename> class VecTypeB, typename GeomType>
+      double operator()(const PropertyComponent<VecTypeA>& pa,
+                        const PropertyComponent<VecTypeB>& pb,
                         const GeomType& Geo) {
-        return operator()(pa.Coordinate,pb.Coordinate,Geo);
+        return operator()(static_cast<const VectorBase<double>&>(pa),
+                          static_cast<const VectorBase<double>&>(pb),Geo);
       }
 
   };
@@ -132,16 +146,22 @@ namespace std {
       const double& DistanceSQ() { return nowDistSQ; }
       
       const fixVector<double,N>& DisplaceVector() { return nowDisp; }
-      
-      template <typename GeomType>
-      double operator()(const Property& pa, const Property& pb,
+
+      template <template <typename> class VecTypeA,
+                template <typename> class VecTypeB, typename GeomType>
+      double operator()(const PropertyComponent<VecTypeA>& pa,
+                        const PropertyComponent<VecTypeB>& pb,
+                        const uint& aIdx, const uint& bIdx,
                         const GeomType& Geo) {
         nowDistSQ=GetDistSQ(pa,pb,Geo);
         return nowDistSQ;
       }
 
-      template <typename GeomType>
-      double operator()(const Property& pa, const Property& pb,
+      template <template <typename> class VecTypeA,
+                template <typename> class VecTypeB, typename GeomType>
+      double operator()(const PropertyComponent<VecTypeA>& pa,
+                        const PropertyComponent<VecTypeB>& pb,
+                        const uint& aIdx, const uint& bIdx,
                         const GeomType& Geo, const char) {
         nowDistSQ=GetDistSQ(pa,pb,Geo);
         nowDisp=GetDistSQ.Direction()();
@@ -164,7 +184,7 @@ namespace std {
       fixVector<double,N> nowDisp;
       
       DistanceSqStorage DistSQPack;
-      
+
     public:
 
       typedef DistanceEvalwStorage<N>   Type;
@@ -181,11 +201,13 @@ namespace std {
       
       const fixVector<double,N>& DisplaceVector() { return nowDisp; }
       
-      template <typename GeomType>
-      double operator()(const Property& pa, const Property& pb,
+      template <template <typename> class VecTypeA,
+                template <typename> class VecTypeB, typename GeomType>
+      double operator()(const PropertyComponent<VecTypeA>& pa,
+                        const PropertyComponent<VecTypeB>& pb,
+                        const uint& aIdx, const uint& bIdx,
                         const GeomType& Geo) {
-        DistanceSqStorage::Item &DItem=DistSQPack(pa.Info[MonomerIndex],
-                                                  pb.Info[MonomerIndex]);
+        DistanceSqStorage::Item &DItem=DistSQPack(aIdx,bIdx);
         if(DItem.Status!=DistSQPack.GStatus) {
           DItem.DistanceSQ=GetDistSQ(pa,pb,Geo);
           DItem.Status=DistSQPack.GStatus;
@@ -194,11 +216,13 @@ namespace std {
         return nowDistSQ;
       }
 
-      template <typename GeomType>
-      double operator()(const Property& pa, const Property& pb,
+      template <template <typename> class VecTypeA,
+                template <typename> class VecTypeB, typename GeomType>
+      double operator()(const PropertyComponent<VecTypeA>& pa,
+                        const PropertyComponent<VecTypeB>& pb,
+                        const uint& aIdx, const uint& bIdx,
                         const GeomType& Geo, const char) {
-        DistanceSqStorage::Item &DItem=DistSQPack(pa.Info[MonomerIndex],
-                                                  pb.Info[MonomerIndex]);
+        DistanceSqStorage::Item &DItem=DistSQPack(aIdx,bIdx);
         if(DItem.Status!=DistSQPack.GStatus) {
           DItem.DistanceSQ=GetDistSQ(pa,pb,Geo);
           DItem.Status=DistSQPack.GStatus;

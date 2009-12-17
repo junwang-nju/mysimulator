@@ -2,8 +2,8 @@
 #ifndef _ID_List_H_
 #define _ID_List_H_
 
-#include "interaction-type.h"
-#include "interaction.h"
+#include "property.h"
+#include "param-list.h"
 
 namespace std {
 
@@ -14,25 +14,31 @@ namespace std {
 
       uint interactionTag;
 
-      void (*efunc)(const VectorBase<Property*>&, const ParamList&,
-                    DistEvalObj&, const GeomType&,double&);
+      void (*efunc)(const VectorBase<PropertyComponent<refVector>*>&,
+                    const ParamList&,DistEvalObj&,const GeomType&,
+                    double&);
 
-      void (*gfunc)(VectorBase<Property*>&, const ParamList&,
-                    DistEvalObj&, const GeomType&);
+      void (*gfunc)(const VectorBase<PropertyComponent<refVector>*>&,
+                    const ParamList&,DistEvalObj&,const GeomType&,
+                    VectorBase<PropertyComponent<refVector>*>&);
 
-      void (*bfunc)(VectorBase<Property*>&, const ParamList&,
-                    DistEvalObj&, const GeomType&, double&);
+      void (*bfunc)(const VectorBase<PropertyComponent<refVector>*>&,
+                    const ParamList&,DistEvalObj&,const GeomType&,
+                    double&,VectorBase<PropertyComponent<refVector>*>&);
 
       varVector<varVector<uint> > List;
       
-      varVector<Property*> runProperty;
+      varVector<PropertyComponent<refVector>*>  RunCoordinate;
+
+      varVector<PropertyComponent<refVector>*>  RunGradient;
+
+      varVector<uint> RunIdx, RunKIdx;
 
       typedef IDList<DistEvalObj,GeomType>    Type;
 
       IDList()
         : interactionTag(0), efunc(NULL), gfunc(NULL), bfunc(NULL),
-          List(), runProperty() {
-      }
+          List(), RunCoordinate(), RunGradient(), RunIdx(), RunKIdx() {}
 
       IDList(const Type& IDL) { myError("copier for IDList is disabled!"); }
 
@@ -58,7 +64,10 @@ namespace std {
       Type& allocate(const uint& NL, const uint& NID) {
         List.allocate(NL);
         for(uint i=0;i<NL;++i)  List[i].allocate(NID);
-        runProperty.allocate(NID);
+        RunCoordinate.allocate(NID);
+        RunGradient.allocate(NID);
+        RunIdx.allocate(NID);
+        RunKIdx.allocate(NID);
         return *this;
       }
 
@@ -67,34 +76,6 @@ namespace std {
         uint nl=IDL.List.size();
         uint nid=IDL.List[0].size();
         return allocate(nl,nid);
-      }
-
-      void set_interaction(const uint& iTag) {
-        interactionTag=iTag;
-        switch(iTag) {
-          case ParticleParticle_Harmonic:
-            efunc=E_ParPar_Harmonic;
-            gfunc=G_ParPar_Harmonic;
-            bfunc=EG_ParPar_Harmonic;
-            break;
-          case ParticleParticle_LJ1012:
-            efunc=E_ParPar_LJ1012;
-            gfunc=G_ParPar_LJ1012;
-            bfunc=EG_ParPar_LJ1012;
-            break;
-          case ParticleParticle_LJ612:
-            efunc=E_ParPar_LJ612;
-            gfunc=G_ParPar_LJ612;
-            bfunc=EG_ParPar_LJ612;
-            break;
-          case ParticleParticle_LJ612Cut:
-            efunc=E_ParPar_LJ612Cut;
-            gfunc=G_ParPar_LJ612Cut;
-            bfunc=EG_ParPar_LJ612Cut;
-            break;
-          default:
-            myError("Unknown Interaction Type!");
-        };
       }
 
   };

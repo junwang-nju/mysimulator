@@ -9,28 +9,36 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_ParPar_Harmonic(const VectorBase<Property*>& P,
+  void E_ParPar_Harmonic(const VectorBase<PropertyComponent<refVector>*>& P,
+                         const varVector<uint>& Idx,
+                         const varVector<uint>& KIdx,
                          const ParamList& PList,
                          DistEvalObj& DEval, const GeomType& Geo,
                          double& Energy) {
-    E_ParPar_Base(P,PList,DEval,Geo,Energy,
+    E_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,Energy,
                   ParticleParticle_Harmonic,FuncFactor_harmonic);
   } 
 
   template <typename DistEvalObj, typename GeomType>
-  void G_ParPar_Harmonic(VectorBase<Property*>& P,
+  void G_ParPar_Harmonic(const VectorBase<PropertyComponent<refVector>*>& P,
+                         const varVector<uint>& Idx,
+                         const varVector<uint>& KIdx,
                          const ParamList& PList,
-                         DistEvalObj& DEval, const GeomType& Geo) {
-    G_ParPar_Base(P,PList,DEval,Geo,
+                         DistEvalObj& DEval, const GeomType& Geo,
+                         VectorBase<PropertyComponent<refVector>*>& G) {
+    G_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,G,
                   ParticleParticle_Harmonic,DiffFactor_harmonic);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_ParPar_Harmonic(VectorBase<Property*>& P,
+  void EG_ParPar_Harmonic(const VectorBase<PropertyComponent<refVector>*>& P,
+                          const varVector<uint>& Idx,
+                          const varVector<uint>& KIdx,
                           const ParamList& PList,
                           DistEvalObj& DEval, const GeomType& Geo,
-                          double& Energy) {
-    EG_ParPar_Base(P,PList,DEval,Geo,Energy,
+                          double& Energy,
+                          VectorBase<PropertyComponent<refVector>*>& G) {
+    EG_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,Energy,G,
                    ParticleParticle_Harmonic,BothFactor_harmonic);
   }
 

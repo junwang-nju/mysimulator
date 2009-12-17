@@ -9,28 +9,33 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_ParPar_LJ1012(const VectorBase<Property*>& P,
+  void E_ParPar_LJ1012(const VectorBase<PropertyComponent<refVector>*>& P,
+                       const varVector<uint>& Idx,const varVector<uint>& KIdx,
                        const ParamList& PList,
                        DistEvalObj& DEval, const GeomType& Geo,
                        double& Energy) {
-    E_ParPar_Base(P,PList,DEval,Geo,Energy,
+    E_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,Energy,
                   ParticleParticle_LJ1012,FuncFactor_lj1012);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_ParPar_LJ1012(VectorBase<Property*>& P,
+  void G_ParPar_LJ1012(const VectorBase<PropertyComponent<refVector>*>& P,
+                       const varVector<uint>& Idx,const varVector<uint>& KIdx,
                        const ParamList& PList,
-                       DistEvalObj& DEval, const GeomType& Geo) {
-    G_ParPar_Base(P,PList,DEval,Geo,
+                       DistEvalObj& DEval, const GeomType& Geo,
+                       VectorBase<PropertyComponent<refVector>*>& G) {
+    G_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,G,
                   ParticleParticle_LJ1012,DiffFactor_lj1012);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_ParPar_LJ1012(VectorBase<Property*>& P,
-      const ParamList& PList,
+  void EG_ParPar_LJ1012(const VectorBase<PropertyComponent<refVector>*>& P,
+                        const varVector<uint>& Idx,const varVector<uint>& KIdx,
+                        const ParamList& PList,
                         DistEvalObj& DEval, const GeomType& Geo,
-                        double& Energy) {
-    EG_ParPar_Base(P,PList,DEval,Geo,Energy,
+                        double& Energy,
+                        VectorBase<PropertyComponent<refVector>*>& G) {
+    EG_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,Energy,G,
                    ParticleParticle_LJ1012,BothFactor_lj1012);
   }
 

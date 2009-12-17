@@ -2,17 +2,15 @@
 #ifndef _Interaction_for_List_H_
 #define _Interaction_for_List_H_
 
-#include "property-frame.h"
+#include "property-list.h"
 #include "id-list.h"
 
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_List(const VectorBase<Property>& PropSet,
-              const ParamList& PList,
+  void E_List(const PropertyList& CoordinateList, const ParamList& PList,
               IDList<DistEvalObj,GeomType>& IDL,
-              DistEvalObj& DEval, const GeomType& Geo,
-              double& Energy){
+              DistEvalObj& DEval, const GeomType& Geo, double& Energy){
     uint nl=IDL.List.size();
     uint nid=IDL.runProperty.size();
     for(uint i=0;i<nl;++i) {
