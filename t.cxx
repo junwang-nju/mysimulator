@@ -29,9 +29,11 @@
 #include "interaction-parpar-coulomb.h"
 #include "interaction-parpar-coulomb-wde.h"
 #include "interaction-parpar-quad-harm.h"
+/*
 #include "minimizer-base.h"
 #include "minimizer-steep.h"
 #include "minimizer-conjg.h"
+*/
 
 #include "vector-base.h"
 #include "ref-vector.h"
@@ -352,6 +354,7 @@ int main() {
 
   cout<<PSM.gDProperty[gCoordinate]<<endl;
 
+  /*
   fixVector<double,6> Drc;
   Drc=0.;
   Drc[0]=-1.;
@@ -432,6 +435,7 @@ int main() {
   cout<<CGM.MinSys[1].Coordinate<<endl;
   cout<<CGM.MinE<<endl;
   cout<<CGM.MinGCount<<endl;
+  */
 
   return 1;
 }
