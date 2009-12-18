@@ -2,7 +2,7 @@
 #ifndef _ID_List_Operation_H_
 #define _ID_List_Operation_H_
 
-#include "id-list.h"
+#include "interaction-list.h"
 #include "interaction.h"
 
 namespace std {

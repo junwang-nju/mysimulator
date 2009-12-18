@@ -2,7 +2,7 @@
 #ifndef _ID_List_H_
 #define _ID_List_H_
 
-#include "property.h"
+#include "property-list.h"
 #include "param-list.h"
 
 namespace std {
@@ -14,31 +14,32 @@ namespace std {
 
       uint interactionTag;
 
-      void (*efunc)(const VectorBase<PropertyComponent<refVector>*>&,
+      void (*efunc)(const VectorBase<Property<refVector>*>&,
+                    const VectorBase<uint>&,const VectorBase<uint>&,
                     const ParamList&,DistEvalObj&,const GeomType&,
                     double&);
 
-      void (*gfunc)(const VectorBase<PropertyComponent<refVector>*>&,
+      void (*gfunc)(const VectorBase<Property<refVector>*>&,
+                    const VectorBase<uint>&,const VectorBase<uint>&,
                     const ParamList&,DistEvalObj&,const GeomType&,
-                    VectorBase<PropertyComponent<refVector>*>&);
+                    VectorBase<Property<refVector>*>&);
 
-      void (*bfunc)(const VectorBase<PropertyComponent<refVector>*>&,
+      void (*bfunc)(const VectorBase<Property<refVector>*>&,
+                    const VectorBase<uint>&,const VectorBase<uint>&,
                     const ParamList&,DistEvalObj&,const GeomType&,
-                    double&,VectorBase<PropertyComponent<refVector>*>&);
+                    double&,VectorBase<Property<refVector>*>&);
 
-      varVector<varVector<uint> > List;
-      
-      varVector<PropertyComponent<refVector>*>  RunCoordinate;
+      PropertyList<varVector,uint>  List;
+      PropertyList<varVector,uint>  KindIdx;
 
-      varVector<PropertyComponent<refVector>*>  RunGradient;
-
-      varVector<uint> RunIdx, RunKIdx;
+      PropertyList<varVector,Property<refVector>*> Coordinate;
+      PropertyList<varVector,Property<refVector>*> Gradient;
 
       typedef IDList<DistEvalObj,GeomType>    Type;
 
       IDList()
         : interactionTag(0), efunc(NULL), gfunc(NULL), bfunc(NULL),
-          List(), RunCoordinate(), RunGradient(), RunIdx(), RunKIdx() {}
+          List(), KindIdx(), Coordinate(), Gradient() {}
 
       IDList(const Type& IDL) { myError("copier for IDList is disabled!"); }
 
@@ -48,6 +49,9 @@ namespace std {
         gfunc=IDL.gfunc;
         bfunc=IDL.bfunc;
         List=IDL.List;
+        KindIdx=IDL.KindIdx;
+        Coordinate=IDL.Coordinate;
+        Gradient=IDL.Gradient;
         return *this;
       }
 
@@ -58,16 +62,28 @@ namespace std {
         gfunc=IDL.gfunc;
         bfunc=IDL.bfunc;
         List=IDL.List;
+        KindIdx=IDL.KindIdx;
+        Coordinate=IDL.Coordinate;
+        Gradient=IDL.Gradient;
         return *this;
       }
 
       Type& allocate(const uint& NL, const uint& NID) {
+        varVector<uint> offset(NL),size(NL);
+        offset[0]=0;
+        size[0]=NID;
+        for(uint i=1;i<NL;++i) {
+          offset[i]=offset[i-1]+NID;
+          size[i]=NID;
+        }
         List.allocate(NL);
-        for(uint i=0;i<NL;++i)  List[i].allocate(NID);
-        RunCoordinate.allocate(NID);
-        RunGradient.allocate(NID);
-        RunIdx.allocate(NID);
-        RunKIdx.allocate(NID);
+        KindIdx.allocate(NL);
+        Coordinate.allocate(NL);
+        Gradient.allocate(NL);
+        List.BuildStructure(offset,size);
+        KindIdx.BuildStructure(offset,size);
+        Coordinate.BuildStructure(offset,size);
+        Gradient.BuildStructure(offset,size);
         return *this;
       }
 

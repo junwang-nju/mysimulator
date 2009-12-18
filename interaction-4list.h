@@ -3,48 +3,35 @@
 #define _Interaction_for_List_H_
 
 #include "property-list.h"
-#include "id-list.h"
+#include "interaction-list.h"
 
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_List(const PropertyList& CoordinateList, const ParamList& PList,
-              IDList<DistEvalObj,GeomType>& IDL,
+  void E_List(IDList<DistEvalObj,GeomType>& IDL,const ParamList& PList,
               DistEvalObj& DEval, const GeomType& Geo, double& Energy){
     uint nl=IDL.List.size();
-    uint nid=IDL.runProperty.size();
-    for(uint i=0;i<nl;++i) {
-      for(uint k=0;k<nid;++k)
-        IDL.runProperty[k]=const_cast<Property*>(&PropSet[IDL.List[i][k]]);
-      IDL.efunc(IDL.runProperty,PList,DEval,Geo,Energy);
-    }
+    for(uint i=0;i<nl;++i)
+      IDL.efunc(IDL.Coordinate[i],IDL.List[i],IDL.KindIdx[i],
+                PList,DEval,Geo,Energy);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_List(VectorBase<Property>& PropSet,
-              const ParamList& PList,
-              IDList<DistEvalObj,GeomType>& IDL,
+  void G_List(IDList<DistEvalObj,GeomType>& IDL,const ParamList& PList,
               DistEvalObj& DEval, const GeomType& Geo) {
     uint nl=IDL.List.size();
-    uint nid=IDL.runProperty.size();
-    for(uint i=0;i<nl;++i) {
-      for(uint k=0;k<nid;++k) IDL.runProperty[k]=&PropSet[IDL.List[i][k]];
-      IDL.gfunc(IDL.runProperty,PList,DEval,Geo);
-    }
+    for(uint i=0;i<nl;++i)
+      IDL.gfunc(IDL.Coordinate[i],IDL.List[i],IDL.KindIdx[i],
+                PList,DEval,Geo,IDL.Gradient[i]);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_List(VectorBase<Property>& PropSet,
-               const ParamList& PList,
-               IDList<DistEvalObj,GeomType>& IDL,
-               DistEvalObj& DEval, const GeomType& Geo,
-               double& Energy) {
+  void EG_List(IDList<DistEvalObj,GeomType>& IDL,const ParamList& PList,
+               DistEvalObj& DEval, const GeomType& Geo,double& Energy) {
     uint nl=IDL.List.size();
-    uint nid=IDL.runProperty.size();
-    for(uint i=0;i<nl;++i) {
-      for(uint k=0;k<nid;++k) IDL.runProperty[k]=&PropSet[IDL.List[i][k]];
-      IDL.bfunc(IDL.runProperty,PList,DEval,Geo,Energy);
-    }
+    for(uint i=0;i<nl;++i)
+      IDL.bfunc(IDL.Coordinate[i],IDL.List[i],IDL.KindIdx[i],
+                PList,DEval,Geo,Energy,IDL.Gradient[i]);
   }
 
 }

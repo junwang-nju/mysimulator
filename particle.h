@@ -2,8 +2,6 @@
 #ifndef _Particle_H_
 #define _Particle_H_
 
-#include "property-frame.h"
-
 namespace std {
 
   enum ParticleFeatureSize {

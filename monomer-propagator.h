@@ -2,25 +2,27 @@
 #ifndef _Monomer_Propagator_H_
 #define _Monomer_Propagator_H_
 
-#include "property-frame.h"
+#include "property-list.h"
 
 namespace std {
 
-  typedef varVector<varVector<double> >   ParamPackType;
+  typedef PropertyList<varVector,double>   FuncParamType;
 
   class MonomerPropagator {
 
     public:
     
-      typedef void (*MoveFuncType)(Property&, ParamPackType&,
-                                   const ParamPackType&,const ParamPackType&);
+      typedef void (*MoveFuncType)(VectorBase<double>&, VectorBase<double>&,
+                                   const VectorBase<double>&, FuncParamType&,
+                                   const FuncParamType&,const FuncParamType&);
       
-      typedef void (*SetFuncType)(ParamPackType&,const double*,const uint&);
+      typedef void (*SetFuncType)(FuncParamType&,const double*,const uint&);
       
-      typedef void (*AllocFuncType)(ParamPackType&,const Property&);
+      typedef void (*AllocFuncType)(FuncParamType&,const VectorBase<uint>&);
       
-      typedef void (*SyncFuncType)(const Property&,const ParamPackType&,
-                                   const ParamPackType&, ParamPackType&);
+      typedef void (*SyncFuncType)(const VectorBase<double>&,
+                                   const FuncParamType&,const FuncParamType&,
+                                   FuncParamType&);
       
       varVector<MoveFuncType> MvFunc;
       
@@ -30,7 +32,7 @@ namespace std {
       
       SyncFuncType Sync;
       
-      ParamPackType runParam;
+      FuncParamType runParam;
       
       MonomerPropagator() : runParam() {}
 

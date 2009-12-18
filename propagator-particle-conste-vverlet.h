@@ -10,28 +10,36 @@
 
 namespace std {
 
-  void PEV_Move_BeforeG(Property& nProp, ParamPackType& mnPrm,
-                        const ParamPackType& gbPrm,
-                        const ParamPackType& cgbPrm) {
-    nProp.Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],nProp.Gradient);
-    nProp.Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],nProp.Velocity);
+  void PEV_Move_BeforeG(VectorBase<double>& Coordinate,
+                        VectorBase<double>& Velocity,
+                        const VectorBase<double>& Gradient,
+                        FuncParamType& mnPrm, const FuncParamType& gbPrm,
+                        const FuncParamType& cgbPrm) {
+    Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],Gradient);
+    Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],Velocity);
   }
 
-  void PEV_Move_AfterG(Property& nProp, ParamPackType& mnPrm,
-                       const ParamPackType& gbPrm,
-                       const ParamPackType& cgbPrm) {
-    nProp.Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],nProp.Gradient);
+  void PEV_Move_AfterG(VectorBase<double>& Coordinate,
+                       VectorBase<double>& Velocity,
+                       const VectorBase<double>& Gradient,
+                       FuncParamType& mnPrm, const FuncParamType& gbPrm,
+                       const FuncParamType& cgbPrm){
+    Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],Gradient);
   }
 
-  void PEV_AllocParam(ParamPackType& mnPrm, const Property& Prop) {
+  void PEV_AllocParam(FuncParamType& mnPrm, const VectorBase<uint>& SizeInf) {
     mnPrm.allocate(NumberParamPEV);
-    mnPrm[BasicPEV].allocate(NumberBasicPEV);
+    varVector<uint> offset(NumberParamPEV),size(NumberParamPEV);
+    offset[BasicPEV]=0;
+    size[BasicPEV]=NumberBasicPEV;
+    mnPrm.BuildStructure(offset,size);
   }
 
-  void PEV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
-                       const ParamPackType& cgbPrm, ParamPackType& mnPrm) {
+  void PEV_Synchronize(const VectorBase<double>& IvMass,
+                       const FuncParamType& gbPrm, const FuncParamType& cgbPrm,
+                       FuncParamType& mnPrm) {
     mnPrm[BasicPEV][HfDeltaTIvMPEV]=cgbPrm[BasicCommon][HalfDeltaTime]*
-                                    nProp.IMass[0];
+                                    IvMass[0];
   }
 
   void SetAsPEV(MonomerPropagator& MP) {

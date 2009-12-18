@@ -9,7 +9,7 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_ParPar_Harmonic(const VectorBase<PropertyComponent<refVector>*>& P,
+  void E_ParPar_Harmonic(const VectorBase<Property<refVector>*>& P,
                          const VectorBase<uint>& Idx,
                          const VectorBase<uint>& KIdx,
                          const ParamList& PList,
@@ -20,24 +20,24 @@ namespace std {
   } 
 
   template <typename DistEvalObj, typename GeomType>
-  void G_ParPar_Harmonic(const VectorBase<PropertyComponent<refVector>*>& P,
+  void G_ParPar_Harmonic(const VectorBase<Property<refVector>*>& P,
                          const VectorBase<uint>& Idx,
                          const VectorBase<uint>& KIdx,
                          const ParamList& PList,
                          DistEvalObj& DEval, const GeomType& Geo,
-                         VectorBase<PropertyComponent<refVector>*>& G) {
+                         VectorBase<Property<refVector>*>& G) {
     G_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,G,
                   ParticleParticle_Harmonic,DiffFactor_harmonic);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_ParPar_Harmonic(const VectorBase<PropertyComponent<refVector>*>& P,
+  void EG_ParPar_Harmonic(const VectorBase<Property<refVector>*>& P,
                           const VectorBase<uint>& Idx,
                           const VectorBase<uint>& KIdx,
                           const ParamList& PList,
                           DistEvalObj& DEval, const GeomType& Geo,
                           double& Energy,
-                          VectorBase<PropertyComponent<refVector>*>& G) {
+                          VectorBase<Property<refVector>*>& G) {
     EG_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,Energy,G,
                    ParticleParticle_Harmonic,BothFactor_harmonic);
   }

@@ -8,10 +8,10 @@ namespace std {
 
 	template <template <typename> class ListType=varVector,
             typename DataType=double>
-	class PropertyList : public ListType<PropertyComponent<refVector,DataType> >{
+	class PropertyList : public ListType<Property<refVector,DataType> >{
     public:
-      typedef PropertyList<ListType,DataType>         Type;
-      typedef ListType<PropertyComponent<refVector,DataType> >  ParentType;
+      typedef PropertyList<ListType,DataType>           Type;
+      typedef ListType<Property<refVector,DataType> >   ParentType;
       varVector<DataType> PropertyData;
 
       PropertyList() : ParentType(), PropertyData() {}
@@ -19,9 +19,10 @@ namespace std {
         myError("copier for property list is prohibited!");
       }
       
-      Type& allocate(const VectorBase<uint>& ShapeOffset,
-                     const VectorBase<uint>& ShapeSize) {
+      Type& BuildStructure(const VectorBase<uint>& ShapeOffset,
+                           const VectorBase<uint>& ShapeSize) {
         uint n=ShapeSize.size();
+        assert(this->size()==n);
         assert(ShapeOffset.size()==n);
         uint num=ShapeOffset[n-1]+ShapeSize[n-1];
         PropertyData.allocate(num);
@@ -39,3 +40,4 @@ namespace std {
 }
 
 #endif
+

@@ -12,55 +12,63 @@
 
 namespace std {
 
-  void PLV_Move_BeforeG(Property& nProp, ParamPackType& mnPrm,
-                        const ParamPackType& gbPrm,
-                        const ParamPackType& cgbPrm) {
-    nProp.Velocity.scaleshift(mnPrm[BasicPLV][FactorBeforeGPLV],
-                              -mnPrm[BasicPLV][HfDeltaTIvMPLV],nProp.Gradient);
+  void PLV_Move_BeforeG(VectorBase<double>& Coordinate,
+                        VectorBase<double>& Velocity,
+                        const VectorBase<double>& Gradient,
+                        FuncParamType& mnPrm,const FuncParamType& gbPrm,
+                        const FuncParamType& cgbPrm) {
+    Velocity.scaleshift(mnPrm[BasicPLV][FactorBeforeGPLV],
+                        -mnPrm[BasicPLV][HfDeltaTIvMPLV],Gradient);
     GaussianRNG *pgrng=
       reinterpret_cast<GaussianRNG*>(static_cast<long long>(
             gbPrm[RandPointerLV][GaussianRNGPointerLV]));
     (*pgrng).FillArray(mnPrm[RandomVelocityPLV]);
-    nProp.Velocity.shift(mnPrm[BasicPLV][RandomVelocitySizePLV],
-                         mnPrm[RandomVelocityPLV]);
-    nProp.Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],nProp.Velocity);
+    Velocity.shift(mnPrm[BasicPLV][RandomVelocitySizePLV],
+                   mnPrm[RandomVelocityPLV]);
+    Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],Velocity);
   }
 
-  void PLV_Move_AfterG(Property& nProp, ParamPackType& mnPrm,
-                       const ParamPackType& gbPrm,
-                       const ParamPackType& cgbPrm) {
-    nProp.Velocity.shift(-mnPrm[BasicPLV][HfDeltaTIvMPLV],nProp.Gradient);
+  void PLV_Move_AfterG(VectorBase<double>& Coordinate,
+                       VectorBase<double>& Velocity,
+                       const VectorBase<double>& Gradient,
+                       FuncParamType& mnPrm,const FuncParamType& gbPrm,
+                       const FuncParamType& cgbPrm) {
+    Velocity.shift(-mnPrm[BasicPLV][HfDeltaTIvMPLV],Gradient);
     GaussianRNG *pgrng=
       reinterpret_cast<GaussianRNG*>(static_cast<long long>(
             gbPrm[RandPointerLV][GaussianRNGPointerLV]));
     (*pgrng).FillArray(mnPrm[RandomVelocityPLV]);
-    nProp.Velocity.shift(mnPrm[BasicPLV][RandomVelocitySizePLV],
-                         mnPrm[RandomVelocityPLV]);
-    nProp.Velocity.scale(mnPrm[BasicPLV][FactorAfterGPLV]);
+    Velocity.shift(mnPrm[BasicPLV][RandomVelocitySizePLV],
+                   mnPrm[RandomVelocityPLV]);
+    Velocity.scale(mnPrm[BasicPLV][FactorAfterGPLV]);
   }
 
-  void PLV_AllocParam(ParamPackType& mnPrm, const Property& nProp) {
+  void PLV_AllocParam(FuncParamType& mnPrm, const VectorBase<uint>& SizeInf) {
     mnPrm.allocate(NumberParamPLV);
-    mnPrm[BasicPLV].allocate(NumberBasicPLV);
-    mnPrm[RandomVelocityPLV].allocate(nProp.Gradient.size());
+    varVector<uint> offset(NumberParamPEV),size(NumberParamPEV);
+    offset[BasicPLV]=0;      size[BasicPLV]=NumberBasicPEV;
+    offset[RandomVelocityPLV]=NumberBasicPEV;
+    size[RandomVelocityPLV]=SizeInf[0];
+    mnPrm.BuildStructure(offset,size);
   }
 
-  void PLV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
-                       const ParamPackType& cgbPrm, ParamPackType& mnPrm) {
+  void PLV_Synchronize(const VectorBase<double>& IvMass,
+                       const FuncParamType& gbPrm,const FuncParamType& cgbPrm,
+                       FuncParamType& mnPrm) {
     mnPrm[BasicPLV][HfDeltaTIvMPLV]=cgbPrm[BasicCommon][HalfDeltaTime]*
-                                    nProp.IMass[0];
+                                    IvMass[0];
     mnPrm[BasicPLV][FrictionCoefPLV]=mnPrm[BasicPLV][HydrodynamicRadiusPLV]*
                                      gbPrm[BasicLV][ViscosityCoefLV];
     mnPrm[BasicPLV][RandomVelocitySizePLV]=
         sqrt(mnPrm[BasicPLV][FrictionCoefPLV]*gbPrm[BasicLV][TempeDeltaTLV])*
-        nProp.IMass[0];
+        IvMass[0];
     double tmd;
     tmd=mnPrm[BasicPLV][HfDeltaTIvMPLV]*mnPrm[BasicPLV][FrictionCoefPLV];
     mnPrm[BasicPLV][FactorBeforeGPLV]=1.-tmd;
     mnPrm[BasicPLV][FactorAfterGPLV]=1./(1.+tmd);
   }
 
-  void PLV_SetHydrodynamicRadius(ParamPackType& mnPrm,
+  void PLV_SetHydrodynamicRadius(FuncParamType& mnPrm,
                                  const double* data, const uint&) {
     mnPrm[BasicPLV][HydrodynamicRadiusPLV]=*data;
   }

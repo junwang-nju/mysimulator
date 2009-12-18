@@ -8,7 +8,7 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_ParPar_Base(const VectorBase<PropertyComponent<refVector>*>& P,
+  void E_ParPar_Base(const VectorBase<Property<refVector>*>& P,
                      const VectorBase<uint>& Idx,const VectorBase<uint>& KIdx,
                      const ParamList& PList,
                      DistEvalObj& DEval,const GeomType& Geo,
@@ -28,11 +28,11 @@ namespace std {
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_ParPar_Base(const VectorBase<PropertyComponent<refVector>*>& P,
+  void G_ParPar_Base(const VectorBase<Property<refVector>*>& P,
                      const VectorBase<uint>& Idx,const VectorBase<uint>& KIdx,
                      const ParamList& PList,
                      DistEvalObj& DEval, const GeomType& Geo,
-                     VectorBase<PropertyComponent<refVector>*>& G,
+                     VectorBase<Property<refVector>*>& G,
                      const uint& iTag,
                      void (*func)(const double&,
                                   const VectorBase<double>&,
@@ -50,12 +50,12 @@ namespace std {
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_ParPar_Base(const VectorBase<PropertyComponent<refVector>*>& P,
+  void EG_ParPar_Base(const VectorBase<Property<refVector>*>& P,
                       const VectorBase<uint>& Idx,const VectorBase<uint>& KIdx,
                       const ParamList& PList,
                       DistEvalObj& DEval, const GeomType& Geo,
                       double& Energy,
-                      VectorBase<PropertyComponent<refVector>*>& G,
+                      VectorBase<Property<refVector>*>& G,
                       const uint& iTag, 
                       void (*func)(const double&,
                                    const VectorBase<double>&,

@@ -44,8 +44,8 @@ namespace std {
 
       template <template <typename> class VecTypeA,
                 template <typename> class VecTypeB>
-      fixVector<double,N>& operator()(const PropertyComponent<VecTypeA>& pa,
-                                      const PropertyComponent<VecTypeB>& pb) {
+      fixVector<double,N>& operator()(const Property<VecTypeA>& pa,
+                                      const Property<VecTypeB>& pb) {
         return operator()(static_cast<const VectorBase<double>&>(pa),
                           static_cast<const VectorBase<double>&>(pb));
       }
@@ -58,8 +58,8 @@ namespace std {
 
       template <template <typename> class VecTypeA,
                 template <typename> class VecTypeB, typename GeomType>
-      fixVector<double,N>& operator()(const PropertyComponent<VecTypeA>& pa,
-                                      const PropertyComponent<VecTypeB>& pb,
+      fixVector<double,N>& operator()(const Property<VecTypeA>& pa,
+                                      const Property<VecTypeB>& pb,
                                       const GeomType& Geo) {
         return operator()(static_cast<const VectorBase<double>&>(pa),
                           static_cast<const VectorBase<double>&>(pb),Geo);
@@ -100,8 +100,8 @@ namespace std {
 
       template <template <typename> class VecTypeA,
                 template <typename> class VecTypeB>
-      double operator()(const PropertyComponent<VecTypeA>& pa,
-                        const PropertyComponent<VecTypeB>& pb) {
+      double operator()(const Property<VecTypeA>& pa,
+                        const Property<VecTypeB>& pb) {
         return operator()(static_cast<const VectorBase<double>&>(pa),
                           static_cast<const VectorBase<double>&>(pb));
       }
@@ -115,8 +115,8 @@ namespace std {
 
       template <template <typename> class VecTypeA,
                 template <typename> class VecTypeB, typename GeomType>
-      double operator()(const PropertyComponent<VecTypeA>& pa,
-                        const PropertyComponent<VecTypeB>& pb,
+      double operator()(const Property<VecTypeA>& pa,
+                        const Property<VecTypeB>& pb,
                         const GeomType& Geo) {
         return operator()(static_cast<const VectorBase<double>&>(pa),
                           static_cast<const VectorBase<double>&>(pb),Geo);
@@ -149,8 +149,8 @@ namespace std {
 
       template <template <typename> class VecTypeA,
                 template <typename> class VecTypeB, typename GeomType>
-      double operator()(const PropertyComponent<VecTypeA>& pa,
-                        const PropertyComponent<VecTypeB>& pb,
+      double operator()(const Property<VecTypeA>& pa,
+                        const Property<VecTypeB>& pb,
                         const uint& aIdx, const uint& bIdx,
                         const GeomType& Geo) {
         nowDistSQ=GetDistSQ(pa,pb,Geo);
@@ -159,8 +159,8 @@ namespace std {
 
       template <template <typename> class VecTypeA,
                 template <typename> class VecTypeB, typename GeomType>
-      double operator()(const PropertyComponent<VecTypeA>& pa,
-                        const PropertyComponent<VecTypeB>& pb,
+      double operator()(const Property<VecTypeA>& pa,
+                        const Property<VecTypeB>& pb,
                         const uint& aIdx, const uint& bIdx,
                         const GeomType& Geo, const char) {
         nowDistSQ=GetDistSQ(pa,pb,Geo);
@@ -203,8 +203,8 @@ namespace std {
       
       template <template <typename> class VecTypeA,
                 template <typename> class VecTypeB, typename GeomType>
-      double operator()(const PropertyComponent<VecTypeA>& pa,
-                        const PropertyComponent<VecTypeB>& pb,
+      double operator()(const Property<VecTypeA>& pa,
+                        const Property<VecTypeB>& pb,
                         const uint& aIdx, const uint& bIdx,
                         const GeomType& Geo) {
         DistanceSqStorage::Item &DItem=DistSQPack(aIdx,bIdx);
@@ -218,8 +218,8 @@ namespace std {
 
       template <template <typename> class VecTypeA,
                 template <typename> class VecTypeB, typename GeomType>
-      double operator()(const PropertyComponent<VecTypeA>& pa,
-                        const PropertyComponent<VecTypeB>& pb,
+      double operator()(const Property<VecTypeA>& pa,
+                        const Property<VecTypeB>& pb,
                         const uint& aIdx, const uint& bIdx,
                         const GeomType& Geo, const char) {
         DistanceSqStorage::Item &DItem=DistSQPack(aIdx,bIdx);

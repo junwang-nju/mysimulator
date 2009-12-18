@@ -10,34 +10,43 @@
 
 namespace std {
 
-  void PBV_Move_BeforeG(Property& nProp, ParamPackType& mnPrm,
-                        const ParamPackType& gbPrm,
-                        const ParamPackType& cgbPrm) {
-    nProp.Velocity.shift(-mnPrm[BasicPBV][HfDeltaTIvMPBV],nProp.Gradient);
-    nProp.Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],nProp.Velocity);
+  void PBV_Move_BeforeG(VectorBase<double>& Coordinate,
+                        VectorBase<double>& Velocity,
+                        const VectorBase<double>& Gradient,
+                        FuncParamType& mnPrm,const FuncParamType& gbPrm,
+                        const FuncParamType& cgbPrm) {
+    Velocity.shift(-mnPrm[BasicPBV][HfDeltaTIvMPBV],Gradient);
+    Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],Velocity);
   }
 
-  void PBV_Move_AfterG(Property& nProp, ParamPackType& mnPrm,
-                       const ParamPackType& gbPrm,
-                       const ParamPackType& cgbPrm) {
-    nProp.Velocity.shift(-mnPrm[BasicPBV][HfDeltaTIvMPBV],nProp.Gradient);
+  void PBV_Move_AfterG(VectorBase<double>& Coordinate,
+                       VectorBase<double>& Velocity,
+                       const VectorBase<double>& Gradient,
+                       FuncParamType& mnPrm,const FuncParamType& gbPrm,
+                       const FuncParamType& cgbPrm) {
+    Velocity.shift(-mnPrm[BasicPBV][HfDeltaTIvMPBV],Gradient);
   }
 
-  void PBV_Move_PostProcess(Property& nProp, ParamPackType& mnPrm,
-                            const ParamPackType& gbPrm,
-                            const ParamPackType& cgbPrm) {
-    nProp.Velocity.scale(gbPrm[BasicBV][ScaleFacBV]);
+  void PBV_Move_PostProcess(VectorBase<double>& Coordinate,
+                            VectorBase<double>& Velocity,
+                            const VectorBase<double>& Gradient,
+                            FuncParamType& mnPrm,const FuncParamType& gbPrm,
+                            const FuncParamType& cgbPrm) {
+    Velocity.scale(gbPrm[BasicBV][ScaleFacBV]);
   }
 
-  void PBV_AllocParam(ParamPackType& mnPrm, const Property& nProp) {
+  void PBV_AllocParam(FuncParamType& mnPrm, const VectorBase<uint>& SizeInf) {
     mnPrm.allocate(NumberParamPBV);
-    mnPrm[BasicPBV].allocate(NumberBasicPBV);
+    varVector<uint> offset(NumberParamPEV),size(NumberParamPEV);
+    offset[BasicPBV]=0;     size[BasicPBV]=NumberBasicPEV;
+    mnPrm.BuildStructure(offset,size);
   }
 
-  void PBV_Synchronize(const Property& nProp, const ParamPackType& gbPrm,
-                       const ParamPackType& cgbPrm, ParamPackType& mnPrm) {
+  void PBV_Synchronize(const VectorBase<double>& IvMass,
+                       const FuncParamType& gbPrm,const FuncParamType& cgbPrm,
+                       FuncParamType& mnPrm) {
     mnPrm[BasicPBV][HfDeltaTIvMPBV]=cgbPrm[BasicCommon][HalfDeltaTime]*
-                                    nProp.IMass[0];
+                                    IvMass[0];
   }
 
   void SetAsPBV(MonomerPropagator& MP) {

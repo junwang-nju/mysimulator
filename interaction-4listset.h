@@ -7,32 +7,29 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_ListSet(const VectorBase<Property>& PropSet,
+  void E_ListSet(VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                  const ParamList& PList,
-                 VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                  DistEvalObj& DEval, const GeomType& Geo,
                  double& Energy){
     uint n=IDLS.size();
-    for(uint i=0;i<n;++i) E_List(PropSet,PList,IDLS[i],DEval,Geo,Energy);
+    for(uint i=0;i<n;++i) E_List(IDLS[i],PList,DEval,Geo,Energy);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_ListSet(VectorBase<Property>& PropSet,
+  void G_ListSet(VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                  const ParamList& PList,
-                 VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                  DistEvalObj& DEval, const GeomType& Geo) {
     uint n=IDLS.size();
-    for(uint i=0;i<n;++i) G_List(PropSet,PList,IDLS[i],DEval,Geo);
+    for(uint i=0;i<n;++i) G_List(IDLS[i],PList,DEval,Geo);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_ListSet(VectorBase<Property>& PropSet,
+  void EG_ListSet(VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                   const ParamList& PList,
-                  VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                   DistEvalObj& DEval, const GeomType& Geo,
                   double& Energy){
     uint n=IDLS.size();
-    for(uint i=0;i<n;++i) EG_List(PropSet,PList,IDLS[i],DEval,Geo,Energy);
+    for(uint i=0;i<n;++i) EG_List(IDLS[i],PList,DEval,Geo,Energy);
   }
 
 }
