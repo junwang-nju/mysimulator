@@ -15,6 +15,8 @@ namespace std {
                         const VectorBase<double>& Gradient,
                         FuncParamType& mnPrm, const FuncParamType& gbPrm,
                         const FuncParamType& cgbPrm) {
+    assert(Coordinate.size()==Velocity.size());
+    assert(Coordinate.size()==Gradient.size());
     Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],Gradient);
     Coordinate.shift(cgbPrm[BasicCommon][DeltaTime],Velocity);
   }
@@ -24,6 +26,8 @@ namespace std {
                        const VectorBase<double>& Gradient,
                        FuncParamType& mnPrm, const FuncParamType& gbPrm,
                        const FuncParamType& cgbPrm){
+    assert(Coordinate.size()==Velocity.size());
+    assert(Coordinate.size()==Gradient.size());
     Velocity.shift(-mnPrm[BasicPEV][HfDeltaTIvMPEV],Gradient);
   }
 

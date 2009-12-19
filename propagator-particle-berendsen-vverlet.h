@@ -37,8 +37,8 @@ namespace std {
 
   void PBV_AllocParam(FuncParamType& mnPrm, const VectorBase<uint>& SizeInf) {
     mnPrm.allocate(NumberParamPBV);
-    varVector<uint> offset(NumberParamPEV),size(NumberParamPEV);
-    offset[BasicPBV]=0;     size[BasicPBV]=NumberBasicPEV;
+    varVector<uint> offset(NumberParamPBV),size(NumberParamPBV);
+    offset[BasicPBV]=0;     size[BasicPBV]=NumberBasicPBV;
     mnPrm.BuildStructure(offset,size);
   }
 

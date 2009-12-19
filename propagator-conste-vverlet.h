@@ -6,50 +6,60 @@
 #include "param-list.h"
 #include "interaction-4listset.h"
 #include "propagator.h"
+#include "monomer-type.h"
 
 namespace std {
 
-  void EV_AllocGbParam(ParamPackType& gbPrm,const VectorBase<Property>& PSet) {
+  void EV_AllocGbParam(FuncParamType& gbPrm) {
     gbPrm.allocate(NumberParamEV);
   }
   
   template <typename DistEvalObj, typename GeomType>
-  void EV_Step(VectorBase<Property>& PropSet, const ParamList& PList,
+  void EV_Step(VectorBase<refVector<double> >& Coordinate,
+               VectorBase<refVector<double> >& Velocity,
+               VectorBase<refVector<double> >& Gradient,
+               const VectorBase<refVector<double> >&,
+               const ParamList& PList,
                VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
-               VectorBase<MonomerPropagator>& Mv, ParamPackType& gbPrm,
-               ParamPackType& cgbPrm,
+               VectorBase<MonomerPropagator>& Mv, FuncParamType& gbPrm,
+               FuncParamType& cgbPrm,
                DistEvalObj& DEval, const GeomType& Geo) {
-    uint n=PropSet.size();
-    for(uint i=0;i<n;++i) Mv[i].MvFunc[BeforeGEV](PropSet[i],Mv[i].runParam,
-                                                  gbPrm,cgbPrm);
+    uint n=Coordinate.size();
+    assert(n==Velocity.size());
+    assert(n==Gradient.size());
+    for(uint i=0;i<n;++i)
+      Mv[i].MvFunc[BeforeGEV](Coordinate[i],Velocity[i],Gradient[i],
+                              Mv[i].runParam,gbPrm,cgbPrm);
     DEval.Update();
-    for(uint i=0;i<n;++i) PropSet[i].Gradient=0.;
-    G_ListSet(PropSet,PList,IDLS,DEval,Geo);
-    for(uint i=0;i<n;++i) Mv[i].MvFunc[AfterGEV](PropSet[i],Mv[i].runParam,
-                                                 gbPrm,cgbPrm);
+    for(uint i=0;i<n;++i) Gradient[i]=0.;
+    G_ListSet(IDLS,PList,DEval,Geo);
+    for(uint i=0;i<n;++i)
+      Mv[i].MvFunc[AfterGEV](Coordinate[i],Velocity[i],Gradient[i],
+                             Mv[i].runParam,gbPrm,cgbPrm);
   }
 
-  void EV_Synchronize(const VectorBase<Property>& PropSet,
-                      VectorBase<MonomerPropagator>& Mv,ParamPackType& gbPrm,
-                      ParamPackType& cgbPrm){
-    uint n=PropSet.size();
-    for(uint i=0;i<n;++i) Mv[i].Sync(PropSet[i],gbPrm,cgbPrm,Mv[i].runParam);
+  void EV_Synchronize(const VectorBase<refVector<double> >& IvMass,
+                      const VectorBase<refVector<double> >&,
+                      FuncParamType& gbPrm,FuncParamType& cgbPrm,
+                      VectorBase<MonomerPropagator>& Mv){
+    uint n=IvMass.size();
+    for(uint i=0;i<n;++i) Mv[i].Sync(IvMass[i],gbPrm,cgbPrm,Mv[i].runParam);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void SetAsEV(const VectorBase<Property>& PropSet,
-               Propagator<DistEvalObj,GeomType>& Pg) {
+  void SetAsEV(Propagator<DistEvalObj,GeomType>& Pg,
+               const VectorBase<uint>& MerType) {
     Pg.GbAlloc=EV_AllocGbParam;
     Pg.GbSetFunc.allocate(NumberSetEV);
     Pg.Step=EV_Step;
     Pg.Sync=EV_Synchronize;
-    uint n=PropSet.size();
+    uint n=MerType.size();
     Pg.UnitMove.allocate(n);
     uint mType;
     for(uint i=0;i<n;++i) {
-      mType=PropSet[i].Info[MonomerTypeID];
+      mType=MerType[i];
       if(mType==Particle) SetAsPEV(Pg.UnitMove[i]);
-      else if(mType>NumberTypes)  myError("Unknown Monomer Types!");
+      else myError("Unknown Monomer Types!");
     }
   }
   

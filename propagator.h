@@ -4,34 +4,36 @@
 
 #include "monomer-propagator.h"
 #include "param-list.h"
-#include "id-list.h"
+#include "interaction-list.h"
 #include "propagator-common-index.h"
 
 namespace std {
 
-  void AllocCommonParameter(ParamPackType& cgbPrm,const VectorBase<Property>&){
+  void AllocCommonParameter(FuncParamType& cgbPrm){
     cgbPrm.allocate(NumberCommonParam);
-    cgbPrm[BasicCommon].allocate(NumberBasicCommon);
+    varVector<uint> offset(NumberCommonParam),size(NumberCommonParam);
+    offset[BasicCommon]=0;    size[BasicCommon]=NumberBasicCommon;
+    cgbPrm.BuildStructure(offset,size);
   } 
 
-  void SetTimeStep(ParamPackType& cgbPrm, const double* data,const uint&) {
+  void SetTimeStep(FuncParamType& cgbPrm, const double* data,const uint&) {
     cgbPrm[BasicCommon][DeltaTime]=*data;
     cgbPrm[BasicCommon][HalfDeltaTime]=0.5*cgbPrm[BasicCommon][DeltaTime];
   }
 
-  void SetStartTime(ParamPackType& cgbPrm, const double* data,const uint&) {
+  void SetStartTime(FuncParamType& cgbPrm, const double* data,const uint&) {
     cgbPrm[BasicCommon][StartTime]=*data;
   }
 
-  void SetTotalTime(ParamPackType& cgbPrm, const double* data,const uint&) {
+  void SetTotalTime(FuncParamType& cgbPrm, const double* data,const uint&) {
     cgbPrm[BasicCommon][TotalTime]=*data;
   }
 
-  void SetOutputInterval(ParamPackType& cgbPrm,const double* data,const uint&){
+  void SetOutputInterval(FuncParamType& cgbPrm,const double* data,const uint&){
     cgbPrm[BasicCommon][OutputInterval]=*data;
   }
 
-  void SynchronizeCommon(ParamPackType& cgbPrm) {
+  void SynchronizeCommon(FuncParamType& cgbPrm) {
     cgbPrm[BasicCommon][CountOutput]=cgbPrm[BasicCommon][TotalTime]/
                                      cgbPrm[BasicCommon][OutputInterval];
     cgbPrm[BasicCommon][CountStepInOne]=cgbPrm[BasicCommon][OutputInterval]/
@@ -45,41 +47,49 @@ namespace std {
     
       typedef Propagator<DistEvalObj,GeomType>  Type;
     
-      typedef void (*AllocFuncType)(ParamPackType&,
-                                    const VectorBase<Property>&);
+      typedef void (*AllocFuncType)(FuncParamType&);
 
-      typedef void (*SetFuncType)(ParamPackType&,const double*,const uint&);
+      typedef void (*SetFuncType)(FuncParamType&,const double*,const uint&);
       
-      typedef void (*StepFuncType)(VectorBase<Property>&,const ParamList&,
+      typedef void (*StepFuncType)(VectorBase<refVector<double> >&,
+                                   VectorBase<refVector<double> >&,
+                                   VectorBase<refVector<double> >&,
+                                   const VectorBase<refVector<double> >&,
+                                   const ParamList&,
                                    VectorBase<IDList<DistEvalObj,GeomType> >&,
                                    VectorBase<MonomerPropagator>&,
-                                   ParamPackType&, ParamPackType&,
+                                   FuncParamType&, FuncParamType&,
                                    DistEvalObj&, const GeomType&);
 
-      typedef void (*SyncFuncType)(const VectorBase<Property>&,
-                                   VectorBase<MonomerPropagator>&,
-                                   ParamPackType&,ParamPackType&);
+      typedef void (*SyncFuncType)(const VectorBase<refVector<double> >&,
+                                   const VectorBase<refVector<double> >&,
+                                   FuncParamType&,FuncParamType&,
+                                   VectorBase<MonomerPropagator>&);
 
       typedef void (*OutputType)(ostream&, const Type&,
-                                 const VectorBase<Property>&, const ParamList&,
+                                 const VectorBase<refVector<double> >&,
+                                 const VectorBase<refVector<double> >&,
+                                 const VectorBase<refVector<double> >&,
+                                 const ParamList&,
                                  VectorBase<IDList<DistEvalObj,GeomType> >&,
                                  DistEvalObj&, const GeomType&);
 
       varVector<MonomerPropagator> UnitMove;
       
-      ParamPackType CmnGbParam;
+      FuncParamType CmnGbParam;
       
-      ParamPackType GbParam;
+      FuncParamType GbParam;
       
       AllocFuncType CmnGbAlloc;
       
       AllocFuncType GbAlloc;
 
-      void AllocAll(const VectorBase<Property>& PropSet) {
-        GbAlloc(GbParam,PropSet);
-        uint n=PropSet.size();
+      void AllocAll(const VectorBase<refVector<uint> >& SizeInf) {
+        uint n=SizeInf.size();
+        assert(n==UnitMove.size());
+        GbAlloc(GbParam);
         for(uint i=0;i<n;++i)
-          UnitMove[i].Alloc(UnitMove[i].runParam,PropSet[i]);
+          UnitMove[i].Alloc(UnitMove[i].runParam,SizeInf[i]);
       }
 
       varVector<SetFuncType> CmnGbSetFunc;
@@ -90,26 +100,31 @@ namespace std {
       
       SyncFuncType Sync;
 
-      void SyncAll(const VectorBase<Property>& PropSet) {
+      void SyncAll(const VectorBase<refVector<double> >& IvMass) {
         SynchronizeCommon(CmnGbParam);
-        Sync(PropSet,UnitMove,GbParam,CmnGbParam);
+        Sync(IvMass,GbParam,CmnGbParam,UnitMove);
       }
 
       OutputType OutFunc;
 
-      void Run(VectorBase<Property>& PropSet, const ParamList& PList,
+      void Run(VectorBase<refVector<double> >& Coordinate,
+               VectorBase<refVector<double> >& Velocity,
+               VectorBase<refVector<double> >& Gradient,
+               const VectorBase<refVector<double> >& Mass,
+               const ParamList& PList,
                VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
                DistEvalObj& DEval, const GeomType& Geo, ostream& os) {
         uint no=static_cast<uint>(CmnGbParam[BasicCommon][CountOutput]+0.5);
         uint ns=static_cast<uint>(CmnGbParam[BasicCommon][CountStepInOne]+0.5);
         double ot=ns*CmnGbParam[BasicCommon][DeltaTime];
         CmnGbParam[BasicCommon][NowTime]=CmnGbParam[BasicCommon][StartTime];
-        OutFunc(os,*this,PropSet,PList,IDLS,DEval,Geo);
+        OutFunc(os,*this,Coordinate,Velocity,Gradient,PList,IDLS,DEval,Geo);
         for(uint i=0;i<no;++i) {
           for(uint j=0;j<ns;++j)
-            Step(PropSet,PList,IDLS,UnitMove,GbParam,CmnGbParam,DEval,Geo);
+            Step(Coordinate,Velocity,Gradient,Mass,PList,IDLS,UnitMove,
+                 GbParam,CmnGbParam,DEval,Geo);
           CmnGbParam[BasicCommon][NowTime]+=ot;
-          OutFunc(os,*this,PropSet,PList,IDLS,DEval,Geo);
+          OutFunc(os,*this,Coordinate,Velocity,Gradient,PList,IDLS,DEval,Geo);
         }
       }
 
@@ -119,8 +134,7 @@ namespace std {
         CmnGbSetFunc[SetCmnStartTime]=SetStartTime;
         CmnGbSetFunc[SetCmnTotalTime]=SetTotalTime;
         CmnGbSetFunc[SetCmnOutputInterval]=SetOutputInterval;
-        varVector<Property> tPropSet;
-        CmnGbAlloc(CmnGbParam,tPropSet);
+        CmnGbAlloc(CmnGbParam);
       }
 
   };

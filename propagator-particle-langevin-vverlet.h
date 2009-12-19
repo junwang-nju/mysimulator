@@ -45,9 +45,9 @@ namespace std {
 
   void PLV_AllocParam(FuncParamType& mnPrm, const VectorBase<uint>& SizeInf) {
     mnPrm.allocate(NumberParamPLV);
-    varVector<uint> offset(NumberParamPEV),size(NumberParamPEV);
-    offset[BasicPLV]=0;      size[BasicPLV]=NumberBasicPEV;
-    offset[RandomVelocityPLV]=NumberBasicPEV;
+    varVector<uint> offset(NumberParamPLV),size(NumberParamPLV);
+    offset[BasicPLV]=0;      size[BasicPLV]=NumberBasicPLV;
+    offset[RandomVelocityPLV]=NumberBasicPLV;
     size[RandomVelocityPLV]=SizeInf[0];
     mnPrm.BuildStructure(offset,size);
   }
