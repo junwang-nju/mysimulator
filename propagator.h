@@ -100,9 +100,10 @@ namespace std {
       
       SyncFuncType Sync;
 
-      void SyncAll(const VectorBase<refVector<double> >& IvMass) {
+      void SyncAll(const VectorBase<refVector<double> >& IvMass,
+                   const VectorBase<refVector<double> >& DMask) {
         SynchronizeCommon(CmnGbParam);
-        Sync(IvMass,GbParam,CmnGbParam,UnitMove);
+        Sync(IvMass,DMask,GbParam,CmnGbParam,UnitMove);
       }
 
       OutputType OutFunc;

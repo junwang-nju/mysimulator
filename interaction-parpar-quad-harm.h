@@ -9,7 +9,7 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_ParPar_QuadHarm(const VectorBase<Property<refVector>*>& P,
+  void E_ParPar_QuadHarm(const VectorBase<refVector<double>*>& P,
                          const VectorBase<uint>& Idx,
                          const VectorBase<uint>& KIdx,
                          const ParamList& PList,
@@ -20,24 +20,24 @@ namespace std {
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_ParPar_QuadHarm(const VectorBase<Property<refVector>*>& P,
+  void G_ParPar_QuadHarm(const VectorBase<refVector<double>*>& P,
                          const VectorBase<uint>& Idx,
                          const VectorBase<uint>& KIdx,
                          const ParamList& PList,
                          DistEvalObj& DEval, const GeomType& Geo,
-                         VectorBase<Property<refVector>*>& G) {
+                         VectorBase<refVector<double>*>& G) {
     G_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,G,
                   ParticleParticle_QuadHarmonic,DiffFactor_quadrupalharmonic);
   }
   
   template <typename DistEvalObj, typename GeomType>
-  void EG_ParPar_QuadHarm(const VectorBase<Property<refVector>*>& P,
+  void EG_ParPar_QuadHarm(const VectorBase<refVector<double>*>& P,
                           const VectorBase<uint>& Idx,
                           const VectorBase<uint>& KIdx,
                           const ParamList& PList,
                           DistEvalObj& DEval, const GeomType& Geo,
                           double& Energy,
-                          VectorBase<Property<refVector>*>& G) {
+                          VectorBase<refVector<double>*>& G) {
     EG_ParPar_Base(P,Idx,KIdx,PList,DEval,Geo,Energy,G,
                    ParticleParticle_QuadHarmonic,BothFactor_quadrupalharmonic);
   }

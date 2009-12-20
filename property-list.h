@@ -2,16 +2,19 @@
 #ifndef _Property_List_H_
 #define _Property_List_H_
 
-#include "property.h"
+#include "var-vector.h"
+#include "ref-vector.h"
 
 namespace std {
 
 	template <template <typename> class ListType=varVector,
+            template <typename> class PropertyType=refVector,
             typename DataType=double>
-	class PropertyList : public ListType<Property<refVector,DataType> >{
+	class PropertyList : public ListType<PropertyType<DataType> >{
     public:
-      typedef PropertyList<ListType,DataType>           Type;
-      typedef ListType<Property<refVector,DataType> >   ParentType;
+      typedef PropertyList<ListType,PropertyType,DataType>  Type;
+      typedef ListType<PropertyType<DataType> >             ParentType;
+      typedef PropertyType<DataType>                        Property;
       varVector<DataType> PropertyData;
 
       PropertyList() : ParentType(), PropertyData() {}

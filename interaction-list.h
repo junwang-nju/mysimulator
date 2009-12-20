@@ -14,26 +14,26 @@ namespace std {
 
       uint interactionTag;
 
-      void (*efunc)(const VectorBase<Property<refVector>*>&,
+      void (*efunc)(const VectorBase<refVector<double>*>&,
                     const VectorBase<uint>&,const VectorBase<uint>&,
                     const ParamList&,DistEvalObj&,const GeomType&,
                     double&);
 
-      void (*gfunc)(const VectorBase<Property<refVector>*>&,
+      void (*gfunc)(const VectorBase<refVector<double>*>&,
                     const VectorBase<uint>&,const VectorBase<uint>&,
                     const ParamList&,DistEvalObj&,const GeomType&,
-                    VectorBase<Property<refVector>*>&);
+                    VectorBase<refVector<double>*>&);
 
-      void (*bfunc)(const VectorBase<Property<refVector>*>&,
+      void (*bfunc)(const VectorBase<refVector<double>*>&,
                     const VectorBase<uint>&,const VectorBase<uint>&,
                     const ParamList&,DistEvalObj&,const GeomType&,
-                    double&,VectorBase<Property<refVector>*>&);
+                    double&,VectorBase<refVector<double>*>&);
 
-      PropertyList<varVector,uint>  List;
-      PropertyList<varVector,uint>  KindIdx;
+      PropertyList<varVector,refVector,uint>  List;
+      PropertyList<varVector,refVector,uint>  KindIdx;
 
-      PropertyList<varVector,Property<refVector>*> Coordinate;
-      PropertyList<varVector,Property<refVector>*> Gradient;
+      PropertyList<varVector,refVector,refVector<double>*> Coordinate;
+      PropertyList<varVector,refVector,refVector<double>*> Gradient;
 
       typedef IDList<DistEvalObj,GeomType>    Type;
 

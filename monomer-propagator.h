@@ -6,7 +6,7 @@
 
 namespace std {
 
-  typedef PropertyList<varVector,double>   FuncParamType;
+  typedef PropertyList<>   FuncParamType;
 
   class MonomerPropagator {
 

@@ -5,13 +5,13 @@
 #include "btree.h"
 #include "hash-func.h"
 #include "param-list.h"
-#include "property-frame.h"
 #include "property-list.h"
 #include "particle.h"
 #include "distance-storage.h"
 #include "distance-evaluation.h"
 #include "interaction-parpar-lj612.h"
-#include "id-list.h"
+#include "interaction-list.h"
+#include "interaction-list-op.h"
 #include "interaction-4list.h"
 #include "interaction-parpar-lj1012.h"
 #include "interaction-parpar-harmonic.h"
@@ -47,10 +47,13 @@ class A{
 
 void OutputFunc(
     ostream& os, const Propagator<DistanceEvalwStorage<3>,FreeSpace>& Pg,
-    const VectorBase<Property>& PropSet, const ParamList&,
+    const VectorBase<refVector<double> >& Coordinate,
+    const VectorBase<refVector<double> >& Velocity,
+    const VectorBase<refVector<double> >& Gradient,
+    const ParamList&,
     VectorBase<IDList<DistanceEvalwStorage<3>,FreeSpace> >&,
     DistanceEvalwStorage<3>&, const FreeSpace&) {
-  os<<Pg.CmnGbParam[BasicCommon][NowTime]<<"\t"<<PropSet[0].Coordinate<<endl;
+  os<<Pg.CmnGbParam[BasicCommon][NowTime]<<"\t"<<Coordinate[0]<<endl;
 }
 
 
@@ -128,22 +131,23 @@ int main() {
   cout<<(*vo)[0]<<endl;
   cout<<(*vo)[1]<<endl;
 
-  PropertyList Pa,Pb;
-  fixVector<uint,1> mType,mFlag;
-  mType[0]=Particle;
-  mFlag[0]=0U;
-  Pa.gAllocate(mType,mFlag,3);
-  Pb.gAllocate(mType,mFlag,3);
-  Pa[0].Coordinate[0]=0;
-  Pa[0].Coordinate[1]=0;
-  Pa[0].Coordinate[2]=0;
-  Pa[0].Info[MonomerKindID]=0;
-  Pa[0].Info[MonomerIndex]=0;
-  Pb[0].Coordinate[0]=0;
-  Pb[0].Coordinate[1]=0;
-  Pb[0].Coordinate[2]=3;
-  Pb[0].Info[MonomerKindID]=0;
-  Pb[0].Info[MonomerIndex]=2;
+  PropertyList<> PaCoordinate,PbCoordinate;
+  fixVector<uint,1> pOff,pSize;
+  pOff[0]=0;  pSize[0]=3;
+  PaCoordinate.allocate(1);
+  PbCoordinate.allocate(1);
+  PaCoordinate.BuildStructure(pOff,pSize);
+  PbCoordinate.BuildStructure(pOff,pSize);
+  PaCoordinate[0]=0.;
+  PbCoordinate[0]=0.;
+  PbCoordinate[0][2]=3.;
+  PropertyList<varVector,refVector,uint> PaInfo,PbInfo;
+  pOff[0]=0;  pSize[0]=4;
+  PaInfo.allocate(1);
+  PbInfo.allocate(1);
+  PaInfo.BuildStructure(pOff,pSize);
+  PbInfo.BuildStructure(pOff,pSize);
+
   FreeSpace FS;
   DistanceEvalwStorage<3> DEval;
   DEval.allocate_storage(3);
@@ -179,56 +183,102 @@ int main() {
 
   double Energy=0.;
 
-  varVector<Property*> P(2);
-  P[0]=&Pa[0];
-  P[1]=&Pb[0];
-  E_ParPar_LJ612(P,prm,DEval,FS,Energy);
+  varVector<refVector<double>*> PCoordinate(2);
+  fixVector<uint,2> PIdx,PKIdx;
+  PIdx[0]=0;  PIdx[1]=2;
+  PKIdx[0]=0; PKIdx[1]=0;
+  PCoordinate[0]=&PaCoordinate[0];
+  PCoordinate[1]=&PbCoordinate[0];
+  E_ParPar_LJ612(PCoordinate,PIdx,PKIdx,prm,DEval,FS,Energy);
   cout<<Energy<<endl;
 
-  PropertyList PropSet;
-  fixVector<uint,3> MSType,MSFlag;
-  MSType=Particle;
-  MSFlag=0U;
-  PropSet.gAllocate(MSType,MSFlag,3);
-  PropSet[0].Coordinate[0]=0;
-  PropSet[0].Coordinate[1]=0;
-  PropSet[0].Coordinate[2]=0;
-  PropSet[0].Info[MonomerIndex]=0;
-  PropSet[2].Coordinate[0]=0;
-  PropSet[2].Coordinate[1]=0;
-  PropSet[2].Coordinate[2]=3;
-  PropSet[2].Info[MonomerIndex]=2;
+  PropertyList<> PropSetCoordinate,PropSetGradient;
+  fixVector<uint,3> psOff,psSize;
+  psOff[0]=0;   psSize[0]=3;
+  psOff[1]=3;   psSize[1]=3;
+  psOff[2]=6;   psSize[2]=3;
+  PropSetCoordinate.allocate(3);
+  PropSetGradient.allocate(3);
+  PropSetCoordinate.BuildStructure(psOff,psSize);
+  PropSetGradient.BuildStructure(psOff,psSize);
+  for(uint i=0;i<3;++i)
+    PropSetCoordinate[i]=0.;
+  PropSetCoordinate[2][2]=3.;
+  fixVector<uint,3> PropSetIdx, PropSetKIdx,PropSetMerType;
+  for(uint i=0;i<3;++i) {
+    PropSetIdx[i]=i;
+    PropSetKIdx[i]=0;
+    PropSetMerType[i]=Particle;
+  }
+  //fixVector<uint,3> MSType,MSFlag;
+  //MSType=Particle;
+  //MSFlag=0U;
+  //PropSet.gAllocate(MSType,MSFlag,3);
+  //PropSet[0].Coordinate[0]=0;
+  //PropSet[0].Coordinate[1]=0;
+  //PropSet[0].Coordinate[2]=0;
+  //PropSet[0].Info[MonomerIndex]=0;
+  //PropSet[2].Coordinate[0]=0;
+  //PropSet[2].Coordinate[1]=0;
+  //PropSet[2].Coordinate[2]=3;
+  //PropSet[2].Info[MonomerIndex]=2;
+
   IDList<DistanceEvalwStorage<3>,FreeSpace> idl;
-  idl.set_interaction(ParticleParticle_LJ612);
   idl.allocate(1,2);
   idl.List[0][0]=0;
   idl.List[0][1]=2;
-  E_List(PropSet,prm,idl,DEval,FS,Energy);
+  idl.KindIdx[0][0]=0;
+  idl.KindIdx[0][1]=0;
+  for(uint i=0;i<1;i++)
+  for(uint k=0;k<2;++k)
+    idl.Coordinate[i][k]=&PropSetCoordinate[idl.List[i][k]];
+  SetInteraction(idl,ParticleParticle_LJ612);
+  E_List(idl,prm,DEval,FS,Energy);
   cout<<Energy<<endl;
 
-  PropertyList PS;
-  fixVector<uint,2> PSType,PSFlag;
-  PSType=Particle;
-  PSFlag=(VelocityEnable|GradientEnable|MassEnable);
-  PS.gAllocate(PSType,PSFlag,3);
-  PS[0].Coordinate=0.;
-  PS[1].Coordinate=0.; PS[1].Coordinate[0]=1.;
-  PS[0].Velocity=0.;
-  PS[1].Velocity=0.;
-  PS[0].Info[MonomerIndex]=0;
-  PS[1].Info[MonomerIndex]=1;
-  PS[0].Info[MonomerKindID]=0;
-  PS[1].Info[MonomerKindID]=1;
-  PS[0].Mass=1.;
-  PS[1].Mass=1.;
-  PS[0].IMass=1.;
-  PS[1].IMass=1.;
+  PropertyList<> PSCoordinate,PSVelocity,PSGradient,PSMass,PSIvMass,PSDMask;
+  fixVector<uint,2> PSOff,PSSize;
+  PSOff[0]=0;         PSSize[0]=3;
+  PSOff[1]=3;         PSSize[1]=3;
+  PSCoordinate.allocate(2);
+  PSVelocity.allocate(2);
+  PSGradient.allocate(2);
+  PSMass.allocate(2);
+  PSIvMass.allocate(2);
+  PSDMask.allocate(2);
+  PSCoordinate.BuildStructure(PSOff,PSSize);
+  PSVelocity.BuildStructure(PSOff,PSSize);
+  PSGradient.BuildStructure(PSOff,PSSize);
+  PSMass.BuildStructure(PSOff,PSSize);
+  PSIvMass.BuildStructure(PSOff,PSSize);
+  PSDMask.BuildStructure(PSOff,PSSize);
+  PSCoordinate[0]=0.;
+  PSCoordinate[1]=0.;     PSCoordinate[1][0]=1.;
+  PSVelocity[0]=0.;
+  PSVelocity[1]=0.;
+  PSMass[0]=1.;
+  PSMass[1]=1.;
+  PSIvMass[0]=1.;
+  PSIvMass[1]=1.;
+  PSDMask[0]=1.;
+  PSDMask[1]=1.;
+  fixVector<uint,2> PSIdx,PSKIdx,PSMerType;
+  PSIdx[0]=0;   PSIdx[1]=1;
+  PSKIdx[0]=0;  PSKIdx[1]=1;
+  PSMerType[0]=Particle;
+  PSMerType[1]=Particle;
 
   varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> > IDLS(1);
-  IDLS[0].set_interaction(ParticleParticle_Harmonic);
   IDLS[0].allocate(1,2);
   IDLS[0].List[0][0]=0;
   IDLS[0].List[0][1]=1;
+  for(uint i=0;i<1;i++)
+  for(uint k=0;k<2;++k) {
+    IDLS[0].KindIdx[i][k]=PSKIdx[IDLS[0].List[i][k]];
+    IDLS[0].Coordinate[i][k]=&PSCoordinate[IDLS[0].List[i][k]];
+    IDLS[0].Gradient[i][k]=&PSGradient[IDLS[0].List[i][k]];
+  }
+  SetInteraction(IDLS[0],ParticleParticle_Harmonic);
   Energy=0.;
 
   ParamList HPList;
@@ -253,30 +303,32 @@ int main() {
   DEval2.allocate_storage(2);
 
   Energy=0.;
-  EG_ListSet(PS,HPList,IDLS,DEval2,FS,Energy);
+  EG_ListSet(IDLS,HPList,DEval2,FS,Energy);
   cout<<Energy<<endl;
-  cout<<PS[0].Gradient<<endl;
+  cout<<PSGradient[0]<<endl;
 
+  PropertyList<varVector,refVector,uint> PSSizeInf;
+  PSSizeInf.allocate(2);
   MonomerPropagator PgFmt;
   SetAsPEV(PgFmt);
-  PgFmt.Alloc(PgFmt.runParam,PS[0]);
+  PgFmt.Alloc(PgFmt.runParam,PSSizeInf[0]);
 
   Propagator<DistanceEvalwStorage<3>,FreeSpace> PgS;
-  SetAsEV(PS,PgS);
+  SetAsEV(PgS,PSMerType);
   double dt=0.001;
   PgS.CmnGbSetFunc[SetCmnTimeStep](PgS.CmnGbParam,&dt,1);
 
-  PgFmt.Sync(PS[0],PgS.GbParam,PgS.CmnGbParam,PgFmt.runParam);
+  PgFmt.Sync(PSIvMass[0],PgS.GbParam,PgS.CmnGbParam,PgFmt.runParam);
   
-  PgS.AllocAll(PS);
+  PgS.AllocAll(PSSizeInf);
   
   double tt=0.01,st=0.,ot=0.001;
   PgS.CmnGbSetFunc[SetCmnTotalTime](PgS.CmnGbParam,&tt,1);
   PgS.CmnGbSetFunc[SetCmnStartTime](PgS.CmnGbParam,&st,1);
   PgS.CmnGbSetFunc[SetCmnOutputInterval](PgS.CmnGbParam,&ot,1);
-  PgS.SyncAll(PS);
+  PgS.SyncAll(PSIvMass,PSDMask);
   PgS.OutFunc=OutputFunc;
-  PgS.Run(PS,HPList,IDLS,DEval2,FS,cout);
+  PgS.Run(PSCoordinate,PSVelocity,PSGradient,PSMass,HPList,IDLS,DEval2,FS,cout);
 
 
   /// the test for random generator is commented to speed the test
@@ -302,6 +354,7 @@ int main() {
     cout<<(i-10000.)*0.001<<"\t"<<histg[i]<<endl;
   */
 
+  /*
   GaussianRNG grng;
   grng.SetWithSeed(123337961);
 
@@ -353,6 +406,7 @@ int main() {
   PSM[1].Info[MonomerKindID]=1;
 
   cout<<PSM.gDProperty[gCoordinate]<<endl;
+  */
 
   /*
   fixVector<double,6> Drc;
