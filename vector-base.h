@@ -38,7 +38,10 @@ namespace std {
 
       void set_HeadTail() { head_ptr=Data; tail_ptr=Data+nData; }
 
-      Type& operator=(const Type& vb) { assign(vb); }
+      Type& operator=(const Type& vb) { return assign(vb); }
+
+      template <typename inputT>
+      Type& operator=(const inputT& v) { return assign(v); }
 
       template <typename inputT>
       Type& operator*=(const inputT& v) { return scale(v); }

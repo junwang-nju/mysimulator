@@ -210,18 +210,6 @@ int main() {
     PropSetKIdx[i]=0;
     PropSetMerType[i]=Particle;
   }
-  //fixVector<uint,3> MSType,MSFlag;
-  //MSType=Particle;
-  //MSFlag=0U;
-  //PropSet.gAllocate(MSType,MSFlag,3);
-  //PropSet[0].Coordinate[0]=0;
-  //PropSet[0].Coordinate[1]=0;
-  //PropSet[0].Coordinate[2]=0;
-  //PropSet[0].Info[MonomerIndex]=0;
-  //PropSet[2].Coordinate[0]=0;
-  //PropSet[2].Coordinate[1]=0;
-  //PropSet[2].Coordinate[2]=3;
-  //PropSet[2].Info[MonomerIndex]=2;
 
   IDList<DistanceEvalwStorage<3>,FreeSpace> idl;
   idl.allocate(1,2);
@@ -309,6 +297,9 @@ int main() {
 
   PropertyList<varVector,refVector,uint> PSSizeInf;
   PSSizeInf.allocate(2);
+  PSOff[0]=0; PSSize[0]=1;
+  PSOff[1]=1; PSSize[1]=1;
+  PSSizeInf.BuildStructure(PSOff,PSSize);
   MonomerPropagator PgFmt;
   SetAsPEV(PgFmt);
   PgFmt.Alloc(PgFmt.runParam,PSSizeInf[0]);
@@ -354,19 +345,19 @@ int main() {
     cout<<(i-10000.)*0.001<<"\t"<<histg[i]<<endl;
   */
 
-  /*
   GaussianRNG grng;
   grng.SetWithSeed(123337961);
 
-  PS[0].Coordinate=0.;
-  PS[1].Coordinate=0.; PS[1].Coordinate[0]=1.;
-  PS[0].Velocity=0.;
-  PS[1].Velocity=0.;
+  PSCoordinate[0]=0.;
+  PSCoordinate[1]=0.; PSCoordinate[1][0]=1.;
+  PSVelocity[0]=0.;
+  PSVelocity[1]=0.;
 
   Propagator<DistanceEvalwStorage<3>,FreeSpace> PgL;
-  SetAsLV(PS,PgL);
+  SetAsLV(PgL,PSMerType);
   PgL.CmnGbSetFunc[SetCmnTimeStep](PgL.CmnGbParam,&dt,1);
-  PgL.AllocAll(PS);
+  PSSizeInf[0][0]=3;  PSSizeInf[1][0]=3;
+  PgL.AllocAll(PSSizeInf);
 
   PgL.CmnGbSetFunc[SetCmnTotalTime](PgL.CmnGbParam,&tt,1);
   PgL.CmnGbSetFunc[SetCmnStartTime](PgL.CmnGbParam,&st,1);
@@ -376,37 +367,51 @@ int main() {
   PgL.GbSetFunc[SetViscosityLV](PgL.GbParam,&Visco,1);
   PgL.GbSetFunc[SetGRNGPointerLV](
       PgL.GbParam,reinterpret_cast<double*>(&grng),1);
-  for(uint i=0;i<PS.size();++i)
+  for(uint i=0;i<PSCoordinate.size();++i)
     PgL.UnitMove[i].SetFunc[SetHydrodynamicRadiusPLV](
         PgL.UnitMove[i].runParam,&hRadius,1);
-  PgL.SyncAll(PS);
+  PgL.SyncAll(PSIvMass,PSDMask);
   PgL.OutFunc=OutputFunc;
   DEval2.Update();
   Energy=0;
-  PS[0].Gradient=0.;
-  PS[1].Gradient=0.;
-  EG_ListSet(PS,HPList,IDLS,DEval2,FS,Energy);
-  for(uint i=0;i<PS.size();++i) {
+  PSGradient[0]=0.;
+  PSGradient[1]=0.;
+  EG_ListSet(IDLS,HPList,DEval2,FS,Energy);
+  for(uint i=0;i<PSCoordinate.size();++i) {
     cout<<i<<"\t";
     cout<<PgL.UnitMove[i].runParam[BasicPLV][RandomVelocitySizePLV]<<endl;
   }
-  PgL.Run(PS,HPList,IDLS,DEval2,FS,cout);
+  PgL.Run(PSCoordinate,PSVelocity,PSGradient,PSMass,
+          HPList,IDLS,DEval2,FS,cout);
 
-  PropertyList PSM;
-  fixVector<uint,2> PSMType, PSMFlag;
-  PSMType=Particle;
-  PSMFlag=GradientEnable;
-  PSM.gAllocate(PSMType,PSMFlag,3);
-  PSM[0].Coordinate=0.;
-  PSM[1].Coordinate=0.;   PSM[1].Coordinate[0]=1.;
-  for(uint i=0;i<2U;++i)  PSM[i].Activate();
-  PSM[0].Info[MonomerIndex]=0;
-  PSM[1].Info[MonomerIndex]=1;
-  PSM[0].Info[MonomerKindID]=0;
-  PSM[1].Info[MonomerKindID]=1;
+  PropertyList<> PSMCoordinate,PSMVelocity,PSMGradient,PSMMass,PSMIvMass,
+                 PSMDMask;
+  PropertyList<varVector,refVector,uint>  PSMMask,PSMSizeInf;
+  fixVector<uint,2> PSMIdx,PSMKIdx,PSMMerType;
+  fixVector<uint,2> PSMOff, PSMSize;
+  PSMOff[0]=0;    PSMSize[0]=3;
+  PSMOff[1]=3;    PSMSize[1]=3;
+  PSMCoordinate.allocate(2);  PSMCoordinate.BuildStructure(PSMOff,PSMSize);
+  PSMVelocity.allocate(2);    PSMVelocity.BuildStructure(PSMOff,PSMSize);
+  PSMGradient.allocate(2);    PSMGradient.BuildStructure(PSMOff,PSMSize);
+  PSMMass.allocate(2);        PSMMass.BuildStructure(PSMOff,PSMSize);
+  PSMIvMass.allocate(2);      PSMIvMass.BuildStructure(PSMOff,PSMSize);
+  PSMDMask.allocate(2);       PSMDMask.BuildStructure(PSMOff,PSMSize);
+  PSMMask.allocate(2);        PSMMask.BuildStructure(PSMOff,PSMSize);
+  PSMOff[0]=0;    PSMSize[0]=1;
+  PSMOff[1]=1;    PSMSize[1]=1;
+  PSMSizeInf.allocate(2);     PSMSizeInf.BuildStructure(PSMOff,PSMSize);
+  PSMMerType=Particle;
+  //PSM.gAllocate(PSMType,PSMFlag,3);
+  PSMCoordinate[0]=0.;
+  PSMCoordinate[1]=0.;   PSMCoordinate[1][0]=1.;
+  for(uint i=0;i<2U;++i)  Activate(PSMMask[i],PSMDMask[i]);
+  PSMIdx[0]=0;
+  PSMIdx[1]=1;
+  PSMKIdx[0]=0;
+  PSMKIdx[1]=1;
 
-  cout<<PSM.gDProperty[gCoordinate]<<endl;
-  */
+  cout<<PSMCoordinate.PropertyData<<endl;
 
   /*
   fixVector<double,6> Drc;

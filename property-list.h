@@ -40,6 +40,31 @@ namespace std {
 
   };
 
+  void Activate(VectorBase<uint>& MaskObj) { MaskObj=1; }
+
+  void DeActivate(VectorBase<uint>& MaskObj) { MaskObj=0; }
+
+  void Activate(VectorBase<uint>& MaskObj, const uint& I) { MaskObj[I]=1; }
+
+  void DeActivate(VectorBase<uint>& MaskObj, const uint& I) { MaskObj[I]=0; }
+
+  void Activate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj) {
+    MaskObj=1;  DMaskObj=1.;
+  }
+
+  void DeActivate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj) {
+    MaskObj=0;  DMaskObj=0.;
+  }
+
+  void Activate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj,
+                const uint& I) {
+    MaskObj[I]=1;  DMaskObj[I]=1.;
+  }
+
+  void DeActivate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj,
+                  const uint& I) {
+    MaskObj[I]=0;  DMaskObj[I]=0.;
+  }
 }
 
 #endif
