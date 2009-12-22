@@ -7,20 +7,20 @@
 
 namespace std {
 
-  template <typename CoordinateType, typename ParameterType>
+  template <typename SpaceType, typename ParameterType>
   class MinimizerKernBase {
 
     public:
-      typedef void (*YFuncType)(const CoordinateType*,ParameterType*,
+      typedef void (*YFuncType)(const SpaceType&,ParameterType&,
                                 double&);
-      typedef void (*GFuncType)(const CoordinateType*,ParameterType*,
-                                CoordinateType*);
-      typedef void (*BFuncType)(const CoordinateType*,ParameterType*,
-                                double&,CoordinateType*);
+      typedef void (*GFuncType)(const SpaceType&,ParameterType&,
+                                SpaceType*);
+      typedef void (*BFuncType)(const SpaceType&,ParameterType&,
+                                double&,SpaceType&);
       YFuncType                 YFunc;
       GFuncType                 GFunc;
       BFuncType                 BFunc;
-      CoordinateType            MinCoor;
+      SpaceType                 MinCoor;
       double                    MinY;
       GradientType              MinGrad;
       ParameterType             *pRunParam;
@@ -47,54 +47,41 @@ namespace std {
         BFunc=const_cast<BFuncType&>(BF);
       }
 
+      virtual void ImportState(const SpaceType&,const ParameterType&)=0;
+
   };
 
-  template <typename CoordinateType, typename ParameterType>
-  class MinimizerKern : public MinimizerKernBase<CoordinateType,ParameterType>{
-    public:
-      typedef MinimizerKern<CoordinateType,ParameterType>     Type;
-      typedef MinimizerKernBase<CoordinateType,ParameterType> ParentType;
-      MinimizerKern() : ParentType() {}
-      virtual void ImportState(const CoordinateType&,const ParameterType&)=0;
-  };
-
-  template <>
-  class MinimizerKern<varVector<double>,varVector<double> >
-    : public MinimizerKernBase<varVector<double>,varVector<double> > {
-    public:
-      typedef varVector<double> DVecType;
-      typedef MinimizerKern<DVecType,DVecType>      Type;
-      typedef MinimizerKernBase<DVecType,DVecType>  ParentType;
-      MinimizerKern() : ParentType() {}
-      void ImportState(const DVecType& Coor, const DVecType& Param) {
-        assert(this->BFunc!=NULL);
-        this->pMinCoor=new DVecType;
-        this->pMinCoor->allocate(Coor);
-        *(this->pMinCoor)=Coor;
-        this->pMinGrad=new DVecType;
-        this->pMinGrad.allocate(Coor);
-        MinY=0.;
-        *(this->pMinGrad)=0.;
-        BFunc(this->pMinCoor,this->pRunParam,MinY,this->pMinGrad);
-      }
-  };
-
-  template <typename CoordinateType, typename ParameterType>
+  template <typename SpaceType, typename ParameterType>
   class LineMinimizerBase
-    : public MinimizerKern<CoordinateType,ParameterType> {
+    : public MinimizerKernBase<SpaceType,ParameterType> {
 
     public:
-      typedef LineMinimizerBase<CoordinateType,ParameterType> Type;
-      typedef MinimizerKern<CoordinateType,ParameterType>     ParentType;
+      typedef LineMinimizerBase<SpaceType,ParameterType> Type;
+      typedef MinimizerKern<SpaceType,ParameterType>     ParentType;
 
-      CoordinateType  *pUppCoor,*pLowCoor,*pMidCoor;
-      CoordinateType  *pUppGrad,*pLowGrad,*pMidGrad;
-      double          UppY,   LowY,   MidY;
+      SpaceType pUppCoor,pLowCoor,pMidCoor;
+      SpaceType pUppGrad,pLowGrad,pMidGrad;
+      double    UppY,    LowY,    MidY;
 
       LineMinimizerBase() : ParentType(),
-                            pUppCoor(NULL), pLowCoor(NULL), pMidCoor(NULL),
-                            pUppGrad(NULL), pLowGrad(NULL), pMidGrad(NULL),
+                            UppCoor(), LowCoor(), MidCoor(),
+                            UppGrad(), LowGrad(), MidGrad(),
                             UppY(0.), LowY(0.), MidY(0.) {}
+    protected:
+
+      template <typename vType>
+      void Propagate(const SpaceType& Origin, const vType& Dirc,
+                     const double& step,
+                     SpaceType& Dest, double& DestY, SpaceType& DestG,
+                     double& Dest Prj) {
+        Dest=Origin;
+        Dest.shift(step,Dirc);
+        DestY=0.;
+        DestG=0.;
+        this->BFunc(Dest,*(this->pRunParam),DestY,DestG);
+        ++(this->MinGCount);
+        DestPrj=dot(DestG,Dirc);
+      }
 
   };
 

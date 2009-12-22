@@ -38,6 +38,17 @@ namespace std {
         PropertyData.swap(PL.PropertyData);
       }
 
+      Type& operator=(const Type& vb) { return assign(vb); }
+
+      template <typename inputT>
+      Type& operator=(const inputT& v) { return assign(v); }
+
+      template <typename inputT>
+      Type& operator*=(const inputT& v) { return scale(v); }
+
+      template <typename inputT>
+      Type& operator+=(const inputT& v) { return shift(v); }
+
       Type& assign(const DataType* v, long ncopy, int voffset=iZero, long vstep=lOne,
                    int offset=iZero, long step=lOne) {
         PropertyData.assign(v,ncopy,voffset,vstep,offset,step);
