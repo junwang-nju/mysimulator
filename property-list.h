@@ -327,6 +327,14 @@ namespace std {
 
   };
 
+  template <template <typename> class ListType,
+            template <typename> class PropertyType, typename DataType>
+  void swap(PropertyList<ListType,PropertyType,DataType>& pl1,
+            PropertyList<ListType,PropertyType,DataType>& pl2) {
+    pl1.swap(pl2);
+  }
+
+
   void Activate(VectorBase<uint>& MaskObj) { MaskObj=1; }
 
   void DeActivate(VectorBase<uint>& MaskObj) { MaskObj=0; }
