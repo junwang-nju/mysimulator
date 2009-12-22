@@ -6,6 +6,7 @@
 #include "hash-func.h"
 #include "param-list.h"
 #include "property-list.h"
+#include "property-list-op.h"
 #include "particle.h"
 #include "distance-storage.h"
 #include "distance-evaluation.h"

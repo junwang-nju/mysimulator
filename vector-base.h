@@ -104,18 +104,6 @@ namespace std {
         return scale(v,n);
       }
 
-      template <typename vType>
-      Type& scale(const pair<const T&,const vType&>& sp) {
-        assert(vType::IsVector);
-        return scale(sp.first).scale(sp.second);
-      }
-
-      template <typename vType>
-      Type& scale(const pair<const Type&,const T&>& sp) {
-        assert(vType::IsVector);
-        return scale(sp.first).scale(sp.second);
-      }
-
       template <typename ScaleT>
       Type& shift(const ScaleT& sv, const T* v, long nshift,
                   int soffset=iZero, long sstep=lOne,
@@ -151,8 +139,8 @@ namespace std {
         return shift(sp.second,sp.first);
       }
 
-      Type& shift(const T& value) {
-        return shift(value,&dOne,nData,iZero,lZero,iZero,lZero,iZero,lOne);
+      Type& shift(const T& value, int offset=iZero, long step=lOne) {
+        return shift(value,&dOne,nData,iZero,lZero,iZero,lZero,offset,step);
       }
 
       Type& shift(const Type& v) { return shift(dOne,v); }

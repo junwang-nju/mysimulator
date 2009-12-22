@@ -20,9 +20,9 @@ namespace std {
       YFuncType                 YFunc;
       GFuncType                 GFunc;
       BFuncType                 BFunc;
-      CoordinateType            *pMinCoor;
+      CoordinateType            MinCoor;
       double                    MinY;
-      GradientType              *pMinGrad;
+      GradientType              MinGrad;
       ParameterType             *pRunParam;
       double                    MinPrj;
       double                    MinMove;
@@ -37,9 +37,7 @@ namespace std {
         YFunc=NULL;
         GFunc=NULL;
         BFunc=NULL;
-        safe_delete(pMinCoor);
-        safe_delete(pMinGrad);
-        safe_delete(pRunParam);
+        pRunParam=NULL;
       }
 
       void ImportFunc(const YFuncType& YF,const GFuncType& GF,
