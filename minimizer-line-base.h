@@ -59,13 +59,16 @@ namespace std {
       double    RunPrj;
       double    DecreaseFac;
       double    CurvatureFac;
+      double    GradThreshold;
 
     public:
       LineMinimizerBase() : ParentType(),
                             RunCoor(), RunGrad(), RunY(0.), RunPrj(0.),
-                            DecreaseFac(1e-4), CurvatureFac(0.4) {}
+                            DecreaseFac(1e-4), CurvatureFac(0.4),
+                            GradThreshold(DRelDelta) {}
       void SetDecreaseFactor(const double& dfac) { DecreaseFac=dfac; }
       void SetCurvatureFactor(const double& cfac) { CurvatureFac=cfac; }
+      void SetGradientThreshold(const double& gth) { GradThreshold=gth; }
 
     protected:
 
@@ -101,9 +104,8 @@ namespace std {
       BacktrackingLineMinimizer() : ParentType(), BacktrackFac(Gold) {}
       void SetBacktrackingFactor(const double& bfac) { BacktrackFac=bfac; }
       int Go(SpaceType& Dirc) {
-        this->MinPrj=dot(Dirc,this->MinGrad);
-        if(this->MinPrj>DRelDelta)  { Dirc*=-1.; this->MinPrj=-this->MinPrj; }
-        else if(this->MinPrj>=-DRelDelta) return 2;
+        assert(this->MinPrj<=0);
+        if(this->MinPrj>=-this->GradThreshold)  return 2;
         const double minstep=MinStep(this->MinCoor,Dirc);
         double step=this->MinScale;
         double c1pj=this->DecreaseFac*this->MinPrj;

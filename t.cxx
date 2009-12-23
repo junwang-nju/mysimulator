@@ -32,6 +32,7 @@
 #include "interaction-parpar-quad-harm.h"
 #include "minimizer-base.h"
 #include "minimizer-line-base.h"
+#include "minimizer-steep-base.h"
 /*
 #include "minimizer-steep.h"
 #include "minimizer-conjg.h"
