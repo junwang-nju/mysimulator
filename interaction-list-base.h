@@ -67,7 +67,7 @@ namespace std {
         return *this;
       }
 
-      Type& allocate(const uint& NL, const uint& NID) {
+      virtual Type& allocate(const uint& NL, const uint& NID) {
         varVector<uint> offset(NL),size(NL);
         offset[0]=0;
         size[0]=NID;
@@ -98,6 +98,8 @@ namespace std {
         List.clear();
         KindIdx.clear();
       }
+
+      virtual ~InteractionListBase() { clear(); }
 
   };
 

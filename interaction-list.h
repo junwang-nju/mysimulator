@@ -45,19 +45,21 @@ namespace std {
             static_cast<InteractionListBase<rDistEvalObj,rGeomType>*>(IL));
         return *this;
       }
-      Type& allocate(const uint& nl, const uint& nid) {
+      virtual Type& allocate(const uint& nl, const uint& nid) {
         static_cast<ParentType*>(this)->allocate(nl,nid);
         Coordinate.allocate(nid);
         Gradient.allocate(nid);
         return *this;
       }
+      /*
       template <typename rDistEvalObj, typename rGeomType>
       Type& allocate(
-        const InteractionListBase<runDistEvalObj,runGeomType>& IL) {
+        const InteractionListBase<rDistEvalObj,rGeomType>& IL) {
         uint nl=IL.List.size();
         uint nid=IL.List[0].size();
         return allocate(nl,nid);
       }
+      */
       void BuildCoordinateBinding(
         const VectorBase<refVector<double> >& rCoordinate,
         const uint& I) {
@@ -77,6 +79,7 @@ namespace std {
         Gradient.clear();
         static_cast<ParentType*>(this)->clear();
       }
+      ~InteractionList() { Coordinate.clear(); Gradient.clear(); }
   };
 
   template <typename DistEvalObj, typename GeomType>
@@ -97,7 +100,7 @@ namespace std {
             static_cast<const ParentType&>(IL));
         return *this;
       }
-      Type& allocate(const uint& nl, const uint& nid) {
+      virtual Type& allocate(const uint& nl, const uint& nid) {
         static_cast<ParentType*>(this)->allocate(nl,nid);
         varVector<uint> offset(nl),size(nl);
         offset[0]=0;
@@ -112,13 +115,15 @@ namespace std {
         Gradient.BuildStructure(offset,size);
         return *this;
       }
+      /*
       template <typename rDistEvalObj, typename rGeomType>
       Type& allocate(
-        const InteractionListBase<runDistEvalObj,runGeomType>& IL) {
+        const InteractionListBase<rDistEvalObj,rGeomType>& IL) {
         uint nl=IL.List.size();
         uint nid=IL.List[0].size();
         return allocate(nl,nid);
       }
+      */
       void BuildCoordinateBinding(
         const VectorBase<refVector<double> >& rCoordinate) {
         uint n=this->List.size(),nid;
@@ -142,6 +147,7 @@ namespace std {
         Gradient.clear();
         static_cast<ParentType*>(this)->clear();
       }
+      ~InteractionList() { Coordinate.clear(); Gradient.clear(); }
   };
 
 }

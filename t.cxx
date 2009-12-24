@@ -49,12 +49,14 @@ class A{
 };
 
 void OutputFunc(
-    ostream& os, const Propagator<DistanceEvalwStorage<3>,FreeSpace>& Pg,
+    ostream& os,
+    const Propagator<DistanceEvalwStorage<3>,FreeSpace,LooseDataBinding>& Pg,
     const VectorBase<refVector<double> >& Coordinate,
     const VectorBase<refVector<double> >& Velocity,
     const VectorBase<refVector<double> >& Gradient,
     const ParamList&,
-    VectorBase<IDList<DistanceEvalwStorage<3>,FreeSpace> >&,
+    VectorBase<InteractionList<DistanceEvalwStorage<3>,FreeSpace,
+               LooseDataBinding> >&,
     DistanceEvalwStorage<3>&, const FreeSpace&) {
   os<<Pg.CmnGbParam[BasicCommon][NowTime]<<"\t"<<Coordinate[0]<<endl;
 }

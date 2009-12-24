@@ -33,7 +33,7 @@ namespace std {
     const ParamList& PList,DistEvalObj& DEval, const GeomType& Geo,
     double& Energy,
     VectorBase<refVector<double> >& Gradient) {
-    uint n=IDLS.size();
+    uint n=ILS.size();
     for(uint i=0;i<n;++i)
       EG_List(Coordinate,ILS[i],PList,DEval,Geo,Energy,Gradient);
   }

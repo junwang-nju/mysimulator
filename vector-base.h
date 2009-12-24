@@ -32,7 +32,7 @@ namespace std {
 
       VectorBase(const Type&) { myError("vector copier is prohibited!"); }
 
-      ~VectorBase() { clear(); }
+      virtual ~VectorBase() { clear(); }
 
       void clear() { Data=NULL; nData=0; head_ptr=NULL; tail_ptr=NULL; }
 

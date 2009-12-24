@@ -2,6 +2,7 @@
 #ifndef _Reference_Table_H_
 #define _Reference_Table_H_
 
+#include "type.h"
 #include "memory.h"
 #include "error-proc.h"
 

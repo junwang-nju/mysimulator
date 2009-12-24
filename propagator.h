@@ -40,39 +40,41 @@ namespace std {
                                         cgbPrm[BasicCommon][DeltaTime];
   }
 
-  template <typename DistEvalObj, typename GeomType>
+  template <typename DistEvalObj, typename GeomType, uint bMode>
   class Propagator {
 
     public:
     
-      typedef Propagator<DistEvalObj,GeomType>  Type;
+      typedef Propagator<DistEvalObj,GeomType,bMode>  Type;
     
       typedef void (*AllocFuncType)(FuncParamType&);
 
       typedef void (*SetFuncType)(FuncParamType&,const double*,const uint&);
       
-      typedef void (*StepFuncType)(VectorBase<refVector<double> >&,
-                                   VectorBase<refVector<double> >&,
-                                   VectorBase<refVector<double> >&,
-                                   const VectorBase<refVector<double> >&,
-                                   const ParamList&,
-                                   VectorBase<IDList<DistEvalObj,GeomType> >&,
-                                   VectorBase<MonomerPropagator>&,
-                                   FuncParamType&, FuncParamType&,
-                                   DistEvalObj&, const GeomType&);
+      typedef void (*StepFuncType)(
+        VectorBase<refVector<double> >&,
+        VectorBase<refVector<double> >&,
+        VectorBase<refVector<double> >&,
+        const VectorBase<refVector<double> >&,
+        const ParamList&,
+        VectorBase<InteractionList<DistEvalObj,GeomType,bMode> >&,
+        VectorBase<MonomerPropagator>&,
+        FuncParamType&, FuncParamType&,
+        DistEvalObj&, const GeomType&);
 
       typedef void (*SyncFuncType)(const VectorBase<refVector<double> >&,
                                    const VectorBase<refVector<double> >&,
                                    FuncParamType&,FuncParamType&,
                                    VectorBase<MonomerPropagator>&);
 
-      typedef void (*OutputType)(ostream&, const Type&,
-                                 const VectorBase<refVector<double> >&,
-                                 const VectorBase<refVector<double> >&,
-                                 const VectorBase<refVector<double> >&,
-                                 const ParamList&,
-                                 VectorBase<IDList<DistEvalObj,GeomType> >&,
-                                 DistEvalObj&, const GeomType&);
+      typedef void (*OutputType)(
+        ostream&, const Type&,
+        const VectorBase<refVector<double> >&,
+        const VectorBase<refVector<double> >&,
+        const VectorBase<refVector<double> >&,
+        const ParamList&,
+        VectorBase<InteractionList<DistEvalObj,GeomType,bMode> >&,
+        DistEvalObj&, const GeomType&);
 
       varVector<MonomerPropagator> UnitMove;
       
@@ -113,19 +115,19 @@ namespace std {
                VectorBase<refVector<double> >& Gradient,
                const VectorBase<refVector<double> >& Mass,
                const ParamList& PList,
-               VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
+               VectorBase<InteractionList<DistEvalObj,GeomType,bMode> >& ILS,
                DistEvalObj& DEval, const GeomType& Geo, ostream& os) {
         uint no=static_cast<uint>(CmnGbParam[BasicCommon][CountOutput]+0.5);
         uint ns=static_cast<uint>(CmnGbParam[BasicCommon][CountStepInOne]+0.5);
         double ot=ns*CmnGbParam[BasicCommon][DeltaTime];
         CmnGbParam[BasicCommon][NowTime]=CmnGbParam[BasicCommon][StartTime];
-        OutFunc(os,*this,Coordinate,Velocity,Gradient,PList,IDLS,DEval,Geo);
+        OutFunc(os,*this,Coordinate,Velocity,Gradient,PList,ILS,DEval,Geo);
         for(uint i=0;i<no;++i) {
           for(uint j=0;j<ns;++j)
-            Step(Coordinate,Velocity,Gradient,Mass,PList,IDLS,UnitMove,
+            Step(Coordinate,Velocity,Gradient,Mass,PList,ILS,UnitMove,
                  GbParam,CmnGbParam,DEval,Geo);
           CmnGbParam[BasicCommon][NowTime]+=ot;
-          OutFunc(os,*this,Coordinate,Velocity,Gradient,PList,IDLS,DEval,Geo);
+          OutFunc(os,*this,Coordinate,Velocity,Gradient,PList,ILS,DEval,Geo);
         }
       }
 

@@ -18,13 +18,13 @@ namespace std {
     gbPrm.BuildStructure(offset,size);
   }
 
-  template <typename DistEvalObj, typename GeomType>
+  template <typename DistEvalObj, typename GeomType, uint bMode>
   void BV_Step(VectorBase<refVector<double> >& Coordinate,
                VectorBase<refVector<double> >& Velocity,
                VectorBase<refVector<double> >& Gradient,
                const VectorBase<refVector<double> >& Mass,
                const ParamList& PList,
-               VectorBase<IDList<DistEvalObj,GeomType> >& IDLS,
+               VectorBase<InteractionList<DistEvalObj,GeomType,bMode> >& ILS,
                VectorBase<MonomerPropagator>& Mv, FuncParamType& gbPrm,
                FuncParamType& cgbPrm,
                DistEvalObj& DEval, const GeomType& Geo) {
@@ -36,7 +36,7 @@ namespace std {
                               Mv[i].runParam,gbPrm,cgbPrm);
     DEval.Update();
     for(uint i=0;i<n;++i) Gradient[i]=0.;
-    G_ListSet(IDLS,PList,DEval,Geo);
+    G_ListSet(Coordinate,ILS,PList,DEval,Geo,Gradient);
     for(uint i=0;i<n;++i)
       Mv[i].MvFunc[AfterGBV](Coordinate[i],Velocity[i],Gradient[i],
                              Mv[i].runParam,gbPrm,cgbPrm);
@@ -72,8 +72,8 @@ namespace std {
       Mv[i].Sync(IvMass[i],gbPrm,cgbPrm,Mv[i].runParam);
   }
 
-  template <typename DistEvalObj, typename GeomType>
-  void SetAsBV(Propagator<DistEvalObj,GeomType>& Pg,
+  template <typename DistEvalObj, typename GeomType, uint bMode>
+  void SetAsBV(Propagator<DistEvalObj,GeomType,bMode>& Pg,
                const VectorBase<uint>& MerType) {
     Pg.GbAlloc=BV_AllocGbParam;
     Pg.GbSetFunc.allocate(NumberSetBV);
