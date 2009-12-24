@@ -8,30 +8,78 @@
 namespace std {
 
   template <typename DistEvalObj, typename GeomType>
-  void E_List(IDList<DistEvalObj,GeomType>& IDL,const ParamList& PList,
-              DistEvalObj& DEval, const GeomType& Geo, double& Energy){
-    uint nl=IDL.List.size();
-    for(uint i=0;i<nl;++i)
-      IDL.efunc(IDL.Coordinate[i],IDL.List[i],IDL.KindIdx[i],
-                PList,DEval,Geo,Energy);
+  void E_List(const VectorBase<refVector<double> >& Coordinate,
+              InteractionList<DistEvalObj,GeomType,LooseDataBinding>& IL,
+              const ParamList& PList, DistEvalObj& DEval, const GeomType& Geo,
+              double& Energy){
+    uint nl=IL.List.size();
+    for(uint i=0;i<nl;++i) {
+      IL.BuildCoordinateBinding(Coordinate,i);
+      IL.efunc(IL.Coordinate,IL.List[i],IL.KindIdx[i],PList,DEval,Geo,Energy);
+    }
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void G_List(IDList<DistEvalObj,GeomType>& IDL,const ParamList& PList,
-              DistEvalObj& DEval, const GeomType& Geo) {
-    uint nl=IDL.List.size();
+  void E_List(const VectorBase<refVector<double> >& Coordinate,
+              InteractionList<DistEvalObj,GeomType,TightDataBinding>& IL,
+              const ParamList& PList, DistEvalObj& DEval, const GeomType& Geo,
+              double& Energy){
+    uint nl=IL.List.size();
     for(uint i=0;i<nl;++i)
-      IDL.gfunc(IDL.Coordinate[i],IDL.List[i],IDL.KindIdx[i],
-                PList,DEval,Geo,IDL.Gradient[i]);
+      IL.efunc(IL.Coordinate[i],IL.List[i],IL.KindIdx[i],PList,DEval,Geo,
+               Energy);
   }
 
   template <typename DistEvalObj, typename GeomType>
-  void EG_List(IDList<DistEvalObj,GeomType>& IDL,const ParamList& PList,
-               DistEvalObj& DEval, const GeomType& Geo,double& Energy) {
-    uint nl=IDL.List.size();
+  void G_List(const VectorBase<refVector<double> >& Coordinate,
+              InteractionList<DistEvalObj,GeomType,LooseDataBinding>& IL,
+              const ParamList& PList,DistEvalObj& DEval,const GeomType& Geo,
+              VectorBase<refVector<double> >& Gradient) {
+    uint nl=IL.List.size();
+    for(uint i=0;i<nl;++i) {
+      IL.BuildCoordinateBinding(Coordinate,i);
+      IL.BuildGradientBinding(Gradient,i);
+      IL.gfunc(IL.Coordinate,IL.List[i],IL.KindIdx[i],PList,DEval,Geo,
+               IL.Gradient);
+    }
+  }
+
+  template <typename DistEvalObj, typename GeomType>
+  void G_List(const VectorBase<refVector<double> >& Coordinate,
+              InteractionList<DistEvalObj,GeomType,TightDataBinding>& IL,
+              const ParamList& PList,DistEvalObj& DEval,const GeomType& Geo,
+              VectorBase<refVector<double> >& Gradient) {
+    uint nl=IL.List.size();
     for(uint i=0;i<nl;++i)
-      IDL.bfunc(IDL.Coordinate[i],IDL.List[i],IDL.KindIdx[i],
-                PList,DEval,Geo,Energy,IDL.Gradient[i]);
+      IL.gfunc(IL.Coordinate[i],IL.List[i],IL.KindIdx[i],
+               PList,DEval,Geo,IL.Gradient[i]);
+  }
+
+  template <typename DistEvalObj, typename GeomType>
+  void EG_List(const VectorBase<refVector<double> >& Coordinate,
+               InteractionList<DistEvalObj,GeomType,LooseDataBinding>& IL,
+               const ParamList& PList,DistEvalObj& DEval,const GeomType& Geo,
+               double& Energy,
+               VectorBase<refVector<double> >& Gradient) {
+    uint nl=IL.List.size();
+    for(uint i=0;i<nl;++i) {
+      IL.BuildCoordinateBinding(Coordinate,i);
+      IL.BuildGradientBinding(Gradient,i);
+      IL.bfunc(IL.Coordinate,IL.List[i],IL.KindIdx[i],PList,DEval,Geo,
+               Energy,IL.Gradient);
+    }
+  }
+
+  template <typename DistEvalObj, typename GeomType>
+  void EG_List(const VectorBase<refVector<double> >& Coordinate,
+               InteractionList<DistEvalObj,GeomType,TightDataBinding>& IL,
+               const ParamList& PList,DistEvalObj& DEval,const GeomType& Geo,
+               double& Energy,
+               VectorBase<refVector<double> >& Gradient) {
+    uint nl=IL.List.size();
+    for(uint i=0;i<nl;++i)
+      IL.bfunc(IL.Coordinate[i],IL.List[i],IL.KindIdx[i],
+               PList,DEval,Geo,Energy,IL.Gradient[i]);
   }
 
 }

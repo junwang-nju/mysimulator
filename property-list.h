@@ -37,6 +37,10 @@ namespace std {
         static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(PL));
         PropertyData.swap(PL.PropertyData);
       }
+      void clear() {
+        PropertyData.clear();
+        static_cast<ParentType*>(this)->clear();
+      }
 
       Type& operator=(const Type& vb) { return assign(vb); }
 
