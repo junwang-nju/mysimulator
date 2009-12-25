@@ -74,13 +74,12 @@ int main() {
   v1=5.;
   v1.scaleshift(1.2,5,v2,v2);
   v1=5.;
-  v1+=pair<const double&,const varVector<double>&>(5.,v2);
+  v1.shift(5.,v2);
   for(int i=0;i<10;++i)
     cout<<v1[i]<<"  ";
   cout<<endl;
   v1=5.;
-  v1+=tr1::tuple<const double&,const varVector<double>&,
-                 const varVector<double>&>(5.,v2,v2);
+  v1.shift(5.,v2,v2);
   for(int i=0;i<10;++i)
     cout<<v1[i]<<"  ";
   cout<<endl;
@@ -95,8 +94,7 @@ int main() {
   fv1+=1.5;
   cout<<fv1[2]<<endl;
   fv1.shift(1.2,fv2);
-  fv1+=tr1::tuple<const double&,const fixVector<double,1000>&,
-                  const fixVector<double,1000>&>(5.,fv2,fv2);
+  fv1.shift(5.,fv2,fv2);
   fv2=fv1.exchange(fv2);
 
   cout<<dot(v1,fv1)<<endl;
@@ -216,17 +214,17 @@ int main() {
     PropSetMerType[i]=Particle;
   }
 
-  IDList<DistanceEvalwStorage<3>,FreeSpace> idl;
-  idl.allocate(1,2);
-  idl.List[0][0]=0;
-  idl.List[0][1]=2;
-  idl.KindIdx[0][0]=0;
-  idl.KindIdx[0][1]=0;
-  for(uint i=0;i<1;i++)
-  for(uint k=0;k<2;++k)
-    idl.Coordinate[i][k]=&PropSetCoordinate[idl.List[i][k]];
-  SetInteraction(idl,ParticleParticle_LJ612);
-  E_List(idl,prm,DEval,FS,Energy);
+  InteractionList<DistanceEvalwStorage<3>,FreeSpace,LooseDataBinding> il;
+  il.allocate(1,2);
+  il.List[0][0]=0;
+  il.List[0][1]=2;
+  il.KindIdx[0][0]=0;
+  il.KindIdx[0][1]=0;
+  //for(uint i=0;i<1;i++)
+  //for(uint k=0;k<2;++k)
+  //  idl.Coordinate[i][k]=&PropSetCoordinate[idl.List[i][k]];
+  SetInteraction(il,ParticleParticle_LJ612);
+  E_List(PropSetCoordinate,il,prm,DEval,FS,Energy);
   cout<<Energy<<endl;
 
   PropertyList<> PSCoordinate,PSVelocity,PSGradient,PSMass,PSIvMass,PSDMask;
@@ -261,17 +259,19 @@ int main() {
   PSMerType[0]=Particle;
   PSMerType[1]=Particle;
 
-  varVector<IDList<DistanceEvalwStorage<3>,FreeSpace> > IDLS(1);
-  IDLS[0].allocate(1,2);
-  IDLS[0].List[0][0]=0;
-  IDLS[0].List[0][1]=1;
+  varVector<InteractionList<DistanceEvalwStorage<3>,
+                            FreeSpace,
+                            LooseDataBinding> > ILS(1);
+  ILS[0].allocate(1,2);
+  ILS[0].List[0][0]=0;
+  ILS[0].List[0][1]=1;
   for(uint i=0;i<1;i++)
   for(uint k=0;k<2;++k) {
-    IDLS[0].KindIdx[i][k]=PSKIdx[IDLS[0].List[i][k]];
-    IDLS[0].Coordinate[i][k]=&PSCoordinate[IDLS[0].List[i][k]];
-    IDLS[0].Gradient[i][k]=&PSGradient[IDLS[0].List[i][k]];
+    ILS[0].KindIdx[i][k]=PSKIdx[ILS[0].List[i][k]];
+    //IDLS[0].Coordinate[i][k]=&PSCoordinate[IDLS[0].List[i][k]];
+    //IDLS[0].Gradient[i][k]=&PSGradient[IDLS[0].List[i][k]];
   }
-  SetInteraction(IDLS[0],ParticleParticle_Harmonic);
+  SetInteraction(ILS[0],ParticleParticle_Harmonic);
   Energy=0.;
 
   ParamList HPList;
@@ -296,7 +296,7 @@ int main() {
   DEval2.allocate_storage(2);
 
   Energy=0.;
-  EG_ListSet(IDLS,HPList,DEval2,FS,Energy);
+  EG_ListSet(PSCoordinate,ILS,HPList,DEval2,FS,Energy,PSGradient);
   cout<<Energy<<endl;
   cout<<PSGradient[0]<<endl;
 
@@ -309,7 +309,7 @@ int main() {
   SetAsPEV(PgFmt);
   PgFmt.Alloc(PgFmt.runParam,PSSizeInf[0]);
 
-  Propagator<DistanceEvalwStorage<3>,FreeSpace> PgS;
+  Propagator<DistanceEvalwStorage<3>,FreeSpace,LooseDataBinding> PgS;
   SetAsEV(PgS,PSMerType);
   double dt=0.001;
   PgS.CmnGbSetFunc[SetCmnTimeStep](PgS.CmnGbParam,&dt,1);
@@ -324,7 +324,7 @@ int main() {
   PgS.CmnGbSetFunc[SetCmnOutputInterval](PgS.CmnGbParam,&ot,1);
   PgS.SyncAll(PSIvMass,PSDMask);
   PgS.OutFunc=OutputFunc;
-  PgS.Run(PSCoordinate,PSVelocity,PSGradient,PSMass,HPList,IDLS,DEval2,FS,cout);
+  PgS.Run(PSCoordinate,PSVelocity,PSGradient,PSMass,HPList,ILS,DEval2,FS,cout);
 
 
   /// the test for random generator is commented to speed the test
@@ -358,7 +358,7 @@ int main() {
   PSVelocity[0]=0.;
   PSVelocity[1]=0.;
 
-  Propagator<DistanceEvalwStorage<3>,FreeSpace> PgL;
+  Propagator<DistanceEvalwStorage<3>,FreeSpace,LooseDataBinding> PgL;
   SetAsLV(PgL,PSMerType);
   PgL.CmnGbSetFunc[SetCmnTimeStep](PgL.CmnGbParam,&dt,1);
   PSSizeInf[0][0]=3;  PSSizeInf[1][0]=3;
@@ -381,13 +381,13 @@ int main() {
   Energy=0;
   PSGradient[0]=0.;
   PSGradient[1]=0.;
-  EG_ListSet(IDLS,HPList,DEval2,FS,Energy);
+  EG_ListSet(PSCoordinate,ILS,HPList,DEval2,FS,Energy,PSGradient);
   for(uint i=0;i<PSCoordinate.size();++i) {
     cout<<i<<"\t";
     cout<<PgL.UnitMove[i].runParam[BasicPLV][RandomVelocitySizePLV]<<endl;
   }
   PgL.Run(PSCoordinate,PSVelocity,PSGradient,PSMass,
-          HPList,IDLS,DEval2,FS,cout);
+          HPList,ILS,DEval2,FS,cout);
 
   PropertyList<> PSMCoordinate,PSMVelocity,PSMGradient,PSMMass,PSMIvMass,
                  PSMDMask;

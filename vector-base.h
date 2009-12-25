@@ -3,7 +3,6 @@
 #define _Vector_Base_H_
 
 #include "vector-impl.cc"
-#include <tr1/tuple>
 
 namespace std {
 
@@ -127,18 +126,6 @@ namespace std {
         return shift(value,v,n);
       }
       
-      template <typename vType>
-      Type& shift(const pair<const T&,const vType&>& sp) {
-        assert(vType::IsVector);
-        return shift(sp.first,sp.second);
-      }
-
-      template <typename vType>
-      Type& shift(const pair<const vType&,const T&>& sp) {
-        assert(vType::IsVector);
-        return shift(sp.second,sp.first);
-      }
-
       Type& shift(const T& value, int offset=iZero, long step=lOne) {
         return shift(value,&dOne,nData,iZero,lZero,iZero,lZero,offset,step);
       }
@@ -149,22 +136,8 @@ namespace std {
         return scaleshift(dOne,dOne,ShiftFv,v);
       }
 
-      template <typename vTypeA, typename vTypeB>
-      Type& shift(const pair<const vTypeA&,const vTypeB&>& sp) {
-        assert(vTypeA::IsVector);
-        assert(vTypeB::IsVector);
-        return shift(sp.first,sp.second);
-      }
-
       Type& shift(const T& ShiftF, const Type& ShiftFv, const Type& v) {
         return scaleshift(dOne,ShiftF,ShiftFv,v);
-      }
-
-      template <typename vTypeA, typename vTypeB>
-      Type& shift(const tr1::tuple<const T&,const vTypeA&,const vTypeB&>& st) {
-        assert(vTypeA::IsVector);
-        assert(vTypeB::IsVector);
-        return shift(tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
 
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const T* ShiftFv,

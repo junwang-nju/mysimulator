@@ -171,16 +171,6 @@ namespace std {
         return *this;
       }
       
-      template <typename vType>
-      Type& shift(const pair<const DataType&,const vType&>& sp) {
-        return shift(sp.first,sp.second);
-      }
-
-      template <typename vType>
-      Type& shift(const pair<const vType&,const DataType&>& sp) {
-        return shift(sp.second,sp.first);
-      }
-
       Type& shift(const DataType& value, int offset=iZero, long step=lOne) {
         PropertyData.shift(value,offset,step);
         return *this;
@@ -196,21 +186,10 @@ namespace std {
       }
 
       template <typename vTypeA, typename vTypeB>
-      Type& shift(const pair<const vTypeA&,const vTypeB&>& sp) {
-        return shift(sp.first,sp.second);
-      }
-
-      template <typename vTypeA, typename vTypeB>
       Type& shift(const DataType& ShiftF,
                   const vTypeA& ShiftFv, const vTypeB& v) {
         PropertyData.scaleshift(dOne,ShiftF,ShiftFv,v);
         return *this;
-      }
-
-      template <typename vTypeA, typename vTypeB>
-      Type& shift(
-          const tr1::tuple<const DataType&,const vTypeA&,const vTypeB&>& st){
-        return shift(tr1::get<0>(st),tr1::get<1>(st),tr1::get<2>(st));
       }
 
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,

@@ -2,9 +2,9 @@
 #ifndef _Random_Generator_MT_SFMT_H_
 #define _Random_Generator_MT_SFMT_H_
 
+#include "type.h"
 #include <cstdlib>
 #include <cassert>
-#include <tr1/cstdint>
 
 namespace std {
 

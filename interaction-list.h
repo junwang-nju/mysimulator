@@ -46,33 +46,26 @@ namespace std {
         return *this;
       }
       virtual Type& allocate(const uint& nl, const uint& nid) {
-        static_cast<ParentType*>(this)->allocate(nl,nid);
+        ParentType::allocate(nl,nid);
         Coordinate.allocate(nid);
         Gradient.allocate(nid);
         return *this;
       }
-      /*
-      template <typename rDistEvalObj, typename rGeomType>
-      Type& allocate(
-        const InteractionListBase<rDistEvalObj,rGeomType>& IL) {
-        uint nl=IL.List.size();
-        uint nid=IL.List[0].size();
-        return allocate(nl,nid);
-      }
-      */
       void BuildCoordinateBinding(
         const VectorBase<refVector<double> >& rCoordinate,
         const uint& I) {
         uint nid=this->List[I].size();
         for(uint i=0;i<nid;++i)
-          Coordinate[i]=&rCoordinate[this->List[I][i]];
+          Coordinate[i]=const_cast<refVector<double>*>(
+              &rCoordinate[this->List[I][i]]);
       }
       void BuildGradientBinding(
         const VectorBase<refVector<double> >& rGradient,
         const uint& I) {
         uint nid=this->List[I].size();
         for(uint i=0;i<nid;++i)
-          Gradient[i]=&rGradient[this->List[I][i]];
+          Gradient[i]=const_cast<refVector<double>*>(
+              &rGradient[this->List[I][i]]);
       }
       void clear() {
         Coordinate.clear();
@@ -101,7 +94,7 @@ namespace std {
         return *this;
       }
       virtual Type& allocate(const uint& nl, const uint& nid) {
-        static_cast<ParentType*>(this)->allocate(nl,nid);
+        ParentType::allocate(nl,nid);
         varVector<uint> offset(nl),size(nl);
         offset[0]=0;
         size[0]=nid;
@@ -115,15 +108,6 @@ namespace std {
         Gradient.BuildStructure(offset,size);
         return *this;
       }
-      /*
-      template <typename rDistEvalObj, typename rGeomType>
-      Type& allocate(
-        const InteractionListBase<rDistEvalObj,rGeomType>& IL) {
-        uint nl=IL.List.size();
-        uint nid=IL.List[0].size();
-        return allocate(nl,nid);
-      }
-      */
       void BuildCoordinateBinding(
         const VectorBase<refVector<double> >& rCoordinate) {
         uint n=this->List.size(),nid;

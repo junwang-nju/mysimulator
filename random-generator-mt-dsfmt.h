@@ -3,7 +3,6 @@
 #define _Random_Generator_MT_DSFMT_H_
 
 #include "type.h"
-#include <tr1/cstdint>
 #include "region-boundary-type.h"
 
 #ifdef HAVE_SSE2

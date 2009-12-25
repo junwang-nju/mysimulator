@@ -32,9 +32,6 @@ namespace std {
       PropertyList<varVector,refVector,uint>  List;
       PropertyList<varVector,refVector,uint>  KindIdx;
 
-      //PropertyList<varVector,refVector,refVector<double>*> Coordinate;
-      //PropertyList<varVector,refVector,refVector<double>*> Gradient;
-
       typedef InteractionListBase<DistEvalObj,GeomType>    Type;
 
       InteractionListBase()
