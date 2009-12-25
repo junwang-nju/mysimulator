@@ -89,45 +89,6 @@ namespace std {
 
   };
 
-  template <typename SpaceType, typename ParameterType,
-            uint CondType=StrongWolfe>
-  class BacktrackingLineMinimizer
-    : public LineMinimizerBase<SpaceType,ParameterType>{
-    public:
-      typedef BacktrackingLineMinimizer<SpaceType,ParameterType,CondType> Type;
-      typedef LineMinimizerBase<SpaceType,ParameterType>            ParentType;
-
-    private:
-      double BacktrackFac;
-
-    public:
-      BacktrackingLineMinimizer() : ParentType(), BacktrackFac(Gold) {}
-      void SetBacktrackingFactor(const double& bfac) { BacktrackFac=bfac; }
-      int Go(SpaceType& Dirc) {
-        assert(this->MinPrj<=0);
-        if(this->MinPrj>=-this->GradThreshold)  return 2;
-        const double minstep=MinStep(this->MinCoor,Dirc);
-        double step=this->MinScale;
-        double c1pj=this->DecreaseFac*this->MinPrj;
-        double c2pj=this->CurvatureFac*this->MinPrj;
-        do {
-          Propagate(this->MinCoor,Dirc,step,
-                    this->RunCoor,this->RunY,this->RunGrad,this->RunPrj);
-          if(Condition<CondType>(this->RunY,this->RunPrj,this->MinY,
-                                 c1pj,c2pj,step)) {
-            swap(this->MinCoor,this->RunCoor);
-            this->MinY=this->RunY;
-            swap(this->MinGrad,this->RunGrad);
-            this->MinPrj=this->RunPrj;
-            this->MinMove=step;
-            return 1;
-          }
-          step*=BacktrackFac;
-        } while(step>minstep);
-        return 2;
-      }
-  };
-
 }
 
 #endif

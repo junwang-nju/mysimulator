@@ -6,17 +6,13 @@
 
 namespace std {
 
-  template <typename SpaceType, typename ParameterType,
-            template <typename,typename,uint>
-            class LineBase=BacktrackingLineMinimizer,
-            uint CondType=StrongWolfe>
-  class SteepestDescentMinimizerBase
-    : public LineBase<SpaceType,ParameterType,CondType> {
+  template <typename LineMinMethod>
+  class SteepestDescentMinimizerBase : public LineMinMethod {
 
     public:
-      typedef SteepestDescentMinimizerBase<SpaceType,ParameterType,LineBase,
-                                           CondType>      Type;
-      typedef LineBase<SpaceType,ParameterType,CondType>  ParentType;
+      typedef SteepestDescentMinimizerBase<LineMinMethod>       Type;
+      typedef LineMinMethod                                     ParentType;
+      typedef typename LineMinMethod::SpaceType                 SpaceType;
 
       static const uint DefaultMaxIter;
 
@@ -44,10 +40,8 @@ namespace std {
 
   };
 
-  template <typename SpaceType, typename ParameterType,
-            template <typename,typename,uint> class LineBase, uint CondType>
-  const uint SteepestDescentMinimizerBase<SpaceType,ParameterType,
-                                          LineBase,CondType>::DefaultMaxIter
+  template <typename LineMinMethod>
+  const uint SteepestDescentMinimizerBase<LineMinMethod>::DefaultMaxIter
       =10000;
 }
 

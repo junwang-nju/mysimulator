@@ -1,23 +1,23 @@
 
-#ifndef _Minimizer_Line_PropertyList_H_
-#define _Minimizer_Line_PropertyList_H_
+#ifndef _Minimizer_Line_For_PropertyList_H_
+#define _Minimizer_Line_For_PropertyList_H_
 
 #include "minimizer-line-base.h"
-#include "minimizer-propertylist-base.h"
+#include "minimizer-base-4propertylist.h"
 
 namespace std {
 
-  template <typename DistEvalObj, typename GeomType, uint bMode,
-            template <typename> class ListType>
+  template <template <typename> class ListType,
+            typename DistEvalObj, typename GeomType, uint bMode>
   class LineMinimizerBase4PropertyList
     : public LineMinimizerBase<
                 PropertyList<ListType>,
-                Parameter4MinimizerPropertyList<DistEvalObj,GeomType,bMode> >{
+                MinimizerParameter4PropertyList<DistEvalObj,GeomType,bMode> >{
     public:
-      typedef LineMinimizerBase4PropertyList<DistEvalObj,GeomType,bMode,
-                                             ListType>
+      typedef LineMinimizerBase4PropertyList<ListType,
+                                             DistEvalObj,GeomType,bMode>
               Type;
-      typedef Parameter4MinimizerPropertyList<DistEvalObj,GeomType,bMode>
+      typedef MinimizerParameter4PropertyList<DistEvalObj,GeomType,bMode>
               ParamType;
       typedef LineMinimizerBase<PropertyList<ListType>,ParamType>
               ParentType;
@@ -49,20 +49,6 @@ namespace std {
         this->MinGrad=0.;
         this->BFunc(this->MinCoor,*(this->pRunParam),this->MinY,this->MinGrad);
       }
-  };
-
-  template <typename DistEvalObj, typename GeomType, uint bMode,
-            template <typename> class ListType>
-  class Backtracking4PropertyList
-    : public LineMinimizerBase4PropertyList<DistEvalObj,GeomType,bMode,
-                                            ListType> {
-    public:
-      typedef Backtracking4PropertyList<DistEvalObj,GeomType,bMode,ListType>
-              Type;
-      typedef LineMinimizerBase4PropertyList<DistEvalObj,GeomType,bMode,
-                                             ListType>
-              ParentType;
-
   };
 
 }
