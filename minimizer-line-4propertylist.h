@@ -4,6 +4,7 @@
 
 #include "minimizer-line-base.h"
 #include "minimizer-base-4propertylist.h"
+#include <cmath>
 
 namespace std {
 
@@ -21,6 +22,7 @@ namespace std {
               ParamType;
       typedef LineMinimizerBase<PropertyList<ListType>,ParamType>
               ParentType;
+      typedef typename ParentType::SpaceType  SpaceType;
 
       LineMinimizerBase4PropertyList() : ParentType() {
         this->ImportFunc(E_MinPropertyList,
@@ -48,6 +50,21 @@ namespace std {
         this->MinY=0.;
         this->MinGrad=0.;
         this->BFunc(this->MinCoor,*(this->pRunParam),this->MinY,this->MinGrad);
+      }
+      virtual 
+      double MinStep(const SpaceType& Origin, const SpaceType& Dirc) {
+        uint n=Origin.PropertyData.size();
+        assert(n==Dirc.PropertyData.size());
+        assert(n==this->pRunParam->Mask.PropertyData.size());
+        double minStep=0.,tmd;
+        for(uint i=0;i<n;++i) {
+          if(this->pRunParam->Mask[i]==0)   continue;
+          tmd=fabs(Origin[i]);
+          tmd=(tmd<1.?Dirc[i]:Dirc[i]/tmd);
+          minStep+=tmd*tmd;
+        }
+        minStep=sumABS(this->pRunParam->DMask.PropertyData)/minStep;
+        return DRelDelta*sqrt(minStep);
       }
   };
 

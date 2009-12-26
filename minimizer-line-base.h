@@ -85,7 +85,8 @@ namespace std {
         DestPrj=dot(DestG,Dirc);
       }
 
-      virtual double MinStep(const SpaceType& Origin, const SpaceType& Dirc) = 0;
+      virtual
+      double MinStep(const SpaceType& Origin, const SpaceType& Dirc) = 0;
 
   };
 
