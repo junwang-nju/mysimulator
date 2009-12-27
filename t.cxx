@@ -499,13 +499,19 @@ int main() {
   SDM.Go();
   cout<<SDM.MinY<<endl;
   cout<<SDM.MinCoor<<endl;
-  cout<<SDM.MinGCount<<endl;
+  cout<<SDM.MinGCount<<"\t"<<SDM.MinLineCount<<endl;
 
 
   ConjugateGradientMinimizer4PropertyList<
     varVector,DistanceEvalwStorage<3>,FreeSpace,LooseDataBinding,StrongWolfe,
     TrackingLineMinimizer4PropertyList>
     CGM;
+  CGM.ImportState(PSMCoordinate,LPrm);
+  cout<<CGM.MinY<<endl;
+  CGM.Go();
+  cout<<CGM.MinY<<endl;
+  cout<<CGM.MinCoor<<endl;
+  cout<<CGM.MinGCount<<"\t"<<CGM.MinLineCount<<endl;
 
   /*
   ConjGradientMin<DistanceEvalwStorage<3>,FreeSpace>  CGM;

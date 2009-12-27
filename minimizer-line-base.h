@@ -53,6 +53,8 @@ namespace std {
       typedef MinimizerKernBase<SpaceType,ParameterType> ParentType;
       typedef SpaceType                                  RunSpaceType;
 
+      uint      MinLineCount;
+
     protected:
       SpaceType RunCoor;
       SpaceType RunGrad;
@@ -63,7 +65,7 @@ namespace std {
       double    GradThreshold;
 
     public:
-      LineMinimizerBase() : ParentType(),
+      LineMinimizerBase() : ParentType(), MinLineCount(0),
                             RunCoor(), RunGrad(), RunY(0.), RunPrj(0.),
                             DecreaseFac(1e-4), CurvatureFac(0.4),
                             GradThreshold(DRelDelta) { }

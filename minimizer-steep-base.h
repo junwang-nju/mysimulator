@@ -23,17 +23,25 @@ namespace std {
       SteepestDescentMinimizerBase() : ParentType(), Dirc() {}
       int Go(const uint& MaxIter=DefaultMaxIter) {
         this->MinGCount=0;
+        this->MinLineCount=0;
         double tmd;
         for(uint nEval=0;nEval<MaxIter;++nEval) {
           Dirc=this->MinGrad;
           tmd=norm(Dirc);
-          if(tmd<this->GradThreshold) return 3;
+          if(tmd<this->GradThreshold) { this->MinLineCount=nEval; return 3; }
           Dirc*=-1./tmd;
           this->MinPrj=-tmd;
           tmd=this->MinY;
-          if(static_cast<ParentType*>(this)->Go(Dirc)==2)       return 1;
-          if(2.0*(tmd-this->MinY)<=(tmd+this->MinY)*DRelDelta)  return 2;
+          if(static_cast<ParentType*>(this)->Go(Dirc)==2)       {
+            this->MinLineCount=nEval;
+            return 1;
+          }
+          if(2.0*(tmd-this->MinY)<=(tmd+this->MinY)*DRelDelta)  {
+            this->MinLineCount=nEval;
+            return 2;
+          }
         }
+        this->MinLineCount=MaxIter;
         return 0;
       }
 
