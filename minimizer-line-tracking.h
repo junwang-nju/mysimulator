@@ -1,27 +1,27 @@
 
-#ifndef _Minimizer_Line_BackTracking_H_
-#define _Minimizer_Line_BackTracking_H_
+#ifndef _Minimizer_Line_Tracking_H_
+#define _Minimizer_Line_Tracking_H_
 
 namespace std {
 
   template <typename LineMinBase, uint CondType=StrongWolfe>
-  class BacktrackingLineMinimizer : public LineMinBase {
+  class TrackingLineMinimizer : public LineMinBase {
     public:
-      typedef BacktrackingLineMinimizer<LineMinBase,CondType> Type;
+      typedef TrackingLineMinimizer<LineMinBase,CondType>     Type;
       typedef LineMinBase                                     ParentType;
-      typedef typename LineMinBase::SpaceType                 SpaceType;
+      typedef typename LineMinBase::RunSpaceType              RunSpaceType;
 
     private:
-      double BacktrackFac;
+      double TrackFac;
 
     public:
-      BacktrackingLineMinimizer() : ParentType(), BacktrackFac(Gold) {}
-      void SetBacktrackingFactor(const double& bfac) { BacktrackFac=bfac; }
-      int Go(SpaceType& Dirc) {
+      TrackingLineMinimizer() : ParentType(), TrackFac(Gold) {}
+      void SetTrackingFactor(const double& bfac) { TrackFac=bfac; }
+      int Go(RunSpaceType& Dirc) {
         assert(this->MinPrj<=0);
         if(this->MinPrj>=-this->GradThreshold)  return 2;
         const double minstep=MinStep(this->MinCoor,Dirc);
-        double step=this->MinScale;
+        double dstep=this->MinScale,step=dstep;
         double c1pj=this->DecreaseFac*this->MinPrj;
         double c2pj=this->CurvatureFac*this->MinPrj;
         do {
@@ -36,8 +36,10 @@ namespace std {
             this->MinMove=step;
             return 1;
           }
-          step*=BacktrackFac;
-        } while(step>minstep);
+          if((dstep>0)&&(this->RunPrj>0))       dstep*=-TrackFac;
+          else if((dstep<0)&&(this->RunPrj<0))  dstep*=-TrackFac;
+          step+=dstep;
+        } while(fabs(dstep)>minstep);
         return 2;
       }
   };

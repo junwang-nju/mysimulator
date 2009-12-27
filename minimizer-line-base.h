@@ -51,6 +51,7 @@ namespace std {
     public:
       typedef LineMinimizerBase<SpaceType,ParameterType> Type;
       typedef MinimizerKernBase<SpaceType,ParameterType> ParentType;
+      typedef SpaceType                                  RunSpaceType;
 
     protected:
       SpaceType RunCoor;
@@ -65,7 +66,7 @@ namespace std {
       LineMinimizerBase() : ParentType(),
                             RunCoor(), RunGrad(), RunY(0.), RunPrj(0.),
                             DecreaseFac(1e-4), CurvatureFac(0.4),
-                            GradThreshold(DRelDelta) {}
+                            GradThreshold(DRelDelta) { }
       void SetDecreaseFactor(const double& dfac) { DecreaseFac=dfac; }
       void SetCurvatureFactor(const double& cfac) { CurvatureFac=cfac; }
       void SetGradientThreshold(const double& gth) { GradThreshold=gth; }
@@ -78,6 +79,7 @@ namespace std {
                      double& DestPrj) {
         Dest=Origin;
         Dest.shift(step,Dirc);
+        this->pRunParam->Update();
         DestY=0.;
         DestG=0.;
         this->BFunc(Dest,*(this->pRunParam),DestY,DestG);

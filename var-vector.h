@@ -71,8 +71,7 @@ namespace std {
         tmn=this->nData;        this->nData=v.nData;          v.nData=tmn;
         this->set_HeadTail();
         v.set_HeadTail();
-        this->rTable.clear();
-        v.rTable.clear();
+        this->rTable.swap(v.rTable);
         return *this;
       }
 

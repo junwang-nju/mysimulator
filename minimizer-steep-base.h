@@ -12,18 +12,17 @@ namespace std {
     public:
       typedef SteepestDescentMinimizerBase<LineMinMethod>       Type;
       typedef LineMinMethod                                     ParentType;
-      typedef typename LineMinMethod::SpaceType                 SpaceType;
+      typedef typename LineMinMethod::RunSpaceType              RunSpaceType;
 
       static const uint DefaultMaxIter;
 
-    private:
-      SpaceType Dirc;
+    protected:
+      RunSpaceType Dirc;
 
     public:
       SteepestDescentMinimizerBase() : ParentType(), Dirc() {}
       int Go(const uint& MaxIter=DefaultMaxIter) {
         this->MinGCount=0;
-        uint MinStatus=0;
         double tmd;
         for(uint nEval=0;nEval<MaxIter;++nEval) {
           Dirc=this->MinGrad;

@@ -9,19 +9,20 @@ namespace std {
   template <typename DistEvalObj, typename GeomType, uint bMode>
   class MinimizerParameter4PropertyList {
     public:
-      PropertyList<refVector,refVector,uint>                    Mask;
-      PropertyList<refVector>                                   DMask;
+      PropertyList<refVector,refVector,uint,refVector>          Mask;
+      PropertyList<refVector,refVector,double,refVector>        DMask;
       DistEvalObj                                               *pDEval;
       GeomType                                                  *pRunGeo;
       ParamList                                                 *pRunParam;
       refVector<InteractionList<DistEvalObj,GeomType,bMode> >   ILS;
+      void Update() { pDEval->Update(); }
   };
 
   template <template <typename> class ListType,
             typename DistEvalObj,typename GeomType, uint bMode>
   void E_MinPropertyList(
     const PropertyList<ListType>& Coordinate,
-    const MinimizerParameter4PropertyList<DistEvalObj,GeomType,bMode>& Prm,
+    MinimizerParameter4PropertyList<DistEvalObj,GeomType,bMode>& Prm,
     double& Energy){
     E_ListSet(Coordinate,Prm.ILS,*(Prm.pRunParam),*(Prm.pDEval),
               *(Prm.pRunGeo),Energy);
@@ -31,7 +32,7 @@ namespace std {
             typename DistEvalObj,typename GeomType, uint bMode>
   void G_MinPropertyList(
     const PropertyList<ListType>& Coordinate,
-    const MinimizerParameter4PropertyList<DistEvalObj,GeomType,bMode>& Prm,
+    MinimizerParameter4PropertyList<DistEvalObj,GeomType,bMode>& Prm,
     PropertyList<ListType>& Gradient){
     G_ListSet(Coordinate,Prm.ILS,*(Prm.pRunParam),*(Prm.pDEval),
               *(Prm.pRunGeo),Gradient);
@@ -41,10 +42,10 @@ namespace std {
             typename DistEvalObj,typename GeomType, uint bMode>
   void EG_MinPropertyList(
     const PropertyList<ListType>& Coordinate,
-    const MinimizerParameter4PropertyList<DistEvalObj,GeomType,bMode>& Prm,
+    MinimizerParameter4PropertyList<DistEvalObj,GeomType,bMode>& Prm,
     double& Energy,PropertyList<ListType>& Gradient){
-    G_ListSet(Coordinate,Prm.ILS,*(Prm.pRunParam),*(Prm.pDEval),
-              *(Prm.pRunGeo),Energy,Gradient);
+    EG_ListSet(Coordinate,Prm.ILS,*(Prm.pRunParam),*(Prm.pDEval),
+               *(Prm.pRunGeo),Energy,Gradient);
   }
 
 }

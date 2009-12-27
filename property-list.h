@@ -9,13 +9,15 @@ namespace std {
 
 	template <template <typename> class ListType=varVector,
             template <typename> class PropertyType=refVector,
-            typename DataType=double>
+            typename DataType=double,
+            template <typename> class DataVecType=varVector>
 	class PropertyList : public ListType<PropertyType<DataType> >{
     public:
-      typedef PropertyList<ListType,PropertyType,DataType>  Type;
+      typedef PropertyList<ListType,PropertyType,DataType,DataVecType>  
+                                                            Type;
       typedef ListType<PropertyType<DataType> >             ParentType;
       typedef PropertyType<DataType>                        Property;
-      varVector<DataType> PropertyData;
+      DataVecType<DataType> PropertyData;
 
       PropertyList() : ParentType(), PropertyData() {}
       PropertyList(const Type& PL) {
@@ -310,13 +312,21 @@ namespace std {
 
   };
 
+  template <template <typename> class PropertyType, typename DataType,
+            template <typename> class SListType,
+            template <typename> class SDataVecType>
+  void refer(PropertyList<refVector,PropertyType,DataType,refVector>& dPL,
+       const PropertyList<SListType,PropertyType,DataType,SDataVecType>& sPL) {
+    dPL.refer(sPL);
+    dPL.PropertyData.refer(sPL.PropertyData);
+  }
+
   template <template <typename> class ListType,
             template <typename> class PropertyType, typename DataType>
   void swap(PropertyList<ListType,PropertyType,DataType>& pl1,
             PropertyList<ListType,PropertyType,DataType>& pl2) {
     pl1.swap(pl2);
   }
-
 
   void Activate(VectorBase<uint>& MaskObj) { MaskObj=1; }
 

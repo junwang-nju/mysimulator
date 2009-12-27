@@ -14,7 +14,7 @@ namespace std {
       typedef void (*YFuncType)(const SpaceType&,ParameterType&,
                                 double&);
       typedef void (*GFuncType)(const SpaceType&,ParameterType&,
-                                SpaceType*);
+                                SpaceType&);
       typedef void (*BFuncType)(const SpaceType&,ParameterType&,
                                 double&,SpaceType&);
       YFuncType                 YFunc;
@@ -38,13 +38,6 @@ namespace std {
         GFunc=NULL;
         BFunc=NULL;
         pRunParam=NULL;
-      }
-
-      void ImportFunc(const YFuncType& YF,const GFuncType& GF,
-                      const BFuncType& BF) {
-        YFunc=const_cast<YFuncType&>(YF);
-        GFunc=const_cast<GFuncType&>(GF);
-        BFunc=const_cast<BFuncType&>(BF);
       }
 
       virtual void ImportState(const SpaceType&,const ParameterType&)=0;

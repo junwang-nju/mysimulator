@@ -13,7 +13,6 @@ namespace std {
               const ParamList& PList, DistEvalObj& DEval, const GeomType& Geo,
               double& Energy){
     uint nl=IL.List.size();
-    cout<<nl<<endl;
     for(uint i=0;i<nl;++i) {
       IL.BuildCoordinateBinding(Coordinate,i);
       IL.efunc(IL.Coordinate,IL.List[i],IL.KindIdx[i],PList,DEval,Geo,Energy);
