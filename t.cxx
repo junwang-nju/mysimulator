@@ -32,6 +32,7 @@
 #include "interaction-parpar-quad-harm.h"
 #include "minimizer-steep-4propertylist.h"
 #include "minimizer-line-tracking-4propertylist.h"
+#include "minimizer-conjg-4propertylist.h"
 /*
 #include "minimizer-steep.h"
 #include "minimizer-conjg.h"
@@ -500,8 +501,13 @@ int main() {
   cout<<SDM.MinCoor<<endl;
   cout<<SDM.MinGCount<<endl;
 
-  /*
 
+  ConjugateGradientMinimizer4PropertyList<
+    varVector,DistanceEvalwStorage<3>,FreeSpace,LooseDataBinding,StrongWolfe,
+    TrackingLineMinimizer4PropertyList>
+    CGM;
+
+  /*
   ConjGradientMin<DistanceEvalwStorage<3>,FreeSpace>  CGM;
   CGM.Import(PSM,DEval2,MPList,MIDLS,FS,Energy);
   CGM.Go();
