@@ -362,7 +362,7 @@ extern "C" {
    * @param N
    *        The number of elements related to this operation (input)
    *
-   * @param A
+   * @param [in] A
    *        The constant to scale the elements of array X
    *
    * @param X
@@ -372,22 +372,115 @@ extern "C" {
    * @param dX
    *        The spacing between two values in array X
    *
-   * @param Y
+   * @param [in,out] Y
    *        The array to be added. This array would add the scaled array X
    *        as the final output. The output is stored in this array.
    *        (input & output)
    *
-   * @param dY
+   * @param [in] dY
    *        The spacing between two values in array Y
    */
   void saxpy_(long* N,float* A,float* X,long* dX,float* Y,long* dY);
 
+  /**
+   * Scale \c double vector with a triangular band matrix
+   *
+   * This is an operation related to matrix-vector product. The concerned
+   * matrix is in the form of triangular band. The storage for the matrix
+   * is related to the shape of the matrix. The order of elements may refer
+   * to TriangularBandMatrix in IBM (http://tiny.cc/NuTpJ). This function
+   * is for \c double type values.
+   *
+   * @see stbmv_(char* UPLO,char* TRANS,char* DIAG,long* N,long* K,float* A,
+   *             long* LDA,float* X,long* dX)
+   *
+   * @param [in] UPLO
+   *        The character flag indicating the upper or lower triangle is used
+   *
+   * @param [in] TRANS
+   *        The character flag indicating if transpose is needed for matrix
+   *
+   * @param [in] DIAG
+   *        The character flag indicating if diagonal elements are null
+   *
+   * @param [in] N
+   *        The number of elements in arrays to be operated. It could be
+   *        viewed as the dimension of concerned vector.
+   *
+   * @param [in] K
+   *        The width of bands in the concerned matrix. The diagonal is
+   *        omitted in counting.
+   *
+   * @param [in] A
+   *        The triangular band matrix to scale the vector
+   *
+   * @param [in] LDA
+   *        The leading dimension of the matrix, namely the most internal
+   *        dimension of matrix data. This value depends on the programming
+   *        language (C or Fortran), which may have different internal
+   *        order of storage.
+   *
+   * @param [in,out] X
+   *        The array to be scaled. The result after scaling is also stored
+   *        in this array.
+   *
+   * @param [in] dX
+   *        The spacing of the elements for array X.        
+   */
   void dtbmv_(char* UPLO,char* TRANS,char* DIAG,long* N,long* K,double* A,
               long* LDA,double* X,long* dX);
 
+  /**
+   * Scale \c float vector with a triangular band matrix
+   *
+   * This is an operation related to matrix-vector product. The concerned
+   * matrix is in the form of triangular band. The storage for the matrix
+   * is related to the shape of the matrix. The order of elements may refer
+   * to TriangularBandMatrix in IBM (http://tiny.cc/NuTpJ). This function
+   * is for \c float type values.
+   *
+   * @see dtbmv_(char* UPLO,char* TRANS,char* DIAG,long* N,long* K,double* A,
+   *             long* LDA,double* X,long* dX)
+   *
+   * @param [in] UPLO
+   *        The character flag indicating the upper or lower triangle is used
+   *
+   * @param [in] TRANS
+   *        The character flag indicating if transpose is needed for matrix
+   *
+   * @param [in] DIAG
+   *        The character flag indicating if diagonal elements are null
+   *
+   * @param [in] N
+   *        The number of elements in arrays to be operated. It could be
+   *        viewed as the dimension of concerned vector.
+   *
+   * @param [in] K
+   *        The width of bands in the concerned matrix. The diagonal is
+   *        omitted in counting.
+   *
+   * @param [in] A
+   *        The triangular band matrix to scale the vector
+   *
+   * @param [in] LDA
+   *        The leading dimension of the matrix, namely the most internal
+   *        dimension of matrix data. This value depends on the programming
+   *        language (C or Fortran), which may have different internal
+   *        order of storage.
+   *
+   * @param [in,out] X
+   *        The array to be scaled. The result after scaling is also stored
+   *        in this array.
+   *
+   * @param [in] dX
+   *        The spacing of the elements for array X.        
+   */
   void stbmv_(char* UPLO,char* TRANS,char* DIAG,long* N,long* K,float* A,
               long* LDA,float* X,long* dX);
 
+  /**
+   * Composite operation related to real symmetric band matrix
+   */
   void dsbmv_(char* UPLO,long* N,long* K,double* a,double* A,long* LDA,
               double* X,long* dX,double* b,double* Y,long* dY);
 
