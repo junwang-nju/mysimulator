@@ -39,6 +39,7 @@ namespace std {
         BFunc=NULL;
         pRunParam=NULL;
       }
+      virtual ~MinimizerKernBase() {}
 
       virtual void ImportState(const SpaceType&,const ParameterType&)=0;
 
