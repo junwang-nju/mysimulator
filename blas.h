@@ -425,7 +425,7 @@ extern "C" {
    *        in this array.
    *
    * @param [in] dX
-   *        The spacing of the elements for array X.        
+   *        The spacing of the elements for array X.
    */
   void dtbmv_(char* UPLO,char* TRANS,char* DIAG,long* N,long* K,double* A,
               long* LDA,double* X,long* dX);
@@ -473,20 +473,136 @@ extern "C" {
    *        in this array.
    *
    * @param [in] dX
-   *        The spacing of the elements for array X.        
+   *        The spacing of the elements for array X.
    */
   void stbmv_(char* UPLO,char* TRANS,char* DIAG,long* N,long* K,float* A,
               long* LDA,float* X,long* dX);
 
   /**
    * Composite operation related to real symmetric band matrix
+   *
+   * This is an operation relation matrix-vector production, constant-vector
+   * production, and addition of vectors. The detailed operations are
+   * multiplying a vector with constant and matrix at first, and multiplying
+   * another vector with a constant, then adding the resultant vectors
+   * together. The result is stored in the later vector. The order of elements
+   * for symmetric band matrix in programming may refer to SymmetricBandMatrix
+   * in IBM (http://tinyurl.com/yguyb4b or http://tinyurl.com/ydesn9z). This
+   * function is for \c double type values.
+   *
+   * @see ssbmv_(char* UPLO,long* N,long* K,float* a,float* A,long* LDA,
+   *             float* X,long* dX,float* b,float* Y,long* dY)
+   *
+   * @param [in] UPLO
+   *        The character flag indicating the upper or lower triangle is used
+   *
+   * @param [in] N
+   *        The number of elements in arrays to be operated. It could be
+   *        viewed as the dimension of concerned vector.
+   *
+   * @param [in] K
+   *        The width of bands in the concerned matrix. The diagonal is
+   *        omitted in counting.
+   *
+   * @param [in] a
+   *        The constant to scale the vector X.
+   *
+   * @param [in] A
+   *        The symmetric band matrix to scale the vector X
+   *
+   * @param [in] LDA
+   *        The leading dimension of the matrix, namely the most internal
+   *        dimension of matrix data. This value depends on the programming
+   *        language (C or Fortran), which may have different internal
+   *        order of storage. It is said to take K+1 to have best
+   *        performance.
+   *
+   * @param [in] X
+   *        The vector to be scaled with constant and matrix
+   *
+   * @param [in] dX
+   *        The spacing of the elements for array X.
+   *
+   * @param [in] b
+   *        The constant to scale the vector Y
+   *
+   * @param [in,out] Y
+   *        The vector to be scaled with constant and to store the result
+   *        of final output of this composite operation.
+   *
+   * @param [in] dY
+   *        The spacing of the elements for array Y.
+   *
+   * @note The vector Y must have not common elements with matrix A or
+   *       the vector X. Otherwise, the results are unpredictable.
    */
   void dsbmv_(char* UPLO,long* N,long* K,double* a,double* A,long* LDA,
               double* X,long* dX,double* b,double* Y,long* dY);
 
+  /**
+   * Composite operation related to real symmetric band matrix
+   *
+   * This is an operation relation matrix-vector production, constant-vector
+   * production, and addition of vectors. The detailed operations are
+   * multiplying a vector with constant and matrix at first, and multiplying
+   * another vector with a constant, then adding the resultant vectors
+   * together. The result is stored in the later vector. The order of elements
+   * for symmetric band matrix in programming may refer to SymmetricBandMatrix
+   * in IBM (http://tinyurl.com/yguyb4b or http://tinyurl.com/ydesn9z). This
+   * function is for \c float type values.
+   *
+   * @see dsbmv_(char* UPLO,long* N,long* K,double* a,double* A,long* LDA,
+   *             double* X,long* dX,double* b,double* Y,long* dY)
+   *
+   * @param [in] UPLO
+   *        The character flag indicating the upper or lower triangle is used
+   *
+   * @param [in] N
+   *        The number of elements in arrays to be operated. It could be
+   *        viewed as the dimension of concerned vector.
+   *
+   * @param [in] K
+   *        The width of bands in the concerned matrix. The diagonal is
+   *        omitted in counting.
+   *
+   * @param [in] a
+   *        The constant to scale the vector X.
+   *
+   * @param [in] A
+   *        The symmetric band matrix to scale the vector X
+   *
+   * @param [in] LDA
+   *        The leading dimension of the matrix, namely the most internal
+   *        dimension of matrix data. This value depends on the programming
+   *        language (C or Fortran), which may have different internal
+   *        order of storage. It is said to take K+1 to have best
+   *        performance.
+   *
+   * @param [in] X
+   *        The vector to be scaled with constant and matrix
+   *
+   * @param [in] dX
+   *        The spacing of the elements for array X.
+   *
+   * @param [in] b
+   *        The constant to scale the vector Y
+   *
+   * @param [in,out] Y
+   *        The vector to be scaled with constant and to store the result
+   *        of final output of this composite operation.
+   *
+   * @param [in] dY
+   *        The spacing of the elements for array Y.
+   *
+   * @note The vector Y must have not common elements with matrix A or
+   *       the vector X. Otherwise, the results are unpredictable.
+   */
   void ssbmv_(char* UPLO,long* N,long* K,float* a,float* A,long* LDA,
               float* X,long* dX,float* b,float* Y,long* dY);
 
+  /**
+   * Composite operation related to real general matrix
+   */
   void dgemv_(char* TRANS,long* M,long* N,double* a,double* A,long* LDA,
               double* X,long* dX,double* b,double* Y,long* dY);
 
