@@ -1,4 +1,9 @@
 
+/**
+ * @file hash-func.h
+ * @brief Functions to generate hash
+ */
+
 #ifndef _Hash_Function_H_
 #define _Hash_Function_H_
 

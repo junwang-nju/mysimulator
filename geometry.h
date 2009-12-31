@@ -1,4 +1,16 @@
 
+/**
+ * @file geometry.h
+ * @brief objects descibing boundary condition and geometry for distance metric
+ *
+ * This file includes the objects describing (1) the boundary condition
+ * (2) the geometric metric related to distance calculation. This kind of
+ * separation of data and operation from simulations is useful.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ * @todo Some useful boundary conditions need to be implemented in future.
+ */
+
 #ifndef _Geometry_H_
 #define _Geometry_H_
 

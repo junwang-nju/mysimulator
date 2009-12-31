@@ -19,7 +19,7 @@
 extern "C" {
 
   /**
-   * copy \c double data from one array to another
+   * @brief copy \c double data from one array to another
    *
    * This procedure could copy the data from an input array to an output
    * array. The spacings of elements in the input and out arrays could
@@ -46,7 +46,7 @@ extern "C" {
   void dcopy_(long* N,double* X,long* dX,double* Y,long* dY);
 
   /**
-   * copy \c float data from one array to another
+   * @brief copy \c float data from one array to another
    *
    * This procedure could copy the data from an input array to an output
    * array. The spacings of elements in the input and out arrays could
@@ -73,7 +73,7 @@ extern "C" {
   void scopy_(long* N,float* X,long* dX,float* Y,long* dY);
 
   /**
-   * swap two \c double arrays
+   * @brief swap two \c double arrays
    *
    * This procedure could swap the contents of two arrays. The spacings
    * of the elements in these two arrays could be controlled. This function
@@ -99,7 +99,7 @@ extern "C" {
   void dswap_(long* N,double* X,long* dX,double* Y,long* dY);
 
   /**
-   * swap two \c float arrays
+   * @brief swap two \c float arrays
    *
    * This procedure could swap the contents of two arrays. The spacings
    * of the elements in these two arrays could be controlled. This function
@@ -125,7 +125,7 @@ extern "C" {
   void sswap_(long* N,float* X,long* dX,float* Y,long* dY);
 
   /**
-   * dot product of two \c double arrays
+   * @brief dot product of two \c double arrays
    *
    * The arrays are viewed as vectors to carry out the dot product.
    * It corresponds to the summation of the products of elements
@@ -153,7 +153,7 @@ extern "C" {
   double ddot_(long* N,double* X,long* dX,double* Y,long* dY);
 
   /**
-   * dot product of two \c float arrays
+   * @brief dot product of two \c float arrays
    *
    * The arrays are viewed as vectors to carry out the dot product.
    * It corresponds to the summation of the products of elements
@@ -181,7 +181,7 @@ extern "C" {
   float sdot_(long* N,float* X,long* dX,float* Y,long* dY);
 
   /**
-   * Calculate the norm of a \c double vector
+   * @brief Calculate the norm of a \c double vector
    *
    * The array is viewed as a vector. This function calculates its Euclidean
    * norm, namely the the root of the square of elements. This function is
@@ -203,7 +203,7 @@ extern "C" {
   double dnrm2_(long* N,double* X,long* dX);
 
   /**
-   * Calculate the norm of a \c float vector
+   * @brief Calculate the norm of a \c float vector
    *
    * The array is viewed as a vector. This function calculates its Euclidean
    * norm, namely the the root of the square of elements. This function is
@@ -225,7 +225,7 @@ extern "C" {
   float snrm2_(long* N,float* X,long* dX);
 
   /**
-   * Calculate summation of the absolute values of an array
+   * @brief Calculate summation of the absolute values of an array
    *
    * This function sums all the absolute values of the concerned elements
    * in the input array. This is another kinds of norm for vectors. This
@@ -269,7 +269,7 @@ extern "C" {
   float sasum_(long* N,float* X,long* dX);
 
   /**
-   * scale a vector with a \c double constant
+   * @brief Scale a vector with a \c double constant
    *
    * The elements in the input array are scaled (namely multiplify) with
    * a constant. It is similar as the enlargement of vector with a constant
@@ -293,7 +293,7 @@ extern "C" {
   void dscal_(long* N,double* A,double* X,long* dX);
 
   /**
-   * scale a vector with a \c float constant
+   * @brief Scale a vector with a \c float constant
    *
    * The elements in the input array are scaled (namely multiplify) with
    * a constant. It is similar as the enlargement of vector with a constant
@@ -317,7 +317,7 @@ extern "C" {
   void sscal_(long* N,float* A,float* X,long* dX);
 
   /**
-   * Shift a \c double vector with another scaled vector
+   * @brief Shift a \c double vector with another scaled vector
    *
    * This function is a composite operation for vector (array). One vector
    * is scaled with a constant, then the scaled vector is added to another
@@ -350,7 +350,7 @@ extern "C" {
   void daxpy_(long* N,double* A,double* X,long* dX,double* Y,long* dY);
 
   /**
-   * Shift a \c float vector with another scaled vector
+   * @brief Shift a \c float vector with another scaled vector
    *
    * This function is a composite operation for vector (array). One vector
    * is scaled with a constant, then the scaled vector is added to another
@@ -383,7 +383,7 @@ extern "C" {
   void saxpy_(long* N,float* A,float* X,long* dX,float* Y,long* dY);
 
   /**
-   * Scale \c double vector with a triangular band matrix
+   * @brief Scale \c double vector with a triangular band matrix
    *
    * This is an operation related to matrix-vector product. The concerned
    * matrix is in the form of triangular band. The storage for the matrix
@@ -431,7 +431,7 @@ extern "C" {
               long* LDA,double* X,long* dX);
 
   /**
-   * Scale \c float vector with a triangular band matrix
+   * @brief Scale \c float vector with a triangular band matrix
    *
    * This is an operation related to matrix-vector product. The concerned
    * matrix is in the form of triangular band. The storage for the matrix
@@ -479,7 +479,7 @@ extern "C" {
               long* LDA,float* X,long* dX);
 
   /**
-   * Composite operation related to real symmetric band matrix
+   * @brief Composite operation related to real symmetric band matrix
    *
    * This is an operation relation matrix-vector production, constant-vector
    * production, and addition of vectors. The detailed operations are
@@ -540,7 +540,7 @@ extern "C" {
               double* X,long* dX,double* b,double* Y,long* dY);
 
   /**
-   * Composite operation related to real symmetric band matrix
+   * @brief Composite operation related to real symmetric band matrix
    *
    * This is an operation relation matrix-vector production, constant-vector
    * production, and addition of vectors. The detailed operations are
@@ -601,11 +601,106 @@ extern "C" {
               float* X,long* dX,float* b,float* Y,long* dY);
 
   /**
-   * Composite operation related to real general matrix
+   * @brief Composite operation related to \c double general matrix
+   *
+   * This operation is similar as the subroutine dsbmv_() except that
+   * the concerned matrix is a general matrix. It is realized by
+   * scaling one vector with constant and matrix, scaling another
+   * vector with only a constant, and then add then together. The
+   * final result is stored in the later vector to be scaled. This
+   * function is for \c double type values.
+   *
+   * @see sgemv_(char* TRANS,long* M,long* N,float* a,float* A,long* LDA,
+   *             float* X,long* dX,float* b,float* Y,long* dY)
+   *
+   * @param [in] TRANS
+   *        The character flag indicating if transpose is needed for matrix
+   *
+   * @param [in] M
+   *        The number of rows of matrix A
+   *
+   * @param [in] N
+   *        The number of columns of matrix A
+   *
+   * @param [in] a
+   *        The constant to scale the vector X
+   *
+   * @param [in] A
+   *        The \c double general matrix
+   *
+   * @param [in] LDA
+   *        The leading dimension of the matrix, namely the most internal
+   *        dimension of matrix data. This value depends on the programming
+   *        language (C or Fortran), which may have different internal
+   *        order of storage.
+   *
+   * @param [in] X
+   *        The vector to be scaled with constant and matrix
+   *
+   * @param [in] dX
+   *        The spacing between two values in array X
+   *
+   * @param [in] b
+   *        The constant to scale the vector Y
+   *
+   * @param [in,out] Y
+   *        The vector to be scaled with constant and to store the result
+   *
+   * @param [in] dY
+   *        The spacing of the elements for array Y.
    */
   void dgemv_(char* TRANS,long* M,long* N,double* a,double* A,long* LDA,
               double* X,long* dX,double* b,double* Y,long* dY);
 
+  /**
+   * @brief Composite operation related to \c float general matrix
+   *
+   * This operation is similar as the subroutine ssbmv_() except that
+   * the concerned matrix is a general matrix. It is realized by
+   * scaling one vector with constant and matrix, scaling another
+   * vector with only a constant, and then add then together. The
+   * final result is stored in the later vector to be scaled. This
+   * function is for \c float type values.
+   *
+   * @see dgemv_(char* TRANS,long* M,long* N,double* a,double* A,long* LDA,
+   *             double* X,long* dX,double* b,double* Y,long* dY)
+   *
+   * @param [in] TRANS
+   *        The character flag indicating if transpose is needed for matrix
+   *
+   * @param [in] M
+   *        The number of rows of matrix A
+   *
+   * @param [in] N
+   *        The number of columns of matrix A
+   *
+   * @param [in] a
+   *        The constant to scale the vector X
+   *
+   * @param [in] A
+   *        The \c float general matrix
+   *
+   * @param [in] LDA
+   *        The leading dimension of the matrix, namely the most internal
+   *        dimension of matrix data. This value depends on the programming
+   *        language (C or Fortran), which may have different internal
+   *        order of storage.
+   *
+   * @param [in] X
+   *        The vector to be scaled with constant and matrix
+   *
+   * @param [in] dX
+   *        The spacing between two values in array X
+   *
+   * @param [in] b
+   *        The constant to scale the vector Y
+   *
+   * @param [in,out] Y
+   *        The vector to be scaled with constant and to store the result
+   *
+   * @param [in] dY
+   *        The spacing of the elements for array Y.
+   */
   void sgemv_(char* TRANS,long* M,long* N,float* a,float* A,long* LDA,
               float* X,long* dX,float* b,float* Y,long* dY);
 

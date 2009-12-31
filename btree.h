@@ -1,4 +1,17 @@
 
+/**
+ * @file btree.h
+ * The implementation for binary tree
+ *
+ * The binary tree is a useful data structure for efficient random
+ * access. In our package it is implemented as the storage for
+ * parameter libraries.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ * @todo Some operations for binary tree (such deleting) are not
+ *       implemented now.
+ */
+
 #ifndef _Binary_Tree_H_
 #define _Binary_Tree_H_
 
