@@ -1,4 +1,16 @@
 
+/**
+ * @file refer-table.h
+ * @brief The data structure storing reference relationship
+ *
+ * To record the reference and referred objects, a specific object is
+ * initiated to record these information. This object is used in
+ * the classes related to reference. To avoid variation of the size
+ * of the list, we assume the maximal size of reference objects in
+ * reference table. This kind of implementation is not couple with STL,
+ * which makes it more compatible for various compilers.
+ */
+
 #ifndef _Reference_Table_H_
 #define _Reference_Table_H_
 
@@ -8,6 +20,11 @@
 
 namespace std {
 
+  /**
+   * @brief declaration of refer vector
+   *
+   * This is just a declaration before ReferTable<T>.
+   */
   template <typename T>   class refVector;
 
   template <typename T>

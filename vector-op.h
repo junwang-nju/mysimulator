@@ -1,4 +1,16 @@
 
+/**
+ * @file vector-op.h
+ * @brief Operations for vectors
+ *
+ * This file contains a series of operations for vectors (mainly with
+ * \c double type data). This is similar as the file vector-impl.h to
+ * provide interfaces between background library and classes in our
+ * package.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Vector_Operation_H_
 #define _Vector_Operation_H_
 

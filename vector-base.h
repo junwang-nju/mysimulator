@@ -2,7 +2,7 @@
 #ifndef _Vector_Base_H_
 #define _Vector_Base_H_
 
-#include "vector-impl.cc"
+#include "vector-impl.h"
 
 namespace std {
 
