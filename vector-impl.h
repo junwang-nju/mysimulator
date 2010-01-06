@@ -1,6 +1,6 @@
 
 /**
- * @file vector-impl.cc
+ * @file vector-impl.h
  * @brief Implementation for vector-related operations
  *
  * As an interface between background procedures (such as BLAS which

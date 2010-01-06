@@ -1,4 +1,11 @@
 
+/**
+ * @file random-generator.h
+ * @brief random generator definition
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Random_Generator_H_
 #define _Random_Generator_H_
 

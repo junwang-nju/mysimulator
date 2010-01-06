@@ -1,7 +1,7 @@
 
 /**
- * @brief error-proc.h
- * Procedures for error processing
+ * @file error-proc.h
+ * @brief Procedures for error processing
  *
  * Several procedures to processes the errors or warning for my pacakge
  * are defined here. This eases to locate the errors or warnings.

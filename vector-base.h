@@ -1,4 +1,16 @@
 
+/**
+ * @file vector-base.h
+ * @brief the base class for Vector object
+ *
+ * This file contains the definition of the base class of vector-like object.
+ * Some common methods are also defined. This gives the basic interface for
+ * vector-like objects. This is an important class for the data storage
+ * in this package.
+ *
+ * @author Jun Wang (junwang.nju@gamil.com)
+ */
+
 #ifndef _Vector_Base_H_
 #define _Vector_Base_H_
 
@@ -6,48 +18,218 @@
 
 namespace std {
 
+  /**
+   * @brief the base class of vector-like object
+   *
+   * This class defines the common data and methods for vector-like objects.
+   * It contains the pointers to the data, the size information and interface
+   * to access the elements. Generally, this class is an encapsulation for
+   * arrays of data. This encapsulation eases various applications, and
+   * simplifies the interface of the related subroutines. This class is
+   * declared as a class with pure virtual functions, and thus cannot be
+   * instanced in practice.
+   *
+   * \a T
+   *    the type of the elements of the internal data
+   */
   template <typename T>
   class VectorBase {
 
     protected:
 
+      /**
+       * @brief The pointer to the storage of data
+       *
+       * This is the common interface to access the data.
+       */
       T* Data;
 
+      /**
+       * @brief The size of the storage of data
+       */
       uint nData;
 
+      /**
+       * @brief the pointer to the head of data storage
+       *
+       * This variable is used to store the head of storage. With this
+       * variable, it is not necessary to recalculate it when we would like
+       * to access the head of the data storage.
+       */
       T* head_ptr;
 
+      /**
+       * @brief the pointer to the tail of data storage
+       *
+       * This variable is used to store the tail of storage. It points to
+       * the location just after the last element of storage. With this
+       * variable, it is not necessary to recalculate it when we would like
+       * to access the tail of the data storage.
+       */
       T* tail_ptr;
 
     public:
 
+      /**
+       * @brief alias for template type \a T
+       */
       typedef T               DataType;
 
+      /**
+       * @brief the alias for the present class
+       */
       typedef VectorBase<T>   Type;
 
+      /**
+       * @brief flag for objects as a vector
+       *
+       * This variable is defined to check if the concerned object is
+       * vector-like. Since it is common for all instances of vector-like
+       * object, this flag is defined as a \a static \a const.
+       */
       static const uint IsVector;
 
+      /**
+       * @brief default initiator
+       *
+       * This initiator assigns all the properties as null values. After
+       * this initiation, this object cannot be used.
+       */
       VectorBase() : Data(NULL), nData(0), head_ptr(NULL), tail_ptr(NULL) {}
 
-      VectorBase(const Type&) { myError("vector copier is prohibited!"); }
+      /**
+       * @brief initiator from another VectorBase object
+       *
+       * This is prohibited to avoid the creation of temporary object.
+       * An error message is pop up.
+       *
+       * @param [in] VB
+       *        The input VectorBase object
+       */
+      VectorBase(const Type& VB) { myError("vector copier is prohibited!"); }
 
+      /**
+       * @brief destructor
+       *
+       * This destructor just clear the data with clear() method.
+       * This is defined as a virtual function since this class contains
+       * a pure virtual function.
+       */
       virtual ~VectorBase() { clear(); }
 
+      /**
+       * @brief clear up the data
+       *
+       * All the pointers and data are assigned with null values.
+       * This is used in destructor.
+       */
       void clear() { Data=NULL; nData=0; head_ptr=NULL; tail_ptr=NULL; }
 
+      /**
+       * @brief set up the pointers for head and tail
+       *
+       * The pointers for head and tail of storage are assigned. The
+       * head pointer points to the first element, and the tail pointer
+       * refers to the position after the last element. This function
+       * should be used after the storage has been set up.
+       */
       void set_HeadTail() { head_ptr=Data; tail_ptr=Data+nData; }
 
+      /**
+       * @brief copier from another VectorBase object
+       *
+       * It is implemented with assign() function.
+       *
+       * @param [in] vb
+       *        the input VectorBase object
+       *
+       * @return the reference to present object.
+       */
       Type& operator=(const Type& vb) { return assign(vb); }
 
+      /**
+       * @brief copier from an \a inputT type object
+       *
+       * It is implemented with assign() function. This is used for the data
+       * with various kinds of input types except the VectorBase type. The
+       * copier for VectorBase type data is a basic requirement of class,
+       * and cannot be replaced by this function.
+       *
+       * \a inputT
+       *    The type of the input object
+       *
+       * @param [in] v
+       *        The input object with \a inputT type.
+       *
+       * @return the reference to present object.
+       */
       template <typename inputT>
       Type& operator=(const inputT& v) { return assign(v); }
 
+      /**
+       * @brief the multiply-and-assign operator 
+       *
+       * It is implemented with scale() function.
+       *
+       * \a inputT
+       *    The type of the input object
+       *
+       * @param [in] v
+       *        The input object with \a inputT type.
+       *
+       * @return the reference to present object.
+       */
       template <typename inputT>
       Type& operator*=(const inputT& v) { return scale(v); }
 
+      /**
+       * @brief the plus-and-assign operator
+       *
+       * It is implemented with shift() function.
+       *
+       * \a inputT
+       *    The type of the input object.
+       *
+       * @param [in] v
+       *        The input object with \a inputT type.
+       *
+       * @return the reference to present object.
+       */
       template <typename inputT>
       Type& operator+=(const inputT& v) { return shift(v); }
 
+      /**
+       * @brief assign from external array
+       *
+       * It is implemented with vector_assign(). The size requirements for
+       * array and present object are checked at first with assert().
+       *
+       * @param [in] v
+       *        the pointer to the input array
+       *
+       * @param [in] ncopy
+       *        The number of the elements to be copied
+       *
+       * @param [in] voffset
+       *        The shift for the first element to be copied in input array
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input array
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept input. It takes
+       *        the default value zero (namely starting from the head)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object.
+       */
       Type& assign(const T* v, long ncopy, int voffset=iZero, long vstep=lOne,
                    int offset=iZero, long step=lOne) {
         assert(static_cast<uint>(offset+step*ncopy)<=nData);
@@ -55,6 +237,9 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief assign from another VectorBase object
+       */
       Type& assign(const Type& v, long ncopy,
                    int voffset=iZero, long vstep=lOne,
                    int offset=iZero, long step=lOne) {

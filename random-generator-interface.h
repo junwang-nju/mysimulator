@@ -1,4 +1,11 @@
 
+/**
+ * @file random-generator-interface.h
+ * @brief the basic interface for random generators
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Random_Generator_Interface_H_
 #define _Random_Generator_Interface_H_
 
