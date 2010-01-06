@@ -1,4 +1,11 @@
 
+/**
+ * @file var-vector.h
+ * @brief Vector with variable storage
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Variable_Vector_H_
 #define _Variable_Vector_H_
 

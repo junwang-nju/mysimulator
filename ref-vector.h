@@ -1,4 +1,11 @@
 
+/**
+ * @file ref-vector.h
+ * @brief Vector to refer to another storage
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Reference_Vector_H_
 #define _Reference_Vector_H_
 

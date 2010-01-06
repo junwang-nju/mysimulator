@@ -1,4 +1,11 @@
 
+/**
+ * @file interaction-type.h
+ * @brief The type identities for various interactions
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Interaction_Type_H_
 #define _Interaction_Type_H_
 
