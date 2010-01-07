@@ -295,6 +295,29 @@ namespace std {
         return assign(v,n);
       }
 
+      /**
+       * @brief assign value to part of content
+       *
+       * It is implemented with assign() operation for extern array. The
+       * spacing between input elements is set as zero to read only one
+       * element.
+       *
+       * @param [in] value
+       *        The input value
+       *
+       * @param [in] ncopy
+       *        The number of elements to be assigned
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept input. It takes
+       *        the default value zero (namely starting from the head)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object.
+       */
       Type& assign(const T& value, long ncopy,
                    int offset=iZero, long step=lOne) {
         return assign(&value,ncopy,iZero,lZero,offset,step);
@@ -302,6 +325,38 @@ namespace std {
       
       Type& assign(const T& value) { return assign(value,nData); }
 
+      /**
+       * @brief scale with part of external array
+       *
+       * It is implemented with vector_scale() operation. The size of
+       * the internal VectorBase object is checked at first.
+       *
+       * @param [in] v
+       *        the pointer to the input array
+       *
+       * @param [in] nscale
+       *        The number of the elements to be scaled.
+       *
+       * @param [in] voffset
+       *        The shift for the first element to be used in input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input array.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for internal vector. It takes
+       *        the default value zero (namely starting from the head)
+       *
+       * @param [in] step
+       *        The spacing between elements for internal vector. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object.
+       */
       Type& scale(const T* v, long nscale,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
@@ -310,6 +365,28 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief scale with a constant for part of internal vector
+       *
+       * It is implemented with vector_scale() operation. The size of
+       * the internal VectorBase object is checked at first.
+       *
+       * @param [in] d
+       *        the constant to scale the VectorBase object
+       *
+       * @param [in] nscale
+       *        The number of the elements to be scaled.
+       *
+       * @param [in] offset
+       *        The shift for the first element for internal vector. It takes
+       *        the default value zero (namely starting from the head)
+       *
+       * @param [in] step
+       *        The spacing between elements for internal vector. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object.
+       */
       Type& scale(const T& d, long nscale,
                   int offset=iZero, long step=lOne) {
         assert(static_cast<uint>(offset+step*nscale)<=nData);
@@ -317,8 +394,54 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief scale with a constant
+       *
+       * It is a simplificaton for the scale operation with a constant factor.
+       * it is implemented with scale() operation for part of internal
+       * vector. All the elements in the internal object are all scaled.
+       * That is, the number of the elements to be scaled equals to the
+       * size of the internal vector.
+       *
+       * @param [in] d
+       *        The input value
+       *
+       * @return the reference to present object.
+       */
       Type& scale(const T& d) { return scale(d,nData); }
 
+      /**
+       * @brief scale with a VectorBase object for part of elements
+       *
+       * It is implemented with scale() operation for part of elements.
+       * The size of the input VectorBase object is also checked.
+       *
+       * @param [in] v
+       *        the input VectorBase object
+       *
+       * @param [in] nscale
+       *        The number of the elements to be scaled.
+       *
+       * @param [in] voffset
+       *        The shift for the first element to be used in input object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for internal vector. It takes
+       *        the default value zero (namely starting from the head)
+       *
+       * @param [in] step
+       *        The spacing between elements for internal vector. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object.
+       */
       Type& scale(const Type& v, long nscale,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
@@ -326,11 +449,78 @@ namespace std {
         return scale(v.data(),nscale,voffset,vstep,offset,step);
       }
 
+      /**
+       * @brief scale with another VectorBase object
+       *
+       * It is a simplificaton for the operation to scale with another
+       * VectorBase object. It is implemented with the scale() operation
+       * for part of elements. Since there might be differences between
+       * two concerned VectorBase objects, the smaller size is employed
+       * in scale operation.
+       *
+       * @param [in] v
+       *        The input VectorBase object
+       *
+       * @return the reference to present object.
+       */
       Type& scale(const Type& v) {
         long n=(nData<v.nData?nData:v.nData);
         return scale(v,n);
       }
 
+      /**
+       * @brief generic format for shift operation
+       *
+       * This is a generic interface to scale internal object with
+       * input array and \c ScaleT type object. It is assumed that
+       * part of elements are involved in the shift operation. It is
+       * implemented with vector_shift() operation. The size of the
+       * internal VectorBase object is checked.
+       *
+       * \a ScaleT
+       *    The type of quantity for scale operation
+       *
+       * @param [in] sv
+       *        The quantity of \a ScaleT type for scale operation
+       *
+       * @param [in] v
+       *        The array for scale operation
+       *
+       * @param [in] nshift
+       *        The number of elements related to the shift operation.
+       *
+       * @param [in] soffset
+       *        The shift for the first element for the object sv.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] sstep
+       *        The spacing between the two elements in the object sv.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element for the object v.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in the object v.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for the internal object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in the internal object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @return the reference to present object.
+       */
       template <typename ScaleT>
       Type& shift(const ScaleT& sv, const T* v, long nshift,
                   int soffset=iZero, long sstep=lOne,
@@ -341,6 +531,9 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief shift with constant and VectorBase object for part of elements
+       */
       Type& shift(const T& value, const Type& v, long nshift,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
