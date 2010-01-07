@@ -1,4 +1,10 @@
 
+/**
+ * @file property-list-op.h
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Property_List_Operation_H_
 #define _Property_List_Operation_H_
 

@@ -1,4 +1,10 @@
 
+/**
+ * @file region-boundary-type.h
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Region_Boundary_Type_H_
 #define _Region_Boundary_Type_H_
 

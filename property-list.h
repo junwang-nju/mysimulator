@@ -1,4 +1,10 @@
 
+/**
+ * @file property-list.h
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Property_List_H_
 #define _Property_List_H_
 

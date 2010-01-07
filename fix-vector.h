@@ -1,4 +1,10 @@
 
+/**
+ * @file fix-vector.h
+ *
+ * @author Jun Wang (junwang.nju@gamil.com)
+ */
+
 #ifndef _Fixed_Vector_H_
 #define _Fixed_Vector_H_
 

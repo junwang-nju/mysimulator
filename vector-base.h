@@ -199,7 +199,7 @@ namespace std {
       Type& operator+=(const inputT& v) { return shift(v); }
 
       /**
-       * @brief assign from external array
+       * @brief assign from part of external array
        *
        * It is implemented with vector_assign(). The size requirements for
        * array and present object are checked at first with assert().
@@ -211,12 +211,12 @@ namespace std {
        *        The number of the elements to be copied
        *
        * @param [in] voffset
-       *        The shift for the first element to be copied in input array
+       *        The shift for the first element to be copied in input array.
        *        It takes the default value zero (namely starting from the
        *        first element)
        *
        * @param [in] vstep
-       *        The spacing between the two elements in input array
+       *        The spacing between the two elements in input array.
        *        It takes the default value one (namely all elements are
        *        read)
        *
@@ -238,7 +238,36 @@ namespace std {
       }
 
       /**
-       * @brief assign from another VectorBase object
+       * @brief assign from part of another VectorBase object
+       *
+       * It is implemented with the assign() for explicit array.
+       * The size of input vector is also checked.
+       *
+       * @param [in] v
+       *        the VectorBase type object as input
+       *
+       * @param [in] ncopy
+       *        The number of the elements to be copied
+       *
+       * @param [in] voffset
+       *        The shift for the first element to be copied in input vector.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input vector.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept input. It takes
+       *        the default value zero (namely starting from the head)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object.
        */
       Type& assign(const Type& v, long ncopy,
                    int voffset=iZero, long vstep=lOne,
@@ -247,6 +276,20 @@ namespace std {
         return assign(v.data(),ncopy,voffset,vstep,offset,step);
       }
 
+      /**
+       * @brief assign from another VectorBase object
+       *
+       * This is a simplification for assign operation, just duplicating
+       * the contents of input VectorBase object. When two VectorBase
+       * objects have different sizes, the small one is picked. It is
+       * implemented with the assign() related to the operation for
+       * part of VectorBase object.
+       *
+       * @param [in] v
+       *        The input VectorBase object
+       *
+       * @return the reference to present object.
+       */
       Type& assign(const Type& v) {
         long n=(nData<v.nData?nData:v.nData);
         return assign(v,n);
