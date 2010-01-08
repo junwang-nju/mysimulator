@@ -514,7 +514,7 @@ namespace std {
        *        It takes the default value zero (namely starting from the
        *        first element)
        *
-       * @param [in] vstep
+       * @param [in] step
        *        The spacing between the two elements in the internal object.
        *        It takes the default value one (namely all elements are
        *        read)
@@ -533,6 +533,42 @@ namespace std {
 
       /**
        * @brief shift with constant and VectorBase object for part of elements
+       *
+       * This is a typical case for shift operation. The input constant
+       * and the input vector are multiplied at first. The resultant
+       * vector is addeed to the internal vector. The size of the input
+       * vector is checked.
+       *
+       * @param [in] value
+       *        The input constant
+       *
+       * @param [in] v
+       *        The input VectorBase object.
+       *
+       * @param [in] nshift
+       *        The number of elements related to the shift operation.
+       *
+       * @param [in] voffset
+       *        The shift for the first element for the object v.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in the object v.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for the internal object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements in the internal object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @return the reference to present object.
        */
       Type& shift(const T& value, const Type& v, long nshift,
                   int voffset=iZero, long vstep=lOne,
@@ -542,25 +578,170 @@ namespace std {
                      iZero,lZero,voffset,vstep,offset,step);
       }
       
+      /**
+       * @brief shift with a constant and a VectorBase object
+       *
+       * This is a simplification for the operation to shift with
+       * a constant and a VectorBase object. It is implemented with
+       * the shift() operation for part of the intermal vector.
+       * Since the sizes for input vector and the internal vectort
+       * may be different, the smaller one is chosen.
+       *
+       * @param [in] value
+       *        The input constant
+       *
+       * @param [in] v
+       *        The input VectorBase object
+       *
+       * @return the reference to present object.
+       */
       Type& shift(const T& value, const Type& v) {
         long n=(nData<v.nData?nData:v.nData);
         return shift(value,v,n);
       }
       
+      /**
+       * @brief shift with a constant
+       *
+       * This operation shifts the concerned elements with a constant.
+       * It is implemented with shift() operation for external array.
+       * The constant is used as an array with spacing between elements
+       * being zero.
+       *
+       * @param [in] value
+       *        The input constant
+       *
+       * @param [in] offset
+       *        The shift for the first element for the internal object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements in the internal object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @return the reference to present object.
+       */
       Type& shift(const T& value, int offset=iZero, long step=lOne) {
         return shift(value,&dOne,nData,iZero,lZero,iZero,lZero,offset,step);
       }
 
+      /**
+       * @brief shift with a VectorBase object
+       *
+       * This is a simplification for shift() operation with a VectorBase
+       * object. It is implemented with shift() for a constant and a
+       * VectorBase object. The constant is assigned with \c double type
+       * one.
+       *
+       * @param [in] v
+       *        The input VectorBase object
+       *
+       * @return the reference to present object.
+       */
       Type& shift(const Type& v) { return shift(dOne,v); }
 
+      /**
+       * @brief shift with two VectorBase object
+       *
+       * It is a simplification of shift operation with two VectorBase
+       * objects. It is implemented with scaleshift() operation
+       * with the concerned constants being \c double type one.
+       *
+       * @param [in] ShiftFv
+       *        The input VectorBase object to shift the vector v.
+       *
+       * @param [in] v
+       *        The input VectorBase object related to shift operation.
+       *
+       * @return the reference to present object.
+       */
       Type& shift(const Type& ShiftFv, const Type& v) {
         return scaleshift(dOne,dOne,ShiftFv,v);
       }
 
+      /**
+       * @brief shift with a constant and two VectorBase objects
+       *
+       * It is a simplification for shift operation with two VectorBase
+       * objects and a constant. The scale constant for the internal
+       * VectorBase object is set as \c double type one. It is implemented
+       * with scaleshift() operation for two constants and two VectorBase
+       * objects.
+       *
+       * @param [in] ShiftF
+       *        The input constant as the factor to shift the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input VectorBase object to shift the vector v
+       *
+       * @param [in] v
+       *        The input VectorBase object related to shift operation.
+       *
+       * @return the reference to present object.
+       */
       Type& shift(const T& ShiftF, const Type& ShiftFv, const Type& v) {
         return scaleshift(dOne,ShiftF,ShiftFv,v);
       }
 
+      /**
+       * @brief the composite operation of scale and shift with external array
+       *
+       * This is a composite operation. One of the input array is scaled with
+       * another input array and an input constant. At the same time, the
+       * internal object is also scaled with another input costant. These
+       * two scaled data are added together, and finally stored internally.
+       * It is implemented with vector_scaleshift() operation. The size of
+       * the internal object is checked.
+       *
+       * @param [in] ScaleF
+       *        The constant to scale the internal object
+       *
+       * @param [in] ShiftF
+       *        The constanr to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input array to shift the vector v
+       *
+       * @param [in] v
+       *        The input array related to the shift operation
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to this operation
+       *
+       * @param [in] sfoffset
+       *        The shift for the first element for the object ShiftFv.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] sfstep
+       *        The spacing between the two elements in the object ShiftFv.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element for the object v.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in the object v.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for the internal object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements in the internal object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @return the reference to present object.
+       */
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const T* ShiftFv,
                        const T* v, long nscaleshift,
                        int sfoffset=iZero, long sfstep=lOne,
@@ -572,6 +753,59 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief composite operation of scale and shift with external vectors
+       *
+       * It is implemented with the scaleshift() operation related to external
+       * arrays. The sizes of input vectors are checked.
+       *
+       * @param [in] ScaleF
+       *        The constant to scale the internal object
+       *
+       * @param [in] ShiftF
+       *        The constanr to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input vector to shift the vector v
+       *
+       * @param [in] v
+       *        The input vector related to the shift operation
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to this operation
+       *
+       * @param [in] sfoffset
+       *        The shift for the first element for the object ShiftFv.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] sfstep
+       *        The spacing between the two elements in the object ShiftFv.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element for the object v.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in the object v.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for the internal object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements in the internal object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @return the reference to present object.
+       */
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& ShiftFv,
                        const Type& v, long nscaleshift,
                        int sfoffset=iZero, long sfstep=lOne,
@@ -608,6 +842,13 @@ namespace std {
 
       const T* data() const { return Data; }
 
+      /**
+       * @brief head to this object
+       *
+       * Just give the head pointer for the internal array
+       *
+       * @return the constant pointer to the head of internal array.
+       */
       const T* begin() const { return head_ptr; }
 
       const T* end() const { return tail_ptr; }
