@@ -686,7 +686,7 @@ namespace std {
       }
 
       /**
-       * @brief the composite operation of scale and shift with external array
+       * @brief the composite operation of scale and shift with external array for part of content
        *
        * This is a composite operation. One of the input array is scaled with
        * another input array and an input constant. At the same time, the
@@ -754,7 +754,7 @@ namespace std {
       }
 
       /**
-       * @brief composite operation of scale and shift with external vectors
+       * @brief composite operation of scale and shift with external vectors for part of content
        *
        * It is implemented with the scaleshift() operation related to external
        * arrays. The sizes of input vectors are checked.
@@ -817,6 +817,8 @@ namespace std {
                           sfoffset,sfstep,voffset,vstep,offset,step);
       }
       
+      /**
+       * @brief composite operation
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& ShiftFv,
                        const Type& v) {
         long n;
