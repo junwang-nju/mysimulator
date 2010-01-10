@@ -20,6 +20,43 @@
 
 namespace std {
 
+  /**
+   * @brief dot product for part of two external arrays
+   *
+   * The dot product is implemented with the BLAS ddot_() operation.
+   * The part of arraysare selected with offset/step protocol.
+   *
+   * @param [in] va
+   *        The input array containing \c double data
+   *
+   * @param [in] vb
+   *        The input array containing \c double data
+   *
+   * @param [in] ndot
+   *        The number of elements in dot product operation
+   *
+   * @param [in] aoffset
+   *        The shift for the first element to be copied in input array va,
+   *        It takes the default value zero (namely starting from the
+   *        first element)
+   *
+   * @param [in] astep
+   *        The spacing between the two elements in input array va.
+   *        It takes the default value one (namely all elements are
+   *        read)
+   *
+   * @param [in] boffset
+   *        The shift for the first element to be copied in input array vb,
+   *        It takes the default value zero (namely starting from the
+   *        first element)
+   *
+   * @param [in] bstep
+   *        The spacing between the two elements in input array vb.
+   *        It takes the default value one (namely all elements are
+   *        read)
+   *
+   * @return the dot product for the part of the input arrays.
+   */
   double dot(const double* va, const double* vb, long ndot,
              int aoffset=iZero, long astep=lOne,
              int boffset=iZero, long bstep=lOne) {
@@ -27,6 +64,43 @@ namespace std {
                        const_cast<double*>(vb)+boffset,&bstep);
   }
 
+  /**
+   * @brief dot product for part of two external vectors
+   *
+   * The dot product is implemented with the dot() operation for arrays.
+   * The part of arraysare selected with offset/step protocol.
+   *
+   * @param [in] va
+   *        The input vector containing \c double data
+   *
+   * @param [in] vb
+   *        The input vector containing \c double data
+   *
+   * @param [in] ndot
+   *        The number of elements in dot product operation
+   *
+   * @param [in] aoffset
+   *        The shift for the first element to be copied in input vector va,
+   *        It takes the default value zero (namely starting from the
+   *        first element)
+   *
+   * @param [in] astep
+   *        The spacing between the two elements in input vector va.
+   *        It takes the default value one (namely all elements are
+   *        read)
+   *
+   * @param [in] boffset
+   *        The shift for the first element to be copied in input vector vb,
+   *        It takes the default value zero (namely starting from the
+   *        first element)
+   *
+   * @param [in] bstep
+   *        The spacing between the two elements in input vector vb.
+   *        It takes the default value one (namely all elements are
+   *        read)
+   *
+   * @return the dot product for the part of the input vectors.
+   */
   double dot(const VectorBase<double>& va, const VectorBase<double>& vb,
              long ndot,
              int aoffset=iZero, long astep=lOne,
@@ -36,17 +110,92 @@ namespace std {
     return dot(va.data(),vb.data(),ndot,aoffset,astep,boffset,bstep);
   }
 
+  /**
+   * @brief dot product for two external vectors
+   *
+   * This is a simplification for dot product of two vectors. It is
+   * implemented with the dot() operation for part of vectors. The
+   * smaller size of the input vectors is used.
+   *
+   * @param [in] va
+   *        The input vector containing \c double data
+   *
+   * @param [in] vb
+   *        The input vector containing \c double data
+   *
+   * @return the dot product for the input vectors.
+   */
   double dot(const VectorBase<double>& va, const VectorBase<double>& vb) {
     long n=(va.size()<vb.size()?va.size():vb.size());
     return dot(va,vb,n);
   }
 
+  /**
+   * @brief the square of the norm of a vector
+   *
+   * It is implemented as the dot product between the input vector and itself.
+   *
+   * @param [in] v
+   *        The input VectorBase object
+   *
+   * @return the square of the Eulidean norm of input vector
+   */
   double normSQ(const VectorBase<double>& v) { return dot(v,v); }
 
+  /**
+   * @brief the norm of part of input array
+   *
+   * This is defined as the absolute value of the square root of the squares
+   * of elements. It is implemented with BLAS dnrm2_() operation. The result
+   * equals to the Eulidean length of the concerned spatial vector.
+   *
+   * @param [in] v
+   *        The input array containing \c double data
+   *
+   * @param [in] nnorm
+   *        The number of the elements related to the norm calculation
+   *
+   * @param [in] offset
+   *        The shift for the first element to be copied in input array v,
+   *        It takes the default value zero (namely starting from the
+   *        first element)
+   *
+   * @param [in] step
+   *        The spacing between the two elements in input array v.
+   *        It takes the default value one (namely all elements are
+   *        read)
+   *
+   * @return the norm of the input array.
+   */
   double norm(const double* v, long nnorm, int offset=iZero, long step=lOne) {
     return dnrm2_(&nnorm,const_cast<double*>(v)+offset,&step);
   }
 
+  /**
+   * @brief the norm of part of input vector
+   *
+   * This is defined as the absolute value of the square root of the squares
+   * of elements. It is implemented with norm() operation for input array.
+   * The result equals to the Eulidean length of the concerned spatial vector.
+   *
+   * @param [in] v
+   *        The input vector containing \c double data
+   *
+   * @param [in] nnorm
+   *        The number of the elements related to the norm calculation
+   *
+   * @param [in] offset
+   *        The shift for the first element to be copied in input vector v,
+   *        It takes the default value zero (namely starting from the
+   *        first element)
+   *
+   * @param [in] step
+   *        The spacing between the two elements in input vector v.
+   *        It takes the default value one (namely all elements are
+   *        read)
+   *
+   * @return the norm of the input vector
+   */
   double norm(const VectorBase<double>& v, long nnorm,
               int offset=iZero, long step=lOne) {
     assert(static_cast<uint>(offset+step*nnorm)<=v.size());
