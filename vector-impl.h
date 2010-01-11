@@ -510,6 +510,59 @@ namespace std {
       v[iv]+=s[isv]*sfv[ifv];
   }
 
+  /**
+   * @brief composite operation of scale and shift for generic type of data
+   *
+   * Just pop up an error to disable this function. For some specific types
+   * of objects, this function is overloaded. This function is for the
+   * generic types.
+   *
+   * \a T
+   *    The type of the data in array
+   *
+   * @param [in,out] v
+   *        The array to be operated. The result after scale and shift
+   *        operations is stored in this array.
+   *
+   * @param [in] s
+   *        The input constant to scale the array v
+   *
+   * @param [in] sf
+   *        The input constant to scale the array sv
+   *
+   * @param [in] sfv
+   *        The input array as the scale factor for array sv
+   *
+   * @param [in] sv
+   *        The input array to be scaled
+   *
+   * @param [in] nscaleshift
+   *        The number of elements to be operated.
+   *
+   * @param [in] offset
+   *        The starting place in vector v for the composite operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] sfoffset
+   *        The starting place in vector sfv related to scale operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] soffset
+   *        The starting place in vector sv related to scale operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] step
+   *        The spacing between elements in vector v to be operated.
+   *        Defaultly, there are no spacing (step is one)
+   *
+   * @param [in] sfstep
+   *        The spacing between elements in vector sfv in scale operation.
+   *        Defaultly, there are no spacing (step is one).
+   *
+   * @param [in] sstep
+   *        The spacing between elements in vector sv related to scale
+   *        operation. Defaultly, there are no spacing (step is one).
+   */
   template <typename T>
   void vector_scaleshift(T* v, const T& s, const T& sf, const T* sfv,
                          const T* sv, long nscaleshift, int offset=iZero,
@@ -518,6 +571,57 @@ namespace std {
     myError("Scaled Shift for generic type is not available!");
   }
   
+  /**
+   * @brief composite operation of scale and shift for \c double type of data
+   *
+   * This function is implemented with BLAS dsbmv_() operation. The vector
+   * sv is scaled with the constant sf and the vector sfv, and the vector v
+   * is scaled with the constant s. The resultant two vectors are added
+   * together and the result is stored in the vector v.
+   *
+   * @param [in,out] v
+   *        The array to be operated. The result after scale and shift
+   *        operations is stored in this array.
+   *
+   * @param [in] s
+   *        The input constant to scale the array v
+   *
+   * @param [in] sf
+   *        The input constant to scale the array sv
+   *
+   * @param [in] sfv
+   *        The input array as the scale factor for array sv
+   *
+   * @param [in] sv
+   *        The input array to be scaled
+   *
+   * @param [in] nscaleshift
+   *        The number of elements to be operated.
+   *
+   * @param [in] offset
+   *        The starting place in vector v for the composite operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] sfoffset
+   *        The starting place in vector sfv related to scale operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] soffset
+   *        The starting place in vector sv related to scale operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] step
+   *        The spacing between elements in vector v to be operated.
+   *        Defaultly, there are no spacing (step is one)
+   *
+   * @param [in] sfstep
+   *        The spacing between elements in vector sfv in scale operation.
+   *        Defaultly, there are no spacing (step is one).
+   *
+   * @param [in] sstep
+   *        The spacing between elements in vector sv related to scale
+   *        operation. Defaultly, there are no spacing (step is one).
+   */
   void vector_scaleshift(double* v, const double& s, const double& sf,
                          const double* sfv, const double* sv, long nscaleshift,
                          int offset=iZero, int sfoffset=iZero,
@@ -530,6 +634,40 @@ namespace std {
            v+offset,&step);
   }
 
+  /**
+   * @brief swap the content of two arrays with generic type of data
+   *
+   * The elements in two input arrays are swapped one by one. This is
+   * valid for generic type of data.
+   *
+   * \a T
+   *    The type of data in vector
+   *
+   * @param [in,out] va
+   *        An array to be swapped
+   *
+   * @param [in,out] vb
+   *        Another array to be swapped
+   *
+   * @param [in] nswap
+   *        The number of elements to be swapped.
+   *
+   * @param [in] aoffset
+   *        The starting place in array va related to swap operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] astep
+   *        The spacing between elements in array va related to swap
+   *        operation. Defaultly, there are no spacing (step is one).
+   *
+   * @param [in] boffset
+   *        The starting place in array vb related to swap operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] bstep
+   *        The spacing between elements in array vb related to swap
+   *        operation. Defaultly, there are no spacing (step is one).
+   */
   template <typename T>
   void vector_swap(T* va, T* vb, long nswap,
                    int aoffset=iZero, long astep=lOne,
@@ -544,6 +682,36 @@ namespace std {
     }
   }
 
+  /**
+   * @brief swap the content of two arrays with \c double type of data
+   *
+   * It is implemented with dswap_() operation. The contents are swapped.
+   *
+   * @param [in,out] va
+   *        An array to be swapped
+   *
+   * @param [in,out] vb
+   *        Another array to be swapped
+   *
+   * @param [in] nswap
+   *        The number of elements to be swapped.
+   *
+   * @param [in] aoffset
+   *        The starting place in array va related to swap operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] astep
+   *        The spacing between elements in array va related to swap
+   *        operation. Defaultly, there are no spacing (step is one).
+   *
+   * @param [in] boffset
+   *        The starting place in array vb related to swap operation.
+   *        Defaultly, it starts from head (the first element).
+   *
+   * @param [in] bstep
+   *        The spacing between elements in array vb related to swap
+   *        operation. Defaultly, there are no spacing (step is one).
+   */
   void vector_swap(double* va, double* vb, long nswap,
                    int aoffset=iZero, int boffset=iZero,
                    long astep=lOne, long bstep=lOne) {
