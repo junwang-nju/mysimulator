@@ -584,7 +584,7 @@ namespace std {
        * This is a simplification for the operation to shift with
        * a constant and a VectorBase object. It is implemented with
        * the shift() operation for part of the intermal vector.
-       * Since the sizes for input vector and the internal vectort
+       * Since the sizes for input vector and the internal vector
        * may be different, the smaller one is chosen.
        *
        * @param [in] value

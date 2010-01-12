@@ -3,6 +3,11 @@
  * @file ref-vector.h
  * @brief Vector to refer to another storage
  *
+ * This file defines a data structure which refers to another vector-like
+ * data structure. This kind of data structure is light-weight (without
+ * allocation of data). It could be used to define aliases and set up
+ * higher-order data structures.
+ *
  * @author Jun Wang (junwang.nju@gmail.com)
  */
 
@@ -13,27 +18,89 @@
 
 namespace std {
 
+  /**
+   * @brief the data structure referring to vector-like data structure
+   *
+   * This class uses the basic structure of VectorBase class. Its content
+   * is a kind of reference to another vector-like data structure. To use
+   * the VectorBase class as parent makes this class have the same interface
+   * as regular vectors, though some kinds of operations are not defined.
+   * to enable the validation of reference, a table is used to record
+   * reference information.
+   *
+   * \a T
+   *    The type of data in the related storage
+   */
   template <typename T>
   class refVector : public VectorBase<T> {
 
     public:
 
+      /**
+       * @brief flag indicating if this object could be referred to
+       *
+       * Since the refVector object is different from regular vector (without
+       * internal storage), it could not be referred to. This flag is
+       * introduced as an indicator.
+       */
       static const uint IsReferable;
 
+      /**
+       * @brief alias for the type of data in vector
+       */
       typedef T             DataType;
 
+      /**
+       * @brief alias for the refVector class
+       */
       typedef refVector<T>  Type;
 
+      /**
+       * @brief alias for the parent VectorBase class
+       */
       typedef VectorBase<T> ParentType;
 
+      /**
+       * @brief the pointer to the table with reference information
+       *
+       * This pointer is used to point to the table in the object
+       * which is referred by this refVector class. To use a pointer
+       * may keep the synchronization of the reference information.
+       */
       ReferTable<T>* pTable;
 
+      /**
+       * @brief the location in the table with reference information
+       *
+       * This variable records the the location (order) of the present
+       * reference in the table with reference information.
+       */
       int inTable;
 
+      /**
+       * @brief default initiator
+       *
+       * Just initiate the parent class with no parameters, and initiate
+       * the pointer for reference table with NULL and set the location
+       * with -1 indicating there are no targets.
+       */
       refVector() : ParentType(), pTable(NULL), inTable(-1) {}
 
-      refVector(const Type&) { myError("vector copier is prohibited!"); }
+      /**
+       * @brief initiator from another refVector object
+       *
+       * This is prohibited by popping up an error.
+       *
+       * @param [in] v
+       *        The input refVector object
+       */
+      refVector(const Type& v) { myError("vector copier is prohibited!"); }
 
+      /**
+       * @brief destructor
+       *
+       * Just invoke the clear() method.
+       */
       ~refVector() { clear(); }
 
       void clear() {
