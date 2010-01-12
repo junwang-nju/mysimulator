@@ -176,7 +176,7 @@ namespace std {
        * @brief copier from another var-vector
        *
        * It is implemented with assign() function inheritated from parent.
-       * The content of the input vector is copier to internal storage.
+       * The content of the input vector is copied to internal storage.
        *
        * @param [in] v
        *        The input var-vector object
