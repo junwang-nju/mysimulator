@@ -109,6 +109,8 @@ namespace std {
        *
        * @param [in] n
        *        The expected dimension for the internal array
+       *
+       * @return the reference to the present object
        */
       Type& allocate(const uint& n) {
         this->rTable.clear();
@@ -122,10 +124,32 @@ namespace std {
       }
 
       /**
-       * @brief allocate with int-type parameter.
+       * @brief allocate with \c int type parameter.
+       *
+       * It is implemented by converting the \c int type value to a \c unsigned
+       * \c int one as dimensional information.
+       *
+       * @param [in] n
+       *        The \c int type value
+       *
+       * @return the reference to the present object
        */
       Type& allocate(const int& n) { return allocate(static_cast<uint>(n)); }
 
+      /**
+       * @brief allocate based on information of another VectorBase object
+       *
+       * This function uses the size information of the input VectorBase
+       * object as the dimensional information.
+       *
+       * \a rT
+       *    The type of data in input VectorBase object.
+       *
+       * @param [in] v
+       *        The input VectorBase object with \a rT type data
+       *
+       * @return the reference to the present object
+       */
       template <typename rT>
       Type& allocate(const VectorBase<rT>& v) { return allocate(v.size()); }
 
