@@ -2,6 +2,12 @@
 /**
  * @file property-list.h
  *
+ * This file defines a fundamental type for simulation package. This type
+ * is the basic object to be operated by various procedures. This kind of
+ * definition enables various kinds of methods to access the content for
+ * efficiency. This format increases the flexibility to use this API and
+ * to develop in future.
+ *
  * @author Jun Wang (junwang.nju@gmail.com)
  */
 
