@@ -2,6 +2,10 @@
 /**
  * @file property-list-op.h
  *
+ * This file includes some operations for property list. These operations
+ * are similar to those for regular vectors. These operations are defined
+ * to make the type of property list being compatible with regular vectors.
+ *
  * @author Jun Wang (junwang.nju@gmail.com)
  */
 

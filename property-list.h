@@ -19,23 +19,100 @@
 
 namespace std {
 
+  /**
+   * @brief the list type containing various properties
+   *
+   * This type is a variant of vector-like object. The internal data
+   * are re-arranged in a linear vector. This kind of organization
+   * enables various accessments to the data, through the vector of
+   * units or through the vector of the values. These interfaces are
+   * used for various applications based on the consideration of efficiency.
+   * The internal types are defined with template types to provide
+   * flexibility. Besides, some methods for vectors are re-defined to
+   * include the operations for internal vectors of values.
+   *
+   * \a ListType
+   *    The template type of list. This describes the type of vectors
+   *    containing the units. Defaultly, varVector is used.
+   *
+   * \a PropertyType
+   *    The template type containing properties. The unit of property
+   *    is assumed as a vector of certain data. This gives out the
+   *    type of vector to define the property. As a part of internal
+   *    data, it takes refVector as the default type.
+   *
+   * \a DataType
+   *    The type of data in the unit of property. It takes a default
+   *    type of \c double.
+   *
+   * \a DataVecType
+   *    The template type containing values. This gives out the type of
+   *    vector to contain the values. This type is used internally. It
+   *    takes varVector as the default type.
+   */
 	template <template <typename> class ListType=varVector,
             template <typename> class PropertyType=refVector,
             typename DataType=double,
             template <typename> class DataVecType=varVector>
 	class PropertyList : public ListType<PropertyType<DataType> >{
     public:
+      /**
+       * @brief alias of the type for list of property
+       */
       typedef PropertyList<ListType,PropertyType,DataType,DataVecType>  
                                                             Type;
+      /**
+       * @brief alias of the type for vector of units (type of parent class)
+       */
       typedef ListType<PropertyType<DataType> >             ParentType;
+      /**
+       * @brief alias for the type of property
+       */
       typedef PropertyType<DataType>                        Property;
+      /**
+       * @brief declaration of the internal list containing the values
+       */
       DataVecType<DataType> PropertyData;
 
+      /**
+       * @brief default initiator
+       *
+       * Just initiate the parent class and list of internal data with
+       * no parameters.
+       */
       PropertyList() : ParentType(), PropertyData() {}
+      /**
+       * @brief initiator with another list of property
+       *
+       * This is prohibited by just popping up an error.
+       *
+       * @param [in] PL
+       *        The input list of properties.
+       */
       PropertyList(const Type& PL) {
         myError("copier for property list is prohibited!");
       }
       
+      /**
+       * @brief build up the structure based on size information
+       *
+       * The structure is defined as the relation between vector of
+       * units of property and vector of internal values. The size
+       * information describes the sizes of vectors containing units
+       * or internal values. This function sets up the size of two
+       * kinds of vectors, and sets up the relations with refer() method
+       * of vector.
+       *
+       * @param [in] ShapeOffset
+       *        The starting location of data of unit in vector of values
+       *
+       * @param [in] ShapeSize
+       *        The size of the data of unit
+       *
+       * @return the reference to the present object
+       *
+       * @note There are some redundancy for the input size information.
+       */
       Type& BuildStructure(const VectorBase<uint>& ShapeOffset,
                            const VectorBase<uint>& ShapeSize) {
         uint n=ShapeSize.size();
@@ -47,32 +124,157 @@ namespace std {
           this->operator[](i).refer(PropertyData,ShapeOffset[i],ShapeSize[i]);
       	return *this;
       }
+      /**
+       * @brief swap with another list of property
+       *
+       * Just swap the vectors of units and of values.
+       *
+       * @param [in,out] PL
+       *        The list of property to be swapped.
+       */
       void swap(Type& PL) {
         static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(PL));
         PropertyData.swap(PL.PropertyData);
       }
+      /**
+       * @brief clear the internal data and structure
+       *
+       * Just clear the vectors of units and of the values.
+       */
       void clear() {
         PropertyData.clear();
         static_cast<ParentType*>(this)->clear();
       }
 
+      /**
+       * @brief copier from another list of property
+       *
+       * It is implemented with assign() method.
+       *
+       * @param [in] vb
+       *        The input list of property
+       *
+       * @return the reference to the present object
+       */
       Type& operator=(const Type& vb) { return assign(vb); }
 
+      /**
+       * @brief copier from an \a inputT type object
+       *
+       * It is implemented with assign() method.
+       *
+       * \a inputT
+       *    The type of the input object
+       *
+       * @param [in] v
+       *        The input \a inputT type object
+       *
+       * @return the reference to the present object
+       */
       template <typename inputT>
       Type& operator=(const inputT& v) { return assign(v); }
 
+      /**
+       * @brief scale with an \a inputT type object
+       *
+       * It is implemented with scale() method.
+       *
+       * \a inputT
+       *    The type of the input object
+       *
+       * @param [in] v
+       *        The input \a inputT type object
+       *
+       * @return the reference to the present object
+       */
       template <typename inputT>
       Type& operator*=(const inputT& v) { return scale(v); }
 
+      /**
+       * @brief shift with an \a inputT type object
+       *
+       * It is implemented with shift() method.
+       *
+       * \a inputT
+       *    The type of the input object
+       *
+       * @param [in] v
+       *        The input \a inputT type object
+       *
+       * @return the reference to the present object
+       */
       template <typename inputT>
       Type& operator+=(const inputT& v) { return shift(v); }
 
-      Type& assign(const DataType* v, long ncopy, int voffset=iZero, long vstep=lOne,
-                   int offset=iZero, long step=lOne) {
+      /**
+       * @brief assign part from an array
+       *
+       * Just assign the internal vector of values with the input array.
+       *
+       * @param [in] v
+       *        The input array
+       *
+       * @param [in] ncopy
+       *        The number of the elements to be copied
+       *
+       * @param [in] voffset
+       *        The shift for the first element to be copied in input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input array. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object
+       */
+      Type& assign(const DataType* v, long ncopy, int voffset=iZero,
+                   long vstep=lOne, int offset=iZero, long step=lOne) {
         PropertyData.assign(v,ncopy,voffset,vstep,offset,step);
         return *this;
       }
 
+      /**
+       * @brief assign part from a VectorBase object
+       *
+       * Just assign the internal vector of values with the input VectorBase
+       * object.
+       *
+       * @param [in] v
+       *        The input VectorBase object.
+       *
+       * @param [in] ncopy
+       *        The number of the elements to be copied
+       *
+       * @param [in] voffset
+       *        The shift for the first element to be copied in input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input array. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object
+       */
       Type& assign(const VectorBase<DataType>& v, long ncopy,
                    int voffset=iZero, long vstep=lOne,
                    int offset=iZero, long step=lOne) {
