@@ -1,6 +1,7 @@
 
 /**
  * @file property-list.h
+ * @brief list structure of property
  *
  * This file defines a fundamental type for simulation package. This type
  * is the basic object to be operated by various procedures. This kind of
@@ -282,6 +283,40 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief assign part from a list of properties
+       *
+       * Just assign the internal vector of values with the internal
+       * vector of values of the input list of property.
+       *
+       * @param [in] v
+       *        The input VectorBase object.
+       *
+       * @param [in] ncopy
+       *        The number of the elements to be copied
+       *
+       * @param [in] voffset
+       *        The shift for the first element to be copied in input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input array. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to present object
+       * @note this assignment is not based on the level of units, but
+       *       is based on the level of internal values.
+       */
       Type& assign(const Type& v, long ncopy,
                    int voffset=iZero, long vstep=lOne,
                    int offset=iZero, long step=lOne) {
@@ -289,27 +324,118 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief assign with a VectorBase object
+       *
+       * It is implemented with the assign() method of the internal vector
+       * of the values.
+       *
+       * @param [in] v
+       *        The input VectorBase object
+       *
+       * @return the reference to the present object
+       */
       Type& assign(const VectorBase<DataType>& v) {
         PropertyData.assign(v);
         return *this;
       }
 
+      /**
+       * @brief assign from another list of property
+       *
+       * It is implemented with the assign() method of the internal vector
+       * of the values. The corresponding vector of input object is transfered
+       * into this method as parameter.
+       *
+       * @param [in] v
+       *        The input list of property
+       *
+       * @return the reference to the present object
+       * @note It is assumed that these two lists share the same structure
+       *       and their structures have been set up.
+       */
       Type& assign(const Type& v) {
         PropertyData.assign(v.PropertyData);
         return *this;
       }
 
+      /**
+       * @brief assign part of contents with a \a DataType type value
+       *
+       * It is implemented with the method assign() of internal vector
+       * of values.
+       *
+       * @param [in] value
+       *        The input value
+       *
+       * @param [in] ncopy
+       *        The number of the elements to be copied
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       */
       Type& assign(const DataType& value, long ncopy,
                    int offset=iZero, long step=lOne) {
         PropertyData.assign(value,ncopy,offset,step);
         return *this;
       }
       
+      /**
+       * @brief assign with a \a DataType type value
+       *
+       * It is implemented with the method assign() of internal vector
+       * of values.
+       *
+       * @param [in] value
+       *        The input value
+       *
+       * @return the reference to the present object
+       */
       Type& assign(const DataType& value) {
         PropertyData.assign(value);
         return *this;
       }
 
+      /**
+       * @brief scale part of content with an array
+       *
+       * It is implemented with the scale() method of the internal vector
+       * of values.
+       *
+       * @param [in] v
+       *        The input array containing the scaling factors
+       *
+       * @param nscale
+       *        The number of the elements to be scaled.
+       *
+       * @param [in] voffset
+       *        The shift for the first element used for scaling in input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input array. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       */
       Type& scale(const DataType* v, long nscale,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
@@ -317,17 +443,83 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief scale part of content with a \a DataType value
+       *
+       * It just scales the internal vector of values with the input
+       * parameters.
+       *
+       * @param [in] d
+       *        The input value as the scale factor
+       *
+       * @param [in] nscale
+       *        The number of the elements to be scaled
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input array.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       */
       Type& scale(const DataType& d, long nscale,
                   int offset=iZero, long step=lOne) {
         PropertyData.scale(d,nscale,offset,step);
         return *this;
       }
 
+      /**
+       * @brief scale with a \a DataType type value
+       *
+       * It is implemented with the scale() method of the internal vector
+       * of values.
+       *
+       * @param [in] d
+       *        The input value as scaling factor
+       *
+       * @return the reference to the present object
+       */
       Type& scale(const DataType& d) {
         PropertyData.scale(d);
         return *this;
       }
 
+      /**
+       * @brief scale part of content with a VectorBase object
+       *
+       * It is implemented with the scale() method of the internal vector
+       * of values.
+       *
+       * @param [in] v
+       *        The input VectorBase object containing the scaling factors
+       *
+       * @param nscale
+       *        The number of the elements to be scaled.
+       *
+       * @param [in] voffset
+       *        The shift for first element used for scaling in input vector.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input vector. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       */
       Type& scale(const VectorBase<DataType>& v, long nscale,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
@@ -335,6 +527,42 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief scale part of content with a list of property
+       *
+       * It is implemented with the scale() method of the internal vector
+       * of values. The corresponding internal vector of the input object
+       * is used as the input parameter for the above method.
+       *
+       * @param [in] v
+       *        The input list of property
+       *
+       * @param nscale
+       *        The number of the elements to be scaled.
+       *
+       * @param [in] voffset
+       *        The shift for the first element used for scaling in input list.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input list. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       * @note This method practically operates the internal vectors of
+       *       values. It does not operate the units, and does not touch
+       *       the internal structures.
+       */
       Type& scale(const Type& v, long nscale,
                   int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
@@ -342,16 +570,86 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief scale with a VectorBase object
+       *
+       * It is implemented with the scale() method of the internal vector
+       * of values.
+       *
+       * @param [in] v
+       *        The input VectorBase object
+       *
+       * @return the reference to the present object
+       */
       Type& scale(const VectorBase<DataType>& v) {
         PropertyData.scale(v);
         return *this;
       }
 
+      /**
+       * @brief scale with another list of property
+       *
+       * It is implemented with the scale() method of the internal vector
+       * of values. The internal vector of values in input list is used
+       * as the parameter of the above mentioned method.
+       *
+       * @param [in] v
+       *        The input list of property
+       *
+       * @return the reference to the present object
+       */
       Type& scale(const Type& v) {
         PropertyData.scale(v.PropertyData);
         return *this;
       }
 
+      /**
+       * @brief shift part of content with \a ScaleT type object and an array
+       *
+       * It is implemented with the shift() method of the internal vector
+       * of values.
+       *
+       * \a ScaleT
+       *    The type of the input object to scale the input array
+       *
+       * @param [in] sv
+       *        The input \a ScaleT type object to scale input array v
+       *
+       * @param [in] v
+       *        The input array containing the shift direction
+       *
+       * @param [in] nshift
+       *        The number of elements to be shifted.
+       *
+       * @param [in] soffset
+       *        The shift for the first element as scaling factor for the
+       *        input array. It takes the default value zero (namely starting
+       *        from the first element)
+       *
+       * @param [in] sstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element as shift direction in the
+       *        input array. It takes the default value zero (namely starting
+       *        from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input array. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       */
       template <typename ScaleT>
       Type& shift(const ScaleT& sv, const DataType* v, long nshift,
                   int soffset=iZero, long sstep=lOne,
@@ -362,13 +660,84 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief shift part of content with constant and VectorBase object
+       *
+       * It is implemented with the shift() method of the internal vector
+       * of values.
+       *
+       * @param [in] value
+       *        The input constant to scale the vector v
+       *
+       * @param [in] v
+       *        The input VectorBase object indicating the shift direction
+       *
+       * @param [in] nshift
+       *        The number of elements to be shifted.
+       *
+       * @param [in] voffset
+       *        The shift for the first element as shift direction in the
+       *        input vector. It takes the default value zero (namely starting
+       *        from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input vector. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       */
       Type& shift(const DataType& value, const VectorBase<DataType>& v,
                   long nshift, int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
         PropertyData.shift(value,v,nshift,voffset,vstep,offset,step);
         return *this;
       }
-      
+
+      /**
+       * @brief shift part of content with constant and list of property
+       *
+       * It is implemented with the shift() method of the internal vector
+       * of values. The internal vector of values in input list is used
+       * as the parameter of internal shift operation.
+       *
+       * @param [in] value
+       *        The input constant to scale the list v
+       *
+       * @param [in] v
+       *        The input list of property
+       *
+       * @param [in] nshift
+       *        The number of elements to be shifted.
+       *
+       * @param [in] voffset
+       *        The shift for the first element as shift direction in the
+       *        input list. It takes the default value zero (namely starting
+       *        from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input list. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       */
       Type& shift(const DataType& value, const Type& v,
                   long nshift, int voffset=iZero, long vstep=lOne,
                   int offset=iZero, long step=lOne) {
@@ -377,30 +746,144 @@ namespace std {
         return *this;
       }
       
+      /**
+       * @brief shift with constant and VectorBase object
+       *
+       * It is implemented with the shift() method of the internal vector
+       * of values.
+       *
+       * @param [in] value
+       *        The input constant to scale the vector v
+       *
+       * @param [in] v
+       *        The input VectorBase object indicating the shift direction
+       *
+       * @return the reference to the present object
+       */
       Type& shift(const DataType& value, const VectorBase<DataType>& v) {
         PropertyData.shift(value,v);
         return *this;
       }
 
+      /**
+       * @brief shift with constant and list of property
+       *
+       * It is implemented with the shift() method of the internal vector
+       * of values.
+       *
+       * @param [in] value
+       *        The input constant to scale the list v
+       *
+       * @param [in] v
+       *        The input list of property
+       *
+       * @return the reference to the present object
+       */
       Type& shift(const DataType& value, const Type& v) {
         PropertyData.shift(value,v.PropertyData);
         return *this;
       }
       
+      /**
+       * @brief shift part of content with a constant
+       *
+       * It is implemented with the shift() method of the internal vector
+       * of values.
+       *
+       * @param [in] value
+       *        The input constant to shift the component of internal vector
+       *
+       * @param [in] offset
+       *        The shift for the first element to accept the input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between elements accepting the input. It takes
+       *        the default value one (namely all elements are written)
+       *
+       * @return the reference to the present object
+       */
       Type& shift(const DataType& value, int offset=iZero, long step=lOne) {
         PropertyData.shift(value,offset,step);
         return *this;
       }
 
+      /**
+       * @brief shift with VectorBase object
+       *
+       * It is implemented with the shift() method for part of content.
+       * The constant related to the shift is set as one.
+       *
+       * @param [in] v
+       *        The input VectorBase object indicating the shift direction
+       *
+       * @return the reference to the present object
+       */
       Type& shift(const VectorBase<DataType>& v) { return shift(dOne,v); }
 
+      /**
+       * @brief shift with list of property
+       *
+       * It is implemented with the shift() method for part of content.
+       * The constant related to the shift is set as one.
+       *
+       * @param [in] v
+       *        The input list of property. 
+       *
+       * @return the reference to the present object
+       */
       Type& shift(const Type& v) { return shift(dOne,v); }
 
+      /**
+       * @brief shift with two vector-like objects
+       *
+       * It is implemented with the shift() method with a constant
+       * and two vector-like objects. The concerned constant is set as one.
+       *
+       * \a vTypeA
+       *    The type of vector for the factor to scale the direction
+       *
+       * \a vTypeB
+       *    The type of vector discribing the shift direction
+       *
+       * @param [in] ShiftFv
+       *        The vector object as the factor to scale the vector v
+       *
+       * @param [in] v
+       *        The vector object describing the direction of shift
+       *
+       * @return the reference to the present object
+       */
       template <typename vTypeA, typename vTypeB>
       Type& shift(const vTypeA& ShiftFv, const vTypeB& v) {
         return shift(dOne,ShiftFv,v);
       }
 
+      /**
+       * @brief shift with a constant and two vector-like objects
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values. The factor to scale the internal vector is
+       * set as one.
+       *
+       * \a vTypeA
+       *    The type of vector for the factor to scale the direction
+       *
+       * \a vTypeB
+       *    The type of vector discribing the shift direction
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input vector object to scale the vector v
+       *
+       * @param [in] v
+       *        The input vector indicating the shift direction
+       *
+       * @return the reference to the present object
+       */
       template <typename vTypeA, typename vTypeB>
       Type& shift(const DataType& ShiftF,
                   const vTypeA& ShiftFv, const vTypeB& v) {
@@ -408,6 +891,56 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief composite operation of scale and shift for part of content with two constants and two arrays
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values. 
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the array v
+       *
+       * @param [in] ShiftFv
+       *        The input array to scale the array v
+       *
+       * @param [in] v
+       *        The input array describing the shift direction
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to the operation
+       *
+       * @param [in] sfoffset
+       *        The shift for the first element of array containing the
+       *        scaling factor for the input array v. It takes the default
+       *        value zero (namely starting from the first element)
+       *
+       * @param [in] sfstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element of array describing the
+       *        searching direction. It takes the default value zero (namely
+       *        starting from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element of object to accept input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements to accept inputs. It
+       *        takes the default value one (namely all elements are read)
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const DataType* ShiftFv, const DataType* v,
                        long nscaleshift,
@@ -419,6 +952,56 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief composite operation of scale and shift for part of content with two constants and two VectorBase objects
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values. 
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input VectorBase objec to scale the vector v
+       *
+       * @param [in] v
+       *        The input VectorBase object describing the shift direction
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to the operation
+       *
+       * @param [in] sfoffset
+       *        The shift for the first element of vector containing the
+       *        scaling factor for the input vector v. It takes the default
+       *        value zero (namely starting from the first element)
+       *
+       * @param [in] sfstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element of vector describing the
+       *        searching direction. It takes the default value zero (namely
+       *        starting from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element of object to accept input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements to accept inputs. It
+       *        takes the default value one (namely all elements are read)
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const VectorBase<DataType>& ShiftFv,
                        const VectorBase<DataType>& v,long nscaleshift,
@@ -429,7 +1012,58 @@ namespace std {
                                 sfoffset,sfstep,voffset,vstep,offset,step);
         return *this;
       }
-      
+
+      /**
+       * @brief composite operation of scale and shift for part of content with two constants, a VectorBase object, and a list of property
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values. 
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input VectorBase objec to scale the vector v
+       *
+       * @param [in] v
+       *        The input list of property. The internal vector describes
+       *        the shift direction
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to the operation
+       *
+       * @param [in] sfoffset
+       *        The shift for the first element of vector containing the
+       *        scaling factor for the input vector v. It takes the default
+       *        value zero (namely starting from the first element)
+       *
+       * @param [in] sfstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element of list describing the
+       *        searching direction. It takes the default value zero (namely
+       *        starting from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element of object to accept input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements to accept inputs. It
+       *        takes the default value one (namely all elements are read)
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const VectorBase<DataType>& ShiftFv,
                        const Type& v,long nscaleshift,
@@ -441,7 +1075,58 @@ namespace std {
                                 sfoffset,sfstep,voffset,vstep,offset,step);
         return *this;
       }
-      
+
+      /**
+       * @brief composite operation of scale and shift for part of content with two constants, a list of property and a VectorBase object
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values. 
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input list of property. The internal vector of this list
+       *        is used to scale the vector v
+       *
+       * @param [in] v
+       *        The input VectorBase object describing the shift direction
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to the operation
+       *
+       * @param [in] sfoffset
+       *        The shift for the first element of list containing the
+       *        scaling factor for the input vector v. It takes the default
+       *        value zero (namely starting from the first element)
+       *
+       * @param [in] sfstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element of vector describing the
+       *        searching direction. It takes the default value zero (namely
+       *        starting from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element of object to accept input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements to accept inputs. It
+       *        takes the default value one (namely all elements are read)
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const Type& ShiftFv,
                        const VectorBase<DataType>& v,long nscaleshift,
@@ -453,7 +1138,59 @@ namespace std {
                                 sfoffset,sfstep,voffset,vstep,offset,step);
         return *this;
       }
-      
+
+      /**
+       * @brief composite operation of scale and shift for part of content with two constants and two lists of property
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values. 
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input list of property. The internal vector is used
+       *        to scale the list v
+       *
+       * @param [in] v
+       *        The input list of property. The internal vector describes
+       *        the shift direction
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to the operation
+       *
+       * @param [in] sfoffset
+       *        The shift for the first element of list containing the
+       *        scaling factor for the input vector v. It takes the default
+       *        value zero (namely starting from the first element)
+       *
+       * @param [in] sfstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] voffset
+       *        The shift for the first element of list describing the
+       *        searching direction. It takes the default value zero (namely
+       *        starting from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element of object to accept input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements to accept inputs. It
+       *        takes the default value one (namely all elements are read)
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const Type& ShiftFv,const Type& v,long nscaleshift,
                        int sfoffset=iZero, long sfstep=lOne,
@@ -466,6 +1203,28 @@ namespace std {
         return *this;
       }
       
+      /**
+       * @brief composite operation of scale and shift with two constants and two lists of property
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values. 
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input list of property. The internal vector is used
+       *        to scale the list v
+       *
+       * @param [in] v
+       *        The input list of property. The internal vector describes
+       *        the shift direction
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const Type& ShiftFv, const Type& v) {
         PropertyData.scaleshift(ScaleF,ShiftF,
@@ -473,18 +1232,80 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief composite operation of scale and shift with two constants, a VectorBase object and a list of property
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values.
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input VectorBase objec to scale the vector v
+       *
+       * @param [in] v
+       *        The input list of property. The internal vector describes
+       *        the shift direction
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const VectorBase<DataType>& ShiftFv, const Type& v) {
         PropertyData.scaleshift(ScaleF,ShiftF,ShiftFv,v.PropertyData);
         return *this;
       }
 
+      /**
+       * @brief composite operation of scale and shift with two constants, a list of property and a VectorBase object
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values.
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input list of property. The internal vector is used
+       *        to scale the list v
+       *
+       * @param [in] v
+       *        The input VectorBase object describing the shift direction
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const Type& ShiftFv, const VectorBase<DataType>& v) {
         PropertyData.scaleshift(ScaleF,ShiftF,ShiftFv.PropertyData,v);
         return *this;
       }
 
+      /**
+       * @brief composite operation of scale and shift with two constants and two VectorBase objects
+       *
+       * It is implemented with the scaleshift() method of the internal
+       * vector of values.
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input VectorBase objec to scale the vector v
+       *
+       * @param [in] v
+       *        The input VectorBase object describing the shift direction
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const VectorBase<DataType>& ShiftFv,
                        const VectorBase<DataType>& v) {
@@ -492,6 +1313,44 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief composite operation of scale and shift for part of content with two constants and a VectorBase object
+       *
+       * It is implemented with the combination of scale() and shift()
+       * method of the internal vector of values.
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] v
+       *        The input VectorBase object describing the shift direction
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to the operation
+       *
+       * @param [in] voffset
+       *        The shift for the first element of vector describing the
+       *        searching direction. It takes the default value zero (namely
+       *        starting from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element of object to accept input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements to accept inputs. It
+       *        takes the default value one (namely all elements are read)
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const VectorBase<DataType>& v, long nscaleshift,
                        int voffset=iZero, long vstep=lOne,
@@ -501,7 +1360,46 @@ namespace std {
                            voffset,vstep,offset,step);
         return *this;
       }
-      
+
+      /**
+       * @brief composite operation of scale and shift for part of content with two constants and a list of property
+       *
+       * It is implemented with the combination of scale() and shift()
+       * method of the internal vector of values.
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] v
+       *        The input list of property. The internal vector describes
+       *        the shift direction
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to the operation
+       *
+       * @param [in] voffset
+       *        The shift for the first element of list describing the
+       *        searching direction. It takes the default value zero (namely
+       *        starting from the first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in input object. It takes
+       *        the default value one (namely all elements are read)
+       *
+       * @param [in] offset
+       *        The shift for the first element of object to accept input.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements to accept inputs. It
+       *        takes the default value one (namely all elements are read)
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const Type& v, long nscaleshift,
                        int voffset=iZero, long vstep=lOne,
@@ -511,13 +1409,48 @@ namespace std {
                            voffset,vstep,offset,step);
         return *this;
       }
-      
+
+      /**
+       * @brief composite operation of scale and shift with two constants and a VectorBase object
+       *
+       * It is implemented with the scaleshift() method of the internal vector
+       * of values.
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] v
+       *        The input VectorBase object describing the shift direction
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const VectorBase<DataType>& v) {
         PropertyData.scaleshift(ScaleF,ShiftF,v);
         return *this;
       }
 
+      /**
+       * @brief composite operation of scale and shift with two constants and a list of property
+       *
+       * It is implemented with the scaleshift() method of the internal vector
+       * of values.
+       *
+       * @param [in] ScaleF
+       *        The input constant to scale the internal vector of values
+       *
+       * @param [in] ShiftF
+       *        The input constant to scale the vector v
+       *
+       * @param [in] v
+       *        The input list of property. The internal vector describes
+       *        the shift direction
+       *
+       * @return the reference to the present object
+       */
       Type& scaleshift(const DataType& ScaleF, const DataType& ShiftF,
                        const Type& v) {
         PropertyData.scaleshift(ScaleF,ShiftF,v.PropertyData);
