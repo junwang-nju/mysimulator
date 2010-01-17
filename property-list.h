@@ -1459,6 +1459,33 @@ namespace std {
 
   };
 
+  /**
+   * @brief establish reference relation between two lists of property
+   *
+   * To keep the flexibility, the refer() function of the list of property
+   * is not replaced. However, that method does not operate the internal
+   * vector. The present method established the reference relation including
+   * both the parent class and the internal vector.
+   *
+   * \a PropertyType
+   *    The template type for the property
+   *
+   * \a DataType
+   *    The type for the data in the internal vector of the list of property
+   *
+   * \a SListType
+   *    The template type for the source list
+   *
+   * \a SDataVecType
+   *    The template type for internal vector in source list
+   *
+   * @param [out] dPL
+   *        The destinate list of property. It would be used to refer to
+   *        the source list.
+   *
+   * @param [in] sPL
+   *        The source list of property.
+   */
   template <template <typename> class PropertyType, typename DataType,
             template <typename> class SListType,
             template <typename> class SDataVecType>
@@ -1468,6 +1495,27 @@ namespace std {
     dPL.PropertyData.refer(sPL.PropertyData);
   }
 
+  /**
+   * @brief swap two lists of property
+   *
+   * It is implemented with the swap() method of the list of property.
+   * This funciton is used to provide unique interface.
+   *
+   * \a ListType
+   *    The template type for the lists
+   *
+   * \a PropertyType
+   *    The template type for the property
+   *
+   * \a DataType
+   *    The type of the data in the internal vector.
+   *
+   * @param [in,out] pl1
+   *        One list of property to be swapped
+   *
+   * @param [in,out] pl2
+   *        Another list of property to be swapped
+   */
   template <template <typename> class ListType,
             template <typename> class PropertyType, typename DataType>
   void swap(PropertyList<ListType,PropertyType,DataType>& pl1,
@@ -1475,27 +1523,103 @@ namespace std {
     pl1.swap(pl2);
   }
 
+  /**
+   * @brief activate all the mask flags
+   *
+   * Just assign the vector of flags as one.
+   *
+   * @param [out] MaskObj
+   *        The object storing flags
+   */
   void Activate(VectorBase<uint>& MaskObj) { MaskObj=1; }
 
+  /**
+   * @brief deactivate all the mask flags
+   *
+   * Just assign the vector offlags with zero
+   *
+   * @param [out] MaskObj
+   *        The object storing flags
+   */
   void DeActivate(VectorBase<uint>& MaskObj) { MaskObj=0; }
 
+  /**
+   * @brief activate flag of a certain dimension
+   *
+   * Just assign the certain flag with one.
+   *
+   * @param [out] MaskObj
+   *        The object storing flags
+   */
   void Activate(VectorBase<uint>& MaskObj, const uint& I) { MaskObj[I]=1; }
 
+  /**
+   * @brief deactivate flag of a certain dimension
+   *
+   * Just assign the certain flag with zero.
+   *
+   * @param [out] MaskObj
+   *        The object storing flags
+   */
   void DeActivate(VectorBase<uint>& MaskObj, const uint& I) { MaskObj[I]=0; }
 
+  /**
+   * @brief activate all the mask flags including \c double type flags
+   *
+   * Assign the flags with one of corresponding type.
+   *
+   * @param [out] MaskObj
+   *        The object storing \c unsigned \c int flags.
+   *
+   * @param [out] DMaskObj
+   *        The object storing \c double flags.
+   */
   void Activate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj) {
     MaskObj=1;  DMaskObj=1.;
   }
 
+  /**
+   * @brief deactivate all the mask flags including \c double type flags
+   *
+   * Assign the flags with zero of corresponding type.
+   *
+   * @param [out] MaskObj
+   *        The object storing \c unsigned \c int flags.
+   *
+   * @param [out] DMaskObj
+   *        The object storing \c double flags.
+   */
   void DeActivate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj) {
     MaskObj=0;  DMaskObj=0.;
   }
 
+  /**
+   * @brief activate flag of a certain dimension including \c double type flags
+   *
+   * Just assign the certain flag with one.
+   *
+   * @param [out] MaskObj
+   *        The object storing \c unsigned \c int flags.
+   *
+   * @param [out] DMaskObj
+   *        The object storing \c double flags.
+   */
   void Activate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj,
                 const uint& I) {
     MaskObj[I]=1;  DMaskObj[I]=1.;
   }
 
+  /**
+   * @brief deactivate flag of a certain dimension including \c double flags
+   *
+   * Just assign the certain flag with zero.
+   *
+   * @param [out] MaskObj
+   *        The object storing \c unsigned \c int flags.
+   *
+   * @param [out] DMaskObj
+   *        The object storing \c double flags.
+   */
   void DeActivate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj,
                   const uint& I) {
     MaskObj[I]=0;  DMaskObj[I]=0.;
