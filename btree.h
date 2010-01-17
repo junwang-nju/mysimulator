@@ -121,7 +121,7 @@ namespace std {
        *
        * It is prohibited by popping up an error.
        *
-       * @param [in] node
+       * @param [in] bnode
        *        The input node object
        *
        * @return the reference to the present object
