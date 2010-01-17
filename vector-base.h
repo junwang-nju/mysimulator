@@ -584,7 +584,7 @@ namespace std {
        * This is a simplification for the operation to shift with
        * a constant and a VectorBase object. It is implemented with
        * the shift() operation for part of the intermal vector.
-       * Since the sizes for input vector and the internal vectort
+       * Since the sizes for input vector and the internal vector
        * may be different, the smaller one is chosen.
        *
        * @param [in] value
@@ -818,7 +818,26 @@ namespace std {
       }
       
       /**
-       * @brief composite operation
+       * @brief composite operation of scale and shift with external vectors
+       *
+       * It is a simplification for the composite operation of scale and shift
+       * with external vectors. it is implemented with the composite operation
+       * for part of content.
+       *
+       * @param [in] ScaleF
+       *        The constant to scale the internal object
+       *
+       * @param [in] ShiftF
+       *        The constanr to scale the vector v
+       *
+       * @param [in] ShiftFv
+       *        The input vector to shift the vector v
+       *
+       * @param [in] v
+       *        The input vector related to the shift operation
+       *
+       * @return the reference to present object.
+       */
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& ShiftFv,
                        const Type& v) {
         long n;
@@ -827,6 +846,48 @@ namespace std {
         return scaleshift(ScaleF,ShiftF,ShiftFv,v,n);
       }
 
+      /**
+       * @brief composite operation of scale and shift with external constant and vectors for part of content
+       *
+       * The vector related to shift operation is just scaled with a constant.
+       * This is a simplified version of composite operation of scale and shift
+       * for external vectors. It is implemented by the combination of
+       * scale operation and shift operation.
+       *
+       * @param [in] ScaleF
+       *        The constant to scale the internal object
+       *
+       * @param [in] ShiftF
+       *        The constanr to scale the vector v
+       *
+       * @param [in] v
+       *        The input vector related to the shift operation
+       *
+       * @param [in] nscaleshift
+       *        The number of elements related to this operation
+       *
+       * @param [in] voffset
+       *        The shift for the first element for the object v.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in the object v.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for the internal object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements in the internal object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @return the reference to present object.
+       */
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& v,
                        long nscaleshift,
                        int voffset=iZero, long vstep=lOne,
@@ -835,17 +896,51 @@ namespace std {
         return shift(ShiftF,v,nscaleshift,voffset,vstep,offset,step);
       }
       
+      /**
+       * @brief composite operation of scale and shift with external constant and vector
+       *
+       * It is a simplification of the corresponding composite operation
+       * for part of content. It is implemented with the composite operation
+       * for part of content. Since the sizes of internal vector and of input
+       * vector related to shift operation may be different, the smaller
+       * one is chosen in practice
+       *
+       * @param [in] ScaleF
+       *        The constant to scale the internal object
+       *
+       * @param [in] ShiftF
+       *        The constanr to scale the vector v
+       *
+       * @param [in] v
+       *        The input vector related to the shift operation
+       *
+       * @return the reference to present object.
+       */
       Type& scaleshift(const T& ScaleF, const T& ShiftF, const Type& v) {
         long n=(nData<v.nData?nData:v.nData);
         return scaleshift(ScaleF,ShiftF,v,n);
       }
 
+      /**
+       * @brief the pointer to the internal data
+       *
+       * This function provides a method to access the internal data directly.
+       *
+       * @return the pointer to the internal array.
+       */
       T* data() { return Data; }
 
+      /**
+       * @brief the const pointer to the internal data
+       *
+       * This function provides a method to visit the internal data directly.
+       *
+       * @return the const pointer to the internal array
+       */
       const T* data() const { return Data; }
 
       /**
-       * @brief head to this object
+       * @brief the head to this object
        *
        * Just give the head pointer for the internal array
        *
@@ -853,20 +948,95 @@ namespace std {
        */
       const T* begin() const { return head_ptr; }
 
+      /**
+       * @brief the end of this object
+       *
+       * Just give the pointer to the memory location after the last element
+       * of internal array.
+       *
+       * @return the constant pointer to the tail of the internal array
+       */
       const T* end() const { return tail_ptr; }
 
+      /**
+       * @brief the size of the internal storage
+       *
+       * This gives a method to access the size of the internal array.
+       *
+       * @return the size of internal array
+       */
       const uint& size() const { return nData; }
 
+      /**
+       * @brief access the ith element in the internal array
+       *
+       * This method provides a method to access the ith element of the
+       * internal array. The index of element is checked so that it is
+       * smaller than the size of the array storage.
+       *
+       * @param [in] i
+       *        The index for the element to be accessed.
+       *
+       * @return the reference to the ith element
+       */
       T& operator[](const uint i) {
         assert(i<nData);
         return *(Data+i);
       }
 
+      /**
+       * @brief visit the ith element in the internal array
+       *
+       * This method provides a method to visit the ith element of the
+       * internal array. The index of elements is checked so that it is
+       * smaller than the size of the array storage.
+       *
+       * @param [in] i
+       *        The index for the element to be visited.
+       *
+       * @return the constant reference to the ith element.
+       */
       const T& operator[](const uint i) const {
         assert(i<nData);
         return *(Data+i);
       }
 
+      /**
+       * @brief exchange part of internal data with external array
+       *
+       * The exchange operation swaps the corresponding elements between
+       * internal data and external array. It is implemented with the
+       * vector_swap() operation. The size of internal data is checked.
+       *
+       * @param [in,out] v
+       *        The external array. It contains an input array and stores
+       *        the output content.
+       *
+       * @param [in] nswap
+       *        The number of the swapped elements
+       *
+       * @param [in] voffset
+       *        The shift for the first element for the object v.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in the object v.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for the internal object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements in the internal object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @return the reference to present object.
+       */
       Type& exchange(T* v, long nswap, int voffset=iZero, long vstep=lOne,
                      int offset=iZero, long step=lOne) {
         assert(static_cast<uint>(offset+step*nswap)<=nData);
@@ -874,6 +1044,42 @@ namespace std {
         return *this;
       }
 
+      /**
+       * @brief exchange part of internal data with external vector
+       *
+       * The exchange operation swaps the corresponding elements between
+       * internal data and external vector. It is implemented with the
+       * exchange() operation. The size of input vector is checked.
+       *
+       * @param [in,out] v
+       *        The external vector. It contains an input array and stores
+       *        the output content.
+       *
+       * @param [in] nswap
+       *        The number of the swapped elements
+       *
+       * @param [in] voffset
+       *        The shift for the first element for the object v.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] vstep
+       *        The spacing between the two elements in the object v.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @param [in] offset
+       *        The shift for the first element for the internal object.
+       *        It takes the default value zero (namely starting from the
+       *        first element)
+       *
+       * @param [in] step
+       *        The spacing between the two elements in the internal object.
+       *        It takes the default value one (namely all elements are
+       *        read)
+       *
+       * @return the reference to present object.
+       */
       Type& exchange(Type& v, long nswap,
                      int voffset=iZero, long vstep=lOne,
                      int offset=iZero, long step=lOne) {
@@ -881,25 +1087,101 @@ namespace std {
         return exchange(v.Data,nswap,voffset,vstep,offset,step);
       }
 
+      /**
+       * @brief exchange with another vector
+       *
+       * It is a simplification for the exchange operation with another
+       * vector for part of content. It is implemented with exchange()
+       * operation for part of content related to another vector.
+       * Since the concerned two vectors may have different sizes, the
+       * smaller size is chosen as the number of elements to be swapped.
+       *
+       * @param [in] v
+       *        The external vector. It contains an input array and stores
+       *        the output content.
+       *
+       * @return the reference to present object.
+       */
       Type& exchange(Type& v) {
         long n=(nData<v.nData?nData:v.nData);
         return exchange(v,n);
       }
 
+      /**
+       * @brief check if the data is available
+       *
+       * This is a module to check if the internal array is allocated.
+       * The data is generally available when the pointer to the internal
+       * data is not a null type.
+       *
+       * @return a boolean value, true when the pointer to internal data
+       *         is not NULL, and false otherwise.
+       */
       bool isAvailable() const { return Data!=NULL; }
 
+      /**
+       * @brief type of the vector object
+       *
+       * This is defined as a pure virtual function. It needs to be
+       * implemented in child classes to give the specific name string
+       * of the concerned object.
+       *
+       * @return the const string indicating the type of object
+       */
       virtual const char* type() = 0;
 
   };
 
+  /**
+   * @brief exchange two VectorBase objects
+   *
+   * The contents of two input VectorBase objects are exchanged with
+   * each other. It is implemented with the method of VectorBase object.
+   *
+   * \a T
+   *    The type of the elements in input VectorBase type
+   *
+   * @param [in,out] va
+   *        The input VectorBase object
+   *
+   * @param [in,out] vb
+   *        The input VectorBase object
+   */
   template <typename T>
   void exchange(VectorBase<T>& va, VectorBase<T>& vb) {
     va.exchange(vb);
   }
 
+  /**
+   * @brief flag indicating a vector
+   *
+   * This flag is used to indicate that the related object is a vector.
+   * This flag is assigned as 1.
+   *
+   * \a T
+   *    The type of the elements in related VectorBase type
+   */
   template <typename T>
   const uint VectorBase<T>::IsVector=1;
 
+  /**
+   * @brief output the VectorBase object to ostream
+   *
+   * The elements are written out to ostream sequentially, with
+   * tab character as the separator.
+   *
+   * \a T
+   *    The type of the elements in related VectorBase type
+   *
+   * @param [in,out] os
+   *        The ostream. It is used as an input, and the altered ostream
+   *        is also output.
+   *
+   * @param [in] v
+   *        The VectorBase object to be output.
+   *
+   * @return the ostream after output.
+   */
   template <typename T>
   ostream& operator<<(ostream& os, const VectorBase<T>& v) {
     uint n=v.size();
