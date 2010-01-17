@@ -1550,6 +1550,9 @@ namespace std {
    *
    * @param [out] MaskObj
    *        The object storing flags
+   *
+   * @param [in] I
+   *        The index for the dimension to be changed
    */
   void Activate(VectorBase<uint>& MaskObj, const uint& I) { MaskObj[I]=1; }
 
@@ -1560,6 +1563,9 @@ namespace std {
    *
    * @param [out] MaskObj
    *        The object storing flags
+   *
+   * @param [in] I
+   *        The index for the dimension to be changed
    */
   void DeActivate(VectorBase<uint>& MaskObj, const uint& I) { MaskObj[I]=0; }
 
@@ -1603,6 +1609,9 @@ namespace std {
    *
    * @param [out] DMaskObj
    *        The object storing \c double flags.
+   *
+   * @param [in] I
+   *        The index for the dimension to be changed
    */
   void Activate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj,
                 const uint& I) {
@@ -1619,6 +1628,9 @@ namespace std {
    *
    * @param [out] DMaskObj
    *        The object storing \c double flags.
+   *
+   * @param [in] I
+   *        The index for the dimension to be changed
    */
   void DeActivate(VectorBase<uint>& MaskObj, VectorBase<double>& DMaskObj,
                   const uint& I) {
