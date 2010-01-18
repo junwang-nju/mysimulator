@@ -18,12 +18,28 @@
 
 namespace std {
 
+  /**
+   * @brief the identity related to the geometry types
+   *
+   * To ease the input and reflection of the geometric types, the
+   * identities for various geometry are defined (as \c int type).
+   */
   enum GeometryType {
 
+    /**
+     * @brief the type with no boundary
+     */
     FreeSpaceType
 
   };
 
+  /**
+   * @brief the class indicating a free space
+   *
+   * This is the simplest boundary (no boundary). With this kind of boundary,
+   * the distance and geometry-related quantities are all calculated based on
+   * naive definitions. This is often used for isolated systems.
+   */
   class FreeSpace {
   
     public:
