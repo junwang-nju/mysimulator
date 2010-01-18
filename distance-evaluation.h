@@ -269,67 +269,203 @@ namespace std {
 
   };
 
+  /**
+   * @brief functor to evaluate distance directly
+   *
+   * This functor builds up a frame to calculate distance and displacement
+   * directly from input vectors.
+   *
+   * \a N
+   *    The dimension of the space
+   */
   template <uint N>
   class DistanceEvalDirect {
   
     private:
-    
+
+      /**
+       * @brief the functor to calculate square of distance
+       */
       DistanceSquare<N> GetDistSQ;
-      
+
+      /**
+       * @brief the \c double type quantity storing square of distance
+       */
       double nowDistSQ;
-      
+
+      /**
+       * @brief the vector storing the displacement
+       */
       fixVector<double,N> nowDisp;
       
     public:
     
+      /**
+       * @brief default initiator
+       *
+       * Just initiate the internal object with null parameter
+       */
       DistanceEvalDirect() : GetDistSQ(), nowDistSQ(0.), nowDisp() {}
-      
+
+      /**
+       * @brief initiator from another DistanceEvalDirect functor
+       *
+       * It is prohibited by popping up an error.
+       *
+       * @param [in] DEval
+       *        The input DistanceEvalDirect functor
+       */
       DistanceEvalDirect(const DistanceEvalDirect<N>& DEval) {
         myError("copier for Direct DistanceEval is disabled!");
       }
-      
+
+      /**
+       * @brief visit the square of distance
+       *
+       * Just give out the internal variable for square of distance.
+       *
+       * @return const reference to the internal \c double variable
+       */
       const double& DistanceSQ() { return nowDistSQ; }
-      
+
+      /**
+       * @brief visit the displacement vector
+       *
+       * Just give out the internal vector for displacement
+       *
+       * @return the const reference to the internal fixVector object
+       */
       const fixVector<double,N>& DisplaceVector() { return nowDisp; }
 
+      /**
+       * @brief calculate distance for two vectors
+       *
+       * It is implemented directly with DistanceSquare functor.
+       * The calculated result is stored in the internal \c double variable.
+       * The indices related to two vectors are used to match the interface
+       * for other distance calculation.
+       *
+       * \a GeomType
+       *    The type of the concerned geometry
+       *
+       * @param [in] pa
+       *        one vector related to distance calculation
+       *
+       * @param [in] pb
+       *        another vector related to distance calculation
+       *
+       * @param [in] aIdx
+       *        the index related to the vector pa
+       *
+       * @param [in] bIdx
+       *        the index related to the vector pb
+       *
+       * @param [in] Geo
+       *        The concerned geometry
+       *
+       * @return the const reference to the internal \c double type variable
+       */ 
       template <typename GeomType>
-      double operator()(const VectorBase<double>& pa,
-                        const VectorBase<double>& pb,
-                        const uint& aIdx, const uint& bIdx,
-                        const GeomType& Geo) {
+      const double& operator()(const VectorBase<double>& pa,
+                               const VectorBase<double>& pb,
+                               const uint& aIdx, const uint& bIdx,
+                               const GeomType& Geo) {
         nowDistSQ=GetDistSQ(pa,pb,Geo);
         return nowDistSQ;
       }
 
+      /**
+       * @brief calculate the distance and displacement
+       *
+       * It is implemented with the internal DistanceSquare functor.
+       * The distance and the displacement are stored internally.
+       * A \c char quantity is used to distinguish this functor from
+       * the above.
+       *
+       * \a GeomType
+       *    The type of the concerned geometry
+       *
+       * @param [in] pa
+       *        one vector related to distance calculation
+       *
+       * @param [in] pb
+       *        another vector related to distance calculation
+       *
+       * @param [in] aIdx
+       *        the index related to the vector pa
+       *
+       * @param [in] bIdx
+       *        the index related to the vector pb
+       *
+       * @param [in] Geo
+       *        The concerned geometry
+       *
+       * @param [in] c
+       *        The \c char quantity. The existence of this quantity indicates
+       *        that this functor also calculates the displacement. 
+       *
+       * @return the const reference to the internal \c double type variable
+       */
       template <typename GeomType>
-      double operator()(const VectorBase<double>& pa,
-                        const VectorBase<double>& pb,
-                        const uint& aIdx, const uint& bIdx,
-                        const GeomType& Geo, const char) {
+      const double& operator()(const VectorBase<double>& pa,
+                               const VectorBase<double>& pb,
+                               const uint& aIdx, const uint& bIdx,
+                               const GeomType& Geo, const char c) {
         nowDistSQ=GetDistSQ(pa,pb,Geo);
         nowDisp=GetDistSQ.Direction()();
         return nowDistSQ;
       }
-      
+
+      /**
+       * @brief update the internal property
+       *
+       * Do nothing since there are no necessary properties to update.
+       */
       void Update() {}
 
   };
 
+  /**
+   * @brief functor to calculate distance and displacement with buffer storage
+   *
+   * For some cases, the distances between some units are used for multiple
+   * times. To save the time of calculation, a buffer storage is used. This
+   * class is used to implement the calculation of distance and displacement
+   * with buffer storage.
+   * 
+   * \a N
+   *    The dimension of the concerned space
+   */
   template <uint N>
   class DistanceEvalwStorage {
   
     private:
-    
+
+      /**
+       * @brief the functor to calculate the distance and displacement
+       */
       DistanceSquare<N> GetDistSQ;
-    
+
+      /**
+       * @brief the \c double type quantity storing square of distance
+       */
       double nowDistSQ;
       
+      /**
+       * @brief the vector storing the displacement
+       */
       fixVector<double,N> nowDisp;
       
+      /**
+       * @brief the storage storing the square of distance
+       */
       DistanceSqStorage DistSQPack;
 
     public:
 
+      /**
+       * @brief alias for the DistanceEvalwStorage functor
+       */
       typedef DistanceEvalwStorage<N>   Type;
     
       DistanceEvalwStorage()
