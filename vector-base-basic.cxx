@@ -70,5 +70,29 @@ namespace std {
     return *this;
   }
 
+  template <typename T>
+  VectorBaseBasic<T>& VectorBaseBasic<T>::assign(
+      const T& value, long ncopy, int off, long step) {
+    assert(static_cast<unsigned int>(off+step*ncopy)<nData);
+    vector_assign(Data,&value,ncopy,iZero,lZero,off,step);
+  }
+
+  template <typename T>
+  VectorBaseBasic<T>& VectorBaseBasic<T>::exchange(
+      VectorBaseBasic<T>& V) {
+    long n=(nData<V.nData?nData:nData);
+    return exchange(V,n);
+  }
+
+  template <typename T>
+  VectorBaseBasic<T>& VectorBaseBasic<T>::exchange(
+      VectorBaseBasic<T>& V, long nex, int voff, long vstep,
+                                       int off, long step) {
+    assert(static_cast<unsigned int>(voff+vstep*nex)<V.nData);
+    assert(static_cast<unsigned int>(off+step*nex)<nData);
+    vector_exchange(Data,v.Data,nex,voff,vstep,off,step);
+    return *this;
+  }
+
 }
 

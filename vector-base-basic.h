@@ -39,8 +39,7 @@ namespace std {
       Type& assign(const T& value);
       Type& assign(const Type& V, long ncopy, int voff=iZero, long vstep=lOne,
                                               int off=iZero, long step=lOne);
-      Type& assign(const T& V, long ncopy, int voff=iZero, long vstep=lOne,
-                                           int off=iZero, long step=lOne);
+      Type& assign(const T& V, long ncopy, int off=iZero, long step=lOne);
       Type& exchange(Type& V);
       Type& exchange(Type& V, long nex, int voff=iZero, long vstep=lOne,
                                         int off=iZero, long step=lOne);
