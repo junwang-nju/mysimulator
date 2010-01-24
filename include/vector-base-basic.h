@@ -46,7 +46,7 @@ namespace std {
       virtual const char* type() = 0;
   };
   template <typename T>
-  const bool IsVector=true;
+  const bool VectorBaseBasic<T>::IsVector=true;
 }
 
 #endif

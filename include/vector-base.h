@@ -2,7 +2,7 @@
 #ifndef _Vector_Base_H_
 #define _Vector_Base_H_
 
-#include "vector-base-baisc.h"
+#include "vector-base-basic.h"
 
 namespace std {
 
@@ -10,12 +10,10 @@ namespace std {
   class VectorBase : public VectorBaseBasic<T> {
     public:
       typedef T DataType;
-      typedef VectorBaseBasic<T>  Type;
-      typedef VectorBase<T> ParentType;
+      typedef VectorBase<T>  Type;
+      typedef VectorBaseBasic<T> ParentType;
       VectorBase() : ParentType() {}
-      VectorBase(const Type& V) {
-        myError("Cannot create from VectorBase");
-      }
+      VectorBase(const Type& V) { myError("Cannot create from VectorBase"); }
       Type& operator=(const Type& V) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(V));

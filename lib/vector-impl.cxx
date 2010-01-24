@@ -1,5 +1,6 @@
 
 #include "vector-impl.h"
+#include "blas.h"
 #include "constant.h"
 
 namespace std {
@@ -60,6 +61,20 @@ namespace std {
   void vector_exchange(double* va, double* vb, long nex, int aoff, long astep,
                                                          int boff, long bstep){
     dswap_(&nex,va+aoff,&astep,vb+boff,&bstep);
+  }
+
+  double vector_dot(const double* va, const double* vb, long ndot,
+                    int aoff, long astep, int boff, long bstep) {
+    return ddot_(&ndot,const_cast<double*>(va)+aoff,&astep,
+                       const_cast<double*>(vb)+boff,&bstep);
+  }
+
+  double vector_norm(const double* v, long nnm, int off, long step) {
+    return dnrm2_(&nnm,const_cast<double*>(v)+off,&step);
+  }
+
+  double vector_asum(const double* v, long nas, int off, long step) {
+    return dasum_(&nas,const_cast<double*>(v)+off,&step);
   }
 
 }

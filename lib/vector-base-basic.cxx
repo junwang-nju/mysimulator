@@ -66,14 +66,14 @@ namespace std {
       int off, long step) {
     assert(static_cast<unsigned int>(off+step*ncopy)<=nData);
     assert(static_cast<unsigned int>(voff+vstep*ncopy)<=V.nData);
-    vector_assign(Data,v.Data,ncopy,voff,vstep,off,step);
+    vector_assign(Data,V.Data,ncopy,voff,vstep,off,step);
     return *this;
   }
 
   template <typename T>
   VectorBaseBasic<T>& VectorBaseBasic<T>::assign(
       const T& value, long ncopy, int off, long step) {
-    assert(static_cast<unsigned int>(off+step*ncopy)<nData);
+    assert(static_cast<unsigned int>(off+step*ncopy)<=nData);
     vector_assign(Data,&value,ncopy,iZero,lZero,off,step);
   }
 
@@ -88,9 +88,9 @@ namespace std {
   VectorBaseBasic<T>& VectorBaseBasic<T>::exchange(
       VectorBaseBasic<T>& V, long nex, int voff, long vstep,
                                        int off, long step) {
-    assert(static_cast<unsigned int>(voff+vstep*nex)<V.nData);
-    assert(static_cast<unsigned int>(off+step*nex)<nData);
-    vector_exchange(Data,v.Data,nex,voff,vstep,off,step);
+    assert(static_cast<unsigned int>(voff+vstep*nex)<=V.nData);
+    assert(static_cast<unsigned int>(off+step*nex)<=nData);
+    vector_exchange(Data,V.Data,nex,voff,vstep,off,step);
     return *this;
   }
 

@@ -2,8 +2,6 @@
 #ifndef _Vector_Implementation_H_
 #define _Vector_Implementation_H_
 
-#include "blas.h"
-
 namespace std {
   template <typename T>
   void vector_assign(T* v, const T* iv, long ncopy, int voff,  long vstep,
@@ -24,6 +22,10 @@ namespace std {
                                                int boff, long bstep);
   void vector_exchange(double* va, double* vb, long nex, int aoff, long astep,
                                                          int boff, long bstep);
+  double vector_dot(const double* va, const double* vb, long ndot,
+                    int aoff, long astep, int boff, long bstep);
+  double vector_norm(const double* v, long nnm, int off, long step);
+  double vector_asum(const double* v, long nas, int off, long step);
 }
 
 #endif
