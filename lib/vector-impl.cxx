@@ -1,8 +1,10 @@
 
 #include "vector-impl.h"
+#include "constant.h"
 
 namespace std {
 
+  template <typename T>
   void vector_assign(T* v, const T* iv, long ncopy, int voff,  long vstep,
                                                     int off, long step) {
     T* vPtr=v+off;
@@ -22,7 +24,7 @@ namespace std {
 
   void vector_scale(double* v,const double* iv, long nsc, int voff, long vstep,
                                                           int off, long step) {
-    static char flag="LNN";
+    static char flag[]="LNN";
     dtbmv_(flag,flag+1,flag+2,&nsc,&lZero,const_cast<double*>(iv)+voff,&vstep,
            v+off,&step);
   }

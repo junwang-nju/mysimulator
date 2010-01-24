@@ -23,8 +23,6 @@
 #ifndef _Constant_H_
 #define _Constant_H_
 
-#include "type.h"
-
 namespace std {
 
   /**
@@ -54,7 +52,7 @@ namespace std {
   /**
    * @brief \c unsigned \c int type zero
    */
-  static uint   uZero=0U;
+  static unsigned int   uZero=0U;
 
   /**
    * @brief minimal \c double value relative to \c double type one
