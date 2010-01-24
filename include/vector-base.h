@@ -52,6 +52,7 @@ namespace std {
       Type& shift(const Type& V);
       Type& shift(const double value);
       Type& shift(const double value, const Type& V);
+      Type& shift(const Type& V, const double value);
       Type& shift(const Type& SfV, const Type& V);
       Type& shift(const double SfF, const Type& SfV, const Type& V);
       Type& shift(const double& value, const Type& V, long nsh,
