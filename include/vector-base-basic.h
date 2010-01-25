@@ -33,6 +33,7 @@ namespace std {
       T& operator[](const unsigned int& I);
       const T& operator[](const unsigned int& I) const;
       void clear();
+      void SetSize(const unsigned int& N);
       void SetHeadTail();
       const bool IsAvailable() const;
       void assign(const Type& V);
@@ -48,6 +49,10 @@ namespace std {
   };
   template <typename T>
   const bool VectorBaseBasic<T>::IsVector=true;
+  template <typename T>
+  istream& operator>>(istream& is, VectorBaseBasic<T>& V);
+  template <typename T>
+  ostream& operator<<(ostream& os, const VectorBaseBasic<T>& V);
 }
 
 #endif

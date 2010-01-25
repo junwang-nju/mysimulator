@@ -23,6 +23,9 @@ namespace std {
   }
 
   template <typename T>
+  const unsigned int& Pool<T>::used() const { return nUsed; }
+
+  template <typename T>
   void Pool<T>::allocate(const unsigned int& Max) {
     static_cast<ParentType*>(this)->data()=new T[Max];
     nUsed=0;

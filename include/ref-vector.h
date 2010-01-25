@@ -34,7 +34,7 @@ namespace std {
       void clear();
       void refer(const referableVector<T>& V);
       void refer(const referableVector<T>& V,
-                 const unsigned int& off, const unsigned int sz);
+                 const unsigned int& off, const unsigned int& sz);
       void swap(Type& V);
       virtual const char* type();
   };

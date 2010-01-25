@@ -38,6 +38,9 @@ namespace std {
   }
 
   template <typename T>
+  void VectorBaseBasic<T>::SetSize(const unsigned int& N) { nData=N; }
+
+  template <typename T>
   void VectorBaseBasic<T>::SetHeadTail() {
     headPtr=Data;
     tailPtr=Data+nData;
@@ -100,5 +103,23 @@ namespace std {
     SetHeadTail();
     V.SetHeadTail();
   }
+
+  template <typename T>
+  istream& operator>>(istream& is, VectorBaseBasic<T>& V) {
+    assert(V.IsAvailable());
+    unsigned int n=V.size();
+    for(unsigned int i=0;i<n;++i)   is>>V[i];
+    return is;
+  }
+
+  template <typename T>
+  ostream& operator<<(ostream& os, const VectorBaseBasic<T>& V) {
+    assert(V.IsAvailable());
+    unsigned int n=V.size();
+    os<<V[0];
+    for(unsigned int i=1;i<n;++i)   os<<"\t"<<V[i];
+    return os;
+  }
+
 }
 

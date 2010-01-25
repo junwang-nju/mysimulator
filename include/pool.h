@@ -30,6 +30,7 @@ namespace std {
       T& operator[](const unsigned int& I);
       const T& operator[](const unsigned int& I) const;
       const unsigned int& capacity() const;
+      const unsigned int& used() const;
       void allocate(const unsigned int& Max);
       void clear();
       void add(const T& mer);
