@@ -22,6 +22,11 @@ namespace std {
         nUsed=P.nUsed;
         return *this;
       }
+      template <typename inputT>
+      Type& operator=(const inputT& P) {
+        myError("Cannot assigned for Pool");
+        return *this;
+      }
       T& operator[](const unsigned int& I);
       const T& operator[](const unsigned int& I) const;
       const unsigned int& capacity() const;
