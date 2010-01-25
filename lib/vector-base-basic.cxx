@@ -38,13 +38,16 @@ namespace std {
   }
 
   template <typename T>
-  void VectorBaseBasic<T>::SetSize(const unsigned int& N) { nData=N; }
+  void VectorBaseBasic<T>::SetSize(const unsigned int N) { nData=N; }
 
   template <typename T>
   void VectorBaseBasic<T>::SetHeadTail() {
     headPtr=Data;
     tailPtr=Data+nData;
   }
+
+  template <typename T>
+  void VectorBaseBasic<T>::SetSwapFlag(const bool& fg) { IsSwappable=fg; }
 
   template <typename T>
   const bool VectorBaseBasic<T>::IsAvailable() const {
@@ -98,6 +101,7 @@ namespace std {
 
   template <typename T>
   void VectorBaseBasic<T>::swap(VectorBaseBasic<T>& V) {
+    assert(IsSwappable&&V.IsSwappable);
     Data=V.Data;
     nData=V.nData;
     SetHeadTail();

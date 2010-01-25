@@ -36,7 +36,7 @@ namespace std {
       void add(const T& mer);
       void del(const unsigned int& I);
       void swap(Type& P);
-      virtual const char* type();
+      virtual const char* type() const;
   };
 
 }

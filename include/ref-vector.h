@@ -3,7 +3,6 @@
 #define _Reference_Vector_H_
 
 #include "referable-vector.h"
-#include "pool.h"
 
 namespace std {
   template <typename T>
@@ -16,7 +15,9 @@ namespace std {
       typedef T DataType;
       typedef refVector<T>  Type;
       typedef VectorBase<T> ParentType;
-      refVector() : ParentType(), pRefList(NULL), thisID(-1) {}
+      refVector() : ParentType(), pRefList(NULL), thisID(-1) {
+        this->SetSwapFlag(true);
+      }
       refVector(const Type& V) {
         myError("Cannot create from ref-vector");
       }
@@ -36,7 +37,7 @@ namespace std {
       void refer(const referableVector<T>& V,
                  const unsigned int& off, const unsigned int& sz);
       void swap(Type& V);
-      virtual const char* type();
+      virtual const char* type() const;
   };
   template <typename T>
   const bool refVector<T>::IsReferable=false;

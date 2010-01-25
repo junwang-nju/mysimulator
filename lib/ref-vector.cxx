@@ -43,7 +43,7 @@ namespace std {
   }
 
   template <typename T>
-  const char* refVector<T>::type() { return "Reference Vector"; }
+  const char* refVector<T>::type() const { return "Reference Vector"; }
 
 }
 

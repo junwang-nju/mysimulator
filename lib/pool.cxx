@@ -56,13 +56,13 @@ namespace std {
 
   template <typename T>
   void Pool<T>::swap(Pool<T>& P) {
+    static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(P));
     unsigned int tmn;
     tmn=nUsed;  nUsed=P.nUsed;  P.nUsed=tmn;
-    static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(P));
   }
 
   template <typename T>
-  const char* Pool<T>::type() { return "Pool"; }
+  const char* Pool<T>::type() const { return "Pool"; }
 
 }
 
