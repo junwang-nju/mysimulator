@@ -19,6 +19,11 @@ namespace std {
             static_cast<const ParentType&>(V));
         return *this;
       }
+      template <typename inputT>
+      Type& operator=(const inputT& V) {
+        static_cast<ParentType*>(this)->operator=(V);
+        return *this;
+      }
       ~VectorBase() {}
   };
 
@@ -37,36 +42,37 @@ namespace std {
             static_cast<const ParentType&>(V));
         return *this;
       }
+      template <typename inputT>
+      Type& operator=(const inputT& V) {
+        static_cast<ParentType*>(this)->operator=(V);
+        return *this;
+      }
       ~VectorBase() {}
-      template <typename inputT>
-      Type& operator+=(const inputT& V) { return shift(V); }
-      template <typename inputT>
-      Type& operator*=(const inputT& V) { return scale(V); }
-      Type& scale(const Type& V);
-      Type& scale(const double value);
-      Type& scale(const Type& V, long nsc, int voff=iZero, long vstep=lOne,
-                                           int off=iZero, long step=lOne);
-      Type& scale(const double& value,long nsc,int off=iZero,long step=lOne);
-      Type& shift(const Type& V);
-      Type& shift(const double value);
-      Type& shift(const double value, const Type& V);
-      Type& shift(const Type& V, const double value);
-      Type& shift(const Type& SfV, const Type& V);
-      Type& shift(const double SfF, const Type& SfV, const Type& V);
-      Type& shift(const double& value, const Type& V, long nsh,
-                  int voff=iZero,long vstep=lOne,int off=iZero,long step=lOne);
-      Type& shift(const double& value, long nsf, int off=iZero, long step=lOne);
-      Type& scaleshift(const double ScF, const double SfF, const Type& V);
-      Type& scaleshift(const double ScF, const double SfF, const Type& SfV,
-                       const Type& V);
-      Type& scaleshift(const double& ScF, const double& SfF, const Type& V,
-                       long nss, int voff=iZero, long vstep=lOne,
-                       int off=iZero, long step=lOne);
-      Type& scaleshift(const double& ScF, const double& SfF, const Type& SfV,
-                       const Type& V, long nss,
-                       int Sfoff=iZero, long Sfstep=lOne,
-                       int voff=iZero, long vstep=lOne,
-                       int off=iZero, long step=lOne);
+      void scale(const Type& V);
+      void scale(const double value);
+      void scale(const Type& V, long nsc, int voff=iZero, long vstep=lOne,
+                                          int off=iZero, long step=lOne);
+      void scale(const double& value,long nsc,int off=iZero,long step=lOne);
+      void shift(const Type& V);
+      void shift(const double value);
+      void shift(const double value, const Type& V);
+      void shift(const Type& V, const double value);
+      void shift(const Type& SfV, const Type& V);
+      void shift(const double SfF, const Type& SfV, const Type& V);
+      void shift(const double& value, const Type& V, long nsh,
+                 int voff=iZero,long vstep=lOne,int off=iZero,long step=lOne);
+      void shift(const double& value, long nsf, int off=iZero, long step=lOne);
+      void scaleshift(const double ScF, const double SfF, const Type& V);
+      void scaleshift(const double ScF, const double SfF, const Type& SfV,
+                      const Type& V);
+      void scaleshift(const double& ScF, const double& SfF, const Type& V,
+                      long nss, int voff=iZero, long vstep=lOne,
+                      int off=iZero, long step=lOne);
+      void scaleshift(const double& ScF, const double& SfF, const Type& SfV,
+                      const Type& V, long nss,
+                      int Sfoff=iZero, long Sfstep=lOne,
+                      int voff=iZero, long vstep=lOne,
+                      int off=iZero, long step=lOne);
   };
 
 }

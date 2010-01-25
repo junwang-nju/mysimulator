@@ -22,9 +22,9 @@ namespace std {
         myError("Cannot create from VectorBaseBasic");
       }
       virtual ~VectorBaseBasic() { clear(); }
-      Type& operator=(const Type& V) { return assign(V); }
+      Type& operator=(const Type& V) { assign(V); return *this; }
       template <typename inputT>
-      Type& operator=(const inputT& V) { return assign(V); }
+      Type& operator=(const inputT& V) { assign(V); return *this; }
       T* data();
       const T* data() const;
       const T* begin() const;
@@ -35,14 +35,15 @@ namespace std {
       void clear();
       void SetHeadTail();
       const bool IsAvailable() const;
-      Type& assign(const Type& V);
-      Type& assign(const T& value);
-      Type& assign(const Type& V, long ncopy, int voff=iZero, long vstep=lOne,
-                                              int off=iZero, long step=lOne);
-      Type& assign(const T& V, long ncopy, int off=iZero, long step=lOne);
-      Type& exchange(Type& V);
-      Type& exchange(Type& V, long nex, int voff=iZero, long vstep=lOne,
-                                        int off=iZero, long step=lOne);
+      void assign(const Type& V);
+      void assign(const T& value);
+      void assign(const Type& V, long ncopy, int voff=iZero, long vstep=lOne,
+                                             int off=iZero, long step=lOne);
+      void assign(const T& V, long ncopy, int off=iZero, long step=lOne);
+      void exchange(Type& V);
+      void exchange(Type& V, long nex, int voff=iZero, long vstep=lOne,
+                                       int off=iZero, long step=lOne);
+      void swap(Type& V);
       virtual const char* type() = 0;
   };
   template <typename T>

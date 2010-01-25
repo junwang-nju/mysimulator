@@ -22,6 +22,15 @@ namespace std {
         nUsed=P.nUsed;
         return *this;
       }
+      T& operator[](const unsigned int& I);
+      const T& operator[](const unsigned int& I) const;
+      const unsigned int& capacity() const;
+      void allocate(const unsigned int& Max);
+      void clear();
+      void add(const T& mer);
+      void del(const unsigned int& I);
+      void swap(Type& P);
+      virtual const char* type();
   };
 
 }

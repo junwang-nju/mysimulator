@@ -49,50 +49,53 @@ namespace std {
   }
 
   template <typename T>
-  VectorBaseBasic<T>& VectorBaseBasic<T>::assign(
-      const VectorBaseBasic<T>& V) {
+  void VectorBaseBasic<T>::assign(const VectorBaseBasic<T>& V) {
     long n=(nData<V.nData?nData:V.nData);
-    return assign(V,n);
+    assign(V,n);
   }
 
   template <typename T>
-  VectorBaseBasic<T>& VectorBaseBasic<T>::assign(const T& value) {
-    return assign(value,nData);
+  void VectorBaseBasic<T>::assign(const T& value) {
+    assign(value,nData);
   }
 
   template <typename T>
-  VectorBaseBasic<T>& VectorBaseBasic<T>::assign(
+  void VectorBaseBasic<T>::assign(
       const VectorBaseBasic<T>& V, long ncopy, int voff, long vstep,
       int off, long step) {
     assert(static_cast<unsigned int>(off+step*ncopy)<=nData);
     assert(static_cast<unsigned int>(voff+vstep*ncopy)<=V.nData);
     vector_assign(Data,V.Data,ncopy,voff,vstep,off,step);
-    return *this;
   }
 
   template <typename T>
-  VectorBaseBasic<T>& VectorBaseBasic<T>::assign(
+  void VectorBaseBasic<T>::assign(
       const T& value, long ncopy, int off, long step) {
     assert(static_cast<unsigned int>(off+step*ncopy)<=nData);
     vector_assign(Data,&value,ncopy,iZero,lZero,off,step);
   }
 
   template <typename T>
-  VectorBaseBasic<T>& VectorBaseBasic<T>::exchange(
-      VectorBaseBasic<T>& V) {
+  void VectorBaseBasic<T>::exchange(VectorBaseBasic<T>& V) {
     long n=(nData<V.nData?nData:nData);
-    return exchange(V,n);
+    exchange(V,n);
   }
 
   template <typename T>
-  VectorBaseBasic<T>& VectorBaseBasic<T>::exchange(
+  void VectorBaseBasic<T>::exchange(
       VectorBaseBasic<T>& V, long nex, int voff, long vstep,
                                        int off, long step) {
     assert(static_cast<unsigned int>(voff+vstep*nex)<=V.nData);
     assert(static_cast<unsigned int>(off+step*nex)<=nData);
     vector_exchange(Data,V.Data,nex,voff,vstep,off,step);
-    return *this;
   }
 
+  template <typename T>
+  void VectorBaseBasic<T>::swap(VectorBaseBasic<T>& V) {
+    Data=V.Data;
+    nData=V.nData;
+    SetHeadTail();
+    V.SetHeadTail();
+  }
 }
 
