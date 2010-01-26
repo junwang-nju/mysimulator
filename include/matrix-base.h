@@ -10,6 +10,7 @@ namespace std {
     UnknownOrder=-1,
     COrder,
     FortranOrder,
+    DiagonalOrder,
     UnknownTranspose=-1,
     Original,
     Transposed
