@@ -6,6 +6,7 @@ namespace std {
 
   template <typename T>
   void varVector<T>::clear() {
+    safe_delete(this->data());
     static_cast<ParentType*>(this)->clear();
   }
 
