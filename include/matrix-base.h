@@ -25,10 +25,14 @@ namespace std {
       int DataOrder;
       unsigned int NRow;
       unsigned int NCol;
-      T& (*getUnit)(varVector<refVector<T> >&,unsigned int,unsigned int);
     public:
       typedef T DataType;
       typedef MatrixBase<T>   Type;
+      typedef T& (*GetUnitType)(varVector<refVector<T> >&,
+                                unsigned int,unsigned int);
+    protected:
+      GetUnitType getUnit;
+    public:
       MatrixBase() : Data(), Lines(), Order(UnknownOrder),
                      Transpose(UnknownTranspose), DataOrder(UnknownOrder),
                      NRow(uZero), NCol(uZero), getUnit(NULL) {}
@@ -58,6 +62,16 @@ namespace std {
       void clear();
       varVector<T>& data();
       const varVector<T>& data() const;
+      const unsigned int& NumberRow() const;
+      const unsigned int& NumberColumn() const;
+      const int& MatrixOrder() const;
+      const int& MatrixTransposeStatus() const;
+      const int& MatrixDataOrder() const;
+      void SetSize(const unsigned int NR, const unsigned int NC);
+      void SetMatrixOrder(const int MOrd);
+      void SetMatrixTransposeStatus(const int MTrans);
+      void SetDataOrder(const int DOrd);
+      void AssignGetMethod(const GetUnitType& iGetUnit);
       T& operator()(unsigned int I, unsigned int J);
       const T& operator()(unsigned int I, unsigned int J) const;
       virtual const char* type() const = 0;
