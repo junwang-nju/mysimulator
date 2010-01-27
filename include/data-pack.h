@@ -27,6 +27,12 @@ namespace std {
       virtual ~DataPack() {}
       Type& operator=(const Type& DP) { return *this; }
       void clear();
+      DataVecType<T>& data();
+      const DataVecType<T>& data() const;
+      StructVecType<LineType>& structure();
+      const StructVecType<LineType>& structure() const;
+      InfVecType<int>& info();
+      const InfVecType<int>& info() const;
       virtual const char* type() = 0;
   };
 }
