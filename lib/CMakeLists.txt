@@ -2,8 +2,8 @@
 include_directories(${TEST_SOURCE_DIR}/include)
 
 add_library (Base vector-base-basic.cxx vector-base.cxx vector-impl.cxx
-                  vector-op.cxx pool.cxx referable-vector.cxx
+                  vector-op.cxx pool.cxx vector-with-storage.cxx
                   ref-vector.cxx var-vector.cxx fix-vector.cxx
                   matrix-base.cxx matrix-rectangle.cxx util.cxx
-                  matrix-triangle.cxx)
+                  matrix-triangle.cxx data-pack.cxx)
 

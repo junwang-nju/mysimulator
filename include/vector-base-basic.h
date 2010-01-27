@@ -26,8 +26,7 @@ namespace std {
       }
       virtual ~VectorBaseBasic() { clear(); }
       Type& operator=(const Type& V) { assign(V); return *this; }
-      template <typename inputT>
-      Type& operator=(const inputT& V) { assign(V); return *this; }
+      Type& operator=(const T& V) { assign(V); return *this; }
       T* data();
       const T* data() const;
       const T* begin() const;

@@ -19,8 +19,7 @@ namespace std {
             static_cast<const ParentType&>(V));
         return *this;
       }
-      template <typename inputT>
-      Type& operator=(const inputT& V) {
+      Type& operator=(const T& V) {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }
@@ -42,12 +41,11 @@ namespace std {
             static_cast<const ParentType&>(V));
         return *this;
       }
-      template <typename inputT>
-      Type& operator=(const inputT& V) {
+      Type& operator=(const double V) {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }
-      ~VectorBase() {}
+      virtual ~VectorBase() {}
       void scale(const Type& V);
       void scale(const double value);
       void scale(const Type& V, long nsc, int voff=iZero, long vstep=lOne,

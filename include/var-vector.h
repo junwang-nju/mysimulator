@@ -2,15 +2,15 @@
 #ifndef _Variable_Vector_H_
 #define _Variable_Vector_H_
 
-#include "referable-vector.h"
+#include "vector-with-storage.h"
 
 namespace std {
   template <typename T>
-  class varVector : public referableVector<T> {
+  class varVector : public VectorWStorage<T> {
     public:
       typedef T DataType;
       typedef varVector<T>    Type;
-      typedef referableVector<T>  ParentType;
+      typedef VectorWStorage<T>  ParentType;
       varVector() : ParentType() { this->SetSwapFlag(true); }
       varVector(const unsigned int& N) : ParentType() {
         this->SetSwapFlag(true);
@@ -19,7 +19,7 @@ namespace std {
       varVector(const Type& V) {
         myError("Cannot create from variable vector");
       }
-      virtual ~varVector() {}
+      virtual ~varVector() { safe_delete(this->data()); }
       Type& operator=(const Type& V) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(V));

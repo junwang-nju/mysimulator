@@ -2,7 +2,7 @@
 #ifndef _Reference_Vector_H_
 #define _Reference_Vector_H_
 
-#include "referable-vector.h"
+#include "vector-with-storage.h"
 
 namespace std {
   template <typename T>
@@ -11,7 +11,6 @@ namespace std {
       Pool<void*>*  pRefList;
       int  thisID;
     public:
-      static const bool IsReferable;
       typedef T DataType;
       typedef refVector<T>  Type;
       typedef VectorBase<T> ParentType;
@@ -33,14 +32,14 @@ namespace std {
         return *this;
       }
       void clear();
-      void refer(const referableVector<T>& V);
-      void refer(const referableVector<T>& V,
-                 const unsigned int& off, const unsigned int& sz);
+      void refer(const Type& V);
+      void refer(const Type& V, const unsigned int off, const unsigned int sz);
+      void refer(const VectorWStorage<T>& V);
+      void refer(const VectorWStorage<T>& V,
+                 const unsigned int off, const unsigned int sz);
       void swap(Type& V);
       virtual const char* type() const;
   };
-  template <typename T>
-  const bool refVector<T>::IsReferable=false;
 }
 
 #endif

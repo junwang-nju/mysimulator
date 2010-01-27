@@ -11,13 +11,33 @@ namespace std {
   }
 
   template <typename T>
-  void refVector<T>::refer(const referableVector<T>& V) {
+  void refVector<T>::refer(const refVector<T>& V) { refer(V,0,V.size()); }
+
+  template <typename T>
+  void refVector<T>::refer(const refVector<T>& V, const unsigned int off,
+                                                  const unsigned int sz) {
+    assert(off+sz<=V.size());
+    if(this->IsAvailable()) {
+      pRefList->del(thisID);
+      pRefList=NULL;
+      thisID=-1;
+    }
+    this->data()=const_cast<T*>(V.data())+off;
+    this->SetSize(sz);
+    this->SetHeadTail();
+    pRefList=const_cast<Pool<void*>*>(V.pRefList);
+    pRefList->add(static_cast<void*>(this));
+    thisID=pRefList->used()-1;
+  }
+
+  template <typename T>
+  void refVector<T>::refer(const VectorWStorage<T>& V) {
     refer(V,uZero,V.size());
   }
 
   template <typename T>
-  void refVector<T>::refer(const referableVector<T>& V,
-                           const unsigned int& off, const unsigned int& sz) {
+  void refVector<T>::refer(const VectorWStorage<T>& V,
+                           const unsigned int off, const unsigned int sz) {
     assert(V.RefList().used()<V.RefList().capacity());
     assert(off+sz<=V.size());
     if(this->IsAvailable()) {

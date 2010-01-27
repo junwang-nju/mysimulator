@@ -2,17 +2,17 @@
 #ifndef _Fixed_Vector_H_
 #define _Fixed_Vector_H_
 
-#include "referable-vector.h"
+#include "vector-with-storage.h"
 
 namespace std {
   template <typename T, unsigned int ND>
-  class fixVector : public referableVector<T> {
+  class fixVector : public VectorWStorage<T> {
     private:
       T runData[ND];
     public:
       typedef T DataType;
       typedef fixVector<T,ND>  Type;
-      typedef referableVector<T>  ParentType;
+      typedef VectorWStorage<T>  ParentType;
       fixVector() : ParentType() {
         this->SetSwapFlag(false);
         this->data()=runData;

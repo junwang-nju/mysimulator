@@ -1,22 +1,22 @@
 
-#include "referable-vector.h"
+#include "vector-with-storage.h"
 
 namespace std {
 
   template <typename T>
-  void referableVector<T>::clear() {
+  void VectorWStorage<T>::clear() {
     rObjSet.clear();
     static_cast<ParentType*>(this)->clear();
   }
 
   template <typename T>
-  Pool<void*>& referableVector<T>::RefList() { return rObjSet; }
+  Pool<void*>& VectorWStorage<T>::RefList() { return rObjSet; }
 
   template <typename T>
-  const Pool<void*>& referableVector<T>::RefList() const { return rObjSet; }
+  const Pool<void*>& VectorWStorage<T>::RefList() const { return rObjSet; }
 
   template <typename T>
-  void referableVector<T>::swap(referableVector<T>& RV) {
+  void VectorWStorage<T>::swap(VectorWStorage<T>& RV) {
     static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(RV));
     rObjSet.swap(RV.rObjSet);
   }
