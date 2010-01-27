@@ -2,17 +2,17 @@
 #ifndef _Fixed_Vector_H_
 #define _Fixed_Vector_H_
 
-#include "vector-with-storage.h"
+#include "object-with-storage.h"
 
 namespace std {
   template <typename T, unsigned int ND>
-  class fixVector : public VectorWStorage<T> {
+  class fixVector : public ObjectWStorage<VectorBase<T> > {
     private:
       T runData[ND];
     public:
       typedef T DataType;
       typedef fixVector<T,ND>  Type;
-      typedef VectorWStorage<T>  ParentType;
+      typedef ObjectWStorage<VectorBase<T> >  ParentType;
       fixVector() : ParentType() {
         this->SetSwapFlag(false);
         this->data()=runData;
@@ -33,7 +33,6 @@ namespace std {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }
-      void clear();
       virtual const char* type() const;
   };
 }

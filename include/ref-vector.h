@@ -2,25 +2,20 @@
 #ifndef _Reference_Vector_H_
 #define _Reference_Vector_H_
 
-#include "vector-with-storage.h"
+#include "ref-object.h"
 
 namespace std {
   template <typename T>
-  class refVector : public VectorBase<T> {
-    protected:
-      Pool<void*>*  pRefList;
-      int  thisID;
+  class refVector : public refObject<VectorBase<T> > {
     public:
-      typedef T DataType;
+      typedef T   DataType;
       typedef refVector<T>  Type;
-      typedef VectorBase<T> ParentType;
-      refVector() : ParentType(), pRefList(NULL), thisID(-1) {
-        this->SetSwapFlag(true);
-      }
+      typedef refObject<VectorBase<T> > ParentType;
+      refVector() : ParentType() { this->SetSwapFlag(true); }
       refVector(const Type& V) {
-        myError("Cannot create from ref-vector");
+        myError("Cannot create from reference vector");
       }
-      ~refVector() { pRefList=NULL; thisID=-1; }
+      virtual ~refVector() {}
       Type& operator=(const Type& V) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(V));
@@ -31,13 +26,11 @@ namespace std {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }
-      void clear();
-      void refer(const Type& V);
+      virtual void refer(const Type& V);
+      virtual void refer(const ObjectWStorage<VectorBase<T> >& V);
       void refer(const Type& V, const unsigned int off, const unsigned int sz);
-      void refer(const VectorWStorage<T>& V);
-      void refer(const VectorWStorage<T>& V,
+      void refer(const ObjectWStorage<VectorBase<T> >& V,
                  const unsigned int off, const unsigned int sz);
-      void swap(Type& V);
       virtual const char* type() const;
   };
 }

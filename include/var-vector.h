@@ -2,17 +2,18 @@
 #ifndef _Variable_Vector_H_
 #define _Variable_Vector_H_
 
-#include "vector-with-storage.h"
+#include "object-with-storage.h"
+#include "memory.h"
 
 namespace std {
   template <typename T>
-  class varVector : public VectorWStorage<T> {
+  class varVector : public ObjectWStorage<VectorBase<T> > {
     public:
       typedef T DataType;
-      typedef varVector<T>    Type;
-      typedef VectorWStorage<T>  ParentType;
+      typedef varVector<T>  Type;
+      typedef ObjectWStorage<VectorBase<T> >  ParentType;
       varVector() : ParentType() { this->SetSwapFlag(true); }
-      varVector(const unsigned int& N) : ParentType() {
+      varVector(const unsigned int N) : ParentType() {
         this->SetSwapFlag(true);
         allocate(N);
       }
@@ -32,7 +33,6 @@ namespace std {
       }
       void clear();
       void allocate(const unsigned int N);
-      void swap(Type& V);
       virtual const char* type() const;
   };
 }

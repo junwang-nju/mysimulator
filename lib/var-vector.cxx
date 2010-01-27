@@ -1,6 +1,5 @@
 
 #include "var-vector.h"
-#include "memory.h"
 
 namespace std {
 
@@ -19,12 +18,6 @@ namespace std {
       this->SetSize(N);
       this->SetHeadTail();
     }
-  }
-
-  template <typename T>
-  void varVector<T>::swap(Type& V) {
-    static_cast<ParentType*>(this)->swap(
-        static_cast<const ParentType>(V));
   }
 
   template <typename T>
