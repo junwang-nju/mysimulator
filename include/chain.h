@@ -9,16 +9,16 @@ namespace std {
   class Chain {
     protected:
       ChainNode<T>  Root;
-      ChainNode<T>* Head;
+      ChainNode<T>  Head;
     public:
       typedef Chain<T>  Type;
-      Chain() : Root(), Head(NULL) {}
+      Chain() : Root(), Head() { Root.child()=&Head; Head.parent()=&Root; }
       Chain(const Type& C) { myError("Cannot create from chain"); }
       ~Chain() { clear(); }
       Type& operator=(const Type& C) {
         clear();
         ChainNode<T> *rCNode=const_cast<ChainNode<T>*>(C.Root.child());
-        while(rCNode!=NULL) {
+        while(rCNode!=&(C.Head)) {
           append(rCNode->content());
           rCNode=const_cast<ChainNode<T>*>(rCNode->child());
         }
@@ -28,6 +28,7 @@ namespace std {
       void append(const T& content);
       void append(ChainNode<T>& node);
       void remove(ChainNode<T>*& pnode);
+      void swap(Type& C);
   };
 }
 

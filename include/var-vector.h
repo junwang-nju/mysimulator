@@ -3,6 +3,7 @@
 #define _Variable_Vector_H_
 
 #include "object-with-storage.h"
+#include "vector-base.h"
 #include "memory.h"
 
 namespace std {

@@ -17,7 +17,7 @@ namespace std {
     public:
       ChainNode() : Parent(NULL), Child(NULL), Content(), AllocFg(false) {}
       ChainNode(const Type& CN) { myError("Cannot create from chain node"); }
-      ~ChainNode() { clear(); }
+      ~ChainNode() {}
       Type& operator=(const Type& CN) { Content=CN.Content; return *this; }
       template <typename inputT>
       Type& operator=(const inputT& D) { Content=D; return *this; }
@@ -30,6 +30,8 @@ namespace std {
       const T& content() const;
       const bool IsAllocByChain() const;
       void SetChainAllocFlag(bool efg);
+      void add_before(Type& node);
+      void remove_self();
   };
 }
 

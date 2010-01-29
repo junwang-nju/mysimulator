@@ -5,34 +5,35 @@
 namespace std {
 
   template <typename T>
-  void Chain<T>::clear() { while(Head!=&Root) remove(Head); }
+  void Chain<T>::clear() {
+    ChainNode<T>* pNode;
+    while((pNode=Root.child())!=&Head) remove(pNode);
+  }
 
   template <typename T>
   void Chain<T>::append(const T& content) {
-    Head->child()=new ChainNode<T>;
-    Head->child()->parent()=Head;
-    Head=Head->child();
-    Head->SetChainAllocFlag(true);
-    Head->content()=content;
+    ChainNode<T>* pNode=new ChainNode<T>;
+    pNode->SetChainAllocFlag(true);
+    Head.add_before(*pNode);
+    pNode->content()=content;
   }
 
   template <typename T>
   void Chain<T>::append(ChainNode<T>& node) {
-    Head->child()=&node;
-    node.parent()=Head;
-    node.child()=NULL;
-    Head=&node;
+    Head.add_before(node);
   }
 
   template <typename T>
   void Chain<T>::remove(ChainNode<T>*& pnode) {
-    ChainNode<T>* ppnode=pnode->parent();
-    ChainNode<T>* pcnode=pnode->child();
+    pnode->remove_self();
     if(pnode->IsAllocByChain())   safe_delete(pnode); 
-    else                          pnode->clear();
-    ppnode->child()=pcnode;
-    if(pcnode!=NULL)  pcnode->parent()=ppnode;
-    else              Head=ppnode;
+  }
+
+  template <typename T>
+  void Chain<T>::swap(Chain<T>& C) {
+    ChainNode<T>* tpnode;
+    tpnode=Root.child();  Root.child()=C.Root.child();  C.Root.child()=tpnode;
+    tpnode=Head;          Head=C.Head;                  C.Head=tpnode;
   }
 
 }

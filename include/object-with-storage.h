@@ -2,20 +2,17 @@
 #ifndef _Object_With_Storage_H_
 #define _Object_With_Storage_H_
 
-#include "pool.h"
+#include "chain.h"
 
 namespace std {
   template <typename ObjType>
   class ObjectWStorage : public ObjType {
     protected:
-      Pool<void*> rObjSet;
+      Chain<void*> rObjSet;
     public:
       typedef ObjectWStorage<ObjType> Type;
       typedef ObjType ParentType;
-      static const unsigned int MaxRefObj;
-      ObjectWStorage() : ParentType(), rObjSet() {
-        rObjSet.allocate(MaxRefObj);
-      }
+      ObjectWStorage() : ParentType(), rObjSet() {}
       ObjectWStorage(const Type& O) {
         myError("Cannot create from object with storage");
       }
@@ -31,12 +28,10 @@ namespace std {
       }
       ~ObjectWStorage() { rObjSet.clear(); }
       void clear();
-      Pool<void*>& RefList();
-      const Pool<void*>& RefList() const;
+      Chain<void*>& RefList();
+      const Chain<void*>& RefList() const;
       void swap(Type& O);
   };
-  template <typename ObjType>
-  const unsigned int ObjectWStorage<ObjType>::MaxRefObj=20;
 }
 
 #endif

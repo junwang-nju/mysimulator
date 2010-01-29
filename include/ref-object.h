@@ -3,21 +3,21 @@
 #define _Reference_Object_H_
 
 #include "object-with-storage.h"
+#include "memory.h"
 
 namespace std {
-  template <typename ObjType>
-  class refObject : public ObjType {
+  template <typename RObjType, typename SObjType>
+  class refObject : public RObjType {
     protected:
-      Pool<void*>*  pRefList;
-      int           thisID;
+      ChainNode<void*>  rNode;
     public:
-      typedef refObject<ObjType>  Type;
-      typedef ObjType ParentType;
-      refObject() : ParentType(), pRefList(NULL), thisID(-1) {}
+      typedef refObject<RObjType,SObjType>  Type;
+      typedef RObjType ParentType;
+      refObject() : ParentType(), rNode() {}
       refObject(const Type& O) {
         myError("Cannot create from reference object");
       }
-      ~refObject() { pRefList=NULL; thisID=-1; }
+      ~refObject() { rNode.clear(); }
       Type& operator=(const Type& O) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(O));
@@ -28,14 +28,12 @@ namespace std {
         static_cast<ParentType*>(this)->operator=(O);
         return *this;
       }
-      Pool<void*>* PtrRefList();
-      const Pool<void*>* PtrRefList() const;
-      const int& PresentID() const;
-      void SetID(const int id);
+      ChainNode<void*>  RefInfo();
+      const ChainNode<void*> RefInfo() const;
       void clear();
       void swap(Type& O);
-      virtual void refer(const ObjectWStorage<ObjType>& O) = 0;
-      virtual void refer(const Type& O) = 0;
+      virtual void refer(ObjectWStorage<SObjType>& O) = 0;
+      virtual void refer(Type& O) = 0;
   };
 }
 

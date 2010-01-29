@@ -7,7 +7,6 @@ namespace std {
   void ChainNode<T>::clear() {
     Parent=NULL;
     Child=NULL;
-    AllocFg=false;
   }
 
   template <typename T>
@@ -33,6 +32,21 @@ namespace std {
 
   template <typename T>
   void ChainNode<T>::SetChainAllocFlag(bool efg) { AllocFg=efg; }
+
+  template <typename T>
+  void ChainNode<T>::add_before(Type& node) {
+    Parent->Child=&node;
+    node.Parent=Parent;
+    node.Child=this;
+    Parent=&node;
+  }
+
+  template <typename T>
+  void ChainNode<T>::remove_self() {
+    Parent->Child=Child;
+    Child->Parent=Parent;
+    clear();
+  }
 
 }
 

@@ -10,10 +10,10 @@ namespace std {
   }
 
   template <typename ObjType>
-  Pool<void*>& ObjectWStorage<ObjType>::RefList() { return rObjSet; }
+  Chain<void*>& ObjectWStorage<ObjType>::RefList() { return rObjSet; }
 
   template <typename ObjType>
-  const Pool<void*>& ObjectWStorage<ObjType>::RefList() const {
+  const Chain<void*>& ObjectWStorage<ObjType>::RefList() const {
     return rObjSet;
   }
 

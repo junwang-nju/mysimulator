@@ -3,6 +3,7 @@
 #define _Fixed_Vector_H_
 
 #include "object-with-storage.h"
+#include "vector-base.h"
 
 namespace std {
   template <typename T, unsigned int ND>

@@ -3,32 +3,30 @@
 
 namespace std {
 
-  template <typename ObjType>
-  Pool<void*>* refObject<ObjType>::PtrRefList() { return pRefList; }
+  template <typename RObjType, typename SObjType>
+  ChainNode<void*> refObject<RObjType,SObjType>::RefInfo() { return rNode; }
 
-  template <typename ObjType>
-  const Pool<void*>* refObject<ObjType>::PtrRefList() const{ return pRefList; }
-
-  template <typename ObjType>
-  const int& refObject<ObjType>::PresentID() const { return thisID; }
-
-  template <typename ObjType>
-  void refObject<ObjType>::SetID(const int id) { thisID=id; }
-
-  template <typename ObjType>
-  void refObject<ObjType>::clear() {
-    static_cast<ParentType*>(this)->clear();
-    pRefList=NULL;
-    thisID=-1;
+  template <typename RObjType, typename SObjType>
+  const ChainNode<void*> refObject<RObjType,SObjType>::RefInfo() const {
+    return rNode;
   }
 
-  template <typename ObjType>
-  void refObject<ObjType>::swap(refObject<ObjType>& O) {
+  template <typename RObjType, typename SObjType>
+  void refObject<RObjType,SObjType>::clear() {
+    static_cast<ParentType*>(this)->clear();
+    rNode.remove_self();
+  }
+
+  template <typename RObjType, typename SObjType>
+  void refObject<RObjType,SObjType>::swap(refObject<RObjType,SObjType>& O) {
     static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(O));
-    Pool<void*>* tpPtr;
-    tpPtr=pRefList; pRefList=O.pRefList;  O.pRefList=tpPtr;
-    int n;
-    n=thisID; thisID=O.thisID;  O.thisID=n;
+    ChainNode<void*>* pNode;
+    pNode=rNode.parent();
+    rNode.parent()=O.rNode.parent();
+    O.rNode.parent()=pNode;
+    pNode=rNode.child();
+    rNode.child()=O.rNode.child();
+    O.rNode.child()=pNode;
   }
 
 }
