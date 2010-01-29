@@ -35,6 +35,19 @@ namespace std {
     NumberColumns,
     NumberCommonItems
   };
+  enum RectangleInfoItems {
+    RectangleNumberItems=NumberCommonItems
+  };
+  enum SquareInfoItems {
+    SquareDimension=NumberCommonItems,
+    SquareNumberItems
+  };
+  enum TriangleInfoItems {
+    TriangleDimension=NumberCommonItems,
+    SymmetryFlag,
+    TrianglePart,
+    TriangleNumberItems
+  };
   template <typename T, template<typename> class VecType>
   class MatrixBase : DataPack<T,VecType,VecType,VecType> {
     public:
@@ -81,6 +94,7 @@ namespace std {
       void AssignGetMethod(const GetElemFuncType& iGMethod);
       T& operator()(const unsigned int I, const unsigned int J);
       const T& operator()(const unsigned int I, const unsigned int J) const;
+      unsigned MatrixType2NumItems(const int MatType);
   };
 }
 

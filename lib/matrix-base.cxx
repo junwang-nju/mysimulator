@@ -80,5 +80,20 @@ namespace std {
     return getElem(this->structure(),I,J,OtherElems);
   }
 
+  template <typename T, template<typename> class VecType>
+  unsigned int MatrixBase<T,VecType>::MatrixType2NumItems(const int MatType) {
+    switch(MatType) {
+      case Rectangle:       return RectangleNumberItems;
+      case Square:          return SquareNumberItems;
+      case Triangle:        return TriangleNumberItems;
+      case Band:
+      case TriangleBand:
+                            break;
+      case UnknownFormat:   return uZero;
+      default:              myError("Unknown type for matrix");
+    }
+    return uZero;
+  }
+
 }
 
