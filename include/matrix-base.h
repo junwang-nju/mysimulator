@@ -27,16 +27,12 @@ namespace std {
     WithTranspose
   };
   enum CommonInfoItems {
-    MatrixType=0,
-    ExpectOrder,
+    ExpectOrder=0,
     TransposeState,
     ActualOrder,
     NumberRows,
     NumberColumns,
     NumberCommonItems
-  };
-  enum RectangleInfoItems {
-    RectangleNumberItems=NumberCommonItems
   };
   enum SquareInfoItems {
     SquareDimension=NumberCommonItems,
@@ -48,7 +44,7 @@ namespace std {
     TrianglePart,
     TriangleNumberItems
   };
-  template <typename T, template<typename> class VecType>
+  template <typename T, unsigned int MType, template<typename> class VecType>
   class MatrixBase : DataPack<T,VecType,VecType,VecType> {
     public:
       typedef T   DataType;
@@ -57,6 +53,7 @@ namespace std {
       typedef T& (*GetElemFuncType)(VecType<refVector<T> >&,
                                     unsigned int,unsigned int,T&);
     protected:
+      static const unsigned int MatType;
       T OtherElems;
       GetElemFuncType getElem;
     public:
@@ -79,8 +76,8 @@ namespace std {
         for(unsigned int j=0;j<n;++j) operator()(i,j)=MB(i,j);
         return *this;
       }
-      template <typename inputT>
-      Type& operator=(const inputT& V) { this->data()=V; return *this; }
+      Type& operator=(const VectorBase<T>& V) { this->data()=V; return *this; }
+      Type& operator=(const T& D) { this->data()=D; return *this; }
       void clear();
       const unsigned int& NumRow() const;
       const unsigned int& NumCol() const;
@@ -96,6 +93,8 @@ namespace std {
       const T& operator()(const unsigned int I, const unsigned int J) const;
       unsigned MatrixType2NumItems(const int MatType);
   };
+  template <typename T, unsigned int MType, template<typename> class VecType>
+  const unsigned int MatrixBase<T,MType,VecType>::MatType=MType;
 }
 
 #endif
