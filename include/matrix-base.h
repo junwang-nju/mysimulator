@@ -48,7 +48,7 @@ namespace std {
   class MatrixBase : DataPack<T,VecType,VecType,VecType> {
     public:
       typedef T   DataType;
-      typedef MatrixBase<T,VecType>   Type;
+      typedef MatrixBase<T,MType,VecType>   Type;
       typedef DataPack<T,VecType,VecType,VecType> ParentType;
       typedef T& (*GetElemFuncType)(VecType<refVector<T> >&,
                                     unsigned int,unsigned int,T&);
@@ -91,7 +91,6 @@ namespace std {
       void AssignGetMethod(const GetElemFuncType& iGMethod);
       T& operator()(const unsigned int I, const unsigned int J);
       const T& operator()(const unsigned int I, const unsigned int J) const;
-      unsigned MatrixType2NumItems(const int MatType);
   };
   template <typename T, unsigned int MType, template<typename> class VecType>
   const unsigned int MatrixBase<T,MType,VecType>::MatType=MType;

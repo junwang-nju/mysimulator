@@ -24,7 +24,7 @@ namespace std {
         assert(InfVecType<int>::IsVector);
       }
       DataPack(const Type& DP) { myError("Cannot create from data pack"); }
-      virtual ~DataPack() {}
+      virtual ~DataPack() { clear(); }
       Type& operator=(const Type& DP) { return *this; }
       void clear();
       DataVecType<T>& data();

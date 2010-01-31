@@ -34,6 +34,7 @@ namespace std {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }
+      void clear();
       virtual const char* type() const;
   };
 }
