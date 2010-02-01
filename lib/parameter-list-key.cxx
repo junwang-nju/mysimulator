@@ -19,5 +19,20 @@ namespace std {
 
   void ParameterKey::SetIndex(const varVector<unsigned int>& VI) { Index=VI; }
 
+  istream& operator>>(istream& is, ParameterKey& PK) {
+    is>>PK.Index;
+    PK.BuildHash();
+    return is;
+  }
+
+  int compare(const ParameterKey& K1, const ParameterKey& K2) {
+    if(K1.hash()[0]==K2.hash()[0])
+      if(K1.hash()[1]==K2.hash()[1])
+        if(K1.hash()[2]==K2.hash()[2]) return 0;
+        else                           return (K1.hash()[2]>K2.hash()[2]?1:-1);
+      else                           return (K1.hash()[1]>K2.hash()[1]?1:-1);
+    else                           return (K1.hash()[0]>K2.hash()[0]?1:-1);
+  }
+
 }
 

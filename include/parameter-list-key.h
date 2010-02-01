@@ -28,7 +28,10 @@ namespace std {
       const varVector<unsigned int>& index() const;
       const fixVector<unsigned int,3>& hash() const;
       void SetIndex(const varVector<unsigned int>& VI);
+    friend
+      istream& operator>>(istream& is, ParameterKey& PK);
   };
+  int compare(const ParameterKey& K1, const ParameterKey& K2);
 }
 
 #endif
