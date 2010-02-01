@@ -8,5 +8,6 @@ add_library (Base vector-base-basic.cxx vector-base.cxx vector-impl.cxx
                   data-pack.cxx object-with-storage.cxx
                   ref-object.cxx var-matrix-rectangle.cxx
                   ref-matrix-rectangle.cxx fix-matrix-rectangle.cxx
-                  btree-node.cxx btree.cxx hash-func.cxx)
+                  btree-node.cxx btree.cxx hash-func.cxx
+                  parameter-list-key.cxx)
 

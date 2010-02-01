@@ -10,13 +10,13 @@ namespace std {
   }
 
   template <typename T>
-  ChainNode<T>* ChainNode<T>::parent() { return Parent; }
+  ChainNode<T>*& ChainNode<T>::parent() { return Parent; }
 
   template <typename T>
   const ChainNode<T>* ChainNode<T>::parent() const { return Parent; }
 
   template <typename T>
-  ChainNode<T>* ChainNode<T>::child() { return Child; }
+  ChainNode<T>*& ChainNode<T>::child() { return Child; }
 
   template <typename T>
   const ChainNode<T>* ChainNode<T>::child() const { return Child; }

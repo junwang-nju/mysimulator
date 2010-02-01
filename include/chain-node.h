@@ -22,9 +22,9 @@ namespace std {
       template <typename inputT>
       Type& operator=(const inputT& D) { Content=D; return *this; }
       void clear();
-      Type* parent();
+      Type*& parent();
       const Type* parent() const;
-      Type* child();
+      Type*& child();
       const Type* child() const;
       T& content();
       const T& content() const;

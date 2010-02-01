@@ -6,7 +6,7 @@
 namespace std {
 
   template <typename T>
-  T* VectorBaseBasic<T>::data() { return Data; }
+  T*& VectorBaseBasic<T>::data() { return Data; }
 
   template <typename T>
   const T* VectorBaseBasic<T>::data() const { return Data; }
