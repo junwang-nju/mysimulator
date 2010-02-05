@@ -17,17 +17,5 @@ namespace std {
     rNode.remove_self();
   }
 
-  template <typename RObjType, typename SObjType>
-  void refObject<RObjType,SObjType>::swap(refObject<RObjType,SObjType>& O) {
-    static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(O));
-    ChainNode<void*>* pNode;
-    pNode=rNode.parent();
-    rNode.parent()=O.rNode.parent();
-    O.rNode.parent()=pNode;
-    pNode=rNode.child();
-    rNode.child()=O.rNode.child();
-    O.rNode.child()=pNode;
-  }
-
 }
 

@@ -30,7 +30,6 @@ namespace std {
       void clear();
       Chain<void*>& RefList();
       const Chain<void*>& RefList() const;
-      void swap(Type& O);
   };
 }
 

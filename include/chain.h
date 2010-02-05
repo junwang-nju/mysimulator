@@ -7,20 +7,22 @@
 namespace std {
   template <typename T>
   class Chain {
-    protected:
-      ChainNode<T>  Root;
-      ChainNode<T>  Head;
     public:
       typedef Chain<T>  Type;
+      typedef ChainNode<T> NodeType;
+    protected:
+      NodeType  Root;
+      NodeType  Head;
+    public:
       Chain() : Root(), Head() { Root.child()=&Head; Head.parent()=&Root; }
       Chain(const Type& C) { myError("Cannot create from chain"); }
       ~Chain() { clear(); }
       Type& operator=(const Type& C) {
         clear();
-        ChainNode<T> *rCNode=const_cast<ChainNode<T>*>(C.Root.child());
-        while(rCNode!=&(C.Head)) {
-          append(rCNode->content());
-          rCNode=const_cast<ChainNode<T>*>(rCNode->child());
+        NodeType *pCNode=const_cast<NodeType*>(C.Root.child());
+        while(pCNode!=&(C.Head)) {
+          append(pCNode->content());
+          pCNode=const_cast<NodeType*>(pCNode->child());
         }
         return *this;
       }
@@ -28,7 +30,6 @@ namespace std {
       void append(const T& content);
       void append(ChainNode<T>& node);
       void remove(ChainNode<T>*& pnode);
-      void swap(Type& C);
   };
 }
 

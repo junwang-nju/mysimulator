@@ -13,7 +13,6 @@ namespace std {
       typedef refVector<T>  Type;
       typedef refObject<VectorBase<T>,VectorBase<T> > ParentType;
       refVector() : ParentType() {
-        this->SetSwapFlag(true);
         this->RefInfo().content()=static_cast<void*>(this);
       }
       refVector(const Type& V) {

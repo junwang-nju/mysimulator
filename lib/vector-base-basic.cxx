@@ -47,9 +47,6 @@ namespace std {
   }
 
   template <typename T>
-  void VectorBaseBasic<T>::SetSwapFlag(const bool& fg) { IsSwappable=fg; }
-
-  template <typename T>
   const bool VectorBaseBasic<T>::IsAvailable() const {
     return Data!=NULL;
   }
@@ -97,15 +94,6 @@ namespace std {
     assert(static_cast<unsigned int>(voff+vstep*nex)<=V.nData);
     assert(static_cast<unsigned int>(off+step*nex)<=nData);
     vector_exchange(Data,V.Data,nex,voff,vstep,off,step);
-  }
-
-  template <typename T>
-  void VectorBaseBasic<T>::swap(VectorBaseBasic<T>& V) {
-    assert(IsSwappable&&V.IsSwappable);
-    Data=V.Data;
-    nData=V.nData;
-    SetHeadTail();
-    V.SetHeadTail();
   }
 
   template <typename T>

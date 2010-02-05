@@ -15,7 +15,6 @@ namespace std {
       typedef fixVector<T,ND>  Type;
       typedef ObjectWStorage<VectorBase<T> >  ParentType;
       fixVector() : ParentType() {
-        this->SetSwapFlag(false);
         this->data()=runData;
         this->SetSize(ND);
         this->SetHeadTail();

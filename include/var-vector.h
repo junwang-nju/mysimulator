@@ -13,11 +13,8 @@ namespace std {
       typedef T DataType;
       typedef varVector<T>  Type;
       typedef ObjectWStorage<VectorBase<T> >  ParentType;
-      varVector() : ParentType() { this->SetSwapFlag(true); }
-      varVector(const unsigned int N) : ParentType() {
-        this->SetSwapFlag(true);
-        allocate(N);
-      }
+      varVector() : ParentType() { }
+      varVector(const unsigned int N) : ParentType() { allocate(N); }
       varVector(const Type& V) {
         myError("Cannot create from variable vector");
       }

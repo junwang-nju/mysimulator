@@ -17,11 +17,5 @@ namespace std {
     return rObjSet;
   }
 
-  template <typename ObjType>
-  void ObjectWStorage<ObjType>::swap(ObjectWStorage<ObjType>& O) {
-    static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(O));
-    rObjSet.swap(O.rObjSet);
-  }
-
 }
 

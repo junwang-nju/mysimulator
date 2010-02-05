@@ -31,7 +31,6 @@ namespace std {
       ChainNode<void*>  RefInfo();
       const ChainNode<void*> RefInfo() const;
       void clear();
-      void swap(Type& O);
       virtual void refer(ObjectWStorage<SObjType>& O) = 0;
       virtual void refer(Type& O) = 0;
   };

@@ -9,7 +9,6 @@ namespace std {
   template <typename T>
   class VectorBaseBasic {
     protected:
-      bool IsSwappable;
       T* Data;
       unsigned int nData;
       T* headPtr;
@@ -19,8 +18,7 @@ namespace std {
       typedef VectorBaseBasic<T>  Type;
       static const bool IsVector;
       VectorBaseBasic()
-        : IsSwappable(false),
-          Data(NULL), nData(0), headPtr(NULL), tailPtr(NULL) {}
+        : Data(NULL), nData(0), headPtr(NULL), tailPtr(NULL) {}
       VectorBaseBasic(const Type& V) {
         myError("Cannot create from VectorBaseBasic");
       }
@@ -37,7 +35,6 @@ namespace std {
       void clear();
       void SetSize(const unsigned int N);
       void SetHeadTail();
-      void SetSwapFlag(const bool& fg);
       const bool IsAvailable() const;
       void assign(const Type& V);
       void assign(const T& value);
@@ -47,7 +44,6 @@ namespace std {
       void exchange(Type& V);
       void exchange(Type& V, long nex, int voff=iZero, long vstep=lOne,
                                        int off=iZero, long step=lOne);
-      void swap(Type& V);
       virtual const char* type() const = 0;
   };
   template <typename T>
