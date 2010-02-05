@@ -4,11 +4,13 @@
 namespace std {
 
   template <typename T, template<typename> class VecType>
-  void refRectMatrix<T,VecType>::refer(refRectMatrix<T,VecType>& rRM) {
+  void refRectMatrix<T,VecType>::refer(
+      typename refRectMatrix<T,VecType>::ParentType& rRM) {
     this->data().refer(rRM.data());
     this->structure().refer(rRM.structure());
     this->info().refer(rRM.info());
     this->SetGetMethod();
+    rRM.RefInfo().add_before(this->RefInfo());
   }
 
   template <typename T, template<typename> class VecType>
@@ -18,6 +20,7 @@ namespace std {
     this->structure().refer(M.structure());
     this->info().refer(M.info());
     this->SetGetMethod();
+    M.RefList().append(this->RefInfo());
   }
 
   template <typename T, template<typename> class VecType>

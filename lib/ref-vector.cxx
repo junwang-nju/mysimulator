@@ -4,7 +4,9 @@
 namespace std {
 
   template <typename T>
-  void refVector<T>::refer(refVector<T>& V) { refer(V,0,V.size()); }
+  void refVector<T>::refer(typename refVector<T>::ParentType& V) {
+    refer(V,0,V.size());
+  }
 
   template <typename T>
   void refVector<T>::refer(ObjectWStorage<VectorBase<T> >& V) {
@@ -12,8 +14,8 @@ namespace std {
   }
 
   template <typename T>
-  void refVector<T>::refer(refVector<T>& V, const unsigned int off,
-                           const unsigned int sz) {
+  void refVector<T>::refer(typename refVector<T>::ParentType& V,
+                           const unsigned int off, const unsigned int sz) {
     assert(off+sz<=V.size());
     if(this->IsAvailable()) this->RefInfo().remove_self();
     this->data()=const_cast<T*>(V.data())+off;

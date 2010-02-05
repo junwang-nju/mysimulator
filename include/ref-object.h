@@ -28,8 +28,8 @@ namespace std {
         static_cast<ParentType*>(this)->operator=(O);
         return *this;
       }
-      ChainNode<void*>  RefInfo();
-      const ChainNode<void*> RefInfo() const;
+      ChainNode<void*>&  RefInfo();
+      const ChainNode<void*>& RefInfo() const;
       void clear();
       virtual void refer(ObjectWStorage<SObjType>& O) = 0;
       virtual void refer(Type& O) = 0;

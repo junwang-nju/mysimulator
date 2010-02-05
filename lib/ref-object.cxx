@@ -4,10 +4,10 @@
 namespace std {
 
   template <typename RObjType, typename SObjType>
-  ChainNode<void*> refObject<RObjType,SObjType>::RefInfo() { return rNode; }
+  ChainNode<void*>& refObject<RObjType,SObjType>::RefInfo() { return rNode; }
 
   template <typename RObjType, typename SObjType>
-  const ChainNode<void*> refObject<RObjType,SObjType>::RefInfo() const {
+  const ChainNode<void*>& refObject<RObjType,SObjType>::RefInfo() const {
     return rNode;
   }
 

@@ -37,7 +37,7 @@ namespace std {
         static_cast<ParentType*>(this)->operator=(D);
         return *this;
       }
-      virtual void refer(Type& O);
+      virtual void refer(ParentType& O);
       virtual void refer(ObjectWStorage<RectMatrixBase<T,VecType> >&);
       virtual const char* type() const;
   };

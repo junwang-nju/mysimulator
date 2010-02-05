@@ -29,9 +29,9 @@ namespace std {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }
-      virtual void refer(Type& V);
+      virtual void refer(ParentType& V);
       virtual void refer(ObjectWStorage<VectorBase<T> >& V);
-      void refer(Type& V, const unsigned int off, const unsigned int sz);
+      void refer(ParentType& V, const unsigned int off, const unsigned int sz);
       void refer(ObjectWStorage<VectorBase<T> >& V,
                  const unsigned int off, const unsigned int sz);
       virtual const char* type() const;

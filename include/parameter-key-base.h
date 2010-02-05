@@ -3,6 +3,7 @@
 #define _Parameter_Key_Base_H_
 
 #include "ref-vector.h"
+#include <cassert>
 
 namespace std {
   template <template <typename> class IndexVecType>
@@ -13,7 +14,7 @@ namespace std {
       typedef refVector<unsigned int>   HashType;
     protected:
       IndexType Index;
-      HashType  Hash;
+      HashType Hash;
     public:
       ParameterKeyBase() : Index(), Hash() {
         assert(IndexVecType<unsigned int>::IsVector); }
