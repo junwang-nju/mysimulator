@@ -15,18 +15,21 @@ namespace std {
       Type* Parent;
       Type* Left;
       Type* Right;
-      bool ParentFg;
+      int ParentFg;
+      bool AllocFg;
     public:
       BTreeNode() : Key(NULL), Value(NULL),
-                    Parent(NULL), Left(NULL), Right(NULL), ParentFg(true) {}
+                    Parent(NULL), Left(NULL), Right(NULL), ParentFg(0),
+                    AllocFg(false) {}
       BTreeNode(const Type& bn) {
         myError("Cannot create from node of binary tree");
       }
       BTreeNode(const KeyType* K, const ValueType* V, const Type* p,
-                const bool pfg, const Type* l=NULL, const Type* r=NULL)
+                const int pfg=0, const Type* l=NULL, const Type* r=NULL,
+                const bool afg=false)
         : Key(const_cast<KeyType*>(K)), Value(const_cast<ValueType*>(V)),
           Parent(const_cast<Type*>(p)), Left(const_cast<Type*>(l)),
-          Right(const_cast<Type*>(r)), ParentFg(pfg) {
+          Right(const_cast<Type*>(r)), ParentFg(pfg), AllocFg(afg) {
       }
       ~BTreeNode() { clear(); }
       Type& operator=(const Type& bn) {
@@ -42,10 +45,12 @@ namespace std {
       const Type* parent() const;
       const Type* left() const;
       const Type* right() const;
-      const bool IsParentFromLeft() const;
-      void SetParent(const Type* p, const bool pfg);
+      const int WhereParentFrom() const;
+      void SetParent(const Type* p, const int pfg);
       void SetLeft(const Type* l);
       void SetRight(const Type* r);
+      const bool IsAllocByTree() const;
+      void SetTreeAllocFlag(const bool afg);
   };
 }
 

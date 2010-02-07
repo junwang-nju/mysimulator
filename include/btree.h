@@ -11,11 +11,15 @@ namespace std {
       typedef BTree<KeyType,ValueType>  Type;
       typedef BTreeNode<KeyType,ValueType>  NodeType;
     protected:
-      NodeType Root;
+      NodeType *pRoot;
     public:
-      BTree() : Root() {}
+      BTree() : pRoot(NULL) {}
       BTree(const Type& bt) { myError("Cannot create from binary tree"); }
       ~BTree() { clear(); }
+      Type& operator=(const Type& BT) {
+        clear();
+        return *this;
+      }
       void clear();
       void insert(const KeyType& K, const ValueType& V);
       const ValueType* get(const KeyType& K) const;

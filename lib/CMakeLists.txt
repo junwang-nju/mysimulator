@@ -10,5 +10,5 @@ add_library (Base vector-base-basic.cxx vector-base.cxx vector-impl.cxx
                   ref-matrix-rectangle.cxx fix-matrix-rectangle.cxx
                   btree-node.cxx btree.cxx hash-func.cxx
                   parameter-key-base.cxx var-parameter-key.cxx
-                  ref-parameter-key.cxx)
+                  ref-parameter-key.cxx parameter-list-base.cxx)
 

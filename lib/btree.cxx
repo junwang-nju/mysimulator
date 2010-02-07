@@ -6,44 +6,31 @@ namespace std {
 
   template <typename KeyType, typename ValueType>
   void BTree<KeyType,ValueType>::clear() {
-    NodeType *present=&Root, *tofree;
-    while(true) {
+    NodeType *present=pRoot, *tofree;
+    while(present!=NULL) {
       if(present->left()!=NULL) present=present->left();
       else if(present->right()!=NULL) present=present->right();
-      else if(present!=&Root) {
+      else {
         tofree=present;
         present=present.parent();
         remove(tofree);
-      } else break;
+      }
     }
   }
 
   template <typename KeyType, typename ValueType>
   void BTree<KeyType,ValueType>::insert(const KeyType& K, const ValueType& V) {
-    if(Root.Ptr2Key()==NULL) {
-      Root.Ptr2Key()=const_cast<KeyType*>(&K);
-      Root.Ptr2Value()=const_cast<ValueType*>(&V);
-    } else {
-      NodeType* present=&Root;
-      int cmp;
-      while(true) {
-        cmp=compare(*(present->Ptr2Key()),K);
-        if(cmp==0) {
-          present->Ptr2Value()=const_cast<ValueType*>(&V);
-          break;
-        } else if(cmp<0) {
-          if(present->left()==NULL) {
-            present->SetLeft(new NodeType(K,V,present,true,NULL,NULL));
-            break;
-          } else  present=present->left();
-        } else {
-          if(present->right()==NULL) {
-            present->SetRight(new NodeType(K,V,present,false,NULL,NULL));
-            break;
-          } else present=present->right();
-        }
-      }
+    NodeType *present=pRoot;
+    int cmp;
+    while(present!=NULL) {
+      cmp=compare(*(present->Ptr2Key()),K);
+      if(cmp==0) {
+        present->Ptr2Value()=const_cast<ValueType*>(&V);
+        return;
+      } else if(cmp<0)  present=present->left();
+      else              present=present->right();
     }
+    present=new NodeType(&K,&V,NULL,0,NULL,NULL,true);
   }
 
   template <typename KeyType, typename ValueType>
@@ -89,7 +76,7 @@ namespace std {
       rnd->SetLeft(pnd->left());
       rnd->SetRight(pnd->right());
     }
-    safe_delete(pnd);
+    if(pnd->IsAllocByTree()) safe_delete(pnd);
   }
 
 }

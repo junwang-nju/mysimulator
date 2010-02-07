@@ -29,7 +29,7 @@ namespace std {
       T& content();
       const T& content() const;
       const bool IsAllocByChain() const;
-      void SetChainAllocFlag(bool efg);
+      void SetChainAllocFlag(const bool efg);
       void add_before(Type& node);
       void remove_self();
   };

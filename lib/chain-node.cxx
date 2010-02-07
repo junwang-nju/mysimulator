@@ -31,7 +31,7 @@ namespace std {
   const bool ChainNode<T>::IsAllocByChain() const { return AllocFg; }
 
   template <typename T>
-  void ChainNode<T>::SetChainAllocFlag(bool efg) { AllocFg=efg; }
+  void ChainNode<T>::SetChainAllocFlag(const bool efg) { AllocFg=efg; }
 
   template <typename T>
   void ChainNode<T>::add_before(Type& node) {

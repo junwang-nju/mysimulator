@@ -5,7 +5,7 @@ namespace std {
 
   template <typename KeyType,typename ValueType>
   void BTreeNode<KeyType,ValueType>::clear() {
-    Key=NULL; Value=NULL; Parent=NULL; Left=NULL; Right=NULL; ParentFg=true;
+    Key=NULL; Value=NULL; Parent=NULL; Left=NULL; Right=NULL; ParentFg=0;
   }
 
   template <typename KeyType,typename ValueType>
@@ -23,7 +23,7 @@ namespace std {
   }
 
   template <typename KeyType,typename ValueType>
-  const bool BTreeNode<KeyType,ValueType>::IsParentFromLeft() const {
+  const int BTreeNode<KeyType,ValueType>::WhereParentFrom() const {
     return ParentFg;
   }
 
@@ -47,7 +47,7 @@ namespace std {
 
   template <typename KeyType,typename ValueType>
   void BTreeNode<KeyType,ValueType>::SetParent(
-      const BTreeNode<KeyType,ValueType>* p, const bool pfg) {
+      const BTreeNode<KeyType,ValueType>* p, const int pfg) {
     Parent=p;
     ParentFg=pfg;
   }
@@ -62,6 +62,16 @@ namespace std {
   void BTreeNode<KeyType,ValueType>::SetRight(
       const BTreeNode<KeyType,ValueType>* r) {
     Right=r;
+  }
+
+  template <typename KeyType,typename ValueType>
+  const bool BTreeNode<KeyType,ValueType>::IsAllocByTree() const {
+    return AllocFg;
+  }
+
+  template <typename KeyType,typename ValueType>
+  void BTreeNode<KeyType,ValueType>::SetTreeAllocFlag(const bool afg) {
+    AllocFg=afg;
   }
 
 }
