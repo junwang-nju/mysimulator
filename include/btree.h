@@ -20,8 +20,11 @@ namespace std {
         clear();
         return *this;
       }
+      NodeType& Root();
+      const NodeType& Root() const;
       void clear();
       void insert(const KeyType& K, const ValueType& V);
+      void insert(NodeType& nd);
       const ValueType* get(const KeyType& K) const;
       void remove(NodeType*& nd);
   };

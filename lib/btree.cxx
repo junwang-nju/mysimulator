@@ -5,6 +5,16 @@
 namespace std {
 
   template <typename KeyType, typename ValueType>
+  BTreeNode<KeyType,ValueType>& BTree<KeyType,ValueType>::Root() {
+    return *pRoot;
+  }
+
+  template <typename KeyType, typename ValueType>
+  const BTreeNode<KeyType,ValueType>& BTree<KeyType,ValueType>::Root() const {
+    return *pRoot;
+  }
+
+  template <typename KeyType, typename ValueType>
   void BTree<KeyType,ValueType>::clear() {
     NodeType *present=pRoot, *tofree;
     while(present!=NULL) {
@@ -23,58 +33,95 @@ namespace std {
     NodeType *present=pRoot;
     int cmp;
     while(present!=NULL) {
-      cmp=compare(*(present->Ptr2Key()),K);
+      cmp=compare(*(present->ptr2key()),K);
       if(cmp==0) {
-        present->Ptr2Value()=const_cast<ValueType*>(&V);
+        present->ptr2value()=const_cast<ValueType*>(&V);
         return;
-      } else if(cmp<0)  present=present->left();
-      else              present=present->right();
+      } else if(cmp<0)  {
+        if(present->left()!=NULL)   present=present->left();
+        else {
+          present->SetLeft(new NodeType(&K,&V,present,-1,NULL,NULL,true));
+          return;
+        }
+      } else  {
+        if(present->right()!=NULL)  present=present->right();
+        else {
+          present->SetRight(new NodeType(&K,&V,present,1,NULL,NULL,true));
+          return;
+        }
+      }
     }
-    present=new NodeType(&K,&V,NULL,0,NULL,NULL,true);
+    pRoot=new NodeType(&K,&V,NULL,0,NULL,NULL,true);
+  }
+
+  template <typename KeyType, typename ValueType>
+  void BTree<KeyType,ValueType>::insert(BTreeNode<KeyType,ValueType>& nd) {
+    NodeType *present=pRoot;
+    int cmp,pflag=0;
+    while(present!=NULL) {
+      cmp=compare(*(present->ptr2key()),*(nd.ptr2key()));
+      if(cmp==0) {
+        myError("Conflict in the inserted Key");
+        return;
+      } else if(cmp<0)  {
+        if(present->left()!=NULL)   present=present->left();
+        else {
+          present->SetLeft(&nd);
+          nd.SetParent(present,-1);
+          return;
+        }
+      } else  {
+        if(present->right()!=NULL)  present=present->right();
+        else {
+          present->SetRight(&nd);
+          nd.SetParent(present,1);
+          return;
+        }
+      }
+    }
+    pRoot=&nd;
   }
 
   template <typename KeyType, typename ValueType>
   const ValueType* BTree<KeyType,ValueType>::get(const KeyType& K) const {
-    if(Root.Ptr2Key()==NULL)  return NULL;
-    NodeType *present=const_cast<NodeType*>(&Root);
+    NodeType *present=pRoot;
     int cmp;
-    while(true) {
-      cmp=compare(*(present->Ptr2Key()),K);
-      if(cmp==0)  return present->Ptr2Value();
+    while(present!=NULL) {
+      cmp=compare(*(present->ptr2key()),K);
+      if(cmp==0)  return  present->ptr2value();
       else if(cmp<0)  present=present->left();
       else            present=present->right();
-      if(present==NULL)  break;
     }
     return NULL;
   }
 
   template <typename KeyType, typename ValueType>
-  bool remove_base(BTreeNode<KeyType,ValueType>& nd) {
-    if(nd.left()==NULL) {
-      if(nd.IsParentFromLeft()) nd.parent()->SetLeft(nd.right());
-      else                      nd.parent()->SetRight(nd.right());
-      if(nd.right()!=NULL)
-        nd.right()->SetParent(nd.parent(),nd.IsParentFromLeft());
-    } else {
-      if(nd.right()==NULL) {
-        if(nd.IsParentFromLeft()) nd.parent()->SetLeft(nd.left());
-        else                      nd.parent()->SetRight(nd.left());
-        nd.left()->SetParent(nd.parent(),nd.IsParentFromLeft());
-      } else return false;
-    }
-    return true;
-  }
-
-  template <typename KeyType, typename ValueType>
   void BTree<KeyType,ValueType>::remove(BTreeNode<KeyType,ValueType>*& pnd) {
-    if(!remove_base(*pnd)) {
-      BTreeNode<KeyType,ValueType>* rnd;
-      rnd=pnd.right();
-      while(rnd->left()!=NULL) rnd=rnd->left();
-      remove_base(*rnd);
-      rnd->SetParent(pnd->parent(),pnd->IsParentFromLeft());
-      rnd->SetLeft(pnd->left());
-      rnd->SetRight(pnd->right());
+    if(pnd==NULL) return;
+    NodeType *parent=pnd->parent();
+    NodeType *left=pnd->left();
+    NodeType *right=pnd->right();
+    int pflag=pnd->WhereParentFrom();
+    if(left==NULL) {
+      if(pflag==0)      pRoot=right;
+      else if(pflag==1) parent->SetRight(right);
+      else              parent->SetLeft(right);
+      if(right!=NULL)   right->SetParent(parent,pflag);
+    } else if(right==NULL) {
+      if(pflag==0)      pRoot=left;
+      else if(pflag==1) parent->SetRight(left);
+      else              parent->SetLeft(left);
+      left->SetParent(parent,pflag);
+    } else {
+      NodeType *rnd=right;
+      while(rnd->left()!=NULL)  rnd=rnd->left();
+      if(rnd->WhereParentFrom()==1) rnd->parent()->SetRight(rnd->right());
+      else                          rnd->parent()->SetLeft(rnd->right());
+      if(rnd->right()!=NULL)
+        rnd->right()->SetParent(rnd->parent(),rnd->WhereParentFrom());
+      rnd->SetParent(parent,pflag);
+      rnd->SetLeft(left);
+      rnd->SetRight(right);
     }
     if(pnd->IsAllocByTree()) safe_delete(pnd);
   }
