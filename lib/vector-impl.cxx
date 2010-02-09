@@ -5,15 +5,6 @@
 
 namespace std {
 
-  template <typename T>
-  void vector_assign(T* v, const T* iv, long ncopy, int voff,  long vstep,
-                                                    int off, long step) {
-    T* vPtr=v+off;
-    T* ivPtr=const_cast<T*>(iv)+voff;
-    for(int i=0;i<ncopy;++i,vPtr+=step,ivPtr+=vstep)
-      *vPtr=*ivPtr;
-  }
-
   void vector_assign(double* v, const double* iv, long ncopy,
                      int voff, long vstep, int off, long step) {
     dcopy_(&ncopy,const_cast<double*>(iv)+voff,&vstep,v+off,&step);
@@ -45,17 +36,6 @@ namespace std {
            const_cast<double*>(sfv)+sfoff,&sfstep,
            const_cast<double*>(iv)+voff,&vstep,const_cast<double*>(&s),
            v+off,&step);
-  }
-
-  template <typename T>
-  void vector_exchange(T* va, T* vb, long nex, int aoff, long astep,
-                                               int boff, long bstep) {
-    T tmT, *aPtr, *bPtr;
-    aPtr=va+aoff;
-    bPtr=vb+boff;
-    for(int i=0;i<nex;++i,aPtr+=astep,bPtr+=bstep) {
-      tmT=*aPtr;  *aPtr=*bPtr;  *bPtr=tmT;
-    }
   }
 
   void vector_exchange(double* va, double* vb, long nex, int aoff, long astep,
