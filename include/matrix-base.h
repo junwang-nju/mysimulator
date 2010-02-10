@@ -78,19 +78,42 @@ namespace std {
       }
       Type& operator=(const VectorBase<T>& V) { this->data()=V; return *this; }
       Type& operator=(const T& D) { this->data()=D; return *this; }
-      void clear();
-      const unsigned int& NumRow() const;
-      const unsigned int& NumCol() const;
-      const int& MatrixOrder() const;
-      const int& MatrixTransposeState() const;
-      const int& MatrixActualOrder() const;
-      void SetSize(const unsigned int NR, const unsigned int NC);
-      void SetOrder(const int Ord);
-      void SetTranpose(const int Trans);
-      void SetActualOrder(const int AOrd);
-      void AssignGetMethod(const GetElemFuncType& iGMethod);
-      T& operator()(const unsigned int I, const unsigned int J);
-      const T& operator()(const unsigned int I, const unsigned int J) const;
+      void clear() {
+        getElem=NULL;
+        this->info()[NumberColumns]=uZero;
+        this->info()[NumberRows]=uZero;
+        this->info()[ActualOrder]=UnknownOrder;
+        this->info()[TransposeState]=UnknowTranspose;
+        this->info()[ExpectOrder]=UnknownOrder;
+        static_cast<ParentType*>(this)->clear();
+      }
+      const unsigned int& NumRow() const { return this->info()[NumberRows]; }
+      const unsigned int& NumCol() const {
+        return this->info()[NumberColumns];
+      }
+      const int& MatrixOrder() const { return this->info()[ExpectOrder]; }
+      const int& MatrixTransposeState() const {
+        return this->info()[TransposeState];
+      }
+      const int& MatrixActualOrder() const {
+        return this->info()[ActualOrder];
+      }
+      void SetSize(const unsigned int NR, const unsigned int NC) {
+        this->info()[NumberRows]=NR;
+        this->info()[NumberColumns]=NC;
+      }
+      void SetOrder(const int Ord) { this->info()[ExpectOrder]=Ord; }
+      void SetTranpose(const int Trans) { this->info()[TransposeState]=Trans; }
+      void SetActualOrder(const int AOrd) { this->info()[ActualOrder]=AOrd; }
+      void AssignGetMethod(const GetElemFuncType& iGMethod) {
+        getElem=iGMethod;
+      }
+      T& operator()(const unsigned int I, const unsigned int J) {
+        return getElem(this->structure(),I,J,OtherElems);
+      }
+      const T& operator()(const unsigned int I, const unsigned int J) const {
+        return getElem(this->structure(),I,J,OtherElems);
+      }
   };
   template <typename T, unsigned int MType, template<typename> class VecType>
   const unsigned int MatrixBase<T,MType,VecType>::MatType=MType;

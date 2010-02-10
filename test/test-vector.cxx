@@ -5,6 +5,7 @@ using namespace std;
 
 int main() {
 
+  cout<<"test -- vector_assign<double>"<<endl;
   double dV1[10],dV2[10];
   for(unsigned int i=0;i<10;++i)  dV1[i]=i+0.5;
   for(unsigned int i=0;i<10;++i)  dV2[i]=0;
@@ -12,6 +13,7 @@ int main() {
   for(unsigned int i=0;i<10;++i) cout<<dV2[i]<<" ";
   cout<<endl;
 
+  cout<<"Test -- vector_assign<int>"<<endl;
   int *iV1=new int[10],*iV2=new int[10];
   for(unsigned int i=0;i<10;++i)  iV1[i]=i+2;
   for(unsigned int i=0;i<10;++i)  iV2[i]=0;
@@ -19,6 +21,23 @@ int main() {
   for(unsigned int i=0;i<10;++i) cout<<iV2[i]<<" ";
   cout<<endl;
 
+  cout<<"Test -- vector_scale<double> of value"<<endl;
+  vector_scale(dV2,2.5,7,0,1);
+  for(unsigned int i=0;i<10;++i) cout<<dV2[i]<<" ";
+  cout<<endl;
+
+  cout<<"Test -- vector_scale<double> of array"<<endl;
+  vector_scale(dV2,dV1,7,0,1,0,1);
+  for(unsigned int i=0;i<10;++i) cout<<dV2[i]<<" ";
+  cout<<endl;
+
+  cout<<"Test -- vector_shift<double>"<<endl;
+  vector_shift(dV2,2.,dV1,5,0,1,0,1);
+  for(unsigned int i=0;i<10;++i) cout<<dV2[i]<<" ";
+  cout<<endl;
+
+  cout<<"Test -- vector_scaleshift<double>"<<endl;
+  double dV3[10];
   return 1;
 }
 
