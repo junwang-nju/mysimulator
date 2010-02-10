@@ -8,6 +8,7 @@
 #include <cassert>
 
 namespace std {
+
   template <typename T, unsigned int NRow, unsigned int NCol,
                         int Ord=COrder, int Transp=NoTranspose,
             int DOrd=
@@ -26,14 +27,23 @@ namespace std {
               (Transp==WithTranspose?
                     (Ord==COrder?NRow:(Ord==FortranOrder?NCol:0U)):0U))>
   class fixRectMatrix : public ObjectWStorage<RectMatrixBase<T,refVector> > {
+
     public:
+
       typedef fixRectMatrix<T,NRow,NCol,Ord,Transp> Type;
+
       typedef ObjectWStorage<RectMatrixBase<T,refVector> >  ParentType;
+
     protected:
+
       fixVector<T,NRow*NCol>  inData;
+
       fixVector<refVector<T>,NLines>  inStruct;
+
       fixVector<int,RectangleNumberItems> inInfo;
+
     public:
+
       fixRectMatrix() : ParentType() {
         assert(NLines>0);
         this->data().refer(inData);
@@ -46,31 +56,41 @@ namespace std {
         this->SetTransposeState(Transp);
         this->SetGetMethod();
       }
+
       fixRectMatrix(const Type& fRM) {
         myError("Cannot create from fixed rectangle matrix");
       }
+
       virtual ~fixRectMatrix() {}
+
       Type& operator=(const Type& fRM) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(fRM));
         return *this;
       }
+
       template <unsigned int iMType, template<typename> class iVecType>
       Type& operator=(const MatrixBase<T,iMType,iVecType>& M) {
         static_cast<ParentType*>(this)->operator=(M);
         return *this;
       }
+
       Type& operator=(const VectorBase<T>& V) {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }
+
       Type& operator=(const T& D) {
         static_cast<ParentType*>(this)->operator=(D);
         return *this;
       }
-      void clear();
-      virtual const char* type() const;
+
+      void clear() { myError("fix rectangle matrix cannot be cleared!"); }
+
+      virtual const char* type() const { return "fixed rectangle matrix"; }
+
   };
+
 }
 
 #endif
