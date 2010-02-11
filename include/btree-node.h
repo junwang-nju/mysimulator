@@ -76,13 +76,13 @@ namespace std {
       const int WhereParentFrom() const { return ParentFg; }
 
       void SetParent(const Type* p, const int pfg) {
-        Parent=p;
+        Parent=const_cast<Type*>(p);
         ParentFg=pfg;
       }
 
-      void SetLeft(const Type* l) { Left=l; }
+      void SetLeft(const Type* l) { Left=const_cast<Type*>(l); }
 
-      void SetRight(const Type* r) { Right=r; }
+      void SetRight(const Type* r) { Right=const_cast<Type*>(r); }
 
       const bool IsAllocByTree() const { return AllocFg; }
 

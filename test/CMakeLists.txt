@@ -12,3 +12,5 @@ add_executable (test-chain-node.run test-chain-node.cxx)
 
 add_executable (test-chain.run test-chain.cxx)
 
+add_executable (test-btree-node.run test-btree-node.cxx)
+
