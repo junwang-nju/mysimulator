@@ -3,7 +3,6 @@
 #define _Reference_Object_H_
 
 #include "object-with-storage.h"
-#include "memory.h"
 
 namespace std {
 

@@ -40,6 +40,10 @@ namespace std {
         return *this;
       }
 
+      const ChainNode<T>& root() const { return Root; }
+
+      const ChainNode<T>& head() const { return Head; }
+
       void clear() {
         NodeType* pNode;
         while((pNode=Root.child())!=&Head) remove(pNode);

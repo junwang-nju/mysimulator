@@ -27,7 +27,7 @@ namespace std {
         myError("Cannot create from variable vector");
       }
 
-      virtual ~varVector() { safe_delete(this->data()); }
+      virtual ~varVector() { safe_delete_array(this->data()); }
 
       Type& operator=(const Type& V) {
         static_cast<ParentType*>(this)->operator=(
@@ -42,14 +42,14 @@ namespace std {
       }
 
       void clear() {
-        safe_delete(this->data());
+        safe_delete_array(this->data());
         static_cast<ParentType*>(this)->clear();
       }
 
       void allocate(const unsigned int N) {
         static_cast<ParentType*>(this)->RefList().clear();
         if(this->size()!=N) {
-          safe_delete(this->data());
+          safe_delete_array(this->data());
           this->data()=new T[N];
           this->SetSize(N);
           this->SetHeadTail();
