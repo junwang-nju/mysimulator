@@ -38,6 +38,21 @@ int main() {
 
   cout<<"Test -- vector_scaleshift<double>"<<endl;
   double dV3[10];
+  for(unsigned int i=0;i<10;++i)  dV3[i]=9-i;
+  vector_scaleshift(dV2,-1.,2.,dV3,dV1,7,1,1,2,1,0,1);
+  for(unsigned int i=0;i<10;++i) cout<<dV2[i]<<" ";
+  cout<<endl;
+
+  cout<<"Test -- vector_exchange<double>"<<endl;
+  vector_exchange(dV1,dV3,4,2,1,1,2);
+  for(unsigned int i=0;i<10;++i) cout<<dV1[i]<<" ";
+  cout<<endl;
+
+  cout<<"Test -- vector_exchange<int>"<<endl;
+  vector_exchange(iV1,iV2,4,2,1,1,2);
+  for(unsigned int i=0;i<10;++i) cout<<iV1[i]<<" ";
+  cout<<endl;
+
   return 1;
 }
 
