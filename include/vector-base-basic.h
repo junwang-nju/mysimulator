@@ -65,9 +65,13 @@ namespace std {
 
       void clear() { Data=NULL;  nData=uZero;  headPtr=NULL; tailPtr=NULL; }
 
+    protected:
+
       void SetSize(const unsigned int N) { nData=N; }
 
       void SetHeadTail() { headPtr=Data; tailPtr=Data+nData; }
+
+    public:
 
       const bool IsAvailable() const { return Data!=NULL; }
 
@@ -93,7 +97,7 @@ namespace std {
       }
 
       void exchange(Type& V) {
-        long n=(nData<V.nData?nData:nData);
+        long n=(nData<V.nData?nData:V.nData);
         exchange(V,n);
       }
 
@@ -102,7 +106,7 @@ namespace std {
         assert(this->IsAvailable());
         assert(static_cast<unsigned int>(voff+vstep*nex)<=V.nData);
         assert(static_cast<unsigned int>(off+step*nex)<=nData);
-        vector_exchange(Data,V.Data,nex,voff,vstep,off,step);
+        vector_exchange(Data,V.Data,nex,off,step,voff,vstep);
       }
 
       virtual const char* type() const = 0;

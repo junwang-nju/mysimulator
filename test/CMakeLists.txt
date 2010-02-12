@@ -17,3 +17,6 @@ add_executable (test-btree-node.run test-btree-node.cxx)
 add_executable (test-btree.run test-btree.cxx)
 target_link_libraries (test-btree.run Base)
 
+add_executable (test-var-vector.run test-var-vector.cxx)
+target_link_libraries (test-var-vector.run blas Base)
+

@@ -23,7 +23,7 @@ namespace std {
    * @param [in] msg
    *        The warning messages in C-style string
    */
-  void myWarn(const char* msg) { cerr<<msg<<endl; }
+  static void myWarn(const char* msg) { cerr<<msg<<endl; }
   
   /**
    * @brief pop up an error
@@ -33,7 +33,7 @@ namespace std {
    * @param [in] msg
    *        The warning messages in C-style string
    */
-  void myError(const char* msg) { myWarn(msg); exit(0); }
+  static void myError(const char* msg) { myWarn(msg); exit(0); }
 
 }
 

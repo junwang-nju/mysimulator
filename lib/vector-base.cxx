@@ -38,6 +38,11 @@ namespace std {
   }
 
   void VectorBase<double>::shift(
+      const VectorBase<double>& V, const double value) {
+    return shift(value,V);
+  }
+
+  void VectorBase<double>::shift(
       const VectorBase<double>& SfV, const VectorBase<double>& V) {
     shift(dOne,SfV,V);
   }
