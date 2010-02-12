@@ -27,10 +27,13 @@ namespace std {
         if(bpresent!=NULL)
           present=new NodeType(bpresent->ptr2key(),bpresent->ptr2value(),
                                pparent,pflag,NULL,NULL,true);
+        NodeType* pcnode;
+        pcnode=const_cast<NodeType*>(present->left());
         if(bpresent->left()!=NULL)
-          copy(present->left(),bpresent->left(),present,-1);
+          copy(pcnode,bpresent->left(),present,-1);
+        pcnode=const_cast<NodeType*>(present->right());
         if(bpresent->right()!=NULL)
-          copy(present->right(),bpresent->right(),present,1);
+          copy(pcnode,bpresent->right(),present,1);
       }
 
     public:
@@ -47,18 +50,18 @@ namespace std {
         return *this;
       }
 
-      NodeType& Root() { return *pRoot; }
-
-      const NodeType& Root() const { return *pRoot; }
+      const NodeType* ptrRoot() const { return pRoot; }
 
       void clear() {
         NodeType *present=pRoot, *tofree;
         while(present!=NULL) {
-          if(present->left()!=NULL) present=present->left();
-          else if(present->right()!=NULL) present=present->right();
+          if(present->left()!=NULL)
+            present=const_cast<NodeType*>(present->left());
+          else if(present->right()!=NULL)
+            present=const_cast<NodeType*>(present->right());
           else {
             tofree=present;
-            present=present.parent();
+            present=const_cast<NodeType*>(present->parent());
             remove(tofree);
           }
         }
@@ -68,18 +71,20 @@ namespace std {
         NodeType *present=pRoot;
         int cmp;
         while(present!=NULL) {
-          cmp=compare(*(present->ptr2key()),K);
+          cmp=compare(K,*(present->ptr2key()));
           if(cmp==0) {
             present->ptr2value()=const_cast<ValueType*>(&V);
             return;
           } else if(cmp<0)  {
-            if(present->left()!=NULL)   present=present->left();
+            if(present->left()!=NULL)
+              present=const_cast<NodeType*>(present->left());
             else {
               present->SetLeft(new NodeType(&K,&V,present,-1,NULL,NULL,true));
               return;
             }
           } else  {
-            if(present->right()!=NULL)  present=present->right();
+            if(present->right()!=NULL)
+              present=const_cast<NodeType*>(present->right());
             else {
               present->SetRight(new NodeType(&K,&V,present,1,NULL,NULL,true));
               return;
@@ -93,19 +98,21 @@ namespace std {
         NodeType *present=pRoot;
         int cmp,pflag=0;
         while(present!=NULL) {
-          cmp=compare(*(present->ptr2key()),*(nd.ptr2key()));
+          cmp=compare(*(nd.ptr2key()),*(present->ptr2key()));
           if(cmp==0) {
             myError("Conflict in the inserted Key");
             return;
           } else if(cmp<0)  {
-            if(present->left()!=NULL)   present=present->left();
+            if(present->left()!=NULL)
+              present=const_cast<NodeType*>(present->left());
             else {
               present->SetLeft(&nd);
               nd.SetParent(present,-1);
               return;
             }
           } else  {
-            if(present->right()!=NULL)  present=present->right();
+            if(present->right()!=NULL)
+              present=const_cast<NodeType*>(present->right());
             else {
               present->SetRight(&nd);
               nd.SetParent(present,1);
@@ -120,19 +127,31 @@ namespace std {
         NodeType *present=pRoot;
         int cmp;
         while(present!=NULL) {
-          cmp=compare(*(present->ptr2key()),K);
+          cmp=compare(K,*(present->ptr2key()));
           if(cmp==0)  return  present->ptr2value();
-          else if(cmp<0)  present=present->left();
-          else            present=present->right();
+          else if(cmp<0)  present=const_cast<NodeType*>(present->left());
+          else            present=const_cast<NodeType*>(present->right());
         }
         return NULL;
       }
 
+      const NodeType* getNode(const KeyType& K) const {
+        NodeType *present=pRoot;
+        int cmp;
+        while(present!=NULL) {
+          cmp=compare(K,*(present->ptr2key()));
+          if(cmp==0)      break;
+          else if(cmp<0)  present=const_cast<NodeType*>(present->left());
+          else            present=const_cast<NodeType*>(present->right());
+        }
+        return present;
+      }
+
       void remove(NodeType*& pnd) {
         if(pnd==NULL) return;
-        NodeType *parent=pnd->parent();
-        NodeType *left=pnd->left();
-        NodeType *right=pnd->right();
+        NodeType *parent=const_cast<NodeType*>(pnd->parent());
+        NodeType *left=const_cast<NodeType*>(pnd->left());
+        NodeType *right=const_cast<NodeType*>(pnd->right());
         int pflag=pnd->WhereParentFrom();
         if(left==NULL) {
           if(pflag==0)      pRoot=right;
@@ -146,11 +165,15 @@ namespace std {
           left->SetParent(parent,pflag);
         } else {
           NodeType *rnd=right;
-          while(rnd->left()!=NULL)  rnd=rnd->left();
-          if(rnd->WhereParentFrom()==1) rnd->parent()->SetRight(rnd->right());
-          else                          rnd->parent()->SetLeft(rnd->right());
+          while(rnd->left()!=NULL)
+            rnd=const_cast<NodeType*>(rnd->left());
+          if(rnd->WhereParentFrom()==1)
+            const_cast<NodeType*>(rnd->parent())->SetRight(rnd->right());
+          else
+            const_cast<NodeType*>(rnd->parent())->SetLeft(rnd->right());
           if(rnd->right()!=NULL)
-            rnd->right()->SetParent(rnd->parent(),rnd->WhereParentFrom());
+            const_cast<NodeType*>(rnd->right())->SetParent(
+                rnd->parent(),rnd->WhereParentFrom());
           rnd->SetParent(parent,pflag);
           rnd->SetLeft(left);
           rnd->SetRight(right);

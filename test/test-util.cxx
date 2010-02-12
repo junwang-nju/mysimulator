@@ -23,6 +23,12 @@ int main() {
   cout<<D<<endl;
   cout<<endl;
 
+  cout<<"Test -- compare<int>"<<endl;
+  cout<<"1"<<"\t\t"<<2<<"\t:\t"<<compare(1,2)<<endl;
+  cout<<"3"<<"\t\t"<<2<<"\t:\t"<<compare(3,2)<<endl;
+  cout<<"2"<<"\t\t"<<2<<"\t:\t"<<compare(2,2)<<endl;
+  cout<<endl;
+
   return 1;
 }
 
