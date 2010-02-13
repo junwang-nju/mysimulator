@@ -5,6 +5,7 @@
 #include "object-with-storage.h"
 #include "vector-base.h"
 #include "memory.h"
+#include "ref-vector.h"
 
 namespace std {
 
@@ -43,6 +44,12 @@ namespace std {
 
       void clear() {
         safe_delete_array(this->data());
+        typedef ChainNode<void*>  NodeType;
+        NodeType *pNode;
+        const NodeType *pRoot=&(this->RefList().root());
+        const NodeType *pHead=&(this->RefList().head());
+        while((pNode=const_cast<NodeType*>(pRoot->child()))!=pHead)
+          reinterpret_cast<refVector<T>*>(pNode->content())->clear();
         static_cast<ParentType*>(this)->clear();
       }
 

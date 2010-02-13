@@ -40,8 +40,8 @@ namespace std {
       ~ObjectWStorage() { rObjSet.clear(); }
 
       void clear() {
-        rObjSet.clear();
         static_cast<ParentType*>(this)->clear();
+        rObjSet.clear();
       }
 
       Chain<void*>& RefList() { return rObjSet; }

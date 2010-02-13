@@ -23,3 +23,6 @@ target_link_libraries (test-var-vector.run blas Base)
 add_executable (test-fix-vector.run test-fix-vector.cxx)
 target_link_libraries (test-fix-vector.run blas Base)
 
+add_executable (test-ref-vector.run test-ref-vector.cxx)
+target_link_libraries (test-ref-vector.run blas Base)
+
