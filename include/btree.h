@@ -96,7 +96,7 @@ namespace std {
 
       void insert(NodeType& nd) {
         NodeType *present=pRoot;
-        int cmp,pflag=0;
+        int cmp;
         while(present!=NULL) {
           cmp=compare(*(nd.ptr2key()),*(present->ptr2key()));
           if(cmp==0) {

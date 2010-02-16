@@ -47,7 +47,7 @@ namespace std {
   /**
    * @brief \c int type one
    */
-  static double dOne=1.;
+  static const double dOne=1.;
 
   /**
    * @brief \c unsigned \c int type zero

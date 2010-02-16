@@ -19,13 +19,13 @@ namespace std {
 
       typedef RObjType ParentType;
 
-      refObject() : ParentType(), rNode() {}
+      refObject() : ParentType(), rNode() { rNode.SetChainAllocFlag(false); }
 
       refObject(const Type& O) {
         myError("Cannot create from reference object");
       }
 
-      ~refObject() { rNode.clear(); }
+      ~refObject() { clear(); }
 
       Type& operator=(const Type& O) {
         static_cast<ParentType*>(this)->operator=(
@@ -45,7 +45,7 @@ namespace std {
 
       void clear() {
         static_cast<ParentType*>(this)->clear();
-        rNode.remove_self();
+        if(rNode.parent()!=NULL)  rNode.remove_self();
       }
 
       virtual void refer(ObjectWStorage<SObjType>& O) = 0;
