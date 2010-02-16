@@ -33,3 +33,6 @@ target_link_libraries (test-hash-func.run Base)
 add_executable (test-var-matrix-rectangle.run test-var-matrix-rectangle.cxx)
 target_link_libraries (test-var-matrix-rectangle.run blas Base)
 
+add_executable (test-fix-matrix-rectangle.run test-fix-matrix-rectangle.cxx)
+target_link_libraries (test-fix-matrix-rectangle.run blas Base)
+
