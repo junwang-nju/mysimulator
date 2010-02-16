@@ -19,7 +19,9 @@ namespace std {
       typedef ObjectWStorage<RectMatrixBase<T,varVector> >
               ParentType;
 
-      varRectMatrix() : ParentType() {}
+      varRectMatrix() : ParentType() {
+        this->info().allocate(RectangleNumberItems);
+      }
 
       varRectMatrix(const unsigned int M, const unsigned int N,
                     const int Order=COrder, const int Trans=NoTranspose)
@@ -70,7 +72,7 @@ namespace std {
             this->structure()[i].refer(this->data(),n,N);
         } else if(this->MatrixActualOrder()==FortranOrder) {
           this->structure().allocate(N);
-          for(unsigned int i=0,m=0;i<N;++i,m+=N)
+          for(unsigned int i=0,m=0;i<N;++i,m+=M)
             this->structure()[i].refer(this->data(),m,M);
         } else myError("improper order for rectangle matrix");
       }

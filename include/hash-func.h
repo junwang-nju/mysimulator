@@ -7,8 +7,6 @@
 #ifndef _Hash_Function_H_
 #define _Hash_Function_H_
 
-#include "error-proc.h"
-
 namespace std {
   unsigned int hash_rs(const char* str, unsigned int nchar);
   unsigned int hash_js(const char* str, unsigned int nchar);

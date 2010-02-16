@@ -45,7 +45,7 @@ namespace std {
     TriangleNumberItems
   };
   template <typename T, unsigned int MType, template<typename> class VecType>
-  class MatrixBase : DataPack<T,VecType,VecType,VecType> {
+  class MatrixBase : public DataPack<T,VecType,VecType,VecType> {
     public:
       typedef T   DataType;
       typedef MatrixBase<T,MType,VecType>   Type;
@@ -61,14 +61,7 @@ namespace std {
       MatrixBase(const Type& MB) {
         myError("Cannot create from Matrix base");
       }
-      virtual ~MatrixBase() {
-        getElem=NULL;
-        this->info()[NumberColumns]=uZero;
-        this->info()[NumberRows]=uZero;
-        this->info()[ActualOrder]=UnknownOrder;
-        this->info()[TransposeState]=UnknowTranspose;
-        this->info()[ExpectOrder]=UnknownOrder;
-      }
+      virtual ~MatrixBase() { clear(); }
       Type& operator=(const Type& MB) {
         unsigned int m=(NumRow()<MB.NumRow()?NumRow():MB.NumRow());
         unsigned int n=(NumCol()<MB.NumCol()?NumCol():MB.NumCol());
@@ -80,15 +73,10 @@ namespace std {
       Type& operator=(const T& D) { this->data()=D; return *this; }
       void clear() {
         getElem=NULL;
-        this->info()[NumberColumns]=uZero;
-        this->info()[NumberRows]=uZero;
-        this->info()[ActualOrder]=UnknownOrder;
-        this->info()[TransposeState]=UnknowTranspose;
-        this->info()[ExpectOrder]=UnknownOrder;
         static_cast<ParentType*>(this)->clear();
       }
-      const unsigned int& NumRow() const { return this->info()[NumberRows]; }
-      const unsigned int& NumCol() const {
+      const unsigned int NumRow() const { return this->info()[NumberRows]; }
+      const unsigned int NumCol() const {
         return this->info()[NumberColumns];
       }
       const int& MatrixOrder() const { return this->info()[ExpectOrder]; }
@@ -98,21 +86,26 @@ namespace std {
       const int& MatrixActualOrder() const {
         return this->info()[ActualOrder];
       }
+    protected:
       void SetSize(const unsigned int NR, const unsigned int NC) {
         this->info()[NumberRows]=NR;
         this->info()[NumberColumns]=NC;
       }
       void SetOrder(const int Ord) { this->info()[ExpectOrder]=Ord; }
-      void SetTranpose(const int Trans) { this->info()[TransposeState]=Trans; }
+      void SetTransposeState(const int Trans) {
+        this->info()[TransposeState]=Trans;
+      }
       void SetActualOrder(const int AOrd) { this->info()[ActualOrder]=AOrd; }
       void AssignGetMethod(const GetElemFuncType& iGMethod) {
         getElem=iGMethod;
       }
+    public:
       T& operator()(const unsigned int I, const unsigned int J) {
         return getElem(this->structure(),I,J,OtherElems);
       }
       const T& operator()(const unsigned int I, const unsigned int J) const {
-        return getElem(this->structure(),I,J,OtherElems);
+        return getElem(const_cast<VecType<refVector<T> >&>(this->structure()),
+                       I,J,const_cast<T&>(OtherElems));
       }
   };
   template <typename T, unsigned int MType, template<typename> class VecType>

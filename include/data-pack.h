@@ -55,7 +55,7 @@ namespace std {
 
       const InfVecType<int>& info() const { return Info; }
 
-      virtual const char* type() = 0;
+      virtual const char* type() const = 0;
 
   };
 
