@@ -39,3 +39,6 @@ target_link_libraries (test-fix-matrix-rectangle.run blas Base)
 add_executable (test-ref-matrix-rectangle.run test-ref-matrix-rectangle.cxx)
 target_link_libraries (test-ref-matrix-rectangle.run blas Base)
 
+add_executable (test-var-parameter-key.run test-var-parameter-key.cxx)
+target_link_libraries (test-var-parameter-key.run blas)
+
