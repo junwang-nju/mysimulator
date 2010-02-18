@@ -49,6 +49,18 @@ namespace std {
         clearHashTree();
       }
 
+      VecType<varParameterKey>& keylist() { return KeyList; }
+
+      const VecType<varParameterKey>& keylist() const { return KeyList; }
+
+      VecType<varParameterValue>& valuelist() { return ValueList; }
+
+      const VecType<varParameterValue>& valuelist() const { return ValueList; }
+
+      refVector<NodeType>& hashtree() { return HashTree; }
+      
+      const refVector<NodeType>& hashtree() const { return HashTree; }
+
     protected:
 
       void clearHashTree() {
@@ -79,8 +91,11 @@ namespace std {
 
   template <template <typename> class VecType>
   istream& operator>>(istream& is, ParameterListBase<VecType>& PL) {
-    unsigned int n=PL.KeyList.size();
-    for(unsigned int i=0;i<n;++i) is>>PL.KeyList[i]>>PL.ValueList[i];
+    unsigned int n=PL.keylist().size();
+    for(unsigned int i=0;i<n;++i) {
+      is>>PL.keylist()[i]>>PL.valuelist()[i];
+      PL.keylist()[i].BuildHash();
+    }
     PL.updateHashTree();
     return is;
   }
