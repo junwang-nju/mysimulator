@@ -7,12 +7,20 @@ using namespace std;
 int main() {
   refParameterKey rPK;
   varParameterKey vPK;
+  cout<<"Test -- set size of index"<<endl;
   vPK.SetIndexSize(3);
+  cout<<endl;
+
+  cout<<"Test -- refer to variable parameter key"<<endl;
   rPK.refer(vPK);
   cout<<rPK.index().size()<<endl;
+  cout<<endl;
+
+  cout<<"Test -- refer to reference parameter key"<<endl;
   refParameterKey rPK2;
   rPK2.refer(rPK);
   cout<<rPK2.index().size()<<endl;
+  cout<<endl;
 
   cout<<"Test -- assign through index"<<endl;
   rPK.index()[0]=1.;
@@ -20,11 +28,13 @@ int main() {
   rPK.index()[2]=0;
   cout<<endl;
 
+  cout<<"Test -- assign reference parameter key"<<endl;
   varParameterKey vPK2;
   vPK2.SetIndexSize(3);
   vPK2.BuildHash();
   rPK2.refer(vPK2);
   rPK2=rPK;
+  cout<<endl;
 
   cout<<"Test -- read hash"<<endl;
   cout<<rPK2.hash()<<endl;
@@ -44,8 +54,4 @@ int main() {
 
   return 1;
 }
-
-
-/*
-  */
 

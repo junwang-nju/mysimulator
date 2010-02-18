@@ -31,7 +31,7 @@ namespace std {
         myError("Cannot create with variable parameter list");
       }
 
-      virtual ~varParameterList() { this->clear(); }
+      virtual ~varParameterList() {}
 
       Type& operator=(const Type& P) {
         static_cast<ParentType*>(this)->operator=(
