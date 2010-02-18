@@ -54,6 +54,8 @@ namespace std {
    */
   static unsigned int   uZero=0U;
 
+  static const unsigned int   uOne=1U;
+
   /**
    * @brief minimal \c double value relative to \c double type one
    *

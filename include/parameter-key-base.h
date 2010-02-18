@@ -72,7 +72,7 @@ namespace std {
   template <template <typename> class IdVecA, template <typename> class IdVecB>
   int compare(const ParameterKeyBase<IdVecA>& PA,
               const ParameterKeyBase<IdVecB>& PB) {
-    unsigned int n=PA.hash.size();
+    unsigned int n=PA.hash().size();
     assert(n==PB.hash().size());
     for(unsigned int i=0;i<PA.hash().size();++i)
       if(PA.hash()[i]!=PB.hash()[i])  return (PA.hash()[i]>PB.hash()[i]?1:-1);

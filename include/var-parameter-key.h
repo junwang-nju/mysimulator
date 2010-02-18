@@ -28,7 +28,7 @@ namespace std {
         myError("Cannot create with variable parameter key");
       }
 
-      virtual ~varParameterKey() { clear(); }
+      virtual ~varParameterKey() { this->clear(); }
 
       Type& operator=(const Type& P) {
         static_cast<ParentType*>(this)->operator=(
