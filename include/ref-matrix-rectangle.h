@@ -50,6 +50,7 @@ namespace std {
       }
 
       virtual void refer(ParentType& rRM) {
+        if(this->data().IsAvailable()) this->RefInfo().remove_self();
         this->data().refer(rRM.data());
         this->structure().refer(rRM.structure());
         this->info().refer(rRM.info());
@@ -58,6 +59,7 @@ namespace std {
       }
 
       virtual void refer(ObjectWStorage<RectMatrixBase<T,VecType> >& M) {
+        if(this->data().IsAvailable()) this->RefInfo().remove_self();
         this->data().refer(M.data());
         this->structure().refer(M.structure());
         this->info().refer(M.info());

@@ -23,36 +23,29 @@ int main() {
   varParameterKey vPK2;
   vPK2.SetIndexSize(3);
   vPK2.BuildHash();
-  cout<<"=============================="<<endl;
   rPK2.refer(vPK2);
-  cout<<"=============================="<<endl;
-  //rPK2=rPK;
+  rPK2=rPK;
+
+  cout<<"Test -- read hash"<<endl;
+  cout<<rPK2.hash()<<endl;
+  cout<<endl;
+
+  cout<<"Test -- read from cin"<<endl;
+  cin>>rPK;
+  cout<<rPK.index()<<endl;
+  cout<<rPK.hash()<<endl;
+  cout<<endl;
+
+  cout<<"Test -- clear"<<endl;
+  rPK.clear();
+  cout<<rPK.index().size()<<endl;
+  cout<<rPK.hash().size()<<endl;
+  cout<<endl;
 
   return 1;
 }
 
 
 /*
-  cout<<"Test -- assign through another key"<<endl;
-  vPK1=vPK;
-  cout<<vPK1.index()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- read hash"<<endl;
-  cout<<vPK1.hash()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- read from cin"<<endl;
-  cin>>vPK;
-  vPK1=vPK;
-  cout<<vPK1.index()<<endl;
-  cout<<vPK1.hash()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- clear"<<endl;
-  vPK1.clear();
-  cout<<vPK1.index().size()<<endl;
-  cout<<vPK1.hash().size()<<endl;
-  cout<<endl;
   */
 

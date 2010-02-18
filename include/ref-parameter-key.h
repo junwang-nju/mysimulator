@@ -33,19 +33,17 @@ namespace std {
       }
 
       virtual void refer(ParentType& P) {
+        if(this->index().IsAvailable()) this->RefInfo().remove_self();
         this->index().refer(P.index());
         this->hash().refer(P.hash());
         P.RefInfo().add_before(this->RefInfo());
       }
 
       virtual void refer(ObjectWStorage<ParameterKeyBase<varVector> >& P) {
-        cout<<"=============A============="<<endl;
+        if(this->index().IsAvailable()) this->RefInfo().remove_self();
         this->index().refer(P.index());
-        cout<<"=============B============="<<endl;
         this->hash().refer(P.hash());
-        cout<<"=============C============="<<endl;
         P.RefList().append(this->RefInfo());
-        cout<<"=============D============="<<endl;
       }
 
   };
