@@ -33,8 +33,9 @@ namespace std {
         return *this;
       }
 
-      template <unsigned int iMType, template<typename> class iVecType>
-      Type& operator=(const MatrixBase<T,iMType,iVecType>& M) {
+      template <unsigned int iMType, template<typename> class iVecType,
+                unsigned int iNInf>
+      Type& operator=(const MatrixBase<T,iMType,iVecType,iNInf>& M) {
         static_cast<ParentType*>(this)->operator=(M);
         return *this;
       }
@@ -53,7 +54,7 @@ namespace std {
         if(this->data().IsAvailable()) this->RefInfo().remove_self();
         this->data().refer(rRM.data());
         this->structure().refer(rRM.structure());
-        this->info().refer(rRM.info());
+        this->info()=rRM.info();
         this->SetGetMethod();
         rRM.RefInfo().add_before(this->RefInfo());
       }
@@ -62,7 +63,36 @@ namespace std {
         if(this->data().IsAvailable()) this->RefInfo().remove_self();
         this->data().refer(M.data());
         this->structure().refer(M.structure());
-        this->info().refer(M.info());
+        this->info()=M.info();
+        this->SetGetMethod();
+        M.RefList().append(this->RefInfo());
+      }
+
+      void refer(ParentType& rRM, unsigned int off, unsigned int sz) {
+        assert(off+sz<=rRM.structure().size());
+        if(this->data().IsAvailable()) this->RefInfo().remove_self();
+        unsigned int nl=rRM.structure()[0].size();
+        this->data().refer(rRM.data(),off*nl,sz*nl);
+        this->structure().refer(rRM.structure(),off,sz);
+        this->info()=rRM.info();
+        if(this->MatrixActualOrder()==COrder) this->info()[NumberRows]=sz;
+        else if(this->MatrixActualOrder()==FortranOrder)  this->info()[NumberColumns]=sz;
+        else myError("improper order for rectangle matrix");
+        this->SetGetMethod();
+        rRM.RefInfo().add_before(this->RefInfo());
+      }
+
+      void refer(ObjectWStorage<RectMatrixBase<T,VecType> >& M,
+                 unsigned int off, unsigned int sz) {
+        assert(off+sz<=M.structure().size());
+        if(this->data().IsAvailable()) this->RefInfo().remove_self();
+        unsigned int nl=M.structure()[0].size();
+        this->data().refer(M.data(),off*nl,sz*nl);
+        this->structure().refer(M.structure(),off,sz);
+        this->info()=M.info();
+        if(this->MatrixActualOrder()==COrder) this->info()[NumberRows]=sz;
+        else if(this->MatrixActualOrder()==FortranOrder)  this->info()[NumberColumns]=sz;
+        else myError("improper order for rectangle matrix");
         this->SetGetMethod();
         M.RefList().append(this->RefInfo());
       }

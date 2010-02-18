@@ -87,6 +87,23 @@ int main() {
   }
   cout<<endl;
 
+  cout<<"Test -- refer part of reference rectangle matrix"<<endl;
+  refRectMatrix<double> rDM3;
+  rDM3.refer(rdM,1,2);
+  for(unsigned int i=0;i<rDM3.NumRow();++i) {
+    for(unsigned int j=0;j<rDM3.NumCol();++j) cout<<rDM3(i,j)<<"\t";
+    cout<<endl;
+  }
+  cout<<endl;
+
+  cout<<"Test -- refer part of storable reference rectangle matrix"<<endl;
+  rdM2.refer(fdM,2,2);
+  cout<<rdM2.NumRow()<<"\t\t"<<rdM2.NumCol()<<endl;
+  cout<<rdM2.MatrixOrder()<<"\t";
+  cout<<rdM2.MatrixTransposeState()<<"\t";
+  cout<<rdM2.MatrixActualOrder()<<endl;
+  cout<<endl;
+
   cout<<"Test -- clear"<<endl;
   rdM.clear();
   cout<<endl;

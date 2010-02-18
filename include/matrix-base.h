@@ -44,12 +44,13 @@ namespace std {
     TrianglePart,
     TriangleNumberItems
   };
-  template <typename T, unsigned int MType, template<typename> class VecType>
-  class MatrixBase : public DataPack<T,VecType,VecType,VecType> {
+  template <typename T, unsigned int MType, template<typename> class VecType,
+            unsigned int NInf>
+  class MatrixBase : public DataPack<T,VecType,VecType,NInf> {
     public:
       typedef T   DataType;
-      typedef MatrixBase<T,MType,VecType>   Type;
-      typedef DataPack<T,VecType,VecType,VecType> ParentType;
+      typedef MatrixBase<T,MType,VecType,NInf>   Type;
+      typedef DataPack<T,VecType,VecType,NInf> ParentType;
       typedef T& (*GetElemFuncType)(VecType<refVector<T> >&,
                                     unsigned int,unsigned int,T&);
     protected:
@@ -108,8 +109,9 @@ namespace std {
                        I,J,const_cast<T&>(OtherElems));
       }
   };
-  template <typename T, unsigned int MType, template<typename> class VecType>
-  const unsigned int MatrixBase<T,MType,VecType>::MatType=MType;
+  template <typename T, unsigned int MType, template<typename> class VecType,
+            unsigned int NInf>
+  const unsigned int MatrixBase<T,MType,VecType,NInf>::MatType=MType;
 }
 
 #endif

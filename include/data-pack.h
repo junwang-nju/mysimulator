@@ -3,12 +3,13 @@
 #define _Data_Pack_H_
 
 #include "ref-vector.h"
+#include "fix-vector.h"
 
 namespace std {
 
   template <typename T, template<typename> class DataVecType,
                         template<typename> class StructVecType,
-                        template<typename> class InfVecType>
+                        unsigned int NInf>
   class DataPack {
 
     public:
@@ -17,7 +18,7 @@ namespace std {
 
       typedef refVector<T>  LineType;
 
-      typedef DataPack<T,DataVecType,StructVecType,InfVecType>  Type;
+      typedef DataPack<T,DataVecType,StructVecType,NInf>  Type;
 
     protected:
 
@@ -25,14 +26,13 @@ namespace std {
 
       StructVecType<LineType> Struct;
 
-      InfVecType<int> Info;
+      fixVector<int,NInf> Info;
 
     public:
 
       DataPack() : Data(), Struct(), Info() {
         assert(DataVecType<T>::IsVector);
         assert(StructVecType<LineType>::IsVector);
-        assert(InfVecType<int>::IsVector);
       }
 
       DataPack(const Type& DP) { myError("Cannot create from data pack"); }
@@ -41,7 +41,7 @@ namespace std {
 
       Type& operator=(const Type& DP) { return *this; }
 
-      void clear() { Data.clear(); Struct.clear(); Info.clear(); }
+      void clear() { Data.clear(); Struct.clear(); }
 
       DataVecType<T>& data() { return Data; }
 
@@ -51,9 +51,9 @@ namespace std {
 
       const StructVecType<LineType>& structure() const { return Struct; }
 
-      InfVecType<int>& info() { return Info; }
+      fixVector<int,NInf>& info() { return Info; }
 
-      const InfVecType<int>& info() const { return Info; }
+      const fixVector<int,NInf>& info() const { return Info; }
 
       virtual const char* type() const = 0;
 

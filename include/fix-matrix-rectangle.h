@@ -40,15 +40,12 @@ namespace std {
 
       fixVector<refVector<T>,NLines>  inStruct;
 
-      fixVector<int,RectangleNumberItems> inInfo;
-
     public:
 
       fixRectMatrix() : ParentType() {
         assert(NLines>0);
         this->data().refer(inData);
         this->structure().refer(inStruct);
-        this->info().refer(inInfo);
         for(unsigned int i=0,n=0;i<NLines;++i,n+=NMerInLine)
           this->structure()[i].refer(this->data(),n,NMerInLine);
         this->SetSize(NRow,NCol);
@@ -69,8 +66,9 @@ namespace std {
         return *this;
       }
 
-      template <unsigned int iMType, template<typename> class iVecType>
-      Type& operator=(const MatrixBase<T,iMType,iVecType>& M) {
+      template <unsigned int iMType, template<typename> class iVecType,
+                unsigned int iNInf>
+      Type& operator=(const MatrixBase<T,iMType,iVecType,iNInf>& M) {
         static_cast<ParentType*>(this)->operator=(M);
         return *this;
       }

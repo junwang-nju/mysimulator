@@ -23,13 +23,14 @@ namespace std {
   };
 
   template <typename T, template<typename> class VecType>
-  class RectMatrixBase : public MatrixBase<T,Rectangle,VecType> {
+  class RectMatrixBase
+    : public MatrixBase<T,Rectangle,VecType,RectangleNumberItems> {
 
     public:
 
       typedef RectMatrixBase<T,VecType>   Type;
 
-      typedef MatrixBase<T,Rectangle,VecType>   ParentType;
+      typedef MatrixBase<T,Rectangle,VecType,RectangleNumberItems>   ParentType;
 
       RectMatrixBase() : ParentType() {}
 
@@ -45,8 +46,8 @@ namespace std {
         return *this;
       }
 
-      template <unsigned int iMType, template<typename> class iVecType>
-      Type& operator=(const MatrixBase<T,iMType,iVecType>& V) {
+      template <unsigned int iMType, template<typename> class iVecType, unsigned int iNInf>
+      Type& operator=(const MatrixBase<T,iMType,iVecType,iNInf>& V) {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }

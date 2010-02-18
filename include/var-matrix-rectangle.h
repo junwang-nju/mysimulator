@@ -19,9 +19,7 @@ namespace std {
       typedef ObjectWStorage<RectMatrixBase<T,varVector> >
               ParentType;
 
-      varRectMatrix() : ParentType() {
-        this->info().allocate(RectangleNumberItems);
-      }
+      varRectMatrix() : ParentType() {}
 
       varRectMatrix(const unsigned int M, const unsigned int N,
                     const int Order=COrder, const int Trans=NoTranspose)
@@ -41,8 +39,9 @@ namespace std {
         return *this;
       }
 
-      template <unsigned int iMType, template<typename> class iVecType>
-      Type& operator=(const MatrixBase<T,iMType,iVecType>& M) {
+      template <unsigned int iMType, template<typename> class iVecType,
+                unsigned int iNInf>
+      Type& operator=(const MatrixBase<T,iMType,iVecType,iNInf>& M) {
         static_cast<ParentType*>(this)->operator=(M);
         return *this;
       }
@@ -60,7 +59,6 @@ namespace std {
       void allocate(const unsigned int M, const unsigned int N,
                     const int Order=COrder, const int Trans=NoTranspose) {
         this->clear();
-        this->info().allocate(RectangleNumberItems);
         this->SetSize(M,N);
         this->SetOrder(Order);
         this->SetTransposeState(Trans);
