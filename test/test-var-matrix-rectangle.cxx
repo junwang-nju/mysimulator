@@ -54,29 +54,20 @@ int main() {
 
   cout<<"Test -- assign with constant"<<endl;
   dM=5.;
-  for(unsigned int i=0;i<dM.NumRow();++i) {
-    for(unsigned int j=0;j<dM.NumCol();++j) cout<<dM(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<dM<<endl;
   cout<<endl;
 
   cout<<"Test -- assign with another matrix"<<endl;
   varRectMatrix<double> dM2(3,5);
   dM2=dM;
-  for(unsigned int i=0;i<dM2.NumRow();++i) {
-    for(unsigned int j=0;j<dM2.NumCol();++j) cout<<dM2(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<dM2<<endl;
   cout<<endl;
 
   cout<<"Test -- assign with a vector"<<endl;
   varVector<double> dV(15);
   for(unsigned int i=0;i<dV.size();++i) dV[i]=i+1;
   dM=dV;
-  for(unsigned int i=0;i<dM.NumRow();++i) {
-    for(unsigned int j=0;j<dM.NumCol();++j) cout<<dM(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<dM<<endl;
   cout<<endl;
 
   cout<<"Test -- type"<<endl;
@@ -87,10 +78,7 @@ int main() {
   for(unsigned int i=0;i<dM.NumRow();++i)
   for(unsigned int j=0;j<dM.NumCol();++j)
     dM(i,j)=i+j;
-  for(unsigned int i=0;i<dM.NumRow();++i) {
-    for(unsigned int j=0;j<dM.NumCol();++j) cout<<dM(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<dM<<endl;
   cout<<endl;
 
   cout<<"Test -- clear"<<endl;

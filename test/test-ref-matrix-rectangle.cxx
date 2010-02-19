@@ -43,34 +43,22 @@ int main() {
 
   cout<<"Test -- assign with constant"<<endl;
   rdM=5.;
-  for(unsigned int i=0;i<rdM.NumRow();++i) {
-    for(unsigned int j=0;j<rdM.NumCol();++j) cout<<rdM(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<rdM<<endl;
   cout<<endl;
 
   cout<<"Test -- assign with another matrix"<<endl;
   rdM(1,2)=3;
   rdM2=rdM;
-  for(unsigned int i=0;i<rdM2.NumRow();++i) {
-    for(unsigned int j=0;j<rdM2.NumCol();++j) cout<<rdM2(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<rdM2<<endl;
   cout<<endl;
 
   cout<<"Test -- assign with a vector for various orders of matrix"<<endl;
   varVector<double> dV(15);
   for(unsigned int i=0;i<dV.size();++i) dV[i]=i+1;
   rdM2=dV;
-  for(unsigned int i=0;i<rdM2.NumRow();++i) {
-    for(unsigned int j=0;j<rdM2.NumCol();++j) cout<<rdM2(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<rdM2<<endl;
   rdM=dV;
-  for(unsigned int i=0;i<rdM.NumRow();++i) {
-    for(unsigned int j=0;j<rdM.NumCol();++j) cout<<rdM(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<rdM<<endl;
   cout<<endl;
 
   cout<<"Test -- type"<<endl;
@@ -81,23 +69,18 @@ int main() {
   for(unsigned int i=0;i<rdM.NumRow();++i)
   for(unsigned int j=0;j<rdM.NumCol();++j)
     rdM(i,j)=i+j;
-  for(unsigned int i=0;i<rdM.NumRow();++i) {
-    for(unsigned int j=0;j<rdM.NumCol();++j) cout<<rdM(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<rdM<<endl;
   cout<<endl;
 
   cout<<"Test -- refer part of reference rectangle matrix"<<endl;
   refRectMatrix<double> rDM3;
   rDM3.refer(rdM,1,2);
-  for(unsigned int i=0;i<rDM3.NumRow();++i) {
-    for(unsigned int j=0;j<rDM3.NumCol();++j) cout<<rDM3(i,j)<<"\t";
-    cout<<endl;
-  }
+  cout<<rDM3<<endl;
   cout<<endl;
 
   cout<<"Test -- refer part of storable reference rectangle matrix"<<endl;
   rdM2.refer(fdM,2,2);
+  cout<<rdM2<<endl;
   cout<<rdM2.NumRow()<<"\t\t"<<rdM2.NumCol()<<endl;
   cout<<rdM2.MatrixOrder()<<"\t";
   cout<<rdM2.MatrixTransposeState()<<"\t";

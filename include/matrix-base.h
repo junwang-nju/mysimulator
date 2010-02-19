@@ -112,6 +112,19 @@ namespace std {
   template <typename T, unsigned int MType, template<typename> class VecType,
             unsigned int NInf>
   const unsigned int MatrixBase<T,MType,VecType,NInf>::MatType=MType;
+  template <typename T, unsigned int MType, template<typename> class VecType,
+            unsigned int NInf>
+  ostream& operator<<(ostream& os, const MatrixBase<T,MType,VecType,NInf>& M) {
+    unsigned int m=M.NumRow(), n=M.NumCol();
+    os<<M(0,0);
+    for(unsigned int j=1;j<n;++j) os<<"\t"<<M(0,j);
+    for(unsigned int i=1;i<m;++i) {
+      os<<endl;
+      os<<M(i,0);
+      for(unsigned int j=1;j<n;++j) os<<"\t"<<M(i,j);
+    }
+    return os;
+  }
 }
 
 #endif
