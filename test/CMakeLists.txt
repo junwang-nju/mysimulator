@@ -51,3 +51,5 @@ target_link_libraries (test-var-parameter-list.run blas Base)
 add_executable (test-ref-parameter-list.run test-ref-parameter-list.cxx)
 target_link_libraries (test-ref-parameter-list.run blas Base)
 
+add_executable (test-free-space.run test-free-space.cxx)
+target_link_libraries (test-free-space.run blas Base)
