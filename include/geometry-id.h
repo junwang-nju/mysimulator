@@ -5,7 +5,8 @@
 namespace std {
 
   enum GeometryID {
-    FreeSpaceType=0
+    FreeSpaceType=0,
+    PeriodicBoxType
   };
 
 }

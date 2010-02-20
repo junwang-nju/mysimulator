@@ -11,7 +11,7 @@ namespace std {
 
     public:
 
-      static const unsigned int Type;
+      static const unsigned int TypeID;
 
       FreeSpace() {}
 
@@ -25,7 +25,7 @@ namespace std {
 
   };
 
-  const unsigned int FreeSpace::Type=FreeSpaceType;
+  const unsigned int FreeSpace::TypeID=FreeSpaceType;
 
   void DisplacementFunc(const VectorBase<double>& va,
                         const VectorBase<double>& vb, VectorBase<double>& Dsp,

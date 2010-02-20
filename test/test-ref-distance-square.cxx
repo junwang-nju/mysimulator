@@ -7,6 +7,7 @@
 using namespace std;
 
 int main() {
+  cout<<"Test -- refer to var ot fix distance-sq functor"<<endl;
   refDistanceSq<> rDS;
   varDistanceSq vDS;
   vDS.allocate(3);

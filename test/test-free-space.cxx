@@ -11,7 +11,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- type id of geometry"<<endl;
-  cout<<FS.Type<<endl;
+  cout<<FS.TypeID<<endl;
   cout<<endl;
 
   cout<<"Test -- func to calculate displacement"<<endl;
