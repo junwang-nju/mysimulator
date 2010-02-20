@@ -44,6 +44,8 @@ namespace std {
         return *this;
       }
 
+      void clear() {}
+
   };
 
 }

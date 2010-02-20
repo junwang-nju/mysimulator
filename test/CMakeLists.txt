@@ -72,3 +72,12 @@ target_link_libraries (test-fix-periodic-box.run blas Base)
 add_executable (test-ref-periodic-box.run test-ref-periodic-box.cxx)
 target_link_libraries (test-ref-periodic-box.run blas Base)
 
+add_executable (test-var-distance-square-eval-direct.run test-var-distance-square-eval-direct.cxx)
+target_link_libraries (test-var-distance-square-eval-direct.run blas Base)
+
+add_executable (test-ref-distance-square-eval-direct.run test-ref-distance-square-eval-direct.cxx)
+target_link_libraries (test-ref-distance-square-eval-direct.run blas Base)
+
+add_executable (test-fix-distance-square-eval-direct.run test-fix-distance-square-eval-direct.cxx)
+target_link_libraries (test-fix-distance-square-eval-direct.run blas Base)
+

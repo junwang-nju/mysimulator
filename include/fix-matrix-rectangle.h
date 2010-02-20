@@ -83,7 +83,7 @@ namespace std {
         return *this;
       }
 
-      void clear() { myError("fix rectangle matrix cannot be cleared!"); }
+      void clear() {}
 
       virtual const char* type() const { return "fixed rectangle matrix"; }
 
