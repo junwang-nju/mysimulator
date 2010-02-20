@@ -24,7 +24,7 @@ namespace std {
 
     public:
 
-      fixDistanceSq() : ParentType() { displacement().refer(DspData); }
+      fixDistanceSq() : ParentType() { runDisplacement().refer(DspData); }
 
       fixDistanceSq(const Type& fD) {
         myError("Cannot create from fixed distance-square functor");
@@ -35,6 +35,12 @@ namespace std {
       Type& operator=(const Type& fD) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(fD));
+        return *this;
+      }
+
+      template <template <typename> class iVecType>
+      Type& operator=(const DistanceSqBase<iVecType>& D) {
+        static_cast<ParentType*>(this)->operator=(D);
         return *this;
       }
 

@@ -30,7 +30,15 @@ namespace std {
         return *this;
       }
 
-      void allocate(const unsigned int Dim) { displacement().allocate(Dim); }
+      template <template <typename> class iVecType>
+      Type& operator=(const DistanceSqBase<iVecType>& D) {
+        static_cast<ParentType*>(this)->operator=(D);
+        return *this;
+      }
+
+      void allocate(const unsigned int Dim) {
+        runDisplacement().allocate(Dim);
+      }
 
   };
 

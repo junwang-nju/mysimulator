@@ -57,3 +57,9 @@ target_link_libraries (test-free-space.run blas Base)
 add_executable (test-var-distance-square.run test-var-distance-square.cxx)
 target_link_libraries (test-var-distance-square.run blas Base)
 
+add_executable (test-fix-distance-square.run test-fix-distance-square.cxx)
+target_link_libraries (test-fix-distance-square.run blas Base)
+
+add_executable (test-ref-distance-square.run test-ref-distance-square.cxx)
+target_link_libraries (test-ref-distance-square.run blas Base)
+

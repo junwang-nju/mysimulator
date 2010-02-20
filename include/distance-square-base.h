@@ -32,7 +32,7 @@ namespace std {
         return *this;
       }
 
-      VecType<double>& displacement() { return Displacement; }
+      VecType<double>& runDisplacement() { return Displacement; }
 
       const VecType<double>& displacement() const { return Displacement; }
 

@@ -34,15 +34,21 @@ namespace std {
         return *this;
       }
 
+      template <template <typename> class iVecType>
+      Type& operator=(const DistanceSqBase<iVecType>& D) {
+        static_cast<ParentType*>(this)->operator=(D);
+        return *this;
+      }
+
       virtual void refer(ParentType& rD) {
         if(this->displacement().IsAvailable())  this->RefInfo().remove_self();
-        this->displacement().refer(rD.displacement());
+        this->runDisplacement().refer(rD.runDisplacement());
         rD.RefInfo().add_before(this->RefInfo());
       }
 
       virtual void refer(ObjectWStorage<DistanceSqBase<VecType> >& D) {
         if(this->displacement().IsAvailable())  this->RefInfo().remove_self();
-        this->displacement().refer(D.displacement());
+        this->runDisplacement().refer(D.runDisplacement());
         D.RefList().append(this->RefInfo());
       }
 
