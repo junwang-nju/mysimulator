@@ -27,7 +27,7 @@ namespace std {
 
   const unsigned int FreeSpace::Type=FreeSpaceType;
 
-  void CalcDisplacement(const VectorBase<double>& va,
+  void DisplacementFunc(const VectorBase<double>& va,
                         const VectorBase<double>& vb, VectorBase<double>& Dsp,
                         const FreeSpace& FS) {
     DirectDisplacement(va,vb,Dsp);

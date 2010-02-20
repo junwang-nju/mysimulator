@@ -6,13 +6,21 @@ using namespace std;
 
 int main() {
   FreeSpace FS,FS1;
+  cout<<"Test -- assign with another free-space geometry"<<endl;
   FS=FS1;
+  cout<<endl;
+
+  cout<<"Test -- type id of geometry"<<endl;
   cout<<FS.Type<<endl;
+  cout<<endl;
+
+  cout<<"Test -- func to calculate displacement"<<endl;
   varVector<double> va(3),vb(3),v(3);
   va=5;
   vb=7; vb[2]=9;
-  CalcDisplacement(va,vb,v,FS);
+  DisplacementFunc(va,vb,v,FS);
   cout<<v<<endl;
+  cout<<endl;
   return 1;
 }
 

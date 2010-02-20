@@ -39,9 +39,15 @@ namespace std {
       void clear() { Displacement.clear(); }
 
       template <typename GeomType>
-      double operator()(const VectorBase<double>& va,
-                        const VectorBase<double>& vb, GeomType& Geo) {
-        CalcDisplacement(va,vb,Displacement,Geo);
+      void CalcDisplacement(const VectorBase<double>& va,
+                            const VectorBase<double>& vb, const GeomType& Geo){
+        DisplacementFunc(va,vb,Displacement,Geo);
+      }
+
+      template <typename GeomType>
+      double Calc(const VectorBase<double>& va, const VectorBase<double>& vb,
+                  const GeomType& Geo) {
+        CalcDisplacement(va,vb,Geo);
         return normSQ(Displacement);
       }
 
