@@ -46,7 +46,8 @@ namespace std {
         return *this;
       }
 
-      template <unsigned int iMType, template<typename> class iVecType, unsigned int iNInf>
+      template <unsigned int iMType, template<typename> class iVecType,
+                unsigned int iNInf>
       Type& operator=(const MatrixBase<T,iMType,iVecType,iNInf>& V) {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;

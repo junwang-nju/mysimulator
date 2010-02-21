@@ -272,6 +272,35 @@ namespace std {
         return *this;
       }
 
+      template <template <typename> class iVecType>
+      Type& operator=(const TriangMatrixBase<T,iVecType>& TMB) {
+        assert(this->IsSymmetry()==TMB.IsSymmetry());
+        assert(this->IsDiagonalExisted()==TMB.IsDiagonalExisted());
+        if(this->IsSymmetry()) {
+          bool fg1,fg2,fg3;
+          fg1=(this->MatrixActualOrder()==TMB.MatrixActualOrder())&&
+              (this->MatrixActualOrder()==DiagonalOrder);
+          fg2=(this->MatrixActualOrder()!=DiagonalOrder)&&
+              (TMB.MatrixActualOrder()!=DiagonalOrder)&&
+              (this->MatrixActualOrder()!=TMB.MatrixActualOrder())&&
+              (this->MatrixActualTrianglePart()!=
+               TMB.MatrixActualTrianglePart());
+          fg3=(this->MatrixActualOrder()==TMB.MatrixActualOrder())&&
+              (this->MatrixActualOrder()!=DiagonalOrder)&&
+              (this->MatrixActualTrianglePart()==
+               TMB.MatrixActualTrianglePart());
+          assert(fg1||fg2||fg3);
+        } else {
+          assert(this->MatrixActualOrder()==TMB.MatrixActualOrder());
+          assert(this->MatrixActualTrianglePart()==
+                 TMB.MatrixActualTrianglePart());
+        }
+        static_cast<ParentType*>(this)->operator=(
+            static_cast<const MatrixBase<T,Triangle,iVecType,
+                                         TriangleNumberItems>&>(TMB));
+        return *this;
+      }
+
       Type& operator=(const VectorBase<T>& V) {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;

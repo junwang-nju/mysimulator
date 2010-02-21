@@ -40,6 +40,12 @@ namespace std {
         return *this;
       }
 
+      template <template <typename> class VecType>
+      Type& operator=(const TriangMatrixBase<T,VecType>& TM) {
+        static_cast<ParentType*>(this)->operator=(TM);
+        return *this;
+      }
+
       Type& operator=(const VectorBase<T>& V) {
         static_cast<ParentType*>(this)->operator=(V);
         return *this;

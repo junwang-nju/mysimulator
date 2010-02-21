@@ -69,6 +69,15 @@ namespace std {
         for(unsigned int j=0;j<n;++j) operator()(i,j)=MB(i,j);
         return *this;
       }
+      template <unsigned int iMType, template<typename> class iVecType,
+                unsigned int iNInf>
+      Type& operator=(const MatrixBase<T,iMType,iVecType,iNInf>& MB) {
+        unsigned int m=(NumRow()<MB.NumRow()?NumRow():MB.NumRow());
+        unsigned int n=(NumCol()<MB.NumCol()?NumCol():MB.NumCol());
+        for(unsigned int i=0;i<m;++i)
+        for(unsigned int j=0;j<n;++j) operator()(i,j)=MB(i,j);
+        return *this;
+      }
       Type& operator=(const VectorBase<T>& V) { this->data()=V; return *this; }
       Type& operator=(const T& D) { this->data()=D; return *this; }
       void clear() {

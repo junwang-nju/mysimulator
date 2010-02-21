@@ -76,7 +76,8 @@ namespace std {
         this->structure().refer(rRM.structure(),off,sz);
         this->info()=rRM.info();
         if(this->MatrixActualOrder()==COrder) this->info()[NumberRows]=sz;
-        else if(this->MatrixActualOrder()==FortranOrder)  this->info()[NumberColumns]=sz;
+        else if(this->MatrixActualOrder()==FortranOrder)
+          this->info()[NumberColumns]=sz;
         else myError("improper order for rectangle matrix");
         this->SetGetMethod();
         rRM.RefInfo().add_before(this->RefInfo());
@@ -91,7 +92,8 @@ namespace std {
         this->structure().refer(M.structure(),off,sz);
         this->info()=M.info();
         if(this->MatrixActualOrder()==COrder) this->info()[NumberRows]=sz;
-        else if(this->MatrixActualOrder()==FortranOrder)  this->info()[NumberColumns]=sz;
+        else if(this->MatrixActualOrder()==FortranOrder)
+          this->info()[NumberColumns]=sz;
         else myError("improper order for rectangle matrix");
         this->SetGetMethod();
         M.RefList().append(this->RefInfo());
