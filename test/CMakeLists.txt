@@ -81,3 +81,6 @@ target_link_libraries (test-ref-distance-square-eval-direct.run blas Base)
 add_executable (test-fix-distance-square-eval-direct.run test-fix-distance-square-eval-direct.cxx)
 target_link_libraries (test-fix-distance-square-eval-direct.run blas Base)
 
+add_executable (test-var-triangle-matrix.run test-var-triangle-matrix.cxx)
+target_link_libraries (test-var-triangle-matrix.run blas Base)
+

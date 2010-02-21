@@ -26,6 +26,11 @@ namespace std {
     NoTranspose,
     WithTranspose
   };
+  enum MatrixSymmetryType {
+    UnknownSymmetry=-1,
+    NoSymmetry=0,
+    WithSymmetry
+  };
   enum CommonInfoItems {
     ExpectOrder=0,
     TransposeState,
@@ -37,12 +42,6 @@ namespace std {
   enum SquareInfoItems {
     SquareDimension=NumberCommonItems,
     SquareNumberItems
-  };
-  enum TriangleInfoItems {
-    TriangleDimension=NumberCommonItems,
-    SymmetryFlag,
-    TrianglePart,
-    TriangleNumberItems
   };
   template <typename T, unsigned int MType, template<typename> class VecType,
             unsigned int NInf>
