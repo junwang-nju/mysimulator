@@ -354,6 +354,8 @@ namespace std {
         this->info()[ActualTrianglePart]=ulstate;
       }
 
+      const unsigned int Dimension() const { return this->NumRow(); }
+
     protected:
 
       void SetGetMethod() {
