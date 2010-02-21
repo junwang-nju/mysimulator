@@ -323,14 +323,66 @@ namespace std {
           else if(this->MatrixOrder()==DiagonalOrder)
             this->SetActualOrder(DiagonalOrder);
           else myError("matrix order is not proper");
+          if(MatrixTrianglePart()==UpperPart) SetActualTrianglePart(LowerPart);
+          else if(MatrixActualTrianglePart()==LowerPart)
+            SetActualTrianglePart(UpperPart);
+          else myError("unknow triangle part flag");
         } else myError("unknown mode of transpose state for matrix");
-        /*
-        if(this->MatrixActualOrder()==COrder)
-          this->AssignGetMethod(getCData<T,VecType>);
-        else if(this->MatrixActualOrder()==FortranOrder)
-          this->AssignGetMethod(getFortranData<T,VecType>);
-        else myError("improper actual order for matrix rectangle more");
-        */
+        if(this->MatrixActualOrder()==COrder) {
+          if(IsDiagonalExisted()) {
+            if(MatrixActualTrianglePart()==UpperPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getCDUSData<T,VecType>);
+              else              this->AssignGetMethod(getCDUNData<T,VecType>);
+            } else if(MatrixActualTrianglePart()=LowerPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getCDLSData<T,VecType>);
+              else              this->AssignGetMethod(getCDLNData<T,VecType>);
+            } else myError("unknow triangle part flag");
+          } else {
+            if(MatrixActualTrianglePart()==UpperPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getCNUSData<T,VecType>);
+              else              this->AssignGetMethod(getCNUNData<T,VecType>);
+            } else if(MatrixTrianglePart()=LowerPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getCNLSData<T,VecType>);
+              else              this->AssignGetMethod(getCNLNData<T,VecType>);
+            } else myError("unknow triangle part flag");
+          }
+        } else if(this->MatrixActualOrder()==FortranOrder) {
+          if(IsDiagonalExisted()) {
+            if(MatrixActualTrianglePart()==UpperPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getFDUSData<T,VecType>);
+              else              this->AssignGetMethod(getFDUNData<T,VecType>);
+            } else if(MatrixActualTrianglePart()=LowerPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getFDLSData<T,VecType>);
+              else              this->AssignGetMethod(getFDLNData<T,VecType>);
+            } else myError("unknow triangle part flag");
+          } else {
+            if(MatrixActualTrianglePart()==UpperPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getFNUSData<T,VecType>);
+              else              this->AssignGetMethod(getFNUNData<T,VecType>);
+            } else if(MatrixTrianglePart()=LowerPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getFNLSData<T,VecType>);
+              else              this->AssignGetMethod(getFNLNData<T,VecType>);
+            } else myError("unknow triangle part flag");
+          }
+        } else if(this->MatrixActualOrder()=DiagonalOrder) {
+          if(IsDiagonalExisted()) {
+            if(MatrixActualTrianglePart()==UpperPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getDDUSData<T,VecType>);
+              else              this->AssignGetMethod(getDDUNData<T,VecType>);
+            } else if(MatrixActualTrianglePart()=LowerPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getDDLSData<T,VecType>);
+              else              this->AssignGetMethod(getDDLNData<T,VecType>);
+            } else myError("unknow triangle part flag");
+          } else {
+            if(MatrixActualTrianglePart()==UpperPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getDNUSData<T,VecType>);
+              else              this->AssignGetMethod(getDNUNData<T,VecType>);
+            } else if(MatrixTrianglePart()=LowerPart) {
+              if(IsSymmetry())  this->AssignGetMethod(getDNLSData<T,VecType>);
+              else              this->AssignGetMethod(getDNLNData<T,VecType>);
+            } else myError("unknow triangle part flag");
+          }
+        }
       }
 
   };

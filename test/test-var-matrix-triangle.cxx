@@ -1,5 +1,5 @@
 
-#include "matrix-triangle-base.h"
+#include "var-matrix-triangle.h"
 #include <iostream>
 using namespace std;
 
