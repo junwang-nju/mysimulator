@@ -87,3 +87,6 @@ target_link_libraries (test-var-matrix-triangle.run blas Base)
 add_executable (test-ref-matrix-triangle.run test-ref-matrix-triangle.cxx)
 target_link_libraries (test-ref-matrix-triangle.run blas Base)
 
+add_executable (test-fix-matrix-triangle.run test-fix-matrix-triangle.cxx)
+target_link_libraries (test-fix-matrix-triangle.run blas Base)
+

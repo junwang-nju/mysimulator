@@ -253,7 +253,7 @@ namespace std {
         assert(this->IsSymmetry()==TMB.IsSymmetry());
         assert(this->IsDiagonalExisted()==TMB.IsDiagonalExisted());
         if(this->IsSymmetry()) {
-          bool fg1,fg2;
+          bool fg1,fg2,fg3;
           fg1=(this->MatrixActualOrder()==TMB.MatrixActualOrder())&&
               (this->MatrixActualOrder()==DiagonalOrder);
           fg2=(this->MatrixActualOrder()!=DiagonalOrder)&&
@@ -261,7 +261,11 @@ namespace std {
               (this->MatrixActualOrder()!=TMB.MatrixActualOrder())&&
               (this->MatrixActualTrianglePart()!=
                TMB.MatrixActualTrianglePart());
-          assert(fg1||fg2);
+          fg3=(this->MatrixActualOrder()==TMB.MatrixActualOrder())&&
+              (this->MatrixActualOrder()!=DiagonalOrder)&&
+              (this->MatrixActualTrianglePart()==
+               TMB.MatrixActualTrianglePart());
+          assert(fg1||fg2||fg3);
         } else {
           assert(this->MatrixActualOrder()==TMB.MatrixActualOrder());
           assert(this->MatrixActualTrianglePart()==
