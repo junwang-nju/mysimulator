@@ -1,40 +1,31 @@
 
-#ifndef _Fixed_Rectangle_Matrix_H_
-#define _Fixed_Rectangle_Matrix_H_
+#ifndef _Fixed_Matrix_Rectangle_H_
+#define _Fixed_Matrix_Rectangle_H_
 
 #include "matrix-rectangle-base.h"
-#include "object-with-storage.h"
 #include "fix-vector.h"
 #include <cassert>
 
 namespace std {
 
   template <typename T, unsigned int NRow, unsigned int NCol,
-                        int Ord=COrder, int Transp=NoTranspose,
-            int DOrd=
-              (Transp==NoTranspose?Ord:
-              (Transp==WithTranspose?(Ord==COrder?FortranOrder:
-                                     (Ord==FortranOrder?COrder:UnknownOrder)):
-              UnknownOrder)),
+                        int Order=COrder, int Trans=NoTranspose,
             unsigned int NLines=
-              (Transp==NoTranspose?
-                    (Ord==COrder?NRow:(Ord==FortranOrder?NCol:0U)):
-              (Transp==WithTranspose?
-                    (Ord==COrder?NCol:(Ord==FortranOrder?NRow:0U)):0U)),
-            unsigned int NMerInLine=
-              (Transp==NoTranspose?
-                    (Ord==COrder?NCol:(Ord==FortranOrder?NRow:0U)):
-              (Transp==WithTranspose?
-                    (Ord==COrder?NRow:(Ord==FortranOrder?NCol:0U)):0U))>
-  class fixRectMatrix : public ObjectWStorage<RectMatrixBase<T,refVector> > {
+              (Trans==NoTranspose?
+                  (Order==COrder?NRow:(Order==FortranOrder?NCol:0U)):
+              (Trans==WithTranspose?
+                  (Order==COrder?NCol:(Order==FortranOrder?NRow:0U)):0U))>
+  class fixMatrixRectangle : public RectMatrixBase<T,refVector> {
 
     public:
 
-      typedef fixRectMatrix<T,NRow,NCol,Ord,Transp> Type;
+      typedef fixMatrixRectangle<T,NRow,NCol,Order,Trans,NLines> Type;
 
-      typedef ObjectWStorage<RectMatrixBase<T,refVector> >  ParentType;
+      typedef RectMatrixBase<T,refVector> ParentType;
 
     protected:
+
+      static const unsigned int NMerInLines;
 
       fixVector<T,NRow*NCol>  inData;
 
@@ -42,23 +33,23 @@ namespace std {
 
     public:
 
-      fixRectMatrix() : ParentType() {
+      fixMatrixRectangle() : ParentType() {
         assert(NLines>0);
         this->data().refer(inData);
         this->structure().refer(inStruct);
-        for(unsigned int i=0,n=0;i<NLines;++i,n+=NMerInLine)
-          this->structure()[i].refer(this->data(),n,NMerInLine);
+        for(unsigned int i=0,n=0;i<NLines;++i,n+=NMerInLines)
+          this->structure()[i].refer(this->data(),n,NMerInLines);
         this->SetSize(NRow,NCol);
-        this->SetOrder(Ord);
-        this->SetTransposeState(Transp);
+        this->SetOrder(Order);
+        this->SetTransposeState(Trans);
         this->SetGetMethod();
       }
 
-      fixRectMatrix(const Type& fRM) {
+      fixMatrixRectangle(const Type&) {
         myError("Cannot create from fixed rectangle matrix");
       }
 
-      virtual ~fixRectMatrix() {}
+      virtual ~fixMatrixRectangle() {}
 
       Type& operator=(const Type& fRM) {
         static_cast<ParentType*>(this)->operator=(
@@ -66,7 +57,7 @@ namespace std {
         return *this;
       }
 
-      template <unsigned int iMType, template<typename> class iVecType,
+      template <unsigned int iMType, template <typename> class iVecType,
                 unsigned int iNInf>
       Type& operator=(const MatrixBase<T,iMType,iVecType,iNInf>& M) {
         static_cast<ParentType*>(this)->operator=(M);
@@ -85,9 +76,18 @@ namespace std {
 
       void clear() {}
 
-      virtual const char* type() const { return "fixed rectangle matrix"; }
+      virtual const char* type() const { return "Fixed Rectangle Matrix"; }
 
   };
+
+  template <typename T, unsigned int NRow, unsigned int NCol,
+                        int Order, int Trans, unsigned int NLines>
+  const unsigned int
+  fixMatrixRectangle<T,NRow,NCol,Order,Trans,NLines>::NMerInLines=
+      (Trans==NoTranspose?
+          (Order==COrder?NCol:(Order==FortranOrder?NRow:0U)):
+      (Trans==WithTranspose?
+          (Order==COrder?NRow:(Order==FortranOrder?NCol:0U)):0U));
 
 }
 

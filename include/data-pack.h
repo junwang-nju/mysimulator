@@ -14,8 +14,6 @@ namespace std {
 
     public:
 
-      typedef T DataType;
-
       typedef refVector<T>  LineType;
 
       typedef DataPack<T,DataVecType,StructVecType,NInf>  Type;

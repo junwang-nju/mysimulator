@@ -3,18 +3,21 @@
 #define _Matrix_Rectangle_H_
 
 #include "matrix-base.h"
+#include "matrix-format-id.h"
+#include "matrix-data-order-id.h"
+#include "matrix-transpose-id.h"
 
 namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCData(VecType<refVector<T> >& Ls, unsigned int I,
-                     unsigned int J, T& Other) {
+                     unsigned int J, T* Other) {
     return Ls[I][J];
   }
 
   template <typename T, template<typename> class VecType>
   static T& getFortranData(VecType<refVector<T> >& Ls, unsigned int I,
-                           unsigned int J, T& Other) {
+                           unsigned int J, T* Other) {
     return Ls[J][I];
   }
 
@@ -30,11 +33,11 @@ namespace std {
 
       typedef RectMatrixBase<T,VecType>   Type;
 
-      typedef MatrixBase<T,Rectangle,VecType,RectangleNumberItems>   ParentType;
+      typedef MatrixBase<T,Rectangle,VecType,RectangleNumberItems>  ParentType;
 
       RectMatrixBase() : ParentType() {}
 
-      RectMatrixBase(const Type& RMB) {
+      RectMatrixBase(const Type&) {
         myError("Cannot create from rectangle matrix base");
       }
 

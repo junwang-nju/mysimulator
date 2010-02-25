@@ -3,12 +3,13 @@
 #define _Matrix_Triangle_Base_H_
 
 #include "matrix-base.h"
+#include <cassert>
 
 namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCDUSData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T& Other) {
+                       unsigned int J, T* Other) {
     unsigned int rI=I,rJ=J;
     if(rI>rJ) { rI=J; rJ=I; }
     return Ls[rI][rJ-rI];
@@ -16,15 +17,15 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCDUNData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T& Other) {
+                       unsigned int J, T* Other) {
     unsigned int rI=I,rJ=J;
-    if(rI>rJ) return Other;
+    if(rI>rJ) return { assert(Other); return *Other; }
     return Ls[rI][rJ-rI];
   }
 
   template <typename T, template<typename> class VecType>
   static T& getCDLSData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T& Other) {
+                       unsigned int J, T* Other) {
     unsigned int rI=I,rJ=J;
     if(rI<rJ) { rI=J; rJ=I; }
     return Ls[rI][rJ];
@@ -32,16 +33,16 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCDLNData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T& Other) {
+                       unsigned int J, T* Other) {
     unsigned int rI=I,rJ=J;
-    if(rI<rJ) return Other;
+    if(rI<rJ) return { assert(Other); return *Other; }
     return Ls[rI][rJ];
   }
 
   template <typename T, template<typename> class VecType>
   static T& getCNUSData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T& Other) {
-    if(I==J)  return Other;
+                       unsigned int J, T* Other) {
+    if(I==J)  { assert(Other); return *Other; }
     unsigned int rI=I,rJ=J;
     if(rI>rJ) { rI=J; rJ=I; }
     return Ls[rI][rJ-rI-1];
@@ -49,8 +50,8 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCNUNData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T& Other) {
-    if(I==J)  return Other;
+                       unsigned int J, T* Other) {
+    if(I==J)  { assert(Other); return *Other; }
     unsigned int rI=I,rJ=J;
     if(rI>rJ) return Other;
     return Ls[rI][rJ-rI-1];
@@ -58,8 +59,8 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCNLSData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T& Other) {
-    if(I==J)  return Other;
+                       unsigned int J, T* Other) {
+    if(I==J)  { assert(Other); return *Other; }
     unsigned int rI=I,rJ=J;
     if(rI<rJ) { rI=J; rJ=I; }
     return Ls[rI-1][rJ];
@@ -67,10 +68,10 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCNLNData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T& Other) {
-    if(I==J)  return Other;
+                       unsigned int J, T* Other) {
+    if(I==J)  { assert(Other); return *Other; }
     unsigned int rI=I,rJ=J;
-    if(rI<rJ) return Other;
+    if(rI<rJ) { assert(Other); return *Other; }
     return Ls[rI-1][rJ];
   }
 

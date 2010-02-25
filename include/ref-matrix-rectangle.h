@@ -1,31 +1,27 @@
 
-#ifndef _Reference_Rectangle_Matrix_H_
-#define _Reference_Rectangle_Matrix_H_
+#ifndef _Reference_Matrix_Rectangle_H_
+#define _Reference_Matrix_Rectangle_H_
 
 #include "matrix-rectangle-base.h"
-#include "ref-object.h"
-#include "var-vector.h"
 
 namespace std {
 
-  template <typename T, template<typename> class VecType=varVector>
-  class refRectMatrix
-    : public refObject<RectMatrixBase<T,refVector>,RectMatrixBase<T,VecType> >{
+  template <typename T>
+  class refMatrixRectangle : public RectMatrixBase<T,refVector> {
 
     public:
 
-      typedef refRectMatrix<T,VecType>  Type;
+      typedef refMatrixRectangle<T>   Type;
 
-      typedef refObject<RectMatrixBase<T,refVector>,RectMatrixBase<T,VecType> >
-              ParentType;
+      typedef RectMatrixBase<T,refVector> ParentType;
 
-      refRectMatrix() : ParentType() {}
+      refMatrixRectangle() : ParentType() {}
 
-      refRectMatrix(const Type& rRM) {
+      refMatrixRectangle(const Type&) {
         myError("Cannot create from reference rectangle matrix");
       }
 
-      ~refRectMatrix() {}
+      ~refMatrixRectangle() {}
 
       Type& operator=(const Type& rRM) {
         static_cast<ParentType*>(this)->operator=(
@@ -33,7 +29,7 @@ namespace std {
         return *this;
       }
 
-      template <unsigned int iMType, template<typename> class iVecType,
+      template <unsigned int iMType, template <typename> class iVecType,
                 unsigned int iNInf>
       Type& operator=(const MatrixBase<T,iMType,iVecType,iNInf>& M) {
         static_cast<ParentType*>(this)->operator=(M);
@@ -50,56 +46,31 @@ namespace std {
         return *this;
       }
 
-      virtual void refer(ParentType& rRM) {
-        if(this->data().IsAvailable()) this->RefInfo().remove_self();
-        this->data().refer(rRM.data());
-        this->structure().refer(rRM.structure());
-        this->info()=rRM.info();
+      template <template <typename> class iVecType>
+      void refer(const RectMatrixBase<T,iVecType>& RMB) {
+        this->data().refer(RMB.data());
+        this->structure().refer(RMB.structure());
+        this->info()=RMB.info();
         this->SetGetMethod();
-        rRM.RefInfo().add_before(this->RefInfo());
       }
 
-      virtual void refer(ObjectWStorage<RectMatrixBase<T,VecType> >& M) {
-        if(this->data().IsAvailable()) this->RefInfo().remove_self();
-        this->data().refer(M.data());
-        this->structure().refer(M.structure());
-        this->info()=M.info();
-        this->SetGetMethod();
-        M.RefList().append(this->RefInfo());
-      }
-
-      void refer(ParentType& rRM, unsigned int off, unsigned int sz) {
-        assert(off+sz<=rRM.structure().size());
-        if(this->data().IsAvailable()) this->RefInfo().remove_self();
-        unsigned int nl=rRM.structure()[0].size();
-        this->data().refer(rRM.data(),off*nl,sz*nl);
-        this->structure().refer(rRM.structure(),off,sz);
-        this->info()=rRM.info();
-        if(this->MatrixActualOrder()==COrder) this->info()[NumberRows]=sz;
+      template <template <typename> class iVecType>
+      void refer(const RectMatrixBase<T,iVecType>& RMB,
+                 const unsigned int off, const unsigned int size) {
+        unsigned int nl=RMB.structure()[0].size();
+        this->data().refer(RMB.data(),off*nl,size*nl);
+        this->structure().refer(RMB.structure(),off,size);
+        this->info()=RMB.info();
+        if(this->MatrixActualOrder()==COrder)
+          this->info()[NumberRows]=size;
         else if(this->MatrixActualOrder()==FortranOrder)
-          this->info()[NumberColumns]=sz;
-        else myError("improper order for rectangle matrix");
+          this->info()[NumberColumns]=size;
+        else
+          myError("Improper Order for Rectangle Matrix");
         this->SetGetMethod();
-        rRM.RefInfo().add_before(this->RefInfo());
       }
 
-      void refer(ObjectWStorage<RectMatrixBase<T,VecType> >& M,
-                 unsigned int off, unsigned int sz) {
-        assert(off+sz<=M.structure().size());
-        if(this->data().IsAvailable()) this->RefInfo().remove_self();
-        unsigned int nl=M.structure()[0].size();
-        this->data().refer(M.data(),off*nl,sz*nl);
-        this->structure().refer(M.structure(),off,sz);
-        this->info()=M.info();
-        if(this->MatrixActualOrder()==COrder) this->info()[NumberRows]=sz;
-        else if(this->MatrixActualOrder()==FortranOrder)
-          this->info()[NumberColumns]=sz;
-        else myError("improper order for rectangle matrix");
-        this->SetGetMethod();
-        M.RefList().append(this->RefInfo());
-      }
-
-      virtual const char* type() const { return "reference rectangle matrix"; }
+      virtual const char* type() const { return "Reference Rectangle Matrix"; }
 
   };
 
