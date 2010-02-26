@@ -3,13 +3,17 @@
 #define _Matrix_Triangle_Base_H_
 
 #include "matrix-base.h"
+#include "matrix-format-id.h"
+#include "matrix-data-order-id.h"
+#include "matrix-transpose-id.h"
+#include "matrix-symmetry-id.h"
 #include <cassert>
 
 namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCDUSData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T* Other) {
+                       unsigned int J, T& Other) {
     unsigned int rI=I,rJ=J;
     if(rI>rJ) { rI=J; rJ=I; }
     return Ls[rI][rJ-rI];
@@ -17,15 +21,15 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCDUNData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T* Other) {
+                       unsigned int J, T& Other) {
     unsigned int rI=I,rJ=J;
-    if(rI>rJ) return { assert(Other); return *Other; }
+    if(rI>rJ) return Other;
     return Ls[rI][rJ-rI];
   }
 
   template <typename T, template<typename> class VecType>
   static T& getCDLSData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T* Other) {
+                       unsigned int J, T& Other) {
     unsigned int rI=I,rJ=J;
     if(rI<rJ) { rI=J; rJ=I; }
     return Ls[rI][rJ];
@@ -33,16 +37,16 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCDLNData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T* Other) {
+                       unsigned int J, T& Other) {
     unsigned int rI=I,rJ=J;
-    if(rI<rJ) return { assert(Other); return *Other; }
+    if(rI<rJ) return Other;
     return Ls[rI][rJ];
   }
 
   template <typename T, template<typename> class VecType>
   static T& getCNUSData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T* Other) {
-    if(I==J)  { assert(Other); return *Other; }
+                       unsigned int J, T& Other) {
+    if(I==J)  return Other;
     unsigned int rI=I,rJ=J;
     if(rI>rJ) { rI=J; rJ=I; }
     return Ls[rI][rJ-rI-1];
@@ -50,8 +54,8 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCNUNData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T* Other) {
-    if(I==J)  { assert(Other); return *Other; }
+                       unsigned int J, T& Other) {
+    if(I==J)  return Other;
     unsigned int rI=I,rJ=J;
     if(rI>rJ) return Other;
     return Ls[rI][rJ-rI-1];
@@ -59,8 +63,8 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCNLSData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T* Other) {
-    if(I==J)  { assert(Other); return *Other; }
+                       unsigned int J, T& Other) {
+    if(I==J)  return Other;
     unsigned int rI=I,rJ=J;
     if(rI<rJ) { rI=J; rJ=I; }
     return Ls[rI-1][rJ];
@@ -68,10 +72,10 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCNLNData(VecType<refVector<T> >& Ls, unsigned int I,
-                       unsigned int J, T* Other) {
-    if(I==J)  { assert(Other); return *Other; }
+                       unsigned int J, T& Other) {
+    if(I==J)  return Other;
     unsigned int rI=I,rJ=J;
-    if(rI<rJ) { assert(Other); return *Other; }
+    if(rI<rJ) return Other;
     return Ls[rI-1][rJ];
   }
 
@@ -213,10 +217,11 @@ namespace std {
 
   enum TriangleInfoItems {
     TriangleDimension=NumberCommonItems,
-    DiagonalExisted,
+    DiagonalFlag,
     SymmetryFlag,
     TrianglePart,
     ActualTrianglePart,
+    DataPattern,
     TriangleNumberItems
   };
 
@@ -230,6 +235,13 @@ namespace std {
     UnknownTrianglePart=-1,
     UpperPart,
     LowerPart
+  };
+
+  enum TriangleDataPatternType {
+    UnknownPattern=-1,
+    DiagType,
+    CUppType,
+    FUppType
   };
 
   template <typename T, template <typename> class VecType>
@@ -253,21 +265,9 @@ namespace std {
       Type& operator=(const Type& TMB) {
         assert(this->IsSymmetry()==TMB.IsSymmetry());
         assert(this->IsDiagonalExisted()==TMB.IsDiagonalExisted());
-        if(this->IsSymmetry()) {
-          bool fg1,fg2,fg3;
-          fg1=(this->MatrixActualOrder()==TMB.MatrixActualOrder())&&
-              (this->MatrixActualOrder()==DiagonalOrder);
-          fg2=(this->MatrixActualOrder()!=DiagonalOrder)&&
-              (TMB.MatrixActualOrder()!=DiagonalOrder)&&
-              (this->MatrixActualOrder()!=TMB.MatrixActualOrder())&&
-              (this->MatrixActualTrianglePart()!=
-               TMB.MatrixActualTrianglePart());
-          fg3=(this->MatrixActualOrder()==TMB.MatrixActualOrder())&&
-              (this->MatrixActualOrder()!=DiagonalOrder)&&
-              (this->MatrixActualTrianglePart()==
-               TMB.MatrixActualTrianglePart());
-          assert(fg1||fg2||fg3);
-        } else {
+        if(this->IsSymmetry())
+          assert(MatrixDataPattern()==TMB.MatrixDataPattern());
+        else {
           assert(this->MatrixActualOrder()==TMB.MatrixActualOrder());
           assert(this->MatrixActualTrianglePart()==
                  TMB.MatrixActualTrianglePart());
@@ -281,21 +281,9 @@ namespace std {
       Type& operator=(const TriangMatrixBase<T,iVecType>& TMB) {
         assert(this->IsSymmetry()==TMB.IsSymmetry());
         assert(this->IsDiagonalExisted()==TMB.IsDiagonalExisted());
-        if(this->IsSymmetry()) {
-          bool fg1,fg2,fg3;
-          fg1=(this->MatrixActualOrder()==TMB.MatrixActualOrder())&&
-              (this->MatrixActualOrder()==DiagonalOrder);
-          fg2=(this->MatrixActualOrder()!=DiagonalOrder)&&
-              (TMB.MatrixActualOrder()!=DiagonalOrder)&&
-              (this->MatrixActualOrder()!=TMB.MatrixActualOrder())&&
-              (this->MatrixActualTrianglePart()!=
-               TMB.MatrixActualTrianglePart());
-          fg3=(this->MatrixActualOrder()==TMB.MatrixActualOrder())&&
-              (this->MatrixActualOrder()!=DiagonalOrder)&&
-              (this->MatrixActualTrianglePart()==
-               TMB.MatrixActualTrianglePart());
-          assert(fg1||fg2||fg3);
-        } else {
+        if(this->IsSymmetry())
+          assert(MatrixDataPattern()==TMB.MatrixDataPattern());
+        else {
           assert(this->MatrixActualOrder()==TMB.MatrixActualOrder());
           assert(this->MatrixActualTrianglePart()==
                  TMB.MatrixActualTrianglePart());
@@ -332,18 +320,18 @@ namespace std {
       }
 
       const bool IsDiagonalExisted() const {
-        return this->info()[DiagonalExisted]==WithDiagonal;
+        return this->info()[DiagonalFlag]==WithDiagonal;
       }
 
       void SetDiagonalState(const bool dflag) {
-        this->info()[DiagonalExisted]=(dflag?WithDiagonal:NullDiagonal);
+        this->info()[DiagonalFlag]=(dflag?WithDiagonal:NullDiagonal);
       }
 
       const unsigned int MatrixTrianglePart() const {
         return this->info()[TrianglePart];
       }
 
-      void SetTrianglePart(const unsigned int ulstate) {
+      void SetTrianglePart(const int ulstate) {
         this->info()[TrianglePart]=ulstate;
       }
 
@@ -351,8 +339,16 @@ namespace std {
         return this->info()[ActualTrianglePart];
       }
 
-      void SetActualTrianglePart(const unsigned int ulstate) {
+      void SetActualTrianglePart(const int ulstate) {
         this->info()[ActualTrianglePart]=ulstate;
+      }
+
+      const unsigned int MatrixDataPattern() const {
+        return this->info()[DataPattern];
+      }
+
+      void SetDataPattern(const int Pattern) {
+        this->info()[DataPattern]=Pattern;
       }
 
       const unsigned int Dimension() const { return this->NumRow(); }
@@ -363,7 +359,7 @@ namespace std {
         assert(this->MatrixOrder()>=0);
         assert(this->MatrixTransposeState()>=0);
         assert(this->info()[SymmetryFlag]>=0);
-        assert(this->info()[DiagonalExisted]>=0);
+        assert(this->info()[DiagonalFlag]>=0);
         assert(this->info()[TrianglePart]>=0);
         if(this->MatrixTransposeState()==NoTranspose) {
           this->SetActualOrder(this->MatrixOrder());
@@ -380,8 +376,25 @@ namespace std {
             SetActualTrianglePart(LowerPart);
           else if(MatrixTrianglePart()==LowerPart)
             SetActualTrianglePart(UpperPart);
-          else myError("unknow triangle part flag");
+          else myError("unknown triangle part flag");
         } else myError("unknown mode of transpose state for matrix");
+        if(this->IsSymmetry()) {
+          if(this->MatrixActualOrder()==DiagonalOrder)
+            SetDataPattern(DiagType);
+          else if(this->MatrixActualOrder()==COrder) {
+            if(this->MatrixTrianglePart()==UpperPart)
+              SetDataPattern(CUppType);
+            else if(this->MatrixTrianglePart()==LowerPart)
+              SetDataPattern(FUppType);
+            else myError("unknown triangle part flag");
+          } else if(this->MatrixActualOrder()==FortranOrder) {
+            if(this->MatrixTrianglePart()==UpperPart)
+              SetDataPattern(FUppType);
+            else if(this->MatrixTrianglePart()==LowerPart)
+              SetDataPattern(CUppType);
+            else myError("unknown triangle part flag");
+          }
+        } else SetDataPattern(UnknownPattern);
         if(this->MatrixActualOrder()==COrder) {
           if(IsDiagonalExisted()) {
             if(MatrixActualTrianglePart()==UpperPart) {

@@ -23,7 +23,7 @@ namespace std {
       typedef DataPack<T,VecType,VecType,NInf> ParentType;
 
       typedef T& (*GetElemFuncType)(VecType<refVector<T> >&,
-                                    unsigned int,unsigned int,T*);
+                                    unsigned int,unsigned int,T&);
 
     protected:
 
@@ -124,12 +124,12 @@ namespace std {
     public:
 
       T& operator()(const unsigned int I, const unsigned int J) {
-        return getElem(this->structure(),I,J,NULL);
+        return getElem(this->structure(),I,J,OtherElems);
       }
 
       const T& operator()(const unsigned int I, const unsigned int J) const {
         return getElem(const_cast<VecType<refVector<T> >&>(this->structure()),
-                       I,J,const_cast<T*>(&OtherElems));
+                       I,J,const_cast<T&>(OtherElems));
       }
 
   };

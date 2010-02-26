@@ -22,7 +22,7 @@ OK    geometry-id.h
 OK    hash-func.h
 MOD   matrix-base.h
 MOD   matrix-rectangle-base.h
-matrix-triangle-base.h
+MOD   matrix-triangle-base.h
 OK    memory.h
 object-with-storage.h
 pair-storage-base.h
@@ -42,7 +42,7 @@ OK    util.h
 var-distance-square-evaluate-direct.h
 var-distance-square.h
 MOD   var-matrix-rectangle.h
-var-matrix-triangle.h
+MOD   var-matrix-triangle.h
 var-parameter-key.h
 var-parameter-list.h
 var-parameter-value.h

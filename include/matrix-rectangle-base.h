@@ -11,13 +11,13 @@ namespace std {
 
   template <typename T, template<typename> class VecType>
   static T& getCData(VecType<refVector<T> >& Ls, unsigned int I,
-                     unsigned int J, T* Other) {
+                     unsigned int J, T& Other) {
     return Ls[I][J];
   }
 
   template <typename T, template<typename> class VecType>
   static T& getFortranData(VecType<refVector<T> >& Ls, unsigned int I,
-                           unsigned int J, T* Other) {
+                           unsigned int J, T& Other) {
     return Ls[J][I];
   }
 
