@@ -102,6 +102,10 @@ namespace std {
         return this->info()[ActualOrder];
       }
 
+      const T& OtherElements() const { return OtherElems; }
+
+      const GetElemFuncType& GetElementMethod() const { return getElem; }
+
     protected:
 
       void SetSize(const unsigned int NR, const unsigned int NC) {
@@ -120,6 +124,8 @@ namespace std {
       void AssignGetMethod(const GetElemFuncType& iGMethod) {
         getElem=iGMethod;
       }
+
+      void SetOtherElements(const T& OE) { OtherElems=OE; }
 
     public:
 

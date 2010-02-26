@@ -3,31 +3,25 @@
 #define _Reference_Matrix_Triangle_H_
 
 #include "matrix-triangle-base.h"
-#include "ref-vector.h"
-#include "var-vector.h"
 
 namespace std {
 
-  template <typename T, template <typename> class VecType=varVector>
-  class refTriangMatrix
-    : public refObject<TriangMatrixBase<T,refVector>,
-                       TriangMatrixBase<T,VecType> > {
+  template <typename T>
+  class refMatrixTriangle : public TriangMatrixBase<T,refVector> {
 
     public:
 
-      typedef refTriangMatrix<T,VecType>  Type;
+      typedef refMatrixTriangle<T>    Type;
 
-      typedef refObject<TriangMatrixBase<T,refVector>,
-                        TriangMatrixBase<T,VecType> >
-              ParentType;
+      typedef TriangMatrixBase<T,refVector>   ParentType;
 
-      refTriangMatrix() : ParentType() {}
+      refMatrixTriangle() : ParentType() {}
 
-      refTriangMatrix(const Type& rTM) {
+      refMatrixTriangle(const Type&) {
         myError("Cannot create from reference triangle matrix");
       }
 
-      virtual ~refTriangMatrix() {}
+      virtual ~refMatrixTriangle() {}
 
       Type& operator=(const Type& rTM) {
         static_cast<ParentType*>(this)->operator=(
@@ -51,25 +45,14 @@ namespace std {
         return *this;
       }
 
-      virtual void refer(ParentType& rTM) {
-        if(this->data().IsAvailable()) this->RefInfo().remove_self();
-        this->data().refer(rTM.data());
-        this->structure().refer(rTM.structure());
-        this->info()=rTM.info();
-        this->SetGetMethod();
-        rTM.RefInfo().add_before(this->RefInfo());
-      }
-
-      virtual void refer(ObjectWStorage<TriangMatrixBase<T,VecType> >& TM) {
-        if(this->data().IsAvailable()) this->RefInfo().remove_self();
+      template <template <typename> class iVecType>
+      void refer(const TriangMatrixBase<T,iVecType>& TM) {
         this->data().refer(TM.data());
         this->structure().refer(TM.structure());
         this->info()=TM.info();
-        this->SetGetMethod();
-        TM.RefList().append(this->RefInfo());
+        this->SetOtherElements(TM.OtherElements());
+        this->AssignGetMethod(TM.GetElementMethod());
       }
-
-      virtual const char* type() const { return "reference triangle matrix"; }
 
   };
 

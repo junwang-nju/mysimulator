@@ -69,16 +69,7 @@ namespace std {
         int n=(d*(d+1))/2;
         this->data().allocate(n);
         this->structure().allocate(d);
-        if((this->MatrixDataPattern()==CUppType)||
-           (this->MatrixDataPattern()==DiagType)) {
-          n=this->ActualDimension();
-          d=-1;
-        } else if(this->MatrixDataPattern()==FUppType) {
-          n=1;
-          d=1;
-        } else myError("Improper Data Pattern for triangle matrix");
-        for(unsigned int i=0,m=0;i<this->ActualDimension();++i,m+=n,n+=d)
-          this->structure()[i].refer(this->data(),m,n);
+        this->SetStructure();
       }
 
       virtual const char* type() const { return "Variable Triangle Matrix"; }

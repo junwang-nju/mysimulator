@@ -51,7 +51,7 @@ namespace std {
         this->data().refer(RMB.data());
         this->structure().refer(RMB.structure());
         this->info()=RMB.info();
-        this->SetGetMethod();
+        this->AssignGetMethod(RMB.GetElementMethod());
       }
 
       template <template <typename> class iVecType>
@@ -67,7 +67,7 @@ namespace std {
           this->info()[NumberColumns]=size;
         else
           myError("Improper Order for Rectangle Matrix");
-        this->SetGetMethod();
+        this->AssignGetMethod(RMB.GetElementMethod());
       }
 
       virtual const char* type() const { return "Reference Rectangle Matrix"; }

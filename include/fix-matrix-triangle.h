@@ -4,21 +4,19 @@
 
 #include "matrix-triangle-base.h"
 #include "fix-vector.h"
-#include "ref-vector.h"
 
 namespace std {
 
   template <typename T, unsigned int Dim, unsigned int DiagFlag=WithDiagonal,
             unsigned int ADim=(DiagFlag==WithDiagonal?Dim:
-                              (DiagFlag==NullDiagonal?Dim-1:0))>
-  class fixTriangMatrix
-    : public ObjectWStorage<TriangMatrixBase<T,refVector> > {
+                              (DiagFlag==NullDiagonal?Dim-1:0U))>
+  class fixMatrixTriangle : public TriangMatrixBase<T,refVector> {
 
     public:
 
-      typedef fixTriangMatrix<T,Dim,DiagFlag,ADim>  Type;
+      typedef fixMatrixTriangle<T,Dim,DiagFlag,ADim>  Type;
 
-      typedef ObjectWStorage<TriangMatrixBase<T,refVector> >  ParentType;
+      typedef TriangMatrixBase<T,refVector> ParentType;
 
     protected:
 
@@ -26,22 +24,26 @@ namespace std {
 
       fixVector<refVector<T>,ADim>    inStruct;
 
-    public:
-
-      fixTriangMatrix() : ParentType() {
-        assert(ADim>0);
-        this->data().refer(inData);
-        this->structure().refer(inStruct);
+      void initStatic() {
         this->SetSize(Dim,Dim);
         this->SetDiagonalState(DiagFlag);
         this->SetActualDimension(ADim);
+        this->data().refer(inData);
+        this->structure().refer(inStruct);
       }
 
-      fixTriangMatrix(const Type& fTM) {
+    public:
+
+      fixMatrixTriangle() : ParentType() {
+        assert(ADim>0);
+        initStatic();
+      }
+
+      fixMatrixTriangle(const Type&) {
         myError("Cannot create from fixed triangle matrix");
       }
 
-      virtual ~fixTriangMatrix() {}
+      virtual ~fixMatrixTriangle() {}
 
       Type& operator=(const Type& fTM) {
         static_cast<ParentType*>(this)->operator=(
@@ -50,7 +52,7 @@ namespace std {
       }
 
       template <template <typename> class iVecType>
-      Type& operator=(TriangMatrixBase<T,iVecType>& TM) {
+      Type& operator=(const TriangMatrixBase<T,iVecType>& TM) {
         static_cast<ParentType*>(this)->operator=(TM);
         return *this;
       }
@@ -65,44 +67,23 @@ namespace std {
         return *this;
       }
 
-      void SetStructure(const unsigned int Order=COrder,
-                        const unsigned int Trans=NoTranspose,
-                        const unsigned int Tripart=UpperPart,
-                        const bool SymFlag=true) {
+      void clear() {
+        static_cast<ParentType*>(this)->clear();
+        for(unsigned int i=0;i<ADim;++i)  inStruct[i].clear();
+        initStatic();
+      }
+
+      virtual const char* type() const { return "fixed triangle matrix"; }
+
+      void InitAs(const int Order=COrder, const int Trans=NoTranspose,
+                  const int Tripart=UpperPart, const bool SymFlag=true) {
         this->SetOrder(Order);
         this->SetTransposeState(Trans);
         this->SetTrianglePart(Tripart);
         this->SetSymmetryFlag(SymFlag);
         this->SetGetMethod();
-        unsigned int n,d;
-        if(this->MatrixActualOrder()==COrder) {
-          if(this->MatrixActualTrianglePart()==UpperPart) {
-            n=this->ActualDimension();
-            d=-1;
-          } else if(this->MatrixActualTrianglePart()==LowerPart) {
-            n=1;
-            d=1;
-          }
-        } else if(this->MatrixActualOrder()==FortranOrder) {
-          if(this->MatrixActualTrianglePart()==UpperPart) {
-            n=1;
-            d=1;
-          }
-          else if(this->MatrixActualTrianglePart()==LowerPart) {
-            n=this->ActualDimension();
-            d=-1;
-          }
-        } else if(this->MatrixActualOrder()==DiagonalOrder) {
-          n=this->ActualDimension();
-          d=-1;
-        } else myError("improper order for triangle matrix");
-        for(unsigned int i=0,m=0;i<this->ActualDimension();++i,m+=n,n+=d)
-          this->structure()[i].refer(this->data(),m,n);
+        this->SetStructure();
       }
-
-      void clear() {}
-
-      virtual const char* type() const { return "fixed triangle matrix"; }
 
   };
 

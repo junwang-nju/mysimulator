@@ -14,7 +14,7 @@ file
 fix-distance-square-evaluate-direct.h
 fix-distance-square.h
 MOD   fix-matrix-rectangle.h
-fix-matrix-triangle.h
+MOD   fix-matrix-triangle.h
 fix-periodic-box.h
 MOD   fix-vector.h
 free-space.h
