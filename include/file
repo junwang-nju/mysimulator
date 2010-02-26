@@ -5,14 +5,14 @@ chain.h
 chain-node.h
 OK    constant.h
 MOD   data-pack.h
-direct-displacement.h
-distance-square-base.h
-distance-square-evaluate-base.h
-distance-square-evaluate-direct-base.h
+MOD   direct-displacement.h
+MOD   distance-square-base.h
+MOD   distance-square-evaluate-base.h
+MOD   distance-square-evaluate-direct-base.h
 OK    error-proc.h
 file
-fix-distance-square-evaluate-direct.h
-fix-distance-square.h
+MOD   fix-distance-square-evaluate-direct.h
+RM    fix-distance-square.h
 MOD   fix-matrix-rectangle.h
 MOD   fix-matrix-triangle.h
 fix-periodic-box.h
@@ -26,11 +26,11 @@ MOD   matrix-triangle-base.h
 OK    memory.h
 object-with-storage.h
 pair-storage-base.h
-parameter-key-base.h
+MOD   parameter-key-base.h
 parameter-list-base.h
 periodic-box-base.h
-ref-distance-square-evaluate-direct.h
-ref-distance-square.h
+MOD   ref-distance-square-evaluate-direct.h
+RM    ref-distance-square.h
 MOD   ref-matrix-rectangle.h
 MOD   ref-matrix-triangle.h
 ref-object.h
@@ -39,8 +39,8 @@ ref-parameter-value.h
 ref-periodic-box.h
 MOD   ref-vector.h
 OK    util.h
-var-distance-square-evaluate-direct.h
-var-distance-square.h
+MOD   var-distance-square-evaluate-direct.h
+RM    var-distance-square.h
 MOD   var-matrix-rectangle.h
 MOD   var-matrix-triangle.h
 var-parameter-key.h

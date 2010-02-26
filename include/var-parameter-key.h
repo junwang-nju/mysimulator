@@ -4,42 +4,44 @@
 
 #include "parameter-key-base.h"
 #include "var-vector.h"
-#include "fix-vector.h"
 
 namespace std {
 
-  class varParameterKey : public ObjectWStorage<ParameterKeyBase<varVector> > {
+  class varParameterKey : public ParameterKeyBase<varVector> {
 
     public:
 
       typedef varParameterKey   Type;
 
-      typedef ObjectWStorage<ParameterKeyBase<varVector> >  ParentType;
+      typedef ParameterKeyBase<varVector>   ParentType;
 
-    protected:
+      varParameterKey() : ParentType() {}
 
-      fixVector<unsigned int, 3> HashData;
+      varParameterKey(const unsigned int NI) : ParentType() { allocate(NI); }
 
-    public:
-
-      varParameterKey() : ParentType() { hash().refer(HashData); }
-
-      varParameterKey(const Type& P) {
-        myError("Cannot create with variable parameter key");
+      varParameterKey(const Type&) {
+        myError("Cannot create from Variable Parameter Key");
       }
 
-      virtual ~varParameterKey() { this->clear(); }
+      ~varParameterKey() {}
 
-      Type& operator=(const Type& P) {
+      Type& operator=(const Type& vPK) {
         static_cast<ParentType*>(this)->operator=(
-            static_cast<const ParentType&>(P));
+            static_cast<const ParentType&>(vPK));
         return *this;
       }
 
-      void SetIndexSize(const unsigned int NI) { index().allocate(NI); }
+      template <template <typename> class VecType>
+      Type& operator=(const ParameterKeyBase<VecType>& PK) {
+        static_cast<ParentType*>(this)->operator=(PK);
+        return *this;
+      }
+
+      void allocate(const unsigned int NIdx) { this->index().allocate(NIdx); }
 
   };
 
 }
 
 #endif
+

@@ -2,7 +2,7 @@
 #ifndef _Parameter_Key_Base_H_
 #define _Parameter_Key_Base_H_
 
-#include "ref-vector.h"
+#include "fix-vector.h"
 #include "hash-func.h"
 #include <cassert>
 
@@ -17,7 +17,7 @@ namespace std {
 
       typedef IndexVecType<unsigned int>  IndexType;
 
-      typedef refVector<unsigned int>   HashType;
+      typedef fixVector<unsigned int,3>   HashType;
 
     protected:
 
@@ -28,7 +28,8 @@ namespace std {
     public:
 
       ParameterKeyBase() : Index(), Hash() {
-        assert(IndexVecType<unsigned int>::IsVector); }
+        assert(IndexVecType<unsigned int>::IsVector);
+      }
 
       ParameterKeyBase(const Type& P) {
         myError("Cannot create from parameter key base");
@@ -51,14 +52,13 @@ namespace std {
       HashType& hash() { return Hash; }
 
       void BuildHash() {
-        assert(Hash.size()==3);
         unsigned int hsize=Index.size()*4;
         Hash[0]=hash_ap(reinterpret_cast<char*>(Index.data()),hsize);
         Hash[1]=hash_dek(reinterpret_cast<char*>(Index.data()),hsize);
         Hash[2]=hash_bp(reinterpret_cast<char*>(Index.data()),hsize);
       }
 
-      void clear() { Index.clear(); Hash.clear(); }
+      void clear() { Index.clear(); }
 
   };
 
@@ -73,7 +73,6 @@ namespace std {
   int compare(const ParameterKeyBase<IdVecA>& PA,
               const ParameterKeyBase<IdVecB>& PB) {
     unsigned int n=PA.hash().size();
-    assert(n==PB.hash().size());
     for(unsigned int i=0;i<PA.hash().size();++i)
       if(PA.hash()[i]!=PB.hash()[i])  return (PA.hash()[i]>PB.hash()[i]?1:-1);
     return 0;

@@ -4,12 +4,12 @@
 
 #include "vector-op.h"
 
-namespace {
+namespace std {
 
   template <typename GeomType>
   void DistanceDisplacementFunc(const VectorBase<double>& va,
                                 const VectorBase<double>& vb,
-                                VectorBase<T>& Dsp, double& DstSQ,
+                                VectorBase<double>& Dsp, double& DstSQ,
                                 GeomType& Geo) {
     DisplacementFunc(va,vb,Dsp,Geo);
     DstSQ=normSQ(Dsp);
