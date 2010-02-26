@@ -32,7 +32,7 @@ periodic-box-base.h
 ref-distance-square-evaluate-direct.h
 ref-distance-square.h
 MOD   ref-matrix-rectangle.h
-ref-matrix-triangle.h
+MOD   ref-matrix-triangle.h
 ref-object.h
 ref-parameter-key.h
 ref-parameter-value.h
