@@ -34,8 +34,8 @@ RM    ref-distance-square.h
 MOD   ref-matrix-rectangle.h
 MOD   ref-matrix-triangle.h
 ref-object.h
-ref-parameter-key.h
-ref-parameter-value.h
+MOD   ref-parameter-key.h
+OK    ref-parameter-value.h
 ref-periodic-box.h
 MOD   ref-vector.h
 OK    util.h
@@ -43,9 +43,9 @@ MOD   var-distance-square-evaluate-direct.h
 RM    var-distance-square.h
 MOD   var-matrix-rectangle.h
 MOD   var-matrix-triangle.h
-var-parameter-key.h
+MOD   var-parameter-key.h
 var-parameter-list.h
-var-parameter-value.h
+OK    var-parameter-value.h
 var-periodic-box.h
 MOD   var-vector.h
 OK    vector-base-basic.h

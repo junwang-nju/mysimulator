@@ -4,7 +4,7 @@
 
 #include "var-parameter-key.h"
 #include "var-parameter-value.h"
-#include "ref-vector.h"
+#include "fix-vector.h"
 #include "btree.h"
 
 namespace std {
@@ -16,22 +16,24 @@ namespace std {
 
       typedef ParameterListBase<VecType>    Type;
  
-      typedef BTree<varParameterKey,varParameterValue>  NodeType;
+      typedef BTree<varParameterKey,varParameterValue>  TreeType;
+
+      typedef fixVector<TreeType,0xFFFFU>* HashTreePtrType;
 
     protected:
 
-      VecType<varParameterKey>    KeyList;
+      VecType<varParameterKey>        KeyList;
 
-      VecType<varParameterValue>  ValueList;
+      VecType<varParameterValue>      ValueList;
 
-      refVector<NodeType>         HashTree;
+      HashTreePtrType    PtrHashTree;
 
     public:
 
-      ParameterListBase() : KeyList(), ValueList(), HashTree() {}
+      ParameterListBase() : KeyList(), ValueList(), PtrHashTree(NULL) {}
 
       ParameterListBase(const Type& PL) {
-        myError("Cannot create from parameter list base");
+        myError("Cannot create from Parameter List Base");
       }
 
      ~ParameterListBase() { clear(); }
@@ -46,7 +48,7 @@ namespace std {
       void clear() {
         KeyList.clear();
         ValueList.clear();
-        clearHashTree();
+        PtrHashTree=NULL;
       }
 
       VecType<varParameterKey>& keylist() { return KeyList; }
@@ -57,15 +59,15 @@ namespace std {
 
       const VecType<varParameterValue>& valuelist() const { return ValueList; }
 
-      refVector<NodeType>& hashtree() { return HashTree; }
+      HashTreePtrType& ptrhashtree() { return PtrHashTree; }
       
-      const refVector<NodeType>& hashtree() const { return HashTree; }
+      const HashTreePtrType& ptrhashtree() const { return PtrHashTree; }
 
     protected:
 
       void clearHashTree() {
-        unsigned int n=HashTree.size();
-        for(unsigned int i=0;i<n;++i) HashTree[i].clear();
+        unsigned int n=PtrHashTree->size();
+        for(unsigned int i=0;i<n;++i) (*PtrHashTree)[i].clear();
       }
 
     public:
@@ -75,16 +77,16 @@ namespace std {
         clearHashTree();
         unsigned int n=KeyList.size();
         for(unsigned int i=0;i<n;++i)
-          HashTree[(KeyList[i].hash()[0]&0xFFFF0000)>>16].insert(
+          (*PtrHashTree)[(KeyList[i].hash()[0]&0xFFFF0000)>>16].insert(
               KeyList[i],ValueList[i]);
       }
 
       const varParameterValue* get(const VectorBase<unsigned int>& idx) const {
         varParameterKey tKey;
-        tKey.SetIndexSize(idx.size());
+        tKey.allocate(idx.size());
         tKey.index()=idx;
         tKey.BuildHash();
-        return HashTree[(tKey.hash()[0]&0xFFFF0000)>>16].get(tKey);
+        return (*PtrHashTree)[(tKey.hash()[0]&0xFFFF0000)>>16].get(tKey);
       }
 
   };

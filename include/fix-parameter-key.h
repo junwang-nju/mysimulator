@@ -16,6 +16,34 @@ namespace std {
 
       typedef ParameterKeyBase<refVector>   ParentType;
 
+    protected:
+
+      fixVector<unsigned int,NIdx>  inIndex;
+
+    public:
+
+      fixParameterKey() : ParentType() { this->index().refer(inIndex); }
+
+      fixParameterKey(const Type&) {
+        myError("Cannot create from fixed Parameter Key");
+      }
+
+      ~fixParameterKey() {}
+
+      Type& operator=(const Type& fPK) {
+        static_cast<ParentType*>(this)->operator=(
+            static_cast<const ParentType&>(fPK));
+        return *this;
+      }
+
+      template <template <typename> class VecType>
+      Type& operator=(const ParameterKeyBase<VecType>& PK) {
+        static_cast<ParentType*>(this)->operator=(PK);
+        return *this;
+      }
+
+      void clear() {}
+
   };
 
 }

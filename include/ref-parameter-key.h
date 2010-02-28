@@ -3,47 +3,41 @@
 #define _Reference_Parameter_Key_H_
 
 #include "parameter-key-base.h"
-#include "var-vector.h"
+#include "ref-vector.h"
 
 namespace std {
 
-  class refParameterKey
-    : public refObject<ParameterKeyBase<refVector>,
-                       ParameterKeyBase<varVector> > {
+  class refParameterKey : public ParameterKeyBase<refVector> {
 
     public:
 
-      typedef refParameterKey Type;
+      typedef refParameterKey   Type;
 
-      typedef refObject<ParameterKeyBase<refVector>,
-                        ParameterKeyBase<varVector> >   ParentType;
+      typedef ParameterKeyBase<refVector>   ParentType;
 
       refParameterKey() : ParentType() {}
 
-      refParameterKey(const Type& P) {
-        myError("Cannot create from reference parameter key");
+      refParameterKey(const Type&) {
+        myError("Cannot create from reference Parameter Key");
       }
 
-      virtual ~refParameterKey() {}
+      ~refParameterKey() {}
 
-      Type& operator=(const Type& P) {
+      Type& operator=(const Type& rPK) {
         static_cast<ParentType*>(this)->operator=(
-            static_cast<const ParentType&>(P));
+            static_cast<const ParentType&>(rPK));
         return *this;
       }
 
-      virtual void refer(ParentType& P) {
-        if(this->index().IsAvailable()) this->RefInfo().remove_self();
-        this->index().refer(P.index());
-        this->hash().refer(P.hash());
-        P.RefInfo().add_before(this->RefInfo());
+      template <template <typename> class VecType>
+      Type& operator=(const ParameterKeyBase<VecType>& PK) {
+        static_cast<ParentType*>(this)->operator=(PK);
+        return *this;
       }
 
-      virtual void refer(ObjectWStorage<ParameterKeyBase<varVector> >& P) {
-        if(this->index().IsAvailable()) this->RefInfo().remove_self();
-        this->index().refer(P.index());
-        this->hash().refer(P.hash());
-        P.RefList().append(this->RefInfo());
+      template <template <typename> class VecType>
+      void refer(const ParameterKeyBase<VecType>& PK) {
+        this->index.refer(PK.index());
       }
 
   };
