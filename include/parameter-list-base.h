@@ -63,14 +63,10 @@ namespace std {
       
       const HashTreePtrType& ptrhashtree() const { return PtrHashTree; }
 
-    protected:
-
       void clearHashTree() {
         unsigned int n=PtrHashTree->size();
         for(unsigned int i=0;i<n;++i) (*PtrHashTree)[i].clear();
       }
-
-    public:
 
       void updateHashTree() {
         assert(KeyList.size()==ValueList.size());

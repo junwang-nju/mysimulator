@@ -75,7 +75,7 @@ namespace std {
 
       virtual const char* type() const { return "fixed triangle matrix"; }
 
-      void InitAs(const int Order=COrder, const int Trans=NoTranspose,
+      void initAs(const int Order=COrder, const int Trans=NoTranspose,
                   const int Tripart=UpperPart, const bool SymFlag=true) {
         this->SetOrder(Order);
         this->SetTransposeState(Trans);
