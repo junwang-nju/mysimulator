@@ -10,7 +10,6 @@ MOD   distance-square-base.h
 MOD   distance-square-evaluate-base.h
 MOD   distance-square-evaluate-direct-base.h
 OK    error-proc.h
-file
 MOD   fix-distance-square-evaluate-direct.h
 RM    fix-distance-square.h
 MOD   fix-matrix-rectangle.h
@@ -27,7 +26,7 @@ OK    memory.h
 object-with-storage.h
 pair-storage-base.h
 MOD   parameter-key-base.h
-parameter-list-base.h
+MOD   parameter-list-base.h
 periodic-box-base.h
 MOD   ref-distance-square-evaluate-direct.h
 RM    ref-distance-square.h
@@ -44,7 +43,7 @@ RM    var-distance-square.h
 MOD   var-matrix-rectangle.h
 MOD   var-matrix-triangle.h
 MOD   var-parameter-key.h
-var-parameter-list.h
+MOD   var-parameter-list.h
 OK    var-parameter-value.h
 var-periodic-box.h
 MOD   var-vector.h
