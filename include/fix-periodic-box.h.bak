@@ -3,38 +3,39 @@
 #define _Fixed_Periodic_Box_H_
 
 #include "periodic-box-base.h"
+#include "object-with-storage.h"
 #include "fix-vector.h"
 #include "ref-vector.h"
 
 namespace std {
 
   template <unsigned int Dim>
-  class fixPeriodicBox : public PeriodicBoxBase<refVector> {
+  class fixPeriodicBox : public ObjectWStorage<PeriodicBoxBase<refVector> > {
 
     public:
 
       typedef fixPeriodicBox<Dim>   Type;
 
-      typedef PeriodicBoxBase<refVector>  ParentType;
+      typedef ObjectWStorage<PeriodicBoxBase<refVector> > ParentType;
 
     protected:
 
-      fixVector<double,Dim> inBox;
+      fixVector<double,Dim> BoxData;
 
-      fixVector<double,Dim> inHfBox;
+      fixVector<unsigned int,Dim> FlagData;
 
-      fixVector<unsigned int,Dim> inFlag;
+      fixVector<double,Dim> halfBoxData;
 
     public:
 
       fixPeriodicBox() : ParentType() {
-        this->box().refer(inBox);
-        this->hfbox().refer(inHfBox);
-        this->flag().refer(inFlag);
+        runBox().refer(BoxData);
+        runFlag().refer(FlagData);
+        runHfBox().refer(halfBoxData);
       }
 
-      fixPeriodicBox(const Type&) {
-        myError("Cannot create from fixed Periodic Box");
+      fixPeriodicBox(const Type& fPB) {
+        myError("Cannot create from fixed periodic box");
       }
 
       ~fixPeriodicBox() {}
@@ -45,8 +46,8 @@ namespace std {
         return *this;
       }
 
-      template <template <typename> class VecType>
-      Type& operator=(const PeriodicBoxBase<VecType>& PB) {
+      template <template <typename> class iVecType>
+      Type& operator=(const PeriodicBoxBase<iVecType>& PB) {
         static_cast<ParentType*>(this)->operator=(PB);
         return *this;
       }

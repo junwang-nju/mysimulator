@@ -14,7 +14,7 @@ MOD   fix-distance-square-evaluate-direct.h
 RM    fix-distance-square.h
 MOD   fix-matrix-rectangle.h
 MOD   fix-matrix-triangle.h
-fix-periodic-box.h
+MOD   fix-periodic-box.h
 MOD   fix-vector.h
 MOD   free-space.h
 OK    geometry-id.h
@@ -27,7 +27,7 @@ object-with-storage.h
 pair-storage-base.h
 MOD   parameter-key-base.h
 MOD   parameter-list-base.h
-periodic-box-base.h
+MOD   periodic-box-base.h
 MOD   ref-distance-square-evaluate-direct.h
 RM    ref-distance-square.h
 MOD   ref-matrix-rectangle.h
@@ -35,7 +35,7 @@ MOD   ref-matrix-triangle.h
 ref-object.h
 MOD   ref-parameter-key.h
 OK    ref-parameter-value.h
-ref-periodic-box.h
+MOD   ref-periodic-box.h
 MOD   ref-vector.h
 OK    util.h
 MOD   var-distance-square-evaluate-direct.h
@@ -45,7 +45,7 @@ MOD   var-matrix-triangle.h
 MOD   var-parameter-key.h
 MOD   var-parameter-list.h
 OK    var-parameter-value.h
-var-periodic-box.h
+MOD   var-periodic-box.h
 MOD   var-vector.h
 OK    vector-base-basic.h
 OK    vector-base.h

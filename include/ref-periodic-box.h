@@ -1,28 +1,24 @@
 
-#ifndef _Reference_Periodic_Box_
-#define _Reference_Periodic_Box_
+#ifndef _Reference_Periodic_Box_H_
+#define _Reference_Periodic_Box_H_
 
 #include "periodic-box-base.h"
 #include "ref-vector.h"
-#include "var-vector.h"
 
 namespace std {
 
-  template <template <typename> class VecType=varVector>
-  class refPeriodicBox
-    : public refObject<PeriodicBoxBase<refVector>,PeriodicBoxBase<VecType> > {
+  class refPeriodicBox : public PeriodicBoxBase<refVector> {
 
     public:
 
-      typedef refPeriodicBox<VecType>   Type;
+      typedef refPeriodicBox    Type;
 
-      typedef refObject<PeriodicBoxBase<refVector>,PeriodicBoxBase<VecType> >
-              ParentType;
+      typedef PeriodicBoxBase<refVector>  ParentType;
 
       refPeriodicBox() : ParentType() {}
 
-      refPeriodicBox(const Type& rPB) {
-        myError("Cannot create from reference periodic box");
+      refPeriodicBox(const Type&) {
+        myError("Cannot create from reference Periodic Box");
       }
 
       ~refPeriodicBox() {}
@@ -33,38 +29,27 @@ namespace std {
         return *this;
       }
 
-      template <template <typename> class iVecType>
-      Type& operator=(const PeriodicBoxBase<iVecType>& PB) {
+      template <template <typename> class VecType>
+      Type& operator=(const PeriodicBoxBase<VecType>& PB) {
         static_cast<ParentType*>(this)->operator=(PB);
         return *this;
       }
 
-      virtual void refer(ParentType& rPB) { refer(rPB,0,rPB.runBox().size()); }
-
-      virtual void refer(ObjectWStorage<PeriodicBoxBase<VecType> >& PB) {
-        refer(PB,0,PB.runBox().size());
+      template <template <typename> class VecType>
+      void refer(const PeriodicBoxBase<VecType>& PB) {
+        refer(PB,0U,PB.box().size());
       }
 
-      void refer(ParentType& rPB, unsigned int off, unsigned int sz) {
-        assert(off+sz<=rPB.runBox().size());
-        if(this->runBox().IsAvailable())  this->RefInfo().remove_self();
-        this->runBox().refer(rPB.runBox(),off,sz);
-        this->runFlag().refer(rPB.runFlag(),off,sz);
-        this->runHfBox().refer(rPB.runHfBox(),off,sz);
-        rPB.RefInfo().add_before(this->RefInfo());
-      }
-
-      void refer(ObjectWStorage<PeriodicBoxBase<VecType> >& PB,
-                 unsigned int off, unsigned int sz) {
-        assert(off+sz<=PB.runBox().size());
-        if(this->runBox().IsAvailable())  this->RefInfo().remove_self();
-        this->runBox().refer(PB.runBox(),off,sz);
-        this->runFlag().refer(PB.runFlag(),off,sz);
-        this->runHfBox().refer(PB.runHfBox(),off,sz);
-        PB.RefList().append(this->RefInfo());
-      }
+      template <template <typename> class VecType>
+      void refer(const PeriodicBoxBase<VecType>& PB,
+                 const unsigned int off, const unsigned int size) {
+        assert(off+size<=PB.box().size());
+        this->box().refer(PB.box(),off,size);
+        this->flag().refer(PB.flag(),off,size);
+        this->hfbox().refer(PB.hfbox(),off,size);
 
   };
+
 }
 
 #endif
