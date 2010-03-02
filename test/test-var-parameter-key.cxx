@@ -10,8 +10,8 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- Set size of index"<<endl;
-  vPK.SetIndexSize(3);
-  vPK1.SetIndexSize(3);
+  vPK.allocate(3);
+  vPK1.allocate(3);
   cout<<endl;
 
   cout<<"Test -- assign through index"<<endl;

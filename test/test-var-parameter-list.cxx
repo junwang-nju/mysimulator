@@ -52,20 +52,21 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- access the hash tree"<<endl;
-  unsigned int n=vPL.hashtree().size();
+  unsigned int n=vPL.ptrhashtree()->size();
   for(unsigned int i=0;i<n;++i)
-    if(vPL.hashtree()[i].ptrRoot()!=NULL)  cout<<i<<endl;
+    if((*vPL.ptrhashtree())[i].ptrRoot()!=NULL)  cout<<i<<endl;
   cout<<endl;
 
   cout<<"Test -- input from istream"<<endl;
   cin>>vPL;
-  n=vPL.hashtree().size();
+  n=vPL.ptrhashtree()->size();
   for(unsigned int i=0;i<n;++i)
-    if(vPL.hashtree()[i].ptrRoot()!=NULL)  cout<<i<<endl;
+    if((*vPL.ptrhashtree())[i].ptrRoot()!=NULL)  cout<<i<<endl;
   cout<<endl;
 
   cout<<"Test -- clear"<<endl;
-  vPL.clear();
+  //vPL.clear();
+  vPL2.clear();
   cout<<endl;
   return 1;
 }

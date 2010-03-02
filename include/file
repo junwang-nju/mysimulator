@@ -1,8 +1,8 @@
 OK    blas.h
 OK    btree.h
 OK    btree-node.h
-chain.h
-chain-node.h
+RM    chain.h
+RM    chain-node.h
 OK    constant.h
 MOD   data-pack.h
 MOD   direct-displacement.h
@@ -23,7 +23,7 @@ MOD   matrix-base.h
 MOD   matrix-rectangle-base.h
 MOD   matrix-triangle-base.h
 OK    memory.h
-object-with-storage.h
+RM    object-with-storage.h
 pair-storage-base.h
 MOD   parameter-key-base.h
 MOD   parameter-list-base.h
@@ -32,7 +32,7 @@ MOD   ref-distance-square-evaluate-direct.h
 RM    ref-distance-square.h
 MOD   ref-matrix-rectangle.h
 MOD   ref-matrix-triangle.h
-ref-object.h
+RM    ref-object.h
 MOD   ref-parameter-key.h
 OK    ref-parameter-value.h
 MOD   ref-periodic-box.h
@@ -50,4 +50,4 @@ MOD   var-vector.h
 OK    vector-base-basic.h
 OK    vector-base.h
 OK    vector-impl.h
-vector-op.h
+OK    vector-op.h

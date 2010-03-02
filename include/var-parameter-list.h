@@ -22,7 +22,14 @@ namespace std {
         myError("Cannot create from variable Parameter List");
       }
 
-      ~varParameterList() { clear(); }
+      ~varParameterList() {
+        static_cast<ParentType*>(this)->clearHashTree();
+        safe_delete(this->ptrhashtree());
+        for(unsigned int i=0;i<this->keylist().size();++i) {
+          this->keylist()[i].clear();
+          this->valuelist()[i].clear();
+        }
+      }
 
       void clear() {
         static_cast<ParentType*>(this)->clearHashTree();
@@ -78,6 +85,7 @@ namespace std {
                     const unsigned int N) {
         allocateList(this->keylist(),kSize,N);
         allocateList(this->valuelist(),vSize,N);
+        this->ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
       }
 
       void allocate(const unsigned int kSize,
@@ -87,6 +95,7 @@ namespace std {
                     const unsigned int vstep=uOne) {
         allocateList(this->keylist(),kSize,N);
         allocateList(this->valuelist(),vSize,N,voff,vstep);
+        this->ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
       }
 
       void allocate(const VectorBase<unsigned int>& kSize,
@@ -95,6 +104,7 @@ namespace std {
                     const unsigned int kstep=uOne) {
         allocateList(this->keylist(),kSize,N,koff,kstep);
         allocateList(this->valuelist(),vSize,N);
+        this->ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
       }
 
       void allocate(const VectorBase<unsigned int>& kSize,
@@ -104,6 +114,7 @@ namespace std {
                     unsigned int voff=uZero, unsigned int vstep=uOne) {
         allocateList(this->keylist(),kSize,N,koff,kstep);
         allocateList(this->valuelist(),vSize,N,voff,vstep);
+        this->ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
       }
 
       void allocate(const unsigned int kSize,

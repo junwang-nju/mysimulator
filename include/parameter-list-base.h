@@ -64,6 +64,7 @@ namespace std {
       const HashTreePtrType& ptrhashtree() const { return PtrHashTree; }
 
       void clearHashTree() {
+        if(PtrHashTree==NULL) return;
         unsigned int n=PtrHashTree->size();
         for(unsigned int i=0;i<n;++i) (*PtrHashTree)[i].clear();
       }

@@ -39,10 +39,6 @@ int main() {
   rdV2.refer(rdV,1,3);
   cout<<endl;
 
-  cout<<"Test -- ref info of ref-vector"<<endl;
-  cout<<rdV.RefInfo().content()<<endl;
-  cout<<endl;
-
   cout<<"Test -- type of ref-vector"<<endl;
   cout<<rdV.type()<<endl;
   cout<<endl;

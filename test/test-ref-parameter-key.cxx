@@ -8,7 +8,7 @@ int main() {
   refParameterKey rPK;
   varParameterKey vPK;
   cout<<"Test -- set size of index"<<endl;
-  vPK.SetIndexSize(3);
+  vPK.allocate(3);
   cout<<endl;
 
   cout<<"Test -- refer to variable parameter key"<<endl;
@@ -30,7 +30,7 @@ int main() {
 
   cout<<"Test -- assign reference parameter key"<<endl;
   varParameterKey vPK2;
-  vPK2.SetIndexSize(3);
+  vPK2.allocate(3);
   vPK2.BuildHash();
   rPK2.refer(vPK2);
   rPK2=rPK;

@@ -37,7 +37,7 @@ namespace std {
 
       template <template <typename> class VecType>
       void refer(const ParameterKeyBase<VecType>& PK) {
-        this->index.refer(PK.index());
+        this->index().refer(PK.index());
       }
 
   };
