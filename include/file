@@ -16,7 +16,7 @@ MOD   fix-matrix-rectangle.h
 MOD   fix-matrix-triangle.h
 fix-periodic-box.h
 MOD   fix-vector.h
-free-space.h
+MOD   free-space.h
 OK    geometry-id.h
 OK    hash-func.h
 MOD   matrix-base.h

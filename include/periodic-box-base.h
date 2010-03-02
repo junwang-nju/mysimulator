@@ -2,8 +2,8 @@
 #ifndef _Periodi_Box_Base_H_
 #define _Periodi_Box_Base_H_
 
-#include "direct-displacement.h"
 #include "geometry-id.h"
+#include "displacement-direct.h"
 
 namespace std {
 
@@ -54,15 +54,15 @@ namespace std {
 
       const VecType<double>& box() const { return Box; }
 
-      VecType<double>& runBox() { return Box; }
+      VecType<double>& box() { return Box; }
 
       const VecType<double>& hfbox() const { return halfBox; }
 
-      VecType<double>& runHfBox() { return halfBox; }
+      VecType<double>& hfbox() { return halfBox; }
 
       const VecType<unsigned int>& flag() const { return EdgeFlag; }
 
-      VecType<unsigned int>& runFlag() { return EdgeFlag; }
+      VecType<unsigned int>& flag() { return EdgeFlag; }
 
       void Set(const VectorBase<double>& pbBox,
                const VectorBase<unsigned int>& fgBox) {
@@ -102,7 +102,7 @@ namespace std {
   void DisplacementFunc(const VectorBase<double>& va,
                         const VectorBase<double>& vb, VectorBase<double>& v,
                         const PeriodicBoxBase<VecType>& PB) {
-    DirectDisplacement(va,vb,v);
+    DisplacementFunc(va,vb,v);
     PB.shift2main(v);
   }
 

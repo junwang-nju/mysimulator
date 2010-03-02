@@ -18,6 +18,14 @@ namespace std {
       myError("Cannot create from reference Free Space");
     }
 
+    ~refFreeSpace() {}
+
+    Type& operator=(const Type& rFS) { return *this; }
+
+    Type& operator=(const FreeSpaceBase& FS) { return *this; }
+
+    void refer(const FreeSpaceBase& FS) {}
+
   };
 
 }

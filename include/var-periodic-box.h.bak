@@ -3,22 +3,23 @@
 #define _Variable_Periodic_Box_H_
 
 #include "periodic-box-base.h"
+#include "object-with-storage.h"
 #include "var-vector.h"
 
 namespace std {
 
-  class varPeriodicBox : public PeriodicBoxBase<varVector> {
+  class varPeriodicBox : public ObjectWStorage<PeriodicBoxBase<varVector> > {
 
     public:
 
       typedef varPeriodicBox  Type;
 
-      typedef PeriodicBoxBase<varVector>  ParentType;
+      typedef ObjectWStorage<PeriodicBoxBase<varVector> > ParentType;
 
       varPeriodicBox() : ParentType() {}
 
-      varPeriodicBox(const Type&) {
-        myError("Cannot create from variable Periodic Box");
+      varPeriodicBox(const Type& vPB) {
+        myError("Cannot create from variable periodic box");
       }
 
       ~varPeriodicBox() {}
@@ -29,10 +30,16 @@ namespace std {
         return *this;
       }
 
-      template <template <typename> class VecType>
-      Type& operator=(const PeriodicBoxBase<VecType>& PB) {
+      template <template <typename> class iVecType>
+      Type& operator=(const PeriodicBoxBase<iVecType>& PB) {
         static_cast<ParentType*>(this)->operator=(PB);
         return *this;
+      }
+
+      void allocate(const unsigned int Dim) {
+        Box.allocate(Dim);
+        EdgeFlag.allocate(Dim);
+        halfBox.allocate(Dim);
       }
 
   };
