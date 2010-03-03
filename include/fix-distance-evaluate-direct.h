@@ -27,7 +27,7 @@ namespace std {
 
       fixDistanceEvalDirect() : ParentType() {
         this->DistanceSQVec().refer(inDistData);
-        this->DisplacementVec().refer(inDispData);
+        this->Displacement().refer(inDispData);
       }
 
       fixDistanceEvalDirect(const Type&) {

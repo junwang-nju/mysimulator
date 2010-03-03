@@ -40,7 +40,7 @@ namespace std {
       void Evaluate(const VectorBase<double>& va, const VectorBase<double>& vb,
                     const unsigned int aIdx, const unsigned int bIdx,
                     const GeomType& Geo) {
-        DistanceDisplacementFunc(va,vb,this->DisplacementVec(),
+        DistanceDisplacementFunc(va,vb,this->Displacement(),
                                  this->DistanceSQVec()[0],Geo);
       }
 

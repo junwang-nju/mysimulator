@@ -17,6 +17,8 @@ namespace std {
 
       varPeriodicBox() : ParentType() {}
 
+      varPeriodicBox(const unsigned int Dim) : ParentType() { allocate(Dim); }
+
       varPeriodicBox(const Type&) {
         myError("Cannot create from variable Periodic Box");
       }
@@ -33,6 +35,12 @@ namespace std {
       Type& operator=(const PeriodicBoxBase<VecType>& PB) {
         static_cast<ParentType*>(this)->operator=(PB);
         return *this;
+      }
+
+      void allocate(const unsigned int Dim) {
+        this->box().allocate(Dim);
+        this->flag().allocate(Dim);
+        this->hfbox().allocate(Dim);
       }
 
   };

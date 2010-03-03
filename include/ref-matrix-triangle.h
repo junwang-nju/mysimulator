@@ -51,8 +51,10 @@ namespace std {
         this->structure().refer(TM.structure());
         this->info()=TM.info();
         this->SetOtherElements(TM.OtherElements());
-        this->AssignGetMethod(TM.GetElementMethod());
+        this->SetGetMethod();
       }
+
+      virtual const char* type() const { return "Reference Triangle Matrix"; }
 
   };
 

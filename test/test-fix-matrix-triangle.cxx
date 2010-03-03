@@ -5,12 +5,12 @@
 using namespace std;
 
 int main() {
-  fixTriangMatrix<double,4> fTM;
+  fixMatrixTriangle<double,4> fTM;
 
   cout<<"Test -- set structure with dimension"<<endl;
   varVector<double> v(50);
   for(unsigned int i=0;i<v.size();++i)  v[i]=i+1;
-  fTM.SetStructure();
+  fTM.initAs();
   fTM=5.;
   cout<<fTM<<endl;
   fTM=v;
@@ -18,7 +18,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- set structure with all parameters"<<endl;
-  fTM.SetStructure(COrder,WithTranspose,LowerPart,false);
+  fTM.initAs(COrder,WithTranspose,LowerPart,false);
   fTM=5.;
   fTM(2,1)=3;
   cout<<fTM<<endl;
@@ -27,7 +27,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- set structure through dimension, various parameters"<<endl;
-  fTM.SetStructure(COrder,WithTranspose);
+  fTM.initAs(COrder,WithTranspose);
   fTM=5.;
   fTM(1,2)=3.;
   cout<<fTM<<endl;
@@ -36,13 +36,13 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- assign"<<endl;
-  fixTriangMatrix<double,4> fTM2;
-  fTM2.SetStructure(COrder,WithTranspose);
+  fixMatrixTriangle<double,4> fTM2;
+  fTM2.initAs(COrder,WithTranspose);
   fTM2=fTM;
   cout<<fTM2<<endl;
   cout<<endl;
 
-  varTriangMatrix<double> vTM;
+  varMatrixTriangle<double> vTM;
   vTM.allocate(4,COrder,WithTranspose);
   vTM=9;
   fTM2=vTM;

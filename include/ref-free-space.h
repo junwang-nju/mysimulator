@@ -8,23 +8,25 @@ namespace std {
 
   class refFreeSpace : public FreeSpaceBase {
 
-    typedef refFreeSpace  Type;
+    public:
 
-    typedef FreeSpaceBase ParentType;
+      typedef refFreeSpace  Type;
 
-    refFreeSpace() : ParentType() {}
+      typedef FreeSpaceBase ParentType;
 
-    refFreeSpace(const Type&) {
-      myError("Cannot create from reference Free Space");
-    }
+      refFreeSpace() : ParentType() {}
 
-    ~refFreeSpace() {}
+      refFreeSpace(const Type&) {
+        myError("Cannot create from reference Free Space");
+      }
 
-    Type& operator=(const Type& rFS) { return *this; }
+      ~refFreeSpace() {}
 
-    Type& operator=(const FreeSpaceBase& FS) { return *this; }
+      Type& operator=(const Type& rFS) { return *this; }
 
-    void refer(const FreeSpaceBase& FS) {}
+      Type& operator=(const FreeSpaceBase& FS) { return *this; }
+
+      void refer(const FreeSpaceBase& FS) {}
 
   };
 

@@ -378,23 +378,21 @@ namespace std {
             SetActualTrianglePart(UpperPart);
           else myError("unknown triangle part flag");
         } else myError("unknown mode of transpose state for matrix");
-        if(this->IsSymmetry()) {
-          if(this->MatrixActualOrder()==DiagonalOrder)
-            SetDataPattern(DiagType);
-          else if(this->MatrixActualOrder()==COrder) {
-            if(this->MatrixTrianglePart()==UpperPart)
-              SetDataPattern(CUppType);
-            else if(this->MatrixTrianglePart()==LowerPart)
-              SetDataPattern(FUppType);
-            else myError("unknown triangle part flag");
-          } else if(this->MatrixActualOrder()==FortranOrder) {
-            if(this->MatrixTrianglePart()==UpperPart)
-              SetDataPattern(FUppType);
-            else if(this->MatrixTrianglePart()==LowerPart)
-              SetDataPattern(CUppType);
-            else myError("unknown triangle part flag");
-          }
-        } else SetDataPattern(UnknownPattern);
+        if(this->MatrixActualOrder()==DiagonalOrder)
+          SetDataPattern(DiagType);
+        else if(this->MatrixActualOrder()==COrder) {
+          if(this->MatrixActualTrianglePart()==UpperPart)
+            SetDataPattern(CUppType);
+          else if(this->MatrixActualTrianglePart()==LowerPart)
+            SetDataPattern(FUppType);
+          else myError("unknown triangle part flag");
+        } else if(this->MatrixActualOrder()==FortranOrder) {
+          if(this->MatrixActualTrianglePart()==UpperPart)
+            SetDataPattern(FUppType);
+          else if(this->MatrixActualTrianglePart()==LowerPart)
+            SetDataPattern(CUppType);
+          else myError("unknown triangle part flag");
+        }
         if(this->MatrixActualOrder()==COrder) {
           if(IsDiagonalExisted()) {
             if(MatrixActualTrianglePart()==UpperPart) {

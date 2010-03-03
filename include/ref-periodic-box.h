@@ -47,6 +47,7 @@ namespace std {
         this->box().refer(PB.box(),off,size);
         this->flag().refer(PB.flag(),off,size);
         this->hfbox().refer(PB.hfbox(),off,size);
+      }
 
   };
 

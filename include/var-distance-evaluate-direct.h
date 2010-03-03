@@ -7,7 +7,7 @@
 
 namespace std {
 
-  class varDistanceEvalDirect : DistanceEvalDirectBase<varVector> {
+  class varDistanceEvalDirect : public DistanceEvalDirectBase<varVector> {
 
     public:
 
@@ -41,7 +41,7 @@ namespace std {
 
       void allocate(const unsigned int Dim) {
         this->DistanceSQVec().allocate(1);
-        this->DisplacementVec().allocate(Dim);
+        this->Displacement().allocate(Dim);
       }
 
   };

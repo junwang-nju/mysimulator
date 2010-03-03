@@ -62,14 +62,14 @@ target_link_libraries (test-fix-free-space.run blas Base)
 add_executable (test-ref-free-space.run test-ref-free-space.cxx)
 target_link_libraries (test-ref-free-space.run blas Base)
 
-add_executable (test-var-distance-square.run test-var-distance-square.cxx)
-target_link_libraries (test-var-distance-square.run blas Base)
+add_executable(test-chain.run test-chain.cxx)
+target_link_libraries (test-chain.run Base)
 
-add_executable (test-fix-distance-square.run test-fix-distance-square.cxx)
-target_link_libraries (test-fix-distance-square.run blas Base)
+add_executable(test-chain-node.run test-chain-node.cxx)
+target_link_libraries (test-chain-node.run Base)
 
-add_executable (test-ref-distance-square.run test-ref-distance-square.cxx)
-target_link_libraries (test-ref-distance-square.run blas Base)
+add_executable(test-distance-displacement-calc.run test-distance-displacement-calc.cxx)
+target_link_libraries (test-distance-displacement-calc.run blas Base)
 
 add_executable (test-var-periodic-box.run test-var-periodic-box.cxx)
 target_link_libraries (test-var-periodic-box.run blas Base)
@@ -80,14 +80,14 @@ target_link_libraries (test-fix-periodic-box.run blas Base)
 add_executable (test-ref-periodic-box.run test-ref-periodic-box.cxx)
 target_link_libraries (test-ref-periodic-box.run blas Base)
 
-add_executable (test-var-distance-square-eval-direct.run test-var-distance-square-eval-direct.cxx)
-target_link_libraries (test-var-distance-square-eval-direct.run blas Base)
+add_executable (test-var-distance-evaluate-direct.run test-var-distance-evaluate-direct.cxx)
+target_link_libraries (test-var-distance-evaluate-direct.run blas Base)
 
-add_executable (test-ref-distance-square-eval-direct.run test-ref-distance-square-eval-direct.cxx)
-target_link_libraries (test-ref-distance-square-eval-direct.run blas Base)
+add_executable (test-ref-distance-evaluate-direct.run test-ref-distance-evaluate-direct.cxx)
+target_link_libraries (test-ref-distance-evaluate-direct.run blas Base)
 
-add_executable (test-fix-distance-square-eval-direct.run test-fix-distance-square-eval-direct.cxx)
-target_link_libraries (test-fix-distance-square-eval-direct.run blas Base)
+add_executable (test-fix-distance-evaluate-direct.run test-fix-distance-evaluate-direct.cxx)
+target_link_libraries (test-fix-distance-evaluate-direct.run blas Base)
 
 add_executable (test-var-matrix-triangle.run test-var-matrix-triangle.cxx)
 target_link_libraries (test-var-matrix-triangle.run blas Base)

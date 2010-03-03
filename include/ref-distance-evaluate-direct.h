@@ -38,7 +38,7 @@ namespace std {
       template <template <typename> class VecType>
       void refer(const DistanceEvalDirectBase<VecType>& DED) {
         this->DistanceSQVec().refer(DED.DistanceSQVec());
-        this->DisplacementVec().refer(DED.DisplacementVec());
+        this->Displacement().refer(DED.Displacement());
       }
 
   };

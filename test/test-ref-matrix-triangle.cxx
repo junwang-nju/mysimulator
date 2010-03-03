@@ -5,10 +5,10 @@
 using namespace std;
 
 int main() {
-  refTriangMatrix<double> rTM;
-  varTriangMatrix<double> vTM;
+  refMatrixTriangle<double> rTM;
+  varMatrixTriangle<double> vTM;
 
-  cout<<"Test -- refer to varTriangMatrix"<<endl;
+  cout<<"Test -- refer to varMatrixTriangle"<<endl;
   varVector<double> v(50);
   for(unsigned int i=0;i<v.size();++i)  v[i]=i+1;
   vTM.allocate(4);

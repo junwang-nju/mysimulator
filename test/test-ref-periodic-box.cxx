@@ -7,11 +7,11 @@ using namespace std;
 
 int main() {
   cout<<"Test -- refer to var and fix periodic box"<<endl;
-  refPeriodicBox<>  rPB;
+  refPeriodicBox  rPB;
   varPeriodicBox vPB;
   vPB.allocate(4);
   rPB.refer(vPB);
-  refPeriodicBox<refVector> rPB2;
+  refPeriodicBox rPB2;
   fixPeriodicBox<4> fPB;
   rPB2.refer(fPB);
   cout<<endl;

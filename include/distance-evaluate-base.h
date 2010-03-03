@@ -51,9 +51,11 @@ namespace std {
 
       VecType<double>& DistanceSQVec() { return nowDist; }
 
+      const VecType<double>& DistanceSQVec() const { return nowDist; }
+
       const VecType<double>& Displacement() const { return nowDisplacement; }
 
-      VecType<double>& DisplacementVec() { return nowDisplacement; }
+      VecType<double>& Displacement() { return nowDisplacement; }
 
       virtual void update() = 0;
 
