@@ -38,17 +38,29 @@ target_link_libraries (test-ref-matrix-rectangle.run blas Base)
 add_executable (test-var-parameter-key.run test-var-parameter-key.cxx)
 target_link_libraries (test-var-parameter-key.run blas Base)
 
+add_executable (test-fix-parameter-key.run test-fix-parameter-key.cxx)
+target_link_libraries (test-fix-parameter-key.run blas Base)
+
 add_executable (test-ref-parameter-key.run test-ref-parameter-key.cxx)
 target_link_libraries (test-ref-parameter-key.run blas Base)
 
 add_executable (test-var-parameter-list.run test-var-parameter-list.cxx)
 target_link_libraries (test-var-parameter-list.run blas Base)
 
+add_executable (test-fix-parameter-list.run test-fix-parameter-list.cxx)
+target_link_libraries (test-fix-parameter-list.run blas Base)
+
 add_executable (test-ref-parameter-list.run test-ref-parameter-list.cxx)
 target_link_libraries (test-ref-parameter-list.run blas Base)
 
-add_executable (test-free-space.run test-free-space.cxx)
-target_link_libraries (test-free-space.run blas Base)
+add_executable (test-var-free-space.run test-var-free-space.cxx)
+target_link_libraries (test-var-free-space.run blas Base)
+
+add_executable (test-fix-free-space.run test-fix-free-space.cxx)
+target_link_libraries (test-fix-free-space.run blas Base)
+
+add_executable (test-ref-free-space.run test-ref-free-space.cxx)
+target_link_libraries (test-ref-free-space.run blas Base)
 
 add_executable (test-var-distance-square.run test-var-distance-square.cxx)
 target_link_libraries (test-var-distance-square.run blas Base)

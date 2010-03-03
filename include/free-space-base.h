@@ -31,7 +31,7 @@ namespace std {
 
   void DisplacementFunc(const VectorBase<double>& va,
                         const VectorBase<double>& vb, VectorBase<double>& Dsp,
-                        const FreeSpace& FS) {
+                        const FreeSpaceBase& FS) {
     DisplacementFunc(va,vb,Dsp);
   }
 

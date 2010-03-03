@@ -8,25 +8,27 @@ namespace std {
 
   class varFreeSpace : public FreeSpaceBase {
 
-    typedef varFreeSpace  Type;
+    public:
 
-    typedef FreeSpaceBase ParentType;
+      typedef varFreeSpace  Type;
 
-    varFreeSpace() : ParentType() {}
+      typedef FreeSpaceBase ParentType;
 
-    varFreeSpace(const Type&) {
-      myError("Cannot create from variable Free-Space");
-    }
+      varFreeSpace() : ParentType() {}
 
-    ~varFreeSpace() {}
+      varFreeSpace(const Type&) {
+        myError("Cannot create from variable Free-Space");
+      }
 
-    Type& operator=(const Type& vFS) { return *this; }
+      ~varFreeSpace() {}
 
-    Type& operator=(const FreeSpaceBase& FS) { return *this; }
+      Type& operator=(const Type& vFS) { return *this; }
 
-    void clear() {}
+      Type& operator=(const FreeSpaceBase& FS) { return *this; }
 
-    void allocate(const unsigned int Dim) {}
+      void clear() {}
+
+      void allocate(const unsigned int Dim) {}
 
   };
 

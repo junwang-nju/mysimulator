@@ -65,7 +65,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- clear"<<endl;
-  //vPL.clear();
+  vPL.clear();
   vPL2.clear();
   cout<<endl;
   return 1;

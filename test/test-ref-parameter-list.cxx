@@ -54,16 +54,16 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- access the hash tree"<<endl;
-  unsigned int n=rPL.hashtree().size();
+  unsigned int n=rPL.ptrhashtree()->size();
   for(unsigned int i=0;i<n;++i)
-    if(rPL.hashtree()[i].ptrRoot()!=NULL)  cout<<i<<endl;
+    if((*rPL.ptrhashtree())[i].ptrRoot()!=NULL)  cout<<i<<endl;
   cout<<endl;
 
   cout<<"Test -- input from istream"<<endl;
   cin>>rPL;
-  n=rPL.hashtree().size();
+  n=rPL.ptrhashtree()->size();
   for(unsigned int i=0;i<n;++i)
-    if(rPL.hashtree()[i].ptrRoot()!=NULL)  cout<<i<<endl;
+    if((*rPL.ptrhashtree())[i].ptrRoot()!=NULL)  cout<<i<<endl;
   cout<<endl;
 
   cout<<"Test -- clear"<<endl;

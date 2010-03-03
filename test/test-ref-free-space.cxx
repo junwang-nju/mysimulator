@@ -1,11 +1,11 @@
 
-#include "free-space.h"
+#include "var-free-space.h"
 #include "var-vector.h"
 #include <iostream>
 using namespace std;
 
 int main() {
-  FreeSpace FS,FS1;
+  varFreeSpace FS,FS1;
   cout<<"Test -- assign with another free-space geometry"<<endl;
   FS=FS1;
   cout<<endl;
