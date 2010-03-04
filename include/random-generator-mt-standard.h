@@ -2,7 +2,7 @@
 #ifndef _Random_Generator_MT_Standard_H_
 #define _Random_Generator_MT_Standard_H_
 
-#include "type.h"
+#include "fix-vector.h"
 
 namespace std {
 
@@ -10,23 +10,23 @@ namespace std {
 
     private:
 
-      static const uint32_t N;
+      static const unsigned int N;
 
-      static const uint32_t M;
+      static const unsigned int M;
 
-      static const uint32_t MatrixA;
+      static const unsigned int MatrixA;
 
-      static const uint32_t UppMask;
+      static const unsigned int UppMask;
 
-      static const uint32_t LowMask;
+      static const unsigned int LowMask;
 
-      static const uint32_t mag01[2];
+      static const unsigned int mag01[2];
 
-      fixVector<uint32_t,624> mt;
+      fixVector<unsigned int,624> mt;
 
       int mti, kk;
 
-      uint32_t oui;
+      unsigned int oui;
 
       int oi;
 
@@ -38,11 +38,11 @@ namespace std {
 
       MT_Standard() {}
 
-      MT_Standard(const uint32_t& seed) : mti(N+1) { Init(seed); }
+      MT_Standard(const unsigned int& seed) : mti(N+1) { Init(seed); }
 
       MT_Standard(const MT_Standard& rng) { assert(false); }
 
-      void Init(const uint32_t& seed) {
+      void Init(const unsigned int& seed) {
         mt[0]=seed&0xFFFFFFFFUL;
         for(mti=1;mti<static_cast<int>(N);++mti) {
           mt[mti]=1812433253UL*(mt[mti-1]^(mt[mti-1]>>30))+mti;
@@ -50,7 +50,7 @@ namespace std {
         }
       }
 
-      void Init(const uint32_t* init_key, const uint32_t& key_length) {
+      void Init(const unsigned int* init_key, const unsigned int& key_length) {
         int i,j,k;
         Init(19650218UL);
         i=1; j=0;
@@ -59,22 +59,26 @@ namespace std {
           mt[i]=(mt[i]^((mt[i-1]^(mt[i-1]>>30))*1664525UL))+init_key[j]+j;
           mt[i]&=0xFFFFFFFFUL;
           ++i;  ++j;
-          if(static_cast<uint32_t>(i)>=N) { mt[0]=mt[N-1];  i=1; }
-          if(static_cast<uint32_t>(j)>=key_length)    j=0;
+          if(static_cast<unsigned int>(i)>=N) { mt[0]=mt[N-1];  i=1; }
+          if(static_cast<unsigned int>(j)>=key_length)    j=0;
         }
         for(k=N-1;k;--k) {
           mt[i]=(mt[i]^((mt[i-1]^(mt[i-1]>>30))*1566083941UL))-i;
           mt[i]&=0xFFFFFFFFUL;
           ++i;
-          if(static_cast<uint32_t>(i)>=N) { mt[0]=mt[N-1];  i=1; }
+          if(static_cast<unsigned int>(i)>=N) { mt[0]=mt[N-1];  i=1; }
         }
         mt[0]=0x80000000UL;
       }
 
-      const uint32_t& GenRandUint32() {
+      void Init(const VectorBase<unsigned int>& key) {
+        Init(key.data(),key.size());
+      }
+
+      const unsigned int& GenRandUint32() {
         static const int dNM=static_cast<int>(N-M);
-        if(static_cast<uint32_t>(mti)>=N) {
-          if(static_cast<uint32_t>(mti)==N+1)   Init(5489UL);
+        if(static_cast<unsigned int>(mti)>=N) {
+          if(static_cast<unsigned int>(mti)==N+1)   Init(5489UL);
           for(kk=0;kk<dNM;++kk) {
             oui=(mt[kk]&UppMask)|(mt[kk+1]&LowMask);
             mt[kk]=mt[kk+M]^(oui>>1)^mag01[oui&0x1UL];
@@ -112,7 +116,7 @@ namespace std {
         return od;
       }
 
-      const double& GenRand_Open0Close0() {
+      const double& GenRand_Open0Open1() {
         od=static_cast<double>(static_cast<int>(GenRandUint32()))*
            (1.0/4294967296.0)+(0.5+0.5/4294967296.0);
         return od;
@@ -127,14 +131,14 @@ namespace std {
       }
 
       const double& GenRand53Mix_Close0Open1_Slow() {
-        uint32_t x,y;
+        unsigned int x,y;
         x=GenRandUint32()>>5;
         y=GenRandUint32()>>6;
         od=(static_cast<double>(x)*67108864.0+y)*(1.0/9007199254740992.0);
         return od;
       }
 
-      const long double& GenRand63Mix_CLose0Open1() {
+      const long double& GenRand63Mix_Close0Open1() {
         long x,y;
         x=static_cast<long>(GenRandUint32());
         y=static_cast<long>(GenRandUint32());
@@ -144,11 +148,12 @@ namespace std {
         return old;
       }
 
-      const long double& GenRand63Mix_CLose0Open1_Slow() {
-        uint32_t x,y;
+      const long double& GenRand63Mix_Close0Open1_Slow() {
+        unsigned int x,y;
         x=GenRandUint32();
         y=GenRandUint32();
-        old=(x|(static_cast<uint64_t>(y)<<32))*(1.0/18446744073709551616.0L);
+        old=(x|(static_cast<unsigned long long int>(y)<<32))*
+            (1.0/18446744073709551616.0L);
         return old;
       }
 
@@ -157,24 +162,36 @@ namespace std {
       }
 
       const long double& Default(const long double&) {
-        return GenRand63Mix_CLose0Open1();
+        return GenRand63Mix_Close0Open1();
       }
 
-      const uint32_t& Default(const uint32_t&) { return GenRandUint32(); }
+      const unsigned int& Default(const unsigned int&) {
+        return GenRandUint32();
+      }
+
+      void saveStatus(ostream& os) {
+        for(unsigned int i=0;i<624;++i) os<<mt[i]<<"\t";
+        os<<mti<<"\t"<<kk;
+      }
+
+      void loadStatus(istream& is) {
+        for(unsigned int i=0;i<624;++i) is>>mt[i];
+        is>>mti>>kk;
+      }
 
   };
 
-  const uint32_t MT_Standard::N=624;
+  const unsigned int MT_Standard::N=624;
 
-  const uint32_t MT_Standard::M=397;
+  const unsigned int MT_Standard::M=397;
 
-  const uint32_t MT_Standard::MatrixA=0x9908B0DFUL;
+  const unsigned int MT_Standard::MatrixA=0x9908B0DFUL;
 
-  const uint32_t MT_Standard::UppMask=0x80000000UL;
+  const unsigned int MT_Standard::UppMask=0x80000000UL;
 
-  const uint32_t MT_Standard::LowMask=0x7FFFFFFFUL;
+  const unsigned int MT_Standard::LowMask=0x7FFFFFFFUL;
 
-  const uint32_t MT_Standard::mag01[2]={0x0UL,MatrixA};
+  const unsigned int MT_Standard::mag01[2]={0x0UL,MatrixA};
 
 }
 

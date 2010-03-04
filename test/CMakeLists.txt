@@ -98,3 +98,9 @@ target_link_libraries (test-ref-matrix-triangle.run blas Base)
 add_executable (test-fix-matrix-triangle.run test-fix-matrix-triangle.cxx)
 target_link_libraries (test-fix-matrix-triangle.run blas Base)
 
+add_executable (test-random-generator-mt-standard.run test-random-generator-mt-standard.cxx)
+target_link_libraries (test-random-generator-mt-standard.run Base)
+
+add_executable (test-random-generator-mt-dsfmt.run test-random-generator-mt-dsfmt.cxx)
+target_link_libraries (test-random-generator-mt-dsfmt.run Base)
+
