@@ -102,5 +102,6 @@ add_executable (test-random-generator-mt-standard.run test-random-generator-mt-s
 target_link_libraries (test-random-generator-mt-standard.run Base)
 
 add_executable (test-random-generator-mt-dsfmt.run test-random-generator-mt-dsfmt.cxx)
+set_source_files_properties (test-random-generator-mt-dsfmt.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 target_link_libraries (test-random-generator-mt-dsfmt.run Base)
 
