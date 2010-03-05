@@ -22,20 +22,20 @@ namespace std {
 
   };
 
-  ostream& operator<<(ostream& os, const W128_DSFMT& W) {
+  ostream& operator<<(ostream& os, const W128_SFMT& W) {
     os<<W.u[0];
     for(unsigned int i=1;i<4;++i)
       os<<"\t"<<W.u[i];
     return os;
   }
 
-  istream& operator>>(istream& is, W128_DSFMT& W) {
+  istream& operator>>(istream& is, W128_SFMT& W) {
     for(unsigned int i=0;i<4;++i)
       is>>W.u[i];
     return is;
   }
 
-  template <uint LoopFac=19937>
+  template <unsigned int LoopFac=19937>
   class SFMT {
 
     private:
@@ -82,7 +82,7 @@ namespace std {
       
       unsigned int *psfmt32;
       
-      uint64_t *psfmt64;
+      unsigned long long int *psfmt64;
       
       int idx;
       
@@ -90,7 +90,7 @@ namespace std {
       
       unsigned int oui32;
       
-      uint64_t oui64;
+      unsigned long long int oui64;
       
       double od;
       
@@ -128,7 +128,7 @@ namespace std {
           r2=r;
         }
         for(;i<N;++i) {
-          r=mm_recursion(sfmt[i].si,sfmt[i+Po1-N].si,r1,r2,mask);
+          r=mm_recursion(sfmt[i].si,sfmt[i+Pos1-N].si,r1,r2,mask);
           _mm_store_si128(&(sfmt[i].si),r);
           r1=r2;
           r2=r;
@@ -141,7 +141,7 @@ namespace std {
         mask=_mm_set_epi32(Msk4,Msk3,Msk2,Msk1);
         r1=_mm_load_si128(&(sfmt[N-2].si));
         r2=_mm_load_si128(&(sfmt[N-1].si));
-        for(i=0;i<N-Po1;++i) {
+        for(i=0;i<N-Pos1;++i) {
           r=mm_recursion(sfmt[i].si,sfmt[i+Pos1].si,r1,r2,mask);
           _mm_store_si128(&(Array[i].si),r);
           r1=r2;
@@ -164,7 +164,7 @@ namespace std {
           _mm_store_si128(&(sfmt[j].si),r);
         }
         for(;i<Size;++i) {
-          r=mm_recursion(Array[i-N].si,Array[i+Po1-N].si,r1,r1,mask);
+          r=mm_recursion(Array[i-N].si,Array[i+Pos1-N].si,r1,r1,mask);
           _mm_store_si128(&(Array[i].si),r);
           _mm_store_si128(&(sfmt[j++].si),r);
           r1=r2;
@@ -186,7 +186,7 @@ namespace std {
       }
 
       void GenRandAll() {
-        uint i;
+        unsigned int i;
         W128_SFMT *r1=&sfmt[N-2], *r2=&sfmt[N-1];
         for(i=0;i<N-Pos1;++i) {
           DoRecursion(sfmt[i],sfmt[i],sfmt[i+Pos1],*r1,*r2);
@@ -200,8 +200,8 @@ namespace std {
         }
       }
 
-      void GenRandArray(W128_SFMT* Array, const uint& Size) {
-        uint i,j;
+      void GenRandArray(W128_SFMT* Array, const unsigned int& Size) {
+        unsigned int i,j;
         W128_SFMT *r1=&sfmt[N-2], *r2=&sfmt[N-1];
         for(i=0;i<N-Pos1;++i) {
           DoRecursion(Array[i],sfmt[i],sfmt[i+Pos1],*r1,*r2);
@@ -229,14 +229,14 @@ namespace std {
 
 #endif
 
-      uint idxof(const uint& i) { return i; }
+      unsigned int idxof(const unsigned int& i) { return i; }
 
       void rshift128(W128_SFMT& out, const W128_SFMT& in, const int& shift) {
-        uint64_t th,tl,oh,ol;
-        th=(static_cast<uint64_t>(in.u[3])<<32) |
-           (static_cast<uint64_t>(in.u[2]));
-        tl=(static_cast<uint64_t>(in.u[1])<<32) |
-           (static_cast<uint64_t>(in.u[0]));
+        unsigned long long int th,tl,oh,ol;
+        th=(static_cast<unsigned long long int>(in.u[3])<<32) |
+           (static_cast<unsigned long long int>(in.u[2]));
+        tl=(static_cast<unsigned long long int>(in.u[1])<<32) |
+           (static_cast<unsigned long long int>(in.u[0]));
         oh=th>>(shift*8);
         ol=tl>>(shift*8);
         ol|=th<<(64-shift*8);
@@ -247,11 +247,11 @@ namespace std {
       }
 
       void lshift128(W128_SFMT& out, const W128_SFMT& in, const int& shift) {
-        uint64_t th,tl,oh,ol;
-        th=(static_cast<uint64_t>(in.u[3])<<32) |
-           (static_cast<uint64_t>(in.u[2]));
-        tl=(static_cast<uint64_t>(in.u[1])<<32) |
-           (static_cast<uint64_t>(in.u[0]));
+        unsigned long long int th,tl,oh,ol;
+        th=(static_cast<unsigned long long int>(in.u[3])<<32) |
+           (static_cast<unsigned long long int>(in.u[2]));
+        tl=(static_cast<unsigned long long int>(in.u[1])<<32) |
+           (static_cast<unsigned long long int>(in.u[0]));
         oh=th<<(shift*8);
         ol=tl<<(shift*8);
         ol|=th>>(64-shift*8);
@@ -270,8 +270,8 @@ namespace std {
       }
 
       void PeriodCertification() {
-        uint inner=0;
-        uint i,j;
+        unsigned int inner=0;
+        unsigned int i,j;
         for(i=0;i<4;++i)    inner^=psfmt32[idxof(i)]&Parity[i];
         for(i=16;i>0;i>>=1) inner^=inner>>i;
         inner&=1;
@@ -327,7 +327,7 @@ namespace std {
         return oui64;
       }
 
-      void FillArrayUint32(unsigned int* Array, const uint& Size) {
+      void FillArrayUint32(unsigned int* Array, const unsigned int& Size) {
         assert(initialized);
         assert(idx==N32);
         assert(Size%4==0);
@@ -336,7 +336,7 @@ namespace std {
         idx=N32;
       }
 
-      void FillArrayUint64(uint64_t* Array, const uint& Size) {
+      void FillArrayUint64(unsigned long long int* Array, const unsigned int& Size) {
         assert(initialized);
         assert(idx==N32);
         assert(Size%2==0);
@@ -348,7 +348,7 @@ namespace std {
       void Init(const unsigned int& seed) {
         unsigned int work;
         psfmt32[idxof(0)]=seed;
-        for(uint i=1;i<N32;++i) {
+        for(unsigned int i=1;i<N32;++i) {
           work=psfmt32[idxof(i-1)];
           psfmt32[idxof(i)]=1812433253UL*(work^(work>>30))+i;
         }
@@ -358,9 +358,9 @@ namespace std {
       }
 
       void Init(const unsigned int* init_key, const int& key_length) {
-        uint i,j,count;
+        unsigned int i,j,count;
         unsigned int r;
-        uint lag,mid,size=N*4,tmid;
+        unsigned int lag,mid,size=N*4,tmid;
         if(size>=263)       lag=11;
         else if(size>=68)   lag=7;
         else if(size>=39)   lag=5;
@@ -455,7 +455,7 @@ namespace std {
         unsigned int x,y;
         x=GenRandUint32();
         y=GenRandUint32();
-        old=(x|(static_cast<uint64_t>(y)<<32))*(1.0/18446744073709551616.0L);
+        old=(x|(static_cast<unsigned long long int>(y)<<32))*(1.0/18446744073709551616.0L);
         return old;
       }
 
@@ -469,65 +469,67 @@ namespace std {
 
       const unsigned int& Default(const unsigned int&) { return GenRandUint32(); }
 
-      const uint64_t& Default(const uint64_t&) { return GenRandUint64(); }
+      const unsigned long long int& Default(const unsigned long long int&) {
+        return GenRandUint64();
+      }
 
   };
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::MExp=LoopFac;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::N=MExp/128+1;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::N32=N*4;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::N64=N*2;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Pos1=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::SL1=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::SL2=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::SR1=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::SR2=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Msk1=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Msk2=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Msk3=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Msk4=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Parity1=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Parity2=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Parity3=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Parity4=0;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Parity[4]={Parity1,Parity2,Parity3,Parity4};
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const char* SFMT<LoopFac>::IDStr=" ";
 
   template <>
@@ -575,14 +577,14 @@ namespace std {
 
   template <>
   SFMT<607>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                       initialized(0) {
   }
 
   template <>
   SFMT<607>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -632,13 +634,13 @@ namespace std {
 
   template <>
   SFMT<1279>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                       psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                       psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                        initialized(0) {}
 
   template <>
   SFMT<1279>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -688,14 +690,14 @@ namespace std {
 
   template <>
   SFMT<11213>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                        psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                        psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                         initialized(0) {
   }
 
   template <>
   SFMT<11213>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -745,14 +747,14 @@ namespace std {
 
   template <>
   SFMT<132049>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                         psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                         psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                          initialized(0) {
   }
 
   template <>
   SFMT<132049>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -802,14 +804,14 @@ namespace std {
 
   template <>
   SFMT<19937>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                        psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                        psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                         initialized(0) {
   }
 
   template <>
   SFMT<19937>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -859,14 +861,14 @@ namespace std {
 
   template <>
   SFMT<216091>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                         psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                         psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                          initialized(0) {
   }
 
   template <>
   SFMT<216091>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -916,14 +918,14 @@ namespace std {
 
   template <>
   SFMT<2281>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                       psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                       psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                        initialized(0) {
   }
 
   template <>
   SFMT<2281>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -973,14 +975,14 @@ namespace std {
 
   template <>
   SFMT<4253>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                       psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                       psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                        initialized(0) {
   }
 
   template <>
   SFMT<4253>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -1030,14 +1032,14 @@ namespace std {
 
   template <>
   SFMT<44497>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                        psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                        psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                         initialized(0) {
   }
 
   template <>
   SFMT<44497>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }
@@ -1087,14 +1089,14 @@ namespace std {
 
   template <>
   SFMT<86243>::SFMT() : psfmt32(&sfmt[0].u[0]),
-                        psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+                        psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
                         initialized(0) {
   }
 
   template <>
   SFMT<86243>::SFMT(const unsigned int& seed)
     : psfmt32(&sfmt[0].u[0]),
-      psfmt64(reinterpret_cast<uint64_t*>(&sfmt[0].u[0])),
+      psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
   }

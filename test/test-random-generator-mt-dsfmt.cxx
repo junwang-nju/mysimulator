@@ -2,6 +2,7 @@
 #include "random-generator-mt-dsfmt.h"
 #include "random-generator-interface.h"
 #include "fix-vector.h"
+#include "ref-vector.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -60,11 +61,15 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- fill array"<<endl;
-  fixVector<W128_DSFMT,500> dv;
-  rg.FillArray_Close1Open2((double*)(dv.data())+2,382);
+  fixVector<double,501> dv;
+  refVector<double> rv;
+  dv=100;
+  BuildRationalVector(rg,dv,rv);
+  cout<<rv.data()-dv.data()<<endl;
+  rg.FillArray_Close1Open2(rv.data(),382);
   cout<<dv<<endl;
-  //rg.FillArray_Close1Open2(dv);
-  //cout<<dv<<endl;
+  rg.FillArray_Close1Open2(rv);
+  cout<<dv<<endl;
   cout<<endl;
 
   cout<<"Test -- save status"<<endl;

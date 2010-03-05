@@ -2,8 +2,7 @@
 #ifndef _Random_Generator_MT_DSFMT_H_
 #define _Random_Generator_MT_DSFMT_H_
 
-#include "vector-base.h"
-#include <cstdio>
+#include "ref-vector.h"
 #include <cstring>
 
 #ifdef HAVE_SSE2
@@ -164,25 +163,17 @@ namespace std {
 
       void DoRecursion(const W128_DSFMT& a, const W128_DSFMT& b,
                        W128_DSFMT& r, W128_DSFMT& u){
-        __m128i v,w,x,y,z,ra,rb,ru;
-        ra=a.si;
-        cout<<"***************** 1"<<endl;
-        cout<<&rb<<"\t"<<&(b.si)<<endl;
-        rb=_mm_loadu_si128(&(b.si));
-        cout<<"***************** 2"<<endl;
-        ru=u.si;
-        x=ra;
+        __m128i v,w,x,y,z;
+        x=a.si;
         z=_mm_slli_epi64(x,SL1);
-        y=_mm_shuffle_epi32(ru,SSE2_Shuff);
-        z=_mm_xor_si128(z,rb);
+        y=_mm_shuffle_epi32(u.si,SSE2_Shuff);
+        z=_mm_xor_si128(z,b.si);
         y=_mm_xor_si128(y,z);
         v=_mm_srli_epi64(y,SR);
         w=_mm_and_si128(y,SSE2_ParamMask);
         v=_mm_xor_si128(v,x);
         v=_mm_xor_si128(v,w);
-        cout<<"***************** 3"<<endl;
         r.si=v;
-        cout<<"***************** 4"<<endl;
         u.si=y;
       }
 
@@ -207,39 +198,25 @@ namespace std {
 
       void GenRandArrayImpl(W128_DSFMT* Array, unsigned int Size,
                             const ConvertFuncType& cfunc) {
+        assert((reinterpret_cast<unsigned int>(Array)&0xF)==(StatusPtr()&0xF));
         unsigned int i,j;
         W128_DSFMT lung;
         lung=status[N];
-        cout<<((Array-&lung)&0xF)<<endl;
-        assert(((Array-&lung)&0xF)==0);
-        cout<<Array<<"\t"<<(&lung)<<"\t"<<status<<endl; getchar();
-        cout<<"=============0================"<<endl;
         DoRecursion(status[0],status[Pos1],Array[0],lung);
-        for(i=0;i<N-Pos1;++i) {
-          cout<<Array[i]<<endl;
+        for(i=0;i<N-Pos1;++i)
           DoRecursion(status[i],status[i+Pos1],Array[i],lung);
-        }
-        cout<<"=============a================"<<endl;
-        cout<<i<<"----------- "<<N<<"\t"<<Size<<endl;
-        for(;i<N;++i) { cout<<i+Pos1-N<<endl;
-          cout<<status[i]<<endl;
-          cout<<Array[i+Pos1-N]<<endl;
-          cout<<lung<<endl;
+        for(;i<N;++i)
           DoRecursion(status[i],Array[i+Pos1-N],Array[i],lung);
-          cout<<"\t"<<i<<endl; }
-        cout<<"=============b================"<<endl;
         for(;i+N<Size;++i) {
           DoRecursion(Array[i-N],Array[i+Pos1-N],Array[i],lung);
           cfunc(Array[i-N]);
         }
-        cout<<"=============1================"<<endl;
         for(j=0;j+Size<N+N;++j) status[j]=Array[j+Size-N];
         for(;i<Size;++i,++j) {
           DoRecursion(Array[i-N],Array[i+Pos1-N],Array[i],lung);
           status[j]=Array[i];
           cfunc(Array[i-N]);
         }
-        cout<<"=============2================"<<endl;
         for(i=Size-N;i<Size;++i)  cfunc(Array[i]);
         status[N]=lung;
       }
@@ -307,6 +284,10 @@ namespace std {
       const char* IDString() { return IDStr; }
 
       int GetMinArraySize() { return N64; }
+
+      const unsigned int StatusPtr() const {
+        return reinterpret_cast<unsigned int>(status);
+      }
 
       void FillArray_Close1Open2(double* Array, const unsigned int Sz) {
         FillArrayImpl(Array,Sz,Convert_Close1Open2);
@@ -1005,6 +986,17 @@ namespace std {
   
   template <>
   dSFMT<216091>::dSFMT(const unsigned int& seed) { Init(seed); }
+
+  template <unsigned int LoopFac>
+  void BuildRationalVector(const dSFMT<LoopFac>& rg,
+                           const VectorBase<double>& iV,
+                           refVector<double>& rV) {
+    bool fg=((iV.size()&1)==0);
+    if((reinterpret_cast<unsigned int>(iV.data())&0xF)==(rg.StatusPtr()&0xF))
+      rV.refer(iV,0,(fg?iV.size():iV.size()-1));
+    else
+      rV.refer(iV,1,(fg?iV.size()-2:iV.size()-1));
+  }
 
 }
 
