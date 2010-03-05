@@ -1,12 +1,14 @@
 
 #include "random-generator-mt-dsfmt.h"
 #include "random-generator-interface.h"
+#include "fix-vector.h"
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 int main() {
 
-  RandGenerator<MT_Standard,double> rg;
+  RandGenerator<dSFMT<>,double> rg;
 
   cout<<"Test -- init with a seed"<<endl;
   rg.Init(122378);
@@ -14,7 +16,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- create a object with a seed"<<endl;
-  RandGenerator<MT_Standard,double> rg2(2721001);
+  RandGenerator<dSFMT<216091>,double> rg2(2721001);
   cout<<endl;
 
   cout<<"Test -- init with time"<<endl;
@@ -33,12 +35,8 @@ int main() {
   cout<<rg.GenRandUint32()<<endl;
   cout<<endl;
 
-  cout<<"Test -- generate a 31-bit unsigned int"<<endl;
-  cout<<rg.GenRandInt31()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a double in [0,1]"<<endl;
-  cout<<rg.GenRand_Close0Close1()<<endl;
+  cout<<"Test -- generate a double in [1,2)"<<endl;
+  cout<<rg.GenRand_Close1Open2()<<endl;
   cout<<endl;
 
   cout<<"Test -- generate a double in [0,1)"<<endl;
@@ -46,36 +44,32 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- generate a double in (0,1]"<<endl;
+  cout<<rg.GenRand_Open0Close1()<<endl;
+  cout<<endl;
+
+  cout<<"Test -- generate a double in (0,1)"<<endl;
   cout<<rg.GenRand_Open0Open1()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a 53-bit double in [0,1)"<<endl;
-  cout<<rg.GenRand53Mix_Close0Open1()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a 53-bit double in [0,1) with slow speed"<<endl;
-  cout<<rg.GenRand53Mix_Close0Open1_Slow()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a 63-bit double in [0,1)"<<endl;
-  cout<<rg.GenRand63Mix_Close0Open1()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a 63-bit double in [0,1) with slow speed"<<endl;
-  cout<<rg.GenRand63Mix_Close0Open1_Slow()<<endl;
   cout<<endl;
 
   cout<<"Test -- default function"<<endl;
   cout<<rg()<<endl;
-  long double ld;
+  double d;
   unsigned int ui;
-  cout<<rg.Default(ld)<<endl;
+  cout<<rg.Default(d)<<endl;
   cout<<rg.Default(ui)<<endl;
   cout<<endl;
 
+  cout<<"Test -- fill array"<<endl;
+  fixVector<W128_DSFMT,500> dv;
+  rg.FillArray_Close1Open2((double*)(dv.data())+2,382);
+  cout<<dv<<endl;
+  //rg.FillArray_Close1Open2(dv);
+  //cout<<dv<<endl;
+  cout<<endl;
+
   cout<<"Test -- save status"<<endl;
-  stringstream ss;
   fixVector<unsigned int,10> v1,v2;
+  stringstream ss;
   rg.save(ss);
   for(unsigned int i=0;i<10;++i) v1[i]=rg.GenRandUint32();
   rg.load(ss);

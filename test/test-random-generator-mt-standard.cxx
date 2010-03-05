@@ -44,7 +44,7 @@ int main() {
   cout<<rg.GenRand_Close0Open1()<<endl;
   cout<<endl;
 
-  cout<<"Test -- generate a double in (0,1]"<<endl;
+  cout<<"Test -- generate a double in (0,1)"<<endl;
   cout<<rg.GenRand_Open0Open1()<<endl;
   cout<<endl;
 

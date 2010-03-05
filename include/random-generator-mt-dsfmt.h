@@ -3,6 +3,8 @@
 #define _Random_Generator_MT_DSFMT_H_
 
 #include "vector-base.h"
+#include <cstdio>
+#include <cstring>
 
 #ifdef HAVE_SSE2
 #include <emmintrin.h>
@@ -27,6 +29,19 @@ namespace std {
     double    d[2];
 
   };
+
+  ostream& operator<<(ostream& os, const W128_DSFMT& W) {
+    os<<W.u32[0];
+    for(unsigned int i=1;i<4;++i)
+      os<<"\t"<<W.u32[i];
+    return os;
+  }
+
+  istream& operator>>(istream& is, W128_DSFMT& W) {
+    for(unsigned int i=0;i<4;++i)
+      is>>W.u32[i];
+    return is;
+  }
 
   void Convert_Close1Open2(W128_DSFMT& w) {}
 
@@ -74,7 +89,7 @@ namespace std {
 
 #endif
 
-  template <uint LoopFac=19937>
+  template <unsigned int LoopFac=19937>
   class dSFMT {
 
     private:
@@ -127,13 +142,13 @@ namespace std {
 
       W128_DSFMT  status[(LoopFac-128)/104+2];    /// namely N+1
 
-      int idx;
+      unsigned int idx;
 
       unsigned int  oui;
 
       double    od;
 
-      const uint& idxof(const uint& I) { return I; }
+      const unsigned int& idxof(const unsigned int& I) { return I; }
 
 #ifdef HAVE_SSE2
 
@@ -149,17 +164,25 @@ namespace std {
 
       void DoRecursion(const W128_DSFMT& a, const W128_DSFMT& b,
                        W128_DSFMT& r, W128_DSFMT& u){
-        __m128i v,w,x,y,z;
-        x=a.si;
+        __m128i v,w,x,y,z,ra,rb,ru;
+        ra=a.si;
+        cout<<"***************** 1"<<endl;
+        cout<<&rb<<"\t"<<&(b.si)<<endl;
+        rb=_mm_loadu_si128(&(b.si));
+        cout<<"***************** 2"<<endl;
+        ru=u.si;
+        x=ra;
         z=_mm_slli_epi64(x,SL1);
-        y=_mm_shuffle_epi32(u.si,SSE2_Shuff);
-        z=_mm_xor_si128(z,b.si);
+        y=_mm_shuffle_epi32(ru,SSE2_Shuff);
+        z=_mm_xor_si128(z,rb);
         y=_mm_xor_si128(y,z);
         v=_mm_srli_epi64(y,SR);
         w=_mm_and_si128(y,SSE2_ParamMask);
         v=_mm_xor_si128(v,x);
         v=_mm_xor_si128(v,w);
+        cout<<"***************** 3"<<endl;
         r.si=v;
+        cout<<"***************** 4"<<endl;
         u.si=y;
       }
 
@@ -182,26 +205,41 @@ namespace std {
 
       typedef void (*ConvertFuncType)(W128_DSFMT&);
 
-      void GenRandArrayImpl(W128_DSFMT* Array, uint Size,
+      void GenRandArrayImpl(W128_DSFMT* Array, unsigned int Size,
                             const ConvertFuncType& cfunc) {
-        uint i,j;
+        unsigned int i,j;
         W128_DSFMT lung;
         lung=status[N];
+        cout<<((Array-&lung)&0xF)<<endl;
+        assert(((Array-&lung)&0xF)==0);
+        cout<<Array<<"\t"<<(&lung)<<"\t"<<status<<endl; getchar();
+        cout<<"=============0================"<<endl;
         DoRecursion(status[0],status[Pos1],Array[0],lung);
-        for(i=0;i<N-Pos1;++i)
+        for(i=0;i<N-Pos1;++i) {
+          cout<<Array[i]<<endl;
           DoRecursion(status[i],status[i+Pos1],Array[i],lung);
-        for(;i<N;++i)
+        }
+        cout<<"=============a================"<<endl;
+        cout<<i<<"----------- "<<N<<"\t"<<Size<<endl;
+        for(;i<N;++i) { cout<<i+Pos1-N<<endl;
+          cout<<status[i]<<endl;
+          cout<<Array[i+Pos1-N]<<endl;
+          cout<<lung<<endl;
           DoRecursion(status[i],Array[i+Pos1-N],Array[i],lung);
+          cout<<"\t"<<i<<endl; }
+        cout<<"=============b================"<<endl;
         for(;i+N<Size;++i) {
           DoRecursion(Array[i-N],Array[i+Pos1-N],Array[i],lung);
           cfunc(Array[i-N]);
         }
+        cout<<"=============1================"<<endl;
         for(j=0;j+Size<N+N;++j) status[j]=Array[j+Size-N];
         for(;i<Size;++i,++j) {
           DoRecursion(Array[i-N],Array[i+Pos1-N],Array[i],lung);
           status[j]=Array[i];
           cfunc(Array[i-N]);
         }
+        cout<<"=============2================"<<endl;
         for(i=Size-N;i<Size;++i)  cfunc(Array[i]);
         status[N]=lung;
       }
@@ -217,7 +255,7 @@ namespace std {
       void init_mask() {
         unsigned long long int *pSFMT;
         pSFMT=&(status[0].u[0]);
-        for(uint i=0;i<N+N;++i) pSFMT[i]=(pSFMT[i]&LowMask)|HighConst;
+        for(unsigned int i=0;i<N+N;++i) pSFMT[i]=(pSFMT[i]&LowMask)|HighConst;
       }
 
       void PeriodCertification() {
@@ -247,7 +285,7 @@ namespace std {
         status[N]=lung;
       }
 
-      void FillArrayImpl(double *Array, uint Size,
+      void FillArrayImpl(double *Array, unsigned int Size,
                          const ConvertFuncType& cfunc) {
         assert((Size&1)==0);
         assert(Size>=N64);
@@ -306,8 +344,8 @@ namespace std {
         unsigned int *pSFMT;
         pSFMT=&status[0].u32[0];
         pSFMT[idxof(0)]=seed;
-        uint sz=(N+1)*4;
-        for(uint i=1;i<sz;++i)
+        unsigned int sz=(N+1)*4;
+        for(unsigned int i=1;i<sz;++i)
           pSFMT[idxof(i)]=
             1812433253UL*(pSFMT[idxof(i-1)]^(pSFMT[idxof(i-1)]>>30))+i;
         init_mask();
@@ -318,7 +356,7 @@ namespace std {
 #endif
       }
 
-      void Init(unsigned int* init_key, int key_length) {
+      void Init(const unsigned int* init_key, int key_length) {
         unsigned int r, *pSFMT32;
         int i,j,count,lag,mid,tmid;
         int size=(N+1)*4;
@@ -376,6 +414,10 @@ namespace std {
 #endif
       }
 
+      void Init(const VectorBase<unsigned int>& Key) {
+        Init(Key.data(),Key.size());
+      }
+
       const unsigned int& GenRandUint32() {
         unsigned long long int *pSFMT64=&status[0].u[0];
         if(idx>=N64) {
@@ -388,7 +430,7 @@ namespace std {
 
       const double& GenRand_Close1Open2() {
         double *pSFMT64=&status[0].d[0];
-        if(static_cast<unsigned int>(idx)>=N64) {
+        if(idx>=N64) {
           GenRandAll();
           idx=0;
         }
@@ -424,72 +466,84 @@ namespace std {
 
       const double& Default(const double&) { return GenRand_Close0Open1(); }
 
-      const unsigned int& Default(const unsigned int&) { return GenRandUint32(); }
+      const unsigned int& Default(const unsigned int&) {
+        return GenRandUint32();
+      }
+
+      void saveStatus(ostream& os) {
+        for(unsigned int i=0;i<=N;++i) os<<status[i]<<"\t";
+        os<<idx;
+      }
+
+      void loadStatus(istream& is) {
+        for(unsigned int i=0;i<=N;++i) is>>status[i];
+        is>>idx;
+      }
 
   };
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::MExp=LoopFac;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::N=((MExp-128)/104+1);
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::N32=N*4;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::N64=N*2;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::LowMask=0x000FFFFFFFFFFFFFULL;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::HighConst=0x3FF0000000000000ULL;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::SR=12;
 
 #ifdef HAVE_SSE2
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::SSE2_Shuff=0x1BU;
 
 #endif
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Pos1=0U;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::SL1=0U;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Msk1=0ULL;
 
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Msk2=0ULL;
   
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_1=0U;
   
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_3=0U;
   
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_4=0U;
   
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Fix1=0ULL;
   
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Fix2=0ULL;
   
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Pcv1=0ULL;
   
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Pcv2=0ULL;
   
-  template <uint LoopFac>
+  template <unsigned int LoopFac>
   const char* dSFMT<LoopFac>::IDStr="";
   
   template <>
