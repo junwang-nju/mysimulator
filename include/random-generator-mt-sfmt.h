@@ -109,7 +109,7 @@ namespace std {
         z=_mm_xor_si128(z,x);
         z=_mm_xor_si128(z,v);
         x=_mm_slli_si128(x,SL2);
-        y=_mm_and_si128(u,mask);
+        y=_mm_and_si128(y,mask);
         z=_mm_xor_si128(z,x);
         z=_mm_xor_si128(z,y);
         return z;
