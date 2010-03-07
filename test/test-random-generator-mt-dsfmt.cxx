@@ -2,7 +2,6 @@
 #include "random-generator-mt-dsfmt.h"
 #include "random-generator-interface.h"
 #include "fix-vector.h"
-#include "ref-vector.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
