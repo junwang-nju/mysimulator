@@ -2,7 +2,8 @@
 #ifndef _Random_Generator_MT_SFMT_H_
 #define _Random_Generator_MT_SFMT_H_
 
-#include "vector-base.h"
+#include "ref-vector.h"
+#include <cstring>
 
 #ifdef HAVE_SSE2
 #include <emmintrin.h>
@@ -84,7 +85,7 @@ namespace std {
       
       unsigned long long int *psfmt64;
       
-      int idx;
+      unsigned int idx;
       
       int initialized;
       
@@ -135,7 +136,7 @@ namespace std {
         }
       }
 
-      void GenRandArray(W128_SFMT* Array, int Size) {
+      void GenRandArray(W128_SFMT* Array, unsigned int Size) {
         unsigned int i,j;
         __m128i r,r1,r2,mask;
         mask=_mm_set_epi32(Msk4,Msk3,Msk2,Msk1);
@@ -305,6 +306,10 @@ namespace std {
 
       const unsigned int& GetMinArraySize64() const { return N64; }
 
+      const unsigned int StatusPtr() const {
+        return reinterpret_cast<unsigned int>(sfmt);
+      }
+
       const unsigned int& GenRandUint32() {
         assert(initialized);
         if(static_cast<unsigned int>(idx)>=N32) {
@@ -315,7 +320,7 @@ namespace std {
         return oui32;
       }
 
-      const unsigned int& GenRandUint64() {
+      const unsigned long long int& GenRandUint64() {
         assert(initialized);
         assert((idx&1)==0);
         if(static_cast<unsigned int>(idx)>=N32) {
@@ -327,7 +332,7 @@ namespace std {
         return oui64;
       }
 
-      void FillArrayUint32(unsigned int* Array, const unsigned int& Size) {
+      void FillArrayUint32(unsigned int* Array, const unsigned int Size) {
         assert(initialized);
         assert(idx==N32);
         assert(Size%4==0);
@@ -336,7 +341,12 @@ namespace std {
         idx=N32;
       }
 
-      void FillArrayUint64(unsigned long long int* Array, const unsigned int& Size) {
+      void FillArrayUint32(VectorBase<unsigned int>& Array) {
+        FillArrayUint32(Array.data(),Array.size());
+      }
+
+      void FillArrayUint64(unsigned long long int* Array,
+                           const unsigned int Size) {
         assert(initialized);
         assert(idx==N32);
         assert(Size%2==0);
@@ -344,6 +354,12 @@ namespace std {
         GenRandArray(reinterpret_cast<W128_SFMT*>(Array),Size>>1);
         idx=N32;
       }
+
+      void FillArrayUint64(VectorBase<unsigned long long int>& Array) {
+        FillArrayUint64(Array.data(),Array.size());
+      }
+
+      bool IsReadyFill() { return idx==N32; }
 
       void Init(const unsigned int& seed) {
         unsigned int work;
@@ -357,7 +373,7 @@ namespace std {
         initialized=1;
       }
 
-      void Init(const unsigned int* init_key, const int& key_length) {
+      void Init(const unsigned int* init_key, const unsigned int key_length) {
         unsigned int i,j,count;
         unsigned int r;
         unsigned int lag,mid,size=N*4,tmid;
@@ -411,6 +427,10 @@ namespace std {
         initialized=1;
       }
 
+      void Init(const VectorBase<unsigned int>& Key) {
+        Init(Key.data(),Key.size());
+      }
+
       const double& GenRand_Close0Close1() {
         od=static_cast<double>(static_cast<int>(GenRandUint32()))*
            (1.0/4294967295.0)+(0.5+0.5/4294967295.0);
@@ -429,7 +449,7 @@ namespace std {
         return od;
       }
 
-      const double& GenRand53Mix_Open0Close1() {
+      const double& GenRand53Mix_Close0Open1() {
         long x,y;
         x=static_cast<long>(GenRandUint32()>>5);
         y=static_cast<long>(GenRandUint32()>>6);
@@ -437,7 +457,7 @@ namespace std {
         return od;
       }
 
-      const double& GenRand53Mix_Open0Close1_Slow() {
+      const double& GenRand53Mix_Close0Open1_Slow() {
         unsigned int x,y;
         x=GenRandUint32()>>5;
         y=GenRandUint32()>>6;
@@ -445,13 +465,13 @@ namespace std {
         return od;
       }
 
-      const long double& GenRand63_Close0Open1() {
+      const long double& GenRand63Mix_Close0Open1() {
         old=static_cast<long double>(static_cast<long long>(GenRandUint64()))*
             (1.0/18446744073709551616.0L)+0.5;
         return old;
       }
 
-      const long double& GenRand63_Close0Open1_Slow() {
+      const long double& GenRand63Mix_Close0Open1_Slow() {
         unsigned int x,y;
         x=GenRandUint32();
         y=GenRandUint32();
@@ -460,19 +480,33 @@ namespace std {
       }
 
       const double& Default(const double&) {
-        return GenRand53Mix_Open0Close1();
+        return GenRand53Mix_Close0Open1();
       }
 
       const long double& Default(const long double&) {
-        return GenRand63_Close0Open1();
+        return GenRand63Mix_Close0Open1();
       }
 
-      const unsigned int& Default(const unsigned int&) { return GenRandUint32(); }
+      const unsigned int& Default(const unsigned int&) {
+        return GenRandUint32();
+      }
 
       const unsigned long long int& Default(const unsigned long long int&) {
         return GenRandUint64();
       }
 
+      void saveStatus(ostream& os) {
+        for(unsigned int i=0;i<N;++i) os<<sfmt[i]<<"\t";
+        os<<idx<<"\t"<<initialized;
+      }
+
+      void loadStatus(istream& is) {
+        for(unsigned int i=0;i<N;++i) is>>sfmt[i];
+        is>>idx>>initialized;
+        psfmt32=&sfmt[0].u[0];
+        psfmt64=reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0]);
+      }
+                      
   };
 
   template <unsigned int LoopFac>
@@ -1099,6 +1133,34 @@ namespace std {
       psfmt64(reinterpret_cast<unsigned long long int*>(&sfmt[0].u[0])),
       initialized(0) {
     Init(seed);
+  }
+
+  template <unsigned int LoopFac>
+  void BuildRationalVector(const SFMT<LoopFac>& rg,
+                           const VectorBase<unsigned int>& iV,
+                           refVector<unsigned int>& rV) {
+    unsigned int fg;
+    if((reinterpret_cast<unsigned int>(iV.data())&0xF)==(rg.StatusPtr()&0xF)) {
+      fg=(iV.size()&3);
+      rV.refer(iV,0,iV.size()-fg);
+    } else {
+      fg=((iV.size()-2)&3);
+      rV.refer(iV,2,iV.size()-2-fg);
+    }
+  }
+
+  template <unsigned int LoopFac>
+  void BuildRationalVector(const SFMT<LoopFac>& rg,
+                           const VectorBase<unsigned long long int>& iV,
+                           refVector<unsigned long long int>& rV) {
+    unsigned int fg;
+    if((reinterpret_cast<unsigned int>(iV.data())&0xF)==(rg.StatusPtr()&0xF)) {
+      fg=(iV.size()&1);
+      rV.refer(iV,0,iV.size()-fg);
+    } else {
+      fg=((iV.size()-1)&1);
+      rV.refer(iV,1,iV.size()-1-fg);
+    }
   }
 
 }
