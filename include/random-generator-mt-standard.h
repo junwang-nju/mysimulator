@@ -3,6 +3,7 @@
 #define _Random_Generator_MT_Standard_H_
 
 #include "fix-vector.h"
+#include "ref-vector.h"
 
 namespace std {
 
@@ -192,6 +193,12 @@ namespace std {
   const unsigned int MT_Standard::LowMask=0x7FFFFFFFUL;
 
   const unsigned int MT_Standard::mag01[2]={0x0UL,MatrixA};
+
+  template <typename T>
+  void BuildRationalVector(const MT_Standard& rg, const VectorBase<T>& iV,
+                           refVector<T>& rV) {
+    rV.refer(iV);
+  }
 
 }
 

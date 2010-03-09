@@ -49,8 +49,8 @@ namespace std {
         if(isSecond)  od=Y*R2;
         else {
           do {
-            X=urng();   X+=X;   X-=1.;
-            Y=urng();   Y+=Y;   Y-=1.;
+            X=urng.GenRand_Open0Open1();   X+=X;   X-=1.;
+            Y=urng.GenRand_Open0Open1();   Y+=Y;   Y-=1.;
             R2=X*X+Y*Y;
           } while( (R2>1.)||(R2==0) );
           R2=sqrt(-2.0*log(R2)/R2);
@@ -62,8 +62,11 @@ namespace std {
       const double& Default(const double&) { return GenRandNormal(); }
 
       void saveStatus(ostream& os) {
+        unsigned int op=os.precision();
+        os.precision(20);
         urng.saveStatus(os);
         os<<"\t"<<X<<"\t"<<Y<<"\t"<<R2<<"\t"<<isSecond;
+        os.precision(op);
       }
 
       void loadStatus(istream& is) {
@@ -77,14 +80,7 @@ namespace std {
   void BuildRationalVector(const BoxMuller<UniformDbRNGType>& rg,
                            const VectorBase<double>& iV,
                            refVector<double>& rV) {
-    unsigned int fg,bg;
-    bg=(reinterpret_cast<unsigned int>(iV.data())&0xF)+16-
-       (rg.urng.StatusPtr()&0xF);
-    bg&=0xF;
-    bg=(16-bg)&0xF;
-    bg/=sizeof(double);
-    fg=((iV.size()-bg)&1);
-    rV.refer(iV,bg,iV.size()-bg-fg);
+    rV.refer(iV);
   }
 
 
