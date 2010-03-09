@@ -2,8 +2,8 @@
 #ifndef _Random_Generator_BoxMuller_H_
 #define _Random_Generator_BoxMuller_H_
 
-#include "vector-base.h"
-#include <cstdlib>
+#include "ref-vector.h"
+//#include <cstdlib>
 #include <cmath>
 #include <cassert>
 
@@ -38,7 +38,7 @@ namespace std {
         od=0.;
       }
 
-      void FillArray(double* Array, const uint& size) {
+      void FillArray(double* Array, const unsigned int size) {
         for(uint i=0;i<size;++i)  Array[i]=GenRandNormal();
       }
 
@@ -62,12 +62,31 @@ namespace std {
       const double& Default(const double&) { return GenRandNormal(); }
 
       void saveStatus(ostream& os) {
+        urng.saveStatus(os);
+        os<<"\t"<<X<<"\t"<<Y<<"\t"<<R2<<"\t"<<isSecond;
       }
 
       void loadStatus(istream& is) {
+        urng.loadStatus(is);
+        is>>X>>Y>>R2>>isSecond;
       }
 
   };
+
+  template <typename UniformDbRNGType>
+  void BuildRationalVector(const BoxMuller<UniformDbRNGType>& rg,
+                           const VectorBase<double>& iV,
+                           refVector<double>& rV) {
+    unsigned int fg,bg;
+    bg=(reinterpret_cast<unsigned int>(iV.data())&0xF)+16-
+       (rg.urng.StatusPtr()&0xF);
+    bg&=0xF;
+    bg=(16-bg)&0xF;
+    bg/=sizeof(double);
+    fg=((iV.size()-bg)&1);
+    rV.refer(iV,bg,iV.size()-bg-fg);
+  }
+
 
 }
 

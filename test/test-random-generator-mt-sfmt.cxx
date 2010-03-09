@@ -98,6 +98,16 @@ int main() {
   while(!rg.IsReadyFill())  rg.GenRandUint32();
   rg.FillArrayUint32(rv);
   cout<<dv<<endl;
+  fixVector<unsigned long long int,501> ldv;
+  refVector<unsigned long long int> lrv;
+  dv=999;
+  BuildRationalVector(rg,ldv,lrv);
+  while(!rg.IsReadyFill())  rg.GenRandUint32();
+  rg.FillArrayUint64(lrv.data(),400);
+  cout<<ldv<<endl;
+  while(!rg.IsReadyFill())  rg.GenRandUint32();
+  rg.FillArrayUint64(lrv);
+  cout<<ldv<<endl;
   cout<<endl;
 
   cout<<"Test -- save status"<<endl;
@@ -111,19 +121,17 @@ int main() {
     if(v1[i]!=v2[i])  cout<<i<<"\tNot Equal!"<<endl;
   cout<<endl;
 
-  /*
   cout<<"Test -- degree of uniformness"<<endl;
-  fixVector<unsigned int,10000> hist;
+  fixVector<unsigned int,100000> hist;
   hist=0u;
-  for(unsigned int i=0;i<10000000;++i)
-    hist[static_cast<unsigned int>(rg()*10000)]++;
-  fixVector<unsigned int,2000> hhist;
+  for(unsigned int i=0;i<100000000;++i)
+    hist[static_cast<unsigned int>(rg()*100000)]++;
+  fixVector<unsigned int,800> hhist;
   hhist=0U;
   for(unsigned int i=0;i<100000;++i)
-    hhist[hist[i]]++;
+    hhist[hist[i]-600]++;
   cout<<"(The data has been checked, but is not output here.)"<<endl;
   cout<<endl;
-  */
 
   return 1;
 }

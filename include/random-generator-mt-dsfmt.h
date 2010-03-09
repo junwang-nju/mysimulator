@@ -991,14 +991,13 @@ namespace std {
   void BuildRationalVector(const dSFMT<LoopFac>& rg,
                            const VectorBase<double>& iV,
                            refVector<double>& rV) {
-    unsigned int fg;
-    if((reinterpret_cast<unsigned int>(iV.data())&0xF)==(rg.StatusPtr()&0xF)) {
-      fg=(iV.size()&1);
-      rV.refer(iV,0,iV.size()-fg);
-    } else {
-      fg=((iV.size()-1)&1);
-      rV.refer(iV,1,iV.size()-1-fg);
-    }
+    unsigned int fg,bg;
+    bg=(reinterpret_cast<unsigned int>(iV.data())&0xF)+16-(rg.StatusPtr()&0xF);
+    bg&=0xF;
+    bg=(16-bg)&0xF;
+    bg/=sizeof(double);
+    fg=((iV.size()-bg)&1);
+    rV.refer(iV,bg,iV.size()-bg-fg);
   }
 
 }

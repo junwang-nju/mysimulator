@@ -453,7 +453,7 @@ namespace std {
         long x,y;
         x=static_cast<long>(GenRandUint32()>>5);
         y=static_cast<long>(GenRandUint32()>>6);
-        od=(x*67108864.0+y)*(1.0/90071992544740992.0);
+        od=(x*67108864.0+y)*(1.0/9007199254740992.0);
         return od;
       }
 
@@ -461,7 +461,7 @@ namespace std {
         unsigned int x,y;
         x=GenRandUint32()>>5;
         y=GenRandUint32()>>6;
-        od=(static_cast<double>(x)*67108864.0+y)*(1.0/90071992544740992.0);
+        od=(static_cast<double>(x)*67108864.0+y)*(1.0/9007199254740992.0);
         return od;
       }
 
@@ -1139,28 +1139,26 @@ namespace std {
   void BuildRationalVector(const SFMT<LoopFac>& rg,
                            const VectorBase<unsigned int>& iV,
                            refVector<unsigned int>& rV) {
-    unsigned int fg;
-    if((reinterpret_cast<unsigned int>(iV.data())&0xF)==(rg.StatusPtr()&0xF)) {
-      fg=(iV.size()&3);
-      rV.refer(iV,0,iV.size()-fg);
-    } else {
-      fg=((iV.size()-2)&3);
-      rV.refer(iV,2,iV.size()-2-fg);
-    }
+    unsigned int fg,bg;
+    bg=(reinterpret_cast<unsigned int>(iV.data())&0xF)+16-(rg.StatusPtr()&0xF);
+    bg&=0xF;
+    bg=(16-bg)&0xF;
+    bg/=sizeof(unsigned int);
+    fg=((iV.size()-bg)&3);
+    rV.refer(iV,bg,iV.size()-bg-fg);
   }
 
   template <unsigned int LoopFac>
   void BuildRationalVector(const SFMT<LoopFac>& rg,
                            const VectorBase<unsigned long long int>& iV,
                            refVector<unsigned long long int>& rV) {
-    unsigned int fg;
-    if((reinterpret_cast<unsigned int>(iV.data())&0xF)==(rg.StatusPtr()&0xF)) {
-      fg=(iV.size()&1);
-      rV.refer(iV,0,iV.size()-fg);
-    } else {
-      fg=((iV.size()-1)&1);
-      rV.refer(iV,1,iV.size()-1-fg);
-    }
+    unsigned int fg,bg;
+    bg=(reinterpret_cast<unsigned int>(iV.data())&0xF)+16-(rg.StatusPtr()&0xF);
+    bg&=0xF;
+    bg=(16-bg)&0xF;
+    bg/=sizeof(unsigned long long int);
+    fg=((iV.size()-bg)&1);
+    rV.refer(iV,bg,iV.size()-bg-fg);
   }
 
 }
