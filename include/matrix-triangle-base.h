@@ -254,6 +254,8 @@ namespace std {
 
       typedef MatrixBase<T,Triangle,VecType,TriangleNumberItems>  ParentType;
 
+      static const bool IsTriangleMatrix;
+
       TriangMatrixBase() : ParentType() {}
 
       TriangMatrixBase(const Type& TMB) {
@@ -466,6 +468,8 @@ namespace std {
 
   };
 
+  template <typename T, template <typename> class VecType>
+  const bool TriangMatrixBase<T,VecType>::IsTriangleMatrix=true;
 }
 
 #endif

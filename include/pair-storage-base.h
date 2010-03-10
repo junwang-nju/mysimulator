@@ -6,8 +6,9 @@
 
 namespace std {
 
-  template <typename T, template <typename> class TriangMat=varTriangMatrix>
-  class PairStorage {
+  template <typename T, template <typename> class TriangMat,
+                        template <typename> class VecType>
+  class PairStorageBase {
 
     public:
 
@@ -24,17 +25,21 @@ namespace std {
       };
 
     protected:
-      unsigned int GStatus;
+
+      VecType<unsigned int> GStatus;
       TriangMat<Item> Data;
 
     public:
 
-      typedef PairStorage<T,TriangMat>  Type;
+      typedef PairStorage<T,TriangMat,VecType>  Type;
 
-      PairStorage() : GStatus(0U), Data() {}
+      PairStorage() : GStatus(), Data() {
+        assert(VecType<unsigned int>::IsVector);
+        assert(TriangMat<Item>::IsTriangleMatrix);
+      }
 
-      PairStorage(const unsigned int NUnit)
-        : GStatus(0U), Data(NUnit,COrder,NoTranspose,UpperPart,true,false) {}
+      //PairStorage(const unsigned int NUnit)
+      //  : GStatus(0U), Data(NUnit,COrder,NoTranspose,UpperPart,true,false) {}
 
       PairStorage(const Type& PS) {
         myError("Cannot create from pair storage");
@@ -43,20 +48,25 @@ namespace std {
       Type& operator=(const Type& PS) {
         GStatus=PS.GStatus;
         Data=PS.Data;
+        return *this;
       }
 
-      void allocate(const unsigned int NUnit) {
-        Data.allocate(NUnit,COrder,NoTranspose,UpperPart,true,false);
-        GStatus=1U;
-      }
+      //void allocate(const unsigned int NUnit) {
+      //  Data.allocate(NUnit,COrder,NoTranspose,UpperPart,true,false);
+      //  GStatus=1U;
+      //}
 
       const unsigned int NumUnits() const { return Data.Dimension(); }
+
+      const unsigned int& GlobalStatus() const { return GStatus[0]; }
+
+      VecType<unsigned int>& GStatusVec() { return GStatus; }
 
       Item& operator()(const unsigned int I, const unsigned int J) {
         return Data(I,J);
       }
 
-      const Item& operator()(const unsigned int I, const unsigned int J) const{
+      const Item& operator()(const unsigned int I,const unsigned int J) const {
         return Data(I,J);
       }
 
@@ -74,7 +84,19 @@ namespace std {
         Data(idxI,idxJ).Status=GStatus-1;
       }
 
+      const bool IsUpdated(const unsigned int I, const unsigned int J) {
+        return operator()(I,J).Status==GStatus;
+      }
+
+      void Update(const unsigned int I, const unsigned int J,
+                  const T& iItem) {
+        Item& rItem=operator()(I,J);
+        rItem.Element=iItem;
+        rItem.Status=GStatus;
+      }
+
   };
+
 }
 
 #endif

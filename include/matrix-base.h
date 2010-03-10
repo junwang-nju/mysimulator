@@ -25,6 +25,8 @@ namespace std {
       typedef T& (*GetElemFuncType)(VecType<refVector<T> >&,
                                     unsigned int,unsigned int,T&);
 
+      static const bool IsMatrix;
+
     protected:
 
       static const unsigned int MatType;
@@ -139,6 +141,10 @@ namespace std {
       }
 
   };
+
+  template <typename T, unsigned int MType, template<typename> class VecType,
+            unsigned int NInf>
+  const bool MatrixBase<MType,VecType,NInf>::IsMatrix=true;
 
   template <typename T, unsigned int MType, template<typename> class VecType,
             unsigned int NInf>
