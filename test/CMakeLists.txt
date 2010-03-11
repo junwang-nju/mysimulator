@@ -122,3 +122,9 @@ target_link_libraries (test-fix-pair-storage.run blas Base)
 add_executable (test-ref-pair-storage.run test-ref-pair-storage.cxx)
 target_link_libraries (test-ref-pair-storage.run blas Base)
 
+add_executable (test-var-distance-evaluate-with-storage.run test-var-distance-evaluate-with-storage.cxx)
+target_link_libraries (test-var-distance-evaluate-with-storage.run blas Base)
+
+add_executable (test-fix-distance-evaluate-with-storage.run test-fix-distance-evaluate-with-storage.cxx)
+target_link_libraries (test-fix-distance-evaluate-with-storage.run blas Base)
+
