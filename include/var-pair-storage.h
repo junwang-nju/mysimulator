@@ -17,7 +17,27 @@ namespace std {
 
       typedef PairStorageBase<T,varMatrixTriangle,varVector>  ParentType;
 
-      varPairStorage() : ParentType() { this->GStatusVec().allocate(1); }
+      varPairStorage() : ParentType() {}
+
+      varPairStorage(const unsigned int N) : ParentType() { allocate(N); }
+
+      varPairStorage(const Type&) {
+        myError("Cannot create from variable Pair Storage");
+      }
+
+      ~varPairStorage() {}
+
+      Type& operator=(const Type& vPS) {
+        static_cast<ParentType*>(this)->operator=(
+            static_cast<const ParentType&>(vPS));
+        return *this;
+      }
+
+      void allocate(const unsigned int N) {
+        this->DataMat().allocate(N,COrder,NoTranspose,UpperPart,true,false);
+        this->GStatusVec().allocate(1);
+        this->GStatusVec()=1U;
+      }
 
   };
 

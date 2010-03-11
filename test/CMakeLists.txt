@@ -113,4 +113,6 @@ add_executable (test-random-generator-boxmuller-sse2.run test-random-generator-b
 set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -malign-double -DHAVE_SSE2")
 target_link_libraries (test-random-generator-boxmuller-sse2.run Base blas)
 
+add_executable (test-var-pair-storage.run test-var-pair-storage.cxx)
+target_link_libraries (test-var-pair-storage.run blas Base)
 

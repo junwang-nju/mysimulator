@@ -144,7 +144,7 @@ namespace std {
 
   template <typename T, unsigned int MType, template<typename> class VecType,
             unsigned int NInf>
-  const bool MatrixBase<MType,VecType,NInf>::IsMatrix=true;
+  const bool MatrixBase<T,MType,VecType,NInf>::IsMatrix=true;
 
   template <typename T, unsigned int MType, template<typename> class VecType,
             unsigned int NInf>
