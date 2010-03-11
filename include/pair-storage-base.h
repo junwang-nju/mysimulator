@@ -50,11 +50,13 @@ namespace std {
 
       const unsigned int& GlobalStatus() const { return GStatus[0]; }
 
-    protected:
-
       VecType<unsigned int>& GStatusVec() { return GStatus; }
 
       TriangMat<ItemType>& DataMat() { return Data; }
+
+      const VecType<unsigned int>& GStatusVec() const { return GStatus; }
+
+      const TriangMat<ItemType>& DataMat() const { return Data; }
 
     public:
 

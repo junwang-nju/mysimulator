@@ -116,3 +116,9 @@ target_link_libraries (test-random-generator-boxmuller-sse2.run Base blas)
 add_executable (test-var-pair-storage.run test-var-pair-storage.cxx)
 target_link_libraries (test-var-pair-storage.run blas Base)
 
+add_executable (test-fix-pair-storage.run test-fix-pair-storage.cxx)
+target_link_libraries (test-fix-pair-storage.run blas Base)
+
+add_executable (test-ref-pair-storage.run test-ref-pair-storage.cxx)
+target_link_libraries (test-ref-pair-storage.run blas Base)
+
