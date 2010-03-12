@@ -54,7 +54,7 @@ namespace std {
   }
 
   void VectorBase<double>::shift(
-      const double& value, const VectorBase<double>& V, long nsh,
+      const double value, const VectorBase<double>& V, long nsh,
       int voff, long vstep, int off, long step) {
     assert(static_cast<unsigned int>(voff+vstep*nsh)<=V.nData);
     assert(static_cast<unsigned int>(off+step*nsh)<=nData);

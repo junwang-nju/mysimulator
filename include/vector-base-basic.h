@@ -53,12 +53,12 @@ namespace std {
 
       const unsigned int& size() const { return nData; }
 
-      T& operator[](const unsigned int& I) {
+      T& operator[](const unsigned int I) {
         assert(I<nData);
         return *(Data+I);
       }
 
-      const T& operator[](const unsigned int& I) const {
+      const T& operator[](const unsigned int I) const {
         assert(I<nData);
         return *(Data+I);
       }

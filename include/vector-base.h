@@ -32,7 +32,7 @@ namespace std {
         return *this;
       }
 
-      ~VectorBase() {}
+      virtual ~VectorBase() {}
 
   };
 
@@ -87,7 +87,7 @@ namespace std {
 
       void shift(const double SfF, const Type& SfV, const Type& V);
 
-      void shift(const double& value, const Type& V, long nsh,
+      void shift(const double value, const Type& V, long nsh,
                  int voff=iZero,long vstep=lOne,int off=iZero,long step=lOne);
 
       void shift(const double& value, long nsf, int off=iZero, long step=lOne);

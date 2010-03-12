@@ -2,114 +2,82 @@
 #ifndef _Property_List_Base_H_
 #define _Property_List_Base_H_
 
-#include "data-pack.h"
+#include "ref-vector.h"
 
 namespace std {
 
   template <typename T, template <typename> class VecType>
-  class PropertyListBase : public DataPack<T,VecType,VecType,1U> {
+  class PropertyListBase : public VecType<T> {
 
     public:
 
-      typedef PropertyListBase<T,VecType>  Type;
+      typedef PropertyListBase<T,VecType>   Type;
 
-      typedef DataPack<T,VecType,VecType,1U>    ParentType;
+      typedef VecType<T>    ParentType;
 
-      PropertyListBase() : ParentType() {}
+      typedef refVector<T>  PropertyType;
+
+    protected:
+
+      VecType<PropertyType> Struct;
+
+    public:
+
+      PropertyListBase() : ParentType() { assert(VecType<T>::IsVector); }
 
       PropertyListBase(const Type&) {
-        myError("Cannot create from Property List Base");
+        myError("Cannot create from Property List Base Basic");
       }
 
-      ~PropertyListBase() {}
+      virtual ~PropertyListBase() { clear(); }
+
+      void clear() {
+        static_cast<ParentType*>(this)->clear();
+        for(unsigned int i=0;i<Struct.size();++i)   Struct[i].clear();
+        Struct.clear();
+      }
 
       Type& operator=(const Type& PLB) {
-        this->data()=PLB.data();
+        static_cast<ParentType*>(this)->operator=(
+            static_cast<const ParentType&>(PLB));
         return *this;
       }
 
       Type& operator=(const VectorBase<T>& V) {
-        this->data()=V;
+        static_cast<ParentType*>(this)->operator=(V);
         return *this;
       }
 
       Type& operator=(const T& Value) {
-        this->data()=Value;
+        static_cast<ParentType*>(this)->operator=(Value);
         return *this;
       }
 
-  };
+      const unsigned int size() const { return Struct.size(); }
 
-  template <template <typename> class VecType>
-  class PropertyListBase<double,VecType>
-    : public DataPack<double,VecType,VecType,1U> {
+      const unsigned int dataSize() const {
+        return static_cast<const ParentType*>(this)->size();
+      }
+
+      const unsigned int numberUnits() const { return size(); }
+
+      const VecType<PropertyType>& Structure() const { return Struct; }
+
+    protected:
+
+      VecType<PropertyType>& StructureVec() { return Struct; }
 
     public:
 
-      typedef PropertyListBase<double,VecType>  Type;
-
-      typedef DataPack<double,VecType,VecType,1U>    ParentType;
-
-      PropertyListBase() : ParentType() {}
-
-      PropertyListBase(const Type&) {
-        myError("Cannot create from Property List Base");
+      const PropertyType& operator[](const unsigned int I) const {
+        return Struct[I];
       }
 
-      ~PropertyListBase() {}
+      PropertyType& operator[](const unsigned int I) { return Struct[I]; }
 
-      Type& operator=(const Type& PLB) {
-        this->data()=PLB.data();
-        return *this;
-      }
+      const PropertyType* beginUnit() const { return Struct.begin(); }
 
-      Type& operator=(const VectorBase<double>& V) {
-        this->data()=V;
-        return *this;
-      }
-
-      Type& operator=(const double& Value) {
-        this->data()=Value;
-        return *this;
-      }
-
-      void scale(const VectorBase<double>& V) { this->data().scale(V); }
-
-      void scale(const Type& PL) { scale(PL.data()); }
-
-      void scale(const double value) { this->data().scale(value); }
-
-      void scale(const VectorBase<double>& V, long nsc,
-                 int voff=iZero, long vstep=lOne,
-                 int off=iZero, long step=lOne) {
-        this->data().scale(V,nsc,voff,vstep,off,step);
-      }
-
-      void scale(const double value, long nsc, int off=iZero, long step=lOne) {
-        this->data().scale(value,nsc,off,step);
-      }
-
-      void shift(const VectorBase<double>& V) { this->data().shift(V); }
-
-      void shift(const Type& PL) { shift(PL.data()); }
-
-      void shift(const double value) { this->data().shift(value); }
-
-      void shift(const double value, const VectorBase<double>& V) {
-        this->data().shift(value,V);
-      }
-
-      void shift(const double val, const Type& PL) { shift(val,PL.data()); }
-
-      void shift(const VectorBase<double>& V, const double value) {
-        shift(value,V);
-      }
-
-      void shift(const Type& PL, const double value) { scale(value,PL); }
-
-      void shift(const VectorBase<double>& SfV, const VectorBase<double>& V) {
-        this->data().shift(SfV,V);
-      }
+      const PropertyType* endUnit() const { return Struct.end(); }
 
   };
 
