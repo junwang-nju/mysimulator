@@ -131,3 +131,6 @@ target_link_libraries (test-fix-distance-evaluate-with-storage.run blas Base)
 add_executable (test-var-property-list.run test-var-property-list.cxx)
 target_link_libraries (test-var-property-list.run blas Base)
 
+add_executable (test-ref-property-list.run test-ref-property-list.cxx)
+target_link_libraries (test-ref-property-list.run blas Base)
+
