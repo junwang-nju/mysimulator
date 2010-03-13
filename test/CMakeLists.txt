@@ -134,3 +134,9 @@ target_link_libraries (test-var-property-list.run blas Base)
 add_executable (test-ref-property-list.run test-ref-property-list.cxx)
 target_link_libraries (test-ref-property-list.run blas Base)
 
+add_executable (test-var-interaction-list.run test-var-interaction-list.cxx)
+target_link_libraries (test-var-interaction-list.run blas Base)
+
+add_executable (test-ref-interaction-list.run test-ref-interaction-list.cxx)
+target_link_libraries (test-ref-interaction-list.run blas Base)
+
