@@ -3,16 +3,17 @@
 #define _Reference_Free_Space_H_
 
 #include "free-space-base.h"
+#include "ref-vector.h"
 
 namespace std {
 
-  class refFreeSpace : public FreeSpaceBase {
+  class refFreeSpace : public FreeSpaceBase<refVector> {
 
     public:
 
       typedef refFreeSpace  Type;
 
-      typedef FreeSpaceBase ParentType;
+      typedef FreeSpaceBase<refVector> ParentType;
 
       refFreeSpace() : ParentType() {}
 
@@ -24,9 +25,11 @@ namespace std {
 
       Type& operator=(const Type& rFS) { return *this; }
 
-      Type& operator=(const FreeSpaceBase& FS) { return *this; }
+      template <template <typename> class VecType>
+      Type& operator=(const FreeSpaceBase<VecType>& FS) { return *this; }
 
-      void refer(const FreeSpaceBase& FS) {}
+      template <template <typename> class VecType>
+      void refer(const FreeSpaceBase<VecType>& FS) {}
 
   };
 

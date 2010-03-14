@@ -13,6 +13,8 @@ namespace std {
 
       typedef DistanceEvalBase<VecType> Type;
 
+      static const bool IsDistanceEvalMethod;
+
     protected:
 
       VecType<double> nowDist;
@@ -60,6 +62,9 @@ namespace std {
       virtual void update() = 0;
 
   };
+
+  template <template <typename> class VecType>
+  const bool DistanceEvalBase<VecType>::IsDistanceEvalMethod=true;
 
 }
 

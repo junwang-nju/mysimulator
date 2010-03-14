@@ -3,16 +3,17 @@
 #define _Variable_Free_Space_H_
 
 #include "free-space-base.h"
+#include "var-vector.h"
 
 namespace std {
 
-  class varFreeSpace : public FreeSpaceBase {
+  class varFreeSpace : public FreeSpaceBase<varVector> {
 
     public:
 
       typedef varFreeSpace  Type;
 
-      typedef FreeSpaceBase ParentType;
+      typedef FreeSpaceBase<varVector> ParentType;
 
       varFreeSpace() : ParentType() {}
 
@@ -24,7 +25,8 @@ namespace std {
 
       Type& operator=(const Type& vFS) { return *this; }
 
-      Type& operator=(const FreeSpaceBase& FS) { return *this; }
+      template <template <typename> class VecType>
+      Type& operator=(const FreeSpaceBase<VecType>& FS) { return *this; }
 
       void clear() {}
 

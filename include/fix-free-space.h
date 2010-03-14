@@ -3,17 +3,18 @@
 #define _Fixed_Free_Space_H_
 
 #include "free-space-base.h"
+#include "ref-vector.h"
 
 namespace std {
 
   template <unsigned int Dim>
-  class fixFreeSpace : public FreeSpaceBase {
+  class fixFreeSpace : public FreeSpaceBase<refVector> {
 
     public:
 
       typedef fixFreeSpace<Dim>   Type;
 
-      typedef FreeSpaceBase       ParentType;
+      typedef FreeSpaceBase<refVector>       ParentType;
 
       fixFreeSpace() : ParentType() {}
 
@@ -25,7 +26,8 @@ namespace std {
 
       Type& operator=(const Type& fFS) { return *this; }
 
-      Type& operator=(const FreeSpaceBase& FS) { return *this; }
+      template <template <typename> class VecType>
+      Type& operator=(const FreeSpaceBase<VecType>& FS) { return *this; }
 
   };
 
