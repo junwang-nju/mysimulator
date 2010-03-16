@@ -10,6 +10,7 @@ namespace std {
     ParticleParticle_LJ612,
     ParticleParticle_LJ612Cut,
     ParticleParticle_Coulomb,
+    ParticleParticle_QuadPlusHarm,
     InteractionTableTerminus,
     NumberInteractions = InteractionTableTerminus-1
   };

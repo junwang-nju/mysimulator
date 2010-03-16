@@ -7,6 +7,7 @@
 #include "interaction-particle-particle-lj612.h"
 #include "interaction-particle-particle-lj612cut.h"
 #include "interaction-particle-particle-coulomb.h"
+#include "interaction-particle-particle-quadplusharm.h"
 
 namespace std {
 
@@ -119,6 +120,32 @@ namespace std {
                                                   varVector,refVector>;
         IM.BFuncRR=BFunc_ParticleParticle_Coulomb<DistEvalMethod,GeomType,
                                                   refVector,refVector>;
+        break;
+      case ParticleParticle_QuadPlusHarm:
+        IM.EFuncVV=EFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       varVector,varVector>;
+        IM.EFuncRV=EFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       refVector,varVector>;
+        IM.EFuncVR=EFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       varVector,refVector>;
+        IM.EFuncRR=EFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       refVector,refVector>;
+        IM.GFuncVV=GFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       varVector,varVector>;
+        IM.GFuncRV=GFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       refVector,varVector>;
+        IM.GFuncVR=GFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       varVector,refVector>;
+        IM.GFuncRR=GFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       refVector,refVector>;
+        IM.BFuncVV=BFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       varVector,varVector>;
+        IM.BFuncRV=BFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       refVector,varVector>;
+        IM.BFuncVR=BFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       varVector,refVector>;
+        IM.BFuncRR=BFunc_ParticleParticle_QuadPlusHarm<DistEvalMethod,GeomType,
+                                                       refVector,refVector>;
         break;
       case UnknownInteraction:
       default:
