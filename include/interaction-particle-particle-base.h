@@ -2,7 +2,7 @@
 #ifndef _Interaction_Particle_Particle_Base_H_
 #define _Interaction_Particle_Particle_Base_H_
 
-#include "parameter-list-base.h"
+#include "ref-vector.h"
 
 namespace std {
 
