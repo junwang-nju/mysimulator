@@ -146,7 +146,7 @@ namespace std {
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<VecTypeD>& DEval,
-                 const GeomType<VecTypeG>& Geo, double& Energy) {
+                 const GeomType<VecTypeG>& Geo, double& Energy) const {
         myError("Not Implemented");
       }
 
@@ -154,7 +154,7 @@ namespace std {
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
-                 const GeomType<varVector>& Geo, double& Energy) {
+                 const GeomType<varVector>& Geo, double& Energy) const {
         EFuncVV(Coordinate,Idx,Param,DEval,Geo,Energy);
       }
 
@@ -162,7 +162,7 @@ namespace std {
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
-                 const GeomType<varVector>& Geo, double& Energy) {
+                 const GeomType<varVector>& Geo, double& Energy) const {
         EFuncRV(Coordinate,Idx,Param,DEval,Geo,Energy);
       }
 
@@ -170,7 +170,7 @@ namespace std {
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
-                 const GeomType<refVector>& Geo, double& Energy) {
+                 const GeomType<refVector>& Geo, double& Energy) const {
         EFuncVR(Coordinate,Idx,Param,DEval,Geo,Energy);
       }
 
@@ -178,7 +178,7 @@ namespace std {
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
-                 const GeomType<refVector>& Geo, double& Energy) {
+                 const GeomType<refVector>& Geo, double& Energy) const {
         EFuncRR(Coordinate,Idx,Param,DEval,Geo,Energy);
       }
 
@@ -189,7 +189,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<VecTypeD>& DEval,
                  const GeomType<VecTypeG>& Geo,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         myError("Not Implemented");
       }
 
@@ -198,7 +198,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
                  const GeomType<varVector>& Geo,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         GFuncVV(Coordinate,Idx,Param,DEval,Geo,Gradient);
       }
 
@@ -207,7 +207,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
                  const GeomType<varVector>& Geo,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         GFuncRV(Coordinate,Idx,Param,DEval,Geo,Gradient);
       }
 
@@ -216,7 +216,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
                  const GeomType<refVector>& Geo,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         GFuncVR(Coordinate,Idx,Param,DEval,Geo,Gradient);
       }
 
@@ -225,7 +225,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
                  const GeomType<refVector>& Geo,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         GFuncRR(Coordinate,Idx,Param,DEval,Geo,Gradient);
       }
 
@@ -236,7 +236,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<VecTypeD>& DEval,
                  const GeomType<VecTypeG>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         myError("Not Implemented");
       }
 
@@ -245,7 +245,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
                  const GeomType<varVector>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         BFuncVV(Coordinate,Idx,Param,DEval,Geo,Energy,Gradient);
       }
 
@@ -254,7 +254,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
                  const GeomType<varVector>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         BFuncRV(Coordinate,Idx,Param,DEval,Geo,Energy,Gradient);
       }
 
@@ -263,7 +263,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
                  const GeomType<refVector>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         BFuncVR(Coordinate,Idx,Param,DEval,Geo,Energy,Gradient);
       }
 
@@ -272,7 +272,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
                  const GeomType<refVector>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) {
+                 VectorBase<PropertyType>& Gradient) const {
         BFuncRR(Coordinate,Idx,Param,DEval,Geo,Energy,Gradient);
       }
 
