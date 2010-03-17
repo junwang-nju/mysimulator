@@ -2,7 +2,6 @@
 #ifndef _Interaction_for_List_H_
 #define _Interaction_for_List_H_
 
-#include "property-list-base.h"
 #include "parameter-list-base.h"
 #include "interaction-method.h"
 #include "var-vector.h"

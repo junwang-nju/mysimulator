@@ -8,7 +8,8 @@ namespace std {
     LJ612_EqRadius=0,
     LJ612_EqStrength,
     LJ612_EqRadiusSQ,
-    LJ612_TwlfEqStrength
+    LJ612_TwlfEqStrength,
+    LJ612_NumberParameter
   };
 
 }

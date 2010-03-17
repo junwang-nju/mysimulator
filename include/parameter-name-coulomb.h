@@ -5,7 +5,8 @@
 namespace std {
 
   enum CoulombParameterName {
-    Coulomb_Strength=0
+    Coulomb_Strength=0,
+    Coulomb_NumberParameter
   };
 
 }

@@ -152,3 +152,12 @@ target_link_libraries (test-interaction-particle-particle-harmonic.run blas Base
 add_executable (test-interaction-particle-particle-lj612.run test-interaction-particle-particle-lj612.cxx)
 target_link_libraries (test-interaction-particle-particle-lj612.run blas Base)
 
+add_executable (test-interaction-particle-particle-coulomb.run test-interaction-particle-particle-coulomb.cxx)
+target_link_libraries (test-interaction-particle-particle-coulomb.run blas Base)
+
+add_executable (test-interaction-particle-particle-lj612cut.run test-interaction-particle-particle-lj612cut.cxx)
+target_link_libraries (test-interaction-particle-particle-lj612cut.run blas Base)
+
+add_executable (test-interaction-particle-particle-quadplusharm.run test-interaction-particle-particle-quadplusharm.cxx)
+target_link_libraries (test-interaction-particle-particle-quadplusharm.run blas Base)
+

@@ -9,7 +9,8 @@ namespace std {
     QuadPlusHarm_EqQuadStrength,
     QuadPlusHarm_EqHarmStrength,
     QuadPlusHarm_FourEqQuadStrength,
-    QuadPlusHarm_DualEqHarmStrength
+    QuadPlusHarm_DualEqHarmStrength,
+    QuadPlusHarm_NumberParameter
   };
 
 }
