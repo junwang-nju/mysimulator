@@ -164,3 +164,6 @@ target_link_libraries (test-interaction-particle-particle-quadplusharm.run blas 
 add_executable (test-interaction-particle-particle-lj1012.run test-interaction-particle-particle-lj1012.cxx)
 target_link_libraries (test-interaction-particle-particle-lj1012.run blas Base)
 
+add_executable (test-interaction-4listset.run test-interaction-4listset.cxx)
+target_link_libraries (test-interaction-4listset.run blas Base)
+

@@ -4,7 +4,6 @@
 
 #include "parameter-list-base.h"
 #include "interaction-method.h"
-#include "var-vector.h"
 
 namespace std {
 
