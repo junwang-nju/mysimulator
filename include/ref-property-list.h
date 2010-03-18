@@ -42,7 +42,7 @@ namespace std {
       template <template <typename> class VecType>
       void refer(const PropertyListBase<T,VecType>& PL) {
         static_cast<ParentType*>(this)->refer(PL);
-        this->StructureVec().refer(PL.Structure());
+        this->Structure().refer(PL.Structure());
       }
 
   };

@@ -63,11 +63,7 @@ namespace std {
 
       const VecType<PropertyType>& Structure() const { return Struct; }
 
-    protected:
-
-      VecType<PropertyType>& StructureVec() { return Struct; }
-
-    public:
+      VecType<PropertyType>& Structure() { return Struct; }
 
       const PropertyType& operator[](const unsigned int I) const {
         return Struct[I];

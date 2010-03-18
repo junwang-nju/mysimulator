@@ -49,7 +49,7 @@ namespace std {
         unsigned int ne=0;
         for(unsigned int i=0;i<n;++i)   ne+=ShapeSize[i];
         static_cast<ParentType*>(this)->allocate(ne);
-        this->StructureVec().allocate(n);
+        this->Structure().allocate(n);
         ne=0;
         for(unsigned int i=0;i<n;ne+=ShapeSize[i],++i)
           this->operator[](i).refer(
