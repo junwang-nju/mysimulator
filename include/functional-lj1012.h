@@ -33,7 +33,7 @@ namespace std {
     double ivr6=ivr4*ivr2;
     double tmd=ivr6-ivr4;
     func=Prm[LJ1012_EqStrength]*ivr6*(5*tmd-ivr4);
-    diff=Prm[LJ1012_SixtyEqStrength]*ivr6*tmd*ivd2;
+    diff=-Prm[LJ1012_SixtyEqStrength]*ivr6*tmd*ivd2;
   }
 
 }
