@@ -154,14 +154,32 @@ int main() {
     ParamLst[i].refer(*vPL.get(prmKey));
   }
   for(unsigned int i=3;i<6;++i) {
-    prmKey[0]=ParticleParticle_Harmonic;
+    prmKey[0]=ParticleParticle_LJ612;
     for(unsigned int k=0;k<2;++k)
       prmKey[k+1]=KindSeq[IdxLst[i][k]];
     ParamLst[i].refer(*vPL.get(prmKey));
   }
+  cout<<"Test -- Energy for a list of units and a set of interaction with tight binding"<<endl;
   E=0;
   EFunc(CoorLst.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,E);
   cout<<E<<endl;
+  cout<<endl;
+
+  cout<<"Test -- Gradient for a list of units and a set of interaction with tight binding"<<endl;
+  GradSeq=0.;
+  GFunc(CoorLst.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,
+        GradLst.Structure());
+  cout<<GradSeq<<endl;
+  cout<<endl;
+
+  cout<<"Test -- Energy and Gradient for a list of units and a set of interaction with tight binding"<<endl;
+  E=0.;
+  GradSeq=0.;
+  BFunc(CoorLst.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,
+        E,GradLst.Structure());
+  cout<<E<<endl;
+  cout<<GradSeq<<endl;
+  cout<<endl;
   return 1;
 }
 
