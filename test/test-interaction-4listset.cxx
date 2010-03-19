@@ -114,6 +114,54 @@ int main() {
   cout<<E<<endl;
   cout<<endl;
 
+  cout<<"Test -- Gradient for a list of units and a set of interaction with loose binding"<<endl;
+  GradSeq=0.;
+  GFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),KindSeq,vPL,vDED,vFS,
+        GradSeq.Structure());
+  cout<<GradSeq<<endl;
+  cout<<endl;
+
+  cout<<"Test -- Energy and Gradient for a list of units and a set of interaction with loose binding"<<endl;
+  E=0.;
+  GradSeq=0.;
+  BFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),KindSeq,vPL,vDED,vFS,
+        E,GradSeq.Structure());
+  cout<<E<<endl;
+  cout<<GradSeq<<endl;
+  cout<<endl;
+
+  varPropertyList<refVector<double> > CoorLst, GradLst;
+  Sz.allocate(6);
+  Sz=2;
+  CoorLst.allocate(Sz);
+  GradLst.allocate(Sz);
+  for(unsigned int i=0;i<6;++i)
+  for(unsigned int j=0;j<2;++j) {
+    CoorLst[i][j].refer(CoorSeq[IdxLst[i][j]]);
+    GradLst[i][j].refer(GradSeq[IdxLst[i][j]]);
+  }
+  vIM.allocate(6);
+  for(unsigned int i=0;i<3;++i)
+    SetInteractionMethod(vIM[i],ParticleParticle_Harmonic);
+  for(unsigned int i=3;i<6;++i)
+    SetInteractionMethod(vIM[i],ParticleParticle_LJ612);
+  varVector<refVector<double> > ParamLst(6);
+  varVector<unsigned int> prmKey(3);
+  for(unsigned int i=0;i<3;++i) {
+    prmKey[0]=ParticleParticle_Harmonic;
+    for(unsigned int k=0;k<2;++k)
+      prmKey[k+1]=KindSeq[IdxLst[i][k]];
+    ParamLst[i].refer(*vPL.get(prmKey));
+  }
+  for(unsigned int i=3;i<6;++i) {
+    prmKey[0]=ParticleParticle_Harmonic;
+    for(unsigned int k=0;k<2;++k)
+      prmKey[k+1]=KindSeq[IdxLst[i][k]];
+    ParamLst[i].refer(*vPL.get(prmKey));
+  }
+  E=0;
+  EFunc(CoorLst.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,E);
+  cout<<E<<endl;
   return 1;
 }
 
