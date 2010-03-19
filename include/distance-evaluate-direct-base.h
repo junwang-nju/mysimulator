@@ -16,6 +16,8 @@ namespace std {
 
       typedef DistanceEvalBase<VecType>   ParentType;
 
+      static const unsigned int DistanceEvalMethod;
+
       DistanceEvalDirectBase() : ParentType() {}
 
       DistanceEvalDirectBase(const Type&) {
@@ -47,6 +49,10 @@ namespace std {
       virtual void update() {}
 
   };
+
+  template <template <typename> class VecType>
+  const unsigned int
+  DistanceEvalDirectBase<VecType>::DistanceEvalMethod=1;
 
 }
 

@@ -18,6 +18,8 @@ namespace std {
 
       typedef DistanceEvalBase<VecType>   ParentType;
 
+      static const unsigned int DistanceEvalMethod;
+
     protected:
 
       PairStoreType<double>   DistSQPack;
@@ -76,6 +78,11 @@ namespace std {
       }
 
   };
+
+  template <template <typename> class VecType,
+            template <typename> class PairStoreType>
+  const unsigned int
+  DistanceEvalWStorageBase<VecType,PairStoreType>::DistanceEvalMethod=2;
 
 }
 
