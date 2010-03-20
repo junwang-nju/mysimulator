@@ -4,6 +4,8 @@
 
 #include "geometry-id.h"
 #include "displacement-direct.h"
+#include "var-vector.h"
+#include "ref-vector.h"
 
 namespace std {
 
@@ -38,6 +40,10 @@ namespace std {
       template <template <typename> class iVecType>
       void refer(const FreeSpace<iVecType>& FS) { myError("Not Available"); }
 
+      Type& CanonicalForm() { return *this; }
+
+      const Type& CanonicalForm() const { return *this; }
+
   };
 
   template <template <typename> class VecType>
@@ -49,6 +55,7 @@ namespace std {
   template <>
   void FreeSpace<varVector>::allocate(const unsigned int Dim) {}
 
+  template <>
   template <template <typename> class iVecType>
   void FreeSpace<refVector>::refer(const FreeSpace<iVecType>& FS) {}
 

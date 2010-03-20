@@ -1,9 +1,11 @@
 
-#ifndef _Periodi_Box_Base_H_
-#define _Periodi_Box_Base_H_
+#ifndef _Periodi_Box_H_
+#define _Periodi_Box_H_
 
 #include "geometry-id.h"
 #include "displacement-direct.h"
+#include "var-vector.h"
+#include "ref-vector.h"
 
 namespace std {
 
@@ -13,7 +15,7 @@ namespace std {
   };
 
   template <template <typename> class VecType>
-  class PeriodicBoxBase {
+  class PeriodicBox {
 
     protected:
 
@@ -27,15 +29,15 @@ namespace std {
 
       static const unsigned int TypeID;
 
-      typedef PeriodicBoxBase<VecType>  Type;
+      typedef PeriodicBox<VecType>  Type;
 
-      PeriodicBoxBase() : Box(), EdgeFlag(), halfBox() {}
+      PeriodicBox() : Box(), EdgeFlag(), halfBox() {}
 
-      PeriodicBoxBase(const Type& PBB) {
+      PeriodicBox(const Type& PBB) {
         myError("Cannot create from periodic box base");
       }
 
-      ~PeriodicBoxBase() { clear(); }
+      ~PeriodicBox() { clear(); }
 
       void clear() { Box.clear(); EdgeFlag.clear(); halfBox.clear(); }
 
@@ -48,6 +50,14 @@ namespace std {
       Type& operator=(const Type& PBB) {
         Box=PBB.Box;
         EdgeFlag=PBB.EdgeFlag;
+        update();
+        return *this;
+      }
+
+      template <template <typename> class iVecType>
+      Type& operator=(const PeriodicBox<iVecType>& PB) {
+        Box=PB.Box;
+        EdgeFlag=PB.EdgeFlag;
         update();
         return *this;
       }
@@ -93,15 +103,49 @@ namespace std {
         }
       }
 
+      void allocate(const unsigned int Dim) { myError("Not Available"); }
+
+      template <template <typename> class iVecType>
+      void refer(const PeriodicBox<iVecType>& PB) {
+        refer(PB,0U,PB.box().size());
+      }
+
+      template <template <typename> class iVecType>
+      void refer(const PeriodicBox<iVecType>& PB, const unsigned int off,
+                 const unsigned int size) {
+        myError("Not Available");
+      }
+
+      Type& CanonicalForm() { return *this; }
+
+      const Type& CanonicalForm() const { return *this; }
+
   };
 
   template <template <typename> class VecType>
-  const unsigned int PeriodicBoxBase<VecType>::TypeID=PeriodicBoxType;
+  const unsigned int PeriodicBox<VecType>::TypeID=PeriodicBoxType;
+
+  template <>
+  void PeriodicBox<varVector>::allocate(const unsigned int Dim) {
+    box().allocate(Dim);
+    flag().allocate(Dim);
+    hfbox().allocate(Dim);
+  }
+
+  template <>
+  template <template <typename> class iVecType>
+  void PeriodicBox<refVector>::refer(const PeriodicBox<iVecType>& PB,
+                                     const unsigned int off,
+                                     const unsigned int size) {
+    box().refer(PB.box(),off,size);
+    flag().refer(PB.flag(),off,size);
+    hfbox().refer(PB.hfbox(),off,size);
+  }
 
   template <template <typename> class VecType>
   void DisplacementFunc(const VectorBase<double>& va,
                         const VectorBase<double>& vb, VectorBase<double>& v,
-                        const PeriodicBoxBase<VecType>& PB) {
+                        const PeriodicBox<VecType>& PB) {
     DisplacementFunc(va,vb,v);
     PB.shift2main(v);
   }

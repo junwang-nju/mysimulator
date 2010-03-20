@@ -2,20 +2,20 @@
 #ifndef _Fixed_Periodic_Box_H_
 #define _Fixed_Periodic_Box_H_
 
-#include "periodic-box-base.h"
+#include "periodic-box.h"
 #include "fix-vector.h"
 #include "ref-vector.h"
 
 namespace std {
 
   template <unsigned int Dim>
-  class fixPeriodicBox : public PeriodicBoxBase<refVector> {
+  class fixPeriodicBox : public PeriodicBox<refVector> {
 
     public:
 
       typedef fixPeriodicBox<Dim>   Type;
 
-      typedef PeriodicBoxBase<refVector>  ParentType;
+      typedef PeriodicBox<refVector>  ParentType;
 
     protected:
 
@@ -46,7 +46,7 @@ namespace std {
       }
 
       template <template <typename> class VecType>
-      Type& operator=(const PeriodicBoxBase<VecType>& PB) {
+      Type& operator=(const PeriodicBox<VecType>& PB) {
         static_cast<ParentType*>(this)->operator=(PB);
         return *this;
       }

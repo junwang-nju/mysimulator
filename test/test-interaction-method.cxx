@@ -10,7 +10,7 @@ using namespace std;
 
 int main() {
   cout<<"Test -- init"<<endl;
-  InteractionMethod<DistanceEvalDirectBase,FreeSpaceBase> IM;
+  InteractionMethod<DistanceEvalDirectBase,FreeSpace> IM;
   cout<<endl;
 
   cout<<"Test -- Set content of Interaction Method"<<endl;
