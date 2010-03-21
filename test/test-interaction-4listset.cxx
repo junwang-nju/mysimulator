@@ -15,7 +15,7 @@ int main() {
   Sz=2;
   CoorSeq.allocate(Sz);
   GradSeq.allocate(Sz);
-  varVector<InteractionMethod<DistanceEvalDirectBase,FreeSpace> > vIM;
+  varVector<InteractionMethod<DistanceEvalDirect,FreeSpace> > vIM;
   vIM.allocate(2);
   SetInteractionMethod(vIM[0],ParticleParticle_Harmonic);
   SetInteractionMethod(vIM[1],ParticleParticle_LJ612);

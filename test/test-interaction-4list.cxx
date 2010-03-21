@@ -14,7 +14,7 @@ int main() {
   Sz=2;
   CoorSeq.allocate(Sz);
   GradSeq.allocate(Sz);
-  InteractionMethod<DistanceEvalDirectBase,FreeSpace> runIM;
+  InteractionMethod<DistanceEvalDirect,FreeSpace> runIM;
   SetInteractionMethod(runIM,ParticleParticle_Harmonic);
   varPropertyList<unsigned int>::Type IdxLst;
   Sz.allocate(6);

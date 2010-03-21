@@ -2,20 +2,20 @@
 #ifndef _Fixed_Distance_Evaluate_Direct_H_
 #define _Fixed_Distance_Evaluate_Direct_H_
 
-#include "distance-evaluate-direct-base.h"
+#include "distance-evaluate-direct.h"
 #include "fix-vector.h"
 #include "ref-vector.h"
 
 namespace std {
 
   template <unsigned int Dim>
-  class fixDistanceEvalDirect : public DistanceEvalDirectBase<refVector> {
+  class fixDistanceEvalDirect : public DistanceEvalDirect<refVector> {
 
     public:
 
       typedef fixDistanceEvalDirect<Dim>  Type;
 
-      typedef DistanceEvalDirectBase<refVector>   ParentType;
+      typedef DistanceEvalDirect<refVector>   ParentType;
 
     protected:
 
@@ -43,7 +43,7 @@ namespace std {
       }
 
       template <template <typename> class VecType>
-      Type& operator=(const DistanceEvalDirectBase<VecType>& DED) {
+      Type& operator=(const DistanceEvalDirect<VecType>& DED) {
         static_cast<ParentType*>(this)->operator=(DED);
         return *this;
       }
