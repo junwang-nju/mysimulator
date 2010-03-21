@@ -6,8 +6,8 @@ using namespace std;
 int main() {
 
   cout<<"Test -- init with null or size"<<endl;
-  varPairStorage<double> vPS;
-  varPairStorage<double> vPS2(5);
+  varPairStorage<double>::Type vPS;
+  varPairStorage<double>::Type vPS2(5);
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;

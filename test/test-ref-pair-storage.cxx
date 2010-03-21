@@ -8,12 +8,12 @@ using namespace std;
 int main() {
 
   cout<<"Test -- init"<<endl;
-  refPairStorage<double> rPS;
+  refPairStorage<double>::Type rPS;
   cout<<endl;
 
   cout<<"Test -- refer to various storage of pair information"<<endl;
-  varPairStorage<double> vPS(5);
-  fixPairStorage<double,5> fPS;
+  varPairStorage<double>::Type vPS(5);
+  fixPairStorage<double,5>::Type fPS;
   rPS.refer(vPS);
   rPS.refer(fPS);
   cout<<endl;
