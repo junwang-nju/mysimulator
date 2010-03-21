@@ -1,6 +1,6 @@
 
-#ifndef _Parameter_Key_Base_H_
-#define _Parameter_Key_Base_H_
+#ifndef _Parameter_Key_H_
+#define _Parameter_Key_H_
 
 #include "fix-vector.h"
 #include "hash-func.h"
@@ -9,11 +9,11 @@
 namespace std {
 
   template <template <typename> class IndexVecType>
-  class ParameterKeyBase {
+  class ParameterKey {
 
     public:
 
-      typedef ParameterKeyBase<IndexVecType>  Type;
+      typedef ParameterKey<IndexVecType>  Type;
 
       typedef IndexVecType<unsigned int>  IndexType;
 
@@ -27,15 +27,15 @@ namespace std {
 
     public:
 
-      ParameterKeyBase() : Index(), Hash() {
+      ParameterKey() : Index(), Hash() {
         assert(IndexVecType<unsigned int>::IsVector);
       }
 
-      ParameterKeyBase(const Type& P) {
-        myError("Cannot create from parameter key base");
+      ParameterKey(const Type& P) {
+        myError("Cannot create from parameter key");
       }
 
-      ~ParameterKeyBase() { clear(); }
+      ~ParameterKey() { clear(); }
 
       Type& operator=(const Type& P) {
         Index=P.Index;
@@ -63,15 +63,15 @@ namespace std {
   };
 
   template <template <typename> class IdVec>
-  istream& operator>>(istream& is, ParameterKeyBase<IdVec>& P) {
+  istream& operator>>(istream& is, ParameterKey<IdVec>& P) {
     is>>P.index();
     P.BuildHash();
     return is;
   }
 
   template <template <typename> class IdVecA, template <typename> class IdVecB>
-  int compare(const ParameterKeyBase<IdVecA>& PA,
-              const ParameterKeyBase<IdVecB>& PB) {
+  int compare(const ParameterKey<IdVecA>& PA,
+              const ParameterKey<IdVecB>& PB) {
     for(unsigned int i=0;i<PA.hash().size();++i)
       if(PA.hash()[i]!=PB.hash()[i])  return (PA.hash()[i]>PB.hash()[i]?1:-1);
     return 0;

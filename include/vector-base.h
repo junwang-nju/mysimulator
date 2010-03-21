@@ -34,6 +34,10 @@ namespace std {
 
       virtual ~VectorBase() {}
 
+      Type& CanonicalForm() { return *this; }
+
+      const Type& CanonicalForm() const { return *this; }
+
   };
 
   template <>
@@ -106,6 +110,10 @@ namespace std {
                       int Sfoff=iZero, long Sfstep=lOne,
                       int voff=iZero, long vstep=lOne,
                       int off=iZero, long step=lOne);
+
+      Type& CanonicalForm() { return *this; }
+
+      const Type& CanonicalForm() const { return *this; }
 
   };
 
