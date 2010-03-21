@@ -7,11 +7,11 @@ using namespace std;
 int main() {
 
   cout<<"Test -- init"<<endl;
-  refPropertyList<double> rPL;
+  refPropertyList<double>::Type rPL;
   cout<<endl;
   
   cout<<"Test -- refer operation"<<endl;
-  varPropertyList<double> vPL;
+  varPropertyList<double>::Type vPL;
   varVector<unsigned int> Sz(5);
   for(unsigned int i=0;i<5;++i) Sz[i]=i+3;
   vPL.allocate(Sz);
@@ -33,8 +33,8 @@ int main() {
 
   cout<<"Test -- assign from another var-property-list"<<endl;
   rPL[2]=3;
-  varPropertyList<double> vPL2(Sz);
-  refPropertyList<double> rPL2;
+  varPropertyList<double>::Type vPL2(Sz);
+  refPropertyList<double>::Type rPL2;
   rPL2.refer(vPL2);
   rPL2=rPL;
   cout<<vPL2[2]<<endl;

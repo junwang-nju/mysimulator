@@ -9,14 +9,14 @@
 using namespace std;
 
 int main() {
-  varPropertyList<double> CoorSeq,GradSeq;
+  varPropertyList<double>::Type CoorSeq,GradSeq;
   varVector<unsigned int> Sz(4);
   Sz=2;
   CoorSeq.allocate(Sz);
   GradSeq.allocate(Sz);
   InteractionMethod<DistanceEvalDirectBase,FreeSpace> runIM;
   SetInteractionMethod(runIM,ParticleParticle_Harmonic);
-  varPropertyList<unsigned int> IdxLst;
+  varPropertyList<unsigned int>::Type IdxLst;
   Sz.allocate(6);
   Sz=2;
   IdxLst.allocate(Sz);
@@ -88,7 +88,7 @@ int main() {
   cout<<GradSeq<<endl;
   cout<<endl;
 
-  varPropertyList<refVector<double> > CoorLst,GradLst;
+  varPropertyList<refVector<double> >::Type CoorLst,GradLst;
   Sz.allocate(6);
   Sz=2;
   CoorLst.allocate(Sz);

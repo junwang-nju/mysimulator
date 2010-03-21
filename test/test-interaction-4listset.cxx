@@ -9,7 +9,7 @@
 using namespace std;
 
 int main() {
-  varPropertyList<double> CoorSeq, GradSeq;
+  varPropertyList<double>::Type CoorSeq, GradSeq;
   varVector<unsigned int> Sz;
   Sz.allocate(4);
   Sz=2;
@@ -19,7 +19,7 @@ int main() {
   vIM.allocate(2);
   SetInteractionMethod(vIM[0],ParticleParticle_Harmonic);
   SetInteractionMethod(vIM[1],ParticleParticle_LJ612);
-  varPropertyList<unsigned int> IdxLst;
+  varPropertyList<unsigned int>::Type IdxLst;
   Sz.allocate(6);
   Sz=2;
   IdxLst.allocate(Sz);
@@ -29,7 +29,7 @@ int main() {
   IdxLst[3][0]=1;   IdxLst[3][1]=2;
   IdxLst[4][0]=1;   IdxLst[4][1]=3;
   IdxLst[5][0]=2;   IdxLst[5][1]=3;
-  varPropertyList<refVector<unsigned int> > vIdx;
+  varPropertyList<refVector<unsigned int> >::Type vIdx;
   Sz.allocate(2);
   Sz=3;
   vIdx.allocate(Sz);
@@ -130,7 +130,7 @@ int main() {
   cout<<GradSeq<<endl;
   cout<<endl;
 
-  varPropertyList<refVector<double> > CoorLst, GradLst;
+  varPropertyList<refVector<double> >::Type CoorLst, GradLst;
   Sz.allocate(6);
   Sz=2;
   CoorLst.allocate(Sz);

@@ -7,11 +7,11 @@ using namespace std;
 int main() {
 
   cout<<"Test -- init"<<endl;
-  refInteractionList rIL;
+  refInteractionList::Type rIL;
   cout<<endl;
   
   cout<<"Test -- refer operation"<<endl;
-  varInteractionList vIL;
+  varInteractionList::Type vIL;
   varVector<unsigned int> Sz(5);
   for(unsigned int i=0;i<5;++i) Sz[i]=i+3;
   vIL.allocate(Sz);
@@ -33,8 +33,8 @@ int main() {
 
   cout<<"Test -- assign from another var-interaction-list"<<endl;
   rIL[2]=3;
-  varInteractionList vIL2(Sz);
-  refInteractionList rIL2;
+  varInteractionList::Type vIL2(Sz);
+  refInteractionList::Type rIL2;
   rIL2.refer(vIL2);
   rIL2=rIL;
   cout<<vIL2[2]<<endl;

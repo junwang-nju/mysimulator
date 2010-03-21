@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-  varInteractionList vIL;
+  varInteractionList::Type vIL;
 
   varVector<unsigned int> Sz(5);
   for(unsigned int i=0;i<5;++i) Sz[i]=i+3;
@@ -25,7 +25,7 @@ int main() {
 
   cout<<"Test -- assign from another var-property-list"<<endl;
   vIL[2]=3;
-  varPropertyList<double> vIL2(Sz);
+  varPropertyList<double>::Type vIL2(Sz);
   vIL2=vIL;
   cout<<vIL2[2]<<endl;
   cout<<endl;

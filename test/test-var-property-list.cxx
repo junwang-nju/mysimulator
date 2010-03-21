@@ -6,10 +6,10 @@ using namespace std;
 int main() {
 
   cout<<"Test -- init with null and size vec"<<endl;
-  varPropertyList<double> vPL;
+  varPropertyList<double>::Type vPL;
   varVector<unsigned int> Sz(5);
   for(unsigned int i=0;i<5;++i) Sz[i]=i+3;
-  varPropertyList<double> vPL2(Sz);
+  varPropertyList<double>::Type vPL2(Sz);
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
