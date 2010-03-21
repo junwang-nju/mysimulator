@@ -2,19 +2,18 @@
 #ifndef _Fixed_Parameter_List_H_
 #define _Fixed_Parameter_List_H_
 
-#include "parameter-list-base.h"
-#include "ref-vector.h"
+#include "parameter-list.h"
 
 namespace std {
 
   template <unsigned int NItem>
-  class fixParameterList : public ParameterListBase<refVector> {
+  class fixParameterList : public ParameterList<refVector> {
 
     public:
 
       typedef fixParameterList<NItem>   Type;
 
-      typedef ParameterListBase<refVector>  ParentType;
+      typedef ParameterList<refVector>  ParentType;
 
     protected:
 
@@ -50,7 +49,7 @@ namespace std {
       }
 
       template <template <typename> class VecType>
-      Type& operator=(const ParameterListBase<VecType>& PL) {
+      Type& operator=(const ParameterList<VecType>& PL) {
         static_cast<ParentType*>(this)->operator=(PL);
         return *this;
       }

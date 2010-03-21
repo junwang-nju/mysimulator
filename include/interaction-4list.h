@@ -2,7 +2,7 @@
 #ifndef _Interaction_for_List_H_
 #define _Interaction_for_List_H_
 
-#include "parameter-list-base.h"
+#include "parameter-list.h"
 #include "interaction-method.h"
 
 namespace std {
@@ -15,7 +15,7 @@ namespace std {
              const InteractionMethod<DistEvalMethod,GeomType>& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
-             const ParameterListBase<VecTypeP>& ParamCollection,
+             const ParameterList<VecTypeP>& ParamCollection,
              RunDistEvalMethod& DEval, const RunGeomType& Geo,
              double& Energy) {
     unsigned int n=IdxLst.size();
@@ -43,7 +43,7 @@ namespace std {
              const InteractionMethod<DistEvalMethod,GeomType>& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
-             const ParameterListBase<VecTypeP>& ParamCollection,
+             const ParameterList<VecTypeP>& ParamCollection,
              RunDistEvalMethod& DEval, const RunGeomType& Geo,
              VectorBase<refVector<double> >& GradientSeq) {
     unsigned int n=IdxLst.size();
@@ -72,7 +72,7 @@ namespace std {
              const InteractionMethod<DistEvalMethod,GeomType>& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
-             const ParameterListBase<VecTypeP>& ParamCollection,
+             const ParameterList<VecTypeP>& ParamCollection,
              RunDistEvalMethod& DEval, const RunGeomType& Geo,
              double& Energy, VectorBase<refVector<double> >& GradientSeq) {
     unsigned int n=IdxLst.size();

@@ -14,7 +14,7 @@ namespace std {
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
-             const ParameterListBase<VecTypeP>& ParamCollection,
+             const ParameterList<VecTypeP>& ParamCollection,
              RunDistEvalMethod& DEval, RunGeomType& Geo, double& Energy) {
     assert(IM.size()==IdxLst.size());
     for(unsigned int i=0;i<IdxLst.size();++i)
@@ -29,7 +29,7 @@ namespace std {
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
-             const ParameterListBase<VecTypeP>& ParamCollection,
+             const ParameterList<VecTypeP>& ParamCollection,
              RunDistEvalMethod& DEval, RunGeomType& Geo,
              VectorBase<refVector<double> >& GradientSeq) {
     assert(IM.size()==IdxLst.size());
@@ -46,7 +46,7 @@ namespace std {
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
-             const ParameterListBase<VecTypeP>& ParamCollection,
+             const ParameterList<VecTypeP>& ParamCollection,
              RunDistEvalMethod& DEval, RunGeomType& Geo,
              double& Energy, VectorBase<refVector<double> >& GradientSeq) {
     assert(IM.size()==IdxLst.size());

@@ -33,6 +33,11 @@ namespace std {
 
       PeriodicBox() : Box(), EdgeFlag(), halfBox() {}
 
+      PeriodicBox(const unsigned int Dim)
+        : Box(), EdgeFlag(), halfBox() {
+        allocate(Dim);
+      }
+
       PeriodicBox(const Type& PBB) {
         myError("Cannot create from periodic box base");
       }
