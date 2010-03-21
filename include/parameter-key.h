@@ -3,6 +3,8 @@
 #define _Parameter_Key_H_
 
 #include "fix-vector.h"
+#include "var-vector.h"
+#include "ref-vector.h"
 #include "hash-func.h"
 #include <cassert>
 
@@ -31,6 +33,11 @@ namespace std {
         assert(IndexVecType<unsigned int>::IsVector);
       }
 
+      ParameterKey(const unsigned int NI) : Index(), Hash() {
+        assert(IndexVecType<unsigned int>::IsVector);
+        allocate(NI);
+      }
+
       ParameterKey(const Type& P) {
         myError("Cannot create from parameter key");
       }
@@ -39,6 +46,13 @@ namespace std {
 
       Type& operator=(const Type& P) {
         Index=P.Index;
+        BuildHash();
+        return *this;
+      }
+
+      template <template <typename> class iIndexVecType>
+      Type& operator=(const ParameterKey<iIndexVecType>& PK) {
+        Index=PK.Index;
         BuildHash();
         return *this;
       }
@@ -60,7 +74,30 @@ namespace std {
 
       void clear() { Index.clear(); }
 
+      void allocate(const unsigned int nIdx) { myError("Not Available"); }
+
+      template <template <typename> class iIndexVecType>
+      void refer(const ParameterKey<iIndexVecType>& PK) {
+        myError("Not Available");
+      }
+
+      Type& CanonicalForm() { return *this; }
+
+      const Type& CanonicalForm() const { return *this; }
+
   };
+
+  template <>
+  void ParameterKey<varVector>::allocate(const unsigned int nIdx) {
+    index().allocate(nIdx);
+  }
+
+  template <>
+  template <template <typename> class iIndexVecType>
+  void ParameterKey<refVector>::refer(const ParameterKey<iIndexVecType>& PK) {
+    index().refer(PK.index());
+    hash()=PK.hash();
+  }
 
   template <template <typename> class IdVec>
   istream& operator>>(istream& is, ParameterKey<IdVec>& P) {
