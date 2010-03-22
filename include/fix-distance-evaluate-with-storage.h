@@ -2,21 +2,20 @@
 #ifndef _Fixed_Distance_Evaluate_With_Storage_H_
 #define _Fixed_Distance_Evaluate_With_Storage_H_
 
-#include "distance-evaluate-with-storage-base.h"
+#include "distance-evaluate-with-storage.h"
 #include "fix-pair-storage.h"
-#include "ref-pair-storage.h"
 
 namespace std {
 
   template <unsigned int Dim, unsigned int NUnits>
   class fixDistanceEvalWStorage
-    : public DistanceEvalWStorageBase<refVector,refPairStorage> {
+    : public DistanceEvalWStorage<refVector,refPairStorage> {
 
     public:
 
       typedef fixDistanceEvalWStorage<Dim,NUnits>   Type;
 
-      typedef DistanceEvalWStorageBase<refVector,refPairStorage>  ParentType;
+      typedef DistanceEvalWStorage<refVector,refPairStorage>  ParentType;
 
     protected:
 
@@ -48,7 +47,7 @@ namespace std {
 
       template <template <typename> class VecType,
                 template <typename> class PSType>
-      Type& operator=(const DistanceEvalWStorageBase<VecType,PSType>& DEWS) {
+      Type& operator=(const DistanceEvalWStorage<VecType,PSType>& DEWS) {
         static_cast<ParentType*>(this)->operator=(DEWS);
         return *this;
       }

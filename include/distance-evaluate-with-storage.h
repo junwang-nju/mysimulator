@@ -4,7 +4,8 @@
 
 #include "distance-evaluate-base.h"
 #include "distance-displacement-calc.h"
-#include "pair-storage-item.h"
+#include "var-pair-storage.h"
+#include "ref-pair-storage.h"
 
 namespace std {
 
@@ -22,7 +23,7 @@ namespace std {
 
     protected:
 
-      PairStoreType<double>   DistSQPack;
+      typename PairStoreType<double>::Type   DistSQPack;
 
     public:
 
@@ -76,11 +77,27 @@ namespace std {
 
       virtual void update() { DistSQPack.Inc(); }
 
-      PairStoreType<double>& DistanceSQStorage() { return DistSQPack; }
-
-      const PairStoreType<double>& DistanceSQStorage() const {
+      typename PairStoreType<double>::Type& DistanceSQStorage() {
         return DistSQPack;
       }
+
+      const typename PairStoreType<double>::Type& DistanceSQStorage() const {
+        return DistSQPack;
+      }
+
+      void allocate(const unsigned int Dim, const unsigned int NUnit) {
+        myError("Not Available");
+      }
+
+      template <template <typename> class iVecType,
+                template <typename> class iPairStorageType>
+      void refer(const DistanceEvalWStorage<iVecType,iPairStorageType>& DEWS) {
+        myError("Not Available");
+      }
+
+      Type& CanonicalForm() { return *this; }
+
+      const Type& CanonicalForm() const { return *this; }
 
   };
 
@@ -88,6 +105,26 @@ namespace std {
             template <typename> class PairStoreType>
   const unsigned int
   DistanceEvalWStorage<VecType,PairStoreType>::DistanceEvalMethod=2;
+
+  template <>
+  void DistanceEvalWStorage<varVector,varPairStorage>::allocate(
+      const unsigned int Dim, const unsigned int NUnit) {
+    static_cast<ParentType*>(this)->DistanceSQVec().allocate(1);
+    static_cast<ParentType*>(this)->Displacement().allocate(Dim);
+    DistanceSQStorage().allocate(NUnit);
+  }
+
+  template <>
+  template <template <typename> class iVecType,
+            template <typename> class iPairStorageType>
+  void DistanceEvalWStorage<refVector,refPairStorage>::refer(
+      const DistanceEvalWStorage<iVecType,iPairStorageType>& DEWS) {
+    static_cast<ParentType*>(this)->DistanceSQVec().refer(
+        DEWS.DistanceSQVec());
+    static_cast<ParentType*>(this)->Displacement().refer(
+        DEWS.Displacement());
+    DistanceSQStorage().refer(DEWS.DistanceSQStorage());
+  }
 
 }
 
