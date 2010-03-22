@@ -1,6 +1,6 @@
 
-#ifndef _Distance_Evaluate_With_Storage_Base_H_
-#define _Distance_Evaluate_With_Storage_Base_H_
+#ifndef _Distance_Evaluate_With_Storage_H_
+#define _Distance_Evaluate_With_Storage_H_
 
 #include "distance-evaluate-base.h"
 #include "distance-displacement-calc.h"
@@ -10,11 +10,11 @@ namespace std {
 
   template <template <typename> class VecType,
             template <typename> class PairStoreType>
-  class DistanceEvalWStorageBase : public DistanceEvalBase<VecType> {
+  class DistanceEvalWStorage : public DistanceEvalBase<VecType> {
 
     public:
 
-      typedef DistanceEvalWStorageBase<VecType,PairStoreType>   Type;
+      typedef DistanceEvalWStorage<VecType,PairStoreType>   Type;
 
       typedef DistanceEvalBase<VecType>   ParentType;
 
@@ -26,13 +26,18 @@ namespace std {
 
     public:
 
-      DistanceEvalWStorageBase() : ParentType(), DistSQPack() {}
+      DistanceEvalWStorage() : ParentType(), DistSQPack() {}
 
-      DistanceEvalWStorageBase(const Type&) {
-        myError("Cannot create from Distance Evaluate Base With Storage");
+      DistanceEvalWStorage(const unsigned int Dim, const unsigned int NU)
+        : ParentType(), DistSQPack() {
+        allocate(Dim,NU);
       }
 
-      ~DistanceEvalWStorageBase() { clear(); }
+      DistanceEvalWStorage(const Type&) {
+        myError("Cannot create from Distance Evaluate With Storage");
+      }
+
+      ~DistanceEvalWStorage() { clear(); }
 
       Type& operator=(const Type& DEWS) {
         static_cast<ParentType*>(this)->operator=(
@@ -43,7 +48,7 @@ namespace std {
 
       template <template <typename> class iVecType,
                 template <typename> class iPSType>
-      Type& operator=(const DistanceEvalWStorageBase<iVecType,iPSType>& DEWS) {
+      Type& operator=(const DistanceEvalWStorage<iVecType,iPSType>& DEWS) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(DEWS));
         DistSQPack=DEWS.DistSQPack;
@@ -82,7 +87,7 @@ namespace std {
   template <template <typename> class VecType,
             template <typename> class PairStoreType>
   const unsigned int
-  DistanceEvalWStorageBase<VecType,PairStoreType>::DistanceEvalMethod=2;
+  DistanceEvalWStorage<VecType,PairStoreType>::DistanceEvalMethod=2;
 
 }
 
