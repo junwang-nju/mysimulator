@@ -7,8 +7,8 @@ using namespace std;
 
 int main() {
   cout<<"Test -- refer various kinds of var rectangle matrix"<<endl;
-  refMatrixRectangle<double> rdM;
-  varMatrixRectangle<double> vdM(3,5);
+  refMatrixRectangle<double>::Type rdM;
+  varMatrixRectangle<double>::Type vdM(3,5);
   rdM.refer(vdM);
   cout<<rdM.NumRow()<<"\t\t"<<rdM.NumCol()<<endl;
   cout<<rdM.MatrixOrder()<<"\t";
@@ -23,8 +23,8 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- refer fix rectangle matrix"<<endl;
-  fixMatrixRectangle<double,3,5,COrder,WithTranspose> fdM;
-  refMatrixRectangle<double> rdM2;
+  fixMatrixRectangle<double,3,5,COrder,WithTranspose>::Type fdM;
+  refMatrixRectangle<double>::Type rdM2;
   rdM2.refer(fdM);
   cout<<rdM2.NumRow()<<"\t\t"<<rdM2.NumCol()<<endl;
   cout<<rdM2.MatrixOrder()<<"\t";
@@ -33,7 +33,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- refer ref rectangle matrix"<<endl;
-  refMatrixRectangle<double> rdM3;
+  refMatrixRectangle<double>::Type rdM3;
   rdM3.refer(rdM);
   cout<<rdM3.NumRow()<<"\t\t"<<rdM3.NumCol()<<endl;
   cout<<rdM3.MatrixOrder()<<"\t";
@@ -73,7 +73,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- refer part of reference rectangle matrix"<<endl;
-  refMatrixRectangle<double> rDM3;
+  refMatrixRectangle<double>::Type rDM3;
   rDM3.refer(rdM,1,2);
   cout<<rDM3<<endl;
   cout<<endl;

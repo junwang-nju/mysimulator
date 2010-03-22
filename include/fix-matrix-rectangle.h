@@ -2,7 +2,7 @@
 #ifndef _Fixed_Matrix_Rectangle_H_
 #define _Fixed_Matrix_Rectangle_H_
 
-#include "matrix-rectangle-base.h"
+#include "matrix-rectangle.h"
 #include "fix-vector.h"
 #include <cassert>
 
@@ -15,13 +15,13 @@ namespace std {
                   (Order==COrder?NRow:(Order==FortranOrder?NCol:0U)):
               (Trans==WithTranspose?
                   (Order==COrder?NCol:(Order==FortranOrder?NRow:0U)):0U))>
-  class fixMatrixRectangle : public RectMatrixBase<T,refVector> {
+  class fixMatrixRectangle : public RectMatrix<T,refVector> {
 
     public:
 
       typedef fixMatrixRectangle<T,NRow,NCol,Order,Trans,NLines> Type;
 
-      typedef RectMatrixBase<T,refVector> ParentType;
+      typedef RectMatrix<T,refVector> ParentType;
 
     protected:
 
