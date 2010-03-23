@@ -1,6 +1,6 @@
 
-#ifndef _Matrix_Triangle_Base_H_
-#define _Matrix_Triangle_Base_H_
+#ifndef _Matrix_Triangle_H_
+#define _Matrix_Triangle_H_
 
 #include "matrix-base.h"
 #include "matrix-format-id.h"
@@ -245,24 +245,32 @@ namespace std {
   };
 
   template <typename T, template <typename> class VecType>
-  class TriangMatrixBase
+  class TriangMatrix
     : public MatrixBase<T,Triangle,VecType,TriangleNumberItems> {
 
     public:
 
-      typedef TriangMatrixBase<T,VecType>   Type;
+      typedef TriangMatrix<T,VecType>   Type;
 
       typedef MatrixBase<T,Triangle,VecType,TriangleNumberItems>  ParentType;
 
       static const bool IsTriangleMatrix;
 
-      TriangMatrixBase() : ParentType() {}
+      TriangMatrix() : ParentType() {}
 
-      TriangMatrixBase(const Type& TMB) {
-        myError("Cannot create from triangle matrix base");
+      TriangMatrix(const unsigned int Dim, const int Order=COrder,
+                   const int Trans=NoTranspose,
+                   const int Tripart=UpperPart,
+                   const bool SymFlag=true, const bool DiagFlag=true)
+        : ParentType() {
+        allocate(Dim,Order,Trans,Tripart,SymFlag,DiagFlag);
       }
 
-      virtual ~TriangMatrixBase() {}
+      TriangMatrix(const Type& TMB) {
+        myError("Cannot create from triangle matrix");
+      }
+
+      virtual ~TriangMatrix() {}
 
       Type& operator=(const Type& TMB) {
         assert(this->IsSymmetry()==TMB.IsSymmetry());
@@ -280,7 +288,7 @@ namespace std {
       }
 
       template <template <typename> class iVecType>
-      Type& operator=(const TriangMatrixBase<T,iVecType>& TMB) {
+      Type& operator=(const TriangMatrix<T,iVecType>& TMB) {
         assert(this->IsSymmetry()==TMB.IsSymmetry());
         assert(this->IsDiagonalExisted()==TMB.IsDiagonalExisted());
         if(this->IsSymmetry())
@@ -469,7 +477,7 @@ namespace std {
   };
 
   template <typename T, template <typename> class VecType>
-  const bool TriangMatrixBase<T,VecType>::IsTriangleMatrix=true;
+  const bool TriangMatrix<T,VecType>::IsTriangleMatrix=true;
 }
 
 #endif
