@@ -2,7 +2,7 @@
 #ifndef _Minimizer_Base_H_
 #define _Minimizer_Base_H_
 
-#include "ref-vector.h"
+#include "var-vector.h"
 
 namespace std {
 
@@ -11,13 +11,16 @@ namespace std {
 
     public:
 
-      typedef void (*EFuncType)(const VectorBase<SpaceVecType>&, double&);
+      typedef MinimizerKernelBase<SpaceVecType,ParameterType> Type;
 
-      typedef void (*GFuncType)(const VectorBase<SpaceVecType>&,
-                                VectorBase<SpaceVecType>&);
+      typedef void (*EFuncType)(const SpaceVecType&,double&,
+                                ParameterType&);
 
-      typedef void (*BFuncType)(const VectorBase<SpaceVecType>&, double&,
-                                VectorBase<SpaceVecType>&);
+      typedef void (*GFuncType)(const SpaceVecType&,
+                                VectorBase<SpaceVecType>&,ParameterType&);
+
+      typedef void (*BFuncType)(const SpaceVecType&, double&,
+                                VectorBase<SpaceVecType>&,ParameterType&);
 
       EFuncType MinEFunc;
 
@@ -25,11 +28,11 @@ namespace std {
 
       BFuncType MinBFunc;
 
-      refVector<SpaceVecType> MinCoorSeq;
+      SpaceVecType MinCoorSeq;
 
       double MinE;
 
-      refVector<SpaceVecType> MinGradSeq;
+      SpaceVecType MinGradSeq;
 
       ParameterType MinParam;
 
@@ -46,6 +49,25 @@ namespace std {
           MinE(0.), MinGradSeq(), MinParam(), MinPrj(0.), MinMove(0.),
           MinGCount(0), MinScale(0.1) {}
 
+      MinimizerKernelBase(const Type& MKB) {
+        myError("Cannot create from Minimizer Kernel Base");
+      }
+
+      Type& operator=(const Type& MKB) {
+        MinEFunc=MKB.MinEFunc;
+        MinGFunc=MKB.MinGFunc;
+        MinBFunc=MKB.MinBFunc;
+        MinCoorSeq=MKB.MinCoorSeq;
+        MinE=MKB.MinE;
+        MinGradSeq=MKB.MinGradSeq;
+        MinParam=MKB.MinParam;
+        MinPrj=MKB.MinPrj;
+        MinMove=MKB.MinMove;
+        MinGCount=MKB.MinGCount;
+        MinScale=MKB.MinScale;
+        return *this;
+      }
+
       virtual ~MinimizerKernelBase() {}
 
       void clear() {
@@ -60,9 +82,6 @@ namespace std {
         MinGCount=0;
         MinScale=0.;
       }
-
-      virtual void ImportState(const VectorBase<SpaceVecType>&,
-                               const ParameterType&) = 0;
 
   };
 
