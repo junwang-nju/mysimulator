@@ -32,7 +32,7 @@ int main() {
   KindSeq[2]=0;
   KindSeq[3]=2;
   varParameterList vPL;
-  vPL.allocate(3,Harmonic_NumberParameter,9);
+  vPL.allocate(3,Harmonic_NumberParameter+1,9);
   for(unsigned int i=0,n=0;i<3;++i)
   for(unsigned int j=0;j<3;++j,++n) {
     vPL.keylist()[n].index()[0]=ParticleParticle_Harmonic;

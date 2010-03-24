@@ -110,7 +110,7 @@ namespace std {
       void allocateList(varVector<T>& List,
                         const unsigned int Size, const unsigned int N) {
         List.allocate(N);
-        for(unsigned int i=0;i<N;++i) List.allocate(Size);
+        for(unsigned int i=0;i<N;++i) List[i].allocate(Size);
       }
 
       template <typename T>

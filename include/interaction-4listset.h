@@ -9,13 +9,15 @@ namespace std {
   template <template <template <typename> class> class DistEvalMethod,
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeP,
-            typename RunDistEvalMethod, typename RunGeomType>
+            template <typename> class VecTypeD,
+            template <typename> class VecTypeG>
   void EFunc(const VectorBase<refVector<double> >& CoorSeq,
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
              const ParameterList<VecTypeP>& ParamCollection,
-             RunDistEvalMethod& DEval, RunGeomType& Geo, double& Energy) {
+             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
+             double& Energy) {
     assert(IM.size()==IdxLst.size());
     for(unsigned int i=0;i<IdxLst.size();++i)
       EFunc(CoorSeq,IM[i],IdxLst[i],KindSeq,ParamCollection,DEval,Geo,Energy);
@@ -24,13 +26,14 @@ namespace std {
   template <template <template <typename> class> class DistEvalMethod,
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeP,
-            typename RunDistEvalMethod, typename RunGeomType>
+            template <typename> class VecTypeD,
+            template <typename> class VecTypeG>
   void GFunc(const VectorBase<refVector<double> >& CoorSeq,
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
              const ParameterList<VecTypeP>& ParamCollection,
-             RunDistEvalMethod& DEval, RunGeomType& Geo,
+             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
              VectorBase<refVector<double> >& GradientSeq) {
     assert(IM.size()==IdxLst.size());
     for(unsigned int i=0;i<IdxLst.size();++i)
@@ -41,13 +44,14 @@ namespace std {
   template <template <template <typename> class> class DistEvalMethod,
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeP,
-            typename RunDistEvalMethod, typename RunGeomType>
+            template <typename> class VecTypeD,
+            template <typename> class VecTypeG>
   void BFunc(const VectorBase<refVector<double> >& CoorSeq,
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<unsigned int>& KindSeq,
              const ParameterList<VecTypeP>& ParamCollection,
-             RunDistEvalMethod& DEval, RunGeomType& Geo,
+             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
              double& Energy, VectorBase<refVector<double> >& GradientSeq) {
     assert(IM.size()==IdxLst.size());
     for(unsigned int i=0;i<IdxLst.size();++i)
@@ -57,12 +61,14 @@ namespace std {
 
   template <template <template <typename> class> class DistEvalMethod,
             template <template <typename> class> class GeomType,
-            typename RunDistEvalMethod, typename RunGeomType>
+            template <typename> class VecTypeD,
+            template <typename> class VecTypeG>
   void EFunc(const VectorBase<refVector<refVector<double> > >& CoorLst,
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<refVector<double> >& ParamLst,
-             RunDistEvalMethod& DEval, RunGeomType& Geo, double& Energy) {
+             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
+             double& Energy) {
     assert(CoorLst.size()==IM.size());
     assert(CoorLst.size()==IdxLst.size());
     assert(CoorLst.size()==ParamLst.size());
@@ -72,12 +78,13 @@ namespace std {
 
   template <template <template <typename> class> class DistEvalMethod,
             template <template <typename> class> class GeomType,
-            typename RunDistEvalMethod, typename RunGeomType>
+            template <typename> class VecTypeD,
+            template <typename> class VecTypeG>
   void GFunc(const VectorBase<refVector<refVector<double> > >& CoorLst,
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<refVector<double> >& ParamLst,
-             RunDistEvalMethod& DEval, RunGeomType& Geo,
+             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
              VectorBase<refVector<refVector<double> > >& GradientLst) {
     assert(CoorLst.size()==IM.size());
     assert(CoorLst.size()==IdxLst.size());
@@ -89,12 +96,14 @@ namespace std {
 
   template <template <template <typename> class> class DistEvalMethod,
             template <template <typename> class> class GeomType,
-            typename RunDistEvalMethod, typename RunGeomType>
+            template <typename> class VecTypeD,
+            template <typename> class VecTypeG>
   void BFunc(const VectorBase<refVector<refVector<double> > >& CoorLst,
              const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<refVector<double> >& ParamLst,
-             RunDistEvalMethod& DEval, RunGeomType& Geo, double& Energy, 
+             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
+             double& Energy, 
              VectorBase<refVector<refVector<double> > >& GradientLst) {
     assert(CoorLst.size()==IM.size());
     assert(CoorLst.size()==IdxLst.size());
