@@ -21,7 +21,7 @@ namespace std {
     protected:
 
       VecType<unsigned int> GStatus;
-      TriangMat<ItemType> Data;
+      typename TriangMat<ItemType>::Type Data;
 
     public:
 
@@ -63,11 +63,11 @@ namespace std {
 
       VecType<unsigned int>& GStatusVec() { return GStatus; }
 
-      TriangMat<ItemType>& DataMat() { return Data; }
+      typename TriangMat<ItemType>::Type& DataMat() { return Data; }
 
       const VecType<unsigned int>& GStatusVec() const { return GStatus; }
 
-      const TriangMat<ItemType>& DataMat() const { return Data; }
+      const typename TriangMat<ItemType>::Type& DataMat() const{ return Data; }
 
       const ItemType& operator()(const unsigned int I,const unsigned int J)
           const {

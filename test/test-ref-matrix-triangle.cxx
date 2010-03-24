@@ -5,8 +5,8 @@
 using namespace std;
 
 int main() {
-  refMatrixTriangle<double> rTM;
-  varMatrixTriangle<double> vTM;
+  refMatrixTriangle<double>::Type rTM;
+  varMatrixTriangle<double>::Type vTM;
 
   cout<<"Test -- refer to varMatrixTriangle"<<endl;
   varVector<double> v(50);

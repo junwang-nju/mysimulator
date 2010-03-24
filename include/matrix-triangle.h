@@ -7,7 +7,8 @@
 #include "matrix-data-order-id.h"
 #include "matrix-transpose-id.h"
 #include "matrix-symmetry-id.h"
-#include <cassert>
+#include "var-vector.h"
+#include "ref-vector.h"
 
 namespace std {
 
@@ -244,6 +245,21 @@ namespace std {
     FUppType
   };
 
+  template <template <typename> class iVecType>
+  struct TriMatTypeOp {
+    const char* operator()() const { return "Triangle Matrix"; }
+  };
+
+  template <>
+  struct TriMatTypeOp<varVector> {
+    const char* operator()() const { return "Variable Triangle Matrix"; }
+  };
+
+  template <>
+  struct TriMatTypeOp<refVector> {
+    const char* operator()() const { return "Reference Triangle Matrix"; }
+  };
+
   template <typename T, template <typename> class VecType>
   class TriangMatrix
     : public MatrixBase<T,Triangle,VecType,TriangleNumberItems> {
@@ -473,6 +489,79 @@ namespace std {
         for(unsigned int i=0,m=0;i<this->ActualDimension();++i,m+=n,n+=d)
           this->structure()[i].refer(this->data(),m,n);
       }
+
+      struct AllocateOp {
+        template <template <typename> class iVecType>
+        void operator()(const unsigned int Dim, const int Order,
+                        const int Trans, const int Tripart,
+                        const bool SymFlag, const bool DiagFlag,
+                        TriangMatrix<T,iVecType>& Self) {
+          myError("Not Available");
+        }
+        void operator()(const unsigned int Dim, const int Order,
+                        const int Trans, const int Tripart,
+                        const bool SymFlag, const bool DiagFlag,
+                        TriangMatrix<T,varVector>& Self) {
+          Self.clear();
+          Self.SetSize(Dim,Dim);
+          Self.SetOrder(Order);
+          Self.SetTransposeState(Trans);
+          Self.SetTrianglePart(Tripart);
+          Self.SetSymmetryFlag(SymFlag);
+          Self.SetDiagonalState(DiagFlag);
+          Self.SetGetMethod();
+          if(Self.IsDiagonalExisted()) Self.SetActualDimension(Dim);
+          else                         Self.SetActualDimension(Dim-1);
+          int d=Self.ActualDimension();
+          int n=(d*(d+1))/2;
+          Self.data().allocate(n);
+          Self.structure().allocate(d);
+          Self.SetStructure();
+        }
+      };
+
+      struct ReferOp {
+        template <template <typename> class iVecType,
+                  template <typename> class rVecType>
+        void operator()(const TriangMatrix<T,iVecType>& TM,
+                        TriangMatrix<T,rVecType>& Self) {
+          myError("Not Available");
+        }
+        template <template <typename> class iVecType>
+        void operator()(const TriangMatrix<T,iVecType>& TM,
+                        TriangMatrix<T,refVector>& Self) {
+          Self.data().refer(TM.data());
+          Self.structure().refer(TM.structure());
+          Self.info()=TM.info();
+          Self.SetOtherElements(TM.OtherElements());
+          Self.SetGetMethod();
+        }
+      };
+
+      AllocateOp runAllocateOp;
+
+      TriMatTypeOp<VecType> runTriMatTypeOp;
+
+      ReferOp runReferOp;
+
+    public:
+
+      void allocate(const unsigned int Dim, const int Order=COrder,
+                    const int Trans=NoTranspose, const int Tripart=UpperPart,
+                    const bool SymFlag=true, const bool DiagFlag=true) {
+        runAllocateOp(Dim,Order,Trans,Tripart,SymFlag,DiagFlag,*this);
+      }
+
+      template <template <typename> class iVecType>
+      void refer(const TriangMatrix<T,iVecType>& TM) {
+        runReferOp(TM,*this);
+      }
+
+      Type& CanonicalForm() { return *this; }
+
+      const Type& CanonicalForm() const { return *this; }
+
+      virtual const char* type() const { return runTriMatTypeOp(); }
 
   };
 

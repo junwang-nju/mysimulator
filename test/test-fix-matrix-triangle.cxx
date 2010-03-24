@@ -42,7 +42,7 @@ int main() {
   cout<<fTM2<<endl;
   cout<<endl;
 
-  varMatrixTriangle<double> vTM;
+  varMatrixTriangle<double>::Type vTM;
   vTM.allocate(4,COrder,WithTranspose);
   vTM=9;
   fTM2=vTM;

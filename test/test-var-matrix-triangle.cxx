@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-  varMatrixTriangle<double> vTM;
+  varMatrixTriangle<double>::Type vTM;
 
   cout<<"Test -- allocate with dimension"<<endl;
   varVector<double> v(50);
@@ -36,7 +36,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- initiate with dimension"<<endl;
-  varMatrixTriangle<double> vTM2(4);
+  varMatrixTriangle<double>::Type vTM2(4);
   vTM2=vTM;
   cout<<vTM2<<endl;
   cout<<endl;

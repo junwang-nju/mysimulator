@@ -28,17 +28,17 @@ namespace std {
   };
 
   template <template <typename> class iVecType>
-  struct TypeOp {
+  struct RectMatTypeOp {
     const char* operator()() const { return "Rectangle Matrix"; }
   };
 
   template <>
-  struct TypeOp<varVector> {
+  struct RectMatTypeOp<varVector> {
     const char* operator()() const { return "Variable Rectangle Matrix"; }
   };
 
   template <>
-  struct TypeOp<refVector> {
+  struct RectMatTypeOp<refVector> {
     const char* operator()() const { return "Reference Rectangle Matrix"; }
   };
 
@@ -178,7 +178,7 @@ namespace std {
 
       AllocateOp runAllocateOp;
 
-      TypeOp<VecType> runTypeOp;
+      RectMatTypeOp<VecType> runRectMatTypeOp;
 
       ReferOp runReferOp;
 
@@ -204,7 +204,7 @@ namespace std {
 
       const Type& CanonicalForm() const { return *this; }
 
-      virtual const char* type() const { return runTypeOp(); }
+      virtual const char* type() const { return runRectMatTypeOp(); }
 
   };
 

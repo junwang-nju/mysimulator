@@ -2,7 +2,7 @@
 #ifndef _Fixed_Matrix_Triangle_H_
 #define _Fixed_Matrix_Triangle_H_
 
-#include "matrix-triangle-base.h"
+#include "matrix-triangle.h"
 #include "fix-vector.h"
 
 namespace std {
@@ -10,13 +10,13 @@ namespace std {
   template <typename T, unsigned int Dim, unsigned int DiagFlag=WithDiagonal,
             unsigned int ADim=(DiagFlag==WithDiagonal?Dim:
                               (DiagFlag==NullDiagonal?Dim-1:0U))>
-  class fixMatrixTriangle : public TriangMatrixBase<T,refVector> {
+  class fixMatrixTriangle : public TriangMatrix<T,refVector> {
 
     public:
 
       typedef fixMatrixTriangle<T,Dim,DiagFlag,ADim>  Type;
 
-      typedef TriangMatrixBase<T,refVector> ParentType;
+      typedef TriangMatrix<T,refVector> ParentType;
 
     protected:
 
@@ -52,7 +52,7 @@ namespace std {
       }
 
       template <template <typename> class iVecType>
-      Type& operator=(const TriangMatrixBase<T,iVecType>& TM) {
+      Type& operator=(const TriangMatrix<T,iVecType>& TM) {
         static_cast<ParentType*>(this)->operator=(TM);
         return *this;
       }
