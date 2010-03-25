@@ -92,6 +92,10 @@ namespace std {
 
       unsigned int iTag;
 
+      varVector<PropertyType> TmpCoor;
+
+      varVector<PropertyType> TmpGrad;
+
       InteractionMethod() : EFuncVV(NULL), GFuncVV(NULL), BFuncVV(NULL),
                             EFuncVR(NULL), GFuncVR(NULL), BFuncVR(NULL),
                             EFuncRV(NULL), GFuncRV(NULL), BFuncRV(NULL),

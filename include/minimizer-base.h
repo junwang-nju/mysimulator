@@ -68,7 +68,7 @@ namespace std {
         return *this;
       }
 
-      virtual ~MinimizerKernelBase() {}
+      ~MinimizerKernelBase() {}
 
       void clear() {
         MinEFunc=NULL;
