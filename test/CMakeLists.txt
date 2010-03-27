@@ -170,3 +170,5 @@ target_link_libraries (test-interaction-4listset.run blas Base)
 add_executable (test-minimizer.run test-minimizer.cxx)
 target_link_libraries (test-minimizer.run blas Base)
 
+add_executable (test-binding.run test-binding.cxx)
+target_link_libraries (test-binding.run Base)
