@@ -30,9 +30,11 @@ int main() {
   IdxLst[4][0]=1;   IdxLst[4][1]=3;
   IdxLst[5][0]=2;   IdxLst[5][1]=3;
   varPropertyList<refVector<unsigned int> >::Type vIdx;
+  varPropertyList<refVector<double> >::Type vPrm;
   Sz.allocate(2);
   Sz=3;
   vIdx.allocate(Sz);
+  vPrm.allocate(Sz);
   for(unsigned int i=0,n=0;i<2;++i)
   for(unsigned int j=0;j<3;++j,++n)
     vIdx[i][j].refer(IdxLst[n]);
@@ -101,50 +103,7 @@ int main() {
         12*vPL.valuelist()[i][LJ612_EqStrength];
   }
   vPL.updateHashTree();
-  varDistanceEvalDirect vDED(2);
-  varFreeSpace vFS;
 
-  CoorSeq[0][0]=0;    CoorSeq[0][1]=0;
-  CoorSeq[1][0]=0;    CoorSeq[1][1]=1.2;
-  CoorSeq[2][0]=1.3;  CoorSeq[2][1]=1.5;
-  CoorSeq[3][0]=0.8;  CoorSeq[3][1]=2.2;
-  cout<<"Test -- Energy for a list of units and a set of interaction with loose binding"<<endl;
-  double E=0;
-  EFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),KindSeq,vPL,vDED,vFS,E);
-  cout<<E<<endl;
-  cout<<endl;
-
-  cout<<"Test -- Gradient for a list of units and a set of interaction with loose binding"<<endl;
-  GradSeq=0.;
-  GFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),KindSeq,vPL,vDED,vFS,
-        GradSeq.Structure());
-  cout<<GradSeq<<endl;
-  cout<<endl;
-
-  cout<<"Test -- Energy and Gradient for a list of units and a set of interaction with loose binding"<<endl;
-  E=0.;
-  GradSeq=0.;
-  BFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),KindSeq,vPL,vDED,vFS,
-        E,GradSeq.Structure());
-  cout<<E<<endl;
-  cout<<GradSeq<<endl;
-  cout<<endl;
-
-  varPropertyList<refVector<double> >::Type CoorLst, GradLst;
-  Sz.allocate(6);
-  Sz=2;
-  CoorLst.allocate(Sz);
-  GradLst.allocate(Sz);
-  for(unsigned int i=0;i<6;++i)
-  for(unsigned int j=0;j<2;++j) {
-    CoorLst[i][j].refer(CoorSeq[IdxLst[i][j]]);
-    GradLst[i][j].refer(GradSeq[IdxLst[i][j]]);
-  }
-  vIM.allocate(6);
-  for(unsigned int i=0;i<3;++i)
-    SetInteractionMethod(vIM[i],ParticleParticle_Harmonic);
-  for(unsigned int i=3;i<6;++i)
-    SetInteractionMethod(vIM[i],ParticleParticle_LJ612);
   varVector<refVector<double> > ParamLst(6);
   varVector<unsigned int> prmKey(3);
   for(unsigned int i=0;i<3;++i) {
@@ -159,24 +118,63 @@ int main() {
       prmKey[k+1]=KindSeq[IdxLst[i][k]];
     ParamLst[i].refer(*vPL.get(prmKey));
   }
+  for(unsigned int i=0,n=0;i<2;++i)
+  for(unsigned int j=0;j<3;++j,++n)
+    vPrm[i][j].refer(ParamLst[n]);
+
+  varDistanceEvalDirect vDED(2);
+  varFreeSpace vFS;
+
+  CoorSeq[0][0]=0;    CoorSeq[0][1]=0;
+  CoorSeq[1][0]=0;    CoorSeq[1][1]=1.2;
+  CoorSeq[2][0]=1.3;  CoorSeq[2][1]=1.5;
+  CoorSeq[3][0]=0.8;  CoorSeq[3][1]=2.2;
+
+  cout<<"Test -- Energy for a list of units and a set of interaction with loose binding"<<endl;
+  double E=0;
+  EFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),vPrm.Structure(),vDED,vFS,E);
+  cout<<E<<endl;
+  cout<<endl;
+
+  cout<<"Test -- Gradient for a list of units and a set of interaction with loose binding"<<endl;
+  GradSeq=0.;
+  GFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),vPrm.Structure(),vDED,vFS,
+        GradSeq.Structure());
+  cout<<GradSeq<<endl;
+  cout<<endl;
+
+  cout<<"Test -- Energy and Gradient for a list of units and a set of interaction with loose binding"<<endl;
+  E=0.;
+  GradSeq=0.;
+  BFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),vPrm.Structure(),vDED,vFS,
+        E,GradSeq.Structure());
+  cout<<E<<endl;
+  cout<<GradSeq<<endl;
+  cout<<endl;
+
+  vIM.allocate(6);
+  for(unsigned int i=0;i<3;++i)
+    SetInteractionMethod(vIM[i],ParticleParticle_Harmonic);
+  for(unsigned int i=3;i<6;++i)
+    SetInteractionMethod(vIM[i],ParticleParticle_LJ612);
   cout<<"Test -- Energy for a list of units and a set of interaction with tight binding"<<endl;
   E=0;
-  EFunc(CoorLst.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,E);
+  EFunc(CoorSeq.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,E);
   cout<<E<<endl;
   cout<<endl;
 
   cout<<"Test -- Gradient for a list of units and a set of interaction with tight binding"<<endl;
   GradSeq=0.;
-  GFunc(CoorLst.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,
-        GradLst.Structure());
+  GFunc(CoorSeq.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,
+        GradSeq.Structure());
   cout<<GradSeq<<endl;
   cout<<endl;
 
   cout<<"Test -- Energy and Gradient for a list of units and a set of interaction with tight binding"<<endl;
   E=0.;
   GradSeq=0.;
-  BFunc(CoorLst.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,
-        E,GradLst.Structure());
+  BFunc(CoorSeq.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,
+        E,GradSeq.Structure());
   cout<<E<<endl;
   cout<<GradSeq<<endl;
   cout<<endl;

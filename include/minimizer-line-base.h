@@ -6,44 +6,6 @@
 
 namespace std {
 
-  enum ConditionType {
-    Armijo=0,
-    Wolfe,
-    StrongWolfe
-  };
-
-  template <int CondType>
-  bool Condition(const double&, const double&, const double&,
-                 const double&, const double&, const double&) {
-    myError("Unknown Condition Type!");
-    return false;
-  }
-
-  template <>
-  bool Condition<Armijo>(const double& ry, const double& rp,
-                         const double& my,
-                         const double& dp, const double& cp,
-                         const double& step) {
-    return ry<=my+step*dp;
-  }
-
-  template <>
-  bool Condition<Wolfe>(const double& ry, const double& rp,
-                        const double& my,
-                        const double& dp, const double& cp,
-                        const double& step) {
-    assert(cp<0);
-    return Condition<Armijo>(ry,rp,my,dp,cp,step)&&(rp>=cp);
-  }
-
-  template <>
-  bool Condition<StrongWolfe>(const double& ry, const double& rp,
-                              const double& my,
-                              const double& dp, const double& cp,
-                              const double& step) {
-    return Condition<Wolfe>(ry,rp,my,dp,cp,step)&&(rp<=-cp);
-  }
-
   template <typename SpaceVecType, typename ParameterType>
   class LineMinmizerBase
     : public MinimizerKernelBase<SpaceVecType,ParameterType> {
@@ -54,13 +16,15 @@ namespace std {
 
       typedef MinimizerKernelBase<SpaceVecType,ParameterType>   ParentType;
 
+      typedef SpaceVecType  RunSpaceVecType;
+
       unsigned int MinLineCount;
 
     protected:
 
       SpaceVecType   RunCoor;
       SpaceVecType   RunGrad;
-      double         RunY;
+      double         RunE;
       double         RunPrj;
       double         DecreaseFac;
       double         CurvatureFac;
@@ -69,7 +33,7 @@ namespace std {
     public:
 
       LineMinmizerBase() : ParentType(), MinLineCount(0), RunCoor(), RunGrad(),
-                           RunY(0.), RunPrj(0.), DecreaseFac(1e-4),
+                           RunE(0.), RunPrj(0.), DecreaseFac(1e-4),
                            CurvatureFac(0.4), GradThreshold(DRelDelta) {
       }
 
@@ -83,7 +47,7 @@ namespace std {
         MinLineCount=0;
         RunCoor.clear();
         RunGrad.clear();
-        RunY=0.;
+        RunE=0.;
         RunPrj=0.;
         DecreaseFac=0.;
         CurvatureFac=0.;
@@ -96,7 +60,7 @@ namespace std {
         MinLineCount=LMB.MinLineCount;
         RunCoor=LMB.RunCoor;
         RunGrad=LMB.RunGrad;
-        RunY=LMB.RunY;
+        RunE=LMB.RunE;
         RunPrj=LMB.RunPrj;
         DecreaseFac=LMB.DecreaseFac;
         CurvatureFac=LMB.CurvatureFac;

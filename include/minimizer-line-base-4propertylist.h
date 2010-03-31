@@ -10,31 +10,30 @@
 
 namespace std {
 
-  template <template <typename> class VecType,
-            template <template <typename> class> class DistEvalMethod,
+  template <template <template <typename> class> class DistEvalMethod,
             template <template <typename> class> class GeomType>
   class LineMinmizerBase4PropertyList
-    : public LineMinmizerBase<PropertyList<double,VecType>,
-                              MinimizerParameter4PropertyList<DistEvalMethod,
-                                                              GeomType> > {
+    : public LineMinmizerBase<
+                PropertyList<double,varVector>,
+                MinimizerParameter4PropertyList<DistEvalMethod,GeomType> > {
 
     public:
 
-      typedef LineMinmizerBase4PropertyList<VecType,DistEvalMethod,GeomType>
+      typedef LineMinmizerBase4PropertyList<DistEvalMethod,GeomType>
               Type;
 
       typedef MinimizerParameter4PropertyList<DistEvalMethod,GeomType>
               ParamType;
 
-      typedef LineMinmizerBase<PropertyList<double,VecType>,ParamType>
+      typedef LineMinmizerBase<PropertyList<double,varVector>,ParamType>
               ParentType;
 
-      typedef PropertyList<double,VecType>  RunSpaceVecType;
+      typedef PropertyList<double,varVector>  RunSpaceVecType;
 
       LineMinmizerBase4PropertyList() : ParentType() {
-        this->MinEFunc=EFunc_4PropertyList<DistEvalMethod,GeomType,VecType>;
-        this->MinGFunc=GFunc_4PropertyList<DistEvalMethod,GeomType,VecType>;
-        this->MinBFunc=BFunc_4PropertyList<DistEvalMethod,GeomType,VecType>;
+        this->MinEFunc=EFunc_4PropertyList<DistEvalMethod,GeomType,varVector>;
+        this->MinGFunc=GFunc_4PropertyList<DistEvalMethod,GeomType,varVector>;
+        this->MinBFunc=BFunc_4PropertyList<DistEvalMethod,GeomType,varVector>;
       }
 
       LineMinmizerBase4PropertyList(const Type& LMB) {
@@ -56,20 +55,16 @@ namespace std {
                 template <typename> class VecTypeG,
                 template <typename> class VecTypeP,
                 template <typename> class VecTypeF,
-                template <typename> class VecTypeI,
-                template <typename> class VecTypeCL,
-                template <typename> class VecTypeGL>
+                template <typename> class VecTypeI>
       void ImportState(
           const PropertyList<double,VecTypeC>& Coor,
           const PropertyList<unsigned int,VecTypeM>& Mask,
-          const PropertyList<unsigned int,VecTypeMD>& dMask,
+          const PropertyList<double,VecTypeMD>& dMask,
           const DistEvalMethod<VecTypeD>& DEval,
           const GeomType<VecTypeG>& Geo,
           const VecTypeP<refVector<double> >& ParamLst,
-          const VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IM,
-          const PropertyList<unsigned int,VecTypeI>& IdxLst,
-          const PropertyList<refVector<double>,VecTypeCL>& CoorLst,
-          const PropertyList<refVector<double>,VecTypeGL>& GradLst) {
+          const VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
+          const PropertyList<unsigned int,VecTypeI>& IdxLst) {
         varVector<unsigned int> Sz(Coor.size());
         for(unsigned int i=0;i<Coor.size();++i)   Sz[i]=Coor[i].size();
         this->MinCoorSeq.allocate(Sz);
@@ -80,10 +75,8 @@ namespace std {
         this->MinParam.DEval.refer(DEval);
         this->MinParam.Geo.refer(Geo);
         this->MinParam.ParamLst.refer(ParamLst);
-        this->MinParam.IMethodLst.refer(IM);
+        this->MinParam.IMethodLst.refer(IMLst);
         this->MinParam.IdxLst.refer(IdxLst);
-        this->MinParam.CoorLst.refer(CoorLst);
-        this->MinParam.GradLst.refer(GradLst);
         this->MinParam.update();
         this->MinE=0.;
         this->MinGradSeq=0.;
@@ -91,8 +84,8 @@ namespace std {
                        this->MinParam);
       }
 
-      double MinStep(const VectorBase<refVector<double> >& Orig,
-                     const VectorBase<refVector<double> >& Dirc) {
+      double MinStep(const RunSpaceVecType& Orig,
+                     const RunSpaceVecType& Dirc) {
         assert(Orig.size()==Dirc.size());
         assert(Orig.size()==this->MinParam.iMaskSeq.size());
         double minStep=0.,tmd;

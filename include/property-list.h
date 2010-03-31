@@ -143,6 +143,11 @@ namespace std {
 
       const Type& CanonicalForm() const { return *this; }
 
+      void swap(Type& pv) {
+        static_cast<ParentType*>(this)->swap(static_cast<ParentType&>(pv));
+        Structure().swap(pv.Structure());
+      }
+
   };
 
 }

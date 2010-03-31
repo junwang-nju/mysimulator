@@ -17,10 +17,10 @@ namespace std {
                                 ParameterType&);
 
       typedef void (*GFuncType)(const SpaceVecType&,
-                                VectorBase<SpaceVecType>&,ParameterType&);
+                                SpaceVecType&,ParameterType&);
 
       typedef void (*BFuncType)(const SpaceVecType&, double&,
-                                VectorBase<SpaceVecType>&,ParameterType&);
+                                SpaceVecType&,ParameterType&);
 
       EFuncType MinEFunc;
 

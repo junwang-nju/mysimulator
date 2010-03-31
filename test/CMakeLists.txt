@@ -167,8 +167,6 @@ target_link_libraries (test-interaction-particle-particle-lj1012.run blas Base)
 add_executable (test-interaction-4listset.run test-interaction-4listset.cxx)
 target_link_libraries (test-interaction-4listset.run blas Base)
 
-add_executable (test-minimizer.run test-minimizer.cxx)
-target_link_libraries (test-minimizer.run blas Base)
+add_executable (test-minimizer-steep.run test-minimizer-steep.cxx)
+target_link_libraries (test-minimizer-steep.run blas Base)
 
-add_executable (test-binding.run test-binding.cxx)
-target_link_libraries (test-binding.run Base)

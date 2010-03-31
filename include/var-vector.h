@@ -50,6 +50,14 @@ namespace std {
         }
       }
 
+      void swap(Type& v) {
+        T* pT;
+        pT=this->data();    this->data()=v.data();      v.data()=pT;
+        unsigned int n=this->size(),nv=v.size();
+        this->SetSize(nv);    v.SetSize(n);
+        this->SetHeadTail();  v.SetHeadTail();
+      }
+
       virtual const char* type() const { return "Variable Vector"; }
 
   };

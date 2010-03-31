@@ -30,10 +30,6 @@ namespace std {
 
       refPropertyList<unsigned int>::Type IdxLst;
 
-      refPropertyList<refVector<double> >::Type CoorLst;
-
-      refPropertyList<refVector<double> >::Type GradLst;
-
       void update() { DEval.update(); }
 
   };

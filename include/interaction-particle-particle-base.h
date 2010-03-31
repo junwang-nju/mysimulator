@@ -16,7 +16,7 @@ namespace std {
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy,
       void (*efunc)(const double, const VectorBase<double>&, double&)) {
-    DEval.Evaluate(Coor[0],Coor[1],Idx[0],Idx[1],Geo);
+    DEval.Evaluate(Coor[Idx[0]],Coor[Idx[1]],Idx[0],Idx[1],Geo);
     double DistSQ=DEval.DistanceSQ();
     double ee;
     efunc(DistSQ,Param,ee);
@@ -33,12 +33,12 @@ namespace std {
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Gradient,
       void (*gfunc)(const double, const VectorBase<double>&, double&)) {
-    DEval.Evaluate(Coor[0],Coor[1],Idx[0],Idx[1],Geo);
+    DEval.Evaluate(Coor[Idx[0]],Coor[Idx[1]],Idx[0],Idx[1],Geo);
     double DistSQ=DEval.DistanceSQ();
     double ef;
     gfunc(DistSQ,Param,ef);
-    Gradient[0].shift(+ef,DEval.Displacement());
-    Gradient[1].shift(-ef,DEval.Displacement());
+    Gradient[Idx[0]].shift(+ef,DEval.Displacement());
+    Gradient[Idx[1]].shift(-ef,DEval.Displacement());
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -51,13 +51,13 @@ namespace std {
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Gradient,
       void (*bfunc)(const double,const VectorBase<double>&,double&,double&)) {
-    DEval.Evaluate(Coor[0],Coor[1],Idx[0],Idx[1],Geo);
+    DEval.Evaluate(Coor[Idx[0]],Coor[Idx[1]],Idx[0],Idx[1],Geo);
     double DistSQ=DEval.DistanceSQ();
     double ee,ef;
     bfunc(DistSQ,Param,ee,ef);
     Energy+=ee;
-    Gradient[0].shift(+ef,DEval.Displacement());
-    Gradient[1].shift(-ef,DEval.Displacement());
+    Gradient[Idx[0]].shift(+ef,DEval.Displacement());
+    Gradient[Idx[1]].shift(-ef,DEval.Displacement());
   }
 
 }

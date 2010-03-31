@@ -14,8 +14,8 @@ namespace std {
   void EFunc_4PropertyList(
       const PropertyList<double,VecType>& CoorSeq, double& Energy,
       MinimizerParameter4PropertyList<DistEvalMethod,GeomType>& MParam) {
-    EFunc(MParam.CoorLst,MParam.IMethodLst,MParam.IdxLst,MParam.ParamLst,
-          MParam.DEval,MParam.Geo,Energy);
+    EFunc(CoorSeq.Structure(),MParam.IMethodLst,MParam.IdxLst.Structure(),
+          MParam.ParamLst,MParam.DEval,MParam.Geo,Energy);
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -25,8 +25,8 @@ namespace std {
       const PropertyList<double,VecType>& CoorSeq,
       PropertyList<double,VecType>& GradSeq,
       MinimizerParameter4PropertyList<DistEvalMethod,GeomType>& MParam) {
-    GFunc(MParam.CoorLst,MParam.IMethodLst,MParam.IdxLst,MParam.ParamLst,
-          MParam.DEval,MParam.Geo,MParam.GradLst);
+    GFunc(CoorSeq.Structure(),MParam.IMethodLst,MParam.IdxLst.Structure(),
+          MParam.ParamLst,MParam.DEval,MParam.Geo,GradSeq.Structure());
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -36,8 +36,8 @@ namespace std {
       const PropertyList<double,VecType>& CoorSeq,
       double& Energy, PropertyList<double,VecType>& GradSeq,
       MinimizerParameter4PropertyList<DistEvalMethod,GeomType>& MParam) {
-    BFunc(MParam.CoorLst,MParam.IMethodLst,MParam.IdxLst,MParam.ParamLst,
-          MParam.DEval,MParam.Geo,Energy,MParam.GradLst);
+    BFunc(CoorSeq.Structure(),MParam.IMethodLst,MParam.IdxLst.Structure(),
+          MParam.ParamLst,MParam.DEval,MParam.Geo,Energy,GradSeq.Structure());
   }
 
 }

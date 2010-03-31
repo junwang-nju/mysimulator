@@ -66,38 +66,7 @@ int main() {
   CoorSeq[1][0]=0;    CoorSeq[1][1]=1.2;
   CoorSeq[2][0]=1.3;  CoorSeq[2][1]=1.5;
   CoorSeq[3][0]=0.8;  CoorSeq[3][1]=2.2;
-  cout<<"Test -- Energy for a list of units with loose binding"<<endl;
-  double E=0;
-  EFunc(CoorSeq.Structure(),runIM,IdxLst.Structure(),KindSeq,vPL,vDED,vFS,E);
-  cout<<E<<endl;
-  cout<<endl;
 
-  cout<<"Test -- gradient for a list of units with loose binding"<<endl;
-  GradSeq=0.;
-  GFunc(CoorSeq.Structure(),runIM,IdxLst.Structure(),KindSeq,vPL,vDED,vFS,
-        GradSeq.Structure());
-  cout<<GradSeq<<endl;
-  cout<<endl;
-
-  cout<<"Test -- Energy and gradient for a list of units with loose binding"<<endl;
-  E=0.;
-  GradSeq=0.;
-  BFunc(CoorSeq.Structure(),runIM,IdxLst.Structure(),KindSeq,vPL,vDED,vFS,
-        E,GradSeq.Structure());
-  cout<<E<<endl;
-  cout<<GradSeq<<endl;
-  cout<<endl;
-
-  varPropertyList<refVector<double> >::Type CoorLst,GradLst;
-  Sz.allocate(6);
-  Sz=2;
-  CoorLst.allocate(Sz);
-  GradLst.allocate(Sz);
-  for(unsigned int i=0;i<6;++i)
-  for(unsigned int j=0;j<2;++j) {
-    CoorLst[i][j].refer(CoorSeq[IdxLst[i][j]]);
-    GradLst[i][j].refer(GradSeq[IdxLst[i][j]]);
-  }
   varVector<refVector<double> > ParamLst(6);
   varVector<unsigned int> prmKey(3);
   for(unsigned int i=0;i<6;++i) {
@@ -106,24 +75,26 @@ int main() {
       prmKey[k+1]=KindSeq[IdxLst[i][k]];
     ParamLst[i].refer(*vPL.get(prmKey));
   }
-  cout<<"Test -- Energy for a list of units with tight binding"<<endl;
+
+  double E;
+  cout<<"Test -- Energy for a list of units"<<endl;
   E=0.;
-  EFunc(CoorLst.Structure(),runIM,IdxLst.Structure(),ParamLst,vDED,vFS,E);
+  EFunc(CoorSeq.Structure(),runIM,IdxLst.Structure(),ParamLst,vDED,vFS,E);
   cout<<E<<endl;
   cout<<endl;
 
-  cout<<"Test -- gradient for a list of units with tight binding"<<endl;
+  cout<<"Test -- gradient for a list of units"<<endl;
   GradSeq=0.;
-  GFunc(CoorLst.Structure(),runIM,IdxLst.Structure(),ParamLst,vDED,vFS,
-        GradLst.Structure());
+  GFunc(CoorSeq.Structure(),runIM,IdxLst.Structure(),ParamLst,vDED,vFS,
+        GradSeq.Structure());
   cout<<GradSeq<<endl;
   cout<<endl;
 
-  cout<<"Test -- Energy and gradient for a list of units with tight binding"<<endl;
+  cout<<"Test -- Energy and gradient for a list of units"<<endl;
   E=0.;
   GradSeq=0.;
-  BFunc(CoorLst.Structure(),runIM,IdxLst.Structure(),ParamLst,vDED,vFS,
-        E,GradLst.Structure());
+  BFunc(CoorSeq.Structure(),runIM,IdxLst.Structure(),ParamLst,vDED,vFS,
+        E,GradSeq.Structure());
   cout<<E<<endl;
   cout<<GradSeq<<endl;
   cout<<endl;
