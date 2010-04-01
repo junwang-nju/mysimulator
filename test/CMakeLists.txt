@@ -170,3 +170,6 @@ target_link_libraries (test-interaction-4listset.run blas Base)
 add_executable (test-minimizer-steep.run test-minimizer-steep.cxx)
 target_link_libraries (test-minimizer-steep.run blas Base)
 
+add_executable (test-minimizer-conjg.run test-minimizer-conjg.cxx)
+target_link_libraries (test-minimizer-conjg.run blas Base)
+
