@@ -2,6 +2,7 @@
 #include "interaction-particle-particle-coulomb.h"
 #include "var-distance-evaluate-direct.h"
 #include "var-free-space.h"
+#include "parameter-generate-coulomb.h"
 #include <iostream>
 using namespace std;
 
@@ -23,6 +24,7 @@ int main() {
   vi[1]=1;
   varVector<double> prm(1);
   prm[0]=1.;
+  ParameterGenerateCoulomb(prm);
   double E=0.;
   EFunc_ParticleParticle_Coulomb(v,vi,prm,vDED,vFS,E);
   cout<<E<<endl;

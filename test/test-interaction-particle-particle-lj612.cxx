@@ -2,6 +2,7 @@
 #include "interaction-particle-particle-lj612.h"
 #include "var-distance-evaluate-direct.h"
 #include "var-free-space.h"
+#include "parameter-generate-lj612.h"
 #include <iostream>
 using namespace std;
 
@@ -24,8 +25,7 @@ int main() {
   varVector<double> prm(4);
   prm[0]=1.;
   prm[1]=1.;
-  prm[2]=1.;
-  prm[3]=12.;
+  ParameterGenerateLJ612(prm);
   double E=0.;
   EFunc_ParticleParticle_LJ612(v,vi,prm,vDED,vFS,E);
   cout<<E<<endl;

@@ -2,6 +2,7 @@
 #include "interaction-particle-particle-harmonic.h"
 #include "var-distance-evaluate-direct.h"
 #include "var-free-space.h"
+#include "parameter-generate-harmonic.h"
 #include <iostream>
 using namespace std;
 
@@ -24,7 +25,8 @@ int main() {
   varVector<double> prm(3);
   prm[0]=1.;
   prm[1]=100.;
-  prm[2]=200.;
+  ParameterGenerateHarmonic(prm);
+  //prm[2]=200.;
   double E=0.;
   EFunc_ParticleParticle_Harmonic(v,vi,prm,vDED,vFS,E);
   cout<<E<<endl;

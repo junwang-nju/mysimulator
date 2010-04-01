@@ -2,6 +2,7 @@
 #include "interaction-particle-particle-quadplusharm.h"
 #include "var-distance-evaluate-direct.h"
 #include "var-free-space.h"
+#include "parameter-generate-quadplusharm.h"
 #include <iostream>
 using namespace std;
 
@@ -25,8 +26,7 @@ int main() {
   prm[0]=1.;
   prm[1]=10000.;
   prm[2]=100.;
-  prm[3]=40000.;
-  prm[4]=200.;
+  ParameterGenerateQuadPlusHarm(prm);
   double E=0.;
   EFunc_ParticleParticle_QuadPlusHarm(v,vi,prm,vDED,vFS,E);
   cout<<E<<endl;
