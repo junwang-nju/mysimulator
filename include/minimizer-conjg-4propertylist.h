@@ -1,8 +1,8 @@
 
-#ifndef _Minimizer_SteepestDescent_For_PropertyList_H_
-#define _Minimizer_SteepestDescent_For_PropertyList_H_
+#ifndef _Minimizer_Conjugate_Gradient_For_PropertyList_H_
+#define _Minimizer_Conjugate_Gradient_For_PropertyList_H_
 
-#include "minimizer-steep-base.h"
+#include "minimizer-conjg-base.h"
 #include "property-list.h"
 #include "interaction-method.h"
 
@@ -14,29 +14,32 @@ namespace std {
             template <template <template <typename> class> class,
                       template <template <typename> class> class, unsigned int>
             class LineMinMethod>
-  class SteepestDescentMinimizer4PropertyList
-    : public SteepestDescentMinimizerBase<
+  class ConjugateGradientMinimizer4PropertyList
+    : public ConjugateGradientMinimizerBase<
                 LineMinMethod<DistEvalMethod,GeomType,CondType> > {
 
     public:
 
-      typedef SteepestDescentMinimizer4PropertyList<DistEvalMethod,GeomType,
-                                                    CondType,LineMinMethod>
+      typedef ConjugateGradientMinimizer4PropertyList<DistEvalMethod,GeomType,
+                                                      CondType,LineMinMethod>
               Type;
+
       typedef LineMinMethod<DistEvalMethod,GeomType,CondType>
               LineMinType;
-      typedef SteepestDescentMinimizerBase<LineMinType> ParentType;
-      typedef typename ParentType::ParamType  ParamType;
 
-      SteepestDescentMinimizer4PropertyList() : ParentType() {}
+      typedef ConjugateGradientMinimizerBase<LineMinType>   ParentType;
 
-      SteepestDescentMinimizer4PropertyList(const Type& SDM4P) {
-        myError("Cannot create from steep-descent minimizer of property list");
+      typedef typename ParentType::ParamType    ParamType;
+
+      ConjugateGradientMinimizer4PropertyList() : ParentType() {}
+
+      ConjugateGradientMinimizer4PropertyList(const Type& CGM) {
+        myError("Cannot create from conjugate-gradient minimizer");
       }
 
-      Type& operator=(const Type& SDM4P) {
+      Type& operator=(const Type& CGM) {
         static_cast<ParentType*>(this)->operator=(
-            static_cast<const ParentType&>(SDM4P));
+            static_cast<const ParentType&>(CGM));
         return *this;
       }
 
@@ -62,6 +65,7 @@ namespace std {
         varVector<unsigned int> Sz(Coor.size());
         for(unsigned int i=0;i<Coor.size();++i)   Sz[i]=Coor[i].size();
         this->Dirc.allocate(Sz);
+        this->OldMinGrad.allocate(Sz);
       }
 
   };

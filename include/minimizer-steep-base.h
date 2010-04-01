@@ -3,6 +3,7 @@
 #define _Minimizer_SteepestDescent_Base_H_
 
 #include "constant.h"
+#include "error-proc.h"
 
 namespace std {
 
