@@ -173,3 +173,6 @@ target_link_libraries (test-minimizer-steep.run blas Base)
 add_executable (test-minimizer-conjg.run test-minimizer-conjg.cxx)
 target_link_libraries (test-minimizer-conjg.run blas Base)
 
+add_executable (test-interaction-particle-particle-lj1012cut.run test-interaction-particle-particle-lj1012cut.cxx)
+target_link_libraries (test-interaction-particle-particle-lj1012cut.run blas Base)
+
