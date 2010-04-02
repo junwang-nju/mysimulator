@@ -34,6 +34,7 @@ namespace std {
       Type& operator=(const Type& SDM) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(SDM));
+        Dirc=SDM.Dirc;
         return *this;
       }
 

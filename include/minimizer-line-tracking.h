@@ -31,6 +31,7 @@ namespace std {
       Type& operator=(const Type& TLM) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(TLM));
+        TrackFac=TLM.TrackFac;
         return *this;
       }
 

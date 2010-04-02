@@ -37,6 +37,9 @@ namespace std {
       Type& operator=(const Type& CGM) {
         static_cast<ParentType*>(this)->operator=(
             static_cast<const ParentType&>(CGM));
+        Dirc=CGM.Dirc;
+        OldMinGrad=CGM.OldMinGrad;
+        MaxBeta=CGM.MaxBeta;
         return *this;
       }
 
