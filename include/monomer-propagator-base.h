@@ -35,7 +35,7 @@ namespace std {
 
       typedef MonomerPropagatorBase Type;
 
-      MoveFuncType  Move;
+      varVector<MoveFuncType>  Move;
       SyncFuncType  Sync;
       varVector<PropagatorDataElementType>  Param;
 
