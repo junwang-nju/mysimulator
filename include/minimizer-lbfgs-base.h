@@ -12,9 +12,7 @@ namespace std {
     ConstDiag
   };
 
-  template <typename LineMinMethod,
-            unsigned int DiagMode=HK0Diag,
-            unsigned int MaxCorr=6U>
+  template <typename LineMinMethod, unsigned int MaxCorr=6U>
   class LBFGSbMinimizerBase : public LineMinMethod {
 
     public:
@@ -34,7 +32,7 @@ namespace std {
       RunSpaceVecType                     lastX;
       RunSpaceVecType                     lastG;
       unsigned int                        nCorr;
-      varVector<double>                   diag;
+      double                              diag;
       double                              dgdg;
       double                              dgdx;
       double                              beta;
@@ -43,7 +41,7 @@ namespace std {
 
       LBFGSbMinimizerBase()
         : ParentType(),dX(), dG(), alpha(), rho(), lastX(), lastG(), 
-          nCorr(0), diag(), dgdg(0.), dgdx(0.), beta(0.) {}
+          nCorr(0), diag(0.), dgdg(0.), dgdx(0.), beta(0.) {}
 
       LBFGSbMinimizerBase(const Type& LM) {
         myError("Cannot create from LBFGS-b Minimizer Base");
@@ -66,21 +64,14 @@ namespace std {
         return *this;
       }
 
-      void SetDiagonal(const VectorBase<double>& idiag) {
-        assert(diag.size()<=idiag.size());
-        diag=idiag;
-      }
-
       int Go(const unsigned int MaxIter=DefaultMaxIter) {
         this->MinGCount=0;
         this->MinLineCount=0;
-        if(DiagMode==HK0Diag) {
-        } else if(DiagMode==ConstDiag)  diag=1.;
-        else myError("Unknown Diagonal Mode");
-        lastG[0]=this->MinGradSeq;
-        lastG[0].scale(diag);
+        int point=0;
+        diag=1.;
         this->Dirc=this->MinGradSeq;
-        this->Dirc.scale(-1.);
+        this->Dirc.scale(-diag.);
+        dX[point]=this->Dirc;
         this->MinLineCount=MaxIter;
         return 0;
       }
