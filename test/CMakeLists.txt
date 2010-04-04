@@ -176,3 +176,6 @@ target_link_libraries (test-minimizer-conjg.run blas Base)
 add_executable (test-interaction-particle-particle-lj1012cut.run test-interaction-particle-particle-lj1012cut.cxx)
 target_link_libraries (test-interaction-particle-particle-lj1012cut.run blas Base)
 
+add_executable (test-minimizer-lbfgs.run test-minimizer-lbfgs.cxx)
+target_link_libraries (test-minimizer-lbfgs.run blas Base)
+

@@ -84,7 +84,7 @@ namespace std {
             this->MinPrj=-fnorm2;
             dnorm=fnorm;
             if(dnorm<this->GradThreshold) {
-              this->MinLineCount=neval;
+              this->MinLineCount=neval-1;
               return 4;
             }
           }
@@ -102,6 +102,8 @@ namespace std {
             else        { nextMode=true; --neval; }
           }
           isSteep=nextMode;
+          fnorm=norm(this->MinGradSeq);
+          fnorm2=fnorm*fnorm;
         }
         this->MinLineCount=MaxIter;
         return 0;
