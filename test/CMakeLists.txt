@@ -179,3 +179,6 @@ target_link_libraries (test-interaction-particle-particle-lj1012cut.run blas Bas
 add_executable (test-minimizer-lbfgs.run test-minimizer-lbfgs.cxx)
 target_link_libraries (test-minimizer-lbfgs.run blas Base)
 
+add_executable (test-monomer-propagator.run test-monomer-propagator.cxx)
+target_link_libraries (test-monomer-propagator.run blas Base)
+
