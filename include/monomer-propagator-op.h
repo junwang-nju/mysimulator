@@ -8,13 +8,13 @@
 
 namespace std {
 
-  void SetUp(class MonomerPropagator& MP,
+  void SetUp(MonomerPropagator& MP,
              const unsigned int UnitType, const unsigned int MoveType) {
     MP.UnitMode=UnitType;
     if(MP.UnitMode==ParticleType) {
       if(MoveType==ConstE_VelocityVerlet) SetAsParticleEV(MP);
-      else myError("Not Implemented Type");
-    } else myError("Not Implemented Type");
+      else myError("Not Implemented Move Type");
+    } else myError("Not Implemented Monomer Type");
   }
 
 }

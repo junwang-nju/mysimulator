@@ -47,6 +47,17 @@ namespace std {
       Unit[i].Move[EV_AfterG](Coor[i],Vel[i],Grad[i],GParam,Unit[i].Param);
   }
 
+  template <template <template <typename> class> class DistEvalMethod,
+            template <template <typename> class> class GeomType>
+  void SetAsEV(Propagator<DistEvalMethod,GeomType>& P) {
+    P.GAlloc=EV_Allocate;
+    P.GSync=EV_Synchronize;
+    P.StepVV=EV_Step<DistEvalMethod,GeomType,varVector,varVector>;
+    P.StepVR=EV_Step<DistEvalMethod,GeomType,varVector,refVector>;
+    P.StepRV=EV_Step<DistEvalMethod,GeomType,refVector,varVector>;
+    P.StepRR=EV_Step<DistEvalMethod,GeomType,refVector,refVector>;
+  }
+
 }
 
 #endif

@@ -22,7 +22,7 @@ namespace std {
           VectorBase<PropagatorDataElementType>&);
 
       typedef void (*SetFuncType)(
-          VectorBase<PropagatorDataElementType>&, const double&);
+          VectorBase<PropagatorDataElementType>&, const void*);
 
       typedef void (*AllocFuncType)(varVector<PropagatorDataElementType>&);
 
@@ -49,11 +49,12 @@ namespace std {
       }
 
       Type& operator=(const Type& MP) {
-        Move=MP.Move;
-        Set=MP.Set;
+        UnitMode=MP.UnitMode;
+        Move.duplicate(MP.Move);
+        Set.duplicate(MP.Set);
         Alloc=MP.Alloc;
         Sync=MP.Sync;
-        Param=MP.Param;
+        Param.duplicate(MP.Param);
         return *this;
       }
 

@@ -58,6 +58,13 @@ namespace std {
         this->SetHeadTail();  v.SetHeadTail();
       }
 
+      void duplicate(const VectorBase<T>& v) {
+        if(v.IsAvailable()) {
+          allocate(v.size());
+          operator=(v);
+        } else clear();
+      }
+
       virtual const char* type() const { return "Variable Vector"; }
 
   };

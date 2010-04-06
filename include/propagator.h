@@ -35,6 +35,9 @@ namespace std {
 
       typedef InteractionMethod<DistEvalMethod,GeomType>  InteractionType;
 
+      typedef void (*GSetFuncType)(
+          VectorBase<PropagatorDataElementType>&, const void*);
+
       typedef void (*OutputFuncTypeVarVar)(
           ostream&, const Type&, const VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
@@ -115,6 +118,8 @@ namespace std {
 
       GSyncFuncType   GSync;
 
+      varVector<GSetFuncType> GSet;
+
       OutputFuncTypeVarVar  WriteOutVV;
       OutputFuncTypeVarRef  WriteOutVR;
       OutputFuncTypeRefVar  WriteOutRV;
@@ -128,7 +133,7 @@ namespace std {
       varVector<double> GlobalParam;
 
       Propagator()
-        : Unit(), GAlloc(NULL), GSync(NULL), WriteOutVV(NULL),
+        : Unit(), GAlloc(NULL), GSync(NULL), GSet(), WriteOutVV(NULL),
           WriteOutVR(NULL), WriteOutRV(NULL), WriteOutRR(NULL), StepVV(NULL),
           StepVR(NULL), StepRV(NULL), StepRR(NULL), GlobalParam() {
       }
@@ -136,9 +141,11 @@ namespace std {
       Propagator(const Type& P) { myError("Cannt create from Propagator"); }
 
       Type& operator=(const Type& P) {
-        Unit=P.Unit;
+        MoveMode=P.MoveMode;
+        Unit.duplicate(P.Unit);
         GAlloc=P.GAlloc;
         GSync=P.GSync;
+        GSet.duplicate(P.GSet);
         WriteOutVV=P.WriteOutVV;
         WriteOutVR=P.WriteOutVR;
         WriteOutRV=P.WriteOutRV;
@@ -147,7 +154,7 @@ namespace std {
         StepVR=P.StepVR;
         StepRV=P.StepRV;
         StepRR=P.StepRR;
-        GlobalParam=P.GlobalParam;
+        GlobalParam.duplicate(P.GlobalParam);
         return *this;
       }
 

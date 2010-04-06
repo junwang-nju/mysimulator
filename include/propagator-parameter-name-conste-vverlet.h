@@ -16,6 +16,10 @@ namespace std {
     NumberMoveEV
   };
 
+  enum PropagatorSetNameEV {
+    NumberSetEV=0
+  };
+
 }
 
 #endif

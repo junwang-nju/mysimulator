@@ -148,6 +148,10 @@ namespace std {
         Structure().swap(pv.Structure());
       }
 
+      void duplicate(const VectorBase<T>& v) {
+        myError("duplicate from a vector is prohibitted by property list");
+      }
+
   };
 
 }
