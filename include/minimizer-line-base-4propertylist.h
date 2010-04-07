@@ -11,18 +11,22 @@
 namespace std {
 
   template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType>
+            template <template <typename> class> class GeomType,
+            template <template <template <typename> class> class,
+                      template <template <typename> class> class>
+            class MinimizerParamType=MinimizerFlatParameter4PropertyList>
   class LineMinmizerBase4PropertyList
     : public LineMinmizerBase<
                 PropertyList<double,varVector>,
-                MinimizerParameter4PropertyList<DistEvalMethod,GeomType> > {
+                MinimizerParamType<DistEvalMethod,GeomType> > {
 
     public:
 
-      typedef LineMinmizerBase4PropertyList<DistEvalMethod,GeomType>
+      typedef LineMinmizerBase4PropertyList<DistEvalMethod,GeomType,
+                                            MinimizerParamType>
               Type;
 
-      typedef MinimizerParameter4PropertyList<DistEvalMethod,GeomType>
+      typedef MinimizerParamType<DistEvalMethod,GeomType>
               ParamType;
 
       typedef LineMinmizerBase<PropertyList<double,varVector>,ParamType>
@@ -65,6 +69,46 @@ namespace std {
           const VecTypeP<refVector<double> >& ParamLst,
           const VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
           const PropertyList<unsigned int,VecTypeI>& IdxLst) {
+        if(this->MinParam.Mode!=FlatParameter4PropertyList)
+          myError("Improper Use of Import function");
+        varVector<unsigned int> Sz(Coor.size());
+        for(unsigned int i=0;i<Coor.size();++i)   Sz[i]=Coor[i].size();
+        this->MinCoorSeq.allocate(Sz);
+        this->MinGradSeq.allocate(Sz);
+        this->MinCoorSeq=Coor;
+        this->MinParam.iMaskSeq.refer(Mask);
+        this->MinParam.dMaskSeq.refer(dMask);
+        this->MinParam.DEval.refer(DEval);
+        this->MinParam.Geo.refer(Geo);
+        this->MinParam.ParamLst.refer(ParamLst);
+        this->MinParam.IMethodLst.refer(IMLst);
+        this->MinParam.IdxLst.refer(IdxLst);
+        this->MinParam.update();
+        this->MinE=0.;
+        this->MinGradSeq=0.;
+        this->MinBFunc(this->MinCoorSeq,this->MinE,this->MinGradSeq,
+                       this->MinParam);
+      }
+
+      template <template <typename> class VecTypeC,
+                template <typename> class VecTypeM,
+                template <typename> class VecTypeMD,
+                template <typename> class VecTypeD,
+                template <typename> class VecTypeG,
+                template <typename> class VecTypeP,
+                template <typename> class VecTypeF,
+                template <typename> class VecTypeI>
+      void ImportState(
+          const PropertyList<double,VecTypeC>& Coor,
+          const PropertyList<unsigned int,VecTypeM>& Mask,
+          const PropertyList<double,VecTypeMD>& dMask,
+          const DistEvalMethod<VecTypeD>& DEval,
+          const GeomType<VecTypeG>& Geo,
+          const PropertyList<refVector<double>,VecTypeP>& ParamLst,
+          const VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
+          const PropertyList<refVector<unsigned int>,VecTypeI>& IdxLst) {
+        if(this->MinParam.Mode!=HierarchyParameter4PropertyList)
+          myError("Improper Use of Import function");
         varVector<unsigned int> Sz(Coor.size());
         for(unsigned int i=0;i<Coor.size();++i)   Sz[i]=Coor[i].size();
         this->MinCoorSeq.allocate(Sz);
