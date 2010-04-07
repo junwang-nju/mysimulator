@@ -182,3 +182,9 @@ target_link_libraries (test-minimizer-lbfgs.run blas Base)
 add_executable (test-monomer-propagator.run test-monomer-propagator.cxx)
 target_link_libraries (test-monomer-propagator.run blas Base)
 
+add_executable (test-propagator-parameter-element.run test-propagator-parameter-element.cxx)
+target_link_libraries (test-propagator-parameter-element.run blas Base)
+
+add_executable (test-propagator.run test-propagator.cxx)
+target_link_libraries (test-propagator.run Base blas)
+

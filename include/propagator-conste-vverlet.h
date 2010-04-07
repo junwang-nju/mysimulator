@@ -5,6 +5,7 @@
 #include "propagator-parameter-element.h"
 #include "propagator-parameter-name-conste-vverlet.h"
 #include "propagator.h"
+#include "interaction-4listset.h"
 
 namespace std {
 

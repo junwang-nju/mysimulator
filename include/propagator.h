@@ -210,7 +210,7 @@ namespace std {
       HStepFuncTypeRefVar  HStepRV;
       HStepFuncTypeRefRef  HStepRR;
 
-      varVector<double> GlobalParam;
+      varVector<PropagatorDataElementType> GlobalParam;
 
       Propagator()
         : Unit(), GAlloc(NULL), GSync(NULL), GSet(), FWriteOutVV(NULL),
@@ -263,9 +263,9 @@ namespace std {
       void synchronize(const PropertyList<double,VecTypeM>& IvMass,
                        const PropertyList<double,VecTypeD>& DMask) {
         GlobalParam[CountOutput]
-            =GlobalParam[TotalTime]/GlobalParam[OutputInterval];
+            =GlobalParam[TotalTime].d/GlobalParam[OutputInterval].d;
         GlobalParam[CountStepInOne]
-            =GlobalParam[OutputInterval]/GlobalParam[DeltaTime];
+            =GlobalParam[OutputInterval].d/GlobalParam[DeltaTime].d;
         GSync(IvMass.Structure(),DMask.Structure(),GlobalParam,Unit);
       }
 
@@ -462,9 +462,9 @@ namespace std {
                DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
                ostream& os) {
         unsigned int no,ns;
-        no=static_cast<unsigned int>(GlobalParam[CountOutput]+0.5);
-        ns=static_cast<unsigned int>(GlobalParam[CountStepInOne]+0.5);
-        double ot=ns*GlobalParam[DeltaTime];
+        no=static_cast<unsigned int>(GlobalParam[CountOutput].d+0.5);
+        ns=static_cast<unsigned int>(GlobalParam[CountStepInOne].d+0.5);
+        double ot=ns*GlobalParam[DeltaTime].d;
         GlobalParam[NowTime]=GlobalParam[StartTime];
         WriteOut(os,IM,Coordinate.Structure(),Velocity.Structure(),
                  Gradient.Structure(),IdxLst.Structure(),ParamLst,DEval,Geo);
@@ -496,9 +496,9 @@ namespace std {
                DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
                ostream& os) {
         unsigned int no,ns;
-        no=static_cast<unsigned int>(GlobalParam[CountOutput]+0.5);
-        ns=static_cast<unsigned int>(GlobalParam[CountStepInOne]+0.5);
-        double ot=ns*GlobalParam[DeltaTime];
+        no=static_cast<unsigned int>(GlobalParam[CountOutput].d+0.5);
+        ns=static_cast<unsigned int>(GlobalParam[CountStepInOne].d+0.5);
+        double ot=ns*GlobalParam[DeltaTime].d;
         GlobalParam[NowTime]=GlobalParam[StartTime];
         WriteOut(os,IM,Coordinate.Structure(),Velocity.Structure(),
                  Gradient.Structure(),IdxLst.Structure(),
@@ -531,6 +531,8 @@ namespace std {
   };
 
 }
+
+#include "propagator-op.h"
 
 #endif
 
