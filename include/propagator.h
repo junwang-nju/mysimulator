@@ -267,6 +267,8 @@ namespace std {
         GlobalParam[CountStepInOne]
             =GlobalParam[OutputInterval].d/GlobalParam[DeltaTime].d;
         GSync(IvMass.Structure(),DMask.Structure(),GlobalParam,Unit);
+        for(unsigned int i=0;i<Unit.size();++i)
+          Unit[i].synchronize(IvMass,GlobalParam);
       }
 
       void WriteOut(
@@ -472,7 +474,7 @@ namespace std {
           for(unsigned int j=0;j<ns;++j)
             Step(IM,Coordinate.Structure(),Velocity.Structure(),
                  Gradient.Structure(),IdxLst.Structure(),ParamLst,DEval,Geo);
-          GlobalParam[NowTime]+=ot;
+          GlobalParam[NowTime].d+=ot;
           WriteOut(os,IM,Coordinate.Structure(),Velocity.Structure(),
                    Gradient.Structure(),IdxLst.Structure(),ParamLst,DEval,Geo);
         }
@@ -508,7 +510,7 @@ namespace std {
             Step(IM,Coordinate.Structure(),Velocity.Structure(),
                  Gradient.Structure(),IdxLst.Structure(),
                  ParamLst.Structure(),DEval,Geo);
-          GlobalParam[NowTime]+=ot;
+          GlobalParam[NowTime].d+=ot;
           WriteOut(os,IM,Coordinate.Structure(),Velocity.Structure(),
                    Gradient.Structure(),IdxLst.Structure(),
                    ParamLst.Structure(),DEval,Geo);

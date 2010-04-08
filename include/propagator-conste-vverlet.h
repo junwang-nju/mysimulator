@@ -18,8 +18,6 @@ namespace std {
       const VectorBase<refVector<double> >&,
       VectorBase<PropagatorDataElementType>& GParam,
       VectorBase<MonomerPropagator>& Unit) {
-    for(unsigned int i=0;i<IvMass.size();++i)
-      Unit[i].synchronize(IvMass[i],GParam);
   }
 
   template <template <template <typename> class> class DistEvalMethod,
