@@ -20,6 +20,7 @@ void OutFunc(
     const VectorBase<refVector<double> >& Coor,
     const VectorBase<refVector<double> >& Vel,
     const VectorBase<refVector<double> >& Grad,
+    const VectorBase<refVector<double> >& Mass,
     const VectorBase<refVector<unsigned int> >& IdxLst,
     const VectorBase<refVector<double> >& ParamLst,
     DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo) {
@@ -36,6 +37,7 @@ void OutFunc(
     const VectorBase<refVector<double> >& Coor,
     const VectorBase<refVector<double> >& Vel,
     const VectorBase<refVector<double> >& Grad,
+    const VectorBase<refVector<double> >& Mass,
     const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
     const VectorBase<refVector<refVector<double> > >& ParamLst,
     DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo) {
@@ -55,10 +57,15 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- set a series of property"<<endl;
-  P.SetTimeStep(0.002);
-  P.SetStartTime(100);
-  P.SetTotalTime(0.006);
-  P.SetOutputInterval(0.002);
+  double d;
+  d=0.002;
+  P.Set(TimeStepInCommon,&d);
+  d=100;
+  P.Set(StartTimeInCommon,&d);
+  d=0.006;
+  P.Set(TotalTimeInCommon,&d);
+  d=0.002;
+  P.Set(OutputTimeIntervalInCommon,&d);
   cout<<endl;
 
   cout<<"Test -- synchronize other internal data"<<endl;
@@ -226,7 +233,8 @@ int main() {
 
   cout<<"=== Invoke WriteOut"<<endl;
   P.WriteOut(cout,IM,CoorSeq.Structure(),VelSeq.Structure(),
-             GradSeq.Structure(),vIdx.Structure(),vPrm.Structure(),vDED,vFS);
+             GradSeq.Structure(),Mass.Structure(),vIdx.Structure(),
+             vPrm.Structure(),vDED,vFS);
 
   cout<<"=== Run"<<endl;
   CoorSeq=oCoorSeq;
@@ -262,7 +270,8 @@ int main() {
 
   cout<<"=== Invoke WriteOut"<<endl;
   P.WriteOut(cout,IM,CoorSeq.Structure(),VelSeq.Structure(),
-             GradSeq.Structure(),IdxLst.Structure(),ParamLst,vDED,vFS);
+             GradSeq.Structure(),Mass.Structure(),IdxLst.Structure(),
+             ParamLst,vDED,vFS);
 
   cout<<"=== Run"<<endl;
   CoorSeq=oCoorSeq;

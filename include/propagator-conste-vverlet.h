@@ -77,6 +77,11 @@ namespace std {
   void SetAsEV(Propagator<DistEvalMethod,GeomType>& P) {
     P.GAlloc=EV_Allocate;
     P.GSync=EV_Synchronize;
+    P.GSet.allocate(NumberSetEV);
+    P.GSet[TimeStepInCommon]=SetTimeStep;
+    P.GSet[StartTimeInCommon]=SetStartTime;
+    P.GSet[TotalTimeInCommon]=SetTotalTime;
+    P.GSet[OutputTimeIntervalInCommon]=SetOutputInterval;
     P.HStepVV=EV_Step<DistEvalMethod,GeomType,varVector,varVector>;
     P.HStepVR=EV_Step<DistEvalMethod,GeomType,varVector,refVector>;
     P.HStepRV=EV_Step<DistEvalMethod,GeomType,refVector,varVector>;

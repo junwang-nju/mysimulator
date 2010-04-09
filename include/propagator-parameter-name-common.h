@@ -4,7 +4,7 @@
 
 namespace std {
 
-  enum PropagatorParameterNameCommon {
+  enum PropagatorParamNameCommon {
     DeltaTime=0,
     HalfDeltaTime,
     StartTime,
@@ -14,6 +14,14 @@ namespace std {
     CountOutput,
     CountStepInOne,
     NumberParamCommon
+  };
+
+  enum PropagatorSetNameCommon {
+    TimeStepInCommon=0,
+    StartTimeInCommon,
+    TotalTimeInCommon,
+    OutputTimeIntervalInCommon,
+    NumberSetCommon
   };
 
 }

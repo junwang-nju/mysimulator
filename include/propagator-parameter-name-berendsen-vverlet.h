@@ -23,7 +23,7 @@ namespace std {
   };
 
   enum PropagatorSetNameBV {
-    TemperatureInBV=0,
+    TemperatureInBV=NumberSetCommon,
     RelaxTimeInBV,
     NumberSetBV
   };

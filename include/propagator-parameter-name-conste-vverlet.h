@@ -17,7 +17,7 @@ namespace std {
   };
 
   enum PropagatorSetNameEV {
-    NumberSetEV=0
+    NumberSetEV=NumberSetCommon
   };
 
 }
