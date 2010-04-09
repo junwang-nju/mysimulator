@@ -1,6 +1,6 @@
 
-#ifndef _Monomoer_Propagator_Parameter_Name_Berendsen_VelocityVerlet_H_
-#define _Monomoer_Propagator_Parameter_Name_Berendsen_VelocityVerlet_H_
+#ifndef _Monomoer_Propagator_Parameter_Name_Particle_Berendsen_VelocityVerlet_H_
+#define _Monomoer_Propagator_Parameter_Name_Particle_Berendsen_VelocityVerlet_H_
 
 #include "propagator-parameter-name-berendsen-vverlet.h"
 

@@ -2,7 +2,6 @@
 #ifndef _Propagator_Berendsen_VelocityVerlet_H_
 #define _Propagator_Berendsen_VelocityVerlet_H_
 
-#include "propagator-parameter-element.h"
 #include "propagator.h"
 #include "interaction-4listset.h"
 #include "vector-op.h"
