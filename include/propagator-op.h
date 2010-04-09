@@ -4,6 +4,7 @@
 
 #include "propagator-move-name.h"
 #include "propagator-conste-vverlet.h"
+#include "propagator-berendsen-vverlet.h"
 
 namespace std {
 
@@ -12,7 +13,8 @@ namespace std {
   void SetUp(Propagator<DistEvalMethod,GeomType>& P,
              const unsigned int MoveType) {
     P.MoveMode=MoveType;
-    if(MoveType==ConstE_VelocityVerlet) SetAsEV(P);
+    if(MoveType==ConstE_VelocityVerlet)         SetAsEV(P);
+    else if(MoveType==Berendsen_VelocityVerlet) SetAsBV(P);
     else myError("Not Implemented Move Type");
   }
 

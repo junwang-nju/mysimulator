@@ -6,7 +6,8 @@ namespace std {
 
   enum PropagatorMoveNameType {
     UnknownMoveType=0,
-    ConstE_VelocityVerlet
+    ConstE_VelocityVerlet,
+    Berendsen_VelocityVerlet
   };
 
 }

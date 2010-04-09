@@ -2,7 +2,6 @@
 #ifndef _Propagator_ConstantE_VelocityVerlet_H_
 #define _Propagator_ConstantE_VelocityVerlet_H_
 
-#include "propagator-parameter-element.h"
 #include "propagator-parameter-name-conste-vverlet.h"
 #include "propagator.h"
 #include "interaction-4listset.h"
@@ -14,10 +13,9 @@ namespace std {
   }
 
   void EV_Synchronize(
-      const VectorBase<refVector<double> >& IvMass,
       const VectorBase<refVector<double> >&,
-      VectorBase<PropagatorDataElementType>& GParam,
-      VectorBase<MonomerPropagator>& Unit) {
+      const VectorBase<refVector<double> >&,
+      VectorBase<PropagatorDataElementType>& GParam) {
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -29,6 +27,7 @@ namespace std {
       VectorBase<refVector<double> >& Coor,
       VectorBase<refVector<double> >& Vel,
       VectorBase<refVector<double> >& Grad,
+      const VectorBase<refVector<double> >&,
       const VectorBase<refVector<unsigned int> >& IdxLst,
       const VectorBase<refVector<double> >& ParamLst,
       VectorBase<PropagatorDataElementType>& GParam,
@@ -55,6 +54,7 @@ namespace std {
       VectorBase<refVector<double> >& Coor,
       VectorBase<refVector<double> >& Vel,
       VectorBase<refVector<double> >& Grad,
+      const VectorBase<refVector<double> >&,
       const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
       const VectorBase<refVector<refVector<double> > >& ParamLst,
       VectorBase<PropagatorDataElementType>& GParam,

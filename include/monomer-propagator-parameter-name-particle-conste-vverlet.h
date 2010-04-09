@@ -6,7 +6,7 @@
 
 namespace std {
 
-  enum MonomerPropagatorMoveNameEV {
+  enum MonomerPropagatorMoveNameParticleEV {
     PEV_BeforeG=EV_BeforeG,
     PEV_AfterG=EV_AfterG,
     NumberMoveParticleEV=NumberMoveEV

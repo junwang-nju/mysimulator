@@ -188,3 +188,6 @@ target_link_libraries (test-propagator-parameter-element.run blas Base)
 add_executable (test-propagator.run test-propagator.cxx)
 target_link_libraries (test-propagator.run Base blas)
 
+add_executable (test-propagator-berendsen-vverlet.run test-propagator-berendsen-vverlet.cxx)
+target_link_libraries (test-propagator-berendsen-vverlet.run Base blas)
+

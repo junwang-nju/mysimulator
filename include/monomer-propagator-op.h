@@ -5,6 +5,7 @@
 #include "monomer-name.h"
 #include "propagator-move-name.h"
 #include "monomer-propagator-particle-conste-vverlet.h"
+#include "monomer-propagator-particle-berendsen-vverlet.h"
 
 namespace std {
 
@@ -13,6 +14,7 @@ namespace std {
     MP.UnitMode=UnitType;
     if(MP.UnitMode==ParticleType) {
       if(MoveType==ConstE_VelocityVerlet) SetAsParticleEV(MP);
+      else if(MoveType==Berendsen_VelocityVerlet) SetAsParticleEV(MP);
       else myError("Not Implemented Move Type");
     } else myError("Not Implemented Monomer Type");
   }

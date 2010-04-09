@@ -30,8 +30,7 @@ namespace std {
       typedef void (*GSyncFuncType)(
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
-          VectorBase<PropagatorDataElementType>&,
-          VectorBase<MonomerPropagator>&);
+          VectorBase<PropagatorDataElementType>&);
 
       typedef InteractionMethod<DistEvalMethod,GeomType>  InteractionType;
 
@@ -113,6 +112,7 @@ namespace std {
       typedef void (*FStepFuncTypeVarVar)(
           const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
+          const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<unsigned int> >&, 
           const VectorBase<refVector<double> >&, 
           VectorBase<PropagatorDataElementType>&,
@@ -122,6 +122,7 @@ namespace std {
       typedef void (*FStepFuncTypeVarRef)(
           const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
+          const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<unsigned int> >&, 
           const VectorBase<refVector<double> >&,
           VectorBase<PropagatorDataElementType>&,
@@ -131,6 +132,7 @@ namespace std {
       typedef void (*FStepFuncTypeRefVar)(
           const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
+          const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<unsigned int> >&, 
           const VectorBase<refVector<double> >&,
           VectorBase<PropagatorDataElementType>&,
@@ -140,6 +142,7 @@ namespace std {
       typedef void (*FStepFuncTypeRefRef)(
           const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
+          const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<unsigned int> >&, 
           const VectorBase<refVector<double> >&,
           VectorBase<PropagatorDataElementType>&,
@@ -149,6 +152,7 @@ namespace std {
       typedef void (*HStepFuncTypeVarVar)(
           const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
+          const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<refVector<unsigned int> > >&, 
           const VectorBase<refVector<refVector<double> > >&, 
           VectorBase<PropagatorDataElementType>&,
@@ -158,6 +162,7 @@ namespace std {
       typedef void (*HStepFuncTypeVarRef)(
           const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
+          const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<refVector<unsigned int> > >&, 
           const VectorBase<refVector<refVector<double> > >&, 
           VectorBase<PropagatorDataElementType>&,
@@ -167,6 +172,7 @@ namespace std {
       typedef void (*HStepFuncTypeRefVar)(
           const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
+          const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<refVector<unsigned int> > >&, 
           const VectorBase<refVector<refVector<double> > >&, 
           VectorBase<PropagatorDataElementType>&,
@@ -176,6 +182,7 @@ namespace std {
       typedef void (*HStepFuncTypeRefRef)(
           const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
+          const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<refVector<unsigned int> > >&, 
           const VectorBase<refVector<refVector<double> > >&, 
           VectorBase<PropagatorDataElementType>&,
@@ -266,7 +273,7 @@ namespace std {
             =GlobalParam[TotalTime].d/GlobalParam[OutputInterval].d;
         GlobalParam[CountStepInOne]
             =GlobalParam[OutputInterval].d/GlobalParam[DeltaTime].d;
-        GSync(IvMass.Structure(),DMask.Structure(),GlobalParam,Unit);
+        GSync(IvMass.Structure(),DMask.Structure(),GlobalParam);
         for(unsigned int i=0;i<Unit.size();++i)
           Unit[i].synchronize(IvMass,GlobalParam);
       }
@@ -364,10 +371,12 @@ namespace std {
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
+          const VectorBase<refVector<double> >& Mass,
           const VectorBase<refVector<unsigned int> >& IdxLst,
           const VectorBase<refVector<double> >& ParamLst,
           DistEvalMethod<varVector>& DEval, const GeomType<varVector>& Geo) {
-        FStepVV(IM,Coor,Vel,Grad,IdxLst,ParamLst,GlobalParam,Unit,DEval,Geo);
+        FStepVV(IM,Coor,Vel,Grad,Mass,IdxLst,ParamLst,
+                GlobalParam,Unit,DEval,Geo);
       }
 
       void Step(
@@ -375,10 +384,12 @@ namespace std {
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
+          const VectorBase<refVector<double> >& Mass,
           const VectorBase<refVector<unsigned int> >& IdxLst,
           const VectorBase<refVector<double> >& ParamLst,
           DistEvalMethod<varVector>& DEval, const GeomType<refVector>& Geo) {
-        FStepVR(IM,Coor,Vel,Grad,IdxLst,ParamLst,GlobalParam,Unit,DEval,Geo);
+        FStepVR(IM,Coor,Vel,Grad,Mass,IdxLst,ParamLst,
+                GlobalParam,Unit,DEval,Geo);
       }
 
       void Step(
@@ -386,10 +397,12 @@ namespace std {
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
+          const VectorBase<refVector<double> >& Mass,
           const VectorBase<refVector<unsigned int> >& IdxLst,
           const VectorBase<refVector<double> >& ParamLst,
           DistEvalMethod<refVector>& DEval, const GeomType<varVector>& Geo) {
-        FStepRV(IM,Coor,Vel,Grad,IdxLst,ParamLst,GlobalParam,Unit,DEval,Geo);
+        FStepRV(IM,Coor,Vel,Grad,Mass,IdxLst,ParamLst,
+                GlobalParam,Unit,DEval,Geo);
       }
 
       void Step(
@@ -397,10 +410,12 @@ namespace std {
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
+          const VectorBase<refVector<double> >& Mass,
           const VectorBase<refVector<unsigned int> >& IdxLst,
           const VectorBase<refVector<double> >& ParamLst,
           DistEvalMethod<refVector>& DEval, const GeomType<refVector>& Geo) {
-        FStepRR(IM,Coor,Vel,Grad,IdxLst,ParamLst,GlobalParam,Unit,DEval,Geo);
+        FStepRR(IM,Coor,Vel,Grad,Mass,IdxLst,ParamLst,
+                GlobalParam,Unit,DEval,Geo);
       }
 
       void Step(
@@ -408,10 +423,12 @@ namespace std {
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
+          const VectorBase<refVector<double> >& Mass,
           const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
           const VectorBase<refVector<refVector<double> > >& ParamLst,
           DistEvalMethod<varVector>& DEval, const GeomType<varVector>& Geo) {
-        HStepVV(IM,Coor,Vel,Grad,IdxLst,ParamLst,GlobalParam,Unit,DEval,Geo);
+        HStepVV(IM,Coor,Vel,Grad,Mass,IdxLst,ParamLst,
+                GlobalParam,Unit,DEval,Geo);
       }
 
       void Step(
@@ -419,10 +436,12 @@ namespace std {
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
+          const VectorBase<refVector<double> >& Mass,
           const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
           const VectorBase<refVector<refVector<double> > >& ParamLst,
           DistEvalMethod<varVector>& DEval, const GeomType<refVector>& Geo) {
-        HStepVR(IM,Coor,Vel,Grad,IdxLst,ParamLst,GlobalParam,Unit,DEval,Geo);
+        HStepVR(IM,Coor,Vel,Grad,Mass,IdxLst,ParamLst,
+                GlobalParam,Unit,DEval,Geo);
       }
 
       void Step(
@@ -430,10 +449,12 @@ namespace std {
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
+          const VectorBase<refVector<double> >& Mass,
           const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
           const VectorBase<refVector<refVector<double> > >& ParamLst,
           DistEvalMethod<refVector>& DEval, const GeomType<varVector>& Geo) {
-        HStepRV(IM,Coor,Vel,Grad,IdxLst,ParamLst,GlobalParam,Unit,DEval,Geo);
+        HStepRV(IM,Coor,Vel,Grad,Mass,IdxLst,ParamLst,
+                GlobalParam,Unit,DEval,Geo);
       }
 
       void Step(
@@ -441,10 +462,12 @@ namespace std {
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
+          const VectorBase<refVector<double> >& Mass,
           const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
           const VectorBase<refVector<refVector<double> > >& ParamLst,
           DistEvalMethod<refVector>& DEval, const GeomType<refVector>& Geo) {
-        HStepRR(IM,Coor,Vel,Grad,IdxLst,ParamLst,GlobalParam,Unit,DEval,Geo);
+        HStepRR(IM,Coor,Vel,Grad,Mass,IdxLst,ParamLst,
+                GlobalParam,Unit,DEval,Geo);
       }
 
       template <template <typename> class VecTypeC,
@@ -473,7 +496,8 @@ namespace std {
         for(unsigned int i=0;i<no;++i) {
           for(unsigned int j=0;j<ns;++j)
             Step(IM,Coordinate.Structure(),Velocity.Structure(),
-                 Gradient.Structure(),IdxLst.Structure(),ParamLst,DEval,Geo);
+                 Gradient.Structure(),Mass.Structure(),
+                 IdxLst.Structure(),ParamLst,DEval,Geo);
           GlobalParam[NowTime].d+=ot;
           WriteOut(os,IM,Coordinate.Structure(),Velocity.Structure(),
                    Gradient.Structure(),IdxLst.Structure(),ParamLst,DEval,Geo);
@@ -508,7 +532,7 @@ namespace std {
         for(unsigned int i=0;i<no;++i) {
           for(unsigned int j=0;j<ns;++j)
             Step(IM,Coordinate.Structure(),Velocity.Structure(),
-                 Gradient.Structure(),IdxLst.Structure(),
+                 Gradient.Structure(),Mass.Structure(),IdxLst.Structure(),
                  ParamLst.Structure(),DEval,Geo);
           GlobalParam[NowTime].d+=ot;
           WriteOut(os,IM,Coordinate.Structure(),Velocity.Structure(),

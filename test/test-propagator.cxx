@@ -218,7 +218,7 @@ int main() {
   cout<<VelSeq<<endl;
   cout<<GradSeq<<endl;
   P.Step(IM,CoorSeq.Structure(),VelSeq.Structure(),GradSeq.Structure(),
-         vIdx.Structure(),vPrm.Structure(),vDED,vFS);
+         Mass.Structure(),vIdx.Structure(),vPrm.Structure(),vDED,vFS);
   cout<<"=== Coordinate, Velocity, and Gradient after a step"<<endl;
   cout<<CoorSeq<<endl;
   cout<<VelSeq<<endl;
@@ -254,7 +254,7 @@ int main() {
   cout<<VelSeq<<endl;
   cout<<GradSeq<<endl;
   P.Step(IM,CoorSeq.Structure(),VelSeq.Structure(),GradSeq.Structure(),
-         IdxLst.Structure(),ParamLst,vDED,vFS);
+         Mass.Structure(),IdxLst.Structure(),ParamLst,vDED,vFS);
   cout<<"=== Coordinate, Velocity, and Gradient after a step"<<endl;
   cout<<CoorSeq<<endl;
   cout<<VelSeq<<endl;
