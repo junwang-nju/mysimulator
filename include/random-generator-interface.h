@@ -33,13 +33,13 @@ namespace std {
 
       RandGenerator(const Type& RNG) { assert(false); }
 
-      RandGenerator(const uint& seed) : ParentRNGType(seed) {}
+      RandGenerator(const unsigned int seed) : ParentRNGType(seed) {}
 
-      void SetWithSeed(const uint& seed) {
+      void SetWithSeed(const unsigned int seed) {
         static_cast<ParentRNGType*>(this)->Init(seed);
       }
 
-      void SetWithTime() { SetWithSeed(static_cast<uint>(time(0))); }
+      void SetWithTime() { SetWithSeed(static_cast<unsigned int>(time(0))); }
 
       const T& operator()() { return this->Default(tmTData); }
 

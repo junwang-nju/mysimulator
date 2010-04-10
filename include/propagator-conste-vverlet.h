@@ -5,6 +5,7 @@
 #include "propagator-parameter-name-conste-vverlet.h"
 #include "propagator.h"
 #include "interaction-4listset.h"
+#include "propagator-set-common.h"
 
 namespace std {
 
@@ -78,10 +79,7 @@ namespace std {
     P.GAlloc=EV_Allocate;
     P.GSync=EV_Synchronize;
     P.GSet.allocate(NumberSetEV);
-    P.GSet[TimeStepInCommon]=SetTimeStep;
-    P.GSet[StartTimeInCommon]=SetStartTime;
-    P.GSet[TotalTimeInCommon]=SetTotalTime;
-    P.GSet[OutputTimeIntervalInCommon]=SetOutputInterval;
+    AssignCommonSet4Propagator(P.GSet);
     P.HStepVV=EV_Step<DistEvalMethod,GeomType,varVector,varVector>;
     P.HStepVR=EV_Step<DistEvalMethod,GeomType,varVector,refVector>;
     P.HStepRV=EV_Step<DistEvalMethod,GeomType,refVector,varVector>;

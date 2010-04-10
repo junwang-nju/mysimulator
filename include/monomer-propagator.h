@@ -35,14 +35,14 @@ namespace std {
 
       unsigned int UnitMode;
       varVector<MoveFuncType>   Move;
-      varVector<SetFuncType>    Set;
+      varVector<SetFuncType>    MSet;
       AllocFuncType Alloc;
       SyncFuncType  Sync;
       varVector<PropagatorDataElementType>  Param;
 
       MonomerPropagator()
         : UnitMode(UnknownUnitType),
-          Move(), Set(), Alloc(NULL), Sync(NULL), Param() {}
+          Move(), MSet(), Alloc(NULL), Sync(NULL), Param() {}
 
       MonomerPropagator(const Type& MP) {
         myError("Cannot create from Monomer Propagator");
@@ -51,7 +51,7 @@ namespace std {
       Type& operator=(const Type& MP) {
         UnitMode=MP.UnitMode;
         Move.duplicate(MP.Move);
-        Set.duplicate(MP.Set);
+        MSet.duplicate(MP.MSet);
         Alloc=MP.Alloc;
         Sync=MP.Sync;
         Param.duplicate(MP.Param);
@@ -67,6 +67,10 @@ namespace std {
       void allocate(const unsigned int UnitType, const unsigned int MoveType) {
         SetUp(*this,UnitType,MoveType);
         Alloc(Param);
+      }
+
+      void Set(const unsigned int SComponent, const void* pd) {
+        MSet[SComponent](Param,pd);
       }
 
   };

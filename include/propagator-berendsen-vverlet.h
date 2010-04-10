@@ -5,6 +5,7 @@
 #include "propagator.h"
 #include "interaction-4listset.h"
 #include "vector-op.h"
+#include "propagator-set-common.h"
 #include <cmath>
 
 namespace std {
@@ -107,10 +108,7 @@ namespace std {
     P.GAlloc=BV_Allocate;
     P.GSync=BV_Synchronize;
     P.GSet.allocate(NumberSetBV);
-    P.GSet[TimeStepInCommon]=SetTimeStep;
-    P.GSet[StartTimeInCommon]=SetStartTime;
-    P.GSet[TotalTimeInCommon]=SetTotalTime;
-    P.GSet[OutputTimeIntervalInCommon]=SetOutputInterval;
+    AssignCommonSet4Propagator(P.GSet);
     P.GSet[TemperatureInBV]=BV_SetTemperature;
     P.GSet[RelaxTimeInBV]=BV_SetRelaxTime;
     P.HStepVV=BV_Step<DistEvalMethod,GeomType,varVector,varVector>;

@@ -19,11 +19,12 @@ namespace std {
     Velocity.scaleshift(Param[PLV_FactorBeforeG].d,-Param[PLV_HalfDeltaTIvM].d,
                         Gradient);
     GaussianRNG *pgrng;
-    pgrng=reinterpret_cast<GaussianRNG*>(GParam[LV_GaussianRNGPoint].vptr);
+    pgrng=reinterpret_cast<GaussianRNG*>(GParam[LV_GaussianRNGPointer].vptr);
+    typedef VectorBase<double> VecType;
     pgrng->FillArray(
-      *reinterpret_cast<VectorBase<double>*>(Param[PLV_RandomVelocity].vptr));
+      *reinterpret_cast<VecType*>(Param[PLV_RandomVelocityPointer].vptr));
     Velocity.shift(Param[PLV_RandomVelocitySize].d,
-      *reinterpret_cast<VectorBase<double>*>(Param[PLV_RandomVelocity].vptr));
+      *reinterpret_cast<VecType*>(Param[PLV_RandomVelocityPointer].vptr));
     Coordinate.shift(GParam[DeltaTime].d,Velocity);
   }
 
@@ -32,18 +33,19 @@ namespace std {
       const VectorBase<double>& Gradient,
       const VectorBase<PropagatorDataElementType>& GParam,
       VectorBase<PropagatorDataElementType>& Param) {
-    Velocity.shift(-Param[PLV_HalfDeltaTIvM],Gradient);
+    Velocity.shift(-Param[PLV_HalfDeltaTIvM].d,Gradient);
     GaussianRNG *pgrng;
-    pgrng=reinterpret_cast<GaussianRNG*>(GParam[LV_GaussianRNGPoint].vptr);
+    pgrng=reinterpret_cast<GaussianRNG*>(GParam[LV_GaussianRNGPointer].vptr);
+    typedef VectorBase<double> VecType;
     pgrng->FillArray(
-      *reinterpret_cast<VectorBase<double>*>(Param[PLV_RandomVelocity].vptr));
-    Velocity.shift(Param[PLV_RandomVelocitySize],
-      *reinterpret_cast<VectorBase<double>*>(Param[PLV_RandomVelocity].vptr));
-    Velocity.scale(Param[PLV_FactorAfterG]);
+      *reinterpret_cast<VecType*>(Param[PLV_RandomVelocityPointer].vptr));
+    Velocity.shift(Param[PLV_RandomVelocitySize].d,
+      *reinterpret_cast<VecType*>(Param[PLV_RandomVelocityPointer].vptr));
+    Velocity.scale(Param[PLV_FactorAfterG].d);
   }
 
   void PLV_Allocate(varVector<PropagatorDataElementType>& Prm) {
-    Prm.allocate(NUmberParamParticleLV);
+    Prm.allocate(NumberParamParticleLV);
   }
 
   void PLV_Synchronize(
@@ -52,11 +54,11 @@ namespace std {
       VectorBase<PropagatorDataElementType>& Param) {
     Param[PLV_HalfDeltaTIvM]=GParam[HalfDeltaTime].d*IvMass[0];
     Param[PLV_FrictionCoef]=Param[PLV_HydrodynamicRadius].d
-                            *GParam[PLV_ViscosityCoef].d;
+                            *GParam[LV_ViscosityCoef].d;
     Param[PLV_RandomVelocitySize]=
       sqrt(Param[PLV_FrictionCoef].d*GParam[LV_TemperatureDeltaT].d)*IvMass[0];
     double tmd;
-    tmd=Param[PLV_HalfDeltaTIvM].d*Param[PLV_FrictionCoef];
+    tmd=Param[PLV_HalfDeltaTIvM].d*Param[PLV_FrictionCoef].d;
     Param[PLV_FactorBeforeG]=1.-tmd;
     Param[PLV_FactorAfterG]=1./(1.+tmd);
   }
@@ -66,12 +68,18 @@ namespace std {
     Prm[PLV_HydrodynamicRadius]=*reinterpret_cast<const double*>(pd);
   }
 
+  void PLV_SetRandomVelocityPointer(
+      VectorBase<PropagatorDataElementType>& Prm, const void* pd) {
+    Prm[PLV_RandomVelocityPointer].vptr=const_cast<void*>(pd);
+  }
+
   void SetAsParticleLV(MonomerPropagator& MP) {
     MP.Move.allocate(NumberMoveParticleLV);
     MP.Move[PLV_BeforeG]=PLV_MoveBeforeG;
     MP.Move[PLV_AfterG]=PLV_MoveAfterG;
-    MP.Set.allocate(NumberSetParticleLV);
-    MP.Set[HydrodynamicRadiusInPLV]=PLV_SetHydrodynamicRadius;
+    MP.MSet.allocate(NumberSetParticleLV);
+    MP.MSet[HydrodynamicRadiusInPLV]=PLV_SetHydrodynamicRadius;
+    MP.MSet[RandomVelocityPointerInPLV]=PLV_SetRandomVelocityPointer;
     MP.Alloc=PLV_Allocate;
     MP.Sync=PLV_Synchronize;
   }

@@ -5,6 +5,7 @@
 #include "propagator-move-name.h"
 #include "propagator-conste-vverlet.h"
 #include "propagator-berendsen-vverlet.h"
+#include "propagator-langevin-vverlet.h"
 
 namespace std {
 
@@ -15,6 +16,7 @@ namespace std {
     P.MoveMode=MoveType;
     if(MoveType==ConstE_VelocityVerlet)         SetAsEV(P);
     else if(MoveType==Berendsen_VelocityVerlet) SetAsBV(P);
+    else if(MoveType==Langevin_VelocityVerlet)  SetAsLV(P);
     else myError("Not Implemented Move Type");
   }
 

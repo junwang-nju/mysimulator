@@ -55,7 +55,7 @@ namespace std {
     MP.Move[PBV_BeforeG]=PBV_MoveBeforeG;
     MP.Move[PBV_AfterG]=PBV_MoveAfterG;
     MP.Move[PBV_PostProcess]=PBV_MovePostProcess;
-    MP.Set.clear();
+    MP.MSet.clear();
     MP.Alloc=PBV_Allocate;
     MP.Sync=PBV_Synchronize;
   }

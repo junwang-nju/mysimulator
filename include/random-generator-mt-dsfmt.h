@@ -568,7 +568,7 @@ namespace std {
     "dSFMT2-521:3-25:FBFEFFF77EFFF-FFEEBFBDFBFDF";
 
   template <>
-  dSFMT<521>::dSFMT() {}
+  dSFMT<521>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<521>::dSFMT(const unsigned int& seed) { Init(seed); }
@@ -614,7 +614,7 @@ namespace std {
     "dSFMT2-1279:9-19:EFFF7FFDDFFEE-FBFFFFFF77FFF";
 
   template <>
-  dSFMT<1279>::dSFMT() {}
+  dSFMT<1279>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<1279>::dSFMT(const unsigned int& seed) { Init(seed); }
@@ -660,7 +660,7 @@ namespace std {
     "dSFMT2-2203:7-19:FDFFFF5EDBFFF-F77FFFFFFFBFE";
 
   template <>
-  dSFMT<2203>::dSFMT() {}
+  dSFMT<2203>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<2203>::dSFMT(const unsigned int& seed) { Init(seed); }
@@ -706,7 +706,7 @@ namespace std {
     "dSFMT2-4253:19-19:7B7FFFEF5FEFF-FFDFFEFFEFBFC";
 
   template <>
-  dSFMT<4253>::dSFMT() {}
+  dSFMT<4253>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<4253>::dSFMT(const unsigned int& seed) { Init(seed); }
@@ -752,7 +752,7 @@ namespace std {
     "dSFMT2-11213:37-19:FFFFFFDF7FFFD-DFFFFFFF6BFFF";
     
   template <>
-  dSFMT<11213>::dSFMT() {}
+  dSFMT<11213>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<11213>::dSFMT(const unsigned int& seed) { Init(seed); }
@@ -798,7 +798,7 @@ namespace std {
     "dSFMT2-19937:117-19:FFAFFFFFFFB3F-FFDFFFC90FFFD";
     
   template <>
-  dSFMT<19937>::dSFMT() {}
+  dSFMT<19937>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<19937>::dSFMT(const unsigned int& seed) { Init(seed); } 
@@ -844,7 +844,7 @@ namespace std {
     "dSFMT2-44497:304-19:FF6DFFFFFFFEF-7FFDDDEEFFF6F";
     
   template <>
-  dSFMT<44497>::dSFMT() {}
+  dSFMT<44497>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<44497>::dSFMT(const unsigned int& seed) { Init(seed); }
@@ -890,7 +890,7 @@ namespace std {
     "dSFMT2-86243:231-13:FFEDFF6FFFFDF-FFFF7FDFFFF7E";
     
   template <>
-  dSFMT<86243>::dSFMT() {}
+  dSFMT<86243>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<86243>::dSFMT(const unsigned int& seed) { Init(seed); }
@@ -936,7 +936,7 @@ namespace std {
     "dSFMT2-132049:371-23:FB9F4EFF4BF77-FFFFFBFEFFF37";
     
   template <>
-  dSFMT<132049>::dSFMT() {}
+  dSFMT<132049>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<132049>::dSFMT(const unsigned int& seed) { Init(seed); }
@@ -982,7 +982,7 @@ namespace std {
     "dSFMT2-216091:1890-23:BF7DF7FEFCFFF-E7FFFFEF737FF";
     
   template <>
-  dSFMT<216091>::dSFMT() {}
+  dSFMT<216091>::dSFMT() { Init(5489UL); }
   
   template <>
   dSFMT<216091>::dSFMT(const unsigned int& seed) { Init(seed); }

@@ -28,18 +28,18 @@ namespace std {
 
       BoxMuller() : isSecond(true), od(0.), urng() {}
 
-      BoxMuller(const uint& seed) { Init(seed); }
+      BoxMuller(const unsigned int seed) { Init(seed); }
 
       BoxMuller(const Type& BM) { assert(false); }
 
-      void Init(const uint& seed) {
+      void Init(const unsigned int seed) {
         urng.SetWithSeed(seed);
         isSecond=true;
         od=0.;
       }
 
       void FillArray(double* Array, const unsigned int size) {
-        for(uint i=0;i<size;++i)  Array[i]=GenRandNormal();
+        for(unsigned int i=0;i<size;++i)  Array[i]=GenRandNormal();
       }
 
       void FillArray(VectorBase<double>& v) { FillArray(v.data(),v.size()); }

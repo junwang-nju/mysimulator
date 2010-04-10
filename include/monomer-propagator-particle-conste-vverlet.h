@@ -46,6 +46,7 @@ namespace std {
     MP.Move[PEV_AfterG]=PEV_MoveAfterG;
     MP.Alloc=PEV_Allocate;
     MP.Sync=PEV_Synchronize;
+    MP.MSet.clear();
   }
 
 }
