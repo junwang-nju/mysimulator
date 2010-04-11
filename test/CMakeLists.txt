@@ -194,3 +194,5 @@ target_link_libraries (test-propagator-berendsen-vverlet.run Base blas)
 add_executable (test-propagator-langevin-vverlet.run test-propagator-langevin-vverlet.cxx)
 target_link_libraries (test-propagator-langevin-vverlet.run Base blas)
 
+add_executable (test-pdb-op.run test-pdb-op.cxx)
+
