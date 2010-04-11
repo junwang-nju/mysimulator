@@ -8,3 +8,6 @@ add_definitions (-Wall -O3 -DNDEBUG)
 add_executable (basic.run basic.cxx)
 target_link_libraries (basic.run blas Base)
 
+add_executable (poor.run poor.cxx)
+target_link_libraries (poor.run blas Base)
+

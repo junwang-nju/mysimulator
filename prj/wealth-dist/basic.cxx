@@ -11,14 +11,15 @@ int main() {
   State=1;
   UniformDbRNG urng(23813);
   unsigned int u,v;
-  double d;
+  double sd,d;
   for(unsigned int i=0;i<100000000;++i) {
     u=static_cast<unsigned int>(urng()*NUnit);
     v=static_cast<unsigned int>(urng()*NUnit)+u+1;
     if(v>=NUnit)  v-=NUnit;
-    d=urng()*State[u];
-    State[u]-=d;
-    State[v]+=d;
+    sd=State[u]+State[v];
+    d=urng()*sd;
+    State[u]=d;
+    State[v]=sd-d;
   }
   varVector<unsigned int> Hist(1000);
   Hist=0;
