@@ -16,7 +16,7 @@ int main() {
   UniformDbRNG urng(23813);
   unsigned int u,v,z;
   double sd,d;
-  varVector<unsigned int> Hist(1000);
+  varVector<unsigned int> Hist(5000);
   Hist=0;
   for(unsigned int i=0;i<1000000000;++i) {
     u=static_cast<unsigned int>(urng()*NUnit);
