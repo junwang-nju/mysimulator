@@ -8,6 +8,8 @@ namespace std {
   void Nullify(double& D);
   int compare(const int I, const int J);
   int compare(const double DI, const double DJ);
+  void toupper(char* dest, const char* src, const unsigned int n);
+  void tolower(char* dest, const char* src, const unsigned int n);
 }
 
 #endif

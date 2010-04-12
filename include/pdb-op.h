@@ -3,11 +3,8 @@
 #define _PDB_Operation_H_
 
 #include <fstream>
-#include <cstring>
-#include <cctype>
-#include <vector>
-#include "property-list.h"
-#include "var-vector.h"
+#include "pdb-data-structure.h"
+#include "util.h"
 
 namespace std {
 
@@ -16,11 +13,44 @@ namespace std {
     ENTFile
   };
 
+  void ImportPDB(const char* pdbid, const unsigned int FileType,
+                 PDBDataStructure& pdb, const char* dataRoot) {
+    char* pdbfname=new char[256];
+    char* cpdbid=new char[5];
+    toupper(cpdbid,pdbid,4);  cpdbid[4]=0;
+    pdb.id.SetAs(cpdbid);
+    strcpy(pdbfname,dataRoot);
+    strcat(pdbfname,cpdbid);
+    if(FileType==PDBFile)  strcat(pdbfname,".pdb");
+    else                   myError("Unknown Type of PDB data");
+    ifstream ifs(pdbfname);
+    if(ifs.fail())  myError("Something Wrong with Input PDB File");
+    char *lbuff=new char[1024];
+    int ModelCount=-1,n;
+    char nowResidue[4]="XXX";
+    lbuff[1023]=0;
+    while(!ifs.eof()) {
+      ifs.getline(lbuff,1023);
+      if(strncmp(lbuff,"MODEL ",6)==0) {
+        ++ModelCount;
+      } else if(strncmp(lbuff,"ATOM  ",6)==0) {
+        if(strncmp(nowResidue,lbuff+17,3)!=0) {
+          strncpy(nowResidue,lbuff+17,3);
+          n=pdb.seq.size();
+          pdb.seq.resize(n+1);
+          pdb.seq[n].SetAs(nowResidue);
+        }
+      }
+    }
+    ifs.close();
+  }
+
   enum PDBCoordinateType {
     CAlphaType=0,
     HeavyAtomType
   };
 
+  /*
   template <template <typename> class VecType>
   void pdb2coordinate(
       const char* pdbid, PropertyList<double,VecType>& Coordinate,
@@ -66,6 +96,7 @@ namespace std {
       Coordinate[i][j]=tmpdata[n];
     ifs.close();
   }
+  */
 
 }
 

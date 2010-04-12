@@ -1,5 +1,6 @@
 
 #include "util.h"
+#include <cctype>
 
 namespace std {
 
@@ -13,6 +14,14 @@ namespace std {
 
   int compare(const double DI, const double DJ) {
     return (DI<DJ?-1:(DI>DJ?1:0));
+  }
+
+  void toupper(char* dest, const char* src, const unsigned int n) {
+    for(unsigned int i=0;i<n;++i) dest[i]=toupper(src[i]);
+  }
+
+  void tolower(char* dest, const char* src, const unsigned int n) {
+    for(unsigned int i=0;i<n;++i) dest[i]=tolower(src[i]);
   }
 
 }
