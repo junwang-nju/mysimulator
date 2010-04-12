@@ -42,7 +42,13 @@ namespace std {
         ifs.getline(lbuff,1023);
         if(strncmp(lbuff,"ATOM  ",6)==0) {
           if(CoorMode==CAlphaType) {
-            if(strncmp(lbuff+12," CA ",4)==0) {
+            if(strncmp(lbuff+13,"CA",2)==0) {
+              tmpdata.push_back(atof(lbuff+30));
+              tmpdata.push_back(atof(lbuff+38));
+              tmpdata.push_back(atof(lbuff+46));
+            }
+          } else if(CoorMode==HeavyAtomType) {
+            if((lbuff[13]!='H')&&(lbuff[13]!=' ')) {
               tmpdata.push_back(atof(lbuff+30));
               tmpdata.push_back(atof(lbuff+38));
               tmpdata.push_back(atof(lbuff+46));
