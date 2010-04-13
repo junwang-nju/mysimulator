@@ -2,7 +2,7 @@
 #ifndef _Interaction_Particle_Particle_LJ612Cut_H_
 #define _Interaction_Particle_Particle_LJ612Cut_H_
 
-#include "interaction-particle-particle-base.h"
+#include "interaction-pairwise-base.h"
 #include "functional-lj612cut.h"
 
 namespace std {

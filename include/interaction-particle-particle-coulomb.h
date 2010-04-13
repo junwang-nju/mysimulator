@@ -2,7 +2,7 @@
 #ifndef _Interaction_Particle_Particle_Coulomb_H_
 #define _Interaction_Particle_Particle_Coulomb_H_
 
-#include "interaction-particle-particle-base.h"
+#include "interaction-pairewise-base.h"
 #include "functional-coulomb.h"
 
 namespace std {

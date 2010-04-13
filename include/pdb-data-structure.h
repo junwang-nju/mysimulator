@@ -83,7 +83,6 @@ namespace std {
     'L','K','M','F','P','S','T','W','Y','V'
   };
 
-
   class AtomType {
     public:
       fixVector<double,3> AtomCoordinate;
@@ -120,6 +119,20 @@ namespace std {
         Name=AA.Name;
         Data=AA.Data;
         return *this;
+      }
+      fixVector<double,3>& Atom(const char* name) {
+        for(unsigned int i=0;i<Data.size();++i)
+          if(strncmp(name,Data[i].AtomName,4)==0)
+            return Data[i].AtomCoordinate;
+        myError("Unknown Atom Name");
+        return Data[0].AtomCoordinate;
+      }
+      const fixVector<double,3>& Atom(const char* name) const {
+        for(unsigned int i=0;i<Data.size();++i)
+          if(strncmp(name,Data[i].AtomName,4)==0)
+            return Data[i].AtomCoordinate;
+        myError("Unknown Atom Name");
+        return Data[0].AtomCoordinate;
       }
   };
 

@@ -5,6 +5,8 @@
 #include <fstream>
 #include "pdb-data-structure.h"
 #include "var-matrix-triangle.h"
+#include "distance-displacement-calc.h"
+#include "var-free-space.h"
 #include "util.h"
 
 namespace std {
@@ -71,10 +73,39 @@ namespace std {
       const PDBDataStructure& pdb,
       varMatrixTriangle<unsigned int>::Type& ContactMap,
       const unsigned int CoorMode, const double dThreshold=-1.) {
-    double rThreshold=dThreshold;
-    if(rThreshold<0)  rThreshold=DistThreshold4Contact[CoorMode];
+    double rThresholdSQ=dThreshold;
+    if(rThresholdSQ<0)  rThresholdSQ=DistThreshold4Contact[CoorMode];
+    rThresholdSQ*=rThresholdSQ;
+    fixVector<double,3> tmVec;
+    varFreeSpace vFS;
+    double dsq;
     ContactMap.allocate(pdb.Model[0].size(),
                         COrder,NoTranspose,UpperPart,true,false);
+    ContactMap=0;
+    if(CoorMode==CAlphaType) {
+      for(unsigned int i=0;i<pdb.Model[0].size();++i)
+      for(unsigned int j=i+1;j<pdb.Model[0].size();++j) {
+        DistanceDisplacementFunc(pdb.Model[0][i].Atom(" CA "),
+                                 pdb.Model[0][j].Atom(" CA "),tmVec,dsq,vFS);
+        if(dsq<=rThresholdSQ)  ContactMap(i,j)=1;
+      }
+    } else if(CoorMode==HeavyAtomType) {
+      for(unsigned int i=0;i<pdb.Model[0].size();++i)
+      for(unsigned int k=0;k<pdb.Model[0][i].Data.size();++k) {
+        if(pdb.Model[0][i].Data[k].AtomName[1]=='H')  continue;
+        for(unsigned int j=i+1;j<pdb.Model[0].size();++j)
+        for(unsigned int l=0;l<pdb.Model[0][j].Data.size();++l) {
+          if(pdb.Model[0][j].Data[l].AtomName[1]=='H')  continue;
+          DistanceDisplacementFunc(pdb.Model[0][i].Data[k].AtomCoordinate,
+                                   pdb.Model[0][j].Data[l].AtomCoordinate,
+                                   tmVec,dsq,vFS);
+          if(dsq<=rThresholdSQ) {
+            ContactMap(i,j)=1;
+            break;
+          }
+        }
+      }
+    }
   }
 
 }
