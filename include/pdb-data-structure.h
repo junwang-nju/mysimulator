@@ -14,7 +14,7 @@ namespace std {
     public:
       PDBID() { name[4]=0; }
       PDBID(const char* iname) { strncpy(name,iname,4); name[4]=0; }
-      PDBID(const PDBID& ipdbid) { myError("Cannot create from PDB ID"); }
+      PDBID(const PDBID& ipdbid) { operator=(ipdbid); name[4]=0; }
       PDBID& operator=(const PDBID& ipdbid) {
         strncpy(name,ipdbid.name,4);
         return *this;
@@ -42,6 +42,7 @@ namespace std {
         return "   ";
       };
     public:
+      typedef AminoAcidName Type;
       AminoAcidName() { name[3]=0; }
       AminoAcidName(const char* aname) {
         SetAs(aname);   name[3]=0;
@@ -49,9 +50,7 @@ namespace std {
       AminoAcidName(const char aname) {
         SetAs(aname);   name[3]=0;
       }
-      AminoAcidName(const AminoAcidName& aaname) {
-        myError("Cannot create from Amino Acid Name");
-      }
+      AminoAcidName(const Type& aaname) { operator=(aaname);  name[3]=0; }
       AminoAcidName& operator=(const AminoAcidName& aaname) {
         strncpy(name,aaname.name,3);
         abname=aaname.abname;
@@ -84,41 +83,60 @@ namespace std {
     'L','K','M','F','P','S','T','W','Y','V'
   };
 
-  typedef fixVector<double,3>  AtomCoordinateType;
 
-  class AminoAcidCoordinateType {
+  class AtomType {
     public:
-      AtomCoordinateType  AtomCoordinate;
+      fixVector<double,3> AtomCoordinate;
       char AtomName[5];
-      typedef AminoAcidCoordinateType   Type;
-      AminoAcidCoordinateType() : AtomCoordinate() { AtomName[4]=0; }
-      AminoAcidCoordinateType(const Type& AACoor) {
-        myError("Cannot create from Amino Acid Coordinate Type");
+      double TempFactor;
+      typedef AtomType Type;
+      AtomType() : AtomCoordinate(), TempFactor(0.) { AtomName[4]=0; }
+      AtomType(const Type& Atm) : AtomCoordinate(), TempFactor(0.) {
+        operator=(Atm);
+        AtomName[4]=0;
       }
-      Type& operator=(const Type& AACoor) {
-        AtomCoordinate=AACoor.AtomCoordinate;
-        strncpy(AtomName,AACoor.AtomName,4);
+      Type& operator=(const Type& Atm) {
+        AtomCoordinate=Atm.AtomCoordinate;
+        strncpy(AtomName,Atm.AtomName,4);
+        TempFactor=Atm.TempFactor;
         return *this;
       }
-      void SetAs(const char* name) { strncpy(AtomName,name,4); }
+      void SetNameAs(const char* name) { strncpy(AtomName,name,4); }
+      void SetCoordinateAs(const double x, const double y, const double z) {
+        AtomCoordinate[0]=x;
+        AtomCoordinate[1]=y;
+        AtomCoordinate[2]=z;
+      }
   };
 
-  typedef vector<AminoAcidCoordinateType>  ModelCoordinateType;
+  class AminoAcidType {
+    public:
+      AminoAcidName Name;
+      vector<AtomType>  Data;
+      typedef AminoAcidType Type;
+      AminoAcidType() : Name(), Data() {}
+      AminoAcidType(const Type& AA) { operator=(AA); }
+      Type& operator=(const Type& AA) {
+        Name=AA.Name;
+        Data=AA.Data;
+        return *this;
+      }
+  };
+
+  typedef vector<AminoAcidType>  ModelType;
 
   class PDBDataStructure {
     public:
-      PDBID id;
-      vector<AminoAcidName> seq;
-      vector<ModelCoordinateType> coordinate;
+      PDBID Id;
+      vector<ModelType> Model;
       typedef PDBDataStructure  Type;
-      PDBDataStructure() : id(), seq(), coordinate() {}
+      PDBDataStructure() : Id(), Model() {}
       PDBDataStructure(const Type& iPDB) {
         myError("Cannot create from PDB Data Structure");
       }
       Type& operator=(const Type& iPDB) {
-        id=iPDB.id;
-        seq=iPDB.seq;
-        coordinate=iPDB.coordinate;
+        Id=iPDB.Id;
+        Model=iPDB.Model;
         return *this;
       }
   };
