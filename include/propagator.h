@@ -38,7 +38,7 @@ namespace std {
           VectorBase<PropagatorDataElementType>&, const void*);
 
       typedef void (*FOutputFuncTypeVarVar)(
-          ostream&, const Type&, const VectorBase<InteractionType>&,
+          ostream&, const Type&, VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
@@ -48,7 +48,7 @@ namespace std {
           DistEvalMethod<varVector>&, const GeomType<varVector>&);
 
       typedef void (*FOutputFuncTypeVarRef)(
-          ostream&, const Type&, const VectorBase<InteractionType>&,
+          ostream&, const Type&, VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
@@ -58,7 +58,7 @@ namespace std {
           DistEvalMethod<varVector>&, const GeomType<refVector>&);
 
       typedef void (*FOutputFuncTypeRefVar)(
-          ostream&, const Type&, const VectorBase<InteractionType>&,
+          ostream&, const Type&, VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
@@ -68,7 +68,7 @@ namespace std {
           DistEvalMethod<refVector>&, const GeomType<varVector>&);
 
       typedef void (*FOutputFuncTypeRefRef)(
-          ostream&, const Type&, const VectorBase<InteractionType>&,
+          ostream&, const Type&, VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
@@ -78,7 +78,7 @@ namespace std {
           DistEvalMethod<refVector>&, const GeomType<refVector>&);
 
       typedef void (*HOutputFuncTypeVarVar)(
-          ostream&, const Type&, const VectorBase<InteractionType>&,
+          ostream&, const Type&, VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
@@ -88,7 +88,7 @@ namespace std {
           DistEvalMethod<varVector>&, const GeomType<varVector>&);
 
       typedef void (*HOutputFuncTypeVarRef)(
-          ostream&, const Type&, const VectorBase<InteractionType>&,
+          ostream&, const Type&, VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
@@ -98,7 +98,7 @@ namespace std {
           DistEvalMethod<varVector>&, const GeomType<refVector>&);
 
       typedef void (*HOutputFuncTypeRefVar)(
-          ostream&, const Type&, const VectorBase<InteractionType>&,
+          ostream&, const Type&, VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
@@ -108,7 +108,7 @@ namespace std {
           DistEvalMethod<refVector>&, const GeomType<varVector>&);
 
       typedef void (*HOutputFuncTypeRefRef)(
-          ostream&, const Type&, const VectorBase<InteractionType>&,
+          ostream&, const Type&, VectorBase<InteractionType>&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
           const VectorBase<refVector<double> >&,
@@ -118,7 +118,7 @@ namespace std {
           DistEvalMethod<refVector>&, const GeomType<refVector>&);
 
       typedef void (*FStepFuncTypeVarVar)(
-          const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
+          VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
           const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<unsigned int> >&, 
@@ -128,7 +128,7 @@ namespace std {
           DistEvalMethod<varVector>&, const GeomType<varVector>&);
 
       typedef void (*FStepFuncTypeVarRef)(
-          const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
+          VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
           const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<unsigned int> >&, 
@@ -138,7 +138,7 @@ namespace std {
           DistEvalMethod<varVector>&, const GeomType<refVector>&);
 
       typedef void (*FStepFuncTypeRefVar)(
-          const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
+          VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
           const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<unsigned int> >&, 
@@ -148,7 +148,7 @@ namespace std {
           DistEvalMethod<refVector>&, const GeomType<varVector>&);
 
       typedef void (*FStepFuncTypeRefRef)(
-          const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
+          VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
           const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<unsigned int> >&, 
@@ -158,7 +158,7 @@ namespace std {
           DistEvalMethod<refVector>&, const GeomType<refVector>&);
 
       typedef void (*HStepFuncTypeVarVar)(
-          const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
+          VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
           const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<refVector<unsigned int> > >&, 
@@ -168,7 +168,7 @@ namespace std {
           DistEvalMethod<varVector>&, const GeomType<varVector>&);
 
       typedef void (*HStepFuncTypeVarRef)(
-          const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
+          VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
           const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<refVector<unsigned int> > >&, 
@@ -178,7 +178,7 @@ namespace std {
           DistEvalMethod<varVector>&, const GeomType<refVector>&);
 
       typedef void (*HStepFuncTypeRefVar)(
-          const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
+          VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
           const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<refVector<unsigned int> > >&, 
@@ -188,7 +188,7 @@ namespace std {
           DistEvalMethod<refVector>&, const GeomType<varVector>&);
 
       typedef void (*HStepFuncTypeRefRef)(
-          const VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
+          VectorBase<InteractionType>&, VectorBase<refVector<double> >&,
           VectorBase<refVector<double> >&, VectorBase<refVector<double> >&, 
           const VectorBase<refVector<double> >&, 
           const VectorBase<refVector<refVector<unsigned int> > >&, 
@@ -287,7 +287,7 @@ namespace std {
       }
 
       void WriteOut(
-          ostream& os, const VectorBase<InteractionType>& IM,
+          ostream& os, VectorBase<InteractionType>& IM,
           const VectorBase<refVector<double> >& Coor,
           const VectorBase<refVector<double> >& Vel,
           const VectorBase<refVector<double> >& Grad,
@@ -299,7 +299,7 @@ namespace std {
       }
 
       void WriteOut(
-          ostream& os, const VectorBase<InteractionType>& IM,
+          ostream& os, VectorBase<InteractionType>& IM,
           const VectorBase<refVector<double> >& Coor,
           const VectorBase<refVector<double> >& Vel,
           const VectorBase<refVector<double> >& Grad,
@@ -311,7 +311,7 @@ namespace std {
       }
 
       void WriteOut(
-          ostream& os, const VectorBase<InteractionType>& IM,
+          ostream& os, VectorBase<InteractionType>& IM,
           const VectorBase<refVector<double> >& Coor,
           const VectorBase<refVector<double> >& Vel,
           const VectorBase<refVector<double> >& Grad,
@@ -323,7 +323,7 @@ namespace std {
       }
 
       void WriteOut(
-          ostream& os, const VectorBase<InteractionType>& IM,
+          ostream& os, VectorBase<InteractionType>& IM,
           const VectorBase<refVector<double> >& Coor,
           const VectorBase<refVector<double> >& Vel,
           const VectorBase<refVector<double> >& Grad,
@@ -335,7 +335,7 @@ namespace std {
       }
 
       void WriteOut(
-          ostream& os, const VectorBase<InteractionType>& IM,
+          ostream& os, VectorBase<InteractionType>& IM,
           const VectorBase<refVector<double> >& Coor,
           const VectorBase<refVector<double> >& Vel,
           const VectorBase<refVector<double> >& Grad,
@@ -347,7 +347,7 @@ namespace std {
       }
 
       void WriteOut(
-          ostream& os, const VectorBase<InteractionType>& IM,
+          ostream& os, VectorBase<InteractionType>& IM,
           const VectorBase<refVector<double> >& Coor,
           const VectorBase<refVector<double> >& Vel,
           const VectorBase<refVector<double> >& Grad,
@@ -359,7 +359,7 @@ namespace std {
       }
 
       void WriteOut(
-          ostream& os, const VectorBase<InteractionType>& IM,
+          ostream& os, VectorBase<InteractionType>& IM,
           const VectorBase<refVector<double> >& Coor,
           const VectorBase<refVector<double> >& Vel,
           const VectorBase<refVector<double> >& Grad,
@@ -371,7 +371,7 @@ namespace std {
       }
 
       void WriteOut(
-          ostream& os, const VectorBase<InteractionType>& IM,
+          ostream& os, VectorBase<InteractionType>& IM,
           const VectorBase<refVector<double> >& Coor,
           const VectorBase<refVector<double> >& Vel,
           const VectorBase<refVector<double> >& Grad,
@@ -383,7 +383,7 @@ namespace std {
       }
 
       void Step(
-          const VectorBase<InteractionType>& IM,
+          VectorBase<InteractionType>& IM,
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
@@ -396,7 +396,7 @@ namespace std {
       }
 
       void Step(
-          const VectorBase<InteractionType>& IM,
+          VectorBase<InteractionType>& IM,
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
@@ -409,7 +409,7 @@ namespace std {
       }
 
       void Step(
-          const VectorBase<InteractionType>& IM,
+          VectorBase<InteractionType>& IM,
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
@@ -422,7 +422,7 @@ namespace std {
       }
 
       void Step(
-          const VectorBase<InteractionType>& IM,
+          VectorBase<InteractionType>& IM,
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
@@ -435,7 +435,7 @@ namespace std {
       }
 
       void Step(
-          const VectorBase<InteractionType>& IM,
+          VectorBase<InteractionType>& IM,
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
@@ -448,7 +448,7 @@ namespace std {
       }
 
       void Step(
-          const VectorBase<InteractionType>& IM,
+          VectorBase<InteractionType>& IM,
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
@@ -461,7 +461,7 @@ namespace std {
       }
 
       void Step(
-          const VectorBase<InteractionType>& IM,
+          VectorBase<InteractionType>& IM,
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
@@ -474,7 +474,7 @@ namespace std {
       }
 
       void Step(
-          const VectorBase<InteractionType>& IM,
+          VectorBase<InteractionType>& IM,
           VectorBase<refVector<double> >& Coor,
           VectorBase<refVector<double> >& Vel,
           VectorBase<refVector<double> >& Grad,
@@ -497,7 +497,7 @@ namespace std {
                PropertyList<double,VecTypeV>& Velocity,
                PropertyList<double,VecTypeF>& Gradient,
                const PropertyList<double,VecTypeM>& Mass,
-               const VectorBase<InteractionType>& IM,
+               VectorBase<InteractionType>& IM,
                const PropertyList<unsigned int,VecTypeI>& IdxLst,
                const VectorBase<refVector<double> >& ParamLst,
                DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
@@ -534,7 +534,7 @@ namespace std {
                PropertyList<double,VecTypeV>& Velocity,
                PropertyList<double,VecTypeF>& Gradient,
                const PropertyList<double,VecTypeM>& Mass,
-               const VectorBase<InteractionType>& IM,
+               VectorBase<InteractionType>& IM,
                const PropertyList<refVector<unsigned int>,VecTypeI>& IdxLst,
                const PropertyList<refVector<double>,VecTypeP>& ParamLst,
                DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,

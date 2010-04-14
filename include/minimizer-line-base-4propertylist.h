@@ -67,7 +67,7 @@ namespace std {
           const DistEvalMethod<VecTypeD>& DEval,
           const GeomType<VecTypeG>& Geo,
           const VecTypeP<refVector<double> >& ParamLst,
-          const VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
+          VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
           const PropertyList<unsigned int,VecTypeI>& IdxLst) {
         if(this->MinParam.Mode!=FlatParameter4PropertyList)
           myError("Improper Use of Import function");
@@ -105,7 +105,7 @@ namespace std {
           const DistEvalMethod<VecTypeD>& DEval,
           const GeomType<VecTypeG>& Geo,
           const PropertyList<refVector<double>,VecTypeP>& ParamLst,
-          const VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
+          VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
           const PropertyList<refVector<unsigned int>,VecTypeI>& IdxLst) {
         if(this->MinParam.Mode!=HierarchyParameter4PropertyList)
           myError("Improper Use of Import function");

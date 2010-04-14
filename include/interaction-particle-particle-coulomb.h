@@ -14,6 +14,7 @@ namespace std {
   void EFunc_ParticleParticle_Coulomb(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy) {
     EFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,FuncCoulomb);
@@ -26,6 +27,7 @@ namespace std {
   void GFunc_ParticleParticle_Coulomb(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Gradient) {
     GFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Gradient,DiffCoulomb);
@@ -38,6 +40,7 @@ namespace std {
   void BFunc_ParticleParticle_Coulomb(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Gradient) {
     BFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,

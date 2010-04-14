@@ -41,7 +41,7 @@ namespace std {
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
   void LV_Step(
-      const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
+      VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
       VectorBase<refVector<double> >& Coor,
       VectorBase<refVector<double> >& Vel,
       VectorBase<refVector<double> >& Grad,
@@ -68,7 +68,7 @@ namespace std {
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
   void LV_Step(
-      const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
+      VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
       VectorBase<refVector<double> >& Coor,
       VectorBase<refVector<double> >& Vel,
       VectorBase<refVector<double> >& Grad,

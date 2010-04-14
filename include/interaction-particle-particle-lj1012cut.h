@@ -14,6 +14,7 @@ namespace std {
   void EFunc_ParticleParticle_LJ1012Cut(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy) {
     EFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,FuncLJ1012Cut);
@@ -26,6 +27,7 @@ namespace std {
   void GFunc_ParticleParticle_LJ1012Cut(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Gradient) {
     GFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Gradient,
@@ -39,6 +41,7 @@ namespace std {
   void BFunc_ParticleParticle_LJ1012Cut(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Gradient) {
     BFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,

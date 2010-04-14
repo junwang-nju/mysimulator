@@ -27,19 +27,19 @@ int main() {
   prm[1]=1.;
   ParameterGenerateLJ1012(prm);
   double E=0.;
-  EFunc_ParticleParticle_LJ1012(v,vi,prm,vDED,vFS,E);
+  EFunc_ParticleParticle_LJ1012(v,vi,prm,v,vDED,vFS,E);
   cout<<E<<endl;
   cout<<endl;
 
   cout<<"Test -- GFunc"<<endl;
-  GFunc_ParticleParticle_LJ1012(v,vi,prm,vDED,vFS,g);
+  GFunc_ParticleParticle_LJ1012(v,vi,prm,v,vDED,vFS,g);
   cout<<g<<endl;
   cout<<endl;
 
   cout<<"Test -- BFunc"<<endl;
   E=0.;
   gd=0.;
-  BFunc_ParticleParticle_LJ1012(v,vi,prm,vDED,vFS,E,g);
+  BFunc_ParticleParticle_LJ1012(v,vi,prm,v,vDED,vFS,E,g);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;

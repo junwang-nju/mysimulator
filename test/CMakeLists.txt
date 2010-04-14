@@ -197,3 +197,6 @@ target_link_libraries (test-propagator-langevin-vverlet.run Base blas)
 add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 target_link_libraries (test-pdb-data-structure-op.run Base blas)
 
+add_executable (test-interaction-angle-harmonic.run test-interaction-angle-harmonic.cxx)
+target_link_libraries (test-interaction-angle-harmonic.run blas Base)
+

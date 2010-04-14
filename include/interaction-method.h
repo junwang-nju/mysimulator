@@ -2,8 +2,7 @@
 #ifndef _Interaction_Method_H_
 #define _Interaction_Method_H_
 
-#include "ref-vector.h"
-#include "var-vector.h"
+#include "var-property-list.h"
 #include "interaction-type.h"
 
 namespace std {
@@ -16,85 +15,95 @@ namespace std {
 
       typedef InteractionMethod<DistEvalMethod,GeomType>  Type;
 
-      typedef refVector<double>   PropertyType;
+      typedef refVector<double> PropertyType;
 
       void (*EFuncVV)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<varVector>&, const GeomType<varVector>&,
                       double&);
 
       void (*GFuncVV)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<varVector>&, const GeomType<varVector>&,
                       VectorBase<PropertyType>&);
 
       void (*BFuncVV)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<varVector>&, const GeomType<varVector>&,
                       double&,VectorBase<PropertyType>&);
 
       void (*EFuncVR)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<varVector>&, const GeomType<refVector>&,
                       double&);
 
       void (*GFuncVR)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<varVector>&, const GeomType<refVector>&,
                       VectorBase<PropertyType>&);
 
       void (*BFuncVR)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<varVector>&, const GeomType<refVector>&,
                       double&,VectorBase<PropertyType>&);
 
       void (*EFuncRV)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<refVector>&, const GeomType<varVector>&,
                       double&);
 
       void (*GFuncRV)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<refVector>&, const GeomType<varVector>&,
                       VectorBase<PropertyType>&);
 
       void (*BFuncRV)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<refVector>&, const GeomType<varVector>&,
                       double&,VectorBase<PropertyType>&);
 
       void (*EFuncRR)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<refVector>&, const GeomType<refVector>&,
                       double&);
 
       void (*GFuncRR)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<refVector>&, const GeomType<refVector>&,
                       VectorBase<PropertyType>&);
 
       void (*BFuncRR)(const VectorBase<PropertyType>&,
                       const VectorBase<unsigned int>&,
                       const VectorBase<double>&,
+                      VectorBase<PropertyType>&,
                       DistEvalMethod<refVector>&, const GeomType<refVector>&,
                       double&,VectorBase<PropertyType>&);
 
       unsigned int iTag;
 
-      varVector<PropertyType> TmpCoor;
-
-      varVector<PropertyType> TmpGrad;
+      varPropertyList<double>::Type TmpVec;
 
       InteractionMethod() : EFuncVV(NULL), GFuncVV(NULL), BFuncVV(NULL),
                             EFuncVR(NULL), GFuncVR(NULL), BFuncVR(NULL),
@@ -150,7 +159,7 @@ namespace std {
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<VecTypeD>& DEval,
-                 const GeomType<VecTypeG>& Geo, double& Energy) const {
+                 const GeomType<VecTypeG>& Geo, double& Energy) {
         myError("Not Implemented");
       }
 
@@ -158,32 +167,32 @@ namespace std {
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
-                 const GeomType<varVector>& Geo, double& Energy) const {
-        EFuncVV(Coordinate,Idx,Param,DEval,Geo,Energy);
+                 const GeomType<varVector>& Geo, double& Energy) {
+        EFuncVV(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,Energy);
       }
 
       void EFunc(const VectorBase<PropertyType>& Coordinate,
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
-                 const GeomType<varVector>& Geo, double& Energy) const {
-        EFuncRV(Coordinate,Idx,Param,DEval,Geo,Energy);
+                 const GeomType<varVector>& Geo, double& Energy) {
+        EFuncRV(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,Energy);
       }
 
       void EFunc(const VectorBase<PropertyType>& Coordinate,
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
-                 const GeomType<refVector>& Geo, double& Energy) const {
-        EFuncVR(Coordinate,Idx,Param,DEval,Geo,Energy);
+                 const GeomType<refVector>& Geo, double& Energy) {
+        EFuncVR(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,Energy);
       }
 
       void EFunc(const VectorBase<PropertyType>& Coordinate,
                  const VectorBase<unsigned int>& Idx,
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
-                 const GeomType<refVector>& Geo, double& Energy) const {
-        EFuncRR(Coordinate,Idx,Param,DEval,Geo,Energy);
+                 const GeomType<refVector>& Geo, double& Energy) {
+        EFuncRR(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,Energy);
       }
 
       template <template <typename> class VecTypeD,
@@ -193,7 +202,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<VecTypeD>& DEval,
                  const GeomType<VecTypeG>& Geo,
-                 VectorBase<PropertyType>& Gradient) const {
+                 VectorBase<PropertyType>& Gradient) {
         myError("Not Implemented");
       }
 
@@ -202,8 +211,8 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
                  const GeomType<varVector>& Geo,
-                 VectorBase<PropertyType>& Gradient) const {
-        GFuncVV(Coordinate,Idx,Param,DEval,Geo,Gradient);
+                 VectorBase<PropertyType>& Gradient) {
+        GFuncVV(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,Gradient);
       }
 
       void GFunc(const VectorBase<PropertyType>& Coordinate,
@@ -211,8 +220,8 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
                  const GeomType<varVector>& Geo,
-                 VectorBase<PropertyType>& Gradient) const {
-        GFuncRV(Coordinate,Idx,Param,DEval,Geo,Gradient);
+                 VectorBase<PropertyType>& Gradient) {
+        GFuncRV(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,Gradient);
       }
 
       void GFunc(const VectorBase<PropertyType>& Coordinate,
@@ -220,8 +229,8 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
                  const GeomType<refVector>& Geo,
-                 VectorBase<PropertyType>& Gradient) const {
-        GFuncVR(Coordinate,Idx,Param,DEval,Geo,Gradient);
+                 VectorBase<PropertyType>& Gradient) {
+        GFuncVR(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,Gradient);
       }
 
       void GFunc(const VectorBase<PropertyType>& Coordinate,
@@ -229,8 +238,8 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
                  const GeomType<refVector>& Geo,
-                 VectorBase<PropertyType>& Gradient) const {
-        GFuncRR(Coordinate,Idx,Param,DEval,Geo,Gradient);
+                 VectorBase<PropertyType>& Gradient) {
+        GFuncRR(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,Gradient);
       }
 
       template <template <typename> class VecTypeD,
@@ -240,7 +249,7 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<VecTypeD>& DEval,
                  const GeomType<VecTypeG>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) const {
+                 VectorBase<PropertyType>& Gradient) {
         myError("Not Implemented");
       }
 
@@ -249,8 +258,9 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
                  const GeomType<varVector>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) const {
-        BFuncVV(Coordinate,Idx,Param,DEval,Geo,Energy,Gradient);
+                 VectorBase<PropertyType>& Gradient) {
+        BFuncVV(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,
+                Energy,Gradient);
       }
 
       void BFunc(const VectorBase<PropertyType>& Coordinate,
@@ -258,8 +268,9 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
                  const GeomType<varVector>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) const {
-        BFuncRV(Coordinate,Idx,Param,DEval,Geo,Energy,Gradient);
+                 VectorBase<PropertyType>& Gradient) {
+        BFuncRV(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,
+                Energy,Gradient);
       }
 
       void BFunc(const VectorBase<PropertyType>& Coordinate,
@@ -267,8 +278,9 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<varVector>& DEval,
                  const GeomType<refVector>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) const {
-        BFuncVR(Coordinate,Idx,Param,DEval,Geo,Energy,Gradient);
+                 VectorBase<PropertyType>& Gradient) {
+        BFuncVR(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,
+                Energy,Gradient);
       }
 
       void BFunc(const VectorBase<PropertyType>& Coordinate,
@@ -276,8 +288,9 @@ namespace std {
                  const VectorBase<double>& Param,
                  DistEvalMethod<refVector>& DEval,
                  const GeomType<refVector>& Geo, double& Energy,
-                 VectorBase<PropertyType>& Gradient) const {
-        BFuncRR(Coordinate,Idx,Param,DEval,Geo,Energy,Gradient);
+                 VectorBase<PropertyType>& Gradient) {
+        BFuncRR(Coordinate,Idx,Param,TmpVec.Structure(),DEval,Geo,
+                Energy,Gradient);
       }
 
       const unsigned int InteractionTag() const { return iTag; }

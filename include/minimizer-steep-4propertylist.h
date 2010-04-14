@@ -55,7 +55,7 @@ namespace std {
           const DistEvalMethod<VecTypeD>& DEval,
           const GeomType<VecTypeG>& Geo,
           const VecTypeP<refVector<double> >& ParamLst,
-          const VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
+          VecTypeF<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
           const PropertyList<unsigned int,VecTypeI>& IdxLst) {
         static_cast<ParentType*>(this)->ImportState(Coor,Mask,dMask,DEval,Geo,
                                                     ParamLst,IMLst,IdxLst);

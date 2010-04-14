@@ -16,7 +16,7 @@ template <template <template <typename> class> class DistEvalMethod,
           template <typename> class VecTypeG>
 void OutFunc(
     ostream& os, const Propagator<DistEvalMethod,GeomType>& P,
-    const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& vIM,
+    VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& vIM,
     const VectorBase<refVector<double> >& Coor,
     const VectorBase<refVector<double> >& Vel,
     const VectorBase<refVector<double> >& Grad,
@@ -33,7 +33,7 @@ template <template <template <typename> class> class DistEvalMethod,
           template <typename> class VecTypeG>
 void OutFunc(
     ostream& os, const Propagator<DistEvalMethod,GeomType>& P,
-    const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& vIM,
+    VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& vIM,
     const VectorBase<refVector<double> >& Coor,
     const VectorBase<refVector<double> >& Vel,
     const VectorBase<refVector<double> >& Grad,

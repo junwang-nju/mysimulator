@@ -14,6 +14,7 @@ namespace std {
   void EFunc_ParticleParticle_QuadPlusHarm(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy) {
     EFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,
@@ -27,6 +28,7 @@ namespace std {
   void GFunc_ParticleParticle_QuadPlusHarm(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Gradient) {
     GFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Gradient,
@@ -40,6 +42,7 @@ namespace std {
   void BFunc_ParticleParticle_QuadPlusHarm(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
+      VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Gradient) {
     BFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,

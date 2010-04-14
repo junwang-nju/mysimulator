@@ -26,19 +26,19 @@ int main() {
   prm[0]=1.;
   ParameterGenerateCoulomb(prm);
   double E=0.;
-  EFunc_ParticleParticle_Coulomb(v,vi,prm,vDED,vFS,E);
+  EFunc_ParticleParticle_Coulomb(v,vi,prm,v,vDED,vFS,E);
   cout<<E<<endl;
   cout<<endl;
 
   cout<<"Test -- GFunc"<<endl;
-  GFunc_ParticleParticle_Coulomb(v,vi,prm,vDED,vFS,g);
+  GFunc_ParticleParticle_Coulomb(v,vi,prm,v,vDED,vFS,g);
   cout<<g<<endl;
   cout<<endl;
 
   cout<<"Test -- BFunc"<<endl;
   E=0.;
   gd=0.;
-  BFunc_ParticleParticle_Coulomb(v,vi,prm,vDED,vFS,E,g);
+  BFunc_ParticleParticle_Coulomb(v,vi,prm,v,vDED,vFS,E,g);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;

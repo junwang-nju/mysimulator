@@ -11,7 +11,7 @@ namespace std {
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
   void EFunc(const VectorBase<refVector<double> >& CoorSeq,
-             const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
+             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<refVector<refVector<double> > >& ParamLst,
              DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
@@ -27,7 +27,7 @@ namespace std {
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
   void GFunc(const VectorBase<refVector<double> >& CoorSeq,
-             const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
+             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<refVector<refVector<double> > >& ParamLst,
              DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
@@ -43,7 +43,7 @@ namespace std {
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
   void BFunc(const VectorBase<refVector<double> >& CoorSeq,
-             const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
+             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
              const VectorBase<refVector<refVector<double> > >& ParamLst,
              DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
@@ -59,7 +59,7 @@ namespace std {
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
   void EFunc(const VectorBase<refVector<double> >& CoorSeq,
-             const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
+             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<refVector<double> >& ParamLst,
              DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
@@ -75,7 +75,7 @@ namespace std {
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
   void GFunc(const VectorBase<refVector<double> >& CoorSeq,
-             const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
+             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<refVector<double> >& ParamLst,
              DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
@@ -91,7 +91,7 @@ namespace std {
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
   void BFunc(const VectorBase<refVector<double> >& CoorSeq,
-             const VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
+             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
              const VectorBase<refVector<unsigned int> >& IdxLst,
              const VectorBase<refVector<double> >& ParamLst,
              DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
