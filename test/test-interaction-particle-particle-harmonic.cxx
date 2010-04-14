@@ -26,7 +26,6 @@ int main() {
   prm[0]=1.;
   prm[1]=100.;
   ParameterGenerateHarmonic(prm);
-  //prm[2]=200.;
   double E=0.;
   EFunc_ParticleParticle_Harmonic(v,vi,prm,v,vDED,vFS,E);
   cout<<E<<endl;
