@@ -2,7 +2,7 @@
 #ifndef _Interaction_Particle_Particle_Coulomb_H_
 #define _Interaction_Particle_Particle_Coulomb_H_
 
-#include "interaction-pairewise-base.h"
+#include "interaction-pairwise-base.h"
 #include "functional-coulomb.h"
 
 namespace std {
@@ -16,7 +16,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy) {
-    EFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Energy,FuncCoulomb);
+    EFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,FuncCoulomb);
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -28,7 +28,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Gradient) {
-    GFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Gradient,DiffCoulomb);
+    GFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Gradient,DiffCoulomb);
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -40,7 +40,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Gradient) {
-    BFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,
+    BFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,
                                 BothCoulomb);
   }
 

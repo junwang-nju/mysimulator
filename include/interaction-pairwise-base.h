@@ -1,6 +1,6 @@
 
-#ifndef _Interaction_Particle_Particle_Base_H_
-#define _Interaction_Particle_Particle_Base_H_
+#ifndef _Interaction_Pairwise_Base_H_
+#define _Interaction_Pairwise_Base_H_
 
 #include "ref-vector.h"
 
@@ -10,7 +10,7 @@ namespace std {
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
-  void EFunc_ParticleParticle_Base(
+  void EFunc_Pairwise_Base(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
@@ -27,7 +27,7 @@ namespace std {
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
-  void GFunc_ParticleParticle_Base(
+  void GFunc_Pairwise_Base(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
@@ -45,7 +45,7 @@ namespace std {
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
-  void BFunc_ParticleParticle_Base(
+  void BFunc_Pairwise_Base(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,

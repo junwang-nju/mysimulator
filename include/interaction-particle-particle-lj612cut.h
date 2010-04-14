@@ -16,7 +16,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy) {
-    EFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Energy,FuncLJ612Cut);
+    EFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,FuncLJ612Cut);
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -28,7 +28,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Gradient) {
-    GFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Gradient,
+    GFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Gradient,
                                 DiffLJ612Cut);
   }
 
@@ -41,7 +41,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Gradient) {
-    BFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,
+    BFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,
                                 BothLJ612Cut);
   }
 

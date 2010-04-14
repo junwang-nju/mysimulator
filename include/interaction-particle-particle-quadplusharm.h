@@ -16,7 +16,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy) {
-    EFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Energy,
+    EFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,
                                 FuncQuadPlusHarm);
   }
 
@@ -29,7 +29,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Gradient) {
-    GFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Gradient,
+    GFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Gradient,
                                 DiffQuadPlusHarm);
   }
 
@@ -42,7 +42,7 @@ namespace std {
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Gradient) {
-    BFunc_ParticleParticle_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,
+    BFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,Gradient,
                                 BothQuadPlusHarm);
   }
 
