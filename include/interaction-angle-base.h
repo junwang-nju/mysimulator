@@ -43,6 +43,7 @@ namespace std {
       VectorBase<refVector<double> >& Grad,
       void (*gfunc)(const double, const double, const double,
                     const VectorBase<double>&, double&, double&)) {
+    assert(tmVec.size()>=4);
     double DSQ01,DSQ12,DSQ20;
     DEval.Evaluate(Coor[Idx[0]],Coor[Idx[1]],Idx[0],Idx[1],Geo);
     DSQ01=DEval.DistanceSQ();
@@ -89,6 +90,7 @@ namespace std {
       double& Energy, VectorBase<refVector<double> >& Grad,
       void (*bfunc)(const double, const double, const double,
                     const VectorBase<double>&, double&, double&, double&)) {
+    assert(tmVec.size()>=4);
     double DSQ01,DSQ12,DSQ20;
     DEval.Evaluate(Coor[Idx[0]],Coor[Idx[1]],Idx[0],Idx[1],Geo);
     DSQ01=DEval.DistanceSQ();

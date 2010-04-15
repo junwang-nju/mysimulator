@@ -200,3 +200,6 @@ target_link_libraries (test-pdb-data-structure-op.run Base blas)
 add_executable (test-interaction-angle-harmonic.run test-interaction-angle-harmonic.cxx)
 target_link_libraries (test-interaction-angle-harmonic.run blas Base)
 
+add_executable (test-interaction-dihedral-periodic.run test-interaction-dihedral-periodic.cxx)
+target_link_libraries (test-interaction-dihedral-periodic.run blas Base)
+

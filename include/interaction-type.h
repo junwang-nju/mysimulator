@@ -11,6 +11,7 @@ namespace std {
     ParticleParticle_LJ612Cut,
     ParticleParticle_Coulomb,
     ParticleParticle_QuadPlusHarm,
+    Angle_Harmonic,
     InteractionTableTerminus,
     NumberInteractions = InteractionTableTerminus-1
   };
