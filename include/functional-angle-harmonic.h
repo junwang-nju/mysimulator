@@ -15,27 +15,20 @@ namespace std {
     func=Prm[AngHarmonic_EqStrength]*dang*dang;
   }
 
-  void DiffAngHarmonic(
-      const double csAng, const double d01, const double d21,
-      const VectorBase<double>& Prm, double& diff0, double& diff2) {
+  void DiffAngHarmonic(const double csAng, const VectorBase<double>& Prm,
+                       double& diff) {
     double ang=acos(csAng);
     double dang=ang-Prm[AngHarmonic_EqAngle];
-    double ef=Prm[AngHarmonic_DualEqStrength]*dang;
-    diff0=ef/d01;
-    diff2=ef/d21;
+    diff=Prm[AngHarmonic_DualEqStrength]*dang;
   }
 
-  void BothAngHarmonic(
-      const double csAng, const double d01, const double d21,
-      const VectorBase<double>& Prm,
-      double& func, double& diff0, double& diff2) {
+  void BothAngHarmonic(const double csAng, const VectorBase<double>& Prm,
+                       double& func, double& diff) {
     double ang=acos(csAng);
     double dang=ang-Prm[AngHarmonic_EqAngle];
     func=Prm[AngHarmonic_EqStrength]*dang;
-    double ef=func+func;
+    diff=func+func;
     func*=dang;
-    diff0=ef/d01;
-    diff2=ef/d21;
   }
 
 }

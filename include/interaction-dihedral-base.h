@@ -55,10 +55,7 @@ namespace std {
       VectorBase<refVector<double> >& tmVec,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Grad,
-      void (*gfunc)(const double, const double, const double, const double,
-                    const VectorBase<refVector<double> >&,
-                    const VectorBase<double>&,
-                    double&, double&, double&, double&)) {
+      void (*gfunc)(const double, const VectorBase<double>&, double&)) {
     assert(DEval.Displacement().size()==3);
     assert(tmVec.size()>=6);
     double DSQ01,DSQ12,DSQ23;
@@ -84,8 +81,17 @@ namespace std {
     crossProd(tmVec[3],tmVec[4],tmVec[5]);
     double SgnSinDihedral=dot(tmVec[1],tmVec[5]);
     double dihedral=acos(cosDihedral)*(SgnSinDihedral>0?1:-1);
+    double ef;
+    gfunc(dihedral,Param,ef);
     double ef0,ef1,ef2,ef3;
-    gfunc(dihedral,DSQ01,DSQ12,DSQ23,tmVec,Param,ef0,ef1,ef2,ef3);
+    double ivDSQ12=1./DSQ12;
+    double dotab,dotbc;
+    dotab=dot(tmVec[0],tmVec[1]);
+    dotbc=dot(tmVec[1],tmVec[2]);
+    ef0=+ef/sqrt(DSQ01-dotab*dotab*ivDSQ12);
+    ef3=-ef/sqrt(DSQ23-dotbc*dotbc*ivDSQ12);
+    ef1=dotab*ivDSQ12*ef0;
+    ef2=dotbc*ivDSQ12*ef3;
     Grad[Idx[0]].shift(ef0,tmVec[3]);
     Grad[Idx[3]].shift(ef3,tmVec[4]);
     Grad[Idx[1]].shift(-ef0-ef1,tmVec[3]);
@@ -104,10 +110,7 @@ namespace std {
       VectorBase<refVector<double> >& tmVec,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Grad,
-      void (*bfunc)(const double, const double, const double, const double,
-                    const VectorBase<refVector<double> >&,
-                    const VectorBase<double>&,
-                    double&, double&, double&, double&, double&)) {
+      void (*bfunc)(const double,const VectorBase<double>&,double&,double&)) {
     assert(DEval.Displacement().size()==3);
     assert(tmVec.size()>=6);
     double DSQ01,DSQ12,DSQ23;
@@ -133,8 +136,18 @@ namespace std {
     crossProd(tmVec[3],tmVec[4],tmVec[5]);
     double SgnSinDihedral=dot(tmVec[1],tmVec[5]);
     double dihedral=acos(cosDihedral)*(SgnSinDihedral>0?1:-1);
-    double ee, ef0,ef1,ef2,ef3;
-    bfunc(dihedral,DSQ01,DSQ12,DSQ23,tmVec,Param,ee,ef0,ef1,ef2,ef3);
+    double ee,ef;
+    bfunc(dihedral,Param,ee,ef);
+    Energy+=ee;
+    double ef0,ef1,ef2,ef3;
+    double ivDSQ12=1./DSQ12;
+    double dotab,dotbc;
+    dotab=dot(tmVec[0],tmVec[1]);
+    dotbc=dot(tmVec[1],tmVec[2]);
+    ef0=+ef/sqrt(DSQ01-dotab*dotab*ivDSQ12);
+    ef3=-ef/sqrt(DSQ23-dotbc*dotbc*ivDSQ12);
+    ef1=dotab*ivDSQ12*ef0;
+    ef2=dotbc*ivDSQ12*ef3;
     Grad[Idx[0]].shift(ef0,tmVec[3]);
     Grad[Idx[3]].shift(ef3,tmVec[4]);
     Grad[Idx[1]].shift(-ef0-ef1,tmVec[3]);

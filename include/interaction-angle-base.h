@@ -41,8 +41,7 @@ namespace std {
       VectorBase<refVector<double> >& tmVec,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Grad,
-      void (*gfunc)(const double, const double, const double,
-                    const VectorBase<double>&, double&, double&)) {
+      void (*gfunc)(const double, const VectorBase<double>&, double&)) {
     assert(tmVec.size()>=4);
     double DSQ01,DSQ12,DSQ20;
     DEval.Evaluate(Coor[Idx[0]],Coor[Idx[1]],Idx[0],Idx[1],Geo);
@@ -70,8 +69,11 @@ namespace std {
     else          tmVec[2]=0;
     if(nr2>1e-8)  tmVec[3].scale(1./nr2);
     else          tmVec[3]=0;
+    double ef;
+    gfunc(cosAngle,Param,ef);
     double ef0,ef2;
-    gfunc(cosAngle,D01,D12,Param,ef0,ef2);
+    ef0=ef/D01;
+    ef2=ef/D12;
     Grad[Idx[0]].shift(+ef0,tmVec[2]);
     Grad[Idx[1]].shift(-ef0,tmVec[2]);
     Grad[Idx[2]].shift(+ef2,tmVec[3]);
@@ -88,8 +90,7 @@ namespace std {
       VectorBase<refVector<double> >& tmVec,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Grad,
-      void (*bfunc)(const double, const double, const double,
-                    const VectorBase<double>&, double&, double&, double&)) {
+      void (*bfunc)(const double,const VectorBase<double>&,double&,double&)) {
     assert(tmVec.size()>=4);
     double DSQ01,DSQ12,DSQ20;
     DEval.Evaluate(Coor[Idx[0]],Coor[Idx[1]],Idx[0],Idx[1],Geo);
@@ -117,8 +118,11 @@ namespace std {
     else          tmVec[2]=0;
     if(nr2>1e-8)  tmVec[3].scale(1./nr2);
     else          tmVec[3]=0;
-    double ee,ef0,ef2;
-    bfunc(cosAngle,D01,D12,Param,ee,ef0,ef2);
+    double ee,ef;
+    bfunc(cosAngle,Param,ee,ef);
+    double ef0,ef2;
+    ef0=ef/D01;
+    ef2=ef/D12;
     Energy+=ee;
     Grad[Idx[0]].shift(+ef0,tmVec[2]);
     Grad[Idx[1]].shift(-ef0,tmVec[2]);
