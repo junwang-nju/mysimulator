@@ -11,7 +11,7 @@ namespace std {
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
-  void EFunc_ParticleParticle_CoreLJ12(
+  void EFunc_ParticleParticle_CoreLJ612(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       VectorBase<refVector<double> >&,
@@ -24,7 +24,7 @@ namespace std {
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
-  void GFunc_ParticleParticle_CoreLJ12(
+  void GFunc_ParticleParticle_CoreLJ612(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       VectorBase<refVector<double> >&,
@@ -37,13 +37,13 @@ namespace std {
             template <template <typename> class> class GeomType,
             template <typename> class VecTypeD,
             template <typename> class VecTypeG>
-  void BFunc_ParticleParticle_CoreLJ12(
+  void BFunc_ParticleParticle_CoreLJ612(
       const VectorBase<refVector<double> >& Coor,
       const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
       VectorBase<refVector<double> >&,
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       double& Energy, VectorBase<refVector<double> >& Grad) {
-    BFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Grad,BothCoreLJ612);
+    BFunc_Pairwise_Base(Coor,Idx,Param,DEval,Geo,Energy,Grad,BothCoreLJ612);
   }
 
 }

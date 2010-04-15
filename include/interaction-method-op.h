@@ -9,6 +9,7 @@
 #include "interaction-particle-particle-coulomb.h"
 #include "interaction-particle-particle-quadplusharm.h"
 #include "interaction-particle-particle-core12.h"
+#include "interaction-particle-particle-corelj612.h"
 #include "interaction-angle-harmonic.h"
 
 namespace std {
@@ -153,7 +154,7 @@ namespace std {
         break;
       case ParticleParticle_Core12:
         IM.EFuncVV=EFunc_ParticleParticle_Core12<DistEvalMethod,GeomType,
-                                                       varVector,varVector>;
+                                                 varVector,varVector>;
         IM.EFuncRV=EFunc_ParticleParticle_Core12<DistEvalMethod,GeomType,
                                                  refVector,varVector>;
         IM.EFuncVR=EFunc_ParticleParticle_Core12<DistEvalMethod,GeomType,
@@ -176,6 +177,32 @@ namespace std {
                                                  varVector,refVector>;
         IM.BFuncRR=BFunc_ParticleParticle_Core12<DistEvalMethod,GeomType,
                                                  refVector,refVector>;
+        break;
+      case ParticleParticle_CoreLJ612:
+        IM.EFuncVV=EFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    varVector,varVector>;
+        IM.EFuncRV=EFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    refVector,varVector>;
+        IM.EFuncVR=EFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    varVector,refVector>;
+        IM.EFuncRR=EFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    refVector,refVector>;
+        IM.GFuncVV=GFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    varVector,varVector>;
+        IM.GFuncRV=GFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    refVector,varVector>;
+        IM.GFuncVR=GFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    varVector,refVector>;
+        IM.GFuncRR=GFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    refVector,refVector>;
+        IM.BFuncVV=BFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    varVector,varVector>;
+        IM.BFuncRV=BFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    refVector,varVector>;
+        IM.BFuncVR=BFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    varVector,refVector>;
+        IM.BFuncRR=BFunc_ParticleParticle_CoreLJ612<DistEvalMethod,GeomType,
+                                                    refVector,refVector>;
         break;
       case Angle_Harmonic:
         IM.EFuncVV=EFunc_Angle_Harmonic<DistEvalMethod,GeomType,
