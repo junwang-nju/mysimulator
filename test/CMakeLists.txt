@@ -203,3 +203,9 @@ target_link_libraries (test-interaction-angle-harmonic.run blas Base)
 add_executable (test-interaction-dihedral-periodic.run test-interaction-dihedral-periodic.cxx)
 target_link_libraries (test-interaction-dihedral-periodic.run blas Base)
 
+add_executable (test-interaction-particle-particle-core12.run test-interaction-particle-particle-core12.cxx)
+target_link_libraries (test-interaction-particle-particle-core12.run blas Base)
+
+add_executable (test-interaction-particle-particle-corelj612.run test-interaction-particle-particle-corelj612.cxx)
+target_link_libraries (test-interaction-particle-particle-corelj612.run blas Base)
+

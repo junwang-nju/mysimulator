@@ -1,5 +1,5 @@
 
-//#include "interaction-dihedral-periodic.h"
+#include "interaction-particle-particle-core12.h"
 #include <iostream>
 using namespace std;
 

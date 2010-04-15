@@ -56,7 +56,7 @@ namespace std {
       DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
       VectorBase<refVector<double> >& Grad,
       void (*gfunc)(const double, const double, const double, const double,
-                    const Vector<refVector<double> >&,
+                    const VectorBase<refVector<double> >&,
                     const VectorBase<double>&,
                     double&, double&, double&, double&)) {
     assert(DEval.Displacement().size()==3);
