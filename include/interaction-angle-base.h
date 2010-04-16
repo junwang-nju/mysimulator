@@ -74,10 +74,10 @@ namespace std {
     double ef0,ef2;
     ef0=ef/D01;
     ef2=ef/D12;
-    Grad[Idx[0]].shift(+ef0,tmVec[2]);
-    Grad[Idx[1]].shift(-ef0,tmVec[2]);
-    Grad[Idx[2]].shift(+ef2,tmVec[3]);
-    Grad[Idx[1]].shift(-ef2,tmVec[3]);
+    Grad[Idx[0]].shift(+ef0,tmVec[2],DEval.Dimension());
+    Grad[Idx[1]].shift(-ef0,tmVec[2],DEval.Dimension());
+    Grad[Idx[2]].shift(+ef2,tmVec[3],DEval.Dimension());
+    Grad[Idx[1]].shift(-ef2,tmVec[3],DEval.Dimension());
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -124,10 +124,10 @@ namespace std {
     ef0=ef/D01;
     ef2=ef/D12;
     Energy+=ee;
-    Grad[Idx[0]].shift(+ef0,tmVec[2]);
-    Grad[Idx[1]].shift(-ef0,tmVec[2]);
-    Grad[Idx[2]].shift(+ef2,tmVec[3]);
-    Grad[Idx[1]].shift(-ef2,tmVec[3]);
+    Grad[Idx[0]].shift(+ef0,tmVec[2],DEval.Dimension());
+    Grad[Idx[1]].shift(-ef0,tmVec[2],DEval.Dimension());
+    Grad[Idx[2]].shift(+ef2,tmVec[3],DEval.Dimension());
+    Grad[Idx[1]].shift(-ef2,tmVec[3],DEval.Dimension());
   }
 
 }

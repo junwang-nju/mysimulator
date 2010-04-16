@@ -92,12 +92,12 @@ namespace std {
     ef3=-ef/sqrt(DSQ23-dotbc*dotbc*ivDSQ12);
     ef1=dotab*ivDSQ12*ef0;
     ef2=dotbc*ivDSQ12*ef3;
-    Grad[Idx[0]].shift(ef0,tmVec[3]);
-    Grad[Idx[3]].shift(ef3,tmVec[4]);
-    Grad[Idx[1]].shift(-ef0-ef1,tmVec[3]);
-    Grad[Idx[1]].shift(ef2,tmVec[4]);
-    Grad[Idx[2]].shift(ef1,tmVec[3]);
-    Grad[Idx[2]].shift(-ef3-ef2,tmVec[4]);
+    Grad[Idx[0]].shift(ef0,tmVec[3],DEval.Dimension());
+    Grad[Idx[3]].shift(ef3,tmVec[4],DEval.Dimension());
+    Grad[Idx[1]].shift(-ef0-ef1,tmVec[3],DEval.Dimension());
+    Grad[Idx[1]].shift(ef2,tmVec[4],DEval.Dimension());
+    Grad[Idx[2]].shift(ef1,tmVec[3],DEval.Dimension());
+    Grad[Idx[2]].shift(-ef3-ef2,tmVec[4],DEval.Dimension());
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -148,12 +148,12 @@ namespace std {
     ef3=-ef/sqrt(DSQ23-dotbc*dotbc*ivDSQ12);
     ef1=dotab*ivDSQ12*ef0;
     ef2=dotbc*ivDSQ12*ef3;
-    Grad[Idx[0]].shift(ef0,tmVec[3]);
-    Grad[Idx[3]].shift(ef3,tmVec[4]);
-    Grad[Idx[1]].shift(-ef0-ef1,tmVec[3]);
-    Grad[Idx[1]].shift(ef2,tmVec[4]);
-    Grad[Idx[2]].shift(ef1,tmVec[3]);
-    Grad[Idx[2]].shift(-ef3-ef2,tmVec[4]);
+    Grad[Idx[0]].shift(ef0,tmVec[3],DEval.Dimension());
+    Grad[Idx[3]].shift(ef3,tmVec[4],DEval.Dimension());
+    Grad[Idx[1]].shift(-ef0-ef1,tmVec[3],DEval.Dimension());
+    Grad[Idx[1]].shift(ef2,tmVec[4],DEval.Dimension());
+    Grad[Idx[2]].shift(ef1,tmVec[3],DEval.Dimension());
+    Grad[Idx[2]].shift(-ef3-ef2,tmVec[4],DEval.Dimension());
   }
 
 }

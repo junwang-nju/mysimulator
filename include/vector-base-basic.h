@@ -18,10 +18,6 @@ namespace std {
 
       unsigned int nData;
 
-      T* headPtr;
-
-      T* tailPtr;
-
     public:
 
       typedef T   DataType;
@@ -30,8 +26,7 @@ namespace std {
 
       static const bool IsVector;
 
-      VectorBaseBasic()
-        : Data(NULL), nData(0), headPtr(NULL), tailPtr(NULL) {}
+      VectorBaseBasic() : Data(NULL), nData(0) {}
 
       VectorBaseBasic(const Type& V) {
         myError("Cannot create from VectorBaseBasic");
@@ -47,10 +42,6 @@ namespace std {
 
       const T* data() const { return Data; }
 
-      const T* begin() const { return headPtr; }
-
-      const T* end() const { return tailPtr; }
-
       const unsigned int& size() const { return nData; }
 
       T& operator[](const unsigned int I) {
@@ -63,13 +54,11 @@ namespace std {
         return *(Data+I);
       }
 
-      void clear() { Data=NULL;  nData=uZero;  headPtr=NULL; tailPtr=NULL; }
+      void clear() { Data=NULL;  nData=uZero; }
 
     protected:
 
       void SetSize(const unsigned int N) { nData=N; }
-
-      void SetHeadTail() { headPtr=Data; tailPtr=Data+nData; }
 
     public:
 

@@ -59,6 +59,8 @@ namespace std {
 
       VecType<double>& Displacement() { return nowDisplacement; }
 
+      const unsigned int Dimension() const { return Displacement().size(); }
+
       virtual void update() = 0;
 
   };

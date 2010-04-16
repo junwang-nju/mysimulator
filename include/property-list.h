@@ -83,10 +83,6 @@ namespace std {
 
       PropertyType& operator[](const unsigned int I) { return Struct[I]; }
 
-      const PropertyType* beginUnit() const { return Struct.begin(); }
-
-      const PropertyType* endUnit() const { return Struct.end(); }
-
     protected:
 
       struct AllocateOp {

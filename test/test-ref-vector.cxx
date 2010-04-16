@@ -183,11 +183,6 @@ int main() {
   cout<<vD[2]<<endl;
   cout<<endl;
 
-  cout<<"Test -- head and tail"<<endl;
-  cout<<*(vD.begin())<<endl;
-  cout<<*(vD.end()-1)<<endl;
-  cout<<endl;
-
   cout<<"Test -- size"<<endl;
   cout<<vD.size()<<endl;
   cout<<endl;

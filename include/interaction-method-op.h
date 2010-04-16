@@ -11,6 +11,7 @@
 #include "interaction-particle-particle-core12.h"
 #include "interaction-particle-particle-corelj612.h"
 #include "interaction-angle-harmonic.h"
+#include "interaction-dihedral-periodic.h"
 
 namespace std {
 
@@ -230,6 +231,35 @@ namespace std {
         IM.BFuncRR=BFunc_Angle_Harmonic<DistEvalMethod,GeomType,
                                         refVector,refVector>;
         Sz.allocate(4);
+        Sz=Dim;
+        IM.TmpVec.allocate(Sz);
+        break;
+      case Dihedral_Periodic:
+        IM.EFuncVV=EFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           varVector,varVector>;
+        IM.EFuncRV=EFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           refVector,varVector>;
+        IM.EFuncVR=EFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           varVector,refVector>;
+        IM.EFuncRR=EFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           refVector,refVector>;
+        IM.GFuncVV=GFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           varVector,varVector>;
+        IM.GFuncRV=GFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           refVector,varVector>;
+        IM.GFuncVR=GFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           varVector,refVector>;
+        IM.GFuncRR=GFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           refVector,refVector>;
+        IM.BFuncVV=BFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           varVector,varVector>;
+        IM.BFuncRV=BFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           refVector,varVector>;
+        IM.BFuncVR=BFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           varVector,refVector>;
+        IM.BFuncRR=BFunc_Dihedral_Periodic<DistEvalMethod,GeomType,
+                                           refVector,refVector>;
+        Sz.allocate(6);
         Sz=Dim;
         IM.TmpVec.allocate(Sz);
         break;

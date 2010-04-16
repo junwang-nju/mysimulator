@@ -37,8 +37,8 @@ namespace std {
     double DistSQ=DEval.DistanceSQ();
     double ef;
     gfunc(DistSQ,Param,ef);
-    Gradient[Idx[0]].shift(+ef,DEval.Displacement());
-    Gradient[Idx[1]].shift(-ef,DEval.Displacement());
+    Gradient[Idx[0]].shift(+ef,DEval.Displacement(),DEval.Dimension());
+    Gradient[Idx[1]].shift(-ef,DEval.Displacement(),DEval.Dimension());
   }
 
   template <template <template <typename> class> class DistEvalMethod,
@@ -56,8 +56,8 @@ namespace std {
     double ee,ef;
     bfunc(DistSQ,Param,ee,ef);
     Energy+=ee;
-    Gradient[Idx[0]].shift(+ef,DEval.Displacement());
-    Gradient[Idx[1]].shift(-ef,DEval.Displacement());
+    Gradient[Idx[0]].shift(+ef,DEval.Displacement(),DEval.Dimension());
+    Gradient[Idx[1]].shift(-ef,DEval.Displacement(),DEval.Dimension());
   }
 
 }

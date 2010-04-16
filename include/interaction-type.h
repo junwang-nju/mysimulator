@@ -14,6 +14,7 @@ namespace std {
     ParticleParticle_Core12,
     ParticleParticle_CoreLJ612,
     Angle_Harmonic,
+    Dihedral_Periodic,
     InteractionTableTerminus,
     NumberInteractions = InteractionTableTerminus-1
   };

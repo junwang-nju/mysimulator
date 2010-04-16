@@ -11,3 +11,6 @@ target_link_libraries (basic.run blas Base)
 add_executable (poor.run poor.cxx)
 target_link_libraries (poor.run blas Base)
 
+add_executable (diff-usage.run diff-usage.cxx)
+target_link_libraries (diff-usage.run blas Base)
+

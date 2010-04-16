@@ -10,7 +10,7 @@ namespace std {
                         const VectorBase<double>& vb,
                         VectorBase<double>& Dsp) {
     Dsp=va;
-    Dsp.shift(-1.,vb);
+    Dsp.shift(-1.,vb,Dsp.size());
   }
 
 }

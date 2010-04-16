@@ -22,7 +22,6 @@ namespace std {
       fixVector() : ParentType() {
         this->data()=runData;
         this->SetSize(ND);
-        this->SetHeadTail();
       }
 
       fixVector(const Type&) { myError("Cannot create from fixed vector"); }

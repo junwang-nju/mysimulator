@@ -46,7 +46,6 @@ namespace std {
           safe_delete_array(this->data());
           this->data()=new T[N];
           this->SetSize(N);
-          this->SetHeadTail();
         }
       }
 
@@ -55,7 +54,6 @@ namespace std {
         pT=this->data();    this->data()=v.data();      v.data()=pT;
         unsigned int n=this->size(),nv=v.size();
         this->SetSize(nv);    v.SetSize(n);
-        this->SetHeadTail();  v.SetHeadTail();
       }
 
       void duplicate(const VectorBase<T>& v) {
