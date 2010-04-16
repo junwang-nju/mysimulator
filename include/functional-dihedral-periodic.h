@@ -31,7 +31,7 @@ namespace std {
                             double& func, double& diff) {
     double tmd;
     func=diff=0.;
-    for(unsigned int i=0;i<Prm.size();i+=3) {
+    for(unsigned int i=0;i<Prm.size();i+=4) {
       tmd=Prm[i+DihedralPeriodic_Period]*
           (dihedral-Prm[i+DihedralPeriodic_Phase]);
       func+=Prm[i+DihedralPeriodic_Strength]*(cos(tmd)+1.);
