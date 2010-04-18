@@ -44,6 +44,7 @@ namespace std {
    */
   static int    iZero=0;
 
+  static int    iOne=0;
   /**
    * @brief \c int type one
    */
