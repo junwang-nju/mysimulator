@@ -49,6 +49,11 @@ int main() {
   for(unsigned int i=0;i<10;++i)  cout<<pInt[i]<<" "; cout<<endl;
   assign(pInt2,pInt,5);
   for(unsigned int i=0;i<10;++i)  cout<<pInt2[i]<<" "; cout<<endl;
+  assign(pDBL,-1.3,9);
+  for(unsigned int i=0;i<10;++i)  cout<<pDBL[i]<<" "; cout<<endl;
+  assign(pDBL2,pDBL,6);
+  for(unsigned int i=0;i<10;++i)  cout<<pDBL2[i]<<" "; cout<<endl;
+  Vector
 
   return 1;
 }
