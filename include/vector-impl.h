@@ -73,9 +73,9 @@ namespace std {
   void scale(int* dest, const int factor, const long nscale,
              const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
-    int* dPtr=dest+doff;
+    int *dPtr=dest+doff;
     for(unsigned int i=0;i<static_cast<unsigned int>(nscale);++i,dPtr+=dstep)
-      *dest*=factor;
+      *dPtr*=factor;
   }
 
   void scale(unsigned int* dest, const unsigned int factor, const long nscale,
@@ -83,7 +83,7 @@ namespace std {
     assert(dest!=NULL);
     unsigned int* dPtr=dest+doff;
     for(unsigned int i=0;i<static_cast<unsigned int>(nscale);++i,dPtr+=dstep)
-      *dest*=factor;
+      *dPtr*=factor;
   }
 
   void scale(double* dest, const double factor, const long nscale,
@@ -191,25 +191,6 @@ namespace std {
   void shift(double* dest, const double factor, const long nshift,
              const int doff=iZero, const long dstep=lOne) {
     shift(dest,factor,&dOne,nshift,iZero,lZero,doff,dstep);
-  }
-
-  void shift(int* dest, const int* vfactor, const int factor,
-             const long nshift, const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
-    shift(dest,factor,vfactor,nshift,voff,vstep,doff,dstep);
-  }
-
-  void shift(unsigned int* dest, const unsigned int* vfactor,
-             const unsigned int factor, const long nshift,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
-    shift(dest,factor,vfactor,nshift,voff,vstep,doff,dstep);
-  }
-
-  void shift(double* dest, const double* vfactor, const double factor,
-             const long nshift, const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
-    shift(dest,factor,vfactor,nshift,voff,vstep,doff,dstep);
   }
 
   void scaleshift(int* dest, const int dfactor, const int factor,

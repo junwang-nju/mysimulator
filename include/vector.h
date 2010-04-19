@@ -24,6 +24,8 @@ namespace std {
 
     T*& operator()() { return data; }
     const T* operator()() const { return data; }
+    T& operator[](const int I) { return data[I]; }
+    const T& operator[](const int I) const { return data[I]; }
 
   };
 
@@ -82,7 +84,7 @@ namespace std {
   }
 
   template <typename T>
-  void shift(Vector<T>& v, const T& fac) { shift(v(),fac,v.size()); }
+  void shift(Vector<T>& v, const T& fac) { shift(v(),fac,v.size); }
 
   template <typename T>
   void shift(Vector<T>& v, const Vector<T>& vfac, const T& fac) {
@@ -154,7 +156,7 @@ namespace std {
   template <typename T>
   istream& operator>>(istream& is, Vector<T>& v) {
     IsVectorAvailable(v);
-    for(unsigned int i=0;i<v.size;++i)  is>>v()[i];
+    for(unsigned int i=0;i<v.size;++i)  is>>v[i];
     return is;
   }
 
