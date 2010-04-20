@@ -21,8 +21,8 @@ namespace std {
 
   enum MatrixSymmtryFlagName {
     SymmetryMatrix=0,
-    AsymmetryMatrix
-  }
+    ASymmetryMatrix
+  };
 
   enum MatrixDiaginalExistFlagName {
     HaveDiagonal=0,
@@ -45,7 +45,7 @@ namespace std {
     if(DFlag==NullDiagonal) return OE;
     unsigned int rI=I, rJ=J;
     if(rI>rJ) {
-      if(SFlag==AsymmetryMatrix)  return OE;
+      if(SFlag==ASymmetryMatrix)  return OE;
       rI=J; rJ=I; 
     }
     return str[rI][rJ-rI-(DFlag==NullDiagonal?1:0)];
@@ -56,7 +56,7 @@ namespace std {
     if(DFlag==NullDiagonal) return OE;
     unsigned int rI=I, rJ=J;
     if(rI<rJ) {
-      if(SFlag==AsymmetryMatrix)  return OE;
+      if(SFlag==ASymmetryMatrix)  return OE;
       rI=J; rJ=I; 
     }
     return str[rI-(DFlag==NullDiagonal?1:0)][rJ];
@@ -67,7 +67,7 @@ namespace std {
     if(DFlag==NullDiagonal) return OE;
     unsigned int rI=I, rJ=J;
     if(rI>rJ) {
-      if(SFlag==AsymmetryMatrix)  return OE;
+      if(SFlag==ASymmetryMatrix)  return OE;
       rI=J; rJ=I; 
     }
     return str[rJ-(DFlag==NullDiagonal?1:0)][rI];
@@ -78,7 +78,7 @@ namespace std {
     if(DFlag==NullDiagonal) return OE;
     unsigned int rI=I, rJ=J;
     if(rI<rJ) {
-      if(SFlag==AsymmetryMatrix)  return OE;
+      if(SFlag==ASymmetryMatrix)  return OE;
       rI=J; rJ=I; 
     }
     return str[rJ][rI-rJ-(DFlag==NullDiagonal?1:0)];
@@ -89,7 +89,7 @@ namespace std {
     if(DFlag==NullDiagonal) return OE;
     unsigned int rI=I, rJ=J;
     if(rI>rJ) {
-      if(SFlag==AsymmetryMatrix)  return OE;
+      if(SFlag==ASymmetryMatrix)  return OE;
       rI=J; rJ=I; 
     }
     return str[rJ-rI-(DFlag==NullDiagonal?1:0)][rI];
@@ -100,7 +100,7 @@ namespace std {
     if(DFlag==NullDiagonal) return OE;
     unsigned int rI=I, rJ=J;
     if(rI<rJ) {
-      if(SFlag==AsymmetryMatrix)  return OE;
+      if(SFlag==ASymmetryMatrix)  return OE;
       rI=J; rJ=I; 
     }
     return str[rI-rJ-(DFlag==NullDiagonal?1:0)][rJ];
@@ -111,16 +111,16 @@ namespace std {
     Matrix<T>& M, const unsigned int Dim, const unsigned int DataOrder,
                   const unsigned int TransposeForm,
                   const unsigned int TrianglePart,
-                  const bool SymmetryFlag, const bool DiagonalExistFlag) {
+                  const bool SymmetryFlag, const bool DiagonalFlag) {
     M.property=new unsigned int[MatrixTriangleNumberProperty];
     M.property[MatrixNumberRow]=M.property[MatrixNumberColumn]=Dim;
     M.property[MatrixDimension]=Dim;
     M.property[MatrixDataOrder]=DataOrder;
     M.property[MatrixTransposeForm]=TransposeForm;
     M.property[MatrixTrianglePart]=TrianglePart;
-    M.property[MatrixSymmtryFlag]=(SymmetryFlag?SymmetryMatrix:AsymmetryMatrix);
+    M.property[MatrixSymmtryFlag]=(SymmetryFlag?SymmetryMatrix:ASymmetryMatrix);
     M.property[MatrixDiagonalExistFlag]=
-        (DiagonalExistFlag?HaveDiagonal:NullDiagonal);
+        (DiagonalFlag?HaveDiagonal:NullDiagonal);
     SetMatrixActualOrder(M.property);
     if(M.property[MatrixTransposeForm]==NoTranspose)
       M.property[MatrixActualTrianglePart]=M.property[MatrixTrianglePart];
@@ -189,15 +189,15 @@ namespace std {
       M.property[MatrixLineSizeShift]=1;
     } else myError("Unknown Data Pattern for Triangle Matrix");
     M.data=new T[(M.property[MatrixActualDimension]*
-                  (M.property[MatrixActualDimension]+1))/2]
+                  (M.property[MatrixActualDimension]+1))/2];
     M.structure=new T*[M.property[MatrixActualDimension]];
     T* PtrData=M.data;
     for(unsigned int 
         i=0,n=M.property[MatrixLineSizeFirst];
         i<M.property[MatrixActualDimension];
         ++i,PtrData+=n,n+=static_cast<int>(M.property[MatrixLineSizeShift]))
-      structure[i]=PtrData;
-    PtrOtherElement=(SymmetryFlag&&DiagonalFlag?NULL:new T);
+      M.structure[i]=PtrData;
+    M.PtrOtherElement=(SymmetryFlag&&DiagonalFlag?NULL:new T);
   }
 
 }

@@ -34,18 +34,17 @@ namespace std {
     M.property[MatrixTransposeForm]=TransposeForm;
     SetMatrixActualOrder(M.property);
     M.data=new T[M.property[MatrixNumberElement]];
+    T* PtrData=M.data;
     if(M.property[MatrixActualOrder]==COrder) {
       M.structure=new T*[nRow];
-      T* PtrData=data;
       for(unsigned int i=0;i<nRow;++i,PtrData+=nCol)  M.structure[i]=PtrData;
-      GetFunc=GetData4C<T>;
+      M.GetFunc=GetData4C<T>;
     } else if(M.property[MatrixActualOrder]==FortranOrder) {
       M.structure=new T*[nCol];
-      T* PtrData=data;
       for(unsigned int i=0;i<nCol;++i,PtrData+=nRow)  M.structure[i]=PtrData;
-      GetFunc=GetData4F<T>;
+      M.GetFunc=GetData4F<T>;
     } else myError("Unknown or Unimplemented Data Order of Matrix");
-    PtrOtherElement=NULL;
+    M.PtrOtherElement=NULL;
   }
 
 }

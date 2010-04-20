@@ -6,6 +6,9 @@ add_definitions (-Wall)
 add_executable (test-vector.run test-vector.cxx)
 target_link_libraries (test-vector.run blas Base)
 
+add_executable (test-matrix.run test-matrix.cxx)
+target_link_libraries (test-matrix.run blas Base)
+
 add_executable (test-util.run test-util.cxx)
 target_link_libraries (test-util.run Base)
 
@@ -16,15 +19,6 @@ target_link_libraries (test-btree.run Base)
 
 add_executable (test-hash-func.run test-hash-func.cxx)
 target_link_libraries (test-hash-func.run Base)
-
-add_executable (test-var-matrix-rectangle.run test-var-matrix-rectangle.cxx)
-target_link_libraries (test-var-matrix-rectangle.run blas Base)
-
-add_executable (test-fix-matrix-rectangle.run test-fix-matrix-rectangle.cxx)
-target_link_libraries (test-fix-matrix-rectangle.run blas Base)
-
-add_executable (test-ref-matrix-rectangle.run test-ref-matrix-rectangle.cxx)
-target_link_libraries (test-ref-matrix-rectangle.run blas Base)
 
 add_executable (test-var-parameter-key.run test-var-parameter-key.cxx)
 target_link_libraries (test-var-parameter-key.run blas Base)
@@ -79,15 +73,6 @@ target_link_libraries (test-ref-distance-evaluate-direct.run blas Base)
 
 add_executable (test-fix-distance-evaluate-direct.run test-fix-distance-evaluate-direct.cxx)
 target_link_libraries (test-fix-distance-evaluate-direct.run blas Base)
-
-add_executable (test-var-matrix-triangle.run test-var-matrix-triangle.cxx)
-target_link_libraries (test-var-matrix-triangle.run blas Base)
-
-add_executable (test-ref-matrix-triangle.run test-ref-matrix-triangle.cxx)
-target_link_libraries (test-ref-matrix-triangle.run blas Base)
-
-add_executable (test-fix-matrix-triangle.run test-fix-matrix-triangle.cxx)
-target_link_libraries (test-fix-matrix-triangle.run blas Base)
 
 add_executable (test-random-generator-mt-standard.run test-random-generator-mt-standard.cxx)
 target_link_libraries (test-random-generator-mt-standard.run Base)
