@@ -8,7 +8,8 @@
 namespace std {
 
   enum MatrixBasePropertyName {
-    MatrixNumberElement=0,
+    MatrixType=0,
+    MatrixNumberElement,
     MatrixNumberRow,
     MatrixNumberColumn,
     MatrixDataState,
@@ -52,16 +53,15 @@ namespace std {
         GetFunc(NULL), state(Unused) {}
     Matrix(const Type& MB) { myError("Cannot create Matrix"); }
     Type& operator=(const Type& M) {
-      assert(data!=NULL);
-      assert(M.data!=NULL);
+    assert(IsMatrixAvailable(*this));
+    assert(IsMatrixAvailable(M));
       unsigned int m=
           (property[MatrixNumberRow]<M.property[MatrixNumberRow]?
            property[MatrixNumberRow]:M.property[MatrixNumberRow]);
       unsigned int n=
           (property[MatrixNumberColumn]<M.property[MatrixNumberColumn]?
            property[MatrixNumberColumn]:M.property[MatrixNumberColumn]);
-      for(unsigned int i=0;i<m;++i)
-      for(unsigned int j=0;j<n;++j) operator()(i,j)=M(i,j);
+      assign(*this,M,m,n);
       return *this;
     }
     ~Matrix() { release(*this); }
@@ -82,20 +82,6 @@ namespace std {
   }
 
   template <typename T>
-  void assign(Matrix<T>& destM, const Matrix<T>& srcM,
-              const unsigned int nrow, const unsigned int ncol,
-              const unsigned int sroff=uZero, const unsigned int srstep=uOne,
-              const unsigned int scoff=uZero, const unsigned int scstep=uOne,
-              const unsigned int droff=uZero, const unsigned int drstep=uOne,
-              const unsigned int dcoff=uZero, const unsigned int dcstep=uOne) {
-    assert(IsMatrixAvailable(destM));
-    assert(IsMatrixAvailable(srcM));
-    for(unsigned int i=0,sr=sroff,dr=droff;i<nrow;++i,sr+=srstep,dr+=drstep)
-    for(unsigned int j=0,sc=scoff,dc=dcoff;j<ncol;++j,sc+=scstep,dc+=dcstep)
-      destM(dr,dc)=srcM(sr,sc);
-  }
-
-  template <typename T>
   void release(Matrix<T>& M) {
     if(M.state==Allocated) {
       safe_delete_array(M.data);
@@ -109,16 +95,18 @@ namespace std {
       M.PtrOtherElement=NULL;
     }
     M.GetFunc=NULL;
+    M.state=Unused;
   }
 
   template <typename T>
   void refer(Matrix<T>& destM, const Matrix<T>& srcM) {
+    assert(IsMatrixAvailable(srcM));
     release(destM);
     destM.data=const_cast<T*>(srcM.data);
     destM.structure=const_cast<T**>(srcM.structure);
     destM.property=const_cast<unsigned int*>(srcM.property);
     destM.PtrOtherElement=const_cast<T*>(srcM.PtrOtherElement);
-    destM.GetFunc=const_cast<typename Matrix<T>::GetFuncType>(srcM.GetFunc);
+    destM.GetFunc=srcM.GetFunc;
     destM.state=Reference;
   }
 
@@ -152,8 +140,8 @@ namespace std {
       unsigned int DataOrder=va_arg(vl,unsigned int);
       unsigned int TransForm=va_arg(vl,unsigned int);
       unsigned int TPart=va_arg(vl,unsigned int);
-      bool SFlag=va_arg(vl,bool);
-      bool DFlag=va_arg(vl,bool);
+      bool SFlag=static_cast<bool>(va_arg(vl,int));
+      bool DFlag=static_cast<bool>(va_arg(vl,int));
       allocateTriangleMatrix(M,Dim,DataOrder,TransForm,TPart,SFlag,DFlag);
     }
     else myError("Unknown or Unimplemented Matrix Type");
@@ -178,5 +166,33 @@ namespace std {
 
 #include "matrix-rectangle-allocator.h"
 #include "matrix-triangle-allocator.h"
+
+namespace std {
+
+  template <typename T>
+  void assign(Matrix<T>& destM, const Matrix<T>& srcM,
+              const unsigned int nrow, const unsigned int ncol,
+              const unsigned int sroff=uZero, const unsigned int srstep=uOne,
+              const unsigned int scoff=uZero, const unsigned int scstep=uOne,
+              const unsigned int droff=uZero, const unsigned int drstep=uOne,
+              const unsigned int dcoff=uZero, const unsigned int dcstep=uOne) {
+    assert(IsMatrixAvailable(destM));
+    assert(IsMatrixAvailable(srcM));
+    if(destM.property[MatrixType]==TriangleMatrix) {
+      assert(srcM.property[MatrixType]!=RectangleMatrix);
+      assert(srcM.property[MatrixDiagonalExistFlag]==
+             destM.property[MatrixDiagonalExistFlag]);
+      assert(srcM.property[MatrixSymmetryFlag]==
+             destM.property[MatrixSymmetryFlag]);
+      if(destM.property[MatrixSymmetryFlag]==ASymmetryMatrix)
+        assert(srcM.property[MatrixActualTrianglePart]==
+               destM.property[MatrixActualTrianglePart]);
+    }
+    for(unsigned int i=0,sr=sroff,dr=droff;i<nrow;++i,sr+=srstep,dr+=drstep)
+    for(unsigned int j=0,sc=scoff,dc=dcoff;j<ncol;++j,sc+=scstep,dc+=dcstep)
+      destM(dr,dc)=srcM(sr,sc);
+  }
+
+}
 
 #endif

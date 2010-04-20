@@ -27,6 +27,7 @@ namespace std {
                     const unsigned int TransposeForm) {
     assert(DataOrder!=DiagonalOrder);
     M.property=new unsigned int[MatrixRectangleNumberProperty];
+    M.property[MatrixType]=RectangleMatrix;
     M.property[MatrixNumberRow]=nRow;
     M.property[MatrixNumberColumn]=nCol;
     M.property[MatrixNumberElement]=nRow*nCol;

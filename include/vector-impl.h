@@ -70,6 +70,11 @@ namespace std {
     assign(dest,&value,ncopy,iZero,lZero,doff,dstep);
   }
 
+  void assign(double* dest, const double value, const long ncopy,
+              const int doff=iZero, const long dstep=lOne) {
+    assign(dest,&value,ncopy,iZero,lZero,doff,dstep);
+  }
+
   void scale(int* dest, const int factor, const long nscale,
              const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);

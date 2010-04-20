@@ -8,7 +8,7 @@ namespace std {
 
   enum MatrixTrianglePropertyName {
     MatrixDimension=MatrixCommonNumberProperty,
-    MatrixSymmtryFlag,
+    MatrixSymmetryFlag,
     MatrixTrianglePart,
     MatrixDiagonalExistFlag,
     MatrixActualDimension,
@@ -19,7 +19,7 @@ namespace std {
     MatrixTriangleNumberProperty
   };
 
-  enum MatrixSymmtryFlagName {
+  enum MatrixSymmetryFlagName {
     SymmetryMatrix=0,
     ASymmetryMatrix
   };
@@ -40,9 +40,9 @@ namespace std {
     FortranOrderUpperType
   };
 
-  template <typename T, unsigned int DFlag, unsigned int SFlag>
-  T& GetData4CU(T** str, const unsigned int I,const unsigned J, T& OE) {
-    if(DFlag==NullDiagonal) return OE;
+  template <typename T, unsigned int SFlag, unsigned int DFlag>
+  T& GetData4CU(T** str, const unsigned int I,const unsigned int J, T& OE) {
+    if((I==J)&&(DFlag==NullDiagonal)) return OE;
     unsigned int rI=I, rJ=J;
     if(rI>rJ) {
       if(SFlag==ASymmetryMatrix)  return OE;
@@ -51,9 +51,9 @@ namespace std {
     return str[rI][rJ-rI-(DFlag==NullDiagonal?1:0)];
   }
 
-  template <typename T, unsigned int DFlag, unsigned int SFlag>
+  template <typename T, unsigned int SFlag, unsigned int DFlag>
   T& GetData4CL(T** str, const unsigned int I,const unsigned J, T& OE) {
-    if(DFlag==NullDiagonal) return OE;
+    if((I==J)&&(DFlag==NullDiagonal)) return OE;
     unsigned int rI=I, rJ=J;
     if(rI<rJ) {
       if(SFlag==ASymmetryMatrix)  return OE;
@@ -62,9 +62,9 @@ namespace std {
     return str[rI-(DFlag==NullDiagonal?1:0)][rJ];
   }
 
-  template <typename T, unsigned int DFlag, unsigned int SFlag>
+  template <typename T, unsigned int SFlag, unsigned int DFlag>
   T& GetData4FU(T** str, const unsigned int I,const unsigned J, T& OE) {
-    if(DFlag==NullDiagonal) return OE;
+    if((I==J)&&(DFlag==NullDiagonal)) return OE;
     unsigned int rI=I, rJ=J;
     if(rI>rJ) {
       if(SFlag==ASymmetryMatrix)  return OE;
@@ -73,9 +73,9 @@ namespace std {
     return str[rJ-(DFlag==NullDiagonal?1:0)][rI];
   }
 
-  template <typename T, unsigned int DFlag, unsigned int SFlag>
+  template <typename T, unsigned int SFlag, unsigned int DFlag>
   T& GetData4FL(T** str, const unsigned int I,const unsigned J, T& OE) {
-    if(DFlag==NullDiagonal) return OE;
+    if((I==J)&&(DFlag==NullDiagonal)) return OE;
     unsigned int rI=I, rJ=J;
     if(rI<rJ) {
       if(SFlag==ASymmetryMatrix)  return OE;
@@ -84,9 +84,9 @@ namespace std {
     return str[rJ][rI-rJ-(DFlag==NullDiagonal?1:0)];
   }
 
-  template <typename T, unsigned int DFlag, unsigned int SFlag>
+  template <typename T, unsigned int SFlag, unsigned int DFlag>
   T& GetData4DU(T** str, const unsigned int I,const unsigned J, T& OE) {
-    if(DFlag==NullDiagonal) return OE;
+    if((I==J)&&(DFlag==NullDiagonal)) return OE;
     unsigned int rI=I, rJ=J;
     if(rI>rJ) {
       if(SFlag==ASymmetryMatrix)  return OE;
@@ -95,9 +95,9 @@ namespace std {
     return str[rJ-rI-(DFlag==NullDiagonal?1:0)][rI];
   }
 
-  template <typename T, unsigned int DFlag, unsigned int SFlag>
+  template <typename T, unsigned int SFlag, unsigned int DFlag>
   T& GetData4DL(T** str, const unsigned int I,const unsigned J, T& OE) {
-    if(DFlag==NullDiagonal) return OE;
+    if((I==J)&&(DFlag==NullDiagonal)) return OE;
     unsigned int rI=I, rJ=J;
     if(rI<rJ) {
       if(SFlag==ASymmetryMatrix)  return OE;
@@ -113,12 +113,13 @@ namespace std {
                   const unsigned int TrianglePart,
                   const bool SymmetryFlag, const bool DiagonalFlag) {
     M.property=new unsigned int[MatrixTriangleNumberProperty];
+    M.property[MatrixType]=TriangleMatrix;
     M.property[MatrixNumberRow]=M.property[MatrixNumberColumn]=Dim;
     M.property[MatrixDimension]=Dim;
     M.property[MatrixDataOrder]=DataOrder;
     M.property[MatrixTransposeForm]=TransposeForm;
     M.property[MatrixTrianglePart]=TrianglePart;
-    M.property[MatrixSymmtryFlag]=(SymmetryFlag?SymmetryMatrix:ASymmetryMatrix);
+    M.property[MatrixSymmetryFlag]=(SymmetryFlag?SymmetryMatrix:ASymmetryMatrix);
     M.property[MatrixDiagonalExistFlag]=
         (DiagonalFlag?HaveDiagonal:NullDiagonal);
     SetMatrixActualOrder(M.property);
@@ -135,52 +136,76 @@ namespace std {
       if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
         M.property[MatrixActualDataPattern]=COrderUpperType;
         M.GetFunc=(SymmetryFlag?
-                  (DiagonalFlag?GetData4CU<T,SymmetryMatrix,HaveDiagonal>:
-                                GetData4CU<T,SymmetryMatrix,NullDiagonal>):
-                  (DiagonalFlag?GetData4CU<T,ASymmetryMatrix,HaveDiagonal>:
-                                GetData4CU<T,ASymmetryMatrix,NullDiagonal>));
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4CU<T,SymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4CU<T,SymmetryMatrix,NullDiagonal>)):
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4CU<T,ASymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4CU<T,ASymmetryMatrix,NullDiagonal>)));
       } else if(M.property[MatrixActualTrianglePart]==LowerTriangle) {
         M.property[MatrixActualDataPattern]=FortranOrderUpperType;
         M.GetFunc=(SymmetryFlag?
-                  (DiagonalFlag?GetData4CL<T,SymmetryMatrix,HaveDiagonal>:
-                                GetData4CL<T,SymmetryMatrix,NullDiagonal>):
-                  (DiagonalFlag?GetData4CL<T,ASymmetryMatrix,HaveDiagonal>:
-                                GetData4CL<T,ASymmetryMatrix,NullDiagonal>));
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4CL<T,SymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4CL<T,SymmetryMatrix,NullDiagonal>)):
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4CL<T,ASymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4CL<T,ASymmetryMatrix,NullDiagonal>)));
       } else myError("Unknown Triangle part for Matrix");
-    } else if(M.property[MatrixActualOrder]=FortranOrder) {
+    } else if(M.property[MatrixActualOrder]==FortranOrder) {
       if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
         M.property[MatrixActualDataPattern]=FortranOrderUpperType;
         M.GetFunc=(SymmetryFlag?
-                  (DiagonalFlag?GetData4FU<T,SymmetryMatrix,HaveDiagonal>:
-                                GetData4FU<T,SymmetryMatrix,NullDiagonal>):
-                  (DiagonalFlag?GetData4FU<T,ASymmetryMatrix,HaveDiagonal>:
-                                GetData4FU<T,ASymmetryMatrix,NullDiagonal>));
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4FU<T,SymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4FU<T,SymmetryMatrix,NullDiagonal>)):
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4FU<T,ASymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4FU<T,ASymmetryMatrix,NullDiagonal>)));
       } else if(M.property[MatrixActualTrianglePart]==LowerTriangle) {
         M.property[MatrixActualDataPattern]=COrderUpperType;
         M.GetFunc=(SymmetryFlag?
-                  (DiagonalFlag?GetData4FL<T,SymmetryMatrix,HaveDiagonal>:
-                                GetData4FL<T,SymmetryMatrix,NullDiagonal>):
-                  (DiagonalFlag?GetData4FL<T,ASymmetryMatrix,HaveDiagonal>:
-                                GetData4FL<T,ASymmetryMatrix,NullDiagonal>));
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4FL<T,SymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4FL<T,SymmetryMatrix,NullDiagonal>)):
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4FL<T,ASymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4FL<T,ASymmetryMatrix,NullDiagonal>)));
       } else myError("Unknown Triangle part for Matrix");
     } else if(M.property[MatrixActualOrder]==DiagonalOrder) {
       M.property[MatrixActualDataPattern]=DiagonalType;
-      if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
+      if(M.property[MatrixActualTrianglePart]==UpperTriangle)
         M.GetFunc=(SymmetryFlag?
-                  (DiagonalFlag?GetData4DU<T,SymmetryMatrix,HaveDiagonal>:
-                                GetData4DU<T,SymmetryMatrix,NullDiagonal>):
-                  (DiagonalFlag?GetData4DU<T,ASymmetryMatrix,HaveDiagonal>:
-                                GetData4DU<T,ASymmetryMatrix,NullDiagonal>));
-      } else if(M.property[MatrixActualTrianglePart]==LowerTriangle) {
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4DU<T,SymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4DU<T,SymmetryMatrix,NullDiagonal>)):
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4DU<T,ASymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4DU<T,ASymmetryMatrix,NullDiagonal>)));
+      else if(M.property[MatrixActualTrianglePart]==LowerTriangle) {
         M.GetFunc=(SymmetryFlag?
-                  (DiagonalFlag?GetData4DL<T,SymmetryMatrix,HaveDiagonal>:
-                                GetData4DL<T,SymmetryMatrix,NullDiagonal>):
-                  (DiagonalFlag?GetData4DL<T,ASymmetryMatrix,HaveDiagonal>:
-                                GetData4DL<T,ASymmetryMatrix,NullDiagonal>));
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4DL<T,SymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4DL<T,SymmetryMatrix,NullDiagonal>)):
+                  (DiagonalFlag?static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4DL<T,ASymmetryMatrix,HaveDiagonal>):
+                                static_cast<typename Matrix<T>::GetFuncType>
+                                (GetData4DL<T,ASymmetryMatrix,NullDiagonal>)));
       } else myError("Unknown Triangle part for Matrix");
     } else myError("Unknown or Unimplemented Data Order for Triangle Matrix");
     M.property[MatrixActualDimension]=Dim-(DiagonalFlag?0:1);
-    if((M.property[MatrixActualDataPattern]==COrderUpperType)&&
+    if((M.property[MatrixActualDataPattern]==COrderUpperType)||
        (M.property[MatrixActualDataPattern]==DiagonalType)) {
       M.property[MatrixLineSizeFirst]=M.property[MatrixActualDimension];
       M.property[MatrixLineSizeShift]=static_cast<unsigned int>(-1);
