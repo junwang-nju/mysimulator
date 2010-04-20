@@ -126,6 +126,7 @@ namespace std {
     tv.data=va.data;  va.data=vb.data;  vb.data=tv.data;
     tv.size=va.size;  va.size=vb.size;  vb.size=tv.size;
     tv.state=va.state;va.state=vb.state;vb.state=tv.state;
+    tv.state=Unused;
   }
 
   template <typename T>
