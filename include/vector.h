@@ -144,11 +144,11 @@ namespace std {
   T asum(const Vector<T>& v) { return asum(v(),v.size); }
 
   template <typename T>
-  bool IsVectorAvailable(const Vector<T>& v){ return IsPointerAvailable(v()); }
+  bool IsAvailable(const Vector<T>& v){ return IsAvailable(v()); }
 
   template <typename T>
   ostream& operator<<(ostream& os, const Vector<T>& v) {
-    IsVectorAvailable(v);
+    IsAvailable(v);
     os<<v[0];
     for(unsigned int i=1;i<v.size;++i)  os<<"\t"<<v[i];
     return os;
@@ -156,7 +156,7 @@ namespace std {
 
   template <typename T>
   istream& operator>>(istream& is, Vector<T>& v) {
-    IsVectorAvailable(v);
+    IsAvailable(v);
     for(unsigned int i=0;i<v.size;++i)  is>>v[i];
     return is;
   }

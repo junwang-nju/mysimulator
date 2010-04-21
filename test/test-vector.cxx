@@ -27,10 +27,10 @@ int main() {
   cout<<"Test -- availability test"<<endl;
   long* pLong=NULL;
   Vector<long> vLong;
-  cout<<IsPointerAvailable(pLong)<<endl;
-  cout<<IsPointerAvailable(pInt)<<endl;
-  cout<<IsVectorAvailable(vLong)<<endl;
-  cout<<IsVectorAvailable(vDBL)<<endl;
+  cout<<IsAvailable(pLong)<<endl;
+  cout<<IsAvailable(pInt)<<endl;
+  cout<<IsAvailable(vLong)<<endl;
+  cout<<IsAvailable(vDBL)<<endl;
   cout<<endl;
 
   cout<<"Test -- release"<<endl;

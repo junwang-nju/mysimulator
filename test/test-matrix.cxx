@@ -6,9 +6,9 @@ using namespace std;
 int main() {
   Matrix<double> dM;
   allocate(dM,RectangleMatrix,4,5,COrder,NoTranspose);
-  cout<<IsMatrixAvailable(dM)<<endl;
+  cout<<IsAvailable(dM)<<endl;
   release(dM);
-  cout<<IsMatrixAvailable(dM)<<endl;
+  cout<<IsAvailable(dM)<<endl;
   allocate(dM,TriangleMatrix,5,COrder,NoTranspose,UpperTriangle,true,false);
   *(dM.PtrOtherElement)=0;
   Matrix<double> dM2;

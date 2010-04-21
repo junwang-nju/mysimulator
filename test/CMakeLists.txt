@@ -9,6 +9,9 @@ target_link_libraries (test-vector.run blas Base)
 add_executable (test-matrix.run test-matrix.cxx)
 target_link_libraries (test-matrix.run blas Base)
 
+add_executable (test-property-list.run test-property-list.cxx)
+target_link_libraries (test-property-list.run blas Base)
+
 add_executable (test-util.run test-util.cxx)
 target_link_libraries (test-util.run Base)
 
@@ -103,12 +106,6 @@ target_link_libraries (test-var-distance-evaluate-with-storage.run blas Base)
 
 add_executable (test-fix-distance-evaluate-with-storage.run test-fix-distance-evaluate-with-storage.cxx)
 target_link_libraries (test-fix-distance-evaluate-with-storage.run blas Base)
-
-add_executable (test-var-property-list.run test-var-property-list.cxx)
-target_link_libraries (test-var-property-list.run blas Base)
-
-add_executable (test-ref-property-list.run test-ref-property-list.cxx)
-target_link_libraries (test-ref-property-list.run blas Base)
 
 add_executable (test-var-interaction-list.run test-var-interaction-list.cxx)
 target_link_libraries (test-var-interaction-list.run blas Base)

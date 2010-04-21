@@ -53,8 +53,8 @@ namespace std {
         GetFunc(NULL), state(Unused) {}
     Matrix(const Type& MB) { myError("Cannot create Matrix"); }
     Type& operator=(const Type& M) {
-    assert(IsMatrixAvailable(*this));
-    assert(IsMatrixAvailable(M));
+    assert(IsAvailable(*this));
+    assert(IsAvailable(M));
       unsigned int m=
           (property[MatrixNumberRow]<M.property[MatrixNumberRow]?
            property[MatrixNumberRow]:M.property[MatrixNumberRow]);
@@ -77,9 +77,7 @@ namespace std {
   };
 
   template <typename T>
-  bool IsMatrixAvailable(const Matrix<T>& M) {
-    return IsPointerAvailable(M.data);
-  }
+  bool IsAvailable(const Matrix<T>& M) { return IsAvailable(M.data); }
 
   template <typename T>
   void release(Matrix<T>& M) {
@@ -100,7 +98,7 @@ namespace std {
 
   template <typename T>
   void refer(Matrix<T>& destM, const Matrix<T>& srcM) {
-    assert(IsMatrixAvailable(srcM));
+    assert(IsAvailable(srcM));
     release(destM);
     destM.data=const_cast<T*>(srcM.data);
     destM.structure=const_cast<T**>(srcM.structure);
@@ -176,8 +174,8 @@ namespace std {
               const unsigned int scoff=uZero, const unsigned int scstep=uOne,
               const unsigned int droff=uZero, const unsigned int drstep=uOne,
               const unsigned int dcoff=uZero, const unsigned int dcstep=uOne) {
-    assert(IsMatrixAvailable(destM));
-    assert(IsMatrixAvailable(srcM));
+    assert(IsAvailable(destM));
+    assert(IsAvailable(srcM));
     if(destM.property[MatrixType]==TriangleMatrix) {
       assert(srcM.property[MatrixType]!=RectangleMatrix);
       assert(srcM.property[MatrixDiagonalExistFlag]==

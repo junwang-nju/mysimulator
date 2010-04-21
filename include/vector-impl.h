@@ -11,7 +11,7 @@
 namespace std {
 
   template <typename T>
-  bool IsPointerAvailable(const T* ptr) { return ptr!=NULL; }
+  bool IsAvailable(const T* ptr) { return ptr!=NULL; }
 
   template <typename T>
   void allocate(T* &dest, const unsigned int N) {
