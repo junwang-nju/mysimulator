@@ -146,6 +146,16 @@ namespace std {
     va_end(vl);
   }
 
+  template <typename T>
+  void swap(Matrix<T>& Ma, Matrix<T>& Mb) {
+    swap(Ma.data,Mb.data);
+    swap(Ma.structure,Mb.structure);
+    swap(Ma.property,Mb.property);
+    swap(Ma.PtrOtherElement,Mb.PtrOtherElement);
+    swap(Ma.GetFunc,Mb.GetFunc);
+    swap(Ma.state,Mb.state);
+  }
+
   void SetMatrixActualOrder(unsigned int* property) {
     if(property[MatrixTransposeForm]==NoTranspose)
       property[MatrixActualOrder]=property[MatrixDataOrder];

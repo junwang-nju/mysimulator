@@ -62,6 +62,16 @@ namespace std {
   template <typename T>
   void assign(Vector<T>& v, const T& value) { assign(v(),value,v.size); }
 
+  void assign(Vector<unsigned int>& v, const unsigned int value) {
+    assign(v(),value,v.size);
+  }
+
+  void assign(Vector<int>& v, const int value) { assign(v(),value,v.size); }
+
+  void assign(Vector<double>& v, const double value) {
+    assign(v(),value,v.size);
+  }
+
   template <typename T>
   void scale(Vector<T>& v, const T& value) { scale(v(),value,v.size); }
 
@@ -122,11 +132,9 @@ namespace std {
 
   template <typename T>
   void swap(Vector<T>& va, Vector<T>& vb) {
-    Vector<T> tv;
-    tv.data=va.data;  va.data=vb.data;  vb.data=tv.data;
-    tv.size=va.size;  va.size=vb.size;  vb.size=tv.size;
-    tv.state=va.state;va.state=vb.state;vb.state=tv.state;
-    tv.state=Unused;
+    swap(va.data,vb.data);
+    swap(va.size,vb.size);
+    swap(va.state,vb.state);
   }
 
   template <typename T>
@@ -148,7 +156,7 @@ namespace std {
 
   template <typename T>
   ostream& operator<<(ostream& os, const Vector<T>& v) {
-    IsAvailable(v);
+    assert(IsAvailable(v));
     os<<v[0];
     for(unsigned int i=1;i<v.size;++i)  os<<"\t"<<v[i];
     return os;
@@ -156,7 +164,7 @@ namespace std {
 
   template <typename T>
   istream& operator>>(istream& is, Vector<T>& v) {
-    IsAvailable(v);
+    assert(IsAvailable(v));
     for(unsigned int i=0;i<v.size;++i)  is>>v[i];
     return is;
   }
