@@ -1,11 +1,13 @@
 
-#ifndef _Bianry_Tree_Node_H_
-#define _Bianry_Tree_Node_H_
+#ifndef _Binary_Tree_Node_H_
+#define _Binary_Tree_Node_H_
 
+#include "vector-impl.h"
 #include "storage-state-name.h"
 #include "error-proc.h"
 #include "memory.h"
 #include <cstdlib>
+#include <cassert>
 
 namespace std {
 
@@ -56,8 +58,8 @@ namespace std {
 
   template <typename KeyType, typename ValueType>
   void release(BTreeNode<KeyType,ValueType>& BN) {
-    if(BN.keystate==Allocated)      release(BN.key);    else BN.key=NULL;
-    if(BN.valuestate==Allocated)    release(BN.value);  else BN.value=NULL;
+    if(BN.keystate==Allocated)      safe_delete(BN.key);    else BN.key=NULL;
+    if(BN.valuestate==Allocated)    safe_delete(BN.value);  else BN.value=NULL;
     BN.parent=NULL;
     safe_delete(BN.left);
     safe_delete(BN.right);

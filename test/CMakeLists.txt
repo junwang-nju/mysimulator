@@ -16,9 +16,10 @@ add_executable (test-util.run test-util.cxx)
 target_link_libraries (test-util.run Base)
 
 add_executable (test-btree-node.run test-btree-node.cxx)
+target_link_libraries (test-btree-node.run Base blas)
 
 add_executable (test-btree.run test-btree.cxx)
-target_link_libraries (test-btree.run Base)
+target_link_libraries (test-btree.run Base blas)
 
 add_executable (test-hash-func.run test-hash-func.cxx)
 target_link_libraries (test-hash-func.run Base)
