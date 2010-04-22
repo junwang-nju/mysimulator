@@ -4,6 +4,7 @@
 
 #include "storage-state-name.h"
 #include "error-proc.h"
+#include "memory.h"
 #include <cstdlib>
 
 namespace std {
@@ -27,14 +28,10 @@ namespace std {
     unsigned int branch;
     unsigned int keystate;
     unsigned int valuestate;
-    unsigned int parentstate;
-    unsigned int leftstate;
-    unsigned int rightstate;
 
     BTreeNode()
       : key(NULL), value(NULL), parent(NULL), left(NULL), right(NULL),
-        branch(Unassigned), keystate(Unused), valuestate(Unused),
-        parentstate(Unused), leftstate(Unused), rightstate(Unused) {}
+        branch(Unassigned), keystate(Unused), valuestate(Unused) {}
     BTreeNode(const Type&) { myError("Cannot create from BinaryTree Node"); }
     Type& operator=(const Type& BN) { assign(*this,BN); return *this; }
     ~BTreeNode() { release(*this); }
@@ -42,8 +39,14 @@ namespace std {
   };
 
   template <typename KeyType, typename ValueType>
+  bool IsAvailable(const BTreeNode<KeyType,ValueType>& BN) {
+    return IsAvailable(BN.key)&&IsAvailable(BN.value);
+  }
+
+  template <typename KeyType, typename ValueType>
   void assign(BTreeNode<KeyType,ValueType>& destBN,
               const BTreeNode<KeyType,ValueType>& srcBN) {
+    assert(IsAvailable(srcBN));
     release(destBN);
     destBN.key=srcBN.key;
     destBN.value=srcBN.value;
@@ -55,15 +58,12 @@ namespace std {
   void release(BTreeNode<KeyType,ValueType>& BN) {
     if(BN.keystate==Allocated)      release(BN.key);    else BN.key=NULL;
     if(BN.valuestate==Allocated)    release(BN.value);  else BN.value=NULL;
-    if(BN.parentstate==Allocated)   release(BN.parent); else BN.parent=NULL;
-    if(BN.leftstate==Allocated)     release(BN.left);   else BN.left=NULL;
-    if(BN.rightstate==Allocated)    release(BN.right);  else BN.right=NULL;
+    BN.parent=NULL;
+    safe_delete(BN.left);
+    safe_delete(BN.right);
     BN.branch=Unassigned;
     BN.keystate=Unused;
     BN.valuestate=Unused;
-    BN.parentstate=Unused;
-    BN.leftstate=Unused;
-    BN.rightstate=Unused;
   }
 
 }

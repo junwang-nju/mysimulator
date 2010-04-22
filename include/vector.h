@@ -48,6 +48,7 @@ namespace std {
 
   template <typename T>
   void refer(Vector<T>& dest, const Vector<T>& src) {
+    assert(IsAvailable(src));
     release(dest);
     dest()=src();
     dest.size=src.size();
