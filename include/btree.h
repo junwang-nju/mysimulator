@@ -38,6 +38,7 @@ namespace std {
         safe_delete(tofree);
       }
     }
+    BT.root=NULL;
   }
 
   template <typename KeyType, typename ValueType>
@@ -50,15 +51,15 @@ namespace std {
       destBN=new BTreeNode<KeyType,ValueType>;
       destBN->key=new KeyType;
       destBN->value=new ValueType;
-      destBN->key=srcBN->key;
-      destBN->value=srcBN->value;
+      *(destBN->key)=*(srcBN->key);
+      *(destBN->value)=*(srcBN->value);
       destBN->keystate=Allocated;
       destBN->valuestate=Allocated;
       destBN->parent=const_cast<BTreeNode<KeyType,ValueType>*>(destPN);
       destBN->branch=destBR;
       if(IsAvailable(srcBN->left))
         assign(destBN->left,srcBN->left,destBN,LeftBranch);
-      else if(IsAvailable(srcBN->right))
+      if(IsAvailable(srcBN->right))
         assign(destBN->right,srcBN->right,destBN,RightBranch);
     }
   }
@@ -67,7 +68,9 @@ namespace std {
   void assign(BTree<KeyType,ValueType>& destBT,
               const BTree<KeyType,ValueType>& srcBT) {
     release(destBT);
-    assign(destBT.root,srcBT.root,NULL,Unassigned);
+    assign(destBT.root,srcBT.root,
+           static_cast<const BTreeNode<KeyType,ValueType>*>(NULL),
+           Unassigned);
   }
 
   template <typename KeyType, typename ValueType>
@@ -117,7 +120,7 @@ namespace std {
   template <typename KeyType, typename ValueType>
   const ValueType* get(
       const BTree<KeyType,ValueType>& BT, const KeyType& key) {
-    BTreeNode<KeyType,ValueType>* BN=getNode(BT,key);
+    const BTreeNode<KeyType,ValueType>* BN=getNode(BT,key);
     return (IsAvailable(BN)?BN->value:NULL);
   }
 
@@ -138,7 +141,7 @@ namespace std {
 
   template <typename KeyType, typename ValueType>
   void removeNode(BTree<KeyType,ValueType>& BT, const KeyType& key) {
-    BTreeNode<KeyType,ValueType> *BN=getNode(BT,key);
+    const BTreeNode<KeyType,ValueType> *BN=getNode(BT,key);
     removeNode(BT,BN);
   }
 
@@ -166,7 +169,7 @@ namespace std {
       } else {
         BTreeNode<KeyType,ValueType> *movenode;
         movenode=BN->right;
-        while(IsAvailable(movenode->left))  movenode=movenode.left;
+        while(IsAvailable(movenode->left))  movenode=movenode->left;
         if(movenode->branch==LeftBranch)
           movenode->parent->left=movenode->right;
         else if(movenode->branch==RightBranch)

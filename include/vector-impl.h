@@ -29,8 +29,9 @@ namespace std {
               const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(src!=NULL);
-    T* dPtr=dest+doff, sPtr=const_cast<T*>(src)+soff;
-    for(unsigned int i=0;i<ncopy;++i,++dPtr,++sPtr)   *dPtr=*sPtr;
+    T* dPtr=dest+doff, *sPtr=const_cast<T*>(src)+soff;
+    for(unsigned int i=0;i<static_cast<unsigned int>(ncopy);++i,++dPtr,++sPtr)
+      *dPtr=*sPtr;
   }
 
   void assign(double* dest, const double* src, const long ncopy,
