@@ -13,7 +13,7 @@ namespace std {
   void toupper(char* dest, const char* src, const unsigned int n);
   void tolower(char* dest, const char* src, const unsigned int n);
   template <typename T>
-  void swap(T*& a, T*& b);
+  void swap(T*& a, T*& b) { T* t; t=a; a=b; b=t; t=NULL; }
   void swap(unsigned int& a, unsigned int& b);
 }
 

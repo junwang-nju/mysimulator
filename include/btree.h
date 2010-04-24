@@ -75,23 +75,39 @@ namespace std {
 
   template <typename KeyType, typename ValueType>
   void insert(BTree<KeyType,ValueType>& destBT,
-              const KeyType& key, const ValueType& value) {
+              const KeyType& key, const ValueType& value,
+              const unsigned int kflag=Reference,
+              const unsigned int vflag=Reference) {
     BTreeNode<KeyType,ValueType> *present;
     int cmp;
     present=destBT.root;
     while(IsAvailable(present)) {
       cmp=compare(key,*(present->key));
       if(cmp==0) {
-        present->value=const_cast<ValueType*>(&value);
+        if(vflag==Reference) present->value=const_cast<ValueType*>(&value);
+        else if(vflag==Allocated) {
+          present->value=new ValueType;
+          *(present->value)=value;
+        } else myError("Imporoper Value Flag");
+        present->valuestate=vflag;
         return;
       } else if(cmp<0) {
         if(IsAvailable(present->left))  present=present->left;
         else {
           present->left=new BTreeNode<KeyType,ValueType>;
-          present->left->key=const_cast<KeyType*>(&key);
-          present->left->value=const_cast<ValueType*>(&value);
-          present->left->keystate=Reference;
-          present->left->valuestate=Reference;
+          if(kflag==Reference) present->left->key=const_cast<KeyType*>(&key);
+          else if(kflag==Allocated) {
+            present->left->key=new KeyType;
+            *(present->left->key)=key;
+          } else myError("Imporoper Key Flag");
+          present->left->keystate=kflag;
+          if(vflag==Reference)
+            present->left->value=const_cast<ValueType*>(&value);
+          else if(vflag==Allocated) {
+            present->left->value=new ValueType;
+            *(present->left->value)=value;
+          } else myError("Imporoper Value Flag");
+          present->left->valuestate=vflag;
           present->left->parent=present;
           present->left->branch=LeftBranch;
           return;
@@ -100,10 +116,19 @@ namespace std {
         if(IsAvailable(present->right)) present=present->right;
         else {
           present->right=new BTreeNode<KeyType,ValueType>;
-          present->right->key=const_cast<KeyType*>(&key);
-          present->right->value=const_cast<ValueType*>(&value);
-          present->right->keystate=Reference;
-          present->right->valuestate=Reference;
+          if(kflag==Reference) present->right->key=const_cast<KeyType*>(&key);
+          else if(kflag==Allocated) {
+            present->right->key=new KeyType;
+            *(present->right->key)=key;
+          } else myError("Imporoper Key Flag");
+          present->right->keystate=kflag;
+          if(vflag==Reference)
+            present->right->value=const_cast<ValueType*>(&value);
+          else if(vflag==Allocated) {
+            present->right->value=new ValueType;
+            *(present->right->value)=value;
+          } else myError("Imporoper Value Flag");
+          present->right->valuestate=vflag;
           present->right->parent=present;
           present->right->branch=RightBranch;
           return;
@@ -111,10 +136,18 @@ namespace std {
       }
     }
     destBT.root=new BTreeNode<KeyType,ValueType>;
-    destBT.root->key=const_cast<KeyType*>(&key);
-    destBT.root->value=const_cast<ValueType*>(&value);
-    destBT.root->keystate=Reference;
-    destBT.root->valuestate=Reference;
+    if(kflag==Reference) destBT.root->key=const_cast<KeyType*>(&key);
+    else if(kflag==Allocated) {
+      destBT.root->key=new KeyType;
+      *(destBT.root->key)=key;
+    }
+    destBT.root->keystate=kflag;
+    if(vflag==Reference) destBT.root->value=const_cast<ValueType*>(&value);
+    else if(vflag==Allocated) {
+      destBT.root->value=new ValueType;
+      *(destBT.root->value)=value;
+    }
+    destBT.root->valuestate=vflag;
   }
 
   template <typename KeyType, typename ValueType>

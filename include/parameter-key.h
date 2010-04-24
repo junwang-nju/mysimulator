@@ -2,118 +2,91 @@
 #ifndef _Parameter_Key_H_
 #define _Parameter_Key_H_
 
-#include "fix-vector.h"
-#include "var-vector.h"
-#include "ref-vector.h"
 #include "hash-func.h"
-#include <cassert>
+#include "vector-impl.h"
+#include "storage-state-name.h"
+#include "error-proc.h"
 
 namespace std {
 
-  template <template <typename> class IndexVecType>
-  class ParameterKey {
+  struct ParameterKey;
+  bool IsAvailable(const ParameterKey&);
+  void assign(ParameterKey&, const ParameterKey&);
+  void release(ParameterKey&);
 
-    public:
+  struct ParameterKey {
 
-      typedef ParameterKey<IndexVecType>  Type;
+    unsigned int* index;
+    unsigned int  size;
+    unsigned int  hsize;
+    unsigned int  hash[3];
+    unsigned int  state;
 
-      typedef IndexVecType<unsigned int>  IndexType;
+    typedef ParameterKey  Type;
 
-      typedef fixVector<unsigned int,3>   HashType;
-
-    protected:
-
-      IndexType Index;
-
-      HashType Hash;
-
-    public:
-
-      ParameterKey() : Index(), Hash() {
-        assert(IndexVecType<unsigned int>::IsVector);
-      }
-
-      ParameterKey(const unsigned int NI) : Index(), Hash() {
-        assert(IndexVecType<unsigned int>::IsVector);
-        allocate(NI);
-      }
-
-      ParameterKey(const Type& P) {
-        myError("Cannot create from parameter key");
-      }
-
-      ~ParameterKey() { clear(); }
-
-      Type& operator=(const Type& P) {
-        Index=P.Index;
-        BuildHash();
-        return *this;
-      }
-
-      template <template <typename> class iIndexVecType>
-      Type& operator=(const ParameterKey<iIndexVecType>& PK) {
-        Index=PK.Index;
-        BuildHash();
-        return *this;
-      }
-
-      const IndexType& index() const { return Index; }
-
-      const HashType& hash() const { return Hash; }
-
-      IndexType& index() { return Index; }
-
-      HashType& hash() { return Hash; }
-
-      void BuildHash() {
-        unsigned int hsize=Index.size()*4;
-        Hash[0]=hash_ap(reinterpret_cast<char*>(Index.data()),hsize);
-        Hash[1]=hash_dek(reinterpret_cast<char*>(Index.data()),hsize);
-        Hash[2]=hash_bp(reinterpret_cast<char*>(Index.data()),hsize);
-      }
-
-      void clear() { Index.clear(); }
-
-      void allocate(const unsigned int nIdx) { myError("Not Available"); }
-
-      template <template <typename> class iIndexVecType>
-      void refer(const ParameterKey<iIndexVecType>& PK) {
-        myError("Not Available");
-      }
-
-      Type& CanonicalForm() { return *this; }
-
-      const Type& CanonicalForm() const { return *this; }
+    ParameterKey() : index(NULL), size(0), hsize(0), state(Unused) {
+      hash[0]=hash[1]=hash[2]=0;
+    }
+    ParameterKey(const Type&) { myError("Cannot create from Parameter Key"); }
+    Type& operator=(const Type& K) { assign(*this,K); return *this; }
+    ~ParameterKey() { release(*this); }
 
   };
 
-  template <>
-  void ParameterKey<varVector>::allocate(const unsigned int nIdx) {
-    index().allocate(nIdx);
+  bool IsAvailable(const ParameterKey& K) { return IsAvailable(K.index); }
+
+  void buildhash(ParameterKey& K) {
+    K.hash[0]=hash_ap(reinterpret_cast<char*>(K.index),K.hsize);
+    K.hash[1]=hash_dek(reinterpret_cast<char*>(K.index),K.hsize);
+    K.hash[2]=hash_bp(reinterpret_cast<char*>(K.index),K.hsize);
   }
 
-  template <>
-  template <template <typename> class iIndexVecType>
-  void ParameterKey<refVector>::refer(const ParameterKey<iIndexVecType>& PK) {
-    index().refer(PK.index());
-    hash()=PK.hash();
+  void assign(ParameterKey& dest, const ParameterKey& src) {
+    assert(IsAvailable(src));
+    unsigned int n=(dest.size<src.size?dest.size:src.size);
+    assign(dest.index,src.index,n);
+    buildhash(dest);
   }
 
-  template <template <typename> class IdVec>
-  istream& operator>>(istream& is, ParameterKey<IdVec>& P) {
-    is>>P.index();
-    P.BuildHash();
+  void release(ParameterKey& K) {
+    if(K.state==Allocated) safe_delete_array(K.index);  else K.index=NULL;
+    K.size=0; K.hsize=0;
+    K.hash[0]=K.hash[1]=K.hash[2]=0;
+    K.state=Unused;
+  }
+
+  void allocate(ParameterKey& K, const unsigned int nidx) {
+    release(K);
+    K.index=new unsigned int[nidx];
+    K.size=nidx;
+    K.hsize=4*nidx;
+    K.state=Allocated;
+    assign(K.index,uZero,K.size);
+  }
+
+  void refer(ParameterKey& dest, const ParameterKey& src) {
+    release(dest);
+    dest.index=src.index;
+    dest.state=Reference;
+    dest.size=src.size;
+    dest.hsize=src.hsize;
+    assign(dest.hash,src.hash,3);
+  }
+
+  istream& operator>>(istream& is, ParameterKey& K) {
+    assert(IsAvailable(K));
+    for(unsigned int i=0;i<K.size;++i) is>>K.index[i];
+    buildhash(K);
     return is;
   }
 
-  template <template <typename> class IdVecA, template <typename> class IdVecB>
-  int compare(const ParameterKey<IdVecA>& PA,
-              const ParameterKey<IdVecB>& PB) {
-    for(unsigned int i=0;i<PA.hash().size();++i)
-      if(PA.hash()[i]!=PB.hash()[i])  return (PA.hash()[i]>PB.hash()[i]?1:-1);
+  int compare(const ParameterKey& k1, const ParameterKey& k2) {
+    for(unsigned int i=0;i<3;++i)
+      if(k1.hash[i]!=k2.hash[i]) return (k1.hash[i]>k2.hash[i]?1:-1);
     return 0;
   }
 
 }
 
 #endif
+

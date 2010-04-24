@@ -24,9 +24,6 @@ namespace std {
     for(unsigned int i=0;i<n;++i) dest[i]=tolower(src[i]);
   }
 
-  template <typename T>
-  void swap(T*& a, T*& b) { T* t; t=a; a=b; b=t; t=NULL; }
-
   void swap(unsigned int& a, unsigned int& b) { unsigned int t=a; a=b; b=t; }
 
 }

@@ -30,21 +30,21 @@ namespace std {
    *
    * This is used for BLAS.
    */
-  static long   lZero=0;
+  static const long   lZero=0;
 
   /**
    * @brief \c long type one
    *
    * This is used for BLAS.
    */
-  static long   lOne=1;
+  static const long   lOne=1;
 
   /**
    * @brief \c int type zero
    */
-  static int    iZero=0;
+  static const int    iZero=0;
 
-  static int    iOne=1;
+  static const int    iOne=1;
   /**
    * @brief \c int type one
    */
@@ -53,7 +53,7 @@ namespace std {
   /**
    * @brief \c unsigned \c int type zero
    */
-  static unsigned int   uZero=0U;
+  static const unsigned int   uZero=0U;
 
   static const unsigned int   uOne=1U;
 

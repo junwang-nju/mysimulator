@@ -2,274 +2,143 @@
 #ifndef _Parameter_List_H_
 #define _Parameter_List_H_
 
-#include "var-parameter-key.h"
-#include "var-parameter-value.h"
-#include "fix-vector.h"
-#include "ref-vector.h"
+#include "parameter-key.h"
+#include "unique-parameter.h"
+#include "vector.h"
 #include "btree.h"
 
 namespace std {
 
-  template <template <typename> class VecType>
-  class ParameterList {
+  struct ParameterList;
 
-    public:
+  void assign(ParameterList&,const ParameterList&);
+  void release(ParameterList&);
 
-      typedef ParameterList<VecType>    Type;
- 
-      typedef BTree<varParameterKey,varParameterValue>  TreeType;
+  struct ParameterList {
 
-      typedef fixVector<TreeType,0xFFFFU>* HashTreePtrType;
+    typedef ParameterList Type;
+    typedef BTree<ParameterKey,Vector<UniqueParameter> > BTreeType;
 
-    protected:
+    struct HashTreeType { BTreeType hash[0xFFFFU]; };
 
-      VecType<varParameterKey>        KeyList;
+    ParameterKey *key;
+    Vector<UniqueParameter> *value;
+    unsigned int size;
+    HashTreeType *tree;
+    unsigned int state;
 
-      VecType<varParameterValue>      ValueList;
+    ParameterList()
+      : key(NULL), value(NULL), size(NULL), tree(NULL), state(Unused) {}
+    ParameterList(const Type&){ myError("Cannot create from Parameter List"); }
+    Type& operator=(const Type& PL) { assign(*this,PL); return *this; }
+    ~ParameterList() { release(*this); }
 
-      HashTreePtrType    PtrHashTree;
-
-    public:
-
-      ParameterList() : KeyList(), ValueList(), PtrHashTree(NULL) {}
-
-      ParameterList(const unsigned int N)
-        : KeyList(), ValueList(), PtrHashTree(NULL) {
-        allocate(N);
-      }
-
-      ParameterList(const Type& PL) {
-        myError("Cannot create from Parameter List");
-      }
-
-     ~ParameterList() { clear(); }
-
-      Type& operator=(const Type& PL) {
-        KeyList=PL.KeyList;
-        ValueList=PL.ValueList;
-        updateHashTree();
-        return *this;
-      }
-
-      template <template <typename> class iVecType>
-      Type& operator=(const ParameterList<iVecType>& PL) {
-        KeyList=PL.KeyList;
-        ValueList=PL.ValueList;
-        updateHashTree();
-        return *this;
-      }
-
-      void clear() {
-        KeyList.clear();
-        ValueList.clear();
-        PtrHashTree=NULL;
-      }
-
-      VecType<varParameterKey>& keylist() { return KeyList; }
-
-      const VecType<varParameterKey>& keylist() const { return KeyList; }
-
-      VecType<varParameterValue>& valuelist() { return ValueList; }
-
-      const VecType<varParameterValue>& valuelist() const { return ValueList; }
-
-      HashTreePtrType& ptrhashtree() { return PtrHashTree; }
-      
-      const HashTreePtrType& ptrhashtree() const { return PtrHashTree; }
-
-      void clearHashTree() {
-        if(PtrHashTree==NULL) return;
-        unsigned int n=PtrHashTree->size();
-        for(unsigned int i=0;i<n;++i) (*PtrHashTree)[i].clear();
-      }
-
-      void updateHashTree() {
-        assert(KeyList.size()==ValueList.size());
-        clearHashTree();
-        unsigned int n=KeyList.size();
-        for(unsigned int i=0;i<n;++i)
-          (*PtrHashTree)[(KeyList[i].hash()[0]&0xFFFF0000)>>16].insert(
-              KeyList[i],ValueList[i]);
-      }
-
-      const varParameterValue* get(const VectorBase<unsigned int>& idx) const {
-        varParameterKey tKey;
-        tKey.allocate(idx.size());
-        tKey.index()=idx;
-        tKey.BuildHash();
-        return (*PtrHashTree)[(tKey.hash()[0]&0xFFFF0000)>>16].get(tKey);
-      }
-
-      void allocate(const unsigned int N) {
-        myError("Not Available");
-      }
-
-    protected:
-
-      template <typename T>
-      void allocateList(varVector<T>& List,
-                        const unsigned int Size, const unsigned int N) {
-        List.allocate(N);
-        for(unsigned int i=0;i<N;++i) List[i].allocate(Size);
-      }
-
-      template <typename T>
-      void allocateList(varVector<T>& List,
-                        const VectorBase<unsigned int>& Size,
-                        const unsigned int N,
-                        const unsigned int off=uZero,
-                        const unsigned int step=uOne) {
-        assert(off+N*step<=Size.size());
-        List.allocate(N);
-        for(unsigned int i=0,n=off;i<N;++i,n+=step) List[i].allocate(Size[n]);
-      }
-
-    public:
-
-      void allocate(const unsigned int kSize, const unsigned int vSize,
-                    const unsigned int N) {
-        myError("Not Available");
-      }
-
-      void allocate(const unsigned int kSize,
-                    const VectorBase<unsigned int>& vSize,
-                    const unsigned int N,
-                    const unsigned int voff=uZero,
-                    const unsigned int vstep=uOne) {
-        myError("Not Available");
-      }
-
-      void allocate(const VectorBase<unsigned int>& kSize,
-                    const unsigned int vSize,
-                    const unsigned int N,
-                    const unsigned int koff=uZero,
-                    const unsigned int kstep=uOne) {
-        myError("Not Available");
-      }
-
-      void allocate(const VectorBase<unsigned int>& kSize,
-                    const VectorBase<unsigned int>& vSize,
-                    const unsigned int N,
-                    const unsigned int koff=uZero,
-                    const unsigned int kstep=uOne,
-                    const unsigned int voff=uZero,
-                    const unsigned int vstep=uOne) {
-        myError("Not Available");
-      }
-
-      void allocate(const unsigned int kSize,
-                    const VectorBase<unsigned int>& vSize) {
-        allocate(kSize,vSize,vSize.size());
-      }
-
-      void allocate(const VectorBase<unsigned int>& kSize,
-                    const unsigned int vSize) {
-        allocate(kSize,vSize,kSize.size());
-      }
-
-      void allocate(const VectorBase<unsigned int>& kSize,
-                    const VectorBase<unsigned int>& vSize) {
-        unsigned int n;
-        n=(kSize.size()<vSize.size()?kSize.size():vSize.size());
-        allocate(kSize,vSize,n);
-      }
-
-      template <template <typename> class iVecType>
-      void refer(const ParameterList<iVecType>& PL) {
-        myError("Not Available");
-      }
-
-      Type& CanonicalForm() { return *this; }
-
-      const Type& CanonicalForm() const { return *this; }
+    BTreeType& operator[](const unsigned int I) { return (*tree).hash[I]; }
+    const BTreeType& operator[](const unsigned int I) const {
+      return (*tree).hash[I];
+    }
 
   };
 
-  template <>
-  ParameterList<varVector>::~ParameterList() {
-    clearHashTree();
-    safe_delete(ptrhashtree());
-    for(unsigned int i=0;i<keylist().size();++i) {
-      keylist()[i].clear();
-      valuelist()[i].clear();
-    }
+  bool IsAvailable(const ParameterList& PL) { return IsAvailable(PL.tree); }
+
+  void updatetree(ParameterList& PL) {
+    assert(IsAvailable(PL));
+    for(unsigned int i=0;i<0xFFFFU;++i) release(PL[i]);
+    for(unsigned int i=0;i<PL.size;++i)
+      insert(PL[(PL.key[i].hash[0]&0xFFFF0000U)>>16],PL.key[i],PL.value[i]);
   }
 
-  template <>
-  void ParameterList<varVector>::clear() {
-    clearHashTree();
-    safe_delete(ptrhashtree());
-    for(unsigned int i=0;i<keylist().size();++i) {
-      keylist()[i].clear();
-      valuelist()[i].clear();
-    }
-    KeyList.clear();
-    ValueList.clear();
-    PtrHashTree=NULL;
-  }
-
-  template <>
-  void ParameterList<varVector>::allocate(const unsigned int N) {
-    keylist().allocate(N);
-    valuelist().allocate(N);
-    ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
-  }
-
-  template <>
-  void ParameterList<varVector>::allocate(
-      const unsigned int kSize, const unsigned int vSize,
-      const unsigned int N) {
-    allocateList(keylist(),kSize,N);
-    allocateList(valuelist(),vSize,N);
-    ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
-  }
-
-  template <>
-  void ParameterList<varVector>::allocate(
-      const unsigned int kSize, const VectorBase<unsigned int>& vSize,
-      const unsigned int N, const unsigned int voff, const unsigned int vstep){
-    allocateList(keylist(),kSize,N);
-    allocateList(valuelist(),vSize,N,voff,vstep);
-    ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
-  }
-
-  template <>
-  void ParameterList<varVector>::allocate(
-      const VectorBase<unsigned int>& kSize, const unsigned int vSize,
-      const unsigned int N, const unsigned int koff, const unsigned int kstep){
-    allocateList(keylist(),kSize,N,koff,kstep);
-    allocateList(valuelist(),vSize,N);
-    ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
-  }
-
-  template <>
-  void ParameterList<varVector>::allocate(
-      const VectorBase<unsigned int>& kSize,
-      const VectorBase<unsigned int>& vSize, const unsigned int N,
-      const unsigned int koff, const unsigned int kstep,
-      const unsigned int voff, const unsigned int vstep) {
-    allocateList(keylist(),kSize,N,koff,kstep);
-    allocateList(valuelist(),vSize,N,voff,vstep);
-    ptrhashtree()=new fixVector<TreeType,0xFFFFU>;
-  }
-
-  template <>
-  template <template <typename> class iVecType>
-  void ParameterList<refVector>::refer(const ParameterList<iVecType>& PL) {
-    keylist().refer(PL.keylist());
-    valuelist().refer(PL.valuelist());
-    ptrhashtree()=PL.ptrhashtree();
-  }
-
-  template <template <typename> class VecType>
-  istream& operator>>(istream& is, ParameterList<VecType>& PL) {
-    unsigned int n=PL.keylist().size();
+  void assign(ParameterList& dest, const ParameterList& src) {
+    assert(IsAvailable(dest));
+    assert(IsAvailable(src));
+    unsigned int n=(dest.size<src.size?dest.size:src.size);
     for(unsigned int i=0;i<n;++i) {
-      is>>PL.keylist()[i]>>PL.valuelist()[i];
-      PL.keylist()[i].BuildHash();
+      dest.key[i]=src.key[i];
+      dest.value[i]=src.value[i];
     }
-    PL.updateHashTree();
-    return is;
+    updatetree(dest);
+  }
+
+  void release(ParameterList& PL) {
+    if(IsAvailable(PL)) {
+      if(PL.state==Reference) {
+        PL.key=NULL;
+        PL.value=NULL;
+        PL.tree=NULL;
+      } else if(PL.state==Allocated) {
+        for(unsigned int i=0;i<0xFFFFU;++i) release(PL[i]);
+        safe_delete(PL.tree);
+        safe_delete_array(PL.key);
+        safe_delete_array(PL.value);
+      }
+    }
+    PL.size=0;
+    PL.state=Unused;
+  }
+
+  void allocate(ParameterList& PL,
+                const unsigned int ksize, const unsigned int vsize,
+                const unsigned int nitem) {
+    PL.key=new ParameterKey[nitem];
+    PL.value=new Vector<UniqueParameter>[nitem];
+    PL.size=nitem;
+    for(unsigned int i=0;i<nitem;++i) {
+      allocate(PL.key[i],ksize);
+      allocate(PL.value[i],vsize);
+    }
+    PL.tree=new ParameterList::HashTreeType;
+    PL.state=Allocated;
+  }
+
+  void allocate(ParameterList& PL,
+                const unsigned int *ksize, const unsigned int vsize,
+                const unsigned int nitem,
+                const unsigned int koff=uZero, const unsigned int kstep=uOne) {
+    PL.key=new ParameterKey[nitem];
+    PL.value=new Vector<UniqueParameter>[nitem];
+    PL.size=nitem;
+    unsigned int *pks=const_cast<unsigned int*>(ksize)+koff;
+    for(unsigned int i=0;i<nitem;++i,pks+=kstep) {
+      allocate(PL.key[i],*pks);
+      allocate(PL.value[i],vsize);
+    }
+    PL.tree=new ParameterList::HashTreeType;
+    PL.state=Allocated;
+  }
+
+  void allocate(ParameterList& PL,
+                const unsigned int ksize, const unsigned int *vsize,
+                const unsigned int nitem,
+                const unsigned int voff=uZero, const unsigned int vstep=uOne) {
+    PL.key=new ParameterKey[nitem];
+    PL.value=new Vector<UniqueParameter>[nitem];
+    PL.size=nitem;
+    unsigned int *pvs=const_cast<unsigned int*>(vsize)+voff;
+    for(unsigned int i=0;i<nitem;++i,pvs+=vstep) {
+      allocate(PL.key[i],ksize);
+      allocate(PL.value[i],*pvs);
+    }
+    PL.tree=new ParameterList::HashTreeType;
+    PL.state=Allocated;
+  }
+
+  void allocate(ParameterList& PL,
+                const unsigned int *ksize, const unsigned int *vsize,
+                const unsigned int nitem,
+                const unsigned int koff=uZero, const unsigned int kstep=uOne,
+                const unsigned int voff=uZero, const unsigned int vstep=uOne) {
+    PL.key=new ParameterKey[nitem];
+    PL.value=new Vector<UniqueParameter>[nitem];
+    PL.size=nitem;
+    unsigned int *pks=const_cast<unsigned int*>(ksize)+koff;
+    unsigned int *pvs=const_cast<unsigned int*>(vsize)+voff;
+    for(unsigned int i=0;i<nitem;++i,pks+=kstep,pvs+=vstep) {
+      allocate(PL.key[i],*pks);
+      allocate(PL.value[i],*pvs);
+    }
+    PL.tree=new ParameterList::HashTreeType;
+    PL.state=Allocated;
   }
 
 }

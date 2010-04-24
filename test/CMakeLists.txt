@@ -24,23 +24,13 @@ target_link_libraries (test-btree.run Base blas)
 add_executable (test-hash-func.run test-hash-func.cxx)
 target_link_libraries (test-hash-func.run Base)
 
-add_executable (test-var-parameter-key.run test-var-parameter-key.cxx)
-target_link_libraries (test-var-parameter-key.run blas Base)
+add_executable (test-parameter-key.run test-parameter-key.cxx)
+target_link_libraries (test-parameter-key.run blas Base)
 
-add_executable (test-fix-parameter-key.run test-fix-parameter-key.cxx)
-target_link_libraries (test-fix-parameter-key.run blas Base)
+add_executable (test-unique-parameter.run test-unique-parameter.cxx)
 
-add_executable (test-ref-parameter-key.run test-ref-parameter-key.cxx)
-target_link_libraries (test-ref-parameter-key.run blas Base)
-
-add_executable (test-var-parameter-list.run test-var-parameter-list.cxx)
-target_link_libraries (test-var-parameter-list.run blas Base)
-
-add_executable (test-fix-parameter-list.run test-fix-parameter-list.cxx)
-target_link_libraries (test-fix-parameter-list.run blas Base)
-
-add_executable (test-ref-parameter-list.run test-ref-parameter-list.cxx)
-target_link_libraries (test-ref-parameter-list.run blas Base)
+add_executable (test-parameter-list.run test-parameter-list.cxx)
+target_link_libraries (test-parameter-list.run blas Base)
 
 add_executable (test-var-free-space.run test-var-free-space.cxx)
 target_link_libraries (test-var-free-space.run blas Base)

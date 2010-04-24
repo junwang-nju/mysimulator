@@ -57,6 +57,7 @@ namespace std {
   void assign(unsigned int* dest, const unsigned int* src, const long ncopy,
               const int soff=iZero, const long sstep=lOne,
               const int doff=iZero, const long dstep=lOne) {
+    assert(sizeof(unsigned int)==sizeof(float));
     assert(dest!=NULL);
     assert(src!=NULL);
     scopy_(const_cast<long*>(&ncopy),
@@ -67,6 +68,11 @@ namespace std {
 
   template <typename T>
   void assign(T* dest, const T& value, const long ncopy,
+              const int doff=iZero, const long dstep=lOne) {
+    assign(dest,&value,ncopy,iZero,lZero,doff,dstep);
+  }
+
+  void assign(unsigned int* dest, const unsigned int value, const long ncopy,
               const int doff=iZero, const long dstep=lOne) {
     assign(dest,&value,ncopy,iZero,lZero,doff,dstep);
   }
@@ -127,8 +133,8 @@ namespace std {
     assert(dest!=NULL);
     assert(vfactor!=NULL);
     static char flag[]="LNN";
-    dtbmv_(flag,flag+1,flag+2,const_cast<long*>(&nscale),&lZero,
-           const_cast<double*>(vfactor)+voff,
+    dtbmv_(flag,flag+1,flag+2,const_cast<long*>(&nscale),
+           const_cast<long*>(&lZero), const_cast<double*>(vfactor)+voff,
            const_cast<long*>(&vstep),dest+doff,const_cast<long*>(&dstep));
   }
 
@@ -247,7 +253,7 @@ namespace std {
     assert(sfactor!=NULL);
     assert(vfactor!=NULL);
     static char flag[]="L";
-    dsbmv_(flag,const_cast<long*>(&nscaleshift),&lZero,
+    dsbmv_(flag,const_cast<long*>(&nscaleshift),const_cast<long*>(&lZero),
            const_cast<double*>(&factor), const_cast<double*>(sfactor)+soff,
            const_cast<long*>(&sstep), const_cast<double*>(vfactor)+voff,
            const_cast<long*>(&vstep),const_cast<double*>(&dfactor),dest+doff,
