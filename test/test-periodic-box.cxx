@@ -74,6 +74,11 @@ int main() {
     cout<<PB2.box[i]<<"\t\t"<<PB2.halfbox[i]<<"\t\t"<<PB2.edgeflag[i]<<endl;
   cout<<endl;
 
+  cout<<"Test -- check whether it is a geometry"<<endl;
+  cout<<IsGeometry(PB)<<endl;
+  cout<<IsGeometry(va)<<endl;
+  cout<<endl;
+
   return 1;
 }
 

@@ -36,6 +36,11 @@ int main() {
   cout<<v<<endl;
   cout<<endl;
 
+  cout<<"Test -- check whether it is a geometry"<<endl;
+  cout<<IsGeometry(FS)<<endl;
+  cout<<IsGeometry(va)<<endl;
+  cout<<endl;
+
   return 1;
 }
 

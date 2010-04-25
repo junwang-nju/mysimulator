@@ -3,7 +3,7 @@
 #define _Free_Space_H_
 
 #include "error-proc.h"
-#include "geometry-id.h"
+#include "geometry.h"
 #include "displacement-direct.h"
 
 namespace std {

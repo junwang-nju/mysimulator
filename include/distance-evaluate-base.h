@@ -18,34 +18,34 @@ namespace std {
     typedef DistanceEvalBase  Type;
 
     double* displacement;
-    double* distance;
+    double* distancesq;
     unsigned int size;
     unsigned int state;
 
     DistanceEvalBase()
-      : displacement(NULL), distance(NULL), size(0), state(Unused) {}
+      : displacement(NULL), distancesq(NULL), size(0), state(Unused) {}
     DistanceEvalBase(const Type&) {
       myError("Cannot create from Distance Evaluate Base");
     }
     Type& operator=(const Type& DEB) { assign(*this,DEB); return *this; }
     ~DistanceEvalBase() { release(*this); }
 
-    double& operator()() { return *distance; }
-    const double& operator()() const { return *distance; }
+    double& operator()() { return *distancesq; }
+    const double& operator()() const { return *distancesq; }
 
   };
 
   bool IsAvailable(const DistanceEvalBase& DEB) {
-    return IsAvailable(DEB.distance);
+    return IsAvailable(DEB.distancesq);
   }
 
   void release(DistanceEvalBase& DEB) {
     if(DEB.state==Allocated) {
       safe_delete_array(DEB.displacement);
-      safe_delete(DEB.distance);
+      safe_delete(DEB.distancesq);
     } else {
       DEB.displacement=NULL;
-      DEB.distance=NULL;
+      DEB.distancesq=NULL;
     }
     DEB.size=0;
     DEB.state=Unused;
@@ -62,7 +62,7 @@ namespace std {
   void allocate(DistanceEvalBase& DEB, const unsigned int dim) {
     release(DEB);
     DEB.displacement=new double[dim];
-    DEB.distance=new double;
+    DEB.distancesq=new double;
     DEB.size=dim;
     DEB.state=Allocated;
   }
@@ -70,10 +70,15 @@ namespace std {
   void refer(DistanceEvalBase& dest, const DistanceEvalBase& src) {
     release(dest);
     dest.displacement=src.displacement;
-    dest.distance=src.distance;
+    dest.distancesq=src.distancesq;
     dest.size=src.size;
     dest.state=Reference;
   }
+
+  template <typename T>
+  bool IsDistanceEvalMethod(const T&) { return false; }
+
+  bool IsDistanceEvalMethod(const DistanceEvalBase&) { return true; }
 
 }
 

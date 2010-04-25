@@ -48,6 +48,9 @@ target_link_libraries (test-distance-evaluate-base.run blas)
 add_executable (test-distance-evaluate-direct.run test-distance-evaluate-direct.cxx)
 target_link_libraries (test-distance-evaluate-direct.run blas)
 
+add_executable (test-distance-evaluate-with-storage.run test-distance-evaluate-with-storage.cxx)
+target_link_libraries (test-distance-evaluate-with-storage.run blas)
+
 add_executable (test-random-generator-mt-standard.run test-random-generator-mt-standard.cxx)
 target_link_libraries (test-random-generator-mt-standard.run Base)
 
@@ -71,9 +74,6 @@ target_link_libraries (test-fix-pair-storage.run blas Base)
 
 add_executable (test-ref-pair-storage.run test-ref-pair-storage.cxx)
 target_link_libraries (test-ref-pair-storage.run blas Base)
-
-add_executable (test-distance-evaluate-with-storage.run test-distance-evaluate-with-storage.cxx)
-target_link_libraries (test-distance-evaluate-with-storage.run blas)
 
 add_executable (test-ref-interaction-list.run test-ref-interaction-list.cxx)
 target_link_libraries (test-ref-interaction-list.run blas Base)

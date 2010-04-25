@@ -2,7 +2,7 @@
 #ifndef _Periodic_Box_H_
 #define _Periodic_Box_H_
 
-#include "geometry-id.h"
+#include "geometry.h"
 #include "displacement-direct.h"
 
 namespace std {
@@ -40,6 +40,7 @@ namespace std {
   const unsigned int PeriodicBox::TypeID=PeriodicBoxType;
 
   bool IsAvailable(const PeriodicBox& PB) { return IsAvailable(PB.box); }
+  bool IsGeometry(const PeriodicBox&) { return true; }
 
   void release(PeriodicBox& PB) {
     if(PB.state==Allocated) {

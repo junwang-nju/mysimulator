@@ -22,6 +22,8 @@ namespace std {
   void swap(unsigned int& a, unsigned int& b) { unsigned int t=a; a=b; b=t; }
   template <typename T>
   bool IsAvailable(const T* ptr) { return ptr!=NULL; }
+  template <typename T>
+  bool IsGeometry(const T&) { return false; }
 
 }
 

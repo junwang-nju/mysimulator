@@ -50,6 +50,11 @@ int main() {
   cout<<DEB2()<<endl;
   cout<<endl;
 
+  cout<<"Test -- check whether DistanceEval method"<<endl;
+  cout<<IsDistanceEvalMethod(DEB)<<endl;
+  cout<<IsDistanceEvalMethod(DEB.displacement)<<endl;
+  cout<<endl;
+
   return 1;
 }
 
