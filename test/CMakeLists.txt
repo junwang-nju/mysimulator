@@ -48,6 +48,12 @@ target_link_libraries (test-distance-evaluate-base.run blas)
 add_executable (test-distance-evaluate-direct.run test-distance-evaluate-direct.cxx)
 target_link_libraries (test-distance-evaluate-direct.run blas)
 
+add_executable (test-matrix-storage-item.run test-matrix-storage-item.cxx)
+target_link_libraries (test-matrix-storage-item.run blas)
+
+add_executable (test-matrix-storage.run test-matrix-storage.cxx)
+target_link_libraries (test-matrix-storage.run blas)
+
 add_executable (test-distance-evaluate-with-storage.run test-distance-evaluate-with-storage.cxx)
 target_link_libraries (test-distance-evaluate-with-storage.run blas)
 
@@ -65,15 +71,6 @@ target_link_libraries (test-random-generator-mt-sfmt-sse2.run Base blas)
 add_executable (test-random-generator-boxmuller-sse2.run test-random-generator-boxmuller.cxx)
 set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -malign-double -DHAVE_SSE2")
 target_link_libraries (test-random-generator-boxmuller-sse2.run Base blas)
-
-add_executable (test-var-pair-storage.run test-var-pair-storage.cxx)
-target_link_libraries (test-var-pair-storage.run blas Base)
-
-add_executable (test-fix-pair-storage.run test-fix-pair-storage.cxx)
-target_link_libraries (test-fix-pair-storage.run blas Base)
-
-add_executable (test-ref-pair-storage.run test-ref-pair-storage.cxx)
-target_link_libraries (test-ref-pair-storage.run blas Base)
 
 add_executable (test-ref-interaction-list.run test-ref-interaction-list.cxx)
 target_link_libraries (test-ref-interaction-list.run blas Base)

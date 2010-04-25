@@ -213,8 +213,10 @@ namespace std {
       M.property[MatrixLineSizeFirst]=1;
       M.property[MatrixLineSizeShift]=1;
     } else myError("Unknown Data Pattern for Triangle Matrix");
-    M.data=new T[(M.property[MatrixActualDimension]*
-                  (M.property[MatrixActualDimension]+1))/2];
+    M.property[MatrixNumberElement]=
+      (M.property[MatrixActualDimension]*(M.property[MatrixActualDimension]+1))
+      /2;
+    M.data=new T[M.property[MatrixNumberElement]];
     M.structure=new T*[M.property[MatrixActualDimension]];
     T* PtrData=M.data;
     for(unsigned int 

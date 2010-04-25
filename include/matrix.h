@@ -179,7 +179,7 @@ namespace std {
 
   template <typename T>
   void assign(Matrix<T>& destM, const Matrix<T>& srcM,
-              const unsigned int nrow, const unsigned int ncol,
+              const unsigned int nrow=uZero, const unsigned int ncol=uZero,
               const unsigned int sroff=uZero, const unsigned int srstep=uOne,
               const unsigned int scoff=uZero, const unsigned int scstep=uOne,
               const unsigned int droff=uZero, const unsigned int drstep=uOne,
@@ -196,8 +196,15 @@ namespace std {
         assert(srcM.property[MatrixActualTrianglePart]==
                destM.property[MatrixActualTrianglePart]);
     }
-    for(unsigned int i=0,sr=sroff,dr=droff;i<nrow;++i,sr+=srstep,dr+=drstep)
-    for(unsigned int j=0,sc=scoff,dc=dcoff;j<ncol;++j,sc+=scstep,dc+=dcstep)
+    unsigned int nr,nc;
+    if(nrow==0)
+      nr=(destM.property[MatrixNumberRow]<srcM.property[MatrixNumberRow]?
+          destM.property[MatrixNumberRow]:srcM.property[MatrixNumberRow]);
+    if(ncol==0)
+      nc=(destM.property[MatrixNumberColumn]<srcM.property[MatrixNumberColumn]?
+          destM.property[MatrixNumberColumn]:srcM.property[MatrixNumberColumn]);
+    for(unsigned int i=0,sr=sroff,dr=droff;i<nr;++i,sr+=srstep,dr+=drstep)
+    for(unsigned int j=0,sc=scoff,dc=dcoff;j<nc;++j,sc+=scstep,dc+=dcstep)
       destM(dr,dc)=srcM(sr,sc);
   }
 
