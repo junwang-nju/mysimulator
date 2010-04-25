@@ -42,14 +42,11 @@ target_link_libraries (test-distance-displacement-calc.run blas)
 add_executable (test-periodic-box.run test-periodic-box.cxx)
 target_link_libraries (test-periodic-box.run blas)
 
-add_executable (test-var-distance-evaluate-direct.run test-var-distance-evaluate-direct.cxx)
-target_link_libraries (test-var-distance-evaluate-direct.run blas Base)
+add_executable (test-distance-evaluate-base.run test-distance-evaluate-base.cxx)
+target_link_libraries (test-distance-evaluate-base.run blas)
 
-add_executable (test-ref-distance-evaluate-direct.run test-ref-distance-evaluate-direct.cxx)
-target_link_libraries (test-ref-distance-evaluate-direct.run blas Base)
-
-add_executable (test-fix-distance-evaluate-direct.run test-fix-distance-evaluate-direct.cxx)
-target_link_libraries (test-fix-distance-evaluate-direct.run blas Base)
+add_executable (test-distance-evaluate-direct.run test-distance-evaluate-direct.cxx)
+target_link_libraries (test-distance-evaluate-direct.run blas)
 
 add_executable (test-random-generator-mt-standard.run test-random-generator-mt-standard.cxx)
 target_link_libraries (test-random-generator-mt-standard.run Base)
@@ -75,14 +72,8 @@ target_link_libraries (test-fix-pair-storage.run blas Base)
 add_executable (test-ref-pair-storage.run test-ref-pair-storage.cxx)
 target_link_libraries (test-ref-pair-storage.run blas Base)
 
-add_executable (test-var-distance-evaluate-with-storage.run test-var-distance-evaluate-with-storage.cxx)
-target_link_libraries (test-var-distance-evaluate-with-storage.run blas Base)
-
-add_executable (test-fix-distance-evaluate-with-storage.run test-fix-distance-evaluate-with-storage.cxx)
-target_link_libraries (test-fix-distance-evaluate-with-storage.run blas Base)
-
-add_executable (test-var-interaction-list.run test-var-interaction-list.cxx)
-target_link_libraries (test-var-interaction-list.run blas Base)
+add_executable (test-distance-evaluate-with-storage.run test-distance-evaluate-with-storage.cxx)
+target_link_libraries (test-distance-evaluate-with-storage.run blas)
 
 add_executable (test-ref-interaction-list.run test-ref-interaction-list.cxx)
 target_link_libraries (test-ref-interaction-list.run blas Base)
