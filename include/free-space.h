@@ -2,67 +2,46 @@
 #ifndef _Free_Space_H_
 #define _Free_Space_H_
 
+#include "error-proc.h"
 #include "geometry-id.h"
 #include "displacement-direct.h"
-#include "var-vector.h"
-#include "ref-vector.h"
 
 namespace std {
 
-  template <template <typename> class VecType>
-  class FreeSpace {
+  struct FreeSpace {
 
-    public:
+    typedef FreeSpace Type;
 
-      typedef FreeSpace<VecType>  Type;
+    static const unsigned int TypeID;
 
-      static const unsigned int TypeID;
-
-      static const bool IsGeometry;
-
-      FreeSpace() {}
-
-      FreeSpace(const Type& FS) {
-        myError("Cannot create from free-space object");
-      }
-
-      ~FreeSpace() {}
-
-      Type& operator=(const Type& FS) { return *this; }
-
-      template <template <typename> class iVecType>
-      Type& operator=(const FreeSpace<iVecType>& FS) { return *this; }
-
-      void clear() {}
-
-      void allocate(const unsigned int Dim) { myError("Not Available"); }
-
-      template <template <typename> class iVecType>
-      void refer(const FreeSpace<iVecType>& FS) { myError("Not Available"); }
-
-      Type& CanonicalForm() { return *this; }
-
-      const Type& CanonicalForm() const { return *this; }
+    FreeSpace() {}
+    FreeSpace(const  Type&) { myError("Cannot create from Free Space"); }
+    Type& operator=(const Type&) { return *this; }
+    ~FreeSpace() {}
 
   };
 
-  template <template <typename> class VecType>
-  const unsigned int FreeSpace<VecType>::TypeID=FreeSpaceType;
+  const unsigned int FreeSpace::TypeID=FreeSpaceType;
 
-  template <template <typename> class VecType>
-  const bool FreeSpace<VecType>::IsGeometry=true;
+  bool IsAvailable(const FreeSpace&) { return true; }
+  bool IsGeometry(const FreeSpace&) { return true; }
 
-  template <>
-  void FreeSpace<varVector>::allocate(const unsigned int Dim) {}
+  void assign(FreeSpace& dest, const FreeSpace& src) {}
+  void release(FreeSpace&) {}
+  void allocate(FreeSpace&, const unsigned int dim) {}
+  void refer(FreeSpace& dest, const FreeSpace& src) {}
 
-  template <>
-  template <template <typename> class iVecType>
-  void FreeSpace<refVector>::refer(const FreeSpace<iVecType>& FS) {}
+  void DisplacementFunc(const double* va, const double* vb,
+                        const unsigned int dim, double* Dsp,
+                        const FreeSpace& FS,
+                        const int aoff=iZero, const long astep=lOne,
+                        const int boff=iZero, const long bstep=lOne,
+                        const int doff=iZero, const long dstep=lOne) {
+    DisplacementFunc(va,vb,dim,Dsp,aoff,astep,boff,bstep,doff,dstep);
+  }
 
-  template <template <typename> class VecType>
-  void DisplacementFunc(const VectorBase<double>& va,
-                        const VectorBase<double>& vb, VectorBase<double>& Dsp,
-                        const FreeSpace<VecType>& FS) {
+  void DisplacementFunc(const Vector<double>& va, const Vector<double>& vb,
+                        Vector<double>& Dsp, const FreeSpace& FS) {
     DisplacementFunc(va,vb,Dsp);
   }
 

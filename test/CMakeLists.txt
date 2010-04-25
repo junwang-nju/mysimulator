@@ -32,14 +32,8 @@ add_executable (test-unique-parameter.run test-unique-parameter.cxx)
 add_executable (test-parameter-list.run test-parameter-list.cxx)
 target_link_libraries (test-parameter-list.run blas Base)
 
-add_executable (test-var-free-space.run test-var-free-space.cxx)
-target_link_libraries (test-var-free-space.run blas Base)
-
-add_executable (test-fix-free-space.run test-fix-free-space.cxx)
-target_link_libraries (test-fix-free-space.run blas Base)
-
-add_executable (test-ref-free-space.run test-ref-free-space.cxx)
-target_link_libraries (test-ref-free-space.run blas Base)
+add_executable (test-free-space.run test-free-space.cxx)
+target_link_libraries (test-free-space.run blas Base)
 
 add_executable(test-chain.run test-chain.cxx)
 target_link_libraries (test-chain.run Base)
