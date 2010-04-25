@@ -4,7 +4,7 @@
 
 #include "storage-state-name.h"
 #include "error-proc.h"
-#include "vector-impl.h"
+#include "vector.h"
 
 namespace std {
 
@@ -20,10 +20,12 @@ namespace std {
     double* displacement;
     double* distancesq;
     unsigned int size;
+    Vector<double> displacementvec;
     unsigned int state;
 
     DistanceEvalBase()
-      : displacement(NULL), distancesq(NULL), size(0), state(Unused) {}
+      : displacement(NULL), distancesq(NULL), size(0),
+        displacementvec(), state(Unused) {}
     DistanceEvalBase(const Type&) {
       myError("Cannot create from Distance Evaluate Base");
     }
@@ -47,6 +49,7 @@ namespace std {
       DEB.displacement=NULL;
       DEB.distancesq=NULL;
     }
+    release(DEB.displacementvec);
     DEB.size=0;
     DEB.state=Unused;
   }
@@ -64,6 +67,9 @@ namespace std {
     DEB.displacement=new double[dim];
     DEB.distancesq=new double;
     DEB.size=dim;
+    DEB.displacementvec()=DEB.displacement;
+    DEB.displacementvec.size=DEB.size;
+    DEB.displacementvec.state=Reference;
     DEB.state=Allocated;
   }
 
@@ -72,6 +78,9 @@ namespace std {
     dest.displacement=src.displacement;
     dest.distancesq=src.distancesq;
     dest.size=src.size;
+    dest.displacementvec()=dest.displacement;
+    dest.displacementvec.size=dest.size;
+    dest.displacementvec.state=Reference;
     dest.state=Reference;
   }
 

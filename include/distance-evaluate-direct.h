@@ -7,19 +7,12 @@
 
 namespace std {
 
-  struct DistanceEvalDirect;
-
-  void release(DistanceEvalDirect&);
-  void assign(DistanceEvalDirect&, const DistanceEvalDirect&);
-
   struct DistanceEvalDirect : public DistanceEvalBase {
 
     typedef DistanceEvalDirect  Type;
     typedef DistanceEvalBase    ParentType;
 
-    Vector<double> displacementvec;
-
-    DistanceEvalDirect() : ParentType(), displacementvec() {}
+    DistanceEvalDirect() : ParentType() {}
     DistanceEvalDirect(const Type&) {
       myError("Cannot create from Distance Evaluate Direct");
     }
@@ -29,31 +22,6 @@ namespace std {
   };
 
   bool IsDistanceEvalMethod(const DistanceEvalDirect&) { return true; }
-
-  void release(DistanceEvalDirect& DED) {
-    release(DED.displacementvec);
-    release(static_cast<DistanceEvalBase&>(DED));
-  }
-
-  void assign(DistanceEvalDirect& dest, const DistanceEvalDirect& src) {
-    assign(static_cast<DistanceEvalBase&>(dest),
-           static_cast<const DistanceEvalBase&>(src));
-  }
-
-  void allocate(DistanceEvalDirect& DED, const unsigned int dim) {
-    allocate(static_cast<DistanceEvalBase&>(DED),dim);
-    DED.displacementvec()=DED.displacement;
-    DED.displacementvec.size=DED.size;
-    DED.displacementvec.state=Reference;
-  }
-
-  void refer(DistanceEvalDirect& dest, const DistanceEvalDirect& src) {
-    refer(static_cast<DistanceEvalBase&>(dest),
-          static_cast<const DistanceEvalBase&>(src));
-    dest.displacementvec()=dest.displacement;
-    dest.displacementvec.size=dest.size;
-    dest.displacementvec.state=Reference;
-  }
 
   void update(DistanceEvalDirect&) {}
 

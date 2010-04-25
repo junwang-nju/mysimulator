@@ -27,9 +27,7 @@ int main() {
   DistanceEvalBase DEB2;
   allocate(DEB2,4);
   assign(DEB2,DEB);
-  for(unsigned int i=0;i<DEB2.size;++i)
-    cout<<DEB2.displacement[i]<<"\t";
-  cout<<endl;
+  cout<<DEB2.displacementvec<<endl;
   cout<<DEB2()<<endl;
   cout<<endl;
 
@@ -44,9 +42,7 @@ int main() {
 
   cout<<"Test -- refer operation"<<endl;
   refer(DEB2,DEB);
-  for(unsigned int i=0;i<DEB2.size;++i)
-    cout<<DEB2.displacement[i]<<"\t";
-  cout<<endl;
+  cout<<DEB2.displacementvec<<endl;
   cout<<DEB2()<<endl;
   cout<<endl;
 
