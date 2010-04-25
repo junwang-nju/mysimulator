@@ -1,158 +1,168 @@
 
-#ifndef _Periodi_Box_H_
-#define _Periodi_Box_H_
+#ifndef _Periodic_Box_H_
+#define _Periodic_Box_H_
 
 #include "geometry-id.h"
 #include "displacement-direct.h"
-#include "var-vector.h"
-#include "ref-vector.h"
 
 namespace std {
 
-  enum PeriodicityState {
-    PeriodicON=1,
-    PeriodicOFF=0
+  struct PeriodicBox;
+
+  void assign(PeriodicBox&, const PeriodicBox&);
+  void release(PeriodicBox&);
+
+  enum PeriodicStateName {
+    HavePeriodic=1,
+    NoPeriodic=0
   };
 
-  template <template <typename> class VecType>
-  class PeriodicBox {
+  struct PeriodicBox {
 
-    protected:
+    static const unsigned int TypeID;
 
-      VecType<double> Box;
+    double* box;
+    double* halfbox;
+    unsigned int* edgeflag;
+    unsigned int size;
+    unsigned int state;
 
-      VecType<unsigned int> EdgeFlag;
+    typedef PeriodicBox Type;
 
-      VecType<double> halfBox;
-
-    public:
-
-      static const unsigned int TypeID;
-
-      typedef PeriodicBox<VecType>  Type;
-
-      PeriodicBox() : Box(), EdgeFlag(), halfBox() {}
-
-      PeriodicBox(const unsigned int Dim)
-        : Box(), EdgeFlag(), halfBox() {
-        allocate(Dim);
-      }
-
-      PeriodicBox(const Type& PBB) {
-        myError("Cannot create from periodic box base");
-      }
-
-      ~PeriodicBox() { clear(); }
-
-      void clear() { Box.clear(); EdgeFlag.clear(); halfBox.clear(); }
-
-    protected:
-
-      void update() { halfBox=Box;  halfBox.scale(0.5); }
-
-    public:
-
-      Type& operator=(const Type& PBB) {
-        Box=PBB.Box;
-        EdgeFlag=PBB.EdgeFlag;
-        update();
-        return *this;
-      }
-
-      template <template <typename> class iVecType>
-      Type& operator=(const PeriodicBox<iVecType>& PB) {
-        Box=PB.Box;
-        EdgeFlag=PB.EdgeFlag;
-        update();
-        return *this;
-      }
-
-      const VecType<double>& box() const { return Box; }
-
-      VecType<double>& box() { return Box; }
-
-      const VecType<double>& hfbox() const { return halfBox; }
-
-      VecType<double>& hfbox() { return halfBox; }
-
-      const VecType<unsigned int>& flag() const { return EdgeFlag; }
-
-      VecType<unsigned int>& flag() { return EdgeFlag; }
-
-      void Set(const VectorBase<double>& pbBox,
-               const VectorBase<unsigned int>& fgBox) {
-        Box=pbBox;
-        EdgeFlag=fgBox;
-        update();
-      }
-
-      void Set(const VectorBase<double>& pbBox,
-               const unsigned int fg=PeriodicON) {
-        Box=pbBox;
-        EdgeFlag=fg;
-        update();
-      }
-
-      void shift2main(VectorBase<double>& v) const {
-        assert(v.size()>=Box.size());
-        double tmd,bmd,bhd;
-        unsigned int n=Box.size();
-        for(unsigned int i=0;i<n;++i) {
-          if(EdgeFlag[i]==0)  continue;
-          tmd=v[i];
-          bmd=Box[i];
-          bhd=halfBox[i];
-          while(tmd<-bhd)   tmd+=bmd;
-          while(tmd>=bhd)   tmd-=bmd;
-          v[i]=tmd;
-        }
-      }
-
-      void allocate(const unsigned int Dim) { myError("Not Available"); }
-
-      template <template <typename> class iVecType>
-      void refer(const PeriodicBox<iVecType>& PB) {
-        refer(PB,0U,PB.box().size());
-      }
-
-      template <template <typename> class iVecType>
-      void refer(const PeriodicBox<iVecType>& PB, const unsigned int off,
-                 const unsigned int size) {
-        myError("Not Available");
-      }
-
-      Type& CanonicalForm() { return *this; }
-
-      const Type& CanonicalForm() const { return *this; }
+    PeriodicBox()
+      : box(NULL), halfbox(NULL), edgeflag(NULL), size(0), state(Unused) {}
+    PeriodicBox(const Type&) { myError("Cannot create from Periodic Box"); }
+    Type& operator=(const Type& PB) { assign(*this,PB); return *this; }
+    ~PeriodicBox() { release(*this); }
 
   };
 
-  template <template <typename> class VecType>
-  const unsigned int PeriodicBox<VecType>::TypeID=PeriodicBoxType;
+  const unsigned int PeriodicBox::TypeID=PeriodicBoxType;
 
-  template <>
-  void PeriodicBox<varVector>::allocate(const unsigned int Dim) {
-    box().allocate(Dim);
-    flag().allocate(Dim);
-    hfbox().allocate(Dim);
+  bool IsAvailable(const PeriodicBox& PB) { return IsAvailable(PB.box); }
+
+  void release(PeriodicBox& PB) {
+    if(PB.state==Allocated) {
+      safe_delete_array(PB.box);
+      safe_delete_array(PB.halfbox);
+      safe_delete_array(PB.edgeflag);
+    } else {
+      PB.box=NULL;
+      PB.halfbox=NULL;
+      PB.edgeflag=NULL;
+    }
+    PB.size=0;
+    PB.state=Unused;
   }
 
-  template <>
-  template <template <typename> class iVecType>
-  void PeriodicBox<refVector>::refer(const PeriodicBox<iVecType>& PB,
-                                     const unsigned int off,
-                                     const unsigned int size) {
-    box().refer(PB.box(),off,size);
-    flag().refer(PB.flag(),off,size);
-    hfbox().refer(PB.hfbox(),off,size);
+  void assign(PeriodicBox& dest, const PeriodicBox& src) {
+    assert(IsAvailable(dest));
+    assert(IsAvailable(src));
+    unsigned int n=(dest.size<src.size?dest.size:src.size);
+    assign(dest.box,src.box,n);
+    assign(dest.halfbox,src.halfbox,n);
+    assign(dest.edgeflag,src.edgeflag,n);
   }
 
-  template <template <typename> class VecType>
-  void DisplacementFunc(const VectorBase<double>& va,
-                        const VectorBase<double>& vb, VectorBase<double>& v,
-                        const PeriodicBox<VecType>& PB) {
-    DisplacementFunc(va,vb,v);
-    PB.shift2main(v);
+  void allocate(PeriodicBox& PB,const unsigned int dim) {
+    release(PB);
+    PB.box=new double[dim];
+    PB.halfbox=new double[dim];
+    PB.edgeflag=new unsigned int[dim];
+    PB.size=dim;
+    PB.state=Allocated;
+  }
+
+  void refer(PeriodicBox& dest, const PeriodicBox& src) {
+    assert(IsAvailable(src));
+    release(dest);
+    dest.box=src.box;
+    dest.halfbox=src.halfbox;
+    dest.edgeflag=src.edgeflag;
+    dest.size=src.size;
+    dest.state=Reference;
+  }
+
+  void update(PeriodicBox& PB) {
+    assert(IsAvailable(PB));
+    assign(PB.halfbox,PB.box,PB.size);
+    scale(PB.halfbox,0.5,PB.size);
+  }
+
+  void set(PeriodicBox& PB,
+           const double* box, const unsigned int* flag, const unsigned int m,
+           const int boff=iZero, const long bstep=lOne,
+           const int foff=iZero, const long fstep=lOne) {
+    assert(IsAvailable(PB));
+    assert(IsAvailable(box));
+    assert(IsAvailable(flag));
+    unsigned int n=(m<PB.size?m:PB.size);
+    assign(PB.box,box,n,boff,bstep);
+    assign(PB.edgeflag,flag,n,foff,fstep);
+    update(PB);
+  }
+
+  void set(PeriodicBox& PB,
+           const Vector<double>& box, const Vector<unsigned int>& flag) {
+    unsigned int m=(box.size<flag.size?box.size:flag.size);
+    set(PB,box(),flag(),m);
+  }
+
+  void set(PeriodicBox& PB,
+           const double* box, const unsigned int m,
+           const unsigned int fg=HavePeriodic,
+           const int boff=iZero, const long bstep=lOne) {
+    assert(IsAvailable(PB));
+    assert(IsAvailable(box));
+    unsigned int n=(m<PB.size?m:PB.size);
+    assign(PB.box,box,n,boff,bstep);
+    assign(PB.edgeflag,fg,n);
+    update(PB);
+  }
+
+  void set(PeriodicBox& PB,
+           const Vector<double>& box, const unsigned int fg=HavePeriodic) {
+    set(PB,box(),box.size,fg);
+  }
+
+  void Compress2MainRegion(const PeriodicBox& PB, double* v,
+                           const unsigned int vdim,
+                           const unsigned int voff=uZero,
+                           const unsigned int vstep=uOne) {
+    assert(IsAvailable(PB));
+    assert(IsAvailable(v));
+    double bmd, bhd;
+    unsigned int n=(PB.size<vdim?PB.size:vdim);
+    double *pv=v+voff;
+    for(unsigned int i=0;i<n;++i,pv+=vstep) {
+      bhd=PB.halfbox[i];
+      bmd=PB.box[i];
+      while(*pv<-bhd) *pv+=bmd;
+      while(*pv>=bhd) *pv-=bmd;
+    }
+  }
+
+  void Compress2MainRegion(const PeriodicBox& PB, Vector<double>& v) {
+    Compress2MainRegion(PB,v(),v.size);
+  }
+
+  void DisplacementFunc(const double* va, const double* vb,
+                        const unsigned int dim, double* Dsp,
+                        const PeriodicBox& PB,
+                        const int aoff=iZero, const long astep=lOne,
+                        const int boff=iZero, const long bstep=lOne,
+                        const int doff=iZero, const long dstep=lOne) {
+    unsigned int n=(dim<PB.size?dim:PB.size);
+    DisplacementFunc(va,vb,n,Dsp,aoff,astep,boff,bstep,doff,dstep);
+    Compress2MainRegion(PB,Dsp,n,doff,dstep);
+  }
+
+  void DisplacementFunc(const Vector<double>& va, const Vector<double>& vb,
+                        Vector<double>& Dsp, const PeriodicBox& PB) {
+    unsigned int m;
+    m=(va.size<vb.size?va.size:vb.size);
+    m=(m<Dsp.size?m:Dsp.size);
+    DisplacementFunc(va(),vb(),m,Dsp(),PB);
   }
 
 }
