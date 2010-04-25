@@ -43,6 +43,12 @@ int main() {
   release(K2);
   cout<<endl;
 
+  cout<<"Test - availability check"<<endl;
+  cout<<IsAvailable(K)<<endl;
+  release(K);
+  cout<<IsAvailable(K)<<endl;
+  cout<<endl;
+
   return 1;
 }
 

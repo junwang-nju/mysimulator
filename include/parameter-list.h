@@ -69,6 +69,10 @@ namespace std {
       } else if(PL.state==Allocated) {
         for(unsigned int i=0;i<0xFFFFU;++i) release(PL[i]);
         safe_delete(PL.tree);
+        for(unsigned int i=0;i<PL.size;++i) {
+          release(PL.key[i]);
+          release(PL.value[i]);
+        }
         safe_delete_array(PL.key);
         safe_delete_array(PL.value);
       }
@@ -139,6 +143,33 @@ namespace std {
     }
     PL.tree=new ParameterList::HashTreeType;
     PL.state=Allocated;
+  }
+
+  void refer(ParameterList& dest, const ParameterList& src) {
+    assert(IsAvailable(src));
+    release(dest);
+    dest.key=src.key;
+    dest.value=src.value;
+    dest.size=src.size;
+    dest.tree=src.tree;
+    dest.state=Reference;
+  }
+
+  const Vector<UniqueParameter>*
+    get(ParameterList& PL, const unsigned int* idx, const unsigned int nidx,
+                           const int ioff=iZero, const long istep=lOne) {
+    static ParameterKey K;
+    allocate(K,nidx);
+    assign(K.index,idx,nidx,ioff,istep);
+    buildhash(K);
+    return get(PL[(K.hash[0]&0xFFFF0000U)>>16],K);
+  }
+
+  istream& operator>>(istream& is, ParameterList& PL) {
+    assert(IsAvailable(PL));
+    for(unsigned int i=0;i<PL.size;++i) is>>PL.key[i]>>PL.value[i];
+    updatetree(PL);
+    return is;
   }
 
 }

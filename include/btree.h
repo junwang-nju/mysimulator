@@ -22,6 +22,11 @@ namespace std {
   };
 
   template <typename KeyType, typename ValueType>
+  bool IsAvailable(const BTree<KeyType,ValueType>& BT) {
+    return IsAvailable(BT.root);
+  }
+
+  template <typename KeyType, typename ValueType>
   void release(BTree<KeyType,ValueType>& BT) {
     BTreeNode<KeyType,ValueType> *present, *tofree;
     present=BT.root;
@@ -86,6 +91,7 @@ namespace std {
       if(cmp==0) {
         if(vflag==Reference) present->value=const_cast<ValueType*>(&value);
         else if(vflag==Allocated) {
+          myWarn("Same Key met!");
           present->value=new ValueType;
           *(present->value)=value;
         } else myError("Imporoper Value Flag");

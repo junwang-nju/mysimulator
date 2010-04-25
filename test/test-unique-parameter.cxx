@@ -31,6 +31,39 @@ int main() {
   cout<<up2.ull<<endl;
   cout<<endl;
 
+  cout<<"Test -- read from istream"<<endl;
+  cin>>up;
+  cout<<up<<endl;
+  cout<<"\t"<<up.d<<endl;
+  cout<<"\t"<<up.u<<endl;
+  cout<<"\t"<<up.i<<endl;
+  cout<<"\t"<<up.ptr<<endl;
+  cin>>up;
+  cout<<up<<endl;
+  cout<<"\t"<<up.d<<endl;
+  cout<<"\t"<<up.u<<endl;
+  cout<<"\t"<<up.i<<endl;
+  cout<<"\t"<<up.ptr<<endl;
+  cin>>up;
+  cout<<up<<endl;
+  cout<<"\t"<<up.d<<endl;
+  cout<<"\t"<<up.u<<endl;
+  cout<<"\t"<<up.i<<endl;
+  cout<<"\t"<<up.ptr<<endl;
+  cin>>up;
+  cout<<up<<endl;
+  cout<<"\t"<<up.d<<endl;
+  cout<<"\t"<<up.u<<endl;
+  cout<<"\t"<<up.i<<endl;
+  cout<<"\t"<<up.ptr<<endl;
+  cin>>up;
+  cout<<up<<endl;
+  cout<<"\t"<<up.d<<endl;
+  cout<<"\t"<<up.u<<endl;
+  cout<<"\t"<<up.i<<endl;
+  cout<<"\t"<<up.ptr<<endl;
+  cout<<endl;
+
   return 1;
 }
 
