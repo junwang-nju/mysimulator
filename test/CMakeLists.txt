@@ -4,22 +4,19 @@ link_directories (${TEST_SOURCE_DIR}/lib)
 add_definitions (-Wall)
 
 add_executable (test-vector.run test-vector.cxx)
-target_link_libraries (test-vector.run blas Base)
+target_link_libraries (test-vector.run blas)
 
 add_executable (test-matrix.run test-matrix.cxx)
-target_link_libraries (test-matrix.run blas Base)
+target_link_libraries (test-matrix.run blas)
 
 add_executable (test-property-list.run test-property-list.cxx)
-target_link_libraries (test-property-list.run blas Base)
+target_link_libraries (test-property-list.run blas)
 
 add_executable (test-util.run test-util.cxx)
-target_link_libraries (test-util.run Base)
 
 add_executable (test-btree-node.run test-btree-node.cxx)
-target_link_libraries (test-btree-node.run Base blas)
 
 add_executable (test-btree.run test-btree.cxx)
-target_link_libraries (test-btree.run Base blas)
 
 add_executable (test-hash-func.run test-hash-func.cxx)
 target_link_libraries (test-hash-func.run Base)
@@ -33,13 +30,11 @@ add_executable (test-parameter-list.run test-parameter-list.cxx)
 target_link_libraries (test-parameter-list.run blas Base)
 
 add_executable (test-free-space.run test-free-space.cxx)
-target_link_libraries (test-free-space.run blas Base)
+target_link_libraries (test-free-space.run blas)
 
 add_executable(test-chain.run test-chain.cxx)
-target_link_libraries (test-chain.run Base)
 
 add_executable(test-chain-node.run test-chain-node.cxx)
-target_link_libraries (test-chain-node.run Base)
 
 add_executable(test-distance-displacement-calc.run test-distance-displacement-calc.cxx)
 target_link_libraries (test-distance-displacement-calc.run blas Base)

@@ -4,48 +4,58 @@
 using namespace std;
 
 int main() {
+  cout<<"Test -- initialize"<<endl;
   Chain<int> C;
-
-  cout<<"Test -- append with content"<<endl;
-  C.append(2);
-  C.append(5);
   cout<<endl;
 
-  cout<<"Test -- access chain through root and head"<<endl;
-  ChainNode<int>* nd=const_cast<ChainNode<int>*>(&(C.root()));
-  while((nd=nd->child())!=&(C.head())) { cout<<nd->content()<<endl; }
+  cout<<"Test -- allocate"<<endl;
+  allocate(C);
+  cout<<C.root->child->parent<<endl;
   cout<<endl;
 
-  cout<<"Test -- append with node"<<endl;
-  ChainNode<int> nda;
-  nda.content()=103;
-  C.append(nda);
-  nd=const_cast<ChainNode<int>*>(&(C.root()));
-  while((nd=nd->child())!=&(C.head())) { cout<<nd->content()<<endl; }
+  cout<<"Test -- add items (node and constant)"<<endl;
+  ChainNode<int> nd;
+  allocate(nd);
+  nd()=18;
+  append(C,nd);
+  append(C,58);
+  append(C,79,Allocated);
+  cout<<*(C.root->child->content)<<endl;
+  cout<<*(C.root->child->child->content)<<endl;
+  cout<<*(C.root->child->child->child->content)<<endl;
   cout<<endl;
 
-  cout<<"Test -- copy another chain"<<endl;
-  Chain<int> C1;
-  C1=C;
-  nd=const_cast<ChainNode<int>*>(&(C1.root()));
-  while((nd=nd->child())!=&(C1.head())) { cout<<nd->content()<<endl; }
+  cout<<"Test -- copy from another Chain"<<endl;
+  Chain<int> C2;
+  assign(C2,C);
+  cout<<*(C2.root->child->content)<<endl;
+  cout<<*(C2.root->child->child->content)<<endl;
+  cout<<*(C2.root->child->child->child->content)<<endl;
+  cout<<endl;
+
+  cout<<"Test -- check whether inside Chain"<<endl;
+  cout<<In(C2,nd)<<endl;
+  cout<<In(C,nd)<<endl;
   cout<<endl;
 
   cout<<"Test -- remove a node"<<endl;
-  nd=const_cast<ChainNode<int>*>(C.root().child());
-  C.remove(nd);
-  nd=const_cast<ChainNode<int>*>(&(C.root()));
-  while((nd=nd->child())!=&(C.head())) { cout<<nd->content()<<endl; }
+  remove(C2,C2.root->child->child);
+  cout<<*(C2.root->child->content)<<endl;
+  cout<<*(C2.root->child->child->content)<<endl;
   cout<<endl;
 
-  cout<<"Test -- clear a chain"<<endl;
-  C.clear();
-  nd=const_cast<ChainNode<int>*>(&(C.root()));
-  while((nd=nd->child())!=&(C.head())) { cout<<nd->content()<<endl; }
-  cout<<"============"<<endl;
-  nd=const_cast<ChainNode<int>*>(&(C1.root()));
-  while((nd=nd->child())!=&(C1.head())) { cout<<nd->content()<<endl; }
+  cout<<"Test -- release"<<endl;
+  release(C2);
+  cout<<C2.root<<"\t"<<C2.head<<endl;
+  cout<<endl;
+
+  cout<<"Test -- refer operation"<<endl;
+  refer(C2,C);
+  cout<<*(C2.root->child->content)<<endl;
+  cout<<*(C2.root->child->child->content)<<endl;
+  cout<<*(C2.root->child->child->child->content)<<endl;
   cout<<endl;
 
   return 1;
 }
+

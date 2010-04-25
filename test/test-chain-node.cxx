@@ -4,54 +4,67 @@
 using namespace std;
 
 int main() {
-  ChainNode<int> nd,ndp,ndc;
-
-  cout<<"Test -- assign of content"<<endl;
-  nd.content()=1;
-  ndp.content()=0;
-  ndc.content()=2;
+  cout<<"Test -- initialize"<<endl;
+  ChainNode<int> CN;
   cout<<endl;
 
-  cout<<"Test -- assign of parent and child pointer"<<endl;
-  nd.parent()=&ndp; ndp.child()=&nd;
-  nd.child()=&ndc;  ndc.parent()=&nd;
+  cout<<"Test -- allocate"<<endl;
+  allocate(CN);
+  CN()=5;
   cout<<endl;
 
-  cout<<"Test -- output of content"<<endl;
-  cout<<nd.content()<<endl;
+  cout<<"Test -- assign external parent and child"<<endl;
+  ChainNode<int> CNp,CNc;
+  allocate(CNp);
+  allocate(CNc);
+  CNp()=4;
+  CNc()=6;
+  CN.parent=&CNp;
+  CN.child=&CNc;
+  CN.parentstate=Reference;
+  CN.childstate=Reference;
+  CNp.child=&CN;
+  CNp.childstate=Reference;
+  CNc.parent=&CN;
+  CNc.parentstate=Reference;
+  cout<<*(CN.parent->child->child->content)<<endl;
   cout<<endl;
 
-  cout<<"Test -- output of parent/child content"<<endl;
-  cout<<nd.parent()->content()<<endl;
-  cout<<nd.child()->content()<<endl;
+  cout<<"Test -- content access"<<endl;
+  cout<<CNp()<<endl;
   cout<<endl;
 
-  cout<<"Test -- assign alloc flag"<<endl;
-  nd.SetChainAllocFlag(true);
-  cout<<nd.IsAllocByChain()<<endl;
+  cout<<"Test -- insert a parent node"<<endl;
+  ChainNode<int> CNa;
+  allocate(CNa);
+  CNa()=34;
+  add_parent(CNc,CNa);
+  cout<<*(CN.child->content)<<"\t"<<*(CN.child->parent->content)<<endl;
+  cout<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<endl;
   cout<<endl;
 
-  cout<<"Test -- add node before existed node"<<endl;
-  ChainNode<int> ndn;
-  ndn.content()=4;
-  nd.add_before(ndn);
-  cout<<nd.parent()->content()<<endl;
-  cout<<ndn.child()->content()<<endl;
+  cout<<"Test -- insert a content"<<endl;
+  add_parent(CNc,45);
+  cout<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<endl;
+  cout<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<endl;
+  add_parent(*(CNc.parent),85,Allocated);
+  cout<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<endl;
+  cout<<*(CNc.parent->parent->content)<<"\t"<<*(CNc.parent->parent->child->content)<<endl;
   cout<<endl;
 
-  cout<<"Test -- remove node"<<endl;
-  ndn.remove_self();
-  cout<<nd.parent()->content()<<endl;
+  cout<<"Test -- release node"<<endl;
+  release(*(CNc.parent));
+  cout<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<endl;
+  cout<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<endl;
+  cout<<*(CNc.parent->parent->content)<<"\t"<<*(CNc.parent->parent->child->content)<<endl;
   cout<<endl;
 
-  cout<<"Test -- clear node"<<endl;
-  nd.clear();
-  cout<<nd.parent()<<endl;
+  cout<<"Test -- availability"<<endl;
+  cout<<IsAvailable(CN)<<endl;
+  release(CNp);
+  cout<<IsAvailable(CNp)<<endl;
   cout<<endl;
 
-  cout<<"Test -- assign node"<<endl;
-  nd=ndn;
-  cout<<nd.content()<<endl;
-  cout<<endl;
   return 1;
 }
+

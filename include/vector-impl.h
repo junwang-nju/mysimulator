@@ -5,13 +5,11 @@
 #include "constant.h"
 #include "blas.h"
 #include "memory.h"
+#include "util.h"
 #include <cassert>
 #include <cstdlib>
 
 namespace std {
-
-  template <typename T>
-  bool IsAvailable(const T* ptr) { return ptr!=NULL; }
 
   template <typename T>
   void allocate(T* &dest, const unsigned int N) {

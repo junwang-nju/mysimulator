@@ -3,9 +3,9 @@
 #define _Parameter_Key_H_
 
 #include "hash-func.h"
-#include "vector-impl.h"
 #include "storage-state-name.h"
 #include "error-proc.h"
+#include "vector-impl.h"
 
 namespace std {
 

@@ -5,7 +5,6 @@
 #include "vector-impl.h"
 #include "storage-state-name.h"
 #include "error-proc.h"
-#include "util.h"
 
 namespace std {
 

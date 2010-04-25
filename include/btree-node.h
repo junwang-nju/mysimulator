@@ -2,7 +2,7 @@
 #ifndef _Binary_Tree_Node_H_
 #define _Binary_Tree_Node_H_
 
-#include "vector-impl.h"
+#include "util.h"
 #include "storage-state-name.h"
 #include "error-proc.h"
 #include "memory.h"
