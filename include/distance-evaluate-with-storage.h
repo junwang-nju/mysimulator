@@ -65,9 +65,10 @@ namespace std {
                 const int boff=iZero, const long bstep=lOne) {
     if(IsUpToDate(DEW.distsqmat,aidx,bidx)) {
       DEW()=DEW.distsqmat(aidx,bidx)();
-      DisplacementFunc();
+      DisplacementFunc(va,vb,dim,DEW.displacement,Geo,aoff,astep,boff,bstep);
     } else {
-      DistanceDisplacementFunc();
+      DistanceDisplacementFunc(va,vb,dim,DEW.displacement,DES(),Geo,
+                               aoof,astep,boff,bstep);
       update(DEW.distsqmat,aidx,bidx,DEW());
     }
   }
