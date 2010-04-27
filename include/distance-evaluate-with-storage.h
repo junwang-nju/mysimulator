@@ -11,7 +11,7 @@ namespace std {
   struct DistanceEvalWStorage;
 
   void release(DistanceEvalWStorage&);
-  void assign(DistanceEvalWStorage& const DistanceEvalWStorage&);
+  void assign(DistanceEvalWStorage&, const DistanceEvalWStorage&);
 
   struct DistanceEvalWStorage : public DistanceEvalBase {
 
@@ -22,9 +22,9 @@ namespace std {
 
     DistanceEvalWStorage() : ParentType(), distsqmat() {}
     DistanceEvalWStorage(const Type&) {
-      myError("Cannot create from Distance Evaluate With Storage"):
+      myError("Cannot create from Distance Evaluate With Storage");
     }
-    Type& operator=(const Type& DEW) { assign(*this); return *this; }
+    Type& operator=(const Type& DEW) { assign(*this,DEW); return *this; }
     ~DistanceEvalWStorage() { release(*this); }
 
   };
@@ -54,7 +54,7 @@ namespace std {
           static_cast<const DistanceEvalBase&>(src));
   }
 
-  void update(DistanceEvalWStorage& DEW) { DEW.distsqmat.refresh(); }
+  void update(DistanceEvalWStorage& DEW) { refresh(DEW.distsqmat); }
 
   template <typename GeomType>
   void Evaluate(DistanceEvalWStorage& DEW,
@@ -67,8 +67,22 @@ namespace std {
       DEW()=DEW.distsqmat(aidx,bidx)();
       DisplacementFunc(va,vb,dim,DEW.displacement,Geo,aoff,astep,boff,bstep);
     } else {
-      DistanceDisplacementFunc(va,vb,dim,DEW.displacement,DES(),Geo,
-                               aoof,astep,boff,bstep);
+      DistanceDisplacementFunc(va,vb,dim,DEW.displacement,DEW(),Geo,
+                               aoff,astep,boff,bstep);
+      update(DEW.distsqmat,aidx,bidx,DEW());
+    }
+  }
+
+  template <typename GeomType>
+  void Evaluate(DistanceEvalWStorage& DEW,
+                const Vector<double>& va, const Vector<double>& vb,
+                const unsigned int aidx, const unsigned int bidx,
+                const GeomType& Geo) {
+    if(IsUpToDate(DEW.distsqmat,aidx,bidx)) {
+      DEW()=DEW.distsqmat(aidx,bidx)();
+      DisplacementFunc(va,vb,DEW.displacementvec,Geo);
+    } else {
+      DistanceDisplacementFunc(va,vb,DEW.displacementvec,DEW(),Geo);
       update(DEW.distsqmat,aidx,bidx,DEW());
     }
   }
