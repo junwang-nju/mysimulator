@@ -41,6 +41,23 @@ int main() {
   cout<<endl;
   cout<<endl;
 
+  cout<<"Test -- refer operation"<<endl;
+  refer(DEW2,DEW);
+  cout<<DEW2.displacementvec<<endl;
+  cout<<DEW2()<<endl;
+  cout<<endl;
+
+  cout<<"Test -- update"<<endl;
+  update(DEW);
+  cout<<DEW.displacementvec<<endl;
+  cout<<DEW()<<endl;
+  cout<<endl;
+
+  cout<<"Test -- whether it is Distance Evaluate Method"<<endl;
+  cout<<IsDistanceEvalMethod(DEW2)<<endl;
+  cout<<IsDistanceEvalMethod(DEW())<<endl;
+  cout<<endl;
+
   return 1;
 }
 

@@ -39,6 +39,7 @@ namespace std {
   void release(MatrixStorage<T>& MS) {
     if(IsAvailable(MS)) {
       if(MS.state==Allocated) safe_delete(MS.gstatus);
+      else MS.gstatus=NULL;
       unsigned int n=MS.data.property[MatrixNumberElement];
       for(unsigned int i=0;i<n;++i) release(*(MS.data.data+i));
       release(*(MS.data.PtrOtherElement));

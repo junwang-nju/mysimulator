@@ -51,7 +51,7 @@ int main() {
   cout<<DED()<<endl;
   cout<<endl;
 
-  cout<<"Test whether it is Distance Evaluate Method"<<endl;
+  cout<<"Test -- whether it is Distance Evaluate Method"<<endl;
   cout<<IsDistanceEvalMethod(DED2)<<endl;
   cout<<IsDistanceEvalMethod(DED())<<endl;
   cout<<endl;

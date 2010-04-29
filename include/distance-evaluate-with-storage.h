@@ -29,6 +29,8 @@ namespace std {
 
   };
 
+  bool IsDistanceEvalMethod(const DistanceEvalWStorage&) { return true; }
+
   void release(DistanceEvalWStorage& DEW) {
     release(DEW.distsqmat);
     release(static_cast<DistanceEvalBase&>(DEW));
