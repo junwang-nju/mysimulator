@@ -2,7 +2,7 @@
 #ifndef _Random_Generator_MT_Standard_H_
 #define _Random_Generator_MT_Standard_H_
 
-#include "error-proc.h"
+#include "unique-parameter-128bit.h"
 #include "vector-impl.h"
 
 namespace std {
@@ -21,15 +21,13 @@ namespace std {
     static const unsigned int LowMask;
     static const unsigned int Mag01[2];
     unsigned int *mt;
-    int *intfac;
-    unsigned int *outfac;
-    int oi;
-    double od;
-    long double old;
+    int *mti;
+    UniqueParameter128b *output;
+    unsigned int state;
 
     typedef MT_Standard Type;
 
-    MT_Standard() {}
+    MT_Standard() mt(NULL), mti(NULL), output(NULL), state(Unused) {}
     MT_Standard(const Type&) { myError("Cannot create from MT Standard"); }
     Type& operator=(const Type& MS) { assign(*this,MT); return *this; }
     ~MT_Standard() { release(*this); }
@@ -39,7 +37,17 @@ namespace std {
   void assign(MT_Standard& dest, const MT_Standard& src) {
   }
 
-  void release(MT_Standard& MS) { assign(MS.mt,0U,624); mti=MS.N+1; }
+  void release(MT_Standard& MS) {
+    if(MS.state=Allocated) {
+      safe_delete_array(MS.mt);
+      safe_delete(MS.mti);
+      safe_delete(MS.output);
+    } else {
+      MS.mt=NULL;
+      MS.mti=NULL;
+      MS.output=NULL;
+    }
+    MS.state=Unused;
 
 }
 
