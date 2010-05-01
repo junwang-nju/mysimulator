@@ -154,15 +154,6 @@ namespace std {
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::SSE2_Shuff=0x1BU;
 #endif 
-
-  template <unsigned int LoopFac>
-  const unsigned int dSFMT<LoopFac>::Pos1=0U;
-  template <unsigned int LoopFac>
-  const unsigned int dSFMT<LoopFac>::SL1=0U;
-  template <unsigned int LoopFac>
-  const unsigned long long int dSFMT<LoopFac>::Msk1=0ULL;
-  template <unsigned int LoopFac>
-  const unsigned long long int dSFMT<LoopFac>::Msk2=0ULL;
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_1=
     (dSFMT<LoopFac>::Msk1>>32)&0xFFFFFFFFUL;
@@ -173,6 +164,15 @@ namespace std {
     (dSFMT<LoopFac>::Msk2>>32)&0xFFFFFFFFUL;
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_4=dSFMT<LoopFac>::Msk1&0xFFFFFFFFUL;
+
+  template <unsigned int LoopFac>
+  const unsigned int dSFMT<LoopFac>::Pos1=0U;
+  template <unsigned int LoopFac>
+  const unsigned int dSFMT<LoopFac>::SL1=0U;
+  template <unsigned int LoopFac>
+  const unsigned long long int dSFMT<LoopFac>::Msk1=0ULL;
+  template <unsigned int LoopFac>
+  const unsigned long long int dSFMT<LoopFac>::Msk2=0ULL;
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Fix1=0ULL;
   template <unsigned int LoopFac>
@@ -181,6 +181,168 @@ namespace std {
   const unsigned long long int dSFMT<LoopFac>::Pcv1=0ULL;
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Pcv2=0ULL;
+  template <unsigned int LoopFac>
+  const unsigned int dSFMT<LoopFac>::IsFacAvailable=0;
+
+  template <> const unsigned int dSFMT<521>::Pos1=3;
+  template <> const unsigned int dSFMT<521>::SL1=25;
+  template <>
+  const unsigned long long int dSFMT<521>::Msk1=0x000FBFEFFF77EFFFULL;
+  template <>
+  const unsigned long long int dSFMT<521>::Msk2=0x000FFEEBFBDFBFDFULL;
+  template <>
+  const unsigned long long int dSFMT<521>::Fix1=0xCFB393D661638469ULL;
+  template <>
+  const unsigned long long int dSFMT<521>::Fix2=0xC166867883AE2ADBULL;
+  template <>
+  const unsigned long long int dSFMT<521>::Pcv1=0xCCAA588000000000ULL;
+  template <>
+  const unsigned long long int dSFMT<521>::Pcv2=0x0000000000000001ULL;
+  template <> const unsigned int dSFMT<521>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<1279>::Pos1=9;
+  template <> const unsigned int dSFMT<1279>::SL1=19;
+  template <>
+  const unsigned long long int dSFMT<1279>::Msk1=0x000EFFF7FFDDFFEEULL;
+  template <>
+  const unsigned long long int dSFMT<1279>::Msk2=0x000FBFFFFFF77FFFULL;
+  template <>
+  const unsigned long long int dSFMT<1279>::Fix1=0xB66627623D1A31BEULL;
+  template <>
+  const unsigned long long int dSFMT<1279>::Fix2=0x04B6C51147B6109BULL;
+  template <>
+  const unsigned long long int dSFMT<1279>::Pcv1=0x7049F2DA382A6AEBULL;
+  template <>
+  const unsigned long long int dSFMT<1279>::Pcv2=0xDE4CA84A40000001ULL;
+  template <> const unsigned int dSFMT<1279>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<2203>::Pos1=7;
+  template <> const unsigned int dSFMT<2203>::SL1=19;
+  template <>
+  const unsigned long long int dSFMT<2203>::Msk1=0x000FDFFFF5EDBFFFULL;
+  template <>
+  const unsigned long long int dSFMT<2203>::Msk2=0x000F77FFFFFFFBFEULL;
+  template <>
+  const unsigned long long int dSFMT<2203>::Fix1=0xB14E907A39338485ULL;
+  template <>
+  const unsigned long long int dSFMT<2203>::Fix2=0xF98F0735C637EF90ULL;
+  template <>
+  const unsigned long long int dSFMT<2203>::Pcv1=0x8000000000000000ULL;
+  template <>
+  const unsigned long long int dSFMT<2203>::Pcv2=0x0000000000000001ULL;
+  template <> const unsigned int dSFMT<2203>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<4253>::Pos1=19;
+  template <> const unsigned int dSFMT<4253>::SL1=19;
+  template <>
+  const unsigned long long int dSFMT<4253>::Msk1=0x0007B7FFFEF5FEFFULL;
+  template <>
+  const unsigned long long int dSFMT<4253>::Msk2=0x000FFDFFEFFEFBFCULL;
+  template <>
+  const unsigned long long int dSFMT<4253>::Fix1=0x80901B5FD7A11C65ULL;
+  template <>
+  const unsigned long long int dSFMT<4253>::Fix2=0x5A63FF0E7CB0BA74ULL;
+  template <>
+  const unsigned long long int dSFMT<4253>::Pcv1=0x1AD277BE12000000ULL;
+  template <>
+  const unsigned long long int dSFMT<4253>::Pcv2=0x0000000000000001ULL;
+  template <> const unsigned int dSFMT<4253>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<11213>::Pos1=37;
+  template <> const unsigned int dSFMT<11213>::SL1=19;
+  template <>
+  const unsigned long long int dSFMT<11213>::Msk1=0x000FFFFFFDF7FFFDULL;
+  template <>
+  const unsigned long long int dSFMT<11213>::Msk2=0x000DFFFFFFF6BFFFULL;
+  template <>
+  const unsigned long long int dSFMT<11213>::Fix1=0xD0EF7B7C75B06793ULL;
+  template <>
+  const unsigned long long int dSFMT<11213>::Fix2=0x9C50FF4CAAE0A641ULL;
+  template <>
+  const unsigned long long int dSFMT<11213>::Pcv1=0x8234C51207C80000ULL;
+  template <>
+  const unsigned long long int dSFMT<11213>::Pcv2=0x0000000000000001ULL;
+  template <> const unsigned int dSFMT<11213>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<19937>::Pos1=117;
+  template <> const unsigned int dSFMT<19937>::SL1=19;
+  template <>
+  const unsigned long long int dSFMT<19937>::Msk1=0x000FFAFFFFFFFB3FULL;
+  template <>
+  const unsigned long long int dSFMT<19937>::Msk2=0x000FFDFFFC90FFFDULL;
+  template <>
+  const unsigned long long int dSFMT<19937>::Fix1=0x90014964B32F4329ULL;
+  template <>
+  const unsigned long long int dSFMT<19937>::Fix2=0x3B8D12AC548A7C7AULL;
+  template <>
+  const unsigned long long int dSFMT<19937>::Pcv1=0x3D84E1AC0DC82880ULL;
+  template <>
+  const unsigned long long int dSFMT<19937>::Pcv2=0x0000000000000001ULL;
+  template <> const unsigned int dSFMT<19937>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<44497>::Pos1=304;
+  template <> const unsigned int dSFMT<44497>::SL1=19;
+  template <>
+  const unsigned long long int dSFMT<44497>::Msk1=0x000FF6DFFFFFFFEFULL;
+  template <>
+  const unsigned long long int dSFMT<44497>::Msk2=0x0007FFDDDEEFFF6FULL;
+  template <>
+  const unsigned long long int dSFMT<44497>::Fix1=0x75D910F235F6E10EULL;
+  template <>
+  const unsigned long long int dSFMT<44497>::Fix2=0x7B32158AEDC8E969ULL;
+  template <>
+  const unsigned long long int dSFMT<44497>::Pcv1=0x4C3356B2A0000000ULL;
+  template <>
+  const unsigned long long int dSFMT<44497>::Pcv2=0x0000000000000001ULL;
+  template <> const unsigned int dSFMT<44497>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<86243>::Pos1=231;
+  template <> const unsigned int dSFMT<86243>::SL1=13;
+  template <>
+  const unsigned long long int dSFMT<86243>::Msk1=0x000FFEDFF6FFFFDFULL;
+  template <>
+  const unsigned long long int dSFMT<86243>::Msk2=0x000FFFF7FDFFFF7EULL;
+  template <>
+  const unsigned long long int dSFMT<86243>::Fix1=0x1D553E776B975E68ULL;
+  template <>
+  const unsigned long long int dSFMT<86243>::Fix2=0x648FAADF1416BF91ULL;
+  template <>
+  const unsigned long long int dSFMT<86243>::Pcv1=0x5F2CD03E2758A373ULL;
+  template <>
+  const unsigned long long int dSFMT<86243>::Pcv2=0xC0B7EB8410000001ULL;
+  template <> const unsigned int dSFMT<86243>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<132049>::Pos1=371;
+  template <> const unsigned int dSFMT<132049>::SL1=23;
+  template <>
+  const unsigned long long int dSFMT<132049>::Msk1=0x000FB9F4EFF4BF77ULL;
+  template <>
+  const unsigned long long int dSFMT<132049>::Msk2=0x000FFFFFBFEFFF37ULL;
+  template <>
+  const unsigned long long int dSFMT<132049>::Fix1=0x4CE24C0E4E234F3BULL;
+  template <>
+  const unsigned long long int dSFMT<132049>::Fix2=0x62612409B5665C2DULL;
+  template <>
+  const unsigned long long int dSFMT<132049>::Pcv1=0x181232889145D000ULL;
+  template <>
+  const unsigned long long int dSFMT<132049>::Pcv2=0x0000000000000001ULL;
+  template <> const unsigned int dSFMT<132049>::IsFacAvailable=1;
+
+  template <> const unsigned int dSFMT<216091>::Pos1=1890;
+  template <> const unsigned int dSFMT<216091>::SL1=23;
+  template <>
+  const unsigned long long int dSFMT<216091>::Msk1=0x000BF7DF7FEFCFFFULL;
+  template <>
+  const unsigned long long int dSFMT<216091>::Msk2=0x000E7FFFFEF737FFULL;
+  template <>
+  const unsigned long long int dSFMT<216091>::Fix1=0xD7F95A04764C27D7ULL;
+  template <>
+  const unsigned long long int dSFMT<216091>::Fix2=0x6A483861810BEBC2ULL;
+  template <>
+  const unsigned long long int dSFMT<216091>::Pcv1=0x3AF0A8F3D5600000ULL;
+  template <>
+  const unsigned long long int dSFMT<216091>::Pcv2=0x0000000000000001ULL;
+  template <> const unsigned int dSFMT<216091>::IsFacAvailable=1;
 
   template <unsigned int LoopFac>
   bool IsAvailable(const dSFMT<LoopFac>& dg) { return IsAvailable(dg.status); }
@@ -192,7 +354,7 @@ namespace std {
   void assign(dSFMT<LoopFac>& dest, const dSFMT<LoopFac>& src) {
     assert(IsAvailable(dest));
     assert(IsAvailable(src));
-    assign(dest.status.src.status,dSFMT<LoopFac>::N+1);
+    assign(dest.status.src.status,dSFMT<LoopFac>::NStatus);
     *dest.idx=*src.idx;
   }
 
@@ -207,16 +369,17 @@ namespace std {
       dg.idx=NULL;
       dg.output=NULL;
     }
-    dg.status=Unused;
+    dg.state=Unused;
   }
 
   template <unsigned int LoopFac>
   void allocate(dSFMT<LoopFac>& dg) {
     release(dg);
-    dg.status=new UniqueParameter128b[dSFMT<LoopFac>::N+1];
+    dg.status=new UniqueParameter128b[dSFMT<LoopFac>::NStatus];
     dg.idx=new unsigned int;
     dg.output=new UniqueParameter128b;
     dg.state=Allocated;
+    dg.init(5489UL);
   }
 
   template <unsigned int LoopFac>
