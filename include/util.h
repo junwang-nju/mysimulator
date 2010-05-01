@@ -24,6 +24,8 @@ namespace std {
   bool IsAvailable(const T* ptr) { return ptr!=NULL; }
   template <typename T>
   bool IsGeometry(const T&) { return false; }
+  template <typename T>
+  bool IsRandomGenerator(const T&) { return false; }
 
 }
 

@@ -50,6 +50,32 @@ namespace std {
 
   };
 
+  void assign(UniqueParameter128b* dest, const UniqueParameter128b* src,
+              const unsigned int size,
+              const int soff=iZero, const int doff=iZero) {
+    assign(reinterpret_cast<double*>(dest),
+           reinterpret_cast<const double*>(src),size+size,
+           soff+soff,lOne,doff+doff,lOne);
+  }
+
+  void assign(UniqueParameter128b* dest, const UniqueParameter128b* src,
+              const unsigned int size,
+              const int soff, const long sstep,
+              const int doff, const long dstep) {
+    assign(reinterpret_cast<double*>(dest),
+           reinterpret_cast<const double*>(src),size,
+           soff+soff,sstep+sstep,doff+doff,dstep+dstep);
+    assign(reinterpret_cast<double*>(dest),
+           reinterpret_cast<const double*>(src),size,
+           soff+soff+1,sstep+sstep,doff+doff+1,dstep+dstep);
+  }
+
+  void assign(UniqueParameter128b* dest, const UniqueParameter128b& src,
+              const unsigned int size,
+              const int doff=iZero, const long dstep=lOne) {
+    assign(dest,&src,size,uZero,uZero,doff,dstep);
+  }
+
   istream& operator>>(istream& is, UniqueParameter128b& UP) {
     static char flag;
     static char buff[1024];

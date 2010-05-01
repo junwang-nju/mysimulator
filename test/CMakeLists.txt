@@ -62,11 +62,11 @@ target_link_libraries (test-unique-parameter-128bit.run blas)
 set_source_files_properties (test-unique-parameter-128bit.cxx COMPILE_FLAGS "-msse2 -malign-double -DHAVE_SSE2")
 
 add_executable (test-random-generator-mt-standard.run test-random-generator-mt-standard.cxx)
-target_link_libraries (test-random-generator-mt-standard.run Base blas)
+target_link_libraries (test-random-generator-mt-standard.run blas)
 
 add_executable (test-random-generator-mt-dsfmt-sse2.run test-random-generator-mt-dsfmt.cxx)
 set_source_files_properties (test-random-generator-mt-dsfmt.cxx COMPILE_FLAGS "-msse2 -malign-double -DHAVE_SSE2")
-target_link_libraries (test-random-generator-mt-dsfmt-sse2.run Base blas)
+target_link_libraries (test-random-generator-mt-dsfmt-sse2.run blas)
 
 add_executable (test-random-generator-mt-sfmt-sse2.run test-random-generator-mt-sfmt.cxx)
 set_source_files_properties (test-random-generator-mt-sfmt.cxx COMPILE_FLAGS "-msse2 -malign-double -DHAVE_SSE2")

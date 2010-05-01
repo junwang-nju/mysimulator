@@ -36,6 +36,31 @@ int main() {
   cout<<up2<<endl;
   cout<<endl;
 
+  cout<<"Test -- assgin between array"<<endl;
+  UniqueParameter128b *uv1=new UniqueParameter128b[10];
+  UniqueParameter128b *uv2=new UniqueParameter128b[8];
+  for(unsigned int i=0;i<10;++i)
+  for(unsigned int k=0;k<4;++k) uv1[i].u[k]=i*4+k;
+  assign(uv2,uv1,8);
+  for(unsigned int i=0;i<8;++i) {
+    for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
+    cout<<endl;
+  }
+  for(unsigned int i=0;i<4;++i) uv1[9].u[i]=0;
+  assign(uv2,uv1[9],8);
+  for(unsigned int i=0;i<8;++i) {
+    for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
+    cout<<endl;
+  }
+  assign(uv2,uv1,2,0,1,1,2);
+  for(unsigned int i=0;i<8;++i) {
+    for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
+    cout<<endl;
+  }
+  delete[] uv2;
+  delete[] uv1;
+  cout<<endl;
+
   cout<<"Test -- read from istream"<<endl;
   cin>>up;
   cout<<up<<endl;
