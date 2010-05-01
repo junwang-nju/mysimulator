@@ -50,7 +50,17 @@ namespace std {
     assert(IsAvailable(src));
     release(dest);
     dest()=src();
-    dest.size=src.size();
+    dest.size=src.size;
+    dest.state=Reference;
+  }
+
+  template <typename T>
+  void refer(Vector<T>& dest, const T* src, const unsigned int size,
+                              const unsigned int off=uZero) {
+    assert(IsAvailable(src));
+    release(dest);
+    dest()=const_cast<T*>(src)+off;
+    dest.size=size;
     dest.state=Reference;
   }
 
