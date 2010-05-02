@@ -83,6 +83,13 @@ namespace std {
     Type& operator=(const Type& dg) { assign(*this,dg); return *this; }
     ~dSFMT() { release(*this); }
 
+    void init(const unsigned int seed) { init(*this,seed); }
+    void init(const unsigned int* key, const unsigned int len,
+              const unsigned int off=uZero, const unsigned int step=uOne) {
+      init(*this,key,len,off,step);
+    }
+    void init(const Vector<unsigned int>& key) { init(*this,key); }
+
 #ifdef HAVE_SSE2
     void InitConst() {
       static bool first=true;
@@ -125,12 +132,77 @@ namespace std {
     }
 #endif
 
-    void init(const unsigned int seed) { init(*this,seed); }
-    void init(const unsigned int* key, const unsigned int len,
-              const unsigned int off=uZero, const unsigned int step=uOne) {
-      init(*this,key,len,off,step);
+    void GenRandArrayImpl(UniqueParameter128b* array, const unsigned int size,
+                          const ConvertFuncType& cvfunc) {
+      assert((static_cast<unsigned int>(array)&0xF)==
+             (static_cast<unsigned int>(status)&0xF)); //check memory alignment
+      unsigned int i,j;
+      UniqueParameter128b lung;
+      lung=status[N];
+      DoRecursion(status[0],status[Pos1],array[0],lung);
+      for(i=0;i<N-Pos1;++i)
+        DoRecursion(status[i],status[i+Pos1],array[i],lung);
+      for(;i<N;++i)
+        DoRecursion(status[i],array[i+Pos1-N],array[i],lung);
+      for(;i+N<size;++i) {
+        DoRecursion(array[i-N],array[i+Pos1-N],array[i],lung);
+        cvfunc(array[i-N]);
+      }
+      for(j=0;j+size<N+N;++j) status[j]=array[j+size-N];
+      for(;i<size;++i,++j) {
+        DoRecursion(array[i-N],array[i+Pos1-N],array[i],lung);
+        status[j]=array[i];
+        cvfunc(array[i-N]);
+      }
+      for(i=size-N;i<size;++i)  cvfunc(array[i]);
+      status[N]=lung;
     }
-    void init(const Vector<unsigned int>& key) { init(*this,key); }
+
+    unsigned int initfunc1(const unsigned int x) {
+      return (x^(x>>27))*1664525UL;
+    }
+
+    unsigned int initfunc2(const unsigned int x) {
+      return (x^(x>>27))*1566083941UL;
+    }
+
+    void initmask() {
+      unsigned long long int *pSFMT;
+      pSFMT=&(status[0].ull[0]);
+      for(unsigned int i=0;i<N+N;++i) pSFMT[i]=(pSFMT[i]&LowMask)|HighConst;
+    }
+
+    void PeriodCertification() {
+      static const unsigned long long int pcv[2]={Pcv1,Pcv2};
+      unsigned long long int tmp[2], inner;
+      tmp[0]=status[N].ull[0]^Fix1;
+      tmp[1]=status[N].ull[1]^Fix2;
+      inner=tmp[0]&pcv[0];
+      inner^=tmp[1]&pcv[1];
+      for(unsigned int i=32;i>0;i>>1)   inner^=inner>>i;
+      inner&=1;
+      if(inner==1)  return;
+      status[N].ull[1]^=1;
+      return;
+    }
+
+    void GenRandAll() {
+      unsigned int i;
+      UniqueParameter128b lung;
+      DoRecursion(status[0],status[Pos1],status[0],lung);
+      for(i=1;i<N-Pos1;++i)
+        DoRecursion(status[i],status[i+Pos1],status[i],lung);
+      for(;i<N;++i) DoRecursion(status[i],status[i+Pos1-N],status[i],lung);
+      status[N]=lung;
+    }
+
+    void FillArrayImpl(double *array, unsigned int size,
+                       const ConvertFuncType& cvfunc) {
+      assert((size&1)==0);
+      assert(size>=N64);
+      GenRandArrayImpl(reinterpret_cast<UniqueParameter128b*>(array),size>>1,
+                       cvfunc);
+    }
 
   };
 
@@ -394,6 +466,21 @@ namespace std {
 
   template <unsigned int LoopFac>
   void init(dSFMT<LoopFac>& dg, const unsigned int seed) {
+    unsigned int *pSFMT;
+    pSFMT=&dg.status[0].u[0];
+    pSFMT[0]=seed;
+    unsigned int sz=dSFMT<LoopFac>::NStatus*4,rmt;
+    rmt=pSFMT[0];
+    for(unsigned int i=1;i<sz;++i) {
+      rmt=1812433253UL*(rmt^(rmt>>30))+i;
+      pSFMT[i]=rmt;
+    }
+    dg.initmask();
+    dg.PeriodCertification();
+    *(dg.idx)=dSFMT<LoopFac>::N64;
+#ifdef HAVE_SSE2
+    dg.InitConst();
+#endif
   }
 
   template <unsigned int LoopFac>
