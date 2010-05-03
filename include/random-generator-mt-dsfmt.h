@@ -46,6 +46,11 @@ namespace std {
     static const unsigned int MExp;
     static const unsigned int N;
     static const unsigned int NStatus;
+    static const unsigned int NStatusU32;
+    static const unsigned int NStatusByte;
+    static const unsigned int Lag;
+    static const unsigned int Mid;
+    static const unsigned int LagMid;
     static const unsigned int N32;
     static const unsigned int N64;
     static const unsigned long long int LowMask;
@@ -66,6 +71,7 @@ namespace std {
     static const unsigned long long int Fix2;
     static const unsigned long long int Pcv1;
     static const unsigned long long int Pcv2;
+    static const unsigned long long int pcv[2];
     static const unsigned int IsFacAvailable;
 
     UniqueParameter128b *status;
@@ -173,7 +179,6 @@ namespace std {
     }
 
     void PeriodCertification() {
-      static const unsigned long long int pcv[2]={Pcv1,Pcv2};
       unsigned long long int tmp[2], inner;
       tmp[0]=status[N].ull[0]^Fix1;
       tmp[1]=status[N].ull[1]^Fix2;
@@ -213,6 +218,21 @@ namespace std {
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::NStatus=dSFMT<LoopFac>::N+1;
   template <unsigned int LoopFac>
+  const unsigned int dSFMT<LoopFac>::NStatusU32=dSFMT<LoopFac>::NStatus*4;
+  template <unsigned int LoopFac>
+  const unsigned int dSFMT<LoopFac>::NStatusByte=dSFMT<LoopFac>::NStatus*16;
+  template <unsigned int LoopFac>
+  const unsigned int dSFMT<LoopFac>::Lag=
+    (dSFMT<LoopFac>::NStatusU32>=623?11:
+    (dSFMT<LoopFac>::NStatusU32>68?7:
+    (dSFMT<LoopFac>::NStatusU32>39?5:3)));
+  template <unsigned int LoopFac>
+  const unsigned int dSFMT<LoopFac>::Mid=
+    (dSFMT<LoopFac>::NStatusU32-dSFMT<LoopFac>::Lag)/2;
+  template <unsigned int LoopFac>
+  const unsigned int dSFMT<LoopFac>::LagMid=
+    dSFMT<LoopFac>::Lag+dSFMT<LoopFac>::Mid;
+  template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::N32=dSFMT<LoopFac>::N*4;
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::N64=dSFMT<LoopFac>::N*2;
@@ -236,6 +256,9 @@ namespace std {
     (dSFMT<LoopFac>::Msk2>>32)&0xFFFFFFFFUL;
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_4=dSFMT<LoopFac>::Msk1&0xFFFFFFFFUL;
+  template <unsigned int LoopFac>
+  const unsigned long long int dSFMT<LoopFac>::pcv[2]={dSFMT<LoopFac>::Pcv1,
+                                                       dSFMT<LoopFac>::Pcv2};
 
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Pos1=0U;
@@ -469,9 +492,9 @@ namespace std {
     unsigned int *pSFMT;
     pSFMT=&dg.status[0].u[0];
     pSFMT[0]=seed;
-    unsigned int sz=dSFMT<LoopFac>::NStatus*4,rmt;
+    unsigned int rmt;
     rmt=pSFMT[0];
-    for(unsigned int i=1;i<sz;++i) {
+    for(unsigned int i=1;i<dSFMT<LoopFac>::NStatusU32;++i) {
       rmt=1812433253UL*(rmt^(rmt>>30))+i;
       pSFMT[i]=rmt;
     }
@@ -487,10 +510,58 @@ namespace std {
   void init(dSFMT<LoopFac>& dg,
             const unsigned int* key, const unsigned int len,
             const unsigned int off=uZero, const unsigned int step=uOne) {
+    unsigned int i,j,g,count,tmid,r, *pSFMT;
+    pSFMT=&dg.status[0].u[0];
+    memset(dg.status,0x8B,dSFMT<LoopFac>::NStatusByte);
+    count=(len+1>dSFMT<LoopFac>::NStatusU32?len+1:dSFMT<LoopFac>::NStatusU32);
+    tmid=dSFMT<LoopFac>::Mid%dSFMT<LoopFac>::NStatusU32;
+    r=dg.initfunc1(pSFMT[0]^pSFMT[tmid]^pSFMT[dSFMT<LoopFac>::NStatusU32-1]);
+    pSFMT[tmid]+=r;
+    r+=len;
+    pSFMT[dSFMT<LoopFac>::LagMid%dSFMT<LoopFac>::NStatusU32]+=r;
+    pSFMT[0]=r;
+    --count;
+    for(i=0,j=0,g=off;(j<count)&&(j<len);++j,g+=step) {
+      tmid=(i+dSFMT<LoopFac>::Mid)%dSFMT<LoopFac>::NStatusU32;
+      r=dg.initfunc1(pSFMT[i]^pSFMT[tmid]
+          ^pSFMT[(i+dSFMT<LoopFac>::NStatusU32-1)%dSFMT<LoopFac>::NStatusU32]);
+      pSFMT[tmid]+=r;
+      r+=key[g]+i;
+      pSFMT[(i+dSFMT<LoopFac>::LagMid)%dSFMT<LoopFac>::NStatusU32]+=r;
+      pSFMT[i]=r;
+      i=(i+1)%dSFMT<LoopFac>::NStatusU32;
+    }
+    for(;j<count;++j) {
+      tmid=(i+dSFMT<LoopFac>::Mid)%dSFMT<LoopFac>::NStatusU32;
+      r=dg.initfunc1(pSFMT[i]^pSFMT[tmid]
+          ^pSFMT[(i+dSFMT<LoopFac>::NStatusU32-1)%dSFMT<LoopFac>::NStatusU32]);
+      pSFMT[tmid]+=r;
+      r+=i;
+      pSFMT[(i+dSFMT<LoopFac>::LagMid)%dSFMT<LoopFac>::NStatusU32]+=r;
+      pSFMT[i]=r;
+      i=(i+1)%dSFMT<LoopFac>::NStatusU32;
+    }
+    for(j=0;j<dSFMT<LoopFac>::NStatusU32;++j) {
+      tmid=(i+dSFMT<LoopFac>::Mid)%dSFMT<LoopFac>::NStatusU32;
+      r=dg.initfunc2(pSFMT[i]+pSFMT[tmid]
+          +pSFMT[(i+dSFMT<LoopFac>::NStatusU32-1)%dSFMT<LoopFac>::NStatusU32]);
+      pSFMT[tmid]^=r;
+      r-=i;
+      pSFMT[(i+dSFMT<LoopFac>::LagMid)%dSFMT<LoopFac>::NStatusU32]^=r;
+      pSFMT[i]=r;
+      i=(i+1)%dSFMT<LoopFac>::NStatusU32;
+    }
+    dg.initmask();
+    dg.PeriodCertification();
+    *(dg.idx)=dSFMT<LoopFac>::N64;
+#ifdef HAVE_SSE2
+    dg.InitConst();
+#endif
   }
 
   template <unsigned int LoopFac>
   void init(dSFMT<LoopFac>& dg, const Vector<unsigned int>& key) {
+    init(dg,key(),key.size);
   }
 
 }
