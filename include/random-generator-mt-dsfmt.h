@@ -174,7 +174,7 @@ namespace std {
       __m128i v,w,x,y,z;
       assert((reinterpret_cast<unsigned int>(&x)&0xF)==
              (reinterpret_cast<unsigned int>(status)&0xF));
-      x=a.si;
+      x=_mm_load_si128(&(a.si));
       z=_mm_slli_epi64(x,SL1);
       y=_mm_shuffle_epi32(u.si,SSE2_Shuff);
       z=_mm_xor_si128(z,b.si);
