@@ -40,12 +40,12 @@ namespace std {
     Type& operator=(const Type& MS) { assign(*this,MS); return *this; }
     ~MT_Standard() { release(*this); }
 
-    void init(const unsigned int seed) { std::init(*this,seed); }
-    void init(const unsigned int* key, const unsigned int len,
+    void Init(const unsigned int seed) { std::init(*this,seed); }
+    void Init(const unsigned int* key, const unsigned int len,
               const unsigned int off=uZero, const unsigned int step=uOne) {
       std::init(*this,key,len,off,step);
     }
-    void init(const Vector<unsigned int>& key) { std::init(*this,key); }
+    void Init(const Vector<unsigned int>& key) { std::init(*this,key); }
 
     const unsigned int& UInt32() {
       unsigned int& ri=*mti;

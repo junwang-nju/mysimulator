@@ -4,6 +4,7 @@
 
 #include "unique-parameter-128bit.h"
 #include "vector.h"
+#include <cstring>
 
 namespace std {
 
@@ -89,12 +90,73 @@ namespace std {
     Type& operator=(const Type& dg) { assign(*this,dg); return *this; }
     ~dSFMT() { release(*this); }
 
-    void init(const unsigned int seed) { init(*this,seed); }
-    void init(const unsigned int* key, const unsigned int len,
+    void Init(const unsigned int seed) { init(*this,seed); }
+    void Init(const unsigned int* key, const unsigned int len,
               const unsigned int off=uZero, const unsigned int step=uOne) {
       init(*this,key,len,off,step);
     }
-    void init(const Vector<unsigned int>& key) { init(*this,key); }
+    void Init(const Vector<unsigned int>& key) { init(*this,key); }
+
+    const unsigned int& UInt32() {
+      unsigned long long int *pSFMT=&(status[0].ull[0]);
+      if(*idx>=N64) { GenRandAll(); *idx=0; }
+      output->u[0]=pSFMT[(*idx)++]&0xFFFFFFFFUL;
+      return output->u[0];
+    }
+    const double& DoubleClose1Open2() {
+      double* pSFMT=&(status[0].d[0]);
+      if(*idx>=N64) { GenRandAll(); *idx=0; }
+      output->d[0]=pSFMT[(*idx)++];
+      return output->d[0];
+    }
+    const double& DoubleClose0Open1() {
+      output->d[1]=DoubleClose1Open2()-1.0;
+      return output->d[1];
+    }
+    const double& DoubleOpen0Close1() {
+      output->d[1]=2.0-DoubleClose1Open2();
+      return output->d[1];
+    }
+    const double& DoubleOpen0Open1() {
+      double *pSFMT=&(status[0].d[0]);
+      if(*idx>=N64) { GenRandAll(); *idx=0; }
+      output->d[0]=pSFMT[(*idx)++];
+      output->ull[0]|=1;
+      output->d[1]=output->d[0]-1.0;
+      return output->d[1];
+    }
+
+    void fillarrayClose1Open2(double* array, const unsigned int sz) {
+      FillArrayImpl(array,sz,ConvertClose1Open2);
+    }
+
+    void fillarrayClose0Open1(double* array, const unsigned int sz) {
+      FillArrayImpl(array,sz,ConvertClose0Open1);
+    }
+
+    void fillarrayOpen0Close1(double* array, const unsigned int sz) {
+      FillArrayImpl(array,sz,ConvertOpen0Close1);
+    }
+
+    void fillarrayOpen0Open1(double* array, const unsigned int sz) {
+      FillArrayImpl(array,sz,ConvertOpen0Open1);
+    }
+
+    void fillarrayClose1Open2(Vector<double>& v) {
+      fillarrayClose1Open2(v(),v.size);
+    }
+
+    void fillarrayClose0Open1(Vector<double>& v) {
+      fillarrayClose0Open1(v(),v.size);
+    }
+
+    void fillarrayOpen0Close1(Vector<double>& v) {
+      fillarrayOpen0Close1(v(),v.size);
+    }
+
+    void fillarrayOpen0Open1(Vector<double>& v) {
+      fillarrayOpen0Open1(v(),v.size);
+    }
 
 #ifdef HAVE_SSE2
     void InitConst() {
@@ -110,6 +172,8 @@ namespace std {
                      const UniqueParameter128b& b,
                      UniqueParameter128b& r, UniqueParameter128b& u) {
       __m128i v,w,x,y,z;
+      assert((reinterpret_cast<unsigned int>(&x)&0xF)==
+             (reinterpret_cast<unsigned int>(status)&0xF));
       x=a.si;
       z=_mm_slli_epi64(x,SL1);
       y=_mm_shuffle_epi32(u.si,SSE2_Shuff);
@@ -140,8 +204,9 @@ namespace std {
 
     void GenRandArrayImpl(UniqueParameter128b* array, const unsigned int size,
                           const ConvertFuncType& cvfunc) {
-      assert((static_cast<unsigned int>(array)&0xF)==
-             (static_cast<unsigned int>(status)&0xF)); //check memory alignment
+      //check memory alignment
+      assert((reinterpret_cast<unsigned int>(array)&0xF)==
+             (reinterpret_cast<unsigned int>(status)&0xF));
       unsigned int i,j;
       UniqueParameter128b lung;
       lung=status[N];
@@ -184,7 +249,7 @@ namespace std {
       tmp[1]=status[N].ull[1]^Fix2;
       inner=tmp[0]&pcv[0];
       inner^=tmp[1]&pcv[1];
-      for(unsigned int i=32;i>0;i>>1)   inner^=inner>>i;
+      for(unsigned int i=32;i>0;i>>=1)   inner^=inner>>i;
       inner&=1;
       if(inner==1)  return;
       status[N].ull[1]^=1;
@@ -207,6 +272,18 @@ namespace std {
       assert(size>=N64);
       GenRandArrayImpl(reinterpret_cast<UniqueParameter128b*>(array),size>>1,
                        cvfunc);
+    }
+
+    void normalizeArray(double*& array, unsigned int& size) {
+      unsigned int fg,bg;
+      bg=(reinterpret_cast<unsigned int>(array)&0xF)+16-
+         (reinterpret_cast<unsigned int>(status)&0xF);
+      bg&=0xF;
+      bg=(16-bg)&0xF;
+      bg/=sizeof(double);
+      fg=((size-bg)&1);
+      array+=bg;
+      size-=bg+fg;
     }
 
   };
@@ -474,7 +551,7 @@ namespace std {
     dg.idx=new unsigned int;
     dg.output=new UniqueParameter128b;
     dg.state=Allocated;
-    dg.init(5489UL);
+    dg.Init(5489UL);
   }
 
   template <unsigned int LoopFac>
@@ -562,6 +639,120 @@ namespace std {
   template <unsigned int LoopFac>
   void init(dSFMT<LoopFac>& dg, const Vector<unsigned int>& key) {
     init(dg,key(),key.size);
+  }
+
+  template <unsigned int LoopFac>
+  const double& rand(dSFMT<LoopFac>& dg) { return dg.DoubleClose0Open1(); }
+
+  template <typename T>
+  const T& rand(dSFMT<521>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<1279>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<2203>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<4253>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<11213>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<19937>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<44497>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<86243>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<132049>& dg) { myError("Default Form is prohibited"); }
+  template <typename T>
+  const T& rand(dSFMT<216091>& dg) { myError("Default Form is prohibited"); }
+
+  template <>
+  const double& rand<double>(dSFMT<521>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<1279>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<2203>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<4253>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<11213>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<19937>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<44497>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<86243>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<132049>& dg) { return rand(dg); }
+  template <>
+  const double& rand<double>(dSFMT<216091>& dg) { return rand(dg); }
+
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<521>& dg){ return dg.UInt32(); }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<1279>& dg) {
+    return dg.UInt32();
+  }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<2203>& dg) {
+    return dg.UInt32();
+  }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<4253>& dg) {
+    return dg.UInt32();
+  }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<11213>& dg) {
+    return dg.UInt32();
+  }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<19937>& dg) {
+    return dg.UInt32();
+  }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<44497>& dg) {
+    return dg.UInt32();
+  }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<86243>& dg) {
+    return dg.UInt32();
+  }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<132049>& dg) {
+    return dg.UInt32();
+  }
+  template <>
+  const unsigned int& rand<unsigned int>(dSFMT<216091>& dg) {
+    return dg.UInt32();
+  }
+
+  template <unsigned int LoopFac>
+  void fillarray(dSFMT<LoopFac>& dg, double* array, const unsigned int size) {
+    dg.fillarrayClose0Open1(array,size);
+  }
+
+  template <unsigned int LoopFac>
+  void fillarray(dSFMT<LoopFac>& dg, Vector<double>& v) {
+    dg.fillarrayClose0Open1(v);
+  }
+
+  template <unsigned int LoopFac>
+  ostream& operator<<(ostream& os, const dSFMT<LoopFac>& dg) {
+    assert(IsAvailable(dg));
+    os<<LoopFac<<"\t";
+    for(unsigned int i=0;i<dSFMT<LoopFac>::NStatus;++i) os<<dg.status[i]<<"\t";
+    os<<*(dg.idx);
+    return os;
+  }
+
+  template <unsigned int LoopFac>
+  istream& operator>>(istream& is, dSFMT<LoopFac>& dg) {
+    assert(IsAvailable(dg));
+    unsigned int expLoopFac;
+    is>>expLoopFac;
+    if(expLoopFac!=LoopFac) myError("Imcompatiable data for dSFMT generator");
+    for(unsigned int i=0;i<dSFMT<LoopFac>::NStatus;++i) is>>dg.status[i];
+    is>>*(dg.idx);
+    return is;
   }
 
 }

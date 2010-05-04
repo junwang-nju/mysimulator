@@ -15,16 +15,16 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- init with a seed"<<endl;
-  MS.init(122378);
+  MS.Init(122378);
   cout<<endl;
 
   cout<<"Test -- init with an array"<<endl;
   unsigned int *v=new unsigned int[100];
   for(unsigned int i=0;i<100;++i) v[i]=(1+i)*(2+i);
-  MS.init(v,40,1,2);
+  MS.Init(v,40,1,2);
   Vector<unsigned int> rv;
   refer(rv,v,80);
-  MS.init(rv);
+  MS.Init(rv);
   delete[] v;
   cout<<endl;
 
@@ -82,7 +82,7 @@ int main() {
   assign(hv,0U,nhhist);
   for(unsigned int i=0;i<nhist;++i) hv[v[i]-600]++;
   cout<<"(The data has been checked, but is not output here)"<<endl;
-  delete hv;
+  delete[] hv;
   delete[] v;
   cout<<endl;
 
