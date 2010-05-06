@@ -9,23 +9,23 @@
 namespace std {
 
 #ifdef HAVE_SSE2
-  __m128i   SSE2_ParamMask;
-  __m128i   SSE2_IntOne;
-  __m128d   SSE2_DoubleTwo;
-  __m128d   SSE2_DoubleMOne;  
+  __m128i   dSFMT_SSE2_ParamMask;
+  __m128i   dSFMT_SSE2_IntOne;
+  __m128d   dSFMT_SSE2_DoubleTwo;
+  __m128d   dSFMT_SSE2_DoubleMOne;  
 #endif
 
   void ConvertClose1Open2(UniqueParameter128b&) {}
 #ifdef HAVE_SSE2
   void ConvertClose0Open1(UniqueParameter128b& w) {
-    w.sd=_mm_add_pd(w.sd,SSE2_DoubleMOne);
+    w.sd=_mm_add_pd(w.sd,dSFMT_SSE2_DoubleMOne);
   }
   void ConvertOpen0Close1(UniqueParameter128b& w) {
-    w.sd=_mm_sub_pd(SSE2_DoubleTwo,w.sd);
+    w.sd=_mm_sub_pd(dSFMT_SSE2_DoubleTwo,w.sd);
   }
   void ConvertOpen0Open1(UniqueParameter128b& w) {
-    w.si=_mm_or_si128(w.si,SSE2_IntOne);
-    w.sd=_mm_add_pd(w.sd,SSE2_DoubleMOne);
+    w.si=_mm_or_si128(w.si,dSFMT_SSE2_IntOne);
+    w.sd=_mm_add_pd(w.sd,dSFMT_SSE2_DoubleMOne);
   }
 #else
   void ConvertClose0Open1(UniqueParameter128b& w) { w.d[0]-=1.0; w.d[1]-=1.0; }
@@ -162,10 +162,11 @@ namespace std {
     void InitConst() {
       static bool first=true;
       if(!first)  return;
-      SSE2_ParamMask=_mm_set_epi32(Msk32_3,Msk32_4,Msk32_1,Msk32_2); // Endian?
-      SSE2_IntOne=_mm_set_epi32(0,1,0,1);
-      SSE2_DoubleTwo=_mm_set_pd(2.0,2.0);
-      SSE2_DoubleMOne=_mm_set_pd(-1.0,-1.0);
+      // Endian?
+      dSFMT_SSE2_ParamMask=_mm_set_epi32(Msk32_3,Msk32_4,Msk32_1,Msk32_2);
+      dSFMT_SSE2_IntOne=_mm_set_epi32(0,1,0,1);
+      dSFMT_SSE2_DoubleTwo=_mm_set_pd(2.0,2.0);
+      dSFMT_SSE2_DoubleMOne=_mm_set_pd(-1.0,-1.0);
       first=false;
     }
     void DoRecursion(const UniqueParameter128b& a,
@@ -180,7 +181,7 @@ namespace std {
       z=_mm_xor_si128(z,b.si);
       y=_mm_xor_si128(y,z);
       v=_mm_srli_epi64(y,SR);
-      w=_mm_and_si128(y,SSE2_ParamMask);
+      w=_mm_and_si128(y,dSFMT_SSE2_ParamMask);
       v=_mm_xor_si128(v,x);
       v=_mm_xor_si128(v,w);
       r.si=v;
