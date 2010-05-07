@@ -53,7 +53,6 @@ int main() {
   double *ndv;
   unsigned int ndvsize;
   ndv=dv; ndvsize=100000;
-  dg.normalizeArray(ndv,ndvsize);
   fillarray(dg,ndv,ndvsize);
   cout<<ndv[0]<<"\t"<<ndv[9999]<<endl;
   Vector<double> rdv;

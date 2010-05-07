@@ -18,14 +18,26 @@ namespace std {
   void ConvertClose1Open2(UniqueParameter128b&) {}
 #ifdef HAVE_SSE2
   void ConvertClose0Open1(UniqueParameter128b& w) {
-    w.sd=_mm_add_pd(w.sd,dSFMT_SSE2_DoubleMOne);
+    __m128d wd,cd;
+    wd=_mm_loadu_pd(w.d);
+    cd=_mm_loadu_pd((double*)(&dSFMT_SSE2_DoubleMOne));
+    _mm_storeu_pd(w.d,_mm_add_pd(wd,cd));
   }
   void ConvertOpen0Close1(UniqueParameter128b& w) {
-    w.sd=_mm_sub_pd(dSFMT_SSE2_DoubleTwo,w.sd);
+    __m128d wd,cd;
+    wd=_mm_loadu_pd(w.d);
+    cd=_mm_loadu_pd((double*)(&dSFMT_SSE2_DoubleTwo));
+    _mm_storeu_pd(w.d,_mm_sub_pd(cd,wd));
   }
   void ConvertOpen0Open1(UniqueParameter128b& w) {
-    w.si=_mm_or_si128(w.si,dSFMT_SSE2_IntOne);
-    w.sd=_mm_add_pd(w.sd,dSFMT_SSE2_DoubleMOne);
+    __m128i wi,ci;
+    wi=_mm_loadu_si128(&(w.si));
+    ci=_mm_loadu_si128(&dSFMT_SSE2_IntOne);
+    _mm_storeu_si128(&(w.si),_mm_or_si128(wi,ci));
+    __m128d wd,cd;
+    wd=_mm_loadu_pd(w.d);
+    cd=_mm_loadu_pd((double*)(&dSFMT_SSE2_DoubleMOne));
+    _mm_storeu_pd(w.d,_mm_add_pd(wd,cd));
   }
 #else
   void ConvertClose0Open1(UniqueParameter128b& w) { w.d[0]-=1.0; w.d[1]-=1.0; }
@@ -172,20 +184,20 @@ namespace std {
     void DoRecursion(const UniqueParameter128b& a,
                      const UniqueParameter128b& b,
                      UniqueParameter128b& r, UniqueParameter128b& u) {
-      __m128i v,w,x,y,z;
-      assert((reinterpret_cast<unsigned int>(&x)&0xF)==
-             (reinterpret_cast<unsigned int>(status)&0xF));
-      x=_mm_load_si128(&(a.si));
+      __m128i v,w,x,y,z,mask,bs;
+      mask=_mm_loadu_si128(&dSFMT_SSE2_ParamMask);
+      x=_mm_loadu_si128(&(a.si));
+      bs=_mm_loadu_si128(&(b.si));
       z=_mm_slli_epi64(x,SL1);
       y=_mm_shuffle_epi32(u.si,SSE2_Shuff);
-      z=_mm_xor_si128(z,b.si);
+      z=_mm_xor_si128(z,bs);
       y=_mm_xor_si128(y,z);
       v=_mm_srli_epi64(y,SR);
       w=_mm_and_si128(y,dSFMT_SSE2_ParamMask);
       v=_mm_xor_si128(v,x);
       v=_mm_xor_si128(v,w);
-      r.si=v;
-      u.si=y;
+      _mm_storeu_si128(&(r.si),v);
+      _mm_storeu_si128(&(u.si),y);
     }
 #else
     void DoRecursion(const UniqueParameter128b& a,
@@ -205,9 +217,6 @@ namespace std {
 
     void GenRandArrayImpl(UniqueParameter128b* array, const unsigned int size,
                           const ConvertFuncType& cvfunc) {
-      //check memory alignment
-      assert((reinterpret_cast<unsigned int>(array)&0xF)==
-             (reinterpret_cast<unsigned int>(status)&0xF));
       unsigned int i,j;
       UniqueParameter128b lung;
       lung=status[N];
@@ -273,18 +282,6 @@ namespace std {
       assert(size>=N64);
       GenRandArrayImpl(reinterpret_cast<UniqueParameter128b*>(array),size>>1,
                        cvfunc);
-    }
-
-    void normalizeArray(double*& array, unsigned int& size) {
-      unsigned int fg,bg;
-      bg=(reinterpret_cast<unsigned int>(array)&0xF)+16-
-         (reinterpret_cast<unsigned int>(status)&0xF);
-      bg&=0xF;
-      bg=(16-bg)&0xF;
-      bg/=sizeof(double);
-      fg=((size-bg)&1);
-      array+=bg;
-      size-=bg+fg;
     }
 
   };
@@ -521,7 +518,7 @@ namespace std {
   bool IsAvailable(const dSFMT<LoopFac>& dg) { return IsAvailable(dg.status); }
 
   template <unsigned int LoopFac>
-  bool IsRandomGenerator(const dSFMT<LoopFac>&) { return false; }
+  bool IsRandomGenerator(const dSFMT<LoopFac>&) { return true; }
 
   template <unsigned int LoopFac>
   void assign(dSFMT<LoopFac>& dest, const dSFMT<LoopFac>& src) {
