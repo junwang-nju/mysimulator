@@ -64,10 +64,6 @@ int main() {
   dg.fillarrayClose0Open1(ndv,ndvsize);
   dg.fillarrayOpen0Close1(ndv,ndvsize);
   dg.fillarrayOpen0Open1(ndv,ndvsize);
-  dg.fillarrayClose1Open2(rdv);
-  dg.fillarrayClose0Open1(rdv);
-  dg.fillarrayOpen0Close1(rdv);
-  dg.fillarrayOpen0Open1(rdv);
   cout<<endl;
 
   cout<<"Test -- save and load status of generator"<<endl;

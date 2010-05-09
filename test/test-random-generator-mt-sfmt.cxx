@@ -1,136 +1,108 @@
 
-#include "random-generator-interface.h"
 #include "random-generator-mt-sfmt.h"
-#include "fix-vector.h"
+#include "random-generator-generic.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
 
 int main() {
+  cout<<"Test -- initialize"<<endl;
+  SFMT<216091> sg;
+  cout<<endl;
 
-  RandGenerator<SFMT<>,double> rg;
+  cout<<"Test -- allocate"<<endl;
+  allocate(sg);
+  cout<<endl;
 
   cout<<"Test -- init with a seed"<<endl;
-  rg.Init(122378);
-  rg.SetWithSeed(2487297);
-  cout<<endl;
-
-  cout<<"Test -- create a object with a seed"<<endl;
-  RandGenerator<SFMT<216091>,double> rg2(2721001);
-  cout<<endl;
-
-  cout<<"Test -- init with time"<<endl;
-  rg.SetWithTime();
+  sg.Init(122378);
   cout<<endl;
 
   cout<<"Test -- init with an array"<<endl;
-  fixVector<unsigned int,100> fv;
-  for(unsigned int i=0;i<fv.size();++i)
-    fv[i]=(1+i)*(2+i);
-  rg.Init(fv);
-  rg.Init(fv.data()+5,31);
+  unsigned int *v=new unsigned int[100];
+  for(unsigned int i=0;i<100;++i) v[i]=(i+1)*(i+2);
+  sg.Init(v,40,1,2);
+  Vector<unsigned int> rv;
+  refer(rv,v,80);
+  sg.Init(rv);
+  safe_delete_array(v);
   cout<<endl;
 
-  cout<<"Test -- generate a 32-bit unsigned int"<<endl;
-  cout<<rg.GenRandUint32()<<endl;
+  cout<<"Test -- generate random numbers"<<endl;
+  cout.precision(20);
+  cout<<sg.UInt32()<<endl;
+  sg.UInt32();
+  cout<<sg.UInt64()<<endl;
+  cout<<sg.DoubleClose0Close1()<<endl;
+  cout<<sg.DoubleClose0Open1()<<endl;
+  cout<<sg.DoubleOpen0Open1()<<endl;
+  cout<<sg.Double53Close0Open1()<<endl;
+  cout<<sg.Double53Close0Open1Slow()<<endl;
+  sg.UInt32();
+  cout<<sg.LDouble63Close0Open1()<<endl;
+  cout<<sg.LDouble63Close0Open1Slow()<<endl;
   cout<<endl;
 
-  cout<<"Test -- generate a 64-bit unsigned int"<<endl;
-  cout<<"Run generator for 32-bit int to enable data align"<<endl;
-  rg.GenRandUint32();
-  cout<<rg.GenRandUint64()<<endl;
+  cout<<"Test -- other interface to generate random numbers"<<endl;
+  cout<<rand(sg)<<endl;
+  cout<<rand<unsigned int>(sg)<<endl;
+  cout<<rand<double>(sg)<<endl;
+  cout<<rand<unsigned long long int>(sg)<<endl;
+  cout<<rand<long double>(sg)<<endl;
   cout<<endl;
 
-  cout<<"Test -- generate a double in [0,1]"<<endl;
-  cout<<rg.GenRand_Close0Close1()<<endl;
+  cout<<"Test -- generate a vector of random data"<<endl;
+  v=new unsigned int[10000];
+  sg.Init(328748327);
+  fillarray(sg,v,9000);
+  refer(rv,v,10000);
+  fillarray(sg,rv);
+  fillarray(sg,v,9000,5,1);
+  safe_delete_array(v);
+  double *dv=new double[100000];
+  fillarray(sg,dv,10000);
+  fillarray(sg,dv,10000,1,3);
+  Vector<double> rdv;
+  refer(rdv,dv,90000);
+  fillarray(sg,rdv);
+  safe_delete_array(dv);
+  sg.Init(2382261);
+  unsigned long long int *lv=new unsigned long long int[10000];
+  fillarray(sg,lv,5000);
+  Vector<unsigned long long int> rlv;
+  refer(rlv,lv,8000);
+  fillarray(sg,rlv);
+  safe_delete_array(lv);
   cout<<endl;
 
-  cout<<"Test -- generate a double in [0,1)"<<endl;
-  cout<<rg.GenRand_Close0Open1()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a double in (0,1)"<<endl;
-  cout<<rg.GenRand_Open0Open1()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a 53-bit double in [0,1)"<<endl;
-  cout<<rg.GenRand53Mix_Close0Open1()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a 53-bit double in [0,1) with slow method"<<endl;
-  cout<<rg.GenRand53Mix_Close0Open1_Slow()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a 63-bit double in [0,1)"<<endl;
-  cout<<"Run generator for 32-bit int to enable data align"<<endl;
-  rg.GenRandUint32();
-  cout<<rg.GenRand63Mix_Close0Open1()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- generate a 63-bit double in [0,1) with slow method"<<endl;
-  cout<<rg.GenRand63Mix_Close0Open1_Slow()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- default function"<<endl;
-  cout<<rg()<<endl;
-  double d;
-  unsigned int ui;
-  unsigned long long int ulli;
-  long double ld;
-  cout<<rg.Default(d)<<endl;
-  cout<<rg.Default(ld)<<endl;
-  cout<<rg.Default(ui)<<endl;
-  cout<<"Run generator for 32-bit int to enable data align"<<endl;
-  rg.GenRandUint32();
-  cout<<rg.Default(ulli)<<endl;
-  cout<<endl;
-
-  cout<<"Test -- fill array"<<endl;
-  fixVector<unsigned int,901> dv;
-  refVector<unsigned int> rv;
-  dv=100;
-  BuildRationalVector(rg,dv,rv);
-  cout<<rv.data()-dv.data()<<endl;
-  cout<<"Run generator for 32-bit int to enable data align"<<endl;
-  while(!rg.IsReadyFill())  rg.GenRandUint32();
-  rg.FillArrayUint32(rv.data(),800);
-  cout<<dv<<endl;
-  while(!rg.IsReadyFill())  rg.GenRandUint32();
-  rg.FillArrayUint32(rv);
-  cout<<dv<<endl;
-  fixVector<unsigned long long int,501> ldv;
-  refVector<unsigned long long int> lrv;
-  dv=999;
-  BuildRationalVector(rg,ldv,lrv);
-  while(!rg.IsReadyFill())  rg.GenRandUint32();
-  rg.FillArrayUint64(lrv.data(),400);
-  cout<<ldv<<endl;
-  while(!rg.IsReadyFill())  rg.GenRandUint32();
-  rg.FillArrayUint64(lrv);
-  cout<<ldv<<endl;
-  cout<<endl;
-
-  cout<<"Test -- save status"<<endl;
-  fixVector<unsigned int,10> v1,v2;
+  cout<<"Test -- save and load status of generator"<<endl;
   stringstream ss;
-  rg.save(ss);
-  for(unsigned int i=0;i<10;++i) v1[i]=rg.GenRandUint32();
-  rg.load(ss);
-  for(unsigned int i=0;i<10;++i) v2[i]=rg.GenRandUint32();
-  for(unsigned int i=0;i<10;++i)
-    if(v1[i]!=v2[i])  cout<<i<<"\tNot Equal!"<<endl;
+  Vector<unsigned int> vbefore,vafter;
+  unsigned int ncmp=10;
+  allocate(vbefore,ncmp);
+  allocate(vafter,ncmp);
+  ss<<sg;
+  fillarray(sg,vbefore(),ncmp,0,1);
+  ss>>sg;
+  fillarray(sg,vafter(),ncmp,0,1);
+  for(unsigned int i=0;i<ncmp;++i)
+    if(vbefore[i]!=vafter[i]) cout<<i<<"\tNot Equal"<<endl;
   cout<<endl;
 
   cout<<"Test -- degree of uniformness"<<endl;
-  fixVector<unsigned int,100000> hist;
-  hist=0u;
-  for(unsigned int i=0;i<100000000;++i)
-    hist[static_cast<unsigned int>(rg()*100000)]++;
-  fixVector<unsigned int,800> hhist;
-  hhist=0U;
-  for(unsigned int i=0;i<100000;++i)
-    hhist[hist[i]-600]++;
-  cout<<"(The data has been checked, but is not output here.)"<<endl;
+  unsigned int nhist=100000, nrnd=nhist*1000;
+  v=new unsigned int[nhist];
+  assign(v,0U,nhist);
+  for(unsigned int i=0;i<nrnd;++i)
+    v[static_cast<unsigned int>(rand<double>(sg)*nhist)]++;
+  unsigned int nhhist=800;
+  unsigned int *hv=new unsigned int[nhhist];
+  assign(hv,0U,nhhist);
+  for(unsigned int i=0;i<nhist;++i) hv[v[i]-600]++;
+  //for(unsigned int i=0;i<nhhist;++i) cout<<i<<"\t"<<hv[i]<<endl;
+  cout<<"(The data has not been checked, but is not output here)"<<endl;
+  safe_delete_array(hv);
+  safe_delete_array(v);
   cout<<endl;
 
   return 1;

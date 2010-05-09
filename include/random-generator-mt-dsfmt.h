@@ -154,22 +154,6 @@ namespace std {
       FillArrayImpl(array,sz,ConvertOpen0Open1);
     }
 
-    void fillarrayClose1Open2(Vector<double>& v) {
-      fillarrayClose1Open2(v(),v.size);
-    }
-
-    void fillarrayClose0Open1(Vector<double>& v) {
-      fillarrayClose0Open1(v(),v.size);
-    }
-
-    void fillarrayOpen0Close1(Vector<double>& v) {
-      fillarrayOpen0Close1(v(),v.size);
-    }
-
-    void fillarrayOpen0Open1(Vector<double>& v) {
-      fillarrayOpen0Open1(v(),v.size);
-    }
-
 #ifdef HAVE_SSE2
     void InitConst() {
       static bool first=true;
@@ -564,6 +548,7 @@ namespace std {
 
   template <unsigned int LoopFac>
   void init(dSFMT<LoopFac>& dg, const unsigned int seed) {
+    assert(IsAvailable(dg));
     unsigned int *pSFMT;
     pSFMT=&dg.status[0].u[0];
     pSFMT[0]=seed;
@@ -596,7 +581,7 @@ namespace std {
     pSFMT[dSFMT<LoopFac>::LagMid%dSFMT<LoopFac>::NStatusU32]+=r;
     pSFMT[0]=r;
     --count;
-    for(i=0,j=0,g=off;(j<count)&&(j<len);++j,g+=step) {
+    for(i=0,j=0,g=off;j<len;++j,g+=step) {
       tmid=(i+dSFMT<LoopFac>::Mid)%dSFMT<LoopFac>::NStatusU32;
       r=dg.initfunc1(pSFMT[i]^pSFMT[tmid]
           ^pSFMT[(i+dSFMT<LoopFac>::NStatusU32-1)%dSFMT<LoopFac>::NStatusU32]);
@@ -726,11 +711,6 @@ namespace std {
   template <unsigned int LoopFac>
   void fillarray(dSFMT<LoopFac>& dg, double* array, const unsigned int size) {
     dg.fillarrayClose0Open1(array,size);
-  }
-
-  template <unsigned int LoopFac>
-  void fillarray(dSFMT<LoopFac>& dg, Vector<double>& v) {
-    dg.fillarrayClose0Open1(v);
   }
 
   template <unsigned int LoopFac>
