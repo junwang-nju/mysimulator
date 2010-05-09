@@ -505,6 +505,7 @@ namespace std {
     sg.idx=new unsigned int;
     sg.output=new UniqueParameter128b;
     sg.state=Allocated;
+    init(sg,5489U);
   }
 
   template <unsigned int LoopFac>

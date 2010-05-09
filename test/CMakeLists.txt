@@ -65,15 +65,15 @@ add_executable (test-random-generator-mt-standard.run test-random-generator-mt-s
 target_link_libraries (test-random-generator-mt-standard.run blas)
 
 add_executable (test-random-generator-mt-dsfmt-sse2.run test-random-generator-mt-dsfmt.cxx)
-set_source_files_properties (test-random-generator-mt-dsfmt.cxx COMPILE_FLAGS "-msse2 -mtune=pentium4m -DHAVE_SSE2")
+set_source_files_properties (test-random-generator-mt-dsfmt.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 target_link_libraries (test-random-generator-mt-dsfmt-sse2.run blas)
 
 add_executable (test-random-generator-mt-sfmt-sse2.run test-random-generator-mt-sfmt.cxx)
-set_source_files_properties (test-random-generator-mt-sfmt.cxx COMPILE_FLAGS "-msse2 -malign-double -DHAVE_SSE2")
+set_source_files_properties (test-random-generator-mt-sfmt.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 target_link_libraries (test-random-generator-mt-sfmt-sse2.run Base blas)
 
 add_executable (test-random-generator-boxmuller-sse2.run test-random-generator-boxmuller.cxx)
-set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -malign-double -DHAVE_SSE2")
+set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 target_link_libraries (test-random-generator-boxmuller-sse2.run Base blas)
 
 add_executable (test-ref-interaction-list.run test-ref-interaction-list.cxx)

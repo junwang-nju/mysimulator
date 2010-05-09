@@ -1,63 +1,67 @@
 
-#include "random-generator-interface.h"
 #include "random-generator-boxmuller.h"
-#include "random-generator-mt-dsfmt.h"
-#include "random-generator-mt-standard.h"
-#include "fix-vector.h"
+#include "random-generator-generic.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
 
 int main() {
-  typedef RandGenerator<dSFMT<216091>,double> UniformDbRNG;
-  typedef RandGenerator<BoxMuller<UniformDbRNG>,double> GaussianRNG;
-
-  cout<<"Test -- test init"<<endl;
-  GaussianRNG rg;
-  GaussianRNG rg1(324287);
+  cout<<"Test -- initialize"<<endl;
+  BoxMuller<dSFMT<19937> > bm;
   cout<<endl;
 
-  cout<<"Test -- test Init function"<<endl;
-  rg.Init(23812);
+  cout<<"Test -- allocate"<<endl;
+  allocate(bm);
   cout<<endl;
 
-  cout<<"Test -- test generate a value"<<endl;
-  cout<<rg.GenRandNormal()<<endl;
+  cout<<"Test -- init with a seed"<<endl;
+  bm.Init(1227389);
   cout<<endl;
 
-  cout<<"Test -- fill array"<<endl;
-  fixVector<double,901> dv;
-  refVector<double> rv;
-  BuildRationalVector(rg,dv,rv);
-  rg.FillArray(rv.data(),800);
-  rg.FillArray(rv);
-  cout<<endl;
-
-  cout<<"Test -- default function"<<endl;
-  double d;
-  cout<<rg()<<endl;
-  cout<<rg.Default(d)<<endl;
-  cout<<endl;
-
-  cout<<"Test -- save status"<<endl;
-  fixVector<double,10> v1,v2;
-  stringstream ss;
-  rg.save(ss);
-  for(unsigned int i=0;i<10;++i) v1[i]=rg.GenRandNormal();
-  rg.load(ss);
-  for(unsigned int i=0;i<10;++i) v2[i]=rg.GenRandNormal();
-  cout<<scientific;
+  cout<<"Test -- generate random numbers"<<endl;
   cout.precision(20);
-  for(unsigned int i=0;i<10;++i)
-    if(fabs(v1[i]-v2[i])>DRelDelta*0.5*(fabs(v1[i])+fabs(v2[i])))
-      cout<<"Not Equal!"<<endl;
+  cout<<bm.DoubleNormal()<<endl;
   cout<<endl;
 
-  cout<<"Test -- test distribution"<<endl;
-  fixVector<unsigned int,20000> hist;
-  hist=0u;
-  for(unsigned int i=0;i<100000000;++i)
-    hist[static_cast<unsigned int>(rg()*1000+10000)]++;
+  cout<<"Test -- other interfaces to generate random numbers"<<endl;
+  cout<<rand(bm)<<endl;
+  cout<<rand<double>(bm)<<endl;
+  cout<<endl;
+
+  cout<<"Test -- generate a vector of random data"<<endl;
+  double *v=new double[1000];
+  fillarray(bm,v,900,20,1);
+  Vector<double> rv;
+  refer(rv,v,1000);
+  fillarray(bm,rv);
+  cout<<endl;
+
+  cout<<"Test -- save and load status of generator"<<endl;
+  stringstream ss;
+  Vector<UniqueParameter128b> vbefore, vafter;
+  unsigned int ncmp=10;
+  allocate(vbefore,ncmp);
+  allocate(vafter,ncmp);
+  ss<<bm;
+  fillarray(bm,vbefore()->d,ncmp*2);
+  ss>>bm;
+  fillarray(bm,vafter()->d,ncmp*2);
+  for(unsigned int i=0;i<ncmp+ncmp;++i)
+    if(vbefore()->ull[i]!=vafter()->ull[i]) cout<<i<<"\tNot Equal"<<endl;
+  cout<<endl;
+
+  cout<<"Test -- distribution"<<endl;
+  unsigned int nhist=10000,nrnd=nhist*1000,hnhist=nhist/2,whist=1000;
+  unsigned int *iv=new unsigned int[nhist];
+  assign(iv,0U,nhist);
+  for(unsigned int i=0,m;i<nrnd;++i) {
+    m=static_cast<unsigned int>(rand(bm)*whist+hnhist);
+    if((m>=0)&&(m<nhist)) iv[m]++;
+  }
+  //for(unsigned int i=0;i<nhist;++i) cout<<i<<"\t"<<iv[i]<<endl;
+  cout<<"(data has been checked, but is not output here)"<<endl;
+  cout<<endl;
+
   return 1;
 }
 

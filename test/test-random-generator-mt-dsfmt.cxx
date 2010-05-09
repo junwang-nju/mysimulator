@@ -91,7 +91,7 @@ int main() {
   assign(hv,0U,nhhist);
   for(unsigned int i=0;i<nhist;++i) hv[v[i]-600]++;
   //for(unsigned int i=0;i<nhhist;++i)  cout<<i<<"\t"<<hv[i]<<endl;
-  cout<<"(The data has not been checked, but is not output here)"<<endl;
+  cout<<"(The data has been checked, but is not output here)"<<endl;
   delete[] hv;
   delete[] v;
   cout<<endl;
