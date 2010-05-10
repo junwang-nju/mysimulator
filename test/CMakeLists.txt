@@ -76,9 +76,6 @@ add_executable (test-random-generator-boxmuller-sse2.run test-random-generator-b
 set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 target_link_libraries (test-random-generator-boxmuller-sse2.run Base blas)
 
-add_executable (test-ref-interaction-list.run test-ref-interaction-list.cxx)
-target_link_libraries (test-ref-interaction-list.run blas Base)
-
 add_executable (test-interaction-method.run test-interaction-method.cxx)
 target_link_libraries (test-interaction-method.run blas Base)
 
