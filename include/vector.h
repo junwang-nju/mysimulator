@@ -49,7 +49,7 @@ namespace std {
   void refer(Vector<T>& dest, const Vector<T>& src) {
     assert(IsAvailable(src));
     release(dest);
-    dest()=src();
+    dest()=const_cast<T*>(src());
     dest.size=src.size;
     dest.state=Reference;
   }

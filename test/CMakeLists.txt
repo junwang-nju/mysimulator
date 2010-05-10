@@ -80,7 +80,7 @@ add_executable (test-interaction-method.run test-interaction-method.cxx)
 target_link_libraries (test-interaction-method.run blas)
 
 add_executable (test-interaction-4list.run test-interaction-4list.cxx)
-target_link_libraries (test-interaction-4list.run blas)
+target_link_libraries (test-interaction-4list.run blas Base)
 
 add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
 target_link_libraries (test-interaction-pairwise-base.run blas)
