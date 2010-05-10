@@ -94,6 +94,7 @@ namespace std {
 }
 
 #include "interaction-type.h"
+#include "interaction-pairwise-harmonic.h"
 
 namespace std {
 
@@ -103,6 +104,11 @@ namespace std {
     *(IM.iTag)=iTag;
     unsigned int *sz=NULL;
     switch(iTag) {
+      case PairwiseHarmonic:
+        IM.EFunc=EFuncPairwiseHarmonic<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncPairwiseHarmonic<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncPairwiseHarmonic<DistEvalMethod,GeomType>;
+        break;
       default:
         myError("Unknown Interaction Type");
     }

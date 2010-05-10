@@ -4,6 +4,7 @@
 
 namespace std {
   enum InteractionTypeName {
+    PairwiseHarmonic=0,
     InteractionTypeTableTerminus,
     NumberInteractions = InteractionTypeTableTerminus-1
   };

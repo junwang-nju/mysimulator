@@ -34,20 +34,20 @@ int main() {
 
   cout<<"Test -- EFunc"<<endl;
   double E=0.;
-  EFuncPairwiseHarmonic(v.structure,idx(),prm(),2,DED,FS,E);
+  EFuncPairwiseHarmonic(v.structure,idx(),prm(),2,NULL,0,DED,FS,E);
   cout<<E<<endl;
   cout<<endl;
 
   cout<<"Test -- GFunc"<<endl;
   assign(g.data,0.,g.dsize);
-  GFuncPairwiseHarmonic(v.structure,idx(),prm(),2,DED,FS,g.structure);
+  GFuncPairwiseHarmonic(v.structure,idx(),prm(),2,NULL,0,DED,FS,g.structure);
   cout<<g<<endl;
   cout<<endl;
 
   cout<<"Test -- BFunc"<<endl;
   E=0.;
   assign(g.data,0.,g.dsize);
-  BFuncPairwiseHarmonic(v.structure,idx(),prm(),2,DED,FS,E,g.structure);
+  BFuncPairwiseHarmonic(v.structure,idx(),prm(),2,NULL,0,DED,FS,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;
