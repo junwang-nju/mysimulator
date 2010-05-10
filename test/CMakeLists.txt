@@ -74,16 +74,19 @@ target_link_libraries (test-random-generator-mt-sfmt-sse2.run Base blas)
 
 add_executable (test-random-generator-boxmuller-sse2.run test-random-generator-boxmuller.cxx)
 set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
-target_link_libraries (test-random-generator-boxmuller-sse2.run Base blas)
+target_link_libraries (test-random-generator-boxmuller-sse2.run blas)
 
 add_executable (test-interaction-method.run test-interaction-method.cxx)
-target_link_libraries (test-interaction-method.run blas Base)
+target_link_libraries (test-interaction-method.run blas)
 
 add_executable (test-interaction-4list.run test-interaction-4list.cxx)
-target_link_libraries (test-interaction-4list.run blas Base)
+target_link_libraries (test-interaction-4list.run blas)
 
-add_executable (test-interaction-particle-particle-harmonic.run test-interaction-particle-particle-harmonic.cxx)
-target_link_libraries (test-interaction-particle-particle-harmonic.run blas Base)
+add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
+target_link_libraries (test-interaction-pairwise-base.run blas)
+
+add_executable (test-interaction-pairwise-harmonic.run test-interaction-pairwise-harmonic.cxx)
+target_link_libraries (test-interaction-pairwise-harmonic.run blas)
 
 add_executable (test-interaction-particle-particle-lj612.run test-interaction-particle-particle-lj612.cxx)
 target_link_libraries (test-interaction-particle-particle-lj612.run blas Base)

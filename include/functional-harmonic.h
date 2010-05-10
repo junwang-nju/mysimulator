@@ -2,31 +2,31 @@
 #ifndef _Functional_Harmonic_H_
 #define _Functional_Harmonic_H_
 
-#include "vector-base.h"
 #include "parameter-name-harmonic.h"
+#include "unique-parameter.h"
 #include <cmath>
 
 namespace std {
 
-  void FuncHarmonic(const double dsq, const VectorBase<double>& Prm,
+  void FuncHarmonic(const double dsq, const UniqueParameter* prm,
                     double& func) {
     double d=sqrt(dsq);
-    double Dd=d-Prm[Harmonic_EqLength];
-    func=Prm[Harmonic_EqStrength]*Dd*Dd;
+    double Dd=d-prm[HarmonicEqLength].d;
+    func=prm[HarmonicEqStrength].d*Dd*Dd;
   }
 
-  void DiffHarmonic(const double dsq, const VectorBase<double>& Prm,
+  void DiffHarmonic(const double dsq, const UniqueParameter* prm,
                     double& diff) {
     double d=sqrt(dsq);
-    double Dd=d-Prm[Harmonic_EqLength];
-    diff=Prm[Harmonic_DualEqStrength]*Dd/d;
+    double Dd=d-prm[HarmonicEqLength].d;
+    diff=prm[HarmonicDualEqStrength].d*Dd/d;
   }
 
-  void BothHarmonic(const double dsq, const VectorBase<double>& Prm,
+  void BothHarmonic(const double dsq, const UniqueParameter* prm,
                     double& func, double& diff) {
     double d=sqrt(dsq);
-    double Dd=d-Prm[Harmonic_EqLength];
-    double tmd=Prm[Harmonic_EqStrength]*Dd;
+    double Dd=d-prm[HarmonicEqLength].d;
+    double tmd=prm[HarmonicEqStrength].d*Dd;
     func=tmd*Dd;
     diff=(tmd+tmd)/d;
   }
@@ -34,3 +34,4 @@ namespace std {
 }
 
 #endif
+

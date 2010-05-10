@@ -67,9 +67,7 @@ namespace std {
     DEB.displacement=new double[dim];
     DEB.distancesq=new double;
     DEB.size=dim;
-    DEB.displacementvec()=DEB.displacement;
-    DEB.displacementvec.size=DEB.size;
-    DEB.displacementvec.state=Reference;
+    refer(DEB.displacementvec,DEB.displacement,DEB.size);
     DEB.state=Allocated;
   }
 
@@ -78,9 +76,7 @@ namespace std {
     dest.displacement=src.displacement;
     dest.distancesq=src.distancesq;
     dest.size=src.size;
-    dest.displacementvec()=dest.displacement;
-    dest.displacementvec.size=dest.size;
-    dest.displacementvec.state=Reference;
+    refer(dest.displacementvec,dest.displacement,dest.size);
     dest.state=Reference;
   }
 
