@@ -3,6 +3,7 @@
 #define _Interaction_Method_H_
 
 #include "property-list.h"
+#include "unique-parameter.h"
 
 namespace std {
 
@@ -12,20 +13,24 @@ namespace std {
     typedef InteractionMethod<DistEvalMethod,GeomType>  Type;
 
     unsigned int *iTag;
-    void (*EFunc)(const Vector<double>*, const unsigned int*, const double*,
-                  Vector<double>*, DistEvalMethod&, const GeomType&, double&);
-    void (*GFunc)(const Vector<double>*, const unsigned int*, const double*,
-                  Vector<double>*, DistEvalMethod&, const GeomType&,
-                  Vector<double>*);
-    void (*BFunc)(const Vector<double>*, const unsigned int*, const double*,
-                  Vector<double>*, DistEvalMethod&, const GeomType&, double&,
-                  Vector<double>*);
+    void (*EFunc)(const Vector<double>*, const unsigned int*,
+                  const UniqueParameter*, const unsigned int,
+                  Vector<double>*, const unsigned int,
+                  DistEvalMethod&, const GeomType&, double&);
+    void (*GFunc)(const Vector<double>*, const unsigned int*,
+                  const UniqueParameter*, const unsigned int,
+                  Vector<double>*, const unsigned int,
+                  DistEvalMethod&, const GeomType&, Vector<double>*);
+    void (*BFunc)(const Vector<double>*, const unsigned int*,
+                  const UniqueParameter*, const unsigned int,
+                  Vector<double>*, const unsigned int,
+                  DistEvalMethod&, const GeomType&, double&, Vector<double>*);
     PropertyList<double> *tmpvec;
     unsigned int state;
 
     InteractionMethod()
-      : iTag(NULL), EFunc(NULL), GFunc(NULL), BFunc(NULL), tmpvec(NULL),
-        state(Unused) {}
+      : iTag(NULL), EFunc(NULL), GFunc(NULL), BFunc(NULL),
+        tmpvec(NULL), state(Unused) {}
     InteractionMethod(const Type&) {
       myError("Cannot create from Interaction Method");
     }
