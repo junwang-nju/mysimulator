@@ -106,6 +106,12 @@ target_link_libraries (test-interaction-pairwise-lj1012cut.run blas)
 add_executable (test-interaction-pairwise-corelj612.run test-interaction-pairwise-corelj612.cxx)
 target_link_libraries (test-interaction-pairwise-corelj612.run blas)
 
+add_executable (test-interaction-pairwise-coulomb.run test-interaction-pairwise-coulomb.cxx)
+target_link_libraries (test-interaction-pairwise-coulomb.run blas)
+
+add_executable (test-interaction-pairwise-quadharm.run test-interaction-pairwise-quadharm.cxx)
+target_link_libraries (test-interaction-pairwise-quadharm.run blas)
+
 #add_executable (test-interaction-particle-particle-coulomb.run test-interaction-particle-particle-coulomb.cxx)
 #target_link_libraries (test-interaction-particle-particle-coulomb.run blas Base)
 

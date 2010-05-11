@@ -93,14 +93,7 @@ namespace std {
 
 }
 
-#include "interaction-type-name.h"
-#include "interaction-pairwise-harmonic.h"
-#include "interaction-pairwise-lj612.h"
-#include "interaction-pairwise-core12.h"
-#include "interaction-pairwise-lj1012.h"
-#include "interaction-pairwise-lj612cut.h"
-#include "interaction-pairwise-lj1012cut.h"
-#include "interaction-pairwise-corelj612.h"
+#include "interaction-type.h"
 
 namespace std {
 
@@ -144,6 +137,16 @@ namespace std {
         IM.EFunc=EFuncPairwiseCoreLJ612<DistEvalMethod,GeomType>;
         IM.GFunc=GFuncPairwiseCoreLJ612<DistEvalMethod,GeomType>;
         IM.BFunc=BFuncPairwiseCoreLJ612<DistEvalMethod,GeomType>;
+        break;
+      case PairwiseCoulomb:
+        IM.EFunc=EFuncPairwiseCoulomb<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncPairwiseCoulomb<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncPairwiseCoulomb<DistEvalMethod,GeomType>;
+        break;
+      case PairwiseQuadHarm:
+        IM.EFunc=EFuncPairwiseQuadHarm<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncPairwiseQuadHarm<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncPairwiseQuadHarm<DistEvalMethod,GeomType>;
         break;
       default:
         myError("Unknown Interaction Type");
