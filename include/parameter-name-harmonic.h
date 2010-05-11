@@ -2,8 +2,6 @@
 #ifndef _Parameter_Name_Harmonic_H_
 #define _Parameter_Name_Harmonic_H_
 
-#include "unique-parameter.h"
-
 namespace std {
 
   enum HarmonicParameterName {
@@ -12,6 +10,13 @@ namespace std {
     HarmonicDualEqStrength,
     HarmonicNumberParameter
   };
+
+}
+
+#include "unique-parameter.h"
+#include "vector.h"
+
+namespace std {
 
   void GenerateParameterHarmonic(UniqueParameter* prm) {
     prm[HarmonicDualEqStrength]=prm[HarmonicEqStrength].d*2;
