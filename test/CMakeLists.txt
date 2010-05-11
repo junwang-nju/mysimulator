@@ -97,14 +97,20 @@ target_link_libraries (test-interaction-pairwise-core12.run blas)
 add_executable (test-interaction-pairwise-lj612cut.run test-interaction-pairwise-lj612cut.cxx)
 target_link_libraries (test-interaction-pairwise-lj612cut.run blas)
 
+add_executable (test-interaction-pairwise-lj1012.run test-interaction-pairwise-lj1012.cxx)
+target_link_libraries (test-interaction-pairwise-lj1012.run blas)
+
+add_executable (test-interaction-pairwise-lj1012cut.run test-interaction-pairwise-lj1012cut.cxx)
+target_link_libraries (test-interaction-pairwise-lj1012cut.run blas)
+
+add_executable (test-interaction-pairwise-corelj612.run test-interaction-pairwise-corelj612.cxx)
+target_link_libraries (test-interaction-pairwise-corelj612.run blas)
+
 #add_executable (test-interaction-particle-particle-coulomb.run test-interaction-particle-particle-coulomb.cxx)
 #target_link_libraries (test-interaction-particle-particle-coulomb.run blas Base)
 
 #add_executable (test-interaction-particle-particle-quadplusharm.run test-interaction-particle-particle-quadplusharm.cxx)
 #target_link_libraries (test-interaction-particle-particle-quadplusharm.run blas Base)
-
-#add_executable (test-interaction-particle-particle-lj1012.run test-interaction-particle-particle-lj1012.cxx)
-#target_link_libraries (test-interaction-particle-particle-lj1012.run blas Base)
 
 add_executable (test-interaction-4listset.run test-interaction-4listset.cxx)
 target_link_libraries (test-interaction-4listset.run blas Base)
@@ -114,9 +120,6 @@ target_link_libraries (test-minimizer-steep.run blas Base)
 
 add_executable (test-minimizer-conjg.run test-minimizer-conjg.cxx)
 target_link_libraries (test-minimizer-conjg.run blas Base)
-
-#add_executable (test-interaction-particle-particle-lj1012cut.run test-interaction-particle-particle-lj1012cut.cxx)
-#target_link_libraries (test-interaction-particle-particle-lj1012cut.run blas Base)
 
 add_executable (test-minimizer-lbfgs.run test-minimizer-lbfgs.cxx)
 target_link_libraries (test-minimizer-lbfgs.run blas Base)
@@ -145,6 +148,4 @@ target_link_libraries (test-interaction-angle-harmonic.run blas Base)
 add_executable (test-interaction-dihedral-periodic.run test-interaction-dihedral-periodic.cxx)
 target_link_libraries (test-interaction-dihedral-periodic.run blas Base)
 
-#add_executable (test-interaction-particle-particle-corelj612.run test-interaction-particle-particle-corelj612.cxx)
-#target_link_libraries (test-interaction-particle-particle-corelj612.run blas Base)
 

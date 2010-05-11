@@ -93,10 +93,14 @@ namespace std {
 
 }
 
-#include "interaction-type.h"
+#include "interaction-type-name.h"
 #include "interaction-pairwise-harmonic.h"
 #include "interaction-pairwise-lj612.h"
 #include "interaction-pairwise-core12.h"
+#include "interaction-pairwise-lj1012.h"
+#include "interaction-pairwise-lj612cut.h"
+#include "interaction-pairwise-lj1012cut.h"
+#include "interaction-pairwise-corelj612.h"
 
 namespace std {
 
@@ -116,10 +120,30 @@ namespace std {
         IM.GFunc=GFuncPairwiseLJ612<DistEvalMethod,GeomType>;
         IM.BFunc=BFuncPairwiseLJ612<DistEvalMethod,GeomType>;
         break;
+      case PairwiseLJ1012:
+        IM.EFunc=EFuncPairwiseLJ1012<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncPairwiseLJ1012<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncPairwiseLJ1012<DistEvalMethod,GeomType>;
+        break;
       case PairwiseCore12:
         IM.EFunc=EFuncPairwiseCore12<DistEvalMethod,GeomType>;
         IM.GFunc=GFuncPairwiseCore12<DistEvalMethod,GeomType>;
         IM.BFunc=BFuncPairwiseCore12<DistEvalMethod,GeomType>;
+        break;
+      case PairwiseLJ612Cut:
+        IM.EFunc=EFuncPairwiseLJ612Cut<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncPairwiseLJ612Cut<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncPairwiseLJ612Cut<DistEvalMethod,GeomType>;
+        break;
+      case PairwiseLJ1012Cut:
+        IM.EFunc=EFuncPairwiseLJ1012Cut<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncPairwiseLJ1012Cut<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncPairwiseLJ1012Cut<DistEvalMethod,GeomType>;
+        break;
+      case PairwiseCoreLJ612:
+        IM.EFunc=EFuncPairwiseCoreLJ612<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncPairwiseCoreLJ612<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncPairwiseCoreLJ612<DistEvalMethod,GeomType>;
         break;
       default:
         myError("Unknown Interaction Type");
