@@ -2,88 +2,129 @@
 #ifndef _Minimizer_Base_H_
 #define _Minimizer_Base_H_
 
-#include "var-vector.h"
+#include "error-proc.h"
+#include "util.h"
+#include "storage-state-name.h"
+#include "memory.h"
 
 namespace std {
 
-  template <typename SpaceVecType, typename ParameterType>
-  class MinimizerKernelBase {
+  template <typename SpaceDataType, typename ParameterType>
+  struct MinimizerKernelBase {
 
-    public:
+    typedef MinimizerKernelBase<SpaceDataType,ParameterType>  Type;
+    typedef void (*EFuncType)(const SpaceDataType&, double&, ParameterType&);
+    typedef void (*GFuncType)(const SpaceDataType&, SpaceDataType&,
+                              ParameterType&);
+    typedef void (*BFuncType)(const SpaceDataType&, SpaceDataType&, double&,
+                              ParameterType&);
 
-      typedef MinimizerKernelBase<SpaceVecType,ParameterType> Type;
+    EFuncType MinEFunc;
+    GFuncType MinGFunc;
+    BFuncType MinBFunc;
+    SpaceDataType *MinCoor;
+    SpaceDataType *MinGrad;
+    double *MinEnergy;
+    ParameterType *MinParam;
+    double *MinProject;
+    double *MinMove;
+    unsigned int *GCalcCount;
+    double *SearchScale;
+    unsigned int state;
 
-      typedef void (*EFuncType)(const SpaceVecType&,double&,
-                                ParameterType&);
-
-      typedef void (*GFuncType)(const SpaceVecType&,
-                                SpaceVecType&,ParameterType&);
-
-      typedef void (*BFuncType)(const SpaceVecType&, double&,
-                                SpaceVecType&,ParameterType&);
-
-      EFuncType MinEFunc;
-
-      GFuncType MinGFunc;
-
-      BFuncType MinBFunc;
-
-      SpaceVecType MinCoorSeq;
-
-      double MinE;
-
-      SpaceVecType MinGradSeq;
-
-      ParameterType MinParam;
-
-      double MinPrj;
-
-      double MinMove;
-
-      unsigned int MinGCount;
-
-      double MinScale;
-
-      MinimizerKernelBase()
-        : MinEFunc(NULL), MinGFunc(NULL), MinBFunc(NULL), MinCoorSeq(),
-          MinE(0.), MinGradSeq(), MinParam(), MinPrj(0.), MinMove(0.),
-          MinGCount(0), MinScale(0.1) {}
-
-      MinimizerKernelBase(const Type& MKB) {
-        myError("Cannot create from Minimizer Kernel Base");
-      }
-
-      Type& operator=(const Type& MKB) {
-        MinEFunc=MKB.MinEFunc;
-        MinGFunc=MKB.MinGFunc;
-        MinBFunc=MKB.MinBFunc;
-        MinCoorSeq=MKB.MinCoorSeq;
-        MinE=MKB.MinE;
-        MinGradSeq=MKB.MinGradSeq;
-        MinParam=MKB.MinParam;
-        MinPrj=MKB.MinPrj;
-        MinMove=MKB.MinMove;
-        MinGCount=MKB.MinGCount;
-        MinScale=MKB.MinScale;
-        return *this;
-      }
-
-      ~MinimizerKernelBase() {}
-
-      void clear() {
-        MinEFunc=NULL;
-        MinGFunc=NULL;
-        MinBFunc=NULL;
-        MinCoorSeq.clear();
-        MinE=0.;
-        MinGradSeq.clear();
-        MinPrj=0.;
-        MinMove=0.;
-        MinGCount=0;
-        MinScale=0.;
-      }
-
+    MinimizerKernelBase()
+      : MinEFunc(NULL), MinGFunc(NULL), MinBFunc(NULL), MinCoor(NULL),
+        MinGrad(NULL), MinEnergy(NULL), MinParam(NULL), MinProject(NULL),
+        MinMove(NULL), GCalcCount(NULL), SearchScale(NULL), state(Unused) {}
+    MinimizerKernelBase(const Type&) {
+      myError("Cannot create from MinimizerKernelBase");
+    }
+    Type& operator=(const Type& M) { assign(*this,M); return *this; }
+    ~MinimizerKernelBase() { release(*this); }
   };
+
+  template <typename SpaceDataType, typename ParameterType>
+  void IsAvailable(const MinimizerKernelBase<SpaceDataType,ParameterType>& M) {
+    return IsAvailable(M.MinCoor);
+  }
+
+  template <typename SpaceDataType, typename ParameterType>
+  void release(MinimizerKernelBase<SpaceDataType,ParameterType>& M) {
+    if(M.state==Allocated) {
+      safe_delete(M.MinCoor);
+      safe_delete(M.MinGrad);
+      safe_delete(M.MinEnergy);
+      safe_delete(M.MinParam);
+      safe_delete(M.MinProject);
+      safe_delete(M.MinMove);
+      safe_delete(M.GCalcCount);
+      safe_delete(M.SearchScale);
+    } else {
+      M.MinCoor=NULL;
+      M.MinGrad=NULL;
+      M.MinEnergy=NULL;
+      M.MinParam=NULL;
+      M.MinProject=NULL;
+      M.MinMove=NULL;
+      M.GCalcCount=NULL;
+      M.SearchScale=NULL;
+    }
+    M.MinEFunc=NULL;
+    M.MinGFunc=NULL;
+    M.MinBFunc=NULL;
+    M.state=Unused;
+  }
+
+  template <typename SpaceDataType, typename ParameterType>
+  void assign(MinimizerKernelBase<SpaceDataType,ParameterType>& dest,
+              const MinimizerKernelBase<SpaceDataType,ParameterType>& src) {
+    assert(IsAvailable(dest));
+    assert(IsAvailable(src));
+    dest.MinEFunc=src.MinEFunc;
+    dest.MinGFunc=src.MinGFunc;
+    dest.MinBFunc=src.MinBFunc;
+    *(dest.MinCoor)=*(src.MinCoor);
+    *(dest.MinGrad)=*(src.MinGrad);
+    *(dest.MinEnergy)=*(src.MinEnergy);
+    *(dest.MinParam)=*(src.MinParam);
+    *(dest.MinProject)=*(src.MinProject);
+    *(dest.MinMove)=*(src.MinMove);
+    *(dest.GCalcCount)=*(src.GCalcCount);
+    *(dest.SearchScale)=*(src.SearchScale);
+  }
+
+  template <typename SpaceDataType, typename ParameterType>
+  void allocate(MinimizerKernelBase<SpaceDataType,ParameterType>& M) {
+    release(M);
+    M.MinCoor=new SpaceDataType;
+    M.MinGrad=new SpaceDataType;
+    M.MinEnergy=new double;
+    M.MinParam=new ParameterType;
+    M.MinProject=new double;
+    M.MinMove=new double;
+    M.GCalcCount=new unsigned int;
+    M.SearchScale=new double;
+    M.state=Allocated;
+  }
+
+  template <typename SpaceDataType, typename ParameterType>
+  void refer(MinimizerKernelBase<SpaceDataType,ParameterType>& dest,
+             const MinimizerKernelBase<SpaceDataType,ParameterType>& src) {
+    assert(IsAvailable(src));
+    release(dest);
+    dest.MinEFunc=src.MinEFunc;
+    dest.MinGFunc=src.MinGFunc;
+    dest.MinBFunc=src.MinBFunc;
+    dest.MinCoor=src.MinCoor;
+    dest.MinGrad=src.MinGrad;
+    dest.MinEnergy=src.MinEnergy;
+    dest.MinParam=src.MinParam;
+    dest.MinProject=src.MinProject;
+    dest.MinMove=src.MinMove;
+    dest.GCalcCount=src.GCalcCount;
+    dest.SearchScale=src.SearchScale;
+    dest.state=Reference;
+  }
 
 }
 
