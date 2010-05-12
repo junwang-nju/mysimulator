@@ -112,11 +112,11 @@ target_link_libraries (test-interaction-pairwise-coulomb.run blas)
 add_executable (test-interaction-pairwise-quadharm.run test-interaction-pairwise-quadharm.cxx)
 target_link_libraries (test-interaction-pairwise-quadharm.run blas)
 
-add_executable (test-minimizer-base.run test-minimizer-base.cxx)
-target_link_libraries (test-minimizer-base.run blas)
-
 add_executable (test-interaction-4listset.run test-interaction-4listset.cxx)
 target_link_libraries (test-interaction-4listset.run blas Base)
+
+add_executable (test-minimizer-base.run test-minimizer-base.cxx)
+target_link_libraries (test-minimizer-base.run blas)
 
 add_executable (test-minimizer-steep.run test-minimizer-steep.cxx)
 target_link_libraries (test-minimizer-steep.run blas Base)

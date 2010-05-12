@@ -6,100 +6,71 @@
 
 namespace std {
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void EFunc(const VectorBase<refVector<double> >& CoorSeq,
-             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
-             const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
-             const VectorBase<refVector<refVector<double> > >& ParamLst,
-             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-             double& Energy) {
-    assert(IM.size()==IdxLst.size());
-    assert(IM.size()==ParamLst.size());
-    for(unsigned int i=0;i<IM.size();++i)
-      EFunc(CoorSeq,IM[i],IdxLst[i],ParamLst[i],DEval,Geo,Energy);
+  template <typename DistEvalMethod, typename GeomType>
+  void EFunc(const Vector<double>* Coor, Vector<Vector<unsigned int> >* IdxSet,
+             const Vector<Vector<UniqueParameter> >* PrmSet,
+             InteractionMethod<DistEvalMethod,GeomType>* imSet,
+             const unsigned int nSet,
+             DistEvalMethod& DEval, const GeomType& Geo, double& Energy) {
+    for(unsigned int i=0;i<nSet;++i)
+      EFunc(Coor,IdxSet[i](),PrmSet[i](),IdxSet[i].size,imSet[i],DEval,Geo,
+            Energy);
   }
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void GFunc(const VectorBase<refVector<double> >& CoorSeq,
-             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
-             const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
-             const VectorBase<refVector<refVector<double> > >& ParamLst,
-             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-             VectorBase<refVector<double> >& GradSeq) {
-    assert(IM.size()==IdxLst.size());
-    assert(IM.size()==ParamLst.size());
-    for(unsigned int i=0;i<IM.size();++i)
-      GFunc(CoorSeq,IM[i],IdxLst[i],ParamLst[i],DEval,Geo,GradSeq);
+  template <typename DistEvalMethod, typename GeomType>
+  void GFunc(const Vector<double>* Coor, Vector<Vector<unsigned int> >* IdxSet,
+             const Vector<Vector<UniqueParameter> >* PrmSet,
+             InteractionMethod<DistEvalMethod,GeomType>* imSet,
+             const unsigned int nSet,
+             DistEvalMethod& DEval, const GeomType& Geo,
+             Vector<double>* Gradient) {
+    for(unsigned int i=0;i<nSet;++i)
+      GFunc(Coor,IdxSet[i](),PrmSet[i](),IdxSet[i].size,imSet[i],DEval,Geo,
+            Gradient);
   }
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void BFunc(const VectorBase<refVector<double> >& CoorSeq,
-             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
-             const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
-             const VectorBase<refVector<refVector<double> > >& ParamLst,
-             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-             double& Energy, VectorBase<refVector<double> >& GradSeq) {
-    assert(IM.size()==IdxLst.size());
-    assert(IM.size()==ParamLst.size());
-    for(unsigned int i=0;i<IM.size();++i)
-      BFunc(CoorSeq,IM[i],IdxLst[i],ParamLst[i],DEval,Geo,Energy,GradSeq);
+  template <typename DistEvalMethod, typename GeomType>
+  void BFunc(const Vector<double>* Coor, Vector<Vector<unsigned int> >* IdxSet,
+             const Vector<Vector<UniqueParameter> >* PrmSet,
+             InteractionMethod<DistEvalMethod,GeomType>* imSet,
+             const unsigned int nSet,
+             DistEvalMethod& DEval, const GeomType& Geo,
+             double& Energy, Vector<double>* Gradient) {
+    for(unsigned int i=0;i<nSet;++i)
+      BFunc(Coor,IdxSet[i](),PrmSet[i](),IdxSet[i].size,imSet[i],DEval,Geo,
+            Energy,Gradient);
   }
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void EFunc(const VectorBase<refVector<double> >& CoorSeq,
-             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
-             const VectorBase<refVector<unsigned int> >& IdxLst,
-             const VectorBase<refVector<double> >& ParamLst,
-             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-             double& Energy) {
-    assert(IM.size()==IdxLst.size());
-    assert(IM.size()==ParamLst.size());
-    for(unsigned int i=0;i<IM.size();++i)
-      IM[i].EFunc(CoorSeq,IdxLst[i],ParamLst[i],DEval,Geo,Energy);
+  template <typename DistEvalMethod, typename GeomType>
+  void EFunc(const Vector<double>* Coor, const Vector<unsigned int>* IdxSet,
+             const Vector<UniqueParameter>* PrmSet,
+             InteractionMethod<DistEvalMethod,GeomType>* imSet,
+             const unsigned int nSet,
+             DistEvalMethod& DEval, const GeomType& Geo, double& Energy) {
+    for(unsigned int i=0;i<nSet;++i)
+      EFunc(Coor,IdxSet+i,PrmSet+i,1,imSet[i],DEval,Geo,Energy);
   }
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void GFunc(const VectorBase<refVector<double> >& CoorSeq,
-             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
-             const VectorBase<refVector<unsigned int> >& IdxLst,
-             const VectorBase<refVector<double> >& ParamLst,
-             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-             VectorBase<refVector<double> >& GradSeq) {
-    assert(IM.size()==IdxLst.size());
-    assert(IM.size()==ParamLst.size());
-    for(unsigned int i=0;i<IM.size();++i)
-      IM[i].GFunc(CoorSeq,IdxLst[i],ParamLst[i],DEval,Geo,GradSeq);
+  template <typename DistEvalMethod, typename GeomType>
+  void GFunc(const Vector<double>* Coor, const Vector<unsigned int>* IdxSet,
+             const Vector<UniqueParameter>* PrmSet,
+             InteractionMethod<DistEvalMethod,GeomType>* imSet,
+             const unsigned int nSet,
+             DistEvalMethod& DEval, const GeomType& Geo,
+             Vector<double>* Gradient) {
+    for(unsigned int i=0;i<nSet;++i)
+      GFunc(Coor,IdxSet+i,PrmSet+i,1,imSet[i],DEval,Geo,Gradient);
   }
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void BFunc(const VectorBase<refVector<double> >& CoorSeq,
-             VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& IM,
-             const VectorBase<refVector<unsigned int> >& IdxLst,
-             const VectorBase<refVector<double> >& ParamLst,
-             DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-             double& Energy, VectorBase<refVector<double> >& GradSeq) {
-    assert(IM.size()==IdxLst.size());
-    assert(IM.size()==ParamLst.size());
-    for(unsigned int i=0;i<IM.size();++i)
-      IM[i].BFunc(CoorSeq,IdxLst[i],ParamLst[i],DEval,Geo,Energy,GradSeq);
+  template <typename DistEvalMethod, typename GeomType>
+  void BFunc(const Vector<double>* Coor, const Vector<unsigned int>* IdxSet,
+             const Vector<UniqueParameter>* PrmSet,
+             InteractionMethod<DistEvalMethod,GeomType>* imSet,
+             const unsigned int nSet,
+             DistEvalMethod& DEval, const GeomType& Geo,
+             double& Energy, Vector<double>* Gradient) {
+    for(unsigned int i=0;i<nSet;++i)
+      BFunc(Coor,IdxSet+i,PrmSet+i,1,imSet[i],DEval,Geo,Energy,Gradient);
   }
 
 }

@@ -1,183 +1,196 @@
 
 #include "interaction-4listset.h"
-#include "var-property-list.h"
-#include "interaction-method-op.h"
-#include "var-distance-evaluate-direct.h"
-#include "var-free-space.h"
-#include "var-parameter-list.h"
+#include "property-list.h"
+#include "interaction-method.h"
+#include "distance-evaluate-direct.h"
+#include "free-space.h"
+#include "parameter-list.h"
 #include <iostream>
 using namespace std;
 
 int main() {
-  varPropertyList<double>::Type CoorSeq, GradSeq;
-  varVector<unsigned int> Sz;
-  Sz.allocate(4);
-  Sz=2;
-  CoorSeq.allocate(Sz);
-  GradSeq.allocate(Sz);
-  varVector<InteractionMethod<DistanceEvalDirect,FreeSpace> > vIM;
-  vIM.allocate(2);
-  SetInteractionMethod(vIM[0],ParticleParticle_Harmonic);
-  SetInteractionMethod(vIM[1],ParticleParticle_LJ612);
-  varPropertyList<unsigned int>::Type IdxLst;
-  Sz.allocate(6);
-  Sz=2;
-  IdxLst.allocate(Sz);
-  IdxLst[0][0]=0;   IdxLst[0][1]=1;
-  IdxLst[1][0]=0;   IdxLst[1][1]=2;
-  IdxLst[2][0]=0;   IdxLst[2][1]=3;
-  IdxLst[3][0]=1;   IdxLst[3][1]=2;
-  IdxLst[4][0]=1;   IdxLst[4][1]=3;
-  IdxLst[5][0]=2;   IdxLst[5][1]=3;
-  varPropertyList<refVector<unsigned int> >::Type vIdx;
-  varPropertyList<refVector<double> >::Type vPrm;
-  Sz.allocate(2);
-  Sz=3;
-  vIdx.allocate(Sz);
-  vPrm.allocate(Sz);
+
+  unsigned int *sz;
+
+  PropertyList<double> Coor,Grad;
+  sz=new unsigned int[4];
+  assign(sz,2,4);
+  allocate(Coor,sz,4);
+  allocate(Grad,sz,4);
+  Coor[0][0]=0;       Coor[0][1]=0;
+  Coor[1][0]=0;       Coor[1][1]=1.2;
+  Coor[2][0]=1.3;     Coor[2][1]=1.5;
+  Coor[3][0]=0.8;     Coor[3][1]=2.2;
+  safe_delete_array(sz);
+
+  PropertyList<unsigned int> IdxLst;
+  sz=new unsigned int[6];
+  assign(sz,2,6);
+  allocate(IdxLst,sz,6);
+  IdxLst[0][0]=0;     IdxLst[0][1]=1;
+  IdxLst[1][0]=0;     IdxLst[1][1]=2;
+  IdxLst[2][0]=0;     IdxLst[2][1]=3;
+  IdxLst[3][0]=1;     IdxLst[3][1]=2;
+  IdxLst[4][0]=1;     IdxLst[4][1]=3;
+  IdxLst[5][0]=2;     IdxLst[5][1]=3;
+  safe_delete_array(sz);
+  PropertyList<Vector<unsigned int> > IdxSet;
+  sz=new unsigned int[2];
+  assign(sz,3,2);
+  allocate(IdxSet,sz,2);
   for(unsigned int i=0,n=0;i<2;++i)
   for(unsigned int j=0;j<3;++j,++n)
-    vIdx[i][j].refer(IdxLst[n]);
-  varVector<unsigned int> KindSeq(4);
-  KindSeq[0]=0;
-  KindSeq[1]=1;
-  KindSeq[2]=0;
-  KindSeq[3]=2;
-  varParameterList vPL;
-  varVector<unsigned int> kS(18),vS(18);
-  for(unsigned int i=0;i<18;++i)  kS[i]=3;
-  for(unsigned int i=0;i<9;++i)   vS[i]=Harmonic_NumberParameter;
-  for(unsigned int i=9;i<18;++i)  vS[i]=LJ612_NumberParameter;
-  vPL.allocate(kS,vS);
+    refer(IdxSet[i][j],IdxLst[n]);
+  safe_delete_array(sz);
+
+  Vector<unsigned int> Kind;
+  allocate(Kind,4);
+  Kind[0]=0;
+  Kind[1]=1;
+  Kind[2]=0;
+  Kind[3]=2;
+  ParameterList PL;
+  sz=new unsigned int[18];
+  for(unsigned int i=0;i<9;++i)   sz[i]=HarmonicNumberParameter;
+  for(unsigned int i=9;i<18;++i)  sz[i]=LJ612NumberParameter;
+  allocate(PL,3,sz,18);
   for(unsigned int i=0,n=0;i<3;++i)
   for(unsigned int j=0;j<3;++j,++n) {
-    vPL.keylist()[n].index()[0]=ParticleParticle_Harmonic;
-    vPL.keylist()[n].index()[1]=i;
-    vPL.keylist()[n].index()[2]=j;
-    vPL.keylist()[n].BuildHash();
+    PL.key[n].index[0]=PairwiseHarmonic;
+    PL.key[n].index[1]=i;
+    PL.key[n].index[2]=j;
+    buildhash(PL.key[n]);
   }
-  vPL.valuelist()[0][Harmonic_EqLength]=1.;
-  vPL.valuelist()[0][Harmonic_EqStrength]=100.;
-  vPL.valuelist()[1][Harmonic_EqLength]=2.;
-  vPL.valuelist()[1][Harmonic_EqStrength]=100.;
-  vPL.valuelist()[2][Harmonic_EqLength]=0.5;
-  vPL.valuelist()[2][Harmonic_EqStrength]=100.;
-  vPL.valuelist()[3]=vPL.valuelist()[1];
-  vPL.valuelist()[4][Harmonic_EqLength]=1.;
-  vPL.valuelist()[4][Harmonic_EqStrength]=200.;
-  vPL.valuelist()[5][Harmonic_EqLength]=1.;
-  vPL.valuelist()[5][Harmonic_EqStrength]=30.;
-  vPL.valuelist()[6]=vPL.valuelist()[2];
-  vPL.valuelist()[7]=vPL.valuelist()[5];
-  vPL.valuelist()[8][Harmonic_EqLength]=1.5;
-  vPL.valuelist()[8][Harmonic_EqStrength]=2000.;
-  for(unsigned int i=0;i<9;++i)
-    vPL.valuelist()[i][Harmonic_DualEqStrength]=
-        2*vPL.valuelist()[i][Harmonic_EqStrength];
+  PL.value[0][HarmonicEqLength]=1.;
+  PL.value[0][HarmonicEqStrength]=100.;
+  PL.value[1][HarmonicEqLength]=2.;
+  PL.value[1][HarmonicEqStrength]=100.;
+  PL.value[2][HarmonicEqLength]=0.5;
+  PL.value[2][HarmonicEqStrength]=100.;
+  PL.value[3]=PL.value[1];
+  PL.value[4][HarmonicEqLength]=1.;
+  PL.value[4][HarmonicEqStrength]=200.;
+  PL.value[5][HarmonicEqLength]=1.;
+  PL.value[5][HarmonicEqStrength]=30.;
+  PL.value[6]=PL.value[2];
+  PL.value[7]=PL.value[5];
+  PL.value[8][HarmonicEqLength]=1.5;
+  PL.value[8][HarmonicEqStrength]=2000.;
+  for(unsigned int n=0;n<9;++n)
+    GenerateParameterHarmonic(PL.value[n]);
   for(unsigned int i=0,n=9;i<3;++i)
   for(unsigned int j=0;j<3;++j,++n) {
-    vPL.keylist()[n].index()[0]=ParticleParticle_LJ612;
-    vPL.keylist()[n].index()[1]=i;
-    vPL.keylist()[n].index()[2]=j;
-    vPL.keylist()[n].BuildHash();
+    PL.key[n].index[0]=PairwiseLJ612;
+    PL.key[n].index[1]=i;
+    PL.key[n].index[2]=j;
+    buildhash(PL.key[n]);
   }
-  vPL.valuelist()[9][LJ612_EqRadius]=1.;
-  vPL.valuelist()[9][LJ612_EqStrength]=1.;
-  vPL.valuelist()[10][LJ612_EqRadius]=0.8;
-  vPL.valuelist()[10][LJ612_EqStrength]=2.;
-  vPL.valuelist()[11][LJ612_EqRadius]=0.5;
-  vPL.valuelist()[11][LJ612_EqStrength]=1.;
-  vPL.valuelist()[12]=vPL.valuelist()[10];
-  vPL.valuelist()[13][LJ612_EqRadius]=1.2;
-  vPL.valuelist()[13][LJ612_EqStrength]=2.;
-  vPL.valuelist()[14][LJ612_EqRadius]=1.1;
-  vPL.valuelist()[14][LJ612_EqStrength]=3.;
-  vPL.valuelist()[15]=vPL.valuelist()[11];
-  vPL.valuelist()[16]=vPL.valuelist()[14];
-  vPL.valuelist()[17][LJ612_EqRadius]=1.5;
-  vPL.valuelist()[17][LJ612_EqStrength]=2.;
-  for(unsigned int i=9;i<18;++i) {
-    vPL.valuelist()[i][LJ612_EqRadiusSQ]=
-        vPL.valuelist()[i][LJ612_EqRadius]*vPL.valuelist()[i][LJ612_EqRadius];
-    vPL.valuelist()[i][LJ612_TwlfEqStrength]=
-        12*vPL.valuelist()[i][LJ612_EqStrength];
-  }
-  vPL.updateHashTree();
-
-  varVector<refVector<double> > ParamLst(6);
-  varVector<unsigned int> prmKey(3);
+  PL.value[9][LJ612EqRadius]=1.;
+  PL.value[9][LJ612EqEnergyDepth]=1.;
+  PL.value[10][LJ612EqRadius]=0.8;
+  PL.value[10][LJ612EqEnergyDepth]=2.;
+  PL.value[11][LJ612EqRadius]=0.5;
+  PL.value[11][LJ612EqEnergyDepth]=1.;
+  PL.value[12]=PL.value[10];
+  PL.value[13][LJ612EqRadius]=1.2;
+  PL.value[13][LJ612EqEnergyDepth]=2.;
+  PL.value[14][LJ612EqRadius]=1.1;
+  PL.value[14][LJ612EqEnergyDepth]=3.;
+  PL.value[15]=PL.value[11];
+  PL.value[16]=PL.value[14];
+  PL.value[17][LJ612EqRadius]=1.5;
+  PL.value[17][LJ612EqEnergyDepth]=2.;
+  for(unsigned int n=9;n<18;++n)
+    GenerateParameterLJ612(PL.value[n]);
+  updatetree(PL);
+  Vector<UniqueParameter>* Prm=new Vector<UniqueParameter>[6];
+  Vector<unsigned int> pKey;
+  allocate(pKey,3);
   for(unsigned int i=0;i<3;++i) {
-    prmKey[0]=ParticleParticle_Harmonic;
-    for(unsigned int k=0;k<2;++k)
-      prmKey[k+1]=KindSeq[IdxLst[i][k]];
-    ParamLst[i].refer(*vPL.get(prmKey));
+    pKey[0]=PairwiseHarmonic;
+    pKey[1]=Kind[IdxLst[i][0]];
+    pKey[2]=Kind[IdxLst[i][1]];
+    refer(Prm[i],*get(PL,pKey(),3));
   }
   for(unsigned int i=3;i<6;++i) {
-    prmKey[0]=ParticleParticle_LJ612;
-    for(unsigned int k=0;k<2;++k)
-      prmKey[k+1]=KindSeq[IdxLst[i][k]];
-    ParamLst[i].refer(*vPL.get(prmKey));
+    pKey[0]=PairwiseLJ612;
+    pKey[1]=Kind[IdxLst[i][0]];
+    pKey[2]=Kind[IdxLst[i][1]];
+    refer(Prm[i],*get(PL,pKey(),3));
   }
+  release(pKey);
+  PropertyList<Vector<UniqueParameter> > PrmSet;
+  sz=new unsigned int[2];
+  assign(sz,3,2);
+  allocate(PrmSet,sz,2);
   for(unsigned int i=0,n=0;i<2;++i)
   for(unsigned int j=0;j<3;++j,++n)
-    vPrm[i][j].refer(ParamLst[n]);
+    refer(PrmSet[i][j],Prm[n]);
+  safe_delete_array(sz);
 
-  varDistanceEvalDirect vDED(2);
-  varFreeSpace vFS;
+  InteractionMethod<DistanceEvalDirect,FreeSpace>* IM;
+  IM=new InteractionMethod<DistanceEvalDirect,FreeSpace>[2];
+  for(unsigned int i=0;i<2;++i)   allocate(IM[i]);
+  Set(IM[0],PairwiseHarmonic);
+  Set(IM[1],PairwiseLJ612);
 
-  CoorSeq[0][0]=0;    CoorSeq[0][1]=0;
-  CoorSeq[1][0]=0;    CoorSeq[1][1]=1.2;
-  CoorSeq[2][0]=1.3;  CoorSeq[2][1]=1.5;
-  CoorSeq[3][0]=0.8;  CoorSeq[3][1]=2.2;
+  DistanceEvalDirect DEval;
+  FreeSpace FS;
+  allocate(DEval,2);
+  allocate(FS,2);
 
-  cout<<"Test -- Energy for a list of units and a set of interaction with loose binding"<<endl;
-  double E=0;
-  EFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),vPrm.Structure(),vDED,vFS,E);
-  cout<<E<<endl;
-  cout<<endl;
-
-  cout<<"Test -- Gradient for a list of units and a set of interaction with loose binding"<<endl;
-  GradSeq=0.;
-  GFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),vPrm.Structure(),vDED,vFS,
-        GradSeq.Structure());
-  cout<<GradSeq<<endl;
-  cout<<endl;
-
-  cout<<"Test -- Energy and Gradient for a list of units and a set of interaction with loose binding"<<endl;
+  cout.precision(20);
+  cout<<"Test -- EFunc"<<endl;
+  double E;
   E=0.;
-  GradSeq=0.;
-  BFunc(CoorSeq.Structure(),vIM,vIdx.Structure(),vPrm.Structure(),vDED,vFS,
-        E,GradSeq.Structure());
-  cout<<E<<endl;
-  cout<<GradSeq<<endl;
-  cout<<endl;
-
-  vIM.allocate(6);
-  for(unsigned int i=0;i<3;++i)
-    SetInteractionMethod(vIM[i],ParticleParticle_Harmonic);
-  for(unsigned int i=3;i<6;++i)
-    SetInteractionMethod(vIM[i],ParticleParticle_LJ612);
-  cout<<"Test -- Energy for a list of units and a set of interaction with tight binding"<<endl;
-  E=0;
-  EFunc(CoorSeq.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,E);
+  EFunc(Coor.structure,IdxSet.structure,PrmSet.structure,IM,2,DEval,FS,E);
   cout<<E<<endl;
   cout<<endl;
-
-  cout<<"Test -- Gradient for a list of units and a set of interaction with tight binding"<<endl;
-  GradSeq=0.;
-  GFunc(CoorSeq.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,
-        GradSeq.Structure());
-  cout<<GradSeq<<endl;
+  
+  cout<<"Test -- GFunc"<<endl;
+  assign(Grad.data,0.,Grad.dsize);
+  GFunc(Coor.structure,IdxSet.structure,PrmSet.structure,IM,2,DEval,FS,
+        Grad.structure);
+  cout<<Grad<<endl;
   cout<<endl;
-
-  cout<<"Test -- Energy and Gradient for a list of units and a set of interaction with tight binding"<<endl;
+  
+  cout<<"Test -- BFunc"<<endl;
   E=0.;
-  GradSeq=0.;
-  BFunc(CoorSeq.Structure(),vIM,IdxLst.Structure(),ParamLst,vDED,vFS,
-        E,GradSeq.Structure());
+  assign(Grad.data,0.,Grad.dsize);
+  BFunc(Coor.structure,IdxSet.structure,PrmSet.structure,IM,2,DEval,FS,
+        E,Grad.structure);
   cout<<E<<endl;
-  cout<<GradSeq<<endl;
+  cout<<Grad<<endl;
   cout<<endl;
+
+  safe_delete_array(IM);
+  IM=new InteractionMethod<DistanceEvalDirect,FreeSpace>[6];
+  for(unsigned int i=0;i<6;++i) allocate(IM[i]);
+  for(unsigned int i=0;i<3;++i) Set(IM[i],PairwiseHarmonic);
+  for(unsigned int i=3;i<6;++i) Set(IM[i],PairwiseLJ612);
+
+  cout<<"Test -- EFunc (series version)"<<endl;
+  E=0.;
+  EFunc(Coor.structure,IdxLst.structure,Prm,IM,6,DEval,FS,E);
+  cout<<E<<endl;
+  cout<<endl;
+  
+  cout<<"Test -- GFunc"<<endl;
+  assign(Grad.data,0.,Grad.dsize);
+  GFunc(Coor.structure,IdxLst.structure,Prm,IM,6,DEval,FS,Grad.structure);
+  cout<<Grad<<endl;
+  cout<<endl;
+  
+  cout<<"Test -- BFunc"<<endl;
+  E=0.;
+  assign(Grad.data,0.,Grad.dsize);
+  BFunc(Coor.structure,IdxLst.structure,Prm,IM,6,DEval,FS,E,Grad.structure);
+  cout<<E<<endl;
+  cout<<Grad<<endl;
+  cout<<endl;
+
+  safe_delete_array(IM);
+  
   return 1;
 }
 
