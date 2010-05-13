@@ -30,7 +30,7 @@ namespace std {
   };
 
   template <typename T>
-  void allocate(Vector<T>& v, const unsigned int vsize) {
+  inline void allocate(Vector<T>& v, const unsigned int vsize) {
     release(v);
     allocate(v(),vsize);
     v.size=vsize;
@@ -38,7 +38,7 @@ namespace std {
   }
 
   template <typename T>
-  void release(Vector<T>& v) {
+  inline void release(Vector<T>& v) {
     if(v.state==Allocated)  release(v());
     else v()=NULL;
     v.size=0;
@@ -46,7 +46,7 @@ namespace std {
   }
 
   template <typename T>
-  void refer(Vector<T>& dest, const Vector<T>& src) {
+  inline void refer(Vector<T>& dest, const Vector<T>& src) {
     assert(IsAvailable(src));
     release(dest);
     dest()=const_cast<T*>(src());
@@ -55,8 +55,8 @@ namespace std {
   }
 
   template <typename T>
-  void refer(Vector<T>& dest, const T* src, const unsigned int size,
-                              const unsigned int off=uZero) {
+  inline void refer(Vector<T>& dest, const T* src, const unsigned int size,
+                    const unsigned int off=uZero) {
     assert(IsAvailable(src));
     release(dest);
     dest()=const_cast<T*>(src)+off;
@@ -65,55 +65,57 @@ namespace std {
   }
 
   template <typename T>
-  void assign(Vector<T>& dest, const Vector<T>& src) {
+  inline void assign(Vector<T>& dest, const Vector<T>& src) {
     unsigned int n=(dest.size<src.size?dest.size:src.size);
     assign(dest(),src(),n);
   }
 
   template <typename T>
-  void assign(Vector<T>& v, const T& value) { assign(v(),value,v.size); }
+  inline void assign(Vector<T>& v, const T& value) { assign(v(),value,v.size); }
 
-  void assign(Vector<unsigned int>& v, const unsigned int value) {
+  inline void assign(Vector<unsigned int>& v, const unsigned int value) {
     assign(v(),value,v.size);
   }
 
-  void assign(Vector<int>& v, const int value) { assign(v(),value,v.size); }
+  inline void assign(Vector<int>& v, const int value) {
+    assign(v(),value,v.size);
+  }
 
-  void assign(Vector<double>& v, const double value) {
+  inline void assign(Vector<double>& v, const double value) {
     assign(v(),value,v.size);
   }
 
   template <typename T>
-  void scale(Vector<T>& v, const T& value) { scale(v(),value,v.size); }
+  inline void scale(Vector<T>& v, const T& value) { scale(v(),value,v.size); }
 
   template <typename T>
-  void scale(Vector<T>& v, const Vector<T>& vf) {
+  inline void scale(Vector<T>& v, const Vector<T>& vf) {
     unsigned int n=(v.size<vf.size?v.size:vf.size);
     scale(v(),vf(),n);
   }
 
   template <typename T>
-  void shift(Vector<T>& v, const T& fac, const Vector<T>& vfac) {
+  inline void shift(Vector<T>& v, const T& fac, const Vector<T>& vfac) {
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     shift(v(),fac,vfac(),n);
   }
 
   template <typename T>
-  void shift(Vector<T>& v, const Vector<T>& vfac) {
+  inline void shift(Vector<T>& v, const Vector<T>& vfac) {
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     shift(v(),vfac(),n);
   }
 
   template <typename T>
-  void shift(Vector<T>& v, const T& fac) { shift(v(),fac,v.size); }
+  inline void shift(Vector<T>& v, const T& fac) { shift(v(),fac,v.size); }
 
   template <typename T>
-  void shift(Vector<T>& v, const Vector<T>& vfac, const T& fac) {
+  inline void shift(Vector<T>& v, const Vector<T>& vfac, const T& fac) {
     shift(v,fac,vfac);
   }
 
   template <typename T>
-  void scaleshift(Vector<T>& v, const T& dfac, const T& fac,
+  inline void scaleshift(Vector<T>& v, const T& dfac, const T& fac,
                   const Vector<T>& sfac, const Vector<T>& vfac) {
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     n=(n<sfac.size?n:sfac.size);
@@ -121,14 +123,14 @@ namespace std {
   }
 
   template <typename T>
-  void scaleshift(Vector<T>& v, const T& dfac, const T& fac,
+  inline void scaleshift(Vector<T>& v, const T& dfac, const T& fac,
                   const Vector<T>& vfac) {
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     scaleshift(v(),dfac,fac,vfac(),n);
   }
 
   template <typename T>
-  void shift(Vector<T>& v, const T& fac, const Vector<T>& sfac,
+  inline void shift(Vector<T>& v, const T& fac, const Vector<T>& sfac,
              const Vector<T>& vfac) {
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     n=(n<sfac.size?n:sfac.size);
@@ -136,34 +138,34 @@ namespace std {
   }
 
   template <typename T>
-  void exchange(Vector<T>& va, Vector<T>& vb) {
+  inline void exchange(Vector<T>& va, Vector<T>& vb) {
     unsigned int n=(va.size<vb.size?va.size:vb.size);
     exchange(va(),vb(),n);
   }
 
   template <typename T>
-  void swap(Vector<T>& va, Vector<T>& vb) {
+  inline void swap(Vector<T>& va, Vector<T>& vb) {
     swap(va.data,vb.data);
     swap(va.size,vb.size);
     swap(va.state,vb.state);
   }
 
   template <typename T>
-  T dot(const Vector<T>& va, const Vector<T>& vb) {
+  inline T dot(const Vector<T>& va, const Vector<T>& vb) {
     unsigned int n=(va.size<vb.size?va.size:vb.size);
     return dot(va(),vb(),n);
   }
 
   template <typename T>
-  T normSQ(const Vector<T>& v) { return normSQ(v(),v.size); }
+  inline T normSQ(const Vector<T>& v) { return normSQ(v(),v.size); }
 
   double norm(const Vector<double>& v) { return norm(v(),v.size); }
 
   template <typename T>
-  T asum(const Vector<T>& v) { return asum(v(),v.size); }
+  inline T asum(const Vector<T>& v) { return asum(v(),v.size); }
 
   template <typename T>
-  bool IsAvailable(const Vector<T>& v){ return IsAvailable(v()); }
+  inline bool IsAvailable(const Vector<T>& v){ return IsAvailable(v()); }
 
   template <typename T>
   ostream& operator<<(ostream& os, const Vector<T>& v) {

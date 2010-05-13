@@ -30,7 +30,7 @@ namespace std {
    * @return 1 indicating the operation is successful.
    */
   template <typename T>
-  int safe_delete(T*& ptr) {
+  inline int safe_delete(T*& ptr) {
     if(ptr==NULL)   return 0;
     delete ptr;
     ptr=NULL;
@@ -38,7 +38,7 @@ namespace std {
   }
 
   template <typename T>
-  int safe_delete_array(T*& ptr) {
+  inline int safe_delete_array(T*& ptr) {
     if(ptr==NULL)   return 0;
     delete[] ptr;
     ptr=NULL;
