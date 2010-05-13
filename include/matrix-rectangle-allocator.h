@@ -34,7 +34,7 @@ namespace std {
     M.property[MatrixDataOrder]=DataOrder;
     M.property[MatrixTransposeForm]=TransposeForm;
     SetMatrixActualOrder(M.property);
-    M.data=new T[M.property[MatrixNumberElement]];
+    allocate(static_cast<Vector<T>&>(M),M.property[MatrixNumberElement]);
     T* PtrData=M.data;
     if(M.property[MatrixActualOrder]==COrder) {
       M.structure=new T*[nRow];

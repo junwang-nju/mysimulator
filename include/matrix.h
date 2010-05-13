@@ -36,34 +36,22 @@ namespace std {
   };
 
   template <typename T>
-  struct Matrix {
+  struct Matrix : public Vector<T> {
 
     typedef Matrix<T> Type;
+    typedef Vector<T> ParentType;
     typedef T& (*GetFuncType)(T**,const unsigned int,const unsigned int,T&);
 
-    T* data;
     T** structure;
     unsigned int *property;
     T* PtrOtherElement;
     GetFuncType GetFunc;
-    unsigned int state;
 
     Matrix()
-      : data(NULL), structure(NULL), property(NULL), PtrOtherElement(NULL),
-        GetFunc(NULL), state(Unused) {}
+      : ParentType(), structure(NULL), property(NULL), PtrOtherElement(NULL),
+        GetFunc(NULL) {}
     Matrix(const Type& MB) { myError("Cannot create Matrix"); }
-    Type& operator=(const Type& M) {
-    assert(IsAvailable(*this));
-    assert(IsAvailable(M));
-      unsigned int m=
-          (property[MatrixNumberRow]<M.property[MatrixNumberRow]?
-           property[MatrixNumberRow]:M.property[MatrixNumberRow]);
-      unsigned int n=
-          (property[MatrixNumberColumn]<M.property[MatrixNumberColumn]?
-           property[MatrixNumberColumn]:M.property[MatrixNumberColumn]);
-      assign(*this,M,m,n);
-      return *this;
-    }
+    Type& operator=(const Type& M) { assign(*this,M); return *this; }
     ~Matrix() { release(*this); }
 
     T& operator()(const unsigned int I, const unsigned int J) {
@@ -77,35 +65,34 @@ namespace std {
   };
 
   template <typename T>
-  bool IsAvailable(const Matrix<T>& M) { return IsAvailable(M.data); }
+  bool IsAvailable(const Matrix<T>& M) {
+    return IsAvailable(static_cast<const Vector<T>&>(M));
+  }
 
   template <typename T>
   void release(Matrix<T>& M) {
     if(M.state==Allocated) {
-      safe_delete_array(M.data);
       safe_delete_array(M.structure);
       safe_delete_array(M.property);
       safe_delete(M.PtrOtherElement);
     } else {
-      M.data=NULL;
       M.structure=NULL;
       M.property=NULL;
       M.PtrOtherElement=NULL;
     }
     M.GetFunc=NULL;
-    M.state=Unused;
+    release(static_cast<Vector<T>&>(M));
   }
 
   template <typename T>
   void refer(Matrix<T>& destM, const Matrix<T>& srcM) {
     assert(IsAvailable(srcM));
     release(destM);
-    destM.data=const_cast<T*>(srcM.data);
     destM.structure=const_cast<T**>(srcM.structure);
     destM.property=const_cast<unsigned int*>(srcM.property);
     destM.PtrOtherElement=const_cast<T*>(srcM.PtrOtherElement);
     destM.GetFunc=srcM.GetFunc;
-    destM.state=Reference;
+    refer(static_cast<Vector<T>&>(destM),static_cast<const Vector<T>&>(srcM));
   }
 
   template <typename T>
@@ -132,8 +119,7 @@ namespace std {
       unsigned int DataOrder=va_arg(vl,unsigned int);
       unsigned int TransForm=va_arg(vl,unsigned int);
       allocateRectangleMatrix(M,nRow,nCol,DataOrder,TransForm);
-    }
-    else if(MatrixType==TriangleMatrix) {
+    } else if(MatrixType==TriangleMatrix) {
       unsigned int Dim=va_arg(vl,unsigned int);
       unsigned int DataOrder=va_arg(vl,unsigned int);
       unsigned int TransForm=va_arg(vl,unsigned int);
@@ -148,12 +134,11 @@ namespace std {
 
   template <typename T>
   void swap(Matrix<T>& Ma, Matrix<T>& Mb) {
-    swap(Ma.data,Mb.data);
     swap(Ma.structure,Mb.structure);
     swap(Ma.property,Mb.property);
     swap(Ma.PtrOtherElement,Mb.PtrOtherElement);
     swap(Ma.GetFunc,Mb.GetFunc);
-    swap(Ma.state,Mb.state);
+    swap(static_cast<Vector<T>&>(Ma),static_cast<Vector<T>&>(Mb));
   }
 
   void SetMatrixActualOrder(unsigned int* property) {

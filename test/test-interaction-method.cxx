@@ -64,11 +64,11 @@ int main() {
   E=0.;
   IM.EFunc(v.structure,idx(),prm(),2,NULL,0,DED,FS,E);
   cout<<E<<endl;
-  assign(g.data,0.,g.dsize);
+  assign(g.data,0.,g.size);
   IM.GFunc(v.structure,idx(),prm(),2,NULL,0,DED,FS,g.structure);
   cout<<g<<endl;
   E=0.;
-  assign(g.data,0.,g.dsize);
+  assign(g.data,0.,g.size);
   IM.BFunc(v.structure,idx(),prm(),2,NULL,0,DED,FS,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;

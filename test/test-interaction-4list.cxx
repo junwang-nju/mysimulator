@@ -96,14 +96,14 @@ int main() {
   cout<<endl;
   
   cout<<"Test -- GFunc"<<endl;
-  assign(Grad.data,0.,Grad.dsize);
+  assign(Grad.data,0.,Grad.size);
   GFunc(Coor.structure,IdxLst.structure,Prm,6,IM,DEval,FS,Grad.structure);
   cout<<Grad<<endl;
   cout<<endl;
   
   cout<<"Test -- BFunc"<<endl;
   E=0.;
-  assign(Grad.data,0.,Grad.dsize);
+  assign(Grad.data,0.,Grad.size);
   BFunc(Coor.structure,IdxLst.structure,Prm,6,IM,DEval,FS,E,Grad.structure);
   cout<<E<<endl;
   cout<<Grad<<endl;

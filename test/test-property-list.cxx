@@ -11,7 +11,7 @@ int main() {
   assign(sz,3);
   allocate(dPL,sz(),sz.size);
   cout<<IsAvailable(dPL)<<endl;
-  assign(dPL.data,2.3,dPL.dsize);
+  assign(dPL.data,2.3,dPL.size);
   cout<<dPL<<endl;
   PropertyList<double> dPL2;
   allocate(sz,4);

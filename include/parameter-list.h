@@ -28,7 +28,7 @@ namespace std {
     unsigned int state;
 
     ParameterList()
-      : key(NULL), value(NULL), size(NULL), tree(NULL), state(Unused) {}
+      : key(NULL), value(NULL), size(0), tree(NULL), state(Unused) {}
     ParameterList(const Type&){ myError("Cannot create from Parameter List"); }
     Type& operator=(const Type& PL) { assign(*this,PL); return *this; }
     ~ParameterList() { release(*this); }

@@ -148,7 +148,7 @@ int main() {
   cout<<endl;
   
   cout<<"Test -- GFunc"<<endl;
-  assign(Grad.data,0.,Grad.dsize);
+  assign(Grad.data,0.,Grad.size);
   GFunc(Coor.structure,IdxSet.structure,PrmSet.structure,IM,2,DEval,FS,
         Grad.structure);
   cout<<Grad<<endl;
@@ -156,7 +156,7 @@ int main() {
   
   cout<<"Test -- BFunc"<<endl;
   E=0.;
-  assign(Grad.data,0.,Grad.dsize);
+  assign(Grad.data,0.,Grad.size);
   BFunc(Coor.structure,IdxSet.structure,PrmSet.structure,IM,2,DEval,FS,
         E,Grad.structure);
   cout<<E<<endl;
@@ -176,14 +176,14 @@ int main() {
   cout<<endl;
   
   cout<<"Test -- GFunc"<<endl;
-  assign(Grad.data,0.,Grad.dsize);
+  assign(Grad.data,0.,Grad.size);
   GFunc(Coor.structure,IdxLst.structure,Prm,IM,6,DEval,FS,Grad.structure);
   cout<<Grad<<endl;
   cout<<endl;
   
   cout<<"Test -- BFunc"<<endl;
   E=0.;
-  assign(Grad.data,0.,Grad.dsize);
+  assign(Grad.data,0.,Grad.size);
   BFunc(Coor.structure,IdxLst.structure,Prm,IM,6,DEval,FS,E,Grad.structure);
   cout<<E<<endl;
   cout<<Grad<<endl;

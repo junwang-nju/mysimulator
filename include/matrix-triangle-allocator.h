@@ -216,7 +216,7 @@ namespace std {
     M.property[MatrixNumberElement]=
       (M.property[MatrixActualDimension]*(M.property[MatrixActualDimension]+1))
       /2;
-    M.data=new T[M.property[MatrixNumberElement]];
+    allocate(static_cast<Vector<T>&>(M),M.property[MatrixNumberElement]);
     M.structure=new T*[M.property[MatrixActualDimension]];
     T* PtrData=M.data;
     for(unsigned int 
