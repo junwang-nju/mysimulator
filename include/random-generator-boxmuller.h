@@ -102,6 +102,7 @@ namespace std {
 
   template <typename UniformRNG>
   void init(BoxMuller<UniformRNG>& bm, const unsigned int seed) {
+    assert(IsAvailable(bm));
     init(*bm.urng,seed);
     *bm.isSecond=false;
   }
