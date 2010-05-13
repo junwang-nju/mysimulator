@@ -7,7 +7,8 @@ namespace std {
   enum StorageStateName {
     Unused=0,
     Allocated,
-    Reference
+    Reference,
+    HybridStorage
   };
 
 }
