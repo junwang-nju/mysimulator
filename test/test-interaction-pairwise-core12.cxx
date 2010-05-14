@@ -27,7 +27,7 @@ int main() {
   idx[1]=1;
 
   Vector<UniqueParameter> prm;
-  allocate(prm,3);
+  allocate(prm,Core12NumberParameter);
   prm[Core12EqStrength]=1.;
   GenerateParameterCore12(prm);
 
