@@ -12,17 +12,17 @@
 namespace std {
 
   template <typename T>
-  void allocate(T* &dest, const unsigned int N) {
+  inline void allocate(T* &dest, const unsigned int N) {
     if(N==0)  return;
     release(dest);
     dest=new T[N];
   }
 
   template <typename T>
-  void release(T* &dest) { safe_delete_array(dest); }
+  inline void release(T* &dest) { safe_delete_array(dest); }
 
   template <typename T>
-  void assign(T* dest, const T* src, const long ncopy,
+  inline void assign(T* dest, const T* src, const long ncopy,
               const int soff=iZero, const long sstep=lOne,
               const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
@@ -32,7 +32,7 @@ namespace std {
       *dPtr=*sPtr;
   }
 
-  void assign(double* dest, const double* src, const long ncopy,
+  inline void assign(double* dest, const double* src, const long ncopy,
               const int soff=iZero, const long sstep=lOne,
               const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
@@ -41,7 +41,7 @@ namespace std {
            const_cast<long*>(&sstep),dest+doff,const_cast<long*>(&dstep));
   }
 
-  void assign(int* dest, const int* src, const long ncopy,
+  inline void assign(int* dest, const int* src, const long ncopy,
               const int soff=iZero, const long sstep=lOne,
               const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
@@ -52,9 +52,10 @@ namespace std {
            reinterpret_cast<float*>(dest)+doff,const_cast<long*>(&dstep));
   }
 
-  void assign(unsigned int* dest, const unsigned int* src, const long ncopy,
-              const int soff=iZero, const long sstep=lOne,
-              const int doff=iZero, const long dstep=lOne) {
+  inline void assign(unsigned int* dest, const unsigned int* src,
+                     const long ncopy,
+                     const int soff=iZero, const long sstep=lOne,
+                     const int doff=iZero, const long dstep=lOne) {
     assert(sizeof(unsigned int)==sizeof(float));
     assert(dest!=NULL);
     assert(src!=NULL);
@@ -65,45 +66,47 @@ namespace std {
   }
 
   template <typename T>
-  void assign(T* dest, const T& value, const long ncopy,
-              const int doff=iZero, const long dstep=lOne) {
+  inline void assign(T* dest, const T& value, const long ncopy,
+                     const int doff=iZero, const long dstep=lOne) {
     assign(dest,&value,ncopy,iZero,lZero,doff,dstep);
   }
 
-  void assign(unsigned int* dest, const unsigned int value, const long ncopy,
-              const int doff=iZero, const long dstep=lOne) {
+  inline void assign(unsigned int* dest, const unsigned int value,
+                     const long ncopy, 
+                     const int doff=iZero, const long dstep=lOne) {
     assign(dest,&value,ncopy,iZero,lZero,doff,dstep);
   }
 
-  void assign(double* dest, const double value, const long ncopy,
-              const int doff=iZero, const long dstep=lOne) {
+  inline void assign(double* dest, const double value, const long ncopy,
+                     const int doff=iZero, const long dstep=lOne) {
     assign(dest,&value,ncopy,iZero,lZero,doff,dstep);
   }
 
-  void scale(int* dest, const int factor, const long nscale,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void scale(int* dest, const int factor, const long nscale,
+                    const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     int *dPtr=dest+doff;
     for(unsigned int i=0;i<static_cast<unsigned int>(nscale);++i,dPtr+=dstep)
       *dPtr*=factor;
   }
 
-  void scale(unsigned int* dest, const unsigned int factor, const long nscale,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void scale(unsigned int* dest, const unsigned int factor,
+                    const long nscale,
+                    const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     unsigned int* dPtr=dest+doff;
     for(unsigned int i=0;i<static_cast<unsigned int>(nscale);++i,dPtr+=dstep)
       *dPtr*=factor;
   }
 
-  void scale(double* dest, const double factor, const long nscale,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void scale(double* dest, const double factor, const long nscale,
+                    const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     dscal_(const_cast<long*>(&nscale),const_cast<double*>(&factor),
            dest+doff,const_cast<long*>(&dstep));
   }
 
-  void scale(int* dest, const int* vfactor,const long nscale,
+  inline void scale(int* dest, const int* vfactor,const long nscale,
              const int voff=iZero, const long vstep=lOne,
              const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
@@ -114,9 +117,10 @@ namespace std {
       *dPtr*=*vPtr;
   }
 
-  void scale(unsigned int* dest, const unsigned int* vfactor,const long nscale,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void scale(unsigned int* dest, const unsigned int* vfactor,
+                    const long nscale,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(vfactor!=NULL);
     unsigned int* dPtr=dest+doff,*vPtr=const_cast<unsigned int*>(vfactor)+voff;
@@ -125,9 +129,9 @@ namespace std {
       *dPtr*=*vPtr;
   }
 
-  void scale(double* dest, const double* vfactor, const long nscale,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void scale(double* dest, const double* vfactor, const long nscale,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(vfactor!=NULL);
     static char flag[]="LNN";
@@ -136,9 +140,10 @@ namespace std {
            const_cast<long*>(&vstep),dest+doff,const_cast<long*>(&dstep));
   }
 
-  void shift(int* dest, const int factor, const int* vfactor,const long nshift,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(int* dest, const int factor, const int* vfactor,
+                    const long nshift,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(vfactor!=NULL);
     int *dPtr=dest+doff, *vPtr=const_cast<int*>(vfactor)+voff;
@@ -147,10 +152,10 @@ namespace std {
       *dPtr+=factor*(*vPtr);
   }
 
-  void shift(unsigned int* dest, const unsigned int factor,
-             const unsigned int* vfactor, const long nshift,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(unsigned int* dest, const unsigned int factor,
+                    const unsigned int* vfactor, const long nshift,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(vfactor!=NULL);
     unsigned int *dPtr=dest+doff;
@@ -160,9 +165,10 @@ namespace std {
       *dPtr+=factor*(*vPtr);
   }
 
-  void shift(double* dest, const double factor, const double* vfactor,
-             const long nshift, const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(double* dest, const double factor, const double* vfactor,
+                    const long nshift,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(vfactor!=NULL);
     daxpy_(const_cast<long*>(&nshift),const_cast<double*>(&factor),
@@ -170,45 +176,47 @@ namespace std {
            dest+doff,const_cast<long*>(&dstep));
   }
 
-  void shift(int* dest, const int* vfactor, const long nshift,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(int* dest, const int* vfactor, const long nshift,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     shift(dest,iOne,vfactor,nshift,voff,vstep,doff,dstep);
   }
 
-  void shift(unsigned int* dest, const unsigned int* vfactor,const long nshift,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(unsigned int* dest, const unsigned int* vfactor,
+                    const long nshift,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     shift(dest,uOne,vfactor,nshift,voff,vstep,doff,dstep);
   }
 
-  void shift(double* dest, const double* vfactor, const long nshift,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(double* dest, const double* vfactor, const long nshift,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     shift(dest,dOne,vfactor,nshift,voff,vstep,doff,dstep);
   }
 
-  void shift(int* dest, const int factor, const long nshift,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(int* dest, const int factor, const long nshift,
+                    const int doff=iZero, const long dstep=lOne) {
     shift(dest,factor,&iOne,nshift,iZero,lZero,doff,dstep);
   }
 
-  void shift(unsigned int* dest, const unsigned int factor, const long nshift,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(unsigned int* dest, const unsigned int factor,
+                    const long nshift,
+                    const int doff=iZero, const long dstep=lOne) {
     shift(dest,factor,&uOne,nshift,iZero,lZero,doff,dstep);
   }
 
-  void shift(double* dest, const double factor, const long nshift,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(double* dest, const double factor, const long nshift,
+                    const int doff=iZero, const long dstep=lOne) {
     shift(dest,factor,&dOne,nshift,iZero,lZero,doff,dstep);
   }
 
-  void scaleshift(int* dest, const int dfactor, const int factor,
-                  const int* sfactor, const int* vfactor,
-                  const long nscaleshift,
-                  const int soff=iZero, const long sstep=lOne,
-                  const int voff=iZero, const long vstep=lOne,
-                  const int doff=iZero, const long dstep=lOne) {
+  inline void scaleshift(int* dest, const int dfactor, const int factor,
+                         const int* sfactor, const int* vfactor,
+                         const long nscaleshift,
+                         const int soff=iZero, const long sstep=lOne,
+                         const int voff=iZero, const long vstep=lOne,
+                         const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(sfactor!=NULL);
     assert(vfactor!=NULL);
@@ -222,12 +230,12 @@ namespace std {
     }
   }
 
-  void scaleshift(unsigned int* dest, const unsigned int dfactor,
-                  const unsigned int factor, const unsigned int* sfactor,
-                  const unsigned int* vfactor, const long nscaleshift,
-                  const int soff=iZero, const long sstep=lOne,
-                  const int voff=iZero, const long vstep=lOne,
-                  const int doff=iZero, const long dstep=lOne) {
+  inline void scaleshift(unsigned int* dest, const unsigned int dfactor,
+                         const unsigned int factor, const unsigned int* sfactor,
+                         const unsigned int* vfactor, const long nscaleshift,
+                         const int soff=iZero, const long sstep=lOne,
+                         const int voff=iZero, const long vstep=lOne,
+                         const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(sfactor!=NULL);
     assert(vfactor!=NULL);
@@ -241,12 +249,13 @@ namespace std {
     }
   }
 
-  void scaleshift(double* dest, const double dfactor, const double factor,
-                  const double* sfactor, const double* vfactor,
-                  const long nscaleshift,
-                  const int soff=iZero, const long sstep=lOne,
-                  const int voff=iZero, const long vstep=lOne,
-                  const int doff=iZero, const long dstep=lOne) {
+  inline void scaleshift(double* dest, const double dfactor,
+                         const double factor,
+                         const double* sfactor, const double* vfactor,
+                         const long nscaleshift,
+                         const int soff=iZero, const long sstep=lOne,
+                         const int voff=iZero, const long vstep=lOne,
+                         const int doff=iZero, const long dstep=lOne) {
     assert(dest!=NULL);
     assert(sfactor!=NULL);
     assert(vfactor!=NULL);
@@ -258,63 +267,63 @@ namespace std {
            const_cast<long*>(&dstep));
   }
 
-  void scaleshift(int* dest, const int dfactor, const int factor,
-                  const int* vfactor, const long nscaleshift,
-                  const int voff=iZero, const long vstep=lOne,
-                  const int doff=iZero, const long dstep=lOne) {
+  inline void scaleshift(int* dest, const int dfactor, const int factor,
+                         const int* vfactor, const long nscaleshift,
+                         const int voff=iZero, const long vstep=lOne,
+                         const int doff=iZero, const long dstep=lOne) {
     scale(dest,dfactor,nscaleshift,doff,dstep);
     shift(dest,factor,vfactor,nscaleshift,voff,vstep,doff,dstep);
   }
 
-  void scaleshift(unsigned int* dest, const unsigned int dfactor,
-                  const unsigned int factor, const unsigned int* vfactor,
-                  const long nscaleshift,
-                  const int voff=iZero, const long vstep=lOne,
-                  const int doff=iZero, const long dstep=lOne) {
+  inline void scaleshift(unsigned int* dest, const unsigned int dfactor,
+                         const unsigned int factor, const unsigned int* vfactor,
+                         const long nscaleshift,
+                         const int voff=iZero, const long vstep=lOne,
+                         const int doff=iZero, const long dstep=lOne) {
     scale(dest,dfactor,nscaleshift,doff,dstep);
     shift(dest,factor,vfactor,nscaleshift,voff,vstep,doff,dstep);
   }
 
-  void scaleshift(double* dest, const double dfactor, const double factor,
-                  const double* vfactor, const long nscaleshift,
-                  const int voff=iZero, const long vstep=lOne,
-                  const int doff=iZero, const long dstep=lOne) {
+  inline void scaleshift(double* dest, const double dfactor,const double factor,
+                         const double* vfactor, const long nscaleshift,
+                         const int voff=iZero, const long vstep=lOne,
+                         const int doff=iZero, const long dstep=lOne) {
     scale(dest,dfactor,nscaleshift,doff,dstep);
     shift(dest,factor,vfactor,nscaleshift,voff,vstep,doff,dstep);
   }
 
-  void shift(int* dest, const int factor, const int* sfactor,
-             const int* vfactor, const long nshift,
-             const int soff=iZero, const long sstep=lOne,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(int* dest, const int factor, const int* sfactor,
+                    const int* vfactor, const long nshift,
+                    const int soff=iZero, const long sstep=lOne,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     scaleshift(dest,iOne,factor,sfactor,vfactor,nshift,soff,sstep,voff,vstep,
                doff,dstep);
   }
 
-  void shift(unsigned int* dest, const unsigned int factor,
-             const unsigned int* sfactor, const unsigned int* vfactor,
-             const long nshift,
-             const int soff=iZero, const long sstep=lOne,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(unsigned int* dest, const unsigned int factor,
+                    const unsigned int* sfactor, const unsigned int* vfactor,
+                    const long nshift,
+                    const int soff=iZero, const long sstep=lOne,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     scaleshift(dest,uOne,factor,sfactor,vfactor,nshift,soff,sstep,voff,vstep,
                doff,dstep);
   }
 
-  void shift(double* dest, const double factor, const double* sfactor,
-             const double* vfactor, const long nshift,
-             const int soff=iZero, const long sstep=lOne,
-             const int voff=iZero, const long vstep=lOne,
-             const int doff=iZero, const long dstep=lOne) {
+  inline void shift(double* dest, const double factor, const double* sfactor,
+                    const double* vfactor, const long nshift,
+                    const int soff=iZero, const long sstep=lOne,
+                    const int voff=iZero, const long vstep=lOne,
+                    const int doff=iZero, const long dstep=lOne) {
     scaleshift(dest,dOne,factor,sfactor,vfactor,nshift,soff,sstep,voff,vstep,
                doff,dstep);
   }
 
   template <typename T>
-  void exchange(T* srcA, T* srcB, const long nexchange,
-                const int aoff=iZero, const long astep=lOne,
-                const int boff=iZero, const long bstep=lOne) {
+  inline void exchange(T* srcA, T* srcB, const long nexchange,
+                       const int aoff=iZero, const long astep=lOne,
+                       const int boff=iZero, const long bstep=lOne) {
     assert(srcA!=NULL);
     assert(srcB!=NULL);
     T tmT, *aPtr=srcA+aoff, *bPtr=srcB+boff;
@@ -323,9 +332,9 @@ namespace std {
     }
   }
 
-  void exchange(int* srcA, int* srcB, const long nexchange,
-                const int aoff=iZero, const long astep=lOne,
-                const int boff=iZero, const long bstep=lOne) {
+  inline void exchange(int* srcA, int* srcB, const long nexchange,
+                       const int aoff=iZero, const long astep=lOne,
+                       const int boff=iZero, const long bstep=lOne) {
     assert(srcA!=NULL);
     assert(srcB!=NULL);
     sswap_(const_cast<long*>(&nexchange),
@@ -333,9 +342,10 @@ namespace std {
            reinterpret_cast<float*>(srcB)+boff,const_cast<long*>(&bstep));
   }
 
-  void exchange(unsigned int* srcA, unsigned int* srcB, const long nexchange,
-                const int aoff=iZero, const long astep=lOne,
-                const int boff=iZero, const long bstep=lOne) {
+  inline void exchange(unsigned int* srcA, unsigned int* srcB,
+                       const long nexchange,
+                       const int aoff=iZero, const long astep=lOne,
+                       const int boff=iZero, const long bstep=lOne) {
     assert(srcA!=NULL);
     assert(srcB!=NULL);
     sswap_(const_cast<long*>(&nexchange),
@@ -343,18 +353,18 @@ namespace std {
            reinterpret_cast<float*>(srcB)+boff,const_cast<long*>(&bstep));
   }
 
-  void exchange(double* srcA, double* srcB, const long nexchange,
-                const int aoff=iZero, const long astep=lOne,
-                const int boff=iZero, const long bstep=lOne) {
+  inline void exchange(double* srcA, double* srcB, const long nexchange,
+                       const int aoff=iZero, const long astep=lOne,
+                       const int boff=iZero, const long bstep=lOne) {
     assert(srcA!=NULL);
     assert(srcB!=NULL);
     dswap_(const_cast<long*>(&nexchange),srcA+aoff,
            const_cast<long*>(&astep),srcB+boff,const_cast<long*>(&bstep));
   }
 
-  int dot(const int* srcA, const int* srcB,const long ndot,
-          const int aoff=iZero, const long astep=lOne,
-          const int boff=iZero, const long bstep=lOne) {
+  inline int dot(const int* srcA, const int* srcB,const long ndot,
+                 const int aoff=iZero, const long astep=lOne,
+                 const int boff=iZero, const long bstep=lOne) {
     assert(srcA!=NULL);
     assert(srcB!=NULL);
     int *aPtr=const_cast<int*>(srcA)+aoff, *bPtr=const_cast<int*>(srcB)+boff;
@@ -365,9 +375,9 @@ namespace std {
     return s;
   }
 
-  unsigned int dot(const unsigned int* srcA, const unsigned int* srcB,
-                   const long ndot,
-                   const int aoff=iZero, const long astep=lOne,
+  inline unsigned int dot(const unsigned int* srcA, const unsigned int* srcB,
+                          const long ndot,
+                          const int aoff=iZero, const long astep=lOne,
                    const int boff=iZero, const long bstep=lOne) {
     assert(srcA!=NULL);
     assert(srcB!=NULL);
@@ -380,9 +390,9 @@ namespace std {
     return s;
   }
 
-  double dot(const double* srcA, const double* srcB, const long ndot,
-             const int aoff=iZero, const long astep=lOne,
-             const int boff=iZero, const long bstep=lOne) {
+  inline double dot(const double* srcA, const double* srcB, const long ndot,
+                    const int aoff=iZero, const long astep=lOne,
+                    const int boff=iZero, const long bstep=lOne) {
     assert(srcA!=NULL);
     assert(srcB!=NULL);
     return ddot_(const_cast<long*>(&ndot),const_cast<double*>(srcA)+aoff,
@@ -390,30 +400,30 @@ namespace std {
                  const_cast<long*>(&bstep));
   }
 
-  int normSQ(const int* src, const long nnormsq,
-             const int off=iZero, const long step=lOne) {
+  inline int normSQ(const int* src, const long nnormsq,
+                    const int off=iZero, const long step=lOne) {
     return dot(src,src,nnormsq,off,step,off,step);
   }
 
-  unsigned int normSQ(const unsigned int* src, const long nnormsq,
-                      const int off=iZero, const long step=lOne) {
+  inline unsigned int normSQ(const unsigned int* src, const long nnormsq,
+                             const int off=iZero, const long step=lOne) {
     return dot(src,src,nnormsq,off,step,off,step);
   }
 
-  double normSQ(const double* src, const long nnormsq,
-                const int off=iZero, const long step=lOne) {
+  inline double normSQ(const double* src, const long nnormsq,
+                       const int off=iZero, const long step=lOne) {
     return dot(src,src,nnormsq,off,step,off,step);
   }
 
-  double norm(const double* src, const long nnorm,
-              const int off=iZero, const long step=lOne) {
+  inline double norm(const double* src, const long nnorm,
+                     const int off=iZero, const long step=lOne) {
     assert(src!=NULL);
     return dnrm2_(const_cast<long*>(&nnorm),const_cast<double*>(src)+off,
                   const_cast<long*>(&step));
   }
 
-  int asum(const int* src, const long nasum,
-           const int off=iZero, const long step=lOne) {
+  inline int asum(const int* src, const long nasum,
+                  const int off=iZero, const long step=lOne) {
     assert(src!=NULL);
     int *Ptr=const_cast<int*>(src)+off;
     int s=0;
@@ -422,8 +432,8 @@ namespace std {
     return s;
   }
 
-  unsigned int asum(const unsigned int* src, const long nasum,
-                    const int off=iZero, const long step=lOne) {
+  inline unsigned int asum(const unsigned int* src, const long nasum,
+                           const int off=iZero, const long step=lOne) {
     assert(src!=NULL);
     unsigned int *Ptr=const_cast<unsigned int*>(src)+off;
     unsigned int s=0;
@@ -432,8 +442,8 @@ namespace std {
     return s;
   }
 
-  double asum(const double* src, const long nasum,
-              const int off=iZero, const long step=lOne) {
+  inline double asum(const double* src, const long nasum,
+                     const int off=iZero, const long step=lOne) {
     assert(src!=NULL);
     return dasum_(const_cast<long*>(&nasum),const_cast<double*>(src)+off,
                   const_cast<long*>(&step));
