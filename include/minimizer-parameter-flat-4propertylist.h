@@ -34,6 +34,9 @@ namespace std {
     Type& operator=(const Type& MP) { assign(*this,MP); return *this; }
     ~MinimizerParameter4PropertyListFlat() { release(*this); }
 
+    Vector<UniqueParameter>*& parameterface() { return ParamLst(); }
+    const Vector<UniqueParameter>* parameterface() const { return ParamLst(); }
+
   };
 
   template <typename DistEvalMethod, typename GeomType>

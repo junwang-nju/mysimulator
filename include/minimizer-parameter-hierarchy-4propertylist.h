@@ -19,7 +19,7 @@ namespace std {
     PropertyList<double> dMask;
     DistEvalMethod DEval;
     GeomType Geo;
-    PropertyList<Vector<double> > ParamLst;
+    PropertyList<Vector<UniqueParameter> > ParamLst;
     Vector<InteractionMethod<DistEvalMethod,GeomType> > IMLst;
     PropertyList<Vector<unsigned int> > IdxLst;
     const unsigned int nunit;
@@ -34,6 +34,13 @@ namespace std {
     }
     Type& operator=(const Type& MP) { assign(*this,MP); return *this; }
     ~MinimizerParameter4PropertyListHierarchy() { release(*this); }
+
+    Vector<Vector<UniqueParameter> >*& parameterface() {
+      return ParamLst.structure;
+    }
+    const Vector<Vector<UniqueParameter> >*& parameterface() const {
+      return ParamLst.structure;
+    }
 
   };
 
