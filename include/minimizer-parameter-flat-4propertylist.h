@@ -111,7 +111,7 @@ namespace std {
     out=(MP.iMask.nunit==MP.dMask.nunit);
     out=out&&(MP.ParamLst.size==MP.IMLst.size);
     out=out&&(MP.ParamLst.size==MP.IdxLst.nunit);
-    // DEVal is not checked
+    out=out&&(MP.ParamLst.size==MP.DEval.nunit);
     return out;
   }
 

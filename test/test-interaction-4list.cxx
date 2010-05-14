@@ -85,7 +85,7 @@ int main() {
 
   DistanceEvalDirect DEval;
   FreeSpace FS;
-  allocate(DEval,2);
+  allocate(DEval,2,4);
   allocate(FS,2);
 
   cout<<"Test -- EFunc"<<endl;

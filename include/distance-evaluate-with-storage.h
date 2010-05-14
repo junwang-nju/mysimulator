@@ -47,7 +47,7 @@ namespace std {
   void allocate(DistanceEvalWStorage& DEW,
                 const unsigned int dim, const unsigned int nunit) {
     allocate(DEW.distsqmat,nunit);
-    allocate(static_cast<DistanceEvalBase&>(DEW),dim);
+    allocate(static_cast<DistanceEvalBase&>(DEW),dim,nunit);
   }
 
   void refer(DistanceEvalWStorage& dest, const DistanceEvalWStorage& src) {

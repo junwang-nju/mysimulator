@@ -10,7 +10,7 @@ int main() {
 
   DistanceEvalDirect DED;
   FreeSpace FS;
-  allocate(DED,3);
+  allocate(DED,3,2);
   allocate(FS,3);
 
   PropertyList<double> v,g;
@@ -39,14 +39,14 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- GFunc"<<endl;
-  assign(g.data,0.,g.dsize);
+  assign(g.data,0.,g.size);
   GFuncPairwiseHarmonic(v.structure,idx(),prm(),2,NULL,0,DED,FS,g.structure);
   cout<<g<<endl;
   cout<<endl;
 
   cout<<"Test -- BFunc"<<endl;
   E=0.;
-  assign(g.data,0.,g.dsize);
+  assign(g.data,0.,g.size);
   BFuncPairwiseHarmonic(v.structure,idx(),prm(),2,NULL,0,DED,FS,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;
