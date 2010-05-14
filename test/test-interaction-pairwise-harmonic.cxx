@@ -27,7 +27,7 @@ int main() {
   idx[1]=1;
 
   Vector<UniqueParameter> prm;
-  allocate(prm,3);
+  allocate(prm,HarmonicNumberParameter);
   prm[HarmonicEqLength]=1.;
   prm[HarmonicEqStrength]=100.;
   GenerateParameterHarmonic(prm);
