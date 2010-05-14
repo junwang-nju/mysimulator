@@ -1,6 +1,6 @@
 
-#ifndef _Minimizer_Parameter_Flat_for_PropertyList_H_
-#define _Minimizer_Parameter_Flat_for_PropertyList_H_
+#ifndef _Minimizer_Property_Hierarchy_for_PropertyList_H_
+#define _Minimizer_Property_Hierarchy_for_PropertyList_H_
 
 #include "interaction-method.h"
 #include "property-list.h"
@@ -9,54 +9,57 @@
 namespace std {
 
   template <typename DistEvalMethod, typename GeomType>
-  struct MinimizerParameter4PropertyListFlat {
+  struct MinimizerParameter4PropertyListHierarchy {
 
-    typedef MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>  Type;
+    typedef MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>
+            Type;
 
     static const unsigned int Mode;
     PropertyList<unsigned int> iMask;
-    PropertyList<double>  dMask;
-    DistEvalMethod  DEval;
-    GeomType  Geo;
-    Vector<Vector<UniqueParameter> > ParamLst;
+    PropertyList<double> dMask;
+    DistEvalMethod DEval;
+    GeomType Geo;
+    PropertyList<Vector<double> > ParamLst;
     Vector<InteractionMethod<DistEvalMethod,GeomType> > IMLst;
-    PropertyList<unsigned int> IdxLst;
+    PropertyList<Vector<unsigned int> > IdxLst;
     const unsigned int nunit;
     const unsigned int nlst;
     static const unsigned int state;
 
-    MinimizerParameter4PropertyListFlat()
-      : iMask(), dMask(), DEval(), Geo(), ParamLst(), IMLst(),
-        IdxLst(), nunit(0), nlst(0) {}
-    MinimizerParameter4PropertyListFlat(const Type&) {
-      myError("Cannot create from Minimizer Parameter Flat for Property List");
+    MinimizerParameter4PropertyListHierarchy()
+      : iMask(), dMask(), DEval(), Geo(), ParamLst(), IMLst(), IdxLst(),
+        nunit(0), nlst(0) {}
+    MinimizerParameter4PropertyListHierarchy(const Type&) {
+      myError("cannot create from Minimizer Parameter Hierarchy for Property List");
     }
     Type& operator=(const Type& MP) { assign(*this,MP); return *this; }
-    ~MinimizerParameter4PropertyListFlat() { release(*this); }
+    ~MinimizerParameter4PropertyListHierarchy() { release(*this); }
 
   };
 
   template <typename DistEvalMethod, typename GeomType>
   const unsigned int
-  MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>::Mode
-    =FlatParameter4PropertyList;
+  MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>::Mode
+      =HierarchyParameter4PropertyList;
 
   template <typename DistEvalMethod, typename GeomType>
   const unsigned int
-  MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>::state
-    =HybridStorage;
+  MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>::state
+      =HybridStorage;
 
   template <typename DistEvalMethod, typename GeomType>
   bool IsAvailable(
-      const MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& MP) {
-    return IsAvailable(MP.iMask)&&IsAvailable(MP.dMask)&&IsAvailable(MP.DEval)
-         &&IsAvailable(MP.Geo)&&IsAvailable(MP.ParamLst)
-         &&IsAvailable(MP.IMLst)&&IsAvailable(MP.IdxLst);
+      const MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>&
+      MP) {
+    return IsAvailable(MP.iMask)&&IsAvailable(MP.dMask)&&
+           IsAvailable(MP.DEval)&&IsAvailable(MP.Geo)&&
+           IsAvailable(MP.ParamLst)&&IsAvailable(MP.IMLst)&&
+           IsAvailable(MP.IdxLst);
   }
 
   template <typename DistEvalMethod, typename GeomType>
   void release(
-      MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& MP) {
+      MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>& MP) {
     release(MP.iMask);
     release(MP.dMask);
     release(MP.DEval);
@@ -70,8 +73,9 @@ namespace std {
 
   template <typename DistEvalMethod, typename GeomType>
   void assign(
-      MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& dest,
-      const MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& src) {
+      MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>& dest,
+      const MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>&
+        src) {
     assert(IsAvailable(dest));
     assert(IsAvailable(src));
     assign(dest.iMask,src.iMask);
@@ -87,8 +91,9 @@ namespace std {
 
   template <typename DistEvalMethod, typename GeomType>
   void refer(
-      MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& dest,
-      const MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& src) {
+      MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>& dest,
+      const MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>&
+        src) {
     assert(IsAvailable(src));
     release(dest);
     refer(dest.iMask,src.iMask);
@@ -97,33 +102,34 @@ namespace std {
     refer(dest.Geo,src.Geo);
     refer(dest.ParamLst,src.ParamLst);
     refer(dest.IMLst,src.IMLst);
-    refer(dest.IdxLst,src.IdxLst);
+    refer(dest.IdxLst,src.IMLst);
     dest.nunit=src.nunit;
     dest.nlst=src.nlst;
   }
 
   template <typename DistEvalMethod, typename GeomType>
   bool Consistency(
-      const MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& MP) {
-    assert(IsAvailable(MP));
+      const MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>&
+      MP) {
     bool out;
     out=(MP.iMask.nunit==MP.dMask.nunit);
     out=out&&(MP.iMask.nunit==MP.DEval.nunit);
-    out=out&&(MP.ParamLst.size==MP.IMLst.size);
-    out=out&&(MP.ParamLst.size==MP.IdxLst.nunit);
+    out=out&&(MP.ParamLst.nunit==MP.IMLst.size);
+    out=out&&(MP.ParamLst.nunit==MP.IdxLst.nunit);
     return out;
   }
 
   template <typename DistEvalMethod, typename GeomType>
   void finalize(
-      MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& MP){
+      MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>& MP) {
     assert(Consistency(MP));
     MP.nunit=MP.iMask.nunit;
     MP.nlst=MP.IMLst.size;
   }
 
   template <typename DistEvalMethod, typename GeomType>
-  void update(MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& MP){
+  void update(
+      MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>& MP) {
     update(MP.DEval);
   }
 

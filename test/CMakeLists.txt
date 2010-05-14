@@ -124,6 +124,9 @@ target_link_libraries (test-minimizer-line-base.run blas)
 add_executable (test-minimizer-parameter-flat-4propertylist.run test-minimizer-parameter-flat-4propertylist.cxx)
 target_link_libraries (test-minimizer-parameter-flat-4propertylist.run blas)
 
+add_executable (test-minimizer-parameter-hierarchy-4propertylist.run test-minimizer-parameter-hierarchy-4propertylist.cxx)
+target_link_libraries (test-minimizer-parameter-hierarchy-4propertylist.run blas)
+
 add_executable (test-minimizer-steep.run test-minimizer-steep.cxx)
 target_link_libraries (test-minimizer-steep.run blas Base)
 
