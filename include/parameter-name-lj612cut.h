@@ -6,7 +6,7 @@ namespace std {
 
   enum LJ612CutParameterName {
     LJ612CutEqRadius=0,
-    LJ612CutEqStrength,
+    LJ612CutEqEnergyDepth,
     LJ612CutCutR,
     LJ612CutCutRSQ,
     LJ612CutVc,
@@ -43,7 +43,7 @@ namespace std {
     e=sgr06*(sgr06-2.);
     e-=prm[LJ612CutVc].d;
     e-=prm[LJ612CutKc].d*(prm[LJ612CutEqRadius].d-prm[LJ612CutCutR].d);
-    tmd=-1./e;
+    tmd=-prm[LJ612CutEqEnergyDepth].d/e;
     prm[LJ612CutRealStrength]=tmd;
     prm[LJ612CutVc].d*=tmd;
     prm[LJ612CutKc].d*=tmd;
