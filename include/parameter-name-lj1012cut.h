@@ -51,7 +51,7 @@ namespace std {
     e=sgr06*sgr04*(5.*sgr02-6.);
     e-=prm[LJ1012CutVc].d;
     e-=prm[LJ1012CutKc].d*(prm[LJ1012CutEqRadius].d-prm[LJ1012CutCutR].d);
-    e=-1./e;
+    e=-prm[LJ1012CutEqEnergyDepth].d/e;
     prm[LJ1012CutRealEnergyDepth]=e;
     prm[LJ1012CutVc].d*=e;
     prm[LJ1012CutKc].d*=e;
