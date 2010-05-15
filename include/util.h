@@ -31,6 +31,25 @@ namespace std {
   template <typename T>
   inline bool IsRandomGenerator(const T&) { return false; }
 
+  template <typename T>
+  void assign(T& dest, const T& src) { dest=src; }
+
+  void shift(double& dest, const double fac, const double src) {
+    dest+=fac*src;
+  }
+  void shift(unsigned int& dest, const unsigned int fac,
+             const unsigned int src) {
+    dest+=fac*src;
+  }
+  void shift(int& dest, const int fac, const int src) { dest+=fac*src; }
+  double dot(const double a, const double b) { return a*b; }
+  unsigned int dot(const unsigned int a, const unsigned int b) { return a*b; }
+  int dot(const int a, const int b) { return a*b; }
+
+  void update(double&) {}
+  void update(unsigned int&) {}
+  void update(int&) {}
+
 }
 
 #endif
