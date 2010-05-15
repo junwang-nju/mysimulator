@@ -31,8 +31,9 @@ namespace std {
   template <typename T>
   inline bool IsRandomGenerator(const T&) { return false; }
 
-  template <typename T>
-  void assign(T& dest, const T& src) { dest=src; }
+  void assign(double dest, const double src) { dest=src; }
+  void assign(unsigned int dest, const unsigned int src) { dest=src; }
+  void assign(int dest, const int src) { dest=src; }
 
   void shift(double& dest, const double fac, const double src) {
     dest+=fac*src;

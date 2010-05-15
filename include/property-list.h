@@ -53,6 +53,11 @@ namespace std {
   }
 
   template <typename T>
+  void allocate(PropertyList<T>& PL, const unsigned int size) {
+    myError("allocate for vector is prohibited for proerpty list");
+  }
+
+  template <typename T>
   void allocate(PropertyList<T>& PL,
                 const unsigned int *vsize, const unsigned int size) {
     release(PL);

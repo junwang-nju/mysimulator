@@ -21,8 +21,8 @@ namespace std {
     Vector<Vector<UniqueParameter> > ParamLst;
     Vector<InteractionMethod<DistEvalMethod,GeomType> > IMLst;
     PropertyList<unsigned int> IdxLst;
-    const unsigned int nunit;
-    const unsigned int nlst;
+    unsigned int nunit;
+    unsigned int nlst;
     static const unsigned int state;
 
     MinimizerParameter4PropertyListFlat()
