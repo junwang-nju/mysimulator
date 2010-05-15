@@ -67,7 +67,7 @@ namespace std {
     allocate(static_cast<Vector<T>&>(PL),dsize);
     PL.structure=new Vector<T>[size];
     T* dPtr=PL.data;
-    for(unsigned int i=0;i<size;++i,dPtr+=vsize[i]) refer(PL[i],dPtr,vsize[i]);
+    for(unsigned int i=0;i<size;dPtr+=vsize[i],++i) refer(PL[i],dPtr,vsize[i]);
   }
 
   template <typename T>

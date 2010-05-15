@@ -109,7 +109,7 @@ namespace std {
     refer(dest.Geo,src.Geo);
     refer(dest.ParamLst,src.ParamLst);
     refer(dest.IMLst,src.IMLst);
-    refer(dest.IdxLst,src.IMLst);
+    refer(dest.IdxLst,src.IdxLst);
     dest.nunit=src.nunit;
     dest.nlst=src.nlst;
   }
