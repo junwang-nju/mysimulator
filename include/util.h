@@ -46,9 +46,9 @@ namespace std {
   unsigned int dot(const unsigned int a, const unsigned int b) { return a*b; }
   int dot(const int a, const int b) { return a*b; }
 
-  void update(double&) {}
-  void update(unsigned int&) {}
-  void update(int&) {}
+  void updateParameter(double&) {}
+  void updateParameter(unsigned int&) {}
+  void updateParameter(int&) {}
 
 }
 

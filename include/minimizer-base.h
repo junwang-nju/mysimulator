@@ -137,7 +137,7 @@ namespace std {
       SpaceDataType& DestG, double& DestPrj) {
     assign(Dest,Origin);
     shift(Dest,step,Dirc);
-    update(*(M.MinParam));
+    updateParameter(*(M.MinParam));
     M.MinBFunc(Dest,DestG,DestY,*(M.MinParam));
     ++(*(M.GCalcCount));
     DestPrj=dot(DestG,Dirc);

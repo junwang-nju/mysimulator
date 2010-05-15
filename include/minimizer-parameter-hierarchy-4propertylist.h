@@ -135,7 +135,7 @@ namespace std {
   }
 
   template <typename DistEvalMethod, typename GeomType>
-  void update(
+  void updateParameter(
       MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>& MP) {
     update(MP.DEval);
   }
