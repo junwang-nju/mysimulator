@@ -8,3 +8,6 @@ add_definitions (-Wall -O3 -DNDEBUG)
 add_executable (pOs-basic.run basic.cxx)
 target_link_libraries (pOs-basic.run blas)
 
+add_executable (pOs-constd.run const-d.cxx)
+target_link_libraries (pOs-constd.run blas)
+

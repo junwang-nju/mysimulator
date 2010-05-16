@@ -42,7 +42,7 @@ namespace std {
     updateParameter(*(LM.MinParam));
     *(LM.MinEnergy)=0.;
     assign(*(LM.MinGrad),0.);
-    LM.MinBFunc(*(LM.MinCoor),*(LM.MinGrad),*(LM.MinEnergy),*(LM.MinParam));
+    LM.MinBFunc(*(LM.MinCoor),*(LM.MinEnergy),*(LM.MinGrad),*(LM.MinParam));
   }
 
   template <typename DistEvalMethod, typename GeomType,
