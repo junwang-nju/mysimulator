@@ -133,6 +133,12 @@ target_link_libraries (test-minimizer-func-4propertylist.run blas)
 add_executable (test-minimizer-line-base-4propertylist-op.run test-minimizer-line-base-4propertylist-op.cxx)
 target_link_libraries (test-minimizer-line-base-4propertylist-op.run blas)
 
+add_executable (test-minimizer-line-tracking.run test-minimizer-line-tracking.cxx)
+target_link_libraries (test-minimizer-line-tracking.run blas)
+
+add_executable (test-minimizer-line-tracking-4propertylist-op.run test-minimizer-line-tracking-4propertylist-op.cxx)
+target_link_libraries (test-minimizer-line-tracking-4propertylist-op.run blas)
+
 add_executable (test-minimizer-steep.run test-minimizer-steep.cxx)
 target_link_libraries (test-minimizer-steep.run blas Base)
 

@@ -13,6 +13,7 @@ namespace std {
 
     typedef MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>  Type;
     typedef Vector<Vector<UniqueParameter> >  ParameterStorageType;
+    typedef PropertyList<unsigned int> IndexStorageType;
 
     static const unsigned int Mode;
     PropertyList<unsigned int> iMask;
@@ -24,6 +25,7 @@ namespace std {
     PropertyList<unsigned int> IdxLst;
     unsigned int nunit;
     unsigned int nlst;
+    double DOF;
     static const unsigned int state;
 
     MinimizerParameter4PropertyListFlat()
@@ -124,6 +126,7 @@ namespace std {
     assert(Consistency(MP));
     MP.nunit=MP.iMask.nunit;
     MP.nlst=MP.IMLst.size;
+    MP.DOF=asum(MP.dMask);
   }
 
   template <typename DistEvalMethod, typename GeomType>

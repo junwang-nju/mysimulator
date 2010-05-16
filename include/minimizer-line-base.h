@@ -96,6 +96,7 @@ namespace std {
     LM.GradThreshold=new double;
     typedef MinimizerKernelBase<SpaceDataType,ParameterType> PType;
     allocate(static_cast<PType&>(LM));
+    *(LM.LineSearchCount)=0;
     *(LM.DecreaseFactor)=1e-4;
     *(LM.CurvatureFactor)=0.4;
     *(LM.GradThreshold)=DRelDelta;
