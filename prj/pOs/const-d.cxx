@@ -88,7 +88,7 @@ void Rsphere(const Vector<double>& x, Vector<double>& g, Vector<double>& v) {
 }
 
 static const unsigned int Kcen=10;
-static const unsigned int dcen=10;
+static const unsigned int dcen=15;
 
 double centerE(const Vector<double>* x, Vector<double>& v, const unsigned int n){
   assign(v,x[0]);
@@ -141,15 +141,15 @@ int main() {
   allocate(rV,sz(),sz.size);
 
   for(unsigned int i=0;i<nunit;++i) assign(X,0.);
-  for(unsigned int i=0;i<nunit;++i) X[i][0]=i;
-  for(unsigned int i=0;i<nunit;++i) X[i][1]=6;
+  for(unsigned int i=0;i<nunit;++i) X[i][0]=i-49.5;
+  for(unsigned int i=0;i<nunit;++i) X[i][1]=dcen;
   fillarray(gng,V);
   scale(V,0.01);
   assign(G,0);
-  ifstream ifs;
-  ifs.open("init-d10");
-  ifs>>X;
-  ifs.close();
+  //ifstream ifs;
+  //ifs.open("init-d10");
+  //ifs>>X;
+  //ifs.close();
 
   Vector<double> v;
   allocate(v,3);
@@ -175,7 +175,7 @@ int main() {
   scale(v,1./nunit);
 
   double dt=0.001, hdt=0.5*dt;
-  double T=0.1,gamma=0.5;
+  double T=0.5,gamma=0.5;
   double gFac=sqrt(gamma*T*dt);
   double sFac1=1-gamma*hdt;
   double sFac2=1./(1+gamma*hdt);
@@ -206,6 +206,7 @@ int main() {
       e3=centerE(X.structure,v,nunit);
       e=e1+e2+e3;
       ke=0.5*normSQ(V);
+      assign(v,0.);
       for(unsigned int i=0;i<nunit;++i) shift(v,X[i]);
       scale(v,1./nunit);
       cout<<rt+1<<"\t"<<e<<"\t"<<ke<<"\t"<<e1<<"\t"<<e2<<"\t"<<e3<<"\t"<<norm(v)<<endl;
