@@ -6,6 +6,7 @@
 #include "util.h"
 #include "storage-state-name.h"
 #include "memory.h"
+#include <cassert>
 
 namespace std {
 
@@ -44,7 +45,7 @@ namespace std {
   };
 
   template <typename SpaceDataType, typename ParameterType>
-  void IsAvailable(const MinimizerKernelBase<SpaceDataType,ParameterType>& M) {
+  bool IsAvailable(const MinimizerKernelBase<SpaceDataType,ParameterType>& M) {
     return IsAvailable(M.MinCoor);
   }
 
@@ -53,7 +54,7 @@ namespace std {
     if(M.state==Allocated) {
       safe_delete(M.MinCoor);
       safe_delete(M.MinGrad);
-      safe_delete(M.Energy);
+      safe_delete(M.MinEnergy);
       safe_delete(M.MinParam);
       safe_delete(M.MinProject);
       safe_delete(M.MinMove);
@@ -105,6 +106,7 @@ namespace std {
     M.GCalcCount=new unsigned int;
     M.SearchScale=new double;
     M.state=Allocated;
+    *(M.GCalcCount)=0;
     *(M.SearchScale)=0.1;
   }
 
@@ -135,9 +137,9 @@ namespace std {
       SpaceDataType& DestG, double& DestPrj) {
     assign(Dest,Origin);
     shift(Dest,step,Dirc);
-    update(M.MinParam);
-    M.MinBFunc(Dest,DestG,DestY,M.MinParam);
-    ++M.GCalcCount;
+    updateParameter(*(M.MinParam));
+    M.MinBFunc(Dest,DestG,DestY,*(M.MinParam));
+    ++(*(M.GCalcCount));
     DestPrj=dot(DestG,Dirc);
   }
 

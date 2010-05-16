@@ -20,11 +20,12 @@ namespace std {
     double* displacement;
     double* distancesq;
     unsigned int size;
+    unsigned int nunit;
     Vector<double> displacementvec;
     unsigned int state;
 
     DistanceEvalBase()
-      : displacement(NULL), distancesq(NULL), size(0),
+      : displacement(NULL), distancesq(NULL), size(0), nunit(0),
         displacementvec(), state(Unused) {}
     DistanceEvalBase(const Type&) {
       myError("Cannot create from Distance Evaluate Base");
@@ -51,6 +52,7 @@ namespace std {
     }
     release(DEB.displacementvec);
     DEB.size=0;
+    DEB.nunit=0;
     DEB.state=Unused;
   }
 
@@ -62,11 +64,13 @@ namespace std {
     assign(dest.displacement,src.displacement,n);
   }
 
-  void allocate(DistanceEvalBase& DEB, const unsigned int dim) {
+  void allocate(DistanceEvalBase& DEB,
+                const unsigned int dim, const unsigned int nunit) {
     release(DEB);
     DEB.displacement=new double[dim];
     DEB.distancesq=new double;
     DEB.size=dim;
+    DEB.nunit=nunit;
     refer(DEB.displacementvec,DEB.displacement,DEB.size);
     DEB.state=Allocated;
   }
@@ -76,6 +80,7 @@ namespace std {
     dest.displacement=src.displacement;
     dest.distancesq=src.distancesq;
     dest.size=src.size;
+    dest.nunit=src.nunit;
     refer(dest.displacementvec,dest.displacement,dest.size);
     dest.state=Reference;
   }

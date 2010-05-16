@@ -66,6 +66,8 @@ namespace std {
 
   template <typename T>
   inline void assign(Vector<T>& dest, const Vector<T>& src) {
+    assert(IsAvailable(dest));
+    assert(IsAvailable(src));
     unsigned int n=(dest.size<src.size?dest.size:src.size);
     assign(dest(),src(),n);
   }

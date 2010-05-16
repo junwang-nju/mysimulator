@@ -42,7 +42,7 @@ int main() {
   cout<<"Test -- EFunc, GFunc and BFunc"<<endl;
   DistanceEvalDirect DED;
   FreeSpace FS;
-  allocate(DED,3);
+  allocate(DED,3,2);
   allocate(FS,3);
   PropertyList<double> v,g;
   unsigned int *sz=new unsigned int[2];

@@ -10,7 +10,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
-  allocate(DED,5);
+  allocate(DED,5,8);
   cout<<DED.displacementvec.size<<endl;
   cout<<DED.state<<endl;
   cout<<endl;
@@ -29,7 +29,7 @@ int main() {
 
   cout<<"Test -- assign from another DistanceEvalDirect"<<endl;
   DistanceEvalDirect DED2;
-  allocate(DED2,4);
+  allocate(DED2,4,7);
   assign(DED2,DED);
   cout<<DED2.displacementvec<<endl;
   cout<<endl;

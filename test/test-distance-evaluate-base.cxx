@@ -9,7 +9,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
-  allocate(DEB,5);
+  allocate(DEB,5,8);
   cout<<DEB.size<<endl;
   cout<<endl;
 
@@ -25,7 +25,7 @@ int main() {
 
   cout<<"Test -- assign from another DistanceEvalBase"<<endl;
   DistanceEvalBase DEB2;
-  allocate(DEB2,4);
+  allocate(DEB2,4,7);
   assign(DEB2,DEB);
   cout<<DEB2.displacementvec<<endl;
   cout<<DEB2()<<endl;

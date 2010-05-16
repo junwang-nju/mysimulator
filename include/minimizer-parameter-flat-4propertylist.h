@@ -12,9 +12,10 @@ namespace std {
   struct MinimizerParameter4PropertyListFlat {
 
     typedef MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>  Type;
+    typedef Vector<Vector<UniqueParameter> >  ParameterStorageType;
+    typedef PropertyList<unsigned int> IndexStorageType;
 
     static const unsigned int Mode;
-
     PropertyList<unsigned int> iMask;
     PropertyList<double>  dMask;
     DistEvalMethod  DEval;
@@ -22,8 +23,9 @@ namespace std {
     Vector<Vector<UniqueParameter> > ParamLst;
     Vector<InteractionMethod<DistEvalMethod,GeomType> > IMLst;
     PropertyList<unsigned int> IdxLst;
-    const unsigned int nunit;
-    const unsigned int nlst;
+    unsigned int nunit;
+    unsigned int nlst;
+    double DOF;
     static const unsigned int state;
 
     MinimizerParameter4PropertyListFlat()
@@ -34,6 +36,9 @@ namespace std {
     }
     Type& operator=(const Type& MP) { assign(*this,MP); return *this; }
     ~MinimizerParameter4PropertyListFlat() { release(*this); }
+
+    Vector<UniqueParameter>*& parameterface() { return ParamLst(); }
+    const Vector<UniqueParameter>* parameterface() const { return ParamLst(); }
 
   };
 
@@ -109,17 +114,25 @@ namespace std {
     assert(IsAvailable(MP));
     bool out;
     out=(MP.iMask.nunit==MP.dMask.nunit);
+    out=out&&(MP.iMask.nunit==MP.DEval.nunit);
     out=out&&(MP.ParamLst.size==MP.IMLst.size);
     out=out&&(MP.ParamLst.size==MP.IdxLst.nunit);
-    // DEVal is not checked
     return out;
   }
 
   template <typename DistEvalMethod, typename GeomType>
-  void Update(MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& MP){
+  void finalize(
+      MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& MP){
     assert(Consistency(MP));
     MP.nunit=MP.iMask.nunit;
     MP.nlst=MP.IMLst.size;
+    MP.DOF=asum(MP.dMask);
+  }
+
+  template <typename DistEvalMethod, typename GeomType>
+  void updateParameter(
+      MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>& MP){
+    update(MP.DEval);
   }
 
 }

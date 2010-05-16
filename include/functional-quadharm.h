@@ -3,6 +3,7 @@
 #define _Functional_QuadrupleHarmonic_H_
 
 #include "parameter-name-quadharm.h"
+#include <cmath>
 
 namespace std {
 

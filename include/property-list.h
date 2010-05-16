@@ -53,6 +53,11 @@ namespace std {
   }
 
   template <typename T>
+  void allocate(PropertyList<T>& PL, const unsigned int size) {
+    myError("allocate for vector is prohibited for proerpty list");
+  }
+
+  template <typename T>
   void allocate(PropertyList<T>& PL,
                 const unsigned int *vsize, const unsigned int size) {
     release(PL);
@@ -62,7 +67,12 @@ namespace std {
     allocate(static_cast<Vector<T>&>(PL),dsize);
     PL.structure=new Vector<T>[size];
     T* dPtr=PL.data;
-    for(unsigned int i=0;i<size;++i,dPtr+=vsize[i]) refer(PL[i],dPtr,vsize[i]);
+    for(unsigned int i=0;i<size;dPtr+=vsize[i],++i) refer(PL[i],dPtr,vsize[i]);
+  }
+
+  template <typename T>
+  void allocate(PropertyList<T>& PL, const Vector<unsigned int>& sz) {
+    allocate(PL,sz(),sz.size);
   }
 
   template <typename T>
