@@ -12,6 +12,7 @@ namespace std {
   struct MinimizerParameter4PropertyListFlat {
 
     typedef MinimizerParameter4PropertyListFlat<DistEvalMethod,GeomType>  Type;
+    typedef Vector<Vector<UniqueParameter> >  ParameterStorageType;
 
     static const unsigned int Mode;
     PropertyList<unsigned int> iMask;

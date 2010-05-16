@@ -13,6 +13,7 @@ namespace std {
 
     typedef MinimizerParameter4PropertyListHierarchy<DistEvalMethod,GeomType>
             Type;
+    typedef PropertyList<Vector<UniqueParameter> >  ParameterStorageType;
 
     static const unsigned int Mode;
     PropertyList<unsigned int> iMask;
