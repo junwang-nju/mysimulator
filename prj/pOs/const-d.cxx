@@ -3,6 +3,7 @@
 #include "random-generator-boxmuller.h"
 #include "random-generator-generic.h"
 #include <iostream>
+#include <fstream> 
 #include <cmath>
 using namespace std;
 
@@ -47,7 +48,7 @@ void fene(const Vector<double>& xa, const Vector<double>& xb,
   shift(gb,-f,v);
 }
 
-static const double epsilon=4.0;
+static const double epsilon=1.0;
 static const double sradius=5;
 
 double sphereE(const Vector<double>& x, Vector<double>& v) {
@@ -65,6 +66,63 @@ void sphere(const Vector<double>& x, Vector<double>& g, Vector<double>& v) {
   double ivd6=ivd2*ivd2*ivd2;
   double f=12*epsilon*ivd6*(1.-ivd6)/(dx*d);
   shift(g,f,x);
+}
+
+double RsphereE(const Vector<double>& x, Vector<double>& v) {
+  double d=norm(x);
+  double dx=d-sradius;
+  if(dx>1)  return 0;
+  double ivd2=1./(dx*dx);
+  double ivd6=ivd2*ivd2*ivd2;
+  return epsilon*(ivd6*(ivd6-2.)+1);
+}
+
+void Rsphere(const Vector<double>& x, Vector<double>& g, Vector<double>& v) {
+  double d=norm(x);
+  double dx=d-sradius;
+  if(dx>1)  return;
+  double ivd2=1./(dx*dx);
+  double ivd6=ivd2*ivd2*ivd2;
+  double f=12*epsilon*ivd6*(1.-ivd6)/(dx*d);
+  shift(g,f,x);
+}
+
+static const unsigned int Kcen=10;
+static const unsigned int dcen=10;
+
+double centerE(const Vector<double>* x, Vector<double>& v, const unsigned int n){
+  assign(v,x[0]);
+  for(unsigned int i=1;i<n;++i)  shift(v,x[i]);
+  scale(v,1./n);
+  double d=norm(v);
+  double Dd=d-dcen;
+  return Kcen*Dd*Dd;
+}
+
+void center(const Vector<double>* x, Vector<double>* g, Vector<double>& v,
+            const unsigned int n) {
+  assign(v,x[0]);
+  for(unsigned int i=1;i<n;++i)  shift(v,x[i]);
+  scale(v,1./n);
+  double d=norm(v);
+  double Dd=d-dcen;
+  double f=(Kcen+Kcen)*Dd/(n*d);
+  for(unsigned int i=0;i<n;++i)
+    shift(g[i],f,v);
+}
+
+static const double dragF=1;
+             
+void drag(const Vector<double>* x, Vector<double>* g, Vector<double>& v,
+          unsigned int n) {
+  assign(v,x[0]);
+  for(unsigned int i=1;i<n;++i)  shift(v,x[i]);
+  scale(v,1./n);
+  double d=norm(v);
+  if(d>dcen)  scale(v,1./d);
+  else        scale(v,-1./d);
+  for(unsigned int i=0;i<n;++i)
+    shift(g[i],dragF/n,v);
 }
 
 int main() {
@@ -88,6 +146,10 @@ int main() {
   fillarray(gng,V);
   scale(V,0.01);
   assign(G,0);
+  ifstream ifs;
+  ifs.open("init-d10");
+  ifs>>X;
+  ifs.close();
 
   Vector<double> v;
   allocate(v,3);
@@ -96,14 +158,17 @@ int main() {
   for(unsigned int i=0;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j)
     rep(X[i],X[j],G[i],G[j],v);
-  for(unsigned int i=0;i<nunit;++i) sphere(X[i],G[i],v);
-  double e,e1,e2,ke;
-  e1=e2=0;
+  //for(unsigned int i=0;i<nunit;++i) Rsphere(X[i],G[i],v);
+  center(X.structure,G.structure,v,nunit);
+  //drag(X.structure,G.structure,v,nunit);
+  double e,e1,e2,e3,ke;
+  e1=e2=e3=0;
   for(unsigned int i=0;i<nunit-1;++i) e1+=feneE(X[i],X[i+1],v);
   for(unsigned int i=0;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j) e1+=repE(X[i],X[j],v);
-  for(unsigned int i=0;i<nunit;++i)   e2+=sphereE(X[i],v);
-  e=e1+e2;
+  //for(unsigned int i=0;i<nunit;++i)   e2+=RsphereE(X[i],v);
+  e3=centerE(X.structure,v,nunit);
+  e=e1+e2+e3;
   ke=0.5*normSQ(V);
   assign(v,0.);
   for(unsigned int i=0;i<nunit;++i) shift(v,X[i]);
@@ -115,8 +180,8 @@ int main() {
   double sFac1=1-gamma*hdt;
   double sFac2=1./(1+gamma*hdt);
 
-  cout<<0<<"\t"<<e<<"\t"<<ke<<"\t"<<e1<<"\t"<<e2<<"\t"<<norm(v)<<endl;
-  for(unsigned int rt=0;rt<100000000;++rt) {
+  cout<<0<<"\t"<<e<<"\t"<<ke<<"\t"<<e1<<"\t"<<e2<<"\t"<<e3<<"\t"<<norm(v)<<endl;
+  for(unsigned int rt=0;rt<10000000;++rt) {
     scaleshift(V,sFac1,-hdt,G);
     fillarray(gng,rV);
     shift(V,gFac,rV);
@@ -125,29 +190,35 @@ int main() {
     for(unsigned int i=0;i<nunit-1;++i) fene(X[i],X[i+1],G[i],G[i+1],v);
     for(unsigned int i=0;i<nunit;++i)
     for(unsigned int j=i+2;j<nunit;++j) rep(X[i],X[j],G[i],G[j],v);
-    for(unsigned int i=0;i<nunit;++i) sphere(X[i],G[i],v);
+    //for(unsigned int i=0;i<nunit;++i) Rsphere(X[i],G[i],v);
+    center(X.structure,G.structure,v,nunit);
+    //drag(X.structure,G.structure,v,nunit);
     shift(V,-hdt,G);
     fillarray(gng,rV);
     shift(V,gFac,rV);
     scale(V,sFac2);
     if((rt+1)%1000==0) {
-      e1=e2=0;
+      e1=e2=e3=0;
       for(unsigned int i=0;i<nunit-1;++i) e1+=feneE(X[i],X[i+1],v);
       for(unsigned int i=0;i<nunit;++i)
       for(unsigned int j=i+2;j<nunit;++j) e1+=repE(X[i],X[j],v);
-      for(unsigned int i=0;i<nunit;++i)   e2+=sphereE(X[i],v);
-      e=e1+e2;
+      //for(unsigned int i=0;i<nunit;++i)   e2+=RsphereE(X[i],v);
+      e3=centerE(X.structure,v,nunit);
+      e=e1+e2+e3;
       ke=0.5*normSQ(V);
       for(unsigned int i=0;i<nunit;++i) shift(v,X[i]);
       scale(v,1./nunit);
-      cout<<rt+1<<"\t"<<e<<"\t"<<ke<<"\t"<<e1<<"\t"<<e2<<"\t"<<norm(v)<<endl;
+      cout<<rt+1<<"\t"<<e<<"\t"<<ke<<"\t"<<e1<<"\t"<<e2<<"\t"<<e3<<"\t"<<norm(v)<<endl;
     }
   }
+
+  cout<<endl;
+  cout<<X<<endl;
 
   release(rV);
   release(G);
   release(V);
   release(X);
-  return 1;
+  return 0;
 }
 
