@@ -13,8 +13,8 @@ namespace std {
 
   template <typename T>
   inline void allocate(T* &dest, const unsigned int N) {
+    assert(dest==NULL);
     if(N==0)  return;
-    release(dest);
     dest=new T[N];
   }
 

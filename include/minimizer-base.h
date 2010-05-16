@@ -17,7 +17,7 @@ namespace std {
     typedef void (*EFuncType)(const SpaceDataType&, double&, ParameterType&);
     typedef void (*GFuncType)(const SpaceDataType&, SpaceDataType&,
                               ParameterType&);
-    typedef void (*BFuncType)(const SpaceDataType&, SpaceDataType&, double&,
+    typedef void (*BFuncType)(const SpaceDataType&, double&, SpaceDataType&,
                               ParameterType&);
 
     EFuncType MinEFunc;
