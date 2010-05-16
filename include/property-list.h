@@ -71,6 +71,11 @@ namespace std {
   }
 
   template <typename T>
+  void allocate(PropertyList<T>& PL, const Vector<unsigned int>& sz) {
+    allocate(PL,sz(),sz.size);
+  }
+
+  template <typename T>
   void refer(PropertyList<T>& destPL, const PropertyList<T>& srcPL) {
     assert(IsAvailable(srcPL));
     release(destPL);
