@@ -11,7 +11,7 @@ void gfunc(const double& x, double& g, double& prm) {
   g+=2*prm*x;
 }
 
-void bfunc(const double& x, double& g, double& e, double& prm) {
+void bfunc(const double& x, double& e, double& g, double& prm) {
   e+=prm*x*x;
   g+=2*prm*x;
 }

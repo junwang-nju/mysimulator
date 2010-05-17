@@ -25,7 +25,7 @@ namespace std {
     ~TrackingLineMinimizer() { release(*this); }
 
     template <unsigned int CondType>
-    int Minimize(SpaceDataType& Dirc) {
+    int Minimize(const SpaceDataType& Dirc) {
       assert(IsAvailable(*this));
       assert(*(this->MinProject)<=0);
       if(*(this->MinProject)>=-*(this->GradThreshold))  return 2;

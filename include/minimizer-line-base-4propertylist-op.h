@@ -48,8 +48,8 @@ namespace std {
   template <typename DistEvalMethod, typename GeomType,
             template <typename,typename> class MParameterType>
   double minimalstep(
-    LineMinimizerBase<PropertyList<double>,
-                      MParameterType<DistEvalMethod,GeomType> >& LM,
+    const LineMinimizerBase<PropertyList<double>,
+                            MParameterType<DistEvalMethod,GeomType> >& LM,
     const PropertyList<double>& Origin,
     const PropertyList<double>& Dirc) {
     assert(Origin.nunit==Dirc.nunit);

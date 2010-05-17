@@ -138,7 +138,7 @@ namespace std {
     assign(Dest,Origin);
     shift(Dest,step,Dirc);
     updateParameter(*(M.MinParam));
-    M.MinBFunc(Dest,DestG,DestY,*(M.MinParam));
+    M.MinBFunc(Dest,DestY,DestG,*(M.MinParam));
     ++(*(M.GCalcCount));
     DestPrj=dot(DestG,Dirc);
   }
