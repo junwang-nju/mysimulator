@@ -138,6 +138,8 @@ namespace std {
     assign(Dest,Origin);
     shift(Dest,step,Dirc);
     updateParameter(*(M.MinParam));
+    DestY=0;
+    assign(DestG,0.);
     M.MinBFunc(Dest,DestY,DestG,*(M.MinParam));
     ++(*(M.GCalcCount));
     DestPrj=dot(DestG,Dirc);

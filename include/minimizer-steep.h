@@ -45,7 +45,7 @@ namespace std {
         scale(*Dirc,-1./tmd);
         *(this->MinProject)=-tmd;
         tmd=*(this->MinEnergy);
-        if(static_cast<ParentType*>(this)->Minimize(*Dirc)==2) {
+        if(static_cast<ParentType*>(this)->Minimize<CondType>(*Dirc)==2) {
           *(this->LineSearchCount)=neval;
           return 1;
         }

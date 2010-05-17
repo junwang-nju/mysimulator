@@ -84,6 +84,7 @@ namespace std {
     TLM.TrackingFac=new double;
     typedef LineMinimizerBase<SpaceDataType,ParameterType> PType;
     allocate(static_cast<PType&>(TLM));
+    *(TLM.TrackingFac)=Gold;
   }
 
   template <typename SpaceDataType, typename ParameterType>
