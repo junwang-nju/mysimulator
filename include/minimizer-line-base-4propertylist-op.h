@@ -21,7 +21,7 @@ namespace std {
     const Vector<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
     const typename
     MParameterType<DistEvalMethod,GeomType>::IndexStorageType& IdxLst) {
-    allocate(LM);
+    assert(IsAvailable(LM));
     LM.MinEFunc=EFunc4PropertyList<DistEvalMethod,GeomType,MParameterType>;
     LM.MinGFunc=GFunc4PropertyList<DistEvalMethod,GeomType,MParameterType>;
     LM.MinBFunc=BFunc4PropertyList<DistEvalMethod,GeomType,MParameterType>;

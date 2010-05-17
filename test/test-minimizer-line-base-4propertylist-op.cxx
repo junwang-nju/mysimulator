@@ -70,6 +70,7 @@ int main() {
                     MinimizerParameter4PropertyListFlat<DistanceEvalDirect,
                                                         FreeSpace> >
     fLM;
+  allocate(fLM);
   buildMinimizer(fLM,Coor,iMask,dMask,DEval,FS,fParamLst,IMLst,fIdxLst);
   cout<<*(fLM.MinEnergy)<<endl;
   cout<<*(fLM.MinGrad)<<endl;
@@ -96,6 +97,7 @@ int main() {
       PropertyList<double>,
       MinimizerParameter4PropertyListHierarchy<DistanceEvalDirect,FreeSpace> >
     hLM;
+  allocate(hLM);
   buildMinimizer(hLM,Coor,iMask,dMask,DEval,FS,hParamLst,IMLst,hIdxLst);
   cout<<*(hLM.MinEnergy)<<endl;
   cout<<*(hLM.MinGrad)<<endl;

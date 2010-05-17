@@ -140,13 +140,16 @@ add_executable (test-minimizer-line-tracking-4propertylist-op.run test-minimizer
 target_link_libraries (test-minimizer-line-tracking-4propertylist-op.run blas)
 
 add_executable (test-minimizer-steep.run test-minimizer-steep.cxx)
-target_link_libraries (test-minimizer-steep.run blas Base)
+target_link_libraries (test-minimizer-steep.run blas)
 
-add_executable (test-minimizer-conjg.run test-minimizer-conjg.cxx)
-target_link_libraries (test-minimizer-conjg.run blas Base)
+add_executable (test-minimizer-steep-4propertylist-op.run test-minimizer-steep-4propertylist-op.cxx)
+target_link_libraries (test-minimizer-steep-4propertylist-op.run blas)
 
-add_executable (test-minimizer-lbfgs.run test-minimizer-lbfgs.cxx)
-target_link_libraries (test-minimizer-lbfgs.run blas Base)
+#add_executable (test-minimizer-conjg.run test-minimizer-conjg.cxx)
+#target_link_libraries (test-minimizer-conjg.run blas Base)
+
+#add_executable (test-minimizer-lbfgs.run test-minimizer-lbfgs.cxx)
+#target_link_libraries (test-minimizer-lbfgs.run blas Base)
 
 add_executable (test-monomer-propagator.run test-monomer-propagator.cxx)
 target_link_libraries (test-monomer-propagator.run blas Base)

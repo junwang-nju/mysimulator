@@ -1,4 +1,5 @@
 
+#include "minimizer-steep-4propertylist-op.h"
 #include "minimizer-line-tracking-4propertylist-op.h"
 #include "minimizer-parameter-flat-4propertylist.h"
 #include "minimizer-parameter-hierarchy-4propertylist.h"
@@ -66,10 +67,10 @@ int main() {
   fIdxLst[3][0]=1;       fIdxLst[3][1]=2;
   fIdxLst[4][0]=1;       fIdxLst[4][1]=3;
   fIdxLst[5][0]=2;       fIdxLst[5][1]=3;
-  TrackingLineMinimizer<PropertyList<double>,
-                        MinimizerParameter4PropertyListFlat<DistanceEvalDirect,
-                                                            FreeSpace> >
-    fLM;
+  SteepestDescentMinimizer<
+    PropertyList<double>,
+    MinimizerParameter4PropertyListFlat<DistanceEvalDirect,FreeSpace>,
+    TrackingLineMinimizer> fLM;
   allocate(fLM);
   buildMinimizer(fLM,Coor,iMask,dMask,DEval,FS,fParamLst,IMLst,fIdxLst);
   cout<<*(fLM.MinEnergy)<<endl;
@@ -93,9 +94,10 @@ int main() {
   for(unsigned int i=0,n=0;i<2;++i)
   for(unsigned int j=0;j<3;++j,++n)
     refer(hIdxLst[i][j],fIdxLst[n]);
-  TrackingLineMinimizer<
+  SteepestDescentMinimizer<
       PropertyList<double>,
-      MinimizerParameter4PropertyListHierarchy<DistanceEvalDirect,FreeSpace> >
+      MinimizerParameter4PropertyListHierarchy<DistanceEvalDirect,FreeSpace>,
+      TrackingLineMinimizer>
     hLM;
   allocate(hLM);
   buildMinimizer(hLM,Coor,iMask,dMask,DEval,FS,hParamLst,IMLst,hIdxLst);

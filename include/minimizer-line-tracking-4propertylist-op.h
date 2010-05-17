@@ -21,6 +21,7 @@ namespace std {
       const Vector<InteractionMethod<DistEvalMethod,GeomType> >& IMLst,
       const typename
       MParameterType<DistEvalMethod,GeomType>::IndexStorageType& IdxLst) {
+    assert(IsAvailable(TLM));
     typedef LineMinimizerBase<PropertyList<double>,
                               MParameterType<DistEvalMethod,GeomType> > PType;
     buildMinimizer(static_cast<PType&>(TLM),Coor,iMask,dMask,DEval,Geo,
