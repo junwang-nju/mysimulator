@@ -145,8 +145,11 @@ target_link_libraries (test-minimizer-steep.run blas)
 add_executable (test-minimizer-steep-4propertylist-op.run test-minimizer-steep-4propertylist-op.cxx)
 target_link_libraries (test-minimizer-steep-4propertylist-op.run blas)
 
-#add_executable (test-minimizer-conjg.run test-minimizer-conjg.cxx)
-#target_link_libraries (test-minimizer-conjg.run blas Base)
+add_executable (test-minimizer-conjg.run test-minimizer-conjg.cxx)
+target_link_libraries (test-minimizer-conjg.run blas)
+
+add_executable (test-minimizer-conjg-4propertylist-op.run test-minimizer-conjg-4propertylist-op.cxx)
+target_link_libraries (test-minimizer-conjg-4propertylist-op.run blas)
 
 #add_executable (test-minimizer-lbfgs.run test-minimizer-lbfgs.cxx)
 #target_link_libraries (test-minimizer-lbfgs.run blas Base)
