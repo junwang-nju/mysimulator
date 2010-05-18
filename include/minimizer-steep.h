@@ -2,7 +2,6 @@
 #ifndef _Minimizer_SteepestDescent_H_
 #define _Minimizer_SteepestDescent_H_
 
-#include "error-proc.h"
 #include "util.h"
 #include "storage-state-name.h"
 #include "constant.h"
