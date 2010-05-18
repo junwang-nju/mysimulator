@@ -4,7 +4,7 @@
 
 namespace std {
 
-  enum MonomerType {
+  enum MonomerTypeName {
     UnknownUnitType=0,
     ParticleType
   };

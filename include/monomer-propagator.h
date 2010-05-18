@@ -2,82 +2,116 @@
 #ifndef _Monomer_Propagator_H_
 #define _Monomer_Propagator_H_
 
-#include "var-vector.h"
-#include "propagator-parameter-element.h"
-#include "monomer-name.h"
+#include "unique-parameter.h"
+#include "vector.h"
 
 namespace std {
 
-  class MonomerPropagator;
+  struct MonomerPropagator;
 
-  void SetUp(MonomerPropagator&, const unsigned int, const unsigned int);
+  void assign(MonomerPropagator&, const MonomerPropagator&);
+  void release(MonomerPropagator&);
 
-  class MonomerPropagator {
+  struct MonomerPropagator {
 
-    public:
+    typedef MonomerPropagator Type;
+    typedef void (*MoveFuncType)(double*,double*,const double*,
+                                 const unsigned int,
+                                 const UniqueParameter*,UniqueParameter*);
+    typedef void (*SetFuncType)(UniqueParameter*,const void*);
+    typedef void (*SyncFuncType)(const Vector<double>&,
+                                 const UniqueParameter*,UniqueParameter*);
 
-      typedef void (*MoveFuncType)(
-          VectorBase<double>&, VectorBase<double>&,const VectorBase<double>&,
-          const VectorBase<PropagatorDataElementType>&,
-          VectorBase<PropagatorDataElementType>&);
+    Vector<MoveFuncType>    Move;
+    Vector<SetFuncType>     MSet;
+    SyncFuncType     MSync;
+    Vector<UniqueParameter> MParam;
+    unsigned int    *UnitKind;
+    unsigned int    *MoveMode;
+    unsigned int     state;
 
-      typedef void (*SetFuncType)(
-          VectorBase<PropagatorDataElementType>&, const void*);
-
-      typedef void (*AllocFuncType)(varVector<PropagatorDataElementType>&);
-
-      typedef void (*SyncFuncType)(
-          const VectorBase<double>&,
-          const VectorBase<PropagatorDataElementType>&,
-          VectorBase<PropagatorDataElementType>&);
-
-      typedef MonomerPropagator Type;
-
-      unsigned int UnitMode;
-      varVector<MoveFuncType>   Move;
-      varVector<SetFuncType>    MSet;
-      AllocFuncType Alloc;
-      SyncFuncType  Sync;
-      varVector<PropagatorDataElementType>  Param;
-
-      MonomerPropagator()
-        : UnitMode(UnknownUnitType),
-          Move(), MSet(), Alloc(NULL), Sync(NULL), Param() {}
-
-      MonomerPropagator(const Type& MP) {
-        myError("Cannot create from Monomer Propagator");
-      }
-
-      Type& operator=(const Type& MP) {
-        UnitMode=MP.UnitMode;
-        Move.duplicate(MP.Move);
-        MSet.duplicate(MP.MSet);
-        Alloc=MP.Alloc;
-        Sync=MP.Sync;
-        Param.duplicate(MP.Param);
-        return *this;
-      }
-
-      void synchronize(const VectorBase<double>& IvMass,
-                       const VectorBase<PropagatorDataElementType>& GPrm) {
-        assert(Sync!=NULL);
-        Sync(IvMass,GPrm,Param);
-      }
-
-      void allocate(const unsigned int UnitType, const unsigned int MoveType) {
-        SetUp(*this,UnitType,MoveType);
-        Alloc(Param);
-      }
-
-      void Set(const unsigned int SComponent, const void* pd) {
-        MSet[SComponent](Param,pd);
-      }
+    MonomerPropagator()
+      : Move(), MSet(), MSync(NULL), MParam(), UnitKind(NULL),
+        MoveMode(NULL), state(Unused) {}
+    MonomerPropagator(const Type&) {
+      myError("Cannot create from Monomer Propagator");
+    }
+    Type& operator=(const Type& MP) { assign(*this,MP); return *this; }
+    ~MonomerPropagator() { release(*this); }
 
   };
 
-}
+  bool IsAvailable(const MonomerPropagator& MP) {
+    return IsAvailable(MP.UnitKind);
+  }
 
-#include "monomer-propagator-op.h"
+  void release(MonomerPropagator& MP) {
+    if(MP.state==Allocated) {
+      safe_delete(MP.UnitKind);
+      safe_delete(MP.MoveMode);
+    }
+    else {
+      MP.UnitKind=NULL;
+      MP.MoveMode=NULL;
+    }
+    release(MP.Move);
+    release(MP.MSet);
+    release(MP.MParam);
+    MP.MSync=NULL;
+    MP.state=Unused;
+  }
+
+  void allocate(MonomerPropagator& MP) {
+    release(MP);
+    MP.UnitKind=new unsigned int;
+    MP.MoveMode=new unsigned int;
+    MP.state=Allocated;
+  }
+
+  void assign(MonomerPropagator& dest, const MonomerPropagator& src) {
+    assert(IsAvailable(src));
+    assert(IsAvailable(dest));
+    if((*(dest.UnitKind)!=*(src.UnitKind))||
+       (*(dest.MoveMode)!=*(src.MoveMode))) {
+      allocate(dest);
+      allocate(dest.Move,src.Move.size);
+      allocate(dest.MSet,src.MSet.size);
+      allocate(dest.MParam,src.MParam.size);
+    }
+    assign(dest.Move,src.Move);
+    assign(dest.MSet,src.MSet);
+    dest.MSync=src.MSync;
+    assign(dest.MParam,src.MParam);
+    *(dest.UnitKind)=*(src.UnitKind);
+    *(dest.MoveMode)=*(src.MoveMode);
+  }
+
+  void refer(MonomerPropagator& dest, const MonomerPropagator& src) {
+    assert(IsAvailable(src));
+    release(dest);
+    refer(dest.Move,src.Move);
+    refer(dest.MSet,src.MSet);
+    dest.MSync=src.MSync;
+    refer(dest.MParam,src.MParam);
+    dest.UnitKind=src.UnitKind;
+    dest.MoveMode=src.MoveMode;
+    dest.state=Reference;
+  }
+
+  void synchronize(MonomerPropagator& MP, const Vector<double>& ivMass,
+                   const UniqueParameter* GlbParam) {
+    assert(MP.MSync!=NULL);
+    MP.MSync(ivMass,GlbParam,MP.MParam());
+  }
+
+  template <typename T>
+  void setparameter(MonomerPropagator& MP,
+                    const unsigned int ComponentID, const T& value) {
+    assert(IsAvailable(MP.MSet));
+    MP.MSet[ComponentID](MP.MParam(),reinterpret_cast<const void*>(&value));
+  }
+
+}
 
 #endif
 

@@ -158,7 +158,7 @@ add_executable (test-minimizer-lbfgs-4propertylist-op.run test-minimizer-lbfgs-4
 target_link_libraries (test-minimizer-lbfgs-4propertylist-op.run blas)
 
 add_executable (test-monomer-propagator.run test-monomer-propagator.cxx)
-target_link_libraries (test-monomer-propagator.run blas Base)
+target_link_libraries (test-monomer-propagator.run blas)
 
 add_executable (test-propagator-parameter-element.run test-propagator-parameter-element.cxx)
 target_link_libraries (test-propagator-parameter-element.run blas Base)
