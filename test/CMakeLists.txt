@@ -163,11 +163,11 @@ target_link_libraries (test-monomer-propagator.run blas)
 add_executable (test-monomer-propagator-op.run test-monomer-propagator-op.cxx)
 target_link_libraries (test-monomer-propagator-op.run blas)
 
-add_executable (test-propagator-parameter-element.run test-propagator-parameter-element.cxx)
-target_link_libraries (test-propagator-parameter-element.run blas Base)
-
 add_executable (test-propagator.run test-propagator.cxx)
-target_link_libraries (test-propagator.run Base blas)
+target_link_libraries (test-propagator.run blas)
+
+add_executable (test-propagator-op.run test-propagator-op.cxx)
+target_link_libraries (test-propagator-op.run blas)
 
 add_executable (test-propagator-berendsen-vverlet.run test-propagator-berendsen-vverlet.cxx)
 target_link_libraries (test-propagator-berendsen-vverlet.run Base blas)

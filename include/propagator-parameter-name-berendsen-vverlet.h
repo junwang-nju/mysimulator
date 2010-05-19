@@ -13,6 +13,12 @@ namespace std {
     NumberMoveBV
   };
 
+  enum PropagatorSetNameBV {
+    TemperatureBV=NumberSetCommon,
+    RelaxTimeBV,
+    NumberSetBV
+  };
+
   enum PropagatorParameterNameBV {
     BV_Temperature=NumberParameterCommon,
     BV_RelaxTime,
