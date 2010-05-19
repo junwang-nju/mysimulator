@@ -1,6 +1,6 @@
 
-#ifndef _Random_Generator_H_
-#define _Random_Generator_H_
+#ifndef _Random_Generator_Generic_H_
+#define _Random_Generator_Generic_H_
 
 #include <ctime>
 #include "vector.h"
