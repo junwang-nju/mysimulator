@@ -163,6 +163,9 @@ target_link_libraries (test-monomer-propagator.run blas)
 add_executable (test-monomer-propagator-op.run test-monomer-propagator-op.cxx)
 target_link_libraries (test-monomer-propagator-op.run blas)
 
+add_executable (test-monomer-propagator-particle-conste-vverlet.run test-monomer-propagator-particle-conste-vverlet.cxx)
+target_link_libraries (test-monomer-propagator-particle-conste-vverlet.run blas)
+
 add_executable (test-propagator.run test-propagator.cxx)
 target_link_libraries (test-propagator.run blas)
 
