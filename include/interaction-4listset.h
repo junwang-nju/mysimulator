@@ -7,7 +7,8 @@
 namespace std {
 
   template <typename DistEvalMethod, typename GeomType>
-  void EFunc(const Vector<double>* Coor, Vector<Vector<unsigned int> >* IdxSet,
+  void EFunc(const Vector<double>* Coor,
+             const Vector<Vector<unsigned int> >* IdxSet,
              const Vector<Vector<UniqueParameter> >* PrmSet,
              InteractionMethod<DistEvalMethod,GeomType>* imSet,
              const unsigned int nSet,
@@ -18,7 +19,8 @@ namespace std {
   }
 
   template <typename DistEvalMethod, typename GeomType>
-  void GFunc(const Vector<double>* Coor, Vector<Vector<unsigned int> >* IdxSet,
+  void GFunc(const Vector<double>* Coor,
+             const Vector<Vector<unsigned int> >* IdxSet,
              const Vector<Vector<UniqueParameter> >* PrmSet,
              InteractionMethod<DistEvalMethod,GeomType>* imSet,
              const unsigned int nSet,
@@ -30,7 +32,8 @@ namespace std {
   }
 
   template <typename DistEvalMethod, typename GeomType>
-  void BFunc(const Vector<double>* Coor, Vector<Vector<unsigned int> >* IdxSet,
+  void BFunc(const Vector<double>* Coor,
+             const Vector<Vector<unsigned int> >* IdxSet,
              const Vector<Vector<UniqueParameter> >* PrmSet,
              InteractionMethod<DistEvalMethod,GeomType>* imSet,
              const unsigned int nSet,

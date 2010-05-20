@@ -30,7 +30,7 @@ namespace std {
   template <typename DistEvalMethod, typename GeomType>
   void LVStep(InteractionMethod<DistEvalMethod,GeomType>* IMLst,
               Vector<double>* Coor, Vector<double>* Vel, Vector<double>* Grad,
-              const Vector<double>* Mass, const Vector<double>* IdxLst,
+              const Vector<double>* Mass, const Vector<unsigned int>* IdxLst,
               const Vector<UniqueParameter>* PrmLst,
               UniqueParameter* GPrm, MonomerPropagator* Unit,
               const unsigned int nunit, const unsigned int nlst,
@@ -50,7 +50,7 @@ namespace std {
   void LVStep(InteractionMethod<DistEvalMethod,GeomType>* IMLst,
               Vector<double>* Coor, Vector<double>* Vel, Vector<double>* Grad,
               const Vector<double>* Mass,
-              const Vector<Vector<double> >* IdxLst,
+              const Vector<Vector<unsigned int> >* IdxLst,
               const Vector<Vector<UniqueParameter> >* PrmLst,
               UniqueParameter* GPrm, MonomerPropagator* Unit,
               const unsigned int nunit, const unsigned int nlst,
