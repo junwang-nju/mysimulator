@@ -4,6 +4,7 @@
 
 #include "interaction-method.h"
 #include "monomer-propagator.h"
+#include "monomer-propagator-op.h"
 #include "propagator-parameter-name-common.h"
 
 namespace std {
@@ -106,20 +107,26 @@ namespace std {
     if(*(dest.MoveMode)!=*(src.MoveMode)) {
       release(dest);
       allocate(dest);
-      allocate(dest.Unit,src.Unit.size);
-      allocate(dest.GSet,src.GSet.size);
-      allocate(dest.GParam,src.GParam.size);
+      if(IsAvailable(src.Unit)) {
+        allocate(dest.Unit,src.Unit.size);
+        for(unsigned int i=0;i<dest.Unit.size;++i) {
+          allocate(dest.Unit[i]);
+          Set(dest.Unit[i],*(src.Unit[i].UnitKind),*(src.MoveMode));
+        }
+      }
+      if(IsAvailable(src.GSet))   allocate(dest.GSet,src.GSet.size);
+      if(IsAvailable(src.GParam)) allocate(dest.GParam,src.GParam.size);
     }
     *(dest.MoveMode)=*(src.MoveMode);
-    assign(dest.Unit,src.Unit);
+    if(IsAvailable(src.Unit))   assign(dest.Unit,src.Unit);
     dest.GSync=src.GSync;
-    assign(dest.GSet,src.GSet.size);
+    if(IsAvailable(src.GSet))   assign(dest.GSet,src.GSet);
     dest.FOutput=src.FOutput;
     dest.HOutput=src.HOutput;
     dest.FStep=src.FStep;
     dest.HStep=src.HStep;
     dest.os=src.os;
-    assign(dest.GParam,src.GParam.size);
+    if(IsAvailable(src.GParam)) assign(dest.GParam,src.GParam);
   }
 
   template <typename DistEvalMethod, typename GeomType>
@@ -150,9 +157,9 @@ namespace std {
     P.GParam[CountStepInOneOutput].u=
         static_cast<unsigned int>(P.GParam[OutputInterval].d/
                                   P.GParam[DeltaTime].d);
-    P.GSync(ivMass,dMask,nunit,P.GParam);
+    P.GSync(ivMass,dMask,nunit,P.GParam());
     for(unsigned int i=0;i<P.Unit.size;++i)
-      synchronize(P.Unit[i],ivMass[i],P.GParam);
+      synchronize(P.Unit[i],ivMass[i],P.GParam());
   }
 
   template <typename DistEvalMethod,typename GeomType, typename T>
@@ -206,7 +213,7 @@ namespace std {
             const Vector<UniqueParameter>* PrmLst,
             const unsigned int nunit, const unsigned int nlst,
             DistEvalMethod& DEval, const GeomType& Geo) {
-    P.FStep(IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,P.GParam,P.Unit(),
+    P.FStep(IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,P.GParam(),P.Unit(),
             nunit,nlst,DEval,Geo);
   }
 
@@ -219,7 +226,7 @@ namespace std {
             const Vector<Vector<UniqueParameter> >* PrmLst,
             const unsigned int nunit, const unsigned int nlst,
             DistEvalMethod& DEval, const GeomType& Geo) {
-    P.FStep(IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,P.GParam,P.Unit(),
+    P.HStep(IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,P.GParam(),P.Unit(),
             nunit,nlst,DEval,Geo);
   }
 

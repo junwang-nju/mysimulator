@@ -74,14 +74,14 @@ namespace std {
     if((*(dest.UnitKind)!=*(src.UnitKind))||
        (*(dest.MoveMode)!=*(src.MoveMode))) {
       allocate(dest);
-      allocate(dest.Move,src.Move.size);
-      allocate(dest.MSet,src.MSet.size);
-      allocate(dest.MParam,src.MParam.size);
+      if(IsAvailable(src.Move))   allocate(dest.Move,src.Move.size);
+      if(IsAvailable(src.MSet))   allocate(dest.MSet,src.MSet.size);
+      if(IsAvailable(src.MParam)) allocate(dest.MParam,src.MParam.size);
     }
-    assign(dest.Move,src.Move);
-    assign(dest.MSet,src.MSet);
+    if(IsAvailable(src.Move)) assign(dest.Move,src.Move);
+    if(IsAvailable(src.MSet)) assign(dest.MSet,src.MSet);
     dest.MSync=src.MSync;
-    assign(dest.MParam,src.MParam);
+    if(IsAvailable(src.MParam)) assign(dest.MParam,src.MParam);
     *(dest.UnitKind)=*(src.UnitKind);
     *(dest.MoveMode)=*(src.MoveMode);
   }
@@ -89,10 +89,10 @@ namespace std {
   void refer(MonomerPropagator& dest, const MonomerPropagator& src) {
     assert(IsAvailable(src));
     release(dest);
-    refer(dest.Move,src.Move);
-    refer(dest.MSet,src.MSet);
+    if(IsAvailable(src.Move))   refer(dest.Move,src.Move);
+    if(IsAvailable(src.MSet))   refer(dest.MSet,src.MSet);
     dest.MSync=src.MSync;
-    refer(dest.MParam,src.MParam);
+    if(IsAvailable(src.MParam)) refer(dest.MParam,src.MParam);
     dest.UnitKind=src.UnitKind;
     dest.MoveMode=src.MoveMode;
     dest.state=Reference;

@@ -39,8 +39,8 @@ int main() {
   cout<<"Test -- assign"<<endl;
   MonomerPropagator MP2;
   allocate(MP2);
-  *(MP.UnitKind)=2;
-  *(MP.MoveMode)=1;
+  *(MP2.UnitKind)=2;
+  *(MP2.MoveMode)=1;
   assign(MP2,MP);
   cout<<MP2.Move.size<<endl;
   cout<<MP2.MSet.size<<endl;
