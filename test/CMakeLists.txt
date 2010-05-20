@@ -178,6 +178,9 @@ target_link_libraries (test-propagator.run blas)
 add_executable (test-propagator-op.run test-propagator-op.cxx)
 target_link_libraries (test-propagator-op.run blas)
 
+add_executable (test-propagator-conste-vverlet.run test-propagator-conste-vverlet.cxx)
+target_link_libraries (test-propagator-conste-vverlet.run blas)
+
 add_executable (test-propagator-berendsen-vverlet.run test-propagator-berendsen-vverlet.cxx)
 target_link_libraries (test-propagator-berendsen-vverlet.run Base blas)
 

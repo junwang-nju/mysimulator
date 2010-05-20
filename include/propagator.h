@@ -180,6 +180,12 @@ namespace std {
   }
 
   template <typename DistEvalMethod, typename GeomType>
+  void buildUnit(Propagator<DistEvalMethod,GeomType>& P,
+                 const unsigned int MType, const Vector<unsigned int>& UType) {
+    buildUnit(P,MType,UType(),UType.size);
+  }
+
+  template <typename DistEvalMethod, typename GeomType>
   void Write(const Propagator<DistEvalMethod,GeomType>& P, 
              InteractionMethod<DistEvalMethod,GeomType>* IMLst,
              const Vector<double>* Coor, const Vector<double>* Vel,
