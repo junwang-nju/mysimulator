@@ -10,6 +10,7 @@
 namespace std {
 
   void LVSynchronize(const Vector<double>* ivMass, const Vector<double>*,
+                     const Vector<double>*,
                      const unsigned int nunit, UniqueParameter* GPrm) {
     GPrm[LV_TemperatureDeltaT]=GPrm[LV_Temperature].d*
                                GPrm[DeltaTime].d;

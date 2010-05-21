@@ -91,7 +91,7 @@ int main() {
   Set(P,ConstantE_VelocityVerlet);
   allocate(sz,4);
   assign(sz,ParticleType);
-  buildUnit(P,ConstantE_VelocityVerlet,sz);
+  buildUnit(P,sz);
   P.FOutput=OutFunc<DistanceEvalDirect,FreeSpace,
                     Vector<unsigned int>,Vector<UniqueParameter> >;
   P.HOutput=OutFunc<DistanceEvalDirect,FreeSpace,
@@ -104,10 +104,10 @@ int main() {
   setparameter(P,OutputTimeIntervalCommon,0.002);
 
   cout<<"Test -- EV synchronize"<<endl;
-  EVSynchronize(iMass.structure,dMask.structure,4,P.GParam());
+  EVSynchronize(iMass.structure,dMask.structure,Vel.structure,4,P.GParam());
   cout<<endl;
 
-  synchronize(P,iMass.structure,dMask.structure,4);
+  synchronize(P,iMass.structure,dMask.structure,Vel.structure,4);
   cout<<"Test -- EV step"<<endl;
   cout<<"=== Coor:"<<endl;
   cout<<Coor<<endl;
@@ -129,7 +129,7 @@ int main() {
   cout<<"Test -- simulation"<<endl;
   setparameter(P,TotalTimeCommon,10.);
   setparameter(P,OutputTimeIntervalCommon,0.001);
-  synchronize(P,iMass.structure,dMask.structure,4);
+  synchronize(P,iMass.structure,dMask.structure,Vel.structure,4);
   Run(P,Coor.structure,Vel.structure,Grad.structure,Mass.structure,
       IMLst(),fIdxLst.structure,fParamLst(),4,6,DEval,FS);
   cout<<endl;

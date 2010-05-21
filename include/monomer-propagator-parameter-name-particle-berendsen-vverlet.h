@@ -7,6 +7,7 @@
 namespace std {
 
   enum MonomerPropagatorMovenameParticleBV {
+    PBV_PreProcess=BV_PreProcess,
     PBV_BeforeG=BV_BeforeG,
     PBV_AfterG=BV_AfterG,
     PBV_PostProcess=BV_PostProcess,

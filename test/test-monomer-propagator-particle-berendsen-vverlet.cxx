@@ -39,9 +39,16 @@ int main() {
   cout<<Vel<<endl;
   cout<<endl;
 
-  GPrm[BV_ScaleFactor]=0.4;
+  GPrm[BV_AScaleFactor]=0.4;
   cout<<"Test -- post process"<<endl;
   PBVMove_PostProcess(Coor(),Vel(),Grad(),4,GPrm(),Prm());
+  cout<<Coor<<endl;
+  cout<<Vel<<endl;
+  cout<<endl;
+
+  GPrm[BV_BScaleFactor]=0.3;
+  cout<<"Test -- post process"<<endl;
+  PBVMove_PreProcess(Coor(),Vel(),Grad(),4,GPrm(),Prm());
   cout<<Coor<<endl;
   cout<<Vel<<endl;
   cout<<endl;

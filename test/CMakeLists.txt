@@ -182,10 +182,10 @@ add_executable (test-propagator-conste-vverlet.run test-propagator-conste-vverle
 target_link_libraries (test-propagator-conste-vverlet.run blas)
 
 add_executable (test-propagator-berendsen-vverlet.run test-propagator-berendsen-vverlet.cxx)
-target_link_libraries (test-propagator-berendsen-vverlet.run Base blas)
+target_link_libraries (test-propagator-berendsen-vverlet.run blas)
 
 add_executable (test-propagator-langevin-vverlet.run test-propagator-langevin-vverlet.cxx)
-target_link_libraries (test-propagator-langevin-vverlet.run Base blas)
+target_link_libraries (test-propagator-langevin-vverlet.run blas)
 
 add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 target_link_libraries (test-pdb-data-structure-op.run Base blas)

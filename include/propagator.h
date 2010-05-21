@@ -14,6 +14,7 @@ namespace std {
 
     typedef Propagator<DistEvalMethod,GeomType> Type;
     typedef void (*GSyncFuncType)(const Vector<double>*, const Vector<double>*,
+                                  const Vector<double>*,
                                   const unsigned int, UniqueParameter*);
     typedef void (*GSetFuncType)(UniqueParameter*,const void*);
     typedef InteractionMethod<DistEvalMethod,GeomType>  InteractionType;
@@ -150,16 +151,17 @@ namespace std {
   template <typename DistEvalMethod, typename GeomType>
   void synchronize(Propagator<DistEvalMethod,GeomType>& P,
                    const Vector<double>* ivMass, const Vector<double>* dMask,
+                   const Vector<double>* Vel,
                    const unsigned int nunit) {
     P.GParam[CountOutput].u=
         static_cast<unsigned int>(P.GParam[TotalTime].d/
-                                  P.GParam[OutputInterval].d);
+                                  P.GParam[OutputInterval].d+0.5);
     if(P.GParam[CountOutput].u==0)  P.GParam[CountOutput]=1U;
     P.GParam[CountStepInOneOutput].u=
         static_cast<unsigned int>(P.GParam[OutputInterval].d/
-                                  P.GParam[DeltaTime].d);
+                                  P.GParam[DeltaTime].d+0.5);
     if(P.GParam[CountStepInOneOutput].u==0) P.GParam[CountStepInOneOutput]=1U;
-    P.GSync(ivMass,dMask,nunit,P.GParam());
+    P.GSync(ivMass,dMask,Vel,nunit,P.GParam());
     for(unsigned int i=0;i<P.Unit.size;++i)
       synchronize(P.Unit[i],ivMass[i],P.GParam());
   }
@@ -172,19 +174,18 @@ namespace std {
 
   template <typename DistEvalMethod, typename GeomType>
   void buildUnit(Propagator<DistEvalMethod,GeomType>& P,
-                 const unsigned int MType,
                  const unsigned int* UType, const unsigned int nunit) {
     allocate(P.Unit,nunit);
     for(unsigned int i=0;i<nunit;++i) {
       allocate(P.Unit[i]);
-      Set(P.Unit[i],UType[i],MType);
+      Set(P.Unit[i],UType[i],*(P.MoveMode));
     }
   }
 
   template <typename DistEvalMethod, typename GeomType>
   void buildUnit(Propagator<DistEvalMethod,GeomType>& P,
-                 const unsigned int MType, const Vector<unsigned int>& UType) {
-    buildUnit(P,MType,UType(),UType.size);
+                 const Vector<unsigned int>& UType) {
+    buildUnit(P,UType(),UType.size);
   }
 
   template <typename DistEvalMethod, typename GeomType>

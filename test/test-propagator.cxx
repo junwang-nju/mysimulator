@@ -70,7 +70,7 @@ int main() {
   Vector<unsigned int> ut;
   allocate(ut,3);
   assign(ut,1);
-  buildUnit(P,1,ut(),3);
+  buildUnit(P,ut);
   cout<<endl;
 
   cout<<"Test -- assign"<<endl;

@@ -10,6 +10,7 @@
 namespace std {
 
   void EVSynchronize(const Vector<double>*, const Vector<double>*,
+                     const Vector<double>*,
                      const unsigned int, UniqueParameter*) {}
 
   template <typename DistEvalMethod, typename GeomType>

@@ -7,7 +7,8 @@
 namespace std {
 
   enum PropagatorMoveNameBV {
-    BV_BeforeG=0,
+    BV_PreProcess=0,
+    BV_BeforeG,
     BV_AfterG,
     BV_PostProcess,
     NumberMoveBV
@@ -23,8 +24,13 @@ namespace std {
     BV_Temperature=NumberParameterCommon,
     BV_RelaxTime,
     BV_DegreeFreedom,
-    BV_DeltaTIvRelaxT,
-    BV_ScaleFactor,
+    BV_HalfDeltaTIvRelaxT,
+    BV_BScaleFactor,
+    BV_AScaleFactor,
+    BV_TemperatureDOF,
+    BV_MassVelSq,
+    BV_TemperatureDOFIvKE,
+    BV_IvHalfDeltaTIvRelaxTPlus1,
     NumberParameterBV
   };
 

@@ -9,12 +9,19 @@
 
 namespace std {
 
-  void BVSynchronize(const Vector<double>*, const Vector<double>* dMask,
+  void BVSynchronize(const Vector<double>* Mass, const Vector<double>* dMask,
+                     const Vector<double>* Vel,
                      const unsigned int nunit, UniqueParameter* GPrm) {
     double dof=0;
     for(unsigned int i=0;i<nunit;++i) dof+=asum(dMask[i]);
     GPrm[BV_DegreeFreedom]=dof;
-    GPrm[BV_DeltaTIvRelaxT]=GPrm[DeltaTime].d/GPrm[BV_RelaxTime].d;
+    GPrm[BV_TemperatureDOF]=GPrm[BV_Temperature].d*dof;
+    GPrm[BV_HalfDeltaTIvRelaxT]=GPrm[HalfDeltaTime].d/GPrm[BV_RelaxTime].d;
+    GPrm[BV_IvHalfDeltaTIvRelaxTPlus1]=1./(GPrm[BV_HalfDeltaTIvRelaxT].d+1);
+    double fac=0;
+    for(unsigned int i=0;i<nunit;++i) fac+=Mass[i][0]*normSQ(Vel[i]);
+    GPrm[BV_MassVelSq]=fac;
+    GPrm[BV_TemperatureDOFIvKE]=GPrm[BV_TemperatureDOF].d/fac;
   }
 
   void BVSet_Temperature(UniqueParameter* GPrm, const void* pt) {
@@ -33,6 +40,13 @@ namespace std {
               UniqueParameter* GPrm, MonomerPropagator* Unit,
               const unsigned int nunit, const unsigned int nlst,
               DistEvalMethod& DEval, const GeomType& Geo) {
+    double fac;
+    fac=1+GPrm[BV_HalfDeltaTIvRelaxT].d*(GPrm[BV_TemperatureDOFIvKE].d-1.);
+    GPrm[BV_MassVelSq].d*=fac;
+    GPrm[BV_BScaleFactor]=sqrt(fac);
+    for(unsigned int i=0;i<nunit;++i)
+      Unit[i].Move[BV_PreProcess](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
+                                  GPrm,Unit[i].MParam());
     for(unsigned int i=0;i<nunit;++i)
       Unit[i].Move[BV_BeforeG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
                                GPrm,Unit[i].MParam());
@@ -42,10 +56,14 @@ namespace std {
     for(unsigned int i=0;i<nunit;++i)
       Unit[i].Move[BV_AfterG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
                               GPrm,Unit[i].MParam());
-    double fac=0.;
+    fac=0.;
     for(unsigned int i=0;i<nunit;++i) fac+=normSQ(Vel[i])*Mass[i][0];
-    fac=GPrm[BV_Temperature].d*GPrm[BV_DegreeFreedom].d/fac;
-    GPrm[BV_ScaleFactor]=sqrt(GPrm[BV_DeltaTIvRelaxT].d*(fac-1.));
+    GPrm[BV_MassVelSq]=fac;
+    GPrm[BV_TemperatureDOFIvKE]=GPrm[BV_TemperatureDOF].d/fac;
+    fac=(1.+GPrm[BV_TemperatureDOFIvKE].d*GPrm[BV_HalfDeltaTIvRelaxT].d)
+       *GPrm[BV_IvHalfDeltaTIvRelaxTPlus1].d;
+    GPrm[BV_MassVelSq].d*=fac;
+    GPrm[BV_AScaleFactor]=sqrt(fac);
     for(unsigned int i=0;i<nunit;++i)
       Unit[i].Move[BV_PostProcess](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
                                    GPrm,Unit[i].MParam());
@@ -60,6 +78,13 @@ namespace std {
               UniqueParameter* GPrm, MonomerPropagator* Unit,
               const unsigned int nunit, const unsigned int nlst,
               DistEvalMethod& DEval, const GeomType& Geo) {
+    double fac;
+    fac=1+GPrm[BV_HalfDeltaTIvRelaxT].d*(GPrm[BV_TemperatureDOFIvKE].d-1.);
+    GPrm[BV_MassVelSq].d*=fac;
+    GPrm[BV_BScaleFactor]=sqrt(fac);
+    for(unsigned int i=0;i<nunit;++i)
+      Unit[i].Move[BV_PreProcess](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
+                                  GPrm,Unit[i].MParam());
     for(unsigned int i=0;i<nunit;++i)
       Unit[i].Move[BV_BeforeG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
                                GPrm,Unit[i].MParam());
@@ -69,10 +94,14 @@ namespace std {
     for(unsigned int i=0;i<nunit;++i)
       Unit[i].Move[BV_AfterG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
                               GPrm,Unit[i].MParam());
-    double fac=0.;
+    fac=0.;
     for(unsigned int i=0;i<nunit;++i) fac+=normSQ(Vel[i])*Mass[i][0];
-    fac=GPrm[BV_Temperature].d*GPrm[BV_DegreeFreedom].d/fac;
-    GPrm[BV_ScaleFactor]=sqrt(GPrm[BV_DeltaTIvRelaxT].d*(fac-1.));
+    GPrm[BV_MassVelSq]=fac;
+    GPrm[BV_TemperatureDOFIvKE]=GPrm[BV_TemperatureDOF].d/fac;
+    fac=(1.+GPrm[BV_TemperatureDOFIvKE].d*GPrm[BV_HalfDeltaTIvRelaxT].d)
+       *GPrm[BV_IvHalfDeltaTIvRelaxTPlus1].d;
+    GPrm[BV_MassVelSq].d*=fac;
+    GPrm[BV_AScaleFactor]=sqrt(fac);
     for(unsigned int i=0;i<nunit;++i)
       Unit[i].Move[BV_PostProcess](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
                                    GPrm,Unit[i].MParam());
