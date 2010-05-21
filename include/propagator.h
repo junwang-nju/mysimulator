@@ -154,9 +154,11 @@ namespace std {
     P.GParam[CountOutput].u=
         static_cast<unsigned int>(P.GParam[TotalTime].d/
                                   P.GParam[OutputInterval].d);
+    if(P.GParam[CountOutput].u==0)  P.GParam[CountOutput]=1U;
     P.GParam[CountStepInOneOutput].u=
         static_cast<unsigned int>(P.GParam[OutputInterval].d/
                                   P.GParam[DeltaTime].d);
+    if(P.GParam[CountStepInOneOutput].u==0) P.GParam[CountStepInOneOutput]=1U;
     P.GSync(ivMass,dMask,nunit,P.GParam());
     for(unsigned int i=0;i<P.Unit.size;++i)
       synchronize(P.Unit[i],ivMass[i],P.GParam());
@@ -165,7 +167,7 @@ namespace std {
   template <typename DistEvalMethod,typename GeomType, typename T>
   void setparameter(Propagator<DistEvalMethod,GeomType>& P,
                     const unsigned int ComponentID, const T& d) {
-    P.GSet[ComponentID](P.GParam,reinterpret_cast<const void*>(&d));
+    P.GSet[ComponentID](P.GParam(),reinterpret_cast<const void*>(&d));
   }
 
   template <typename DistEvalMethod, typename GeomType>

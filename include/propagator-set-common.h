@@ -21,7 +21,7 @@ namespace std {
   }
 
   void SetOutputInterval(UniqueParameter* GPrm, const void* poi) {
-    GPrm[OutputInterval]=*reinterpret_cast<const unsigned int*>(poi);
+    GPrm[OutputInterval]=*reinterpret_cast<const double*>(poi);
   }
 
   typedef void (*GSetFuncType4Propagator)(UniqueParameter*,const void*);

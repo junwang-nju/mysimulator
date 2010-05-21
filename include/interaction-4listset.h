@@ -13,6 +13,8 @@ namespace std {
              InteractionMethod<DistEvalMethod,GeomType>* imSet,
              const unsigned int nSet,
              DistEvalMethod& DEval, const GeomType& Geo, double& Energy) {
+    assert(IsAvailable(DEval));
+    assert(IsAvailable(Geo));
     for(unsigned int i=0;i<nSet;++i)
       EFunc(Coor,IdxSet[i](),PrmSet[i](),IdxSet[i].size,imSet[i],DEval,Geo,
             Energy);
@@ -26,6 +28,8 @@ namespace std {
              const unsigned int nSet,
              DistEvalMethod& DEval, const GeomType& Geo,
              Vector<double>* Gradient) {
+    assert(IsAvailable(DEval));
+    assert(IsAvailable(Geo));
     for(unsigned int i=0;i<nSet;++i)
       GFunc(Coor,IdxSet[i](),PrmSet[i](),IdxSet[i].size,imSet[i],DEval,Geo,
             Gradient);
@@ -39,6 +43,8 @@ namespace std {
              const unsigned int nSet,
              DistEvalMethod& DEval, const GeomType& Geo,
              double& Energy, Vector<double>* Gradient) {
+    assert(IsAvailable(DEval));
+    assert(IsAvailable(Geo));
     for(unsigned int i=0;i<nSet;++i)
       BFunc(Coor,IdxSet[i](),PrmSet[i](),IdxSet[i].size,imSet[i],DEval,Geo,
             Energy,Gradient);
@@ -50,6 +56,8 @@ namespace std {
              InteractionMethod<DistEvalMethod,GeomType>* imSet,
              const unsigned int nSet,
              DistEvalMethod& DEval, const GeomType& Geo, double& Energy) {
+    assert(IsAvailable(DEval));
+    assert(IsAvailable(Geo));
     for(unsigned int i=0;i<nSet;++i)
       EFunc(Coor,IdxSet+i,PrmSet+i,1,imSet[i],DEval,Geo,Energy);
   }
@@ -61,6 +69,8 @@ namespace std {
              const unsigned int nSet,
              DistEvalMethod& DEval, const GeomType& Geo,
              Vector<double>* Gradient) {
+    assert(IsAvailable(DEval));
+    assert(IsAvailable(Geo));
     for(unsigned int i=0;i<nSet;++i)
       GFunc(Coor,IdxSet+i,PrmSet+i,1,imSet[i],DEval,Geo,Gradient);
   }
@@ -72,6 +82,8 @@ namespace std {
              const unsigned int nSet,
              DistEvalMethod& DEval, const GeomType& Geo,
              double& Energy, Vector<double>* Gradient) {
+    assert(IsAvailable(DEval));
+    assert(IsAvailable(Geo));
     for(unsigned int i=0;i<nSet;++i)
       BFunc(Coor,IdxSet+i,PrmSet+i,1,imSet[i],DEval,Geo,Energy,Gradient);
   }
