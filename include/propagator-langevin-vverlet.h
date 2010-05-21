@@ -81,7 +81,7 @@ namespace std {
     AssignCommonSet4Propagator(P.GSet());
     P.GSet[TemperatureLV]=LVSet_Temperature;
     P.GSet[ViscosityLV]=LVSet_Viscosity;
-    P.GSet[GaussiamRNGPointerLV]=LVSet_GaussianRNGPointer;
+    P.GSet[GaussianRNGPointerLV]=LVSet_GaussianRNGPointer;
     P.FStep=LVStep<DistEvalMethod,GeomType>;
     P.HStep=LVStep<DistEvalMethod,GeomType>;
     allocate(P.GParam,NumberParameterLV);

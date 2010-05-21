@@ -15,7 +15,7 @@ namespace std {
   enum PropagatorSetNameLV {
     TemperatureLV=NumberSetCommon,
     ViscosityLV,
-    GaussiamRNGPointerLV,
+    GaussianRNGPointerLV,
     NumberSetLV
   };
 

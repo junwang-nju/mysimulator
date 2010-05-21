@@ -1,303 +1,152 @@
 
-#include "propagator.h"
-#include "var-distance-evaluate-direct.h"
-#include "var-free-space.h"
-#include "var-property-list.h"
-#include "interaction-method-op.h"
-#include "var-parameter-list.h"
-#include "parameter-generate-harmonic.h"
-#include "parameter-generate-lj612.h"
-#include "random-generator.h"
-
+#include "propagator-op.h"
+#include "distance-evaluate-direct.h"
+#include "free-space.h"
 #include <iostream>
 using namespace std;
 
-template <template <template <typename> class> class DistEvalMethod,
-          template <template <typename> class> class GeomType,
-          template <typename> class VecTypeD,
-          template <typename> class VecTypeG>
-void OutFunc(
-    ostream& os, const Propagator<DistEvalMethod,GeomType>& P,
-    VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& vIM,
-    const VectorBase<refVector<double> >& Coor,
-    const VectorBase<refVector<double> >& Vel,
-    const VectorBase<refVector<double> >& Grad,
-    const VectorBase<refVector<double> >& Mass,
-    const VectorBase<refVector<unsigned int> >& IdxLst,
-    const VectorBase<refVector<double> >& ParamLst,
-    DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo) {
-  cout<<P.GlobalParam[NowTime].d<<"\t"<<Coor[0]<<endl;
-}
-
-template <template <template <typename> class> class DistEvalMethod,
-          template <template <typename> class> class GeomType,
-          template <typename> class VecTypeD,
-          template <typename> class VecTypeG>
-void OutFunc(
-    ostream& os, const Propagator<DistEvalMethod,GeomType>& P,
-    VectorBase<InteractionMethod<DistEvalMethod,GeomType> >& vIM,
-    const VectorBase<refVector<double> >& Coor,
-    const VectorBase<refVector<double> >& Vel,
-    const VectorBase<refVector<double> >& Grad,
-    const VectorBase<refVector<double> >& Mass,
-    const VectorBase<refVector<refVector<unsigned int> > >& IdxLst,
-    const VectorBase<refVector<refVector<double> > >& ParamLst,
-    DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo) {
-  cout<<P.GlobalParam[NowTime].d<<"\t"<<Coor[0]<<endl;
+template <typename DistEvalMethod, typename GeomType,
+          typename IdxLstType, typename PrmLstType>
+void OutFunc(ostream& os, const Propagator<DistEvalMethod,GeomType>& P,
+             InteractionMethod<DistEvalMethod,GeomType>* IMLst,
+             const Vector<double>* Coor, const Vector<double>* Vel,
+             const Vector<double>* Grad, const Vector<double>* Mass,
+             const IdxLstType *IdxLst, const PrmLstType* PrmLst,
+             const unsigned int nunit, const unsigned int nlst,
+             DistEvalMethod& DEval, const GeomType& Geo) {
+  double E,kE;
+  E=kE=0.;
+  EFunc(Coor,IdxLst,PrmLst,IMLst,6,DEval,Geo,E);
+  for(unsigned int i=0;i<nunit;++i) kE+=normSQ(Vel[i])*Mass[i][0]*0.5;
+  cout<<P.GParam[NowTime].d<<"\t"<<Coor[0]<<"\t"<<E<<"\t"<<kE<<endl;
 }
 
 int main() {
+  PropertyList<double> Coor,Vel,Grad,Mass,iMass,dMask,RandV;
+  Vector<unsigned int> sz;
+  allocate(sz,4);
+  assign(sz,2);
+  allocate(Coor,sz);
+  allocate(Vel,sz);
+  allocate(Grad,sz);
+  allocate(Mass,sz);
+  allocate(iMass,sz);
+  allocate(dMask,sz);
+  allocate(RandV,sz);
 
-  cout<<"Test -- create a propagator"<<endl;
-  Propagator<DistanceEvalDirect,FreeSpace>  P;
-  cout<<endl;
+  Coor[0][0]=0;       Coor[0][1]=0;
+  Coor[1][0]=0;       Coor[1][1]=1.2;
+  Coor[2][0]=1.3;     Coor[2][1]=1.5;
+  Coor[3][0]=0.8;     Coor[3][1]=2.2;
+  assign(Vel,0.);
+  assign(Mass,2);
+  assign(iMass,0.5);
+  assign(dMask,1.);
 
-  cout<<"Test -- allocate a propagator"<<endl;
-  varVector<unsigned int> uMode(4);
-  uMode=ParticleType;
-  P.allocate(Langevin_VelocityVerlet,uMode);
-  cout<<endl;
+  Vector<InteractionMethod<DistanceEvalDirect,FreeSpace> > IMLst;
 
-  cout<<"Test -- set a series of property"<<endl;
-  double d;
-  d=0.002;
-  P.Set(TimeStepInCommon,&d);
-  d=100;
-  P.Set(StartTimeInCommon,&d);
-  d=0.006;
-  P.Set(TotalTimeInCommon,&d);
-  d=0.002;
-  P.Set(OutputTimeIntervalInCommon,&d);
-  d=0.1;
-  P.Set(TemperatureInLV,&d);
-  d=0.5;
-  P.Set(ViscosityInLV,&d);
-  P.Set(GaussianRNGPointerInLV,new GaussianRNG(324287));
-  cout<<endl;
+  allocate(IMLst,6);
+  for(unsigned int i=0;i<6;++i) allocate(IMLst[i]);
+  for(unsigned int i=0;i<3;++i) Set(IMLst[i],PairwiseHarmonic);
+  for(unsigned int i=3;i<6;++i) Set(IMLst[i],PairwiseLJ612);
+  Vector<Vector<UniqueParameter> > fParamLst;
+  allocate(fParamLst,6);
+  for(unsigned int i=0;i<3;++i) allocate(fParamLst[i],HarmonicNumberParameter);
+  for(unsigned int i=3;i<6;++i) allocate(fParamLst[i],LJ612NumberParameter);
+  PropertyList<unsigned int> fIdxLst;
+  allocate(sz,6);
+  assign(sz,2);
+  allocate(fIdxLst,sz);
+  fParamLst[0][HarmonicEqLength]=1.;
+  fParamLst[0][HarmonicEqStrength]=100.;
+  fParamLst[1][HarmonicEqLength]=1.;
+  fParamLst[1][HarmonicEqStrength]=100.;
+  fParamLst[2][HarmonicEqLength]=1.;
+  fParamLst[2][HarmonicEqStrength]=100.;
+  for(unsigned int i=0;i<3;++i) GenerateParameterHarmonic(fParamLst[i]);
+  fParamLst[3][LJ612EqRadius]=1.;
+  fParamLst[3][LJ612EqEnergyDepth]=1.;
+  fParamLst[4][LJ612EqRadius]=1.;
+  fParamLst[4][LJ612EqEnergyDepth]=1.;
+  fParamLst[5][LJ612EqRadius]=1.;
+  fParamLst[5][LJ612EqEnergyDepth]=1.;
+  for(unsigned int i=3;i<6;++i) GenerateParameterLJ612(fParamLst[i]);
+  fIdxLst[0][0]=0;       fIdxLst[0][1]=1;
+  fIdxLst[1][0]=1;       fIdxLst[1][1]=2;
+  fIdxLst[2][0]=2;       fIdxLst[2][1]=3;
+  fIdxLst[3][0]=0;       fIdxLst[3][1]=2;
+  fIdxLst[4][0]=0;       fIdxLst[4][1]=3;
+  fIdxLst[5][0]=1;       fIdxLst[5][1]=3;
+
+  DistanceEvalDirect DEval;
+  FreeSpace FS;
+  allocate(DEval,2,4);
+  allocate(FS,2);
+
+  assign(Grad,0.);
+  GFunc(Coor.structure,fIdxLst.structure,fParamLst(),IMLst(),6,
+        DEval,FS,Grad.structure);
+
+  Propagator<DistanceEvalDirect,FreeSpace> P;
+  allocate(P);
+  Set(P,Langevin_VelocityVerlet);
+  allocate(sz,4);
+  assign(sz,ParticleType);
+  buildUnit(P,sz);
+  P.FOutput=OutFunc<DistanceEvalDirect,FreeSpace,
+                    Vector<unsigned int>,Vector<UniqueParameter> >;
+  P.HOutput=OutFunc<DistanceEvalDirect,FreeSpace,
+                    Vector<Vector<unsigned int> >,
+                    Vector<Vector<UniqueParameter> > >;
+
+  setparameter(P,TimeStepCommon,0.001);
+  setparameter(P,StartTimeCommon,100.);
+  setparameter(P,TotalTimeCommon,0.01);
+  setparameter(P,OutputTimeIntervalCommon,0.002);
+  setparameter(P,TemperatureLV,0.5);
+  setparameter(P,ViscosityLV,0.5);
+  GaussianRNG gng;
+  allocate(gng);
+  init(gng,1237913);
+  setparameter(P,GaussianRNGPointerLV,gng);
   for(unsigned int i=0;i<4;++i) {
-    d=1.0;
-    P.Unit[i].Set(HydrodynamicRadiusInPLV,&d);
-    P.Unit[i].Set(RandomVelocityPointerInPLV,new varVector<double>(2));
+    setparameter(P.Unit[i],HydrodynamicRadiusPLV,1.0);
+    setparameter(P.Unit[i],RandomVelocityPointerPLV,RandV[i][0]);
   }
 
-  cout<<"Test -- synchronize other internal data"<<endl;
-  varPropertyList<double>::Type Mass,IvMass;
-  varPropertyList<double>::Type dMask;
-  varVector<unsigned int> Sz(4);
-  Sz=2;
-  Mass.allocate(Sz);
-  IvMass.allocate(Sz);
-  dMask.allocate(Sz);
-  Mass=2.;
-  IvMass=0.5;
-  Mass[2]=0.1;
-  IvMass[2]=10;
-  dMask=1;
-  P.synchronize(IvMass,dMask);
+  cout<<"Test -- LV synchronize"<<endl;
+  LVSynchronize(iMass.structure,dMask.structure,Vel.structure,4,P.GParam());
   cout<<endl;
 
-  cout<<"Test -- Step, WriteOut and Run function for Hierarchy form of data"<<endl;
-  varPropertyList<double>::Type CoorSeq,VelSeq,GradSeq,oCoorSeq;
-  CoorSeq.allocate(Sz);
-  VelSeq.allocate(Sz);
-  GradSeq.allocate(Sz);
-  oCoorSeq.allocate(Sz);
-  CoorSeq[0][0]=0;    CoorSeq[0][1]=0;
-  CoorSeq[1][0]=0;    CoorSeq[1][1]=1.2;
-  CoorSeq[2][0]=1.3;  CoorSeq[2][1]=1.5;
-  CoorSeq[3][0]=0.8;  CoorSeq[3][1]=2.2;
-  VelSeq=0.;
-
-  varVector<InteractionMethod<DistanceEvalDirect,FreeSpace> > IM;
-  IM.allocate(2);
-  SetInteractionMethod(IM[0],ParticleParticle_Harmonic);
-  SetInteractionMethod(IM[1],ParticleParticle_LJ612);
-
-  varPropertyList<unsigned int>::Type IdxLst;
-  Sz.allocate(6);
-  Sz=2;
-  IdxLst.allocate(Sz);
-  IdxLst[0][0]=0;   IdxLst[0][1]=1;
-  IdxLst[1][0]=0;   IdxLst[1][1]=2;
-  IdxLst[2][0]=0;   IdxLst[2][1]=3;
-  IdxLst[3][0]=1;   IdxLst[3][1]=2;
-  IdxLst[4][0]=1;   IdxLst[4][1]=3;
-  IdxLst[5][0]=2;   IdxLst[5][1]=3;
-  varPropertyList<refVector<unsigned int> > vIdx;
-  Sz.allocate(2);
-  Sz=3;
-  vIdx.allocate(Sz);
-  for(unsigned int i=0,n=0;i<2;++i)
-  for(unsigned int j=0;j<3;++j,++n)
-    vIdx[i][j].refer(IdxLst[n]);
-
-  varVector<unsigned int> KindSeq(4);
-  KindSeq[0]=0;
-  KindSeq[1]=1;
-  KindSeq[2]=0;
-  KindSeq[3]=2;
-
-  varParameterList vPL;
-  varVector<unsigned int> kS(18),vS(18);
-  for(unsigned int i=0;i<18;++i)  kS[i]=3;
-  for(unsigned int i=0;i<9;++i)   vS[i]=Harmonic_NumberParameter;
-  for(unsigned int i=9;i<18;++i)  vS[i]=LJ612_NumberParameter;
-  vPL.allocate(kS,vS);
-  for(unsigned int i=0,n=0;i<3;++i)
-  for(unsigned int j=0;j<3;++j,++n) {
-    vPL.keylist()[n].index()[0]=ParticleParticle_Harmonic;
-    vPL.keylist()[n].index()[1]=i;
-    vPL.keylist()[n].index()[2]=j;
-    vPL.keylist()[n].BuildHash();
-  }
-  vPL.valuelist()[0][Harmonic_EqLength]=1.;
-  vPL.valuelist()[0][Harmonic_EqStrength]=100.;
-  vPL.valuelist()[1][Harmonic_EqLength]=2.;
-  vPL.valuelist()[1][Harmonic_EqStrength]=100.;
-  vPL.valuelist()[2][Harmonic_EqLength]=0.5;
-  vPL.valuelist()[2][Harmonic_EqStrength]=100.;
-  vPL.valuelist()[3]=vPL.valuelist()[1];
-  vPL.valuelist()[4][Harmonic_EqLength]=1.;
-  vPL.valuelist()[4][Harmonic_EqStrength]=200.;
-  vPL.valuelist()[5][Harmonic_EqLength]=1.;
-  vPL.valuelist()[5][Harmonic_EqStrength]=30.;
-  vPL.valuelist()[6]=vPL.valuelist()[2];
-  vPL.valuelist()[7]=vPL.valuelist()[5];
-  vPL.valuelist()[8][Harmonic_EqLength]=1.5;
-  vPL.valuelist()[8][Harmonic_EqStrength]=2000.;
-  for(unsigned int i=0;i<9;++i)
-    ParameterGenerateHarmonic(vPL.valuelist()[i]);
-  for(unsigned int i=0,n=9;i<3;++i)
-  for(unsigned int j=0;j<3;++j,++n) {
-    vPL.keylist()[n].index()[0]=ParticleParticle_LJ612;
-    vPL.keylist()[n].index()[1]=i;
-    vPL.keylist()[n].index()[2]=j;
-    vPL.keylist()[n].BuildHash();
-  }
-  vPL.valuelist()[9][LJ612_EqRadius]=1.;
-  vPL.valuelist()[9][LJ612_EqStrength]=1.;
-  vPL.valuelist()[10][LJ612_EqRadius]=0.8;
-  vPL.valuelist()[10][LJ612_EqStrength]=2.;
-  vPL.valuelist()[11][LJ612_EqRadius]=0.5;
-  vPL.valuelist()[11][LJ612_EqStrength]=1.;
-  vPL.valuelist()[12]=vPL.valuelist()[10];
-  vPL.valuelist()[13][LJ612_EqRadius]=1.2;
-  vPL.valuelist()[13][LJ612_EqStrength]=2.;
-  vPL.valuelist()[14][LJ612_EqRadius]=1.1;
-  vPL.valuelist()[14][LJ612_EqStrength]=3.;
-  vPL.valuelist()[15]=vPL.valuelist()[11];
-  vPL.valuelist()[16]=vPL.valuelist()[14];
-  vPL.valuelist()[17][LJ612_EqRadius]=1.5;
-  vPL.valuelist()[17][LJ612_EqStrength]=2.;
-  for(unsigned int i=9;i<18;++i)
-    ParameterGenerateLJ612(vPL.valuelist()[i]);
-  vPL.updateHashTree();
-
-  varVector<refVector<double> > ParamLst(6);
-  varVector<unsigned int> prmKey(3);
-  for(unsigned int i=0;i<3;++i) {
-    prmKey[0]=ParticleParticle_Harmonic;
-    for(unsigned int k=0;k<2;++k)
-      prmKey[k+1]=KindSeq[IdxLst[i][k]];
-    ParamLst[i].refer(*vPL.get(prmKey));
-  }
-  for(unsigned int i=3;i<6;++i) {
-    prmKey[0]=ParticleParticle_LJ612;
-    for(unsigned int k=0;k<2;++k)
-      prmKey[k+1]=KindSeq[IdxLst[i][k]];
-    ParamLst[i].refer(*vPL.get(prmKey));
-  }
-
-  varPropertyList<refVector<double> >::Type vPrm;
-  Sz.allocate(2);
-  Sz=3;
-  vPrm.allocate(Sz);
-  for(unsigned int i=0,n=0;i<2;++i)
-  for(unsigned int j=0;j<3;++j,++n)
-    vPrm[i][j].refer(ParamLst[n]);
-
-  varDistanceEvalDirect vDED(2);
-  varFreeSpace vFS;
-
-  P.FWriteOutVV=OutFunc<DistanceEvalDirect,FreeSpace,varVector,varVector>;
-  P.FWriteOutVR=OutFunc<DistanceEvalDirect,FreeSpace,varVector,refVector>;
-  P.FWriteOutRV=OutFunc<DistanceEvalDirect,FreeSpace,refVector,varVector>;
-  P.FWriteOutRR=OutFunc<DistanceEvalDirect,FreeSpace,refVector,refVector>;
-  P.HWriteOutVV=OutFunc<DistanceEvalDirect,FreeSpace,varVector,varVector>;
-  P.HWriteOutVR=OutFunc<DistanceEvalDirect,FreeSpace,varVector,refVector>;
-  P.HWriteOutRV=OutFunc<DistanceEvalDirect,FreeSpace,refVector,varVector>;
-  P.HWriteOutRR=OutFunc<DistanceEvalDirect,FreeSpace,refVector,refVector>;
-
-  oCoorSeq=CoorSeq;
-  GFunc(CoorSeq.Structure(),IM,vIdx.Structure(),vPrm.Structure(),vDED,vFS,
-        GradSeq.Structure());
-  cout<<"=== Initial Coordinate, Velocity, and Gradient"<<endl;
-  cout<<CoorSeq<<endl;
-  cout<<VelSeq<<endl;
-  cout<<GradSeq<<endl;
-  P.Step(IM,CoorSeq.Structure(),VelSeq.Structure(),GradSeq.Structure(),
-         Mass.Structure(),vIdx.Structure(),vPrm.Structure(),vDED,vFS);
-  cout<<"=== Coordinate, Velocity, and Gradient after a step"<<endl;
-  cout<<CoorSeq<<endl;
-  cout<<VelSeq<<endl;
-  cout<<GradSeq<<endl;
-
-  cout<<"=== Invoke WriteOut"<<endl;
-  P.WriteOut(cout,IM,CoorSeq.Structure(),VelSeq.Structure(),
-             GradSeq.Structure(),Mass.Structure(),vIdx.Structure(),
-             vPrm.Structure(),vDED,vFS);
-
-  cout<<"=== Run"<<endl;
-  CoorSeq=oCoorSeq;
-  VelSeq=0.;
-  GradSeq=0.;
-  GFunc(CoorSeq.Structure(),IM,vIdx.Structure(),vPrm.Structure(),vDED,vFS,
-        GradSeq.Structure());
-  P.Run(CoorSeq,VelSeq,GradSeq,Mass,IM,vIdx,vPrm,vDED,vFS,cout);
+  synchronize(P,iMass.structure,dMask.structure,Vel.structure,4);
+  cout<<"Test -- LV step"<<endl;
+  cout<<"=== Coor:"<<endl;
+  cout<<Coor<<endl;
+  cout<<"=== Vel:"<<endl;
+  cout<<Vel<<endl;
+  cout<<"=== Grad:"<<endl;
+  cout<<Grad<<endl;
+  LVStep(IMLst(),Coor.structure,Vel.structure,Grad.structure,Mass.structure,
+         fIdxLst.structure,fParamLst(),P.GParam(),P.Unit(),4,6,
+         DEval,FS);
+  cout<<"=== Coor:"<<endl;
+  cout<<Coor<<endl;
+  cout<<"=== Vel:"<<endl;
+  cout<<Vel<<endl;
+  cout<<"=== Grad:"<<endl;
+  cout<<Grad<<endl;
   cout<<endl;
 
-  cout<<"Test -- Step, WriteOut and Run function for Flat form of data"<<endl;
-  IM.allocate(6);
-  for(unsigned int i=0;i<3;++i)
-    SetInteractionMethod(IM[i],ParticleParticle_Harmonic);
-  for(unsigned int i=3;i<6;++i)
-    SetInteractionMethod(IM[i],ParticleParticle_LJ612);
-
-  CoorSeq=oCoorSeq;
-  VelSeq=0.;
-  GradSeq=0.;
-  GFunc(CoorSeq.Structure(),IM,IdxLst.Structure(),ParamLst,vDED,vFS,
-        GradSeq.Structure());
-  cout<<"=== Initial Coordinate, Velocity, and Gradient"<<endl;
-  cout<<CoorSeq<<endl;
-  cout<<VelSeq<<endl;
-  cout<<GradSeq<<endl;
-  P.Step(IM,CoorSeq.Structure(),VelSeq.Structure(),GradSeq.Structure(),
-         Mass.Structure(),IdxLst.Structure(),ParamLst,vDED,vFS);
-  cout<<"=== Coordinate, Velocity, and Gradient after a step"<<endl;
-  cout<<CoorSeq<<endl;
-  cout<<VelSeq<<endl;
-  cout<<GradSeq<<endl;
-
-  cout<<"=== Invoke WriteOut"<<endl;
-  P.WriteOut(cout,IM,CoorSeq.Structure(),VelSeq.Structure(),
-             GradSeq.Structure(),Mass.Structure(),IdxLst.Structure(),
-             ParamLst,vDED,vFS);
-
-  cout<<"=== Run"<<endl;
-  CoorSeq=oCoorSeq;
-  VelSeq=0.;
-  GradSeq=0.;
-  GFunc(CoorSeq.Structure(),IM,IdxLst.Structure(),ParamLst,vDED,vFS,
-        GradSeq.Structure());
-  P.Run(CoorSeq,VelSeq,GradSeq,Mass,IM,IdxLst,ParamLst,vDED,vFS,cout);
+  cout<<"Test -- simulation"<<endl;
+  /*
+  setparameter(P,TotalTimeCommon,10.);
+  setparameter(P,OutputTimeIntervalCommon,0.001);
+  synchronize(P,iMass.structure,dMask.structure,Vel.structure,4);
+  Run(P,Coor.structure,Vel.structure,Grad.structure,Mass.structure,
+      IMLst(),fIdxLst.structure,fParamLst(),4,6,DEval,FS);
   cout<<endl;
+  */
 
-  cout<<"Test -- assign to another propagator"<<endl;
-  Propagator<DistanceEvalDirect,FreeSpace>  P1;
-  P1=P;
-  cout<<endl;
-
-  return 1;
+  return 0;
 }
 
