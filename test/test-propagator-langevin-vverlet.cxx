@@ -138,14 +138,12 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- simulation"<<endl;
-  /*
-  setparameter(P,TotalTimeCommon,10.);
+  setparameter(P,TotalTimeCommon,200.);
   setparameter(P,OutputTimeIntervalCommon,0.001);
   synchronize(P,iMass.structure,dMask.structure,Vel.structure,4);
   Run(P,Coor.structure,Vel.structure,Grad.structure,Mass.structure,
       IMLst(),fIdxLst.structure,fParamLst(),4,6,DEval,FS);
   cout<<endl;
-  */
 
   return 0;
 }
