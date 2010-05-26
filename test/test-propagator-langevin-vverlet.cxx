@@ -11,6 +11,7 @@ void OutFunc(ostream& os, const Propagator<DistEvalMethod,GeomType>& P,
              InteractionMethod<DistEvalMethod,GeomType>* IMLst,
              const Vector<double>* Coor, const Vector<double>* Vel,
              const Vector<double>* Grad, const Vector<double>* Mass,
+             const Vector<double>* dMask,
              const IdxLstType *IdxLst, const PrmLstType* PrmLst,
              const unsigned int nunit, const unsigned int nlst,
              DistEvalMethod& DEval, const GeomType& Geo) {
@@ -127,8 +128,8 @@ int main() {
   cout<<"=== Grad:"<<endl;
   cout<<Grad<<endl;
   LVStep(IMLst(),Coor.structure,Vel.structure,Grad.structure,Mass.structure,
-         fIdxLst.structure,fParamLst(),P.GParam(),P.Unit(),4,6,
-         DEval,FS);
+         dMask.structure,fIdxLst.structure,fParamLst(),P.GParam(),P.Unit(),
+         4,6,DEval,FS);
   cout<<"=== Coor:"<<endl;
   cout<<Coor<<endl;
   cout<<"=== Vel:"<<endl;
@@ -142,7 +143,7 @@ int main() {
   setparameter(P,OutputTimeIntervalCommon,0.001);
   synchronize(P,iMass.structure,dMask.structure,Vel.structure,4);
   Run(P,Coor.structure,Vel.structure,Grad.structure,Mass.structure,
-      IMLst(),fIdxLst.structure,fParamLst(),4,6,DEval,FS);
+      dMask.structure,IMLst(),fIdxLst.structure,fParamLst(),4,6,DEval,FS);
   cout<<endl;
 
   return 0;

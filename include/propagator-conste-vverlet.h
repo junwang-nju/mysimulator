@@ -16,7 +16,8 @@ namespace std {
   template <typename DistEvalMethod, typename GeomType>
   void EVStep(InteractionMethod<DistEvalMethod,GeomType>* IMLst,
               Vector<double>* Coor, Vector<double>* Vel, Vector<double>* Grad,
-              const Vector<double>* Mass, const Vector<unsigned int>* IdxLst,
+              const Vector<double>* Mass, const Vector<double>* dMask,
+              const Vector<unsigned int>* IdxLst,
               const Vector<UniqueParameter>* PrmLst,
               UniqueParameter* GPrm, MonomerPropagator* Unit,
               const unsigned int nunit, const unsigned int nlst,
@@ -27,6 +28,7 @@ namespace std {
     update(DEval);
     for(unsigned int i=0;i<nunit;++i) assign(Grad[i],0.);
     GFunc(Coor,IdxLst,PrmLst,IMLst,nlst,DEval,Geo,Grad);
+    for(unsigned int i=0;i<nunit;++i) scale(Grad[i],dMask[i]);
     for(unsigned int i=0;i<nunit;++i)
       Unit[i].Move[EV_AfterG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
                               GPrm,Unit[i].MParam());
@@ -35,7 +37,7 @@ namespace std {
   template <typename DistEvalMethod, typename GeomType>
   void EVStep(InteractionMethod<DistEvalMethod,GeomType>* IMLst,
               Vector<double>* Coor, Vector<double>* Vel, Vector<double>* Grad,
-              const Vector<double>* Mass,
+              const Vector<double>* Mass, const Vector<double>* dMask,
               const Vector<Vector<unsigned int> >* IdxLst,
               const Vector<Vector<UniqueParameter> >* PrmLst,
               UniqueParameter* GPrm, MonomerPropagator* Unit,
@@ -47,6 +49,7 @@ namespace std {
     update(DEval);
     for(unsigned int i=0;i<nunit;++i) assign(Grad[i],0.);
     GFunc(Coor,IdxLst,PrmLst,IMLst,nlst,DEval,Geo,Grad);
+    for(unsigned int i=0;i<nunit;++i) scale(Grad[i],dMask[i]);
     for(unsigned int i=0;i<nunit;++i)
       Unit[i].Move[EV_AfterG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
                               GPrm,Unit[i].MParam());

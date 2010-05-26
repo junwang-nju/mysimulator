@@ -6,8 +6,8 @@
 #include <iostream>
 using namespace std;
 
-void sync(const Vector<double>*,const Vector<double>*,const unsigned int,
-          UniqueParameter*) { cout<<"in Sync"<<endl; }
+void sync(const Vector<double>*,const Vector<double>*,const Vector<double>*,
+          const unsigned int,UniqueParameter*) { cout<<"in Sync"<<endl; }
 void msync(const Vector<double>&, const UniqueParameter*,UniqueParameter*) {
   cout<<"in msync"<<endl;
 }
@@ -17,7 +17,8 @@ void setb(UniqueParameter*,const void*) { cout<<"set B"<<endl; }
 void out(ostream& os,const Propagator<DistanceEvalDirect,FreeSpace>&,
          InteractionMethod<DistanceEvalDirect,FreeSpace>*,
          const Vector<double>*,const Vector<double>*,const Vector<double>*,
-         const Vector<double>*,const Vector<unsigned int>*,
+         const Vector<double>*,const Vector<double>*,
+         const Vector<unsigned int>*,
          const Vector<UniqueParameter>*,const unsigned int,const unsigned int,
          DistanceEvalDirect&,const FreeSpace&) {
   os<<"Out Flat"<<endl;
@@ -25,7 +26,8 @@ void out(ostream& os,const Propagator<DistanceEvalDirect,FreeSpace>&,
 void out(ostream& os,const Propagator<DistanceEvalDirect,FreeSpace>&,
          InteractionMethod<DistanceEvalDirect,FreeSpace>*,
          const Vector<double>*,const Vector<double>*,const Vector<double>*,
-         const Vector<double>*,const Vector<Vector<unsigned int> >*,
+         const Vector<double>*,const Vector<double>*,
+         const Vector<Vector<unsigned int> >*,
          const Vector<Vector<UniqueParameter> >*,
          const unsigned int,const unsigned int,
          DistanceEvalDirect&,const FreeSpace&) {
@@ -33,6 +35,7 @@ void out(ostream& os,const Propagator<DistanceEvalDirect,FreeSpace>&,
 }
 void step(InteractionMethod<DistanceEvalDirect,FreeSpace>*,Vector<double>*,
           Vector<double>*,Vector<double>*,const Vector<double>*,
+          const Vector<double>*,
           const Vector<unsigned int>*,const Vector<UniqueParameter>*,
           UniqueParameter*,MonomerPropagator*,const unsigned int,
           const unsigned int,DistanceEvalDirect&,const FreeSpace&) {
@@ -40,6 +43,7 @@ void step(InteractionMethod<DistanceEvalDirect,FreeSpace>*,Vector<double>*,
 }
 void step(InteractionMethod<DistanceEvalDirect,FreeSpace>*,Vector<double>*,
           Vector<double>*,Vector<double>*,const Vector<double>*,
+          const Vector<double>*,
           const Vector<Vector<unsigned int> >*,
           const Vector<Vector<UniqueParameter> >*,
           UniqueParameter*,MonomerPropagator*,const unsigned int,
@@ -101,13 +105,14 @@ int main() {
   for(unsigned int i=0;i<P.Unit.size;++i) P.Unit[i].MSync=msync;
 
   cout<<"Test -- synchronize"<<endl;
-  PropertyList<double> ivMass, dMask;
+  PropertyList<double> ivMass, dMask, Vel;
   Vector<unsigned int> sz;
   allocate(sz,3);
   assign(sz,2);
   allocate(ivMass,sz);
   allocate(dMask,sz);
-  synchronize(P,ivMass.structure,dMask.structure,3);
+  allocate(Vel,sz);
+  synchronize(P,ivMass.structure,dMask.structure,Vel.structure,3);
   cout<<endl;
 
   DistanceEvalDirect DEval;
@@ -117,11 +122,13 @@ int main() {
   Write(P,static_cast<InteractionMethod<DistanceEvalDirect,FreeSpace>*>(NULL),
         static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
         static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
+        static_cast<Vector<double>*>(NULL),
         static_cast<Vector<unsigned int>*>(NULL),
         static_cast<Vector<UniqueParameter>*>(NULL),0,0,DEval,FS);
   Write(P,static_cast<InteractionMethod<DistanceEvalDirect,FreeSpace>*>(NULL),
         static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
         static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
+        static_cast<Vector<double>*>(NULL),
         static_cast<Vector<Vector<unsigned int> >*>(NULL),
         static_cast<Vector<Vector<UniqueParameter> >*>(NULL),0,0,DEval,FS);
   cout<<endl;
@@ -130,11 +137,13 @@ int main() {
   Step(P,static_cast<InteractionMethod<DistanceEvalDirect,FreeSpace>*>(NULL),
        static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
        static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
+       static_cast<Vector<double>*>(NULL),
        static_cast<Vector<unsigned int>*>(NULL),
        static_cast<Vector<UniqueParameter>*>(NULL),0,0,DEval,FS);
   Step(P,static_cast<InteractionMethod<DistanceEvalDirect,FreeSpace>*>(NULL),
        static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
        static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
+       static_cast<Vector<double>*>(NULL),
        static_cast<Vector<Vector<unsigned int> >*>(NULL),
        static_cast<Vector<Vector<UniqueParameter> >*>(NULL),0,0,DEval,FS);
   cout<<endl;
@@ -143,12 +152,14 @@ int main() {
   Run(P,
        static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
        static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
+       static_cast<Vector<double>*>(NULL),
        static_cast<InteractionMethod<DistanceEvalDirect,FreeSpace>*>(NULL),
        static_cast<Vector<unsigned int>*>(NULL),
        static_cast<Vector<UniqueParameter>*>(NULL),0,0,DEval,FS);
   Run(P,
        static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
        static_cast<Vector<double>*>(NULL),static_cast<Vector<double>*>(NULL),
+       static_cast<Vector<double>*>(NULL),
        static_cast<InteractionMethod<DistanceEvalDirect,FreeSpace>*>(NULL),
        static_cast<Vector<Vector<unsigned int> >*>(NULL),
        static_cast<Vector<Vector<UniqueParameter> >*>(NULL),0,0,DEval,FS);

@@ -21,6 +21,7 @@ namespace std {
     typedef void (*FOutputFuncType)(ostream&, const Type&,InteractionType*,
                                     const Vector<double>*,const Vector<double>*,
                                     const Vector<double>*,const Vector<double>*,
+                                    const Vector<double>*,
                                     const Vector<unsigned int>*,
                                     const Vector<UniqueParameter>*,
                                     const unsigned int, const unsigned int,
@@ -28,6 +29,7 @@ namespace std {
     typedef void (*HOutputFuncType)(ostream&, const Type&,InteractionType*,
                                     const Vector<double>*,const Vector<double>*,
                                     const Vector<double>*,const Vector<double>*,
+                                    const Vector<double>*,
                                     const Vector<Vector<unsigned int> >*,
                                     const Vector<Vector<UniqueParameter> >*,
                                     const unsigned int, const unsigned int,
@@ -35,7 +37,7 @@ namespace std {
     typedef void (*FStepFuncType)(InteractionType*,
                                   Vector<double>*,Vector<double>*,
                                   Vector<double>*,const Vector<double>*,
-                                  const Vector<unsigned int>*,
+                                  const Vector<double>*, const Vector<unsigned int>*,
                                   const Vector<UniqueParameter>*,
                                   UniqueParameter*,MonomerPropagator*,
                                   const unsigned int, const unsigned int,
@@ -43,6 +45,7 @@ namespace std {
     typedef void (*HStepFuncType)(InteractionType*,
                                   Vector<double>*,Vector<double>*,
                                   Vector<double>*,const Vector<double>*,
+                                  const Vector<double>*,
                                   const Vector<Vector<unsigned int> >*,
                                   const Vector<Vector<UniqueParameter> >*,
                                   UniqueParameter*,MonomerPropagator*,
@@ -193,11 +196,12 @@ namespace std {
              InteractionMethod<DistEvalMethod,GeomType>* IMLst,
              const Vector<double>* Coor, const Vector<double>* Vel,
              const Vector<double>* Grad, const Vector<double>* Mass,
+             const Vector<double>* dMask,
              const Vector<unsigned int>* IdxLst,
              const Vector<UniqueParameter>* PrmLst,
              const unsigned int nunit, const unsigned int nlst,
              DistEvalMethod& DEval, const GeomType& Geo) {
-    P.FOutput(*(P.os),P,IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,
+    P.FOutput(*(P.os),P,IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,
               nunit,nlst,DEval,Geo);
   }
   
@@ -206,11 +210,12 @@ namespace std {
              InteractionMethod<DistEvalMethod,GeomType>* IMLst,
              const Vector<double>* Coor, const Vector<double>* Vel,
              const Vector<double>* Grad, const Vector<double>* Mass,
+             const Vector<double>* dMask,
              const Vector<Vector<unsigned int> >* IdxLst,
              const Vector<Vector<UniqueParameter> >* PrmLst,
              const unsigned int nunit, const unsigned int nlst,
              DistEvalMethod& DEval, const GeomType& Geo) {
-    P.HOutput(*(P.os),P,IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,
+    P.HOutput(*(P.os),P,IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,
               nunit,nlst,DEval,Geo);
   }
 
@@ -218,11 +223,12 @@ namespace std {
   void Step(Propagator<DistEvalMethod,GeomType>& P,
             InteractionMethod<DistEvalMethod,GeomType>* IMLst,
             Vector<double>* Coor, Vector<double>* Vel, Vector<double>* Grad,
-            const Vector<double>* Mass, const Vector<unsigned int>* IdxLst,
+            const Vector<double>* Mass, const Vector<double>* dMask,
+            const Vector<unsigned int>* IdxLst,
             const Vector<UniqueParameter>* PrmLst,
             const unsigned int nunit, const unsigned int nlst,
             DistEvalMethod& DEval, const GeomType& Geo) {
-    P.FStep(IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,P.GParam(),P.Unit(),
+    P.FStep(IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,P.GParam(),P.Unit(),
             nunit,nlst,DEval,Geo);
   }
 
@@ -230,19 +236,19 @@ namespace std {
   void Step(Propagator<DistEvalMethod,GeomType>& P,
             InteractionMethod<DistEvalMethod,GeomType>* IMLst,
             Vector<double>* Coor, Vector<double>* Vel, Vector<double>* Grad,
-            const Vector<double>* Mass,
+            const Vector<double>* Mass, const Vector<double>* dMask,
             const Vector<Vector<unsigned int> >* IdxLst,
             const Vector<Vector<UniqueParameter> >* PrmLst,
             const unsigned int nunit, const unsigned int nlst,
             DistEvalMethod& DEval, const GeomType& Geo) {
-    P.HStep(IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,P.GParam(),P.Unit(),
+    P.HStep(IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,P.GParam(),P.Unit(),
             nunit,nlst,DEval,Geo);
   }
 
   template <typename DistEvalMethod, typename GeomType>
   void Run(Propagator<DistEvalMethod,GeomType>& P,
            Vector<double>* Coor, Vector<double>* Vel, Vector<double>* Grad,
-           const Vector<double>* Mass,
+           const Vector<double>* Mass, const Vector<double>* dMask,
            InteractionMethod<DistEvalMethod,GeomType>* IMLst,
            const Vector<unsigned int>* IdxLst,
            const Vector<UniqueParameter>* PrmLst,
@@ -252,19 +258,21 @@ namespace std {
     unsigned int ns=P.GParam[CountStepInOneOutput].u;
     double ot=ns*P.GParam[DeltaTime].d;
     P.GParam[NowTime]=P.GParam[StartTime];
-    Write(P,IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,nunit,nlst,DEval,Geo);
+    Write(P,IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,nunit,nlst,DEval,Geo);
     for(unsigned int i=0;i<no;++i) {
       for(unsigned int j=0;j<ns;++j)
-        Step(P,IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,nunit,nlst,DEval,Geo);
+        Step(P,IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,nunit,nlst,
+             DEval,Geo);
       P.GParam[NowTime].d+=ot;
-      Write(P,IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,nunit,nlst,DEval,Geo);
+      Write(P,IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,nunit,nlst,
+            DEval,Geo);
     }
   }
 
   template <typename DistEvalMethod, typename GeomType>
   void Run(Propagator<DistEvalMethod,GeomType>& P,
            Vector<double>* Coor, Vector<double>* Vel, Vector<double>* Grad,
-           const Vector<double>* Mass,
+           const Vector<double>* Mass, const Vector<double>* dMask,
            InteractionMethod<DistEvalMethod,GeomType>* IMLst,
            const Vector<Vector<unsigned int> >* IdxLst,
            const Vector<Vector<UniqueParameter> >* PrmLst,
@@ -274,12 +282,14 @@ namespace std {
     unsigned int ns=P.GParam[CountStepInOneOutput].u;
     double ot=ns*P.GParam[DeltaTime].d;
     P.GParam[NowTime]=P.GParam[StartTime];
-    Write(P,IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,nunit,nlst,DEval,Geo);
+    Write(P,IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,nunit,nlst,DEval,Geo);
     for(unsigned int i=0;i<no;++i) {
       for(unsigned int j=0;j<ns;++j)
-        Step(P,IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,nunit,nlst,DEval,Geo);
+        Step(P,IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,nunit,nlst,
+             DEval,Geo);
       P.GParam[NowTime].d+=ot;
-      Write(P,IMLst,Coor,Vel,Grad,Mass,IdxLst,PrmLst,nunit,nlst,DEval,Geo);
+      Write(P,IMLst,Coor,Vel,Grad,Mass,dMask,IdxLst,PrmLst,nunit,nlst,
+            DEval,Geo);
     }
   }
 
