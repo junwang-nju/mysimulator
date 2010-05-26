@@ -196,6 +196,14 @@ target_link_libraries (test-interaction-core-expand-corelj612.run blas)
 add_executable (test-interaction-core-expand-lj612.run test-interaction-core-expand-lj612.cxx)
 target_link_libraries (test-interaction-core-expand-lj612.run blas)
 
+add_executable (test-interaction-centroid-base.run test-interaction-centroid-base.cxx)
+target_link_libraries (test-interaction-centroid-base.run blas)
+
+add_executable (test-interaction-centroid-harmonic.run test-interaction-centroid-harmonic.cxx)
+target_link_libraries (test-interaction-centroid-harmonic.run blas)
+
+
+########################
 add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 target_link_libraries (test-pdb-data-structure-op.run Base blas)
 
