@@ -11,6 +11,8 @@
 #include "interaction-pairwise-corelj612.h"
 #include "interaction-pairwise-coulomb.h"
 #include "interaction-pairwise-quadharm.h"
+#include "interaction-core-expand-lj612.h"
+#include "interaction-core-expand-corelj612.h"
 
 namespace std {
   enum InteractionTypeName {
@@ -23,6 +25,8 @@ namespace std {
     PairwiseCoreLJ612,
     PairwiseCoulomb,
     PairwiseQuadHarm,
+    PairwiseCoreExpandCoreLJ612,
+    PairwiseCoreExpandLJ612,
     InteractionTypeTableTerminus,
     NumberInteractions = InteractionTypeTableTerminus-1
   };

@@ -149,6 +149,16 @@ namespace std {
         IM.GFunc=GFuncPairwiseQuadHarm<DistEvalMethod,GeomType>;
         IM.BFunc=BFuncPairwiseQuadHarm<DistEvalMethod,GeomType>;
         break;
+      case PairwiseCoreExpandLJ612:
+        IM.EFunc=EFuncCoreExpandLJ612<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncCoreExpandLJ612<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncCoreExpandLJ612<DistEvalMethod,GeomType>;
+        break;
+      case PairwiseCoreExpandCoreLJ612:
+        IM.EFunc=EFuncCoreExpandCoreLJ612<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncCoreExpandCoreLJ612<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncCoreExpandCoreLJ612<DistEvalMethod,GeomType>;
+        break;
       default:
         myError("Unknown Interaction Type");
     }
