@@ -19,7 +19,7 @@ namespace std {
   };
 
   void GenerateParameterCoreExpandCoreLJ612(UniqueParameter* prm) {
-    GenerateParameterLJ612(prm+CoreExpBaseNumberParameter);
+    GenerateParameterCoreLJ612(prm+CoreExpBaseNumberParameter);
   }
 
   void GenerateParameterCoreExpandCoreLJ612(Vector<UniqueParameter>& prm) {

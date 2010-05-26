@@ -193,6 +193,9 @@ target_link_libraries (test-system-op.run blas)
 add_executable (test-interaction-core-expand-corelj612.run test-interaction-core-expand-corelj612.cxx)
 target_link_libraries (test-interaction-core-expand-corelj612.run blas)
 
+add_executable (test-interaction-core-expand-lj612.run test-interaction-core-expand-lj612.cxx)
+target_link_libraries (test-interaction-core-expand-lj612.run blas)
+
 add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 target_link_libraries (test-pdb-data-structure-op.run Base blas)
 
