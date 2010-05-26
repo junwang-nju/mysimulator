@@ -38,15 +38,15 @@ namespace std {
               const unsigned int nunit, const unsigned int nlst,
               DistEvalMethod& DEval, const GeomType& Geo) {
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[LV_BeforeG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                               GPrm,Unit[i].MParam());
+      Unit[i].Move[LV_BeforeG](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                               Coor[i].size,GPrm,Unit[i].MParam());
     update(DEval);
     for(unsigned int i=0;i<nunit;++i) assign(Grad[i],0.);
     GFunc(Coor,IdxLst,PrmLst,IMLst,nlst,DEval,Geo,Grad);
     for(unsigned int i=0;i<nunit;++i) scale(Grad[i],dMask[i]);
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[LV_AfterG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                              GPrm,Unit[i].MParam());
+      Unit[i].Move[LV_AfterG](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                              Coor[i].size,GPrm,Unit[i].MParam());
   }
 
   template <typename DistEvalMethod, typename GeomType>
@@ -59,15 +59,15 @@ namespace std {
               const unsigned int nunit, const unsigned int nlst,
               DistEvalMethod& DEval, const GeomType& Geo) {
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[LV_BeforeG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                               GPrm,Unit[i].MParam());
+      Unit[i].Move[LV_BeforeG](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                               Coor[i].size,GPrm,Unit[i].MParam());
     update(DEval);
     for(unsigned int i=0;i<nunit;++i) assign(Grad[i],0.);
     GFunc(Coor,IdxLst,PrmLst,IMLst,nlst,DEval,Geo,Grad);
     for(unsigned int i=0;i<nunit;++i) scale(Grad[i],dMask[i]);
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[LV_AfterG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                              GPrm,Unit[i].MParam());
+      Unit[i].Move[LV_AfterG](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                              Coor[i].size,GPrm,Unit[i].MParam());
   }
 
 }

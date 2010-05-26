@@ -3,7 +3,8 @@
 #include <iostream>
 using namespace std;
 
-void move(double* x, double* v, const double* g, const unsigned int n,
+void move(double* x, double* v, const double* g, 
+          const double* dm, const unsigned int n,
           const UniqueParameter* gp, UniqueParameter* p) {
 }
 

@@ -15,7 +15,7 @@ namespace std {
   struct MonomerPropagator {
 
     typedef MonomerPropagator Type;
-    typedef void (*MoveFuncType)(double*,double*,const double*,
+    typedef void (*MoveFuncType)(double*,double*,const double*,const double*,
                                  const unsigned int,
                                  const UniqueParameter*,UniqueParameter*);
     typedef void (*SetFuncType)(UniqueParameter*,const void*);

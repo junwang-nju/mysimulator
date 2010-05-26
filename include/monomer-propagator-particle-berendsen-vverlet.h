@@ -9,26 +9,26 @@
 namespace std {
 
   void PBVMove_BeforeG(double* Coor, double* Vel, const double* Grad,
-                       const unsigned int dim,
+                       const double* dMask, const unsigned int dim,
                        const UniqueParameter* GbPrm, UniqueParameter* Prm) {
     shift(Vel,-Prm[PBV_HalfDeltaTIvM].d,Grad,dim);
     shift(Coor,GbPrm[DeltaTime].d,Vel,dim);
   }
 
   void PBVMove_AfterG(double* Coor, double* Vel, const double* Grad,
-                      unsigned int dim,
+                      const double* dMask, const unsigned int dim,
                       const UniqueParameter* GbPrm, UniqueParameter* Prm) {
     shift(Vel,-Prm[PBV_HalfDeltaTIvM].d,Grad,dim);
   }
 
   void PBVMove_PreProcess(double* Coor, double* Vel, const double* Grad,
-                          const unsigned int dim,
+                          const double* dMask, const unsigned int dim,
                           const UniqueParameter* GbPrm, UniqueParameter* Prm){
     scale(Vel,GbPrm[BV_BScaleFactor].d,dim);
   }
 
   void PBVMove_PostProcess(double* Coor, double* Vel, const double* Grad,
-                           const unsigned int dim,
+                           const double* dMask, const unsigned int dim,
                            const UniqueParameter* GbPrm, UniqueParameter* Prm){
     scale(Vel,GbPrm[BV_AScaleFactor].d,dim);
   }

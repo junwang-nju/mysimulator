@@ -9,7 +9,7 @@
 namespace std {
 
   void PLVMove_BeforeG(double* Coor, double* Vel, const double* Grad,
-                       const unsigned int dim,
+                       const double* dMask, const unsigned int dim,
                        const UniqueParameter* GbPrm, UniqueParameter* Prm) {
     scaleshift(Vel,Prm[PLV_FactorBeforeG].d,-Prm[PLV_HalfDeltaTIvM].d,Grad,dim);
     GaussianRNG *pgng;
@@ -17,12 +17,13 @@ namespace std {
     double* rv;
     rv=reinterpret_cast<double*>(Prm[PLV_RandomVelocityPointer].ptr);
     fillarray(*pgng,rv,dim);
+    scale(rv,dMask,dim);
     shift(Vel,Prm[PLV_RandomVelocitySize].d,rv,dim);
     shift(Coor,GbPrm[DeltaTime].d,Vel,dim);
   }
 
   void PLVMove_AfterG(double* Coor, double* Vel, const double* Grad,
-                      const unsigned int dim,
+                      const double* dMask, const unsigned int dim,
                       const UniqueParameter* GbPrm, UniqueParameter* Prm) {
     shift(Vel,-Prm[PLV_HalfDeltaTIvM].d,Grad,dim);
     GaussianRNG *pgng;
@@ -30,6 +31,7 @@ namespace std {
     double *rv;
     rv=reinterpret_cast<double*>(Prm[PLV_RandomVelocityPointer].ptr);
     fillarray(*pgng,rv,dim);
+    scale(rv,dMask,dim);
     shift(Vel,Prm[PLV_RandomVelocitySize].d,rv,dim);
     scale(Vel,Prm[PLV_FactorAfterG].d,dim);
   }

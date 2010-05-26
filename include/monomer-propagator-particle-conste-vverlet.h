@@ -9,14 +9,14 @@
 namespace std {
 
   void PEVMove_BeforeG(double* Coor, double* Vel, const double* Grad,
-                       const unsigned int dim,
+                       const double* dMask, const unsigned int dim,
                        const UniqueParameter* GbPrm, UniqueParameter* Prm) {
     shift(Vel,-Prm[PEV_HalfDeltaTIvM].d,Grad,dim);
     shift(Coor,GbPrm[DeltaTime].d,Vel,dim);
   }
 
   void PEVMove_AfterG(double* Coor, double* Vel, const double* Grad,
-                      const unsigned int dim,
+                      const double* dMask, const unsigned int dim,
                       const UniqueParameter* GbPrm, UniqueParameter* Prm) {
     shift(Vel,-Prm[PEV_HalfDeltaTIvM].d,Grad,dim);
   }

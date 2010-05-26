@@ -46,18 +46,18 @@ namespace std {
     GPrm[BV_MassVelSq].d*=fac;
     GPrm[BV_BScaleFactor]=sqrt(fac);
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[BV_PreProcess](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                                  GPrm,Unit[i].MParam());
+      Unit[i].Move[BV_PreProcess](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                                  Coor[i].size,GPrm,Unit[i].MParam());
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[BV_BeforeG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                               GPrm,Unit[i].MParam());
+      Unit[i].Move[BV_BeforeG](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                               Coor[i].size,GPrm,Unit[i].MParam());
     update(DEval);
     for(unsigned int i=0;i<nunit;++i) assign(Grad[i],0.);
     GFunc(Coor,IdxLst,PrmLst,IMLst,nlst,DEval,Geo,Grad);
     for(unsigned int i=0;i<nunit;++i) scale(Grad[i],dMask[i]);
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[BV_AfterG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                              GPrm,Unit[i].MParam());
+      Unit[i].Move[BV_AfterG](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                              Coor[i].size,GPrm,Unit[i].MParam());
     fac=0.;
     for(unsigned int i=0;i<nunit;++i) fac+=normSQ(Vel[i])*Mass[i][0];
     GPrm[BV_MassVelSq]=fac;
@@ -67,8 +67,8 @@ namespace std {
     GPrm[BV_MassVelSq].d*=fac;
     GPrm[BV_AScaleFactor]=sqrt(fac);
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[BV_PostProcess](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                                   GPrm,Unit[i].MParam());
+      Unit[i].Move[BV_PostProcess](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                                   Coor[i].size,GPrm,Unit[i].MParam());
   }
 
   template <typename DistEvalMethod, typename GeomType>
@@ -85,18 +85,18 @@ namespace std {
     GPrm[BV_MassVelSq].d*=fac;
     GPrm[BV_BScaleFactor]=sqrt(fac);
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[BV_PreProcess](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                                  GPrm,Unit[i].MParam());
+      Unit[i].Move[BV_PreProcess](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                                  Coor[i].size,GPrm,Unit[i].MParam());
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[BV_BeforeG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                               GPrm,Unit[i].MParam());
+      Unit[i].Move[BV_BeforeG](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                               Coor[i].size,GPrm,Unit[i].MParam());
     update(DEval);
     for(unsigned int i=0;i<nunit;++i) assign(Grad[i],0.);
     GFunc(Coor,IdxLst,PrmLst,IMLst,nlst,DEval,Geo,Grad);
     for(unsigned int i=0;i<nunit;++i) scale(Grad[i],dMask[i]);
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[BV_AfterG](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                              GPrm,Unit[i].MParam());
+      Unit[i].Move[BV_AfterG](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                              Coor[i].size,GPrm,Unit[i].MParam());
     fac=0.;
     for(unsigned int i=0;i<nunit;++i) fac+=normSQ(Vel[i])*Mass[i][0];
     GPrm[BV_MassVelSq]=fac;
@@ -106,8 +106,8 @@ namespace std {
     GPrm[BV_MassVelSq].d*=fac;
     GPrm[BV_AScaleFactor]=sqrt(fac);
     for(unsigned int i=0;i<nunit;++i)
-      Unit[i].Move[BV_PostProcess](Coor[i](),Vel[i](),Grad[i](),Coor[i].size,
-                                   GPrm,Unit[i].MParam());
+      Unit[i].Move[BV_PostProcess](Coor[i](),Vel[i](),Grad[i](),dMask[i](),
+                                   Coor[i].size,GPrm,Unit[i].MParam());
   }
 
 }
