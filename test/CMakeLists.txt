@@ -187,6 +187,12 @@ target_link_libraries (test-propagator-berendsen-vverlet.run blas)
 add_executable (test-propagator-langevin-vverlet.run test-propagator-langevin-vverlet.cxx)
 target_link_libraries (test-propagator-langevin-vverlet.run blas)
 
+add_executable (test-system-op.run test-system-op.cxx)
+target_link_libraries (test-system-op.run blas)
+
+add_executable (test-interaction-core-expand-corelj612.run test-interaction-core-expand-corelj612.cxx)
+target_link_libraries (test-interaction-core-expand-corelj612.run blas)
+
 add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 target_link_libraries (test-pdb-data-structure-op.run Base blas)
 

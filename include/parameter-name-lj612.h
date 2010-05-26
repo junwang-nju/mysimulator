@@ -4,7 +4,7 @@
 
 namespace std {
 
-  enum LJ612parameterName {
+  enum LJ612ParameterName {
     LJ612EqRadius=0,
     LJ612EqEnergyDepth,
     LJ612EqRadiusSQ,
