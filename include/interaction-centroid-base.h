@@ -3,7 +3,7 @@
 #define _Interaction_Centroid_Base_H_
 
 #include "unique-parameter.h"
-#include "vector.h"
+#include "system-op.h"
 
 namespace std {
 
@@ -11,13 +11,12 @@ namespace std {
   void EFuncCentroidBase(
       const Vector<double>* Coor, const unsigned int* Idx,
       const unsigned int nIdx, const UniqueParameter* Prm,
-      Vector<double>& tmvec, DistEvalMethod& DEval, const GeomType& Geo,
+      Vector<double>* tmvec, DistEvalMethod& DEval, const GeomType& Geo,
       double& Energy,
       void (*efunc)(const double,const UniqueParameter*,double&)) {
-    assign(tmvec,0.);
-    for(unsigned int i=1;i<nIdx;++i)  shift(tmvec,dOne,Coor[Idx[i]]);
-    scale(tmvec,1./(nIdx-1.));
-    DistanceDisplacementFunc(tmvec,Coor[Idx[0]],DEval.displacementvec,DEval(),
+    MassCenter(Coor,Idx+Idx[nIdx-2],Idx[nIdx-1],tmvec[0]);
+    MassCenter(Coor,Idx+Idx[nIdx-4],Idx[nIdx-3],tmvec[1]);
+    DistanceDisplacementFunc(tmvec[0],tmvec[1],DEval.displacementvec,DEval(),
                              Geo);
     double dsq=DEval();
     double ee;
@@ -29,47 +28,45 @@ namespace std {
   void GFuncCentroidBase(
       const Vector<double>* Coor, const unsigned int* Idx,
       const unsigned int nIdx, const UniqueParameter* Prm,
-      Vector<double>& tmvec, DistEvalMethod& DEval, const GeomType& Geo,
+      Vector<double>* tmvec, DistEvalMethod& DEval, const GeomType& Geo,
       Vector<double>* Gradient,
       void (*gfunc)(const double,const UniqueParameter*,double&)) {
-    assign(tmvec,0.);
-    for(unsigned int i=1;i<nIdx;++i)  shift(tmvec,dOne,Coor[Idx[i]]);
-    double sfac;
-    sfac=1./(nIdx-1.);
-    scale(tmvec,sfac);
-    DistanceDisplacementFunc(tmvec,Coor[Idx[0]],DEval.displacementvec,DEval(),
+    MassCenter(Coor,Idx+Idx[nIdx-2],Idx[nIdx-1],tmvec[0]);
+    MassCenter(Coor,Idx+Idx[nIdx-4],Idx[nIdx-3],tmvec[1]);
+    DistanceDisplacementFunc(tmvec[0],tmvec[1],DEval.displacementvec,DEval(),
                              Geo);
     double dsq=DEval();
-    double ef;
+    double ef,ef0,ef1;
     gfunc(dsq,Prm,ef);
-    shift(Gradient[Idx[0]],-ef,DEval.displacementvec);
-    ef*=sfac;
-    for(unsigned int i=1;i<nIdx;++i)
-      shift(Gradient[Idx[i]],+ef,DEval.displacementvec);
+    ef0=ef/Idx[nIdx-1];
+    ef1=ef/Idx[nIdx-3];
+    for(unsigned int i=0,n=Idx[nIdx-2];i<Idx[nIdx-1];++i,++n)
+      shift(Gradient[Idx[n]],ef0,DEval.displacementvec);
+    for(unsigned int i=0,n=Idx[nIdx-4];i<Idx[nIdx-3];++i,++n)
+      shift(Gradient[Idx[n]],-ef1,DEval.displacementvec);
   }
 
   template <typename DistEvalMethod, typename GeomType>
   void BFuncCentroidBase(
       const Vector<double>* Coor, const unsigned int* Idx,
       const unsigned int nIdx, const UniqueParameter* Prm,
-      Vector<double>& tmvec, DistEvalMethod& DEval, const GeomType& Geo,
+      Vector<double>* tmvec, DistEvalMethod& DEval, const GeomType& Geo,
       double& Energy, Vector<double>* Gradient,
       void (*bfunc)(const double,const UniqueParameter*,double&,double&)) {
-    assign(tmvec,0.);
-    for(unsigned int i=1;i<nIdx;++i)  shift(tmvec,dOne,Coor[Idx[i]]);
-    double sfac;
-    sfac=1./(nIdx-1.);
-    scale(tmvec,sfac);
-    DistanceDisplacementFunc(tmvec,Coor[Idx[0]],DEval.displacementvec,DEval(),
+    MassCenter(Coor,Idx+Idx[nIdx-2],Idx[nIdx-1],tmvec[0]);
+    MassCenter(Coor,Idx+Idx[nIdx-4],Idx[nIdx-3],tmvec[1]);
+    DistanceDisplacementFunc(tmvec[0],tmvec[1],DEval.displacementvec,DEval(),
                              Geo);
     double dsq=DEval();
-    double ee,ef;
+    double ee,ef,ef0,ef1;
     bfunc(dsq,Prm,ee,ef);
     Energy+=ee;
-    shift(Gradient[Idx[0]],-ef,DEval.displacementvec);
-    ef*=sfac;
-    for(unsigned int i=1;i<nIdx;++i)
-      shift(Gradient[Idx[i]],+ef,DEval.displacementvec);
+    ef0=ef/Idx[nIdx-1];
+    ef1=ef/Idx[nIdx-3];
+    for(unsigned int i=0,n=Idx[nIdx-2];i<Idx[nIdx-1];++i,++n)
+      shift(Gradient[Idx[n]],ef0,DEval.displacementvec);
+    for(unsigned int i=0,n=Idx[nIdx-4];i<Idx[nIdx-3];++i,++n)
+      shift(Gradient[Idx[n]],-ef1,DEval.displacementvec);
   }
 
 }

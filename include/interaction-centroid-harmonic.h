@@ -14,7 +14,7 @@ namespace std {
       const UniqueParameter* Prm, const unsigned int nIdx,
       Vector<double>* tmv, const unsigned int,
       DistEvalMethod& DEval, const GeomType& Geo, double& Energy) {
-    EFuncCentroidBase(Coor,Idx,nIdx,Prm,*tmv,DEval,Geo,Energy,FuncHarmonic);
+    EFuncCentroidBase(Coor,Idx,nIdx,Prm,tmv,DEval,Geo,Energy,FuncHarmonic);
   }
 
   template <typename DistEvalMethod, typename GeomType>
@@ -24,7 +24,7 @@ namespace std {
       Vector<double>* tmv, const unsigned int,
       DistEvalMethod& DEval, const GeomType& Geo,
       Vector<double>* Gradient) {
-    GFuncCentroidBase(Coor,Idx,nIdx,Prm,*tmv,DEval,Geo,Gradient,DiffHarmonic);
+    GFuncCentroidBase(Coor,Idx,nIdx,Prm,tmv,DEval,Geo,Gradient,DiffHarmonic);
   }
 
   template <typename DistEvalMethod, typename GeomType>
@@ -34,7 +34,7 @@ namespace std {
       Vector<double>* tmv, const unsigned int,
       DistEvalMethod& DEval, const GeomType& Geo,
       double& Energy, Vector<double>* Gradient) {
-    BFuncCentroidBase(Coor,Idx,nIdx,Prm,*tmv,DEval,Geo,
+    BFuncCentroidBase(Coor,Idx,nIdx,Prm,tmv,DEval,Geo,
                       Energy,Gradient,BothHarmonic);
   }
 
