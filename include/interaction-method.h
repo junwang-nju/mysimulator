@@ -159,6 +159,14 @@ namespace std {
         IM.GFunc=GFuncCoreExpandCoreLJ612<DistEvalMethod,GeomType>;
         IM.BFunc=BFuncCoreExpandCoreLJ612<DistEvalMethod,GeomType>;
         break;
+      case CentroidHarmonic:
+        IM.EFunc=EFuncCentroidHarmonic<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncCentroidHarmonic<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncCentroidHarmonic<DistEvalMethod,GeomType>;
+        sz=new unsigned int[2];
+        assign(sz,Dim,2);
+        allocate(*(IM.tmpvec),sz,2);
+        break;
       default:
         myError("Unknown Interaction Type");
     }

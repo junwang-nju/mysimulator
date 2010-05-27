@@ -4,6 +4,7 @@
 
 #include "interaction-core-expand-base.h"
 #include "functional-corelj612.h"
+#include "parameter-name-core-expand-corelj612.h"
 
 namespace std {
 

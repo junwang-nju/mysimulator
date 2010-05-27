@@ -4,6 +4,7 @@
 
 #include "interaction-core-expand-base.h"
 #include "functional-lj612.h"
+#include "parameter-name-core-expand-lj612.h"
 
 namespace std {
 

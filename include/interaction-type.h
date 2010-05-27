@@ -13,6 +13,7 @@
 #include "interaction-pairwise-quadharm.h"
 #include "interaction-core-expand-lj612.h"
 #include "interaction-core-expand-corelj612.h"
+#include "interaction-centroid-harmonic.h"
 
 namespace std {
   enum InteractionTypeName {
@@ -27,6 +28,7 @@ namespace std {
     PairwiseQuadHarm,
     PairwiseCoreExpandCoreLJ612,
     PairwiseCoreExpandLJ612,
+    CentroidHarmonic,
     InteractionTypeTableTerminus,
     NumberInteractions = InteractionTypeTableTerminus-1
   };
