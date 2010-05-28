@@ -100,7 +100,8 @@ namespace std {
   template <typename DistEvalMethod, typename GeomType>
   void Set(InteractionMethod<DistEvalMethod,GeomType>& IM,
            const unsigned int iTag, const unsigned int Dim=0) {
-    assert(IsAvailable(IM));
+    release(IM);
+    allocate(IM);
     *(IM.iTag)=iTag;
     unsigned int *sz=NULL;
     switch(iTag) {

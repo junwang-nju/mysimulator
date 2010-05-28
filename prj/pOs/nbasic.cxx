@@ -15,17 +15,26 @@ void OutFunc(ostream& os, const Propagator<DistEvalMethod,GeomType>& P,
              const Vector<UniqueParameter> *PrmLst,
              const unsigned int nunit, const unsigned int nlst,
              DistEvalMethod& DEval, const GeomType& Geo) {
-  double E,kE;
-  E=kE=0.;
-  EFunc(Coor,IdxLst,PrmLst,IMLst,6,DEval,Geo,E);
+  double E,kE,Es;
+  E=kE=Es=0.;
+  unsigned int g=((nunit-1)*(nunit-2))/2;
+  EFunc(Coor,IdxLst+g,PrmLst+g,IMLst+g,nunit-1,DEval,Geo,E);
+  EFunc(Coor,IdxLst+nlst-1,PrmLst+nlst-1,IMLst+nlst-1,1,DEval,Geo,Es);
   for(unsigned int i=0;i<nunit;++i) kE+=normSQ(Vel[i])*Mass[i][0]*0.5;
   MassCenter(Coor,IdxLst[nlst-1](),nunit-1,(*(IMLst[nlst-1].tmpvec))[0]);
   cout<<P.GParam[NowTime].d<<"\t"<<(*(IMLst[nlst-1].tmpvec))[0];
-  cout<<"\t"<<E<<"\t"<<kE;
-  cout<<"\t"<<Coor[nunit-1]<<endl;
+  cout<<"\t"<<E<<"\t"<<kE<<"\t"<<Es;
+  cout<<"\t"<<norm((*(IMLst[nlst-1].tmpvec))[0]);
+  assign((*(IMLst[nlst-1].tmpvec))[0],Coor[0]);
+  shift((*(IMLst[nlst-1].tmpvec))[0],-dOne,Coor[nunit-2]);
+  cout<<"\t"<<norm((*(IMLst[nlst-1].tmpvec))[0])<<endl;
 }
 
-int main() {
+int main(int argc, char** argv) {
+  if(argc<3) myError("pOs-nbasic <center-distance> <e-strength>");
+  const double dcent=atof(argv[1]);
+  const double esize=atof(argv[2]);
+
   const unsigned int NMer=50;
   const unsigned int NInter=NMer-1+((NMer-2)*(NMer-1))/2+NMer+1;
 
@@ -44,7 +53,8 @@ int main() {
   assign(Coor,0.);
   for(unsigned int i=0;i<NMer;++i) {
     Coor[i][0]=i-(NMer-1.)*0.5;
-    Coor[i][1]=8;
+    if(dcent>=6.)   Coor[i][1]=dcent;
+    else            Coor[i][1]=6.;
   }
   assign(Vel,0.);
   assign(Mass,1.);
@@ -88,13 +98,11 @@ int main() {
   }
   for(unsigned int i=0;i<NMer;++i,++n) {
     ParamLst[n][CoreExpCoreRadius]=5;
-    //ParamLst[i][CoreExpLJ612EqRadius]=1.;
-    //ParamLst[i][CoreExpLJ612EqEnergyDepth]=1.;
     ParamLst[n][CoreExpCoreLJ612Radius]=1.;
     ParamLst[n][CoreExpCoreLJ612EnergyDepth]=1.;
-    GenerateParameterCoreExpandLJ612(ParamLst[n]);
+    GenerateParameterCoreExpandCoreLJ612(ParamLst[n]);
   }
-  ParamLst[n][CentroidHarmonicEqLength]=8.;
+  ParamLst[n][CentroidHarmonicEqLength]=dcent;
   ParamLst[n][CentroidHarmonicEqStrength]=10.;
   GenerateParameterCentroidHarmonic(ParamLst[n]);
 
@@ -144,9 +152,9 @@ int main() {
 
   setparameter(P,TimeStepCommon,0.001);
   setparameter(P,StartTimeCommon,0.);
-  setparameter(P,TotalTimeCommon,10000.0);
-  setparameter(P,OutputTimeIntervalCommon,0.1);
-  setparameter(P,TemperatureLV,0.1);
+  setparameter(P,TotalTimeCommon,1000.0);
+  setparameter(P,OutputTimeIntervalCommon,1.);
+  setparameter(P,TemperatureLV,1.0);
   setparameter(P,ViscosityLV,0.5);
   setparameter(P,GaussianRNGPointerLV,gng);
   for(unsigned int i=0;i<NMer+1;++i) {
@@ -158,6 +166,32 @@ int main() {
 
   P.FOutput=OutFunc<DistanceEvalDirect,FreeSpace>;
   P.HOutput=NULL;
+
+  Run(P,Coor.structure,Vel.structure,Grad.structure,Mass.structure,
+      dMask.structure,IMLst(),IdxLst.structure,ParamLst(),NMer+1,NInter,
+      DEval,FS);
+
+  n=(NMer*(NMer-1))/2;
+  for(unsigned int i=0;i<NMer;++i,++n)
+    Set(IMLst[n],PairwiseCoreExpandLJ612);
+  n=(NMer*(NMer-1))/2;
+  for(unsigned int i=0;i<NMer;++i,++n)
+    allocate(ParamLst[n],CoreExpLJ612NumberParameter);
+  n=(NMer*(NMer-1))/2;
+  for(unsigned int i=0;i<NMer;++i,++n) {
+    ParamLst[n][CoreExpCoreRadius]=5;
+    ParamLst[n][CoreExpLJ612EqRadius]=1.;
+    ParamLst[n][CoreExpLJ612EqEnergyDepth]=esize;
+    GenerateParameterCoreExpandLJ612(ParamLst[n]);
+  }
+  assign(Grad,0.);
+  GFunc(Coor.structure,IdxLst.structure,ParamLst(),IMLst(),NInter,
+        DEval,FS,Grad.structure);
+
+  setparameter(P,StartTimeCommon,P.GParam[NowTime].d);
+  setparameter(P,TotalTimeCommon,10000.0);
+  setparameter(P,OutputTimeIntervalCommon,0.1);
+  synchronize(P,iMass.structure,dMask.structure,Vel.structure,NMer+1);
 
   Run(P,Coor.structure,Vel.structure,Grad.structure,Mass.structure,
       dMask.structure,IMLst(),IdxLst.structure,ParamLst(),NMer+1,NInter,
