@@ -449,6 +449,23 @@ namespace std {
                   const_cast<long*>(&step));
   }
 
+  void crossProd(const double* va, const double* vb, double* v,
+                 const unsigned int asize, const unsigned int bsize,
+                 const unsigned int size,
+                 const unsigned int aoff=iZero, const unsigned int astep=lOne,
+                 const unsigned int boff=iZero, const unsigned int bstep=lOne,
+                 const unsigned int off=iZero, const unsigned int step=lOne) {
+    assert(aoff+astep*2<=asize);
+    assert(boff+bstep*2<=bsize);
+    assert(off+step*2<=size);
+    double *pa=const_cast<double*>(va)+aoff, *pb=const_cast<double*>(vb)+boff;
+    double *p=v+off;
+    unsigned int dastep=astep+astep, dbstep=bstep+bstep, dstep=step+step;
+    p[0]    = pa[astep] *pb[dbstep] -pa[dastep] *pb[bstep];
+    p[step] = pa[dastep]*pb[0]      -pa[0]      *pb[dbstep];
+    p[dstep]= pa[0]     *pb[bstep]  -pa[astep]  *pb[0];
+  }
+
 }
 
 #endif

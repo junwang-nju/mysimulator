@@ -184,6 +184,15 @@ namespace std {
     return is;
   }
 
+  void crossProd(const Vector<double>& va, const Vector<double>& vb,
+                 Vector<double>& v,
+                 const unsigned int aoff=iZero, const unsigned int astep=lOne,
+                 const unsigned int boff=iZero, const unsigned int bstep=lOne,
+                 const unsigned int off=iZero, const unsigned int step=lOne) {
+    crossProd(va(),vb(),v(),va.size,vb.size,v.size,
+              aoff,astep,boff,bstep,off,step);
+  }
+
 }
 
 #endif

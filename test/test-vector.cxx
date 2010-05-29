@@ -47,8 +47,10 @@ int main() {
   cout<<"Test -- assign pointer and vector with pointer and constant"<<endl;
   int* pInt2=NULL;
   double* pDBL2=NULL;
+  release(pInt);
   allocate(pInt,10);
   allocate(pInt2,10);
+  release(pDBL);
   allocate(pDBL,10);
   allocate(pDBL2,10);
   assign(pInt,-1,9);
@@ -226,6 +228,18 @@ int main() {
   cout<<vInt<<endl;
   swap(vDBL,vDBL2);
   cout<<vDBL<<endl;
+  cout<<endl;
+
+  cout<<"Test -- cross product"<<endl;
+  Vector<double> cva,cvb,cv;
+  allocate(cva,3);
+  allocate(cvb,10);
+  allocate(cv,6);
+  assign(cva,1.);
+  for(unsigned int i=0;i<10;i++)  cvb[i]=i;
+  assign(cv,0.);
+  crossProd(cva,cvb,cv,0,1,1,3,1,2);
+  cout<<cv<<endl;
   cout<<endl;
 
   return 1;
