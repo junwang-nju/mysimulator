@@ -168,6 +168,14 @@ namespace std {
         assign(sz,Dim,2);
         allocate(*(IM.tmpvec),sz,2);
         break;
+      case AngleHarmonic:
+        IM.EFunc=EFuncAngleHarmonic<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncAngleHarmonic<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncAngleHarmonic<DistEvalMethod,GeomType>;
+        sz=new unsigned int[4];
+        assign(sz,Dim,4);
+        allocate(*(IM.tmpvec),sz,4);
+        break;
       default:
         myError("Unknown Interaction Type");
     }

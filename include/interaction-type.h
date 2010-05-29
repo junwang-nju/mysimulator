@@ -14,6 +14,7 @@
 #include "interaction-core-expand-lj612.h"
 #include "interaction-core-expand-corelj612.h"
 #include "interaction-centroid-harmonic.h"
+#include "interaction-angle-harmonic.h"
 
 namespace std {
   enum InteractionTypeName {
@@ -29,6 +30,7 @@ namespace std {
     PairwiseCoreExpandCoreLJ612,
     PairwiseCoreExpandLJ612,
     CentroidHarmonic,
+    AngleHarmonic,
     InteractionTypeTableTerminus,
     NumberInteractions = InteractionTypeTableTerminus-1
   };
