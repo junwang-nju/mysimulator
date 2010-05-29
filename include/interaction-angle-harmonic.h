@@ -7,44 +7,33 @@
 
 namespace std {
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void EFunc_Angle_Harmonic(
-      const VectorBase<refVector<double> >& Coor,
-      const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
-      VectorBase<refVector<double> >&,
-      DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-      double& Energy) {
-    EFunc_Angle_Base(Coor,Idx,Param,DEval,Geo,Energy,FuncAngHarmonic);
+  template <typename DistEvalMethod, typename GeomType>
+  void EFuncAngleHarmonic(
+      const Vector<double>* Coor, const unsigned int* Idx,
+      const UniqueParameter* Prm, const unsigned int nIdx,
+      Vector<double>*, const unsigned int,
+      DistEvalMethod& DEval, const GeomType& Geo, double& Energy) {
+    EFuncAngleBase(Coor,Idx,Prm,DEval,Geo,Energy,FuncAngleHarmonic);
   }
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void GFunc_Angle_Harmonic(
-      const VectorBase<refVector<double> >& Coor,
-      const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
-      VectorBase<refVector<double> >& tmVec,
-      DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-      VectorBase<refVector<double> >& Grad) {
-    GFunc_Angle_Base(Coor,Idx,Param,tmVec,DEval,Geo,Grad,DiffAngHarmonic);
+  template <typename DistEvalMethod, typename GeomType>
+  void GFuncAngleHarmonic(
+      const Vector<double>* Coor, const unsigned int* Idx,
+      const UniqueParameter* Prm, const unsigned int nIdx,
+      Vector<double>* tmvec, const unsigned int,
+      DistEvalMethod& DEval, const GeomType& Geo, Vector<double>* Gradient) {
+    GFuncAngleBase(Coor,Idx,Prm,tmvec,DEval,Geo,Gradient,DiffAngleHarmonic);
   }
 
-  template <template <template <typename> class> class DistEvalMethod,
-            template <template <typename> class> class GeomType,
-            template <typename> class VecTypeD,
-            template <typename> class VecTypeG>
-  void BFunc_Angle_Harmonic(
-      const VectorBase<refVector<double> >& Coor,
-      const VectorBase<unsigned int>& Idx, const VectorBase<double>& Param,
-      VectorBase<refVector<double> >& tmVec,
-      DistEvalMethod<VecTypeD>& DEval, const GeomType<VecTypeG>& Geo,
-      double& Energy, VectorBase<refVector<double> >& Grad) {
-    BFunc_Angle_Base(Coor,Idx,Param,tmVec,DEval,Geo,
-                     Energy,Grad,BothAngHarmonic);
+  template <typename DistEvalMethod, typename GeomType>
+  void BFuncAngleHarmonic(
+      const Vector<double>* Coor, const unsigned int* Idx,
+      const UniqueParameter* Prm, const unsigned int nIdx,
+      Vector<double>* tmvec, const unsigned int,
+      DistEvalMethod& DEval, const GeomType& Geo,
+      double& Energy, Vector<double>* Gradient) {
+    BFuncAngleBase(Coor,Idx,Prm,tmvec,DEval,Geo,Energy,Gradient,
+                   BothAngleHarmonic);
   }
 
 }

@@ -1,57 +1,65 @@
 
 #include "interaction-angle-harmonic.h"
-#include "var-distance-evaluate-direct.h"
-#include "var-free-space.h"
-#include "parameter-generate-angle-harmonic.h"
-#include "var-property-list.h"
+#include "distance-evaluate-direct.h"
+#include "free-space.h"
+#include "property-list.h"
 #include <iostream>
-
 using namespace std;
 
 int main() {
 
-  cout<<"Test -- Calculate Energy of Angle Harmonic"<<endl;
-  varDistanceEvalDirect vDED(3);
-  varFreeSpace vFS;
-  varPropertyList<double>::Type v,g;
-  varVector<unsigned int> Sz(3);
-  Sz=3;
-  v.allocate(Sz);
-  g.allocate(Sz);
-  v[0]=0.;
-  v[1]=0.;    v[1][0]=1.2;
-  v[2]=0.;    v[2][0]=1.5;  v[2][1]=1;  v[2][2]=0.5;
-  varVector<unsigned int> idx(3);
-  idx[0]=0;   idx[1]=1;   idx[2]=2;
-  varVector<double> prm(AngHarmonic_NumberParameter);
-  prm[0]=0.6667*M_PI;
-  prm[1]=20;
-  ParameterGenerateAngHarmonic(prm);
-  double E=0.;
-  EFunc_Angle_Harmonic(v.Structure(),idx,prm,v.Structure(),vDED,vFS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  DistanceEvalDirect DED;
+  FreeSpace FS;
+  allocate(DED,3,3);
+  allocate(FS,3);
   
-  cout<<"Test -- Calculate Gradient for Angle-Harmonic"<<endl;
-  varPropertyList<double>::Type tmVec;
-  Sz.allocate(4);
-  Sz=3;
-  tmVec.allocate(Sz);
-  g=0;
-  GFunc_Angle_Harmonic(v.Structure(),idx,prm,tmVec.Structure(),vDED,vFS,
-                       g.Structure());
+  PropertyList<double> v,g,tmv;
+  Vector<unsigned int> sz;
+  allocate(sz,4);
+  assign(sz,3);
+  allocate(v,sz(),3);
+  allocate(g,sz(),3);
+  allocate(tmv,sz);
+  
+  assign(v,0.);
+  v[1][0]=1.2;
+  v[2][0]=1.5;  v[2][1]=1.; v[2][2]=0.5;
+  assign(g,0.);
+  assign(tmv,0.);
+  
+  Vector<unsigned int> idx;
+  allocate(idx,3);
+  for(unsigned int i=0;i<3;++i) idx[i]=i;
+  
+  Vector<UniqueParameter> prm;
+  allocate(prm,AngleHarmonicNumberParameter);
+  prm[AngleHarmonicEqAngle]=2./3.*M_PI;
+  prm[AngleHarmonicEqStrength]=20.;
+  GenerateParameterAngleHarmonic(prm);
+  
+  double E;
+  cout<<"Test -- calculate Energy of angle"<<endl;
+  E=0.;
+  EFuncAngleHarmonic(v.structure,idx(),prm(),3,NULL,0,DED,FS,E);
+  cout<<E<<endl;
+  cout<<endl;
+
+  cout<<"Test -- calculate Gradient of angle"<<endl;
+  assign(g,0.);
+  GFuncAngleHarmonic(v.structure,idx(),prm(),3,tmv.structure,4,
+                     DED,FS,g.structure);
   cout<<g<<endl;
   cout<<endl;
 
-  cout<<"Test -- Calculate Energy and Gradient for Angle-Harmonic"<<endl;
+  cout<<"Test -- calculate Energy and Gradient of angle"<<endl;
   E=0.;
-  g=0;
-  BFunc_Angle_Harmonic(v.Structure(),idx,prm,tmVec.Structure(),vDED,vFS,
-                       E,g.Structure());
+  assign(g,0.);
+  BFuncAngleHarmonic(v.structure,idx(),prm(),3,tmv.structure,4,
+                     DED,FS,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;
 
-  return 1;
+  return 0;
 }
 
