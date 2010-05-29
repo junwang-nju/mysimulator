@@ -41,6 +41,29 @@ namespace std {
     scale(COM,1./nidx);
   }
 
+  void AngularMomentum(const Vector<double>* Coor, const Vector<double>* Vel,
+                       const Vector<double>* Mass, const unsigned int nunit,
+                       Vector<double>& L, Vector<double>& tmv) {
+    // assume for 3-dimensional only
+    assign(L,0.);
+    for(unsigned int i=0;i<nunit;++i) {
+      crossProd(Coor[i],Vel[i],tmv);
+      shift(L,dOne,Mass[i],tmv);
+    }
+  }
+
+  void AngularMomentum(const Vector<double>* Coor, const Vector<double>* Vel,
+                       const Vector<double>* Mass, const unsigned int* idx,
+                       const unsigned int nidx, Vector<double>& L,
+                       Vector<double>& tmv) {
+    // assume for 3-dimensional only
+    assign(L,0.);
+    for(unsigned int i=0;i<nidx;++i) {
+      crossProd(Coor[idx[i]],Vel[idx[i]],tmv);
+      shift(L,dOne,Mass[idx[i]],tmv);
+    }
+  }
+
 }
 
 #endif
