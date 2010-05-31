@@ -45,7 +45,7 @@ namespace std {
       const Vector<double>* Coor, const unsigned int* Idx,
       const UniqueParameter* Prm, Vector<double>* tmvec,
       DistEvalMethod& DEval, const GeomType& Geo, Vector<double>* Gradient,
-      void *(gfunc)(const double,const UniqueParameter*,double&)) {
+      void (*gfunc)(const double,const UniqueParameter*,double&)) {
     assert(DEval.size==3);
     // tmvec must have more than 6 vectors
     double dsq01,dsq12,dsq23;
@@ -78,8 +78,8 @@ namespace std {
     double dotab=dot(tmvec[0],tmvec[1]),dotbc=dot(tmvec[1],tmvec[2]);
     tmda=dotab*ivdsq12;
     tmdb=dotbc*ivdsq12;
-    ef0=+ef/sqrt(dsq01-dotab*tmda);
-    ef3=-ef/sqrt(dsq23-dotbc*tmdb);
+    ef0=-ef/sqrt(dsq01-dotab*tmda);
+    ef3=+ef/sqrt(dsq23-dotbc*tmdb);
     ef1=tmda*ef0;
     ef2=tmdb*ef3;
     shift(Gradient[Idx[0]],ef0,tmvec[3]);
@@ -96,7 +96,7 @@ namespace std {
       const UniqueParameter* Prm, Vector<double>* tmvec,
       DistEvalMethod& DEval, const GeomType& Geo,
       double& Energy, Vector<double>* Gradient,
-      void *(bfunc)(const double,const UniqueParameter*,double&,double&)) {
+      void (*bfunc)(const double,const UniqueParameter*,double&,double&)) {
     assert(DEval.size==3);
     // tmvec must have more than 6 vectors
     double dsq01,dsq12,dsq23;
@@ -130,8 +130,8 @@ namespace std {
     double dotab=dot(tmvec[0],tmvec[1]),dotbc=dot(tmvec[1],tmvec[2]);
     tmda=dotab*ivdsq12;
     tmdb=dotbc*ivdsq12;
-    ef0=+ef/sqrt(dsq01-dotab*tmda);
-    ef3=-ef/sqrt(dsq23-dotbc*tmdb);
+    ef0=-ef/sqrt(dsq01-dotab*tmda);
+    ef3=+ef/sqrt(dsq23-dotbc*tmdb);
     ef1=tmda*ef0;
     ef2=tmdb*ef3;
     shift(Gradient[Idx[0]],ef0,tmvec[3]);

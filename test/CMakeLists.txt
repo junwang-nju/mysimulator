@@ -214,12 +214,12 @@ target_link_libraries (test-interaction-angle-harmonic.run blas)
 add_executable (test-interaction-dihedral-base.run test-interaction-dihedral-base.cxx)
 target_link_libraries (test-interaction-dihedral-base.run blas)
 
+add_executable (test-interaction-dihedral-periodic.run test-interaction-dihedral-periodic.cxx)
+target_link_libraries (test-interaction-dihedral-periodic.run blas)
+
 
 ########################
 add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 target_link_libraries (test-pdb-data-structure-op.run Base blas)
-
-add_executable (test-interaction-dihedral-periodic.run test-interaction-dihedral-periodic.cxx)
-target_link_libraries (test-interaction-dihedral-periodic.run blas Base)
 
 

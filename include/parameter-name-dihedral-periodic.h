@@ -25,19 +25,18 @@ namespace std {
                                          const unsigned int np) {
     DihedralPeriodicNumberParameter=4*np+1;
     prm=new UniqueParameter[DihedralPeriodicNumberParameter];
-    prm[DihedralPeriodNumberPeriodicFunc]=np;
+    prm[DihedralPeriodicNumberPeriodicFunc]=np;
   }
 
   void allocateDihedralPeriodicParameter(Vector<UniqueParameter>& prm,
                                          const unsigned int np) {
     DihedralPeriodicNumberParameter=4*np+1;
     allocate(prm,DihedralPeriodicNumberParameter);
-    prm[DihedralPeriodNumberPeriodicFunc]=np;
+    prm[DihedralPeriodicNumberPeriodicFunc]=np;
   }
 
   void GenerateParameterDihedralPeriodic(UniqueParameter* prm) {
-    unsigned int shf;
-    for(unsigned int i=0,sft=1;i<prm[DihedralPeriodicNumberPeriodicFunc].u;
+    for(unsigned int i=0,shf=1;i<prm[DihedralPeriodicNumberPeriodicFunc].u;
         ++i,shf+=4) {
       prm[DihedralPeriodicStrengthFrequence+shf]=
         prm[DihedralPeriodicStrength+shf].d*

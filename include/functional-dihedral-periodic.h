@@ -3,6 +3,7 @@
 #define _Functional_Dihedral_Periodic_H_
 
 #include "parameter-name-dihedral-periodic.h"
+#include <cmath>
 
 namespace std {
 
@@ -33,7 +34,7 @@ namespace std {
     for(unsigned int i=0,shf=1;i<prm[DihedralPeriodicNumberPeriodicFunc].u;
         ++i,shf+=4) {
       tmd=prm[DihedralPeriodicFrequence+shf].d*
-          (dih-prm[DihedralPeriodicPhase+shf].d)
+          (dih-prm[DihedralPeriodicPhase+shf].d);
       func+=prm[DihedralPeriodicStrength+shf].d*(cos(tmd)+1.);
       diff+=-prm[DihedralPeriodicStrengthFrequence+shf].d*sin(tmd);
     }
