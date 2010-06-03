@@ -43,9 +43,9 @@ int main(int argc, char** argv) {
   //if(argc<3) myError("pOs-nbasic <center-distance> <e-strength>");
   //const double dcent=atof(argv[1]);
   //const double esize=atof(argv[2]);
-  const double esize=0.8;
+  const double esize=1.0;
 
-  const unsigned int NMer=50;
+  const unsigned int NMer=20;
   const unsigned int NInter=NMer-1+((NMer-2)*(NMer-1))/2+NMer+1;
 
   PropertyList<double> Coor,Vel,Grad,Mass,iMass,dMask,RandV;
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
   assign(Coor,0.);
   for(unsigned int i=0;i<NMer;++i) {
     Coor[i][0]=i-(NMer-1.)*0.5;
-    Coor[i][1]=2.;
+    Coor[i][1]=1.5;
   }
   assign(Vel,0.);
   assign(Mass,1.);
@@ -106,13 +106,13 @@ int main(int argc, char** argv) {
     GenerateParameterCoreLJ612(ParamLst[n]);
   }
   for(unsigned int i=0;i<NMer;++i,++n) {
-    ParamLst[n][CoreExpCoreRadius]=1;
+    ParamLst[n][CoreExpCoreRadius]=0.1;
     ParamLst[n][CoreExpCoreLJ612Radius]=1.;
     ParamLst[n][CoreExpCoreLJ612EnergyDepth]=1.;
     GenerateParameterCoreExpandCoreLJ612(ParamLst[n]);
   }
-  ParamLst[n][CentroidHarmonicEqLength]=0.;
-  ParamLst[n][CentroidHarmonicEqStrength]=0.02;
+  ParamLst[n][CentroidHarmonicEqLength]=0.5;
+  ParamLst[n][CentroidHarmonicEqStrength]=10.;
   GenerateParameterCentroidHarmonic(ParamLst[n]);
 
   PropertyList<unsigned int> IdxLst;

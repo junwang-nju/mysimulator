@@ -10,14 +10,14 @@ int main() {
 
   double T=0.1;
   double gamma=1;
-  double dt=0.01;
+  double dt=0.001;
   double DPI=M_PI+M_PI;
 
   double xl,xh;
   double vl,vh;
   double gl,gh;
 
-  double k=0.0002;
+  double k=0.002;
   double ml=1, mh=5000;
   double rl,rh;
   rl=sqrt(T*gamma*dt)/ml;
@@ -28,14 +28,14 @@ int main() {
   fhb=1-gamma*dt*0.5/mh;
   fha=1./(1+gamma*dt*0.5/mh);
 
-  xl=xh=0.;
+  xl=0; xh=-1.0;
   vl=vh=0.;
 
   gl=gh=0;
   gh=2*k*(xh-xl);
   gl=-gh+sin(xl*DPI)*DPI;
 
-  for(unsigned int rt=0;rt<1000000;++rt) {
+  for(unsigned int rt=0;rt<10000000;++rt) {
     vl*=flb;
     vl+=-gl*dt*0.5+rl*rand(gng);
     vh*=fhb;
