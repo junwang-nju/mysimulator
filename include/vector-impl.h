@@ -1,4 +1,14 @@
 
+/**
+ * @file vector-impl.h
+ * @brief procedures related to array operation for vector object
+ *
+ * This file contains a series of procedures to operate arrays. These
+ * procedures are used as implementations of vector operation.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Vector_Implementation_H_
 #define _Vector_Implementation_H_
 

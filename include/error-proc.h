@@ -5,6 +5,8 @@
  *
  * Several procedures to processes the errors or warning for my pacakge
  * are defined here. This eases to locate the errors or warnings.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
  */
 
 #ifndef _Error_Process_H_
