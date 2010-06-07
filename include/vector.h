@@ -123,6 +123,21 @@ namespace std {
   };
 
   /**
+   * @brief the flag of availability
+   *
+   * This program gives out the flag that indicates if the data in
+   * the concerned vector is available. It is implemented by checking
+   * the availability of the pointer to the data.
+   *
+   * T is the type of data for vector.
+   *
+   * @param [in] v the vector to be checked
+   * @return the flag indicating the availability of input vector.
+   */
+  template <typename T>
+  inline bool IsAvailable(const Vector<T>& v){ return IsAvailable(v()); }
+
+  /**
    * @brief allocate Vector with expected size
    *
    * The array in vector object is allocated with input size. The size
@@ -354,12 +369,25 @@ namespace std {
     scale(v(),vf(),n);
   }
 
+  /**
+   * @brief shift Vector along certain direction with certain step
+   *
+   * It is implemented with the corresponding operation for array. The
+   * number of elements involved in this operation is the minimum of the
+   * size of two concerned vectors. The concerned vectors are required
+   * to be available before this operation.
+   */
   template <typename T>
   inline void shift(Vector<T>& v, const T& fac, const Vector<T>& vfac) {
+    assert(IsAvailable(v));
+    assert(IsAvailable(vfac));
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     shift(v(),fac,vfac(),n);
   }
 
+  /**
+   * @brief shift Vector along direction with unit step
+   */
   template <typename T>
   inline void shift(Vector<T>& v, const Vector<T>& vfac) {
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
@@ -423,9 +451,6 @@ namespace std {
 
   template <typename T>
   inline T asum(const Vector<T>& v) { return asum(v(),v.size); }
-
-  template <typename T>
-  inline bool IsAvailable(const Vector<T>& v){ return IsAvailable(v()); }
 
   template <typename T>
   ostream& operator<<(ostream& os, const Vector<T>& v) {
