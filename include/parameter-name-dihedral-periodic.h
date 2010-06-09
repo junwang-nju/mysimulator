@@ -6,14 +6,13 @@ namespace std {
 
   enum DihedralPeriodicParameterName {
     DihedralPeriodicNumberPeriodicFunc=0,
+    DihedralPeriodicNumberParameter,
     DihedralPeriodicStrength=0,
     DihedralPeriodicFrequence,
     DihedralPeriodicPhase,
     DihedralPeriodicStrengthFrequence
   };
   
-  unsigned int DihedralPeriodicNumberParameter;
-
 }
 
 #include "vector.h"
@@ -23,20 +22,20 @@ namespace std {
 
   void allocateDihedralPeriodicParameter(UniqueParameter* prm,
                                          const unsigned int np) {
-    DihedralPeriodicNumberParameter=4*np+1;
-    prm=new UniqueParameter[DihedralPeriodicNumberParameter];
+    prm=new UniqueParameter[4*np+2];
     prm[DihedralPeriodicNumberPeriodicFunc]=np;
+    prm[DihedralPeriodicNumberParameter]=4*np+2;
   }
 
   void allocateDihedralPeriodicParameter(Vector<UniqueParameter>& prm,
                                          const unsigned int np) {
-    DihedralPeriodicNumberParameter=4*np+1;
-    allocate(prm,DihedralPeriodicNumberParameter);
+    allocate(prm,4*np+2);
     prm[DihedralPeriodicNumberPeriodicFunc]=np;
+    prm[DihedralPeriodicNumberParameter]=4*np+2;
   }
 
   void GenerateParameterDihedralPeriodic(UniqueParameter* prm) {
-    for(unsigned int i=0,shf=1;i<prm[DihedralPeriodicNumberPeriodicFunc].u;
+    for(unsigned int i=0,shf=2;i<prm[DihedralPeriodicNumberPeriodicFunc].u;
         ++i,shf+=4) {
       prm[DihedralPeriodicStrengthFrequence+shf]=
         prm[DihedralPeriodicStrength+shf].d*
@@ -45,7 +44,7 @@ namespace std {
   }
 
   void GenerateParameterDihedralPeriodic(Vector<UniqueParameter>& prm) {
-    assert(prm.size>=DihedralPeriodicNumberParameter);
+    assert(prm.size>=prm[DihedralPeriodicNumberParameter].u);
     GenerateParameterDihedralPeriodic(prm());
   }
 
