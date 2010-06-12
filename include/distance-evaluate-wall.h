@@ -4,33 +4,37 @@
 
 #include "vector.h"
 #include "unique-parameter.h"
+#include <cmath>
 
 namespace std {
 
   template <typename DistEvalMethod, typename GeomType>
   void DistanceDisplacement2Plane(
-      const Vector<double>* Coor, const unsigned int*, 
+      const Vector<double>* Coor, const unsigned int* Idx, 
       const UniqueParameter* Plane,
       DistEvalMethod& DEval, const GeomType& Geo) {
-    DisplacementFunc(Coor[0](),static_cast<const double*>(Plane),Coor[0].size,
+    unsigned int dim=Coor[Idx[0]].size;
+    DisplacementFunc(Coor[Idx[0]](),
+                     reinterpret_cast<const double*>(Plane),dim,
                      DEval.displacement,Geo);
-    DEval()=dot(static_cast<const double*>(Plane+Coor[0].size),
-                DEval.displacement,Coor[0].size);
-    assign(DEval.displacement,static_cast<const double*>(Plane+Coor[0].size),
-           Coor[0].size);
+    DEval()=dot(reinterpret_cast<const double*>(Plane+dim),
+                DEval.displacement,dim);
+    assign(DEval.displacement,reinterpret_cast<const double*>(Plane+dim),dim);
     scale(DEval.displacementvec,DEval());
   }
 
   template <typename DistEvalMethod, typename GeomType>
   void DistanceDisplacement2Sphere(
-      const Vector<double>* Coor, const unsigned int*,
+      const Vector<double>* Coor, const unsigned int* Idx,
       const UniqueParameter* Sphere,
       DistEvalMethod& DEval, const GeomType& Geo) {
-    DistanceDisplacementFunc(Coor[0](),static_cast<const double*>(Sphere+1),
-                             Coor[0].size,DEval.displacement,DEval(),Geo);
-    double tmd=DEval()-Sphere[0].d;
-    scale(DEval.displacementvec,tmd/DEval());
-    DEval()=tmd;
+    DistanceDisplacementFunc(Coor[Idx[0]](),
+                             reinterpret_cast<const double*>(Sphere+2),
+                             Coor[Idx[0]].size,DEval.displacement,DEval(),Geo);
+    double d=sqrt(DEval());
+    double tmd=d-Sphere[0].d;
+    scale(DEval.displacementvec,tmd/d);
+    DEval()=tmd*Sphere[1].d;
   }
 
 }
