@@ -18,9 +18,10 @@ namespace std {
     typedef void (*DistFunc)(
                 const Vector<double>*,const unsigned int*,
                 const UniqueParameter*,DistEvalMethod&,const GeomType&);
-    static_cast<DistFunc>(Prm[WallDistanceFunc].ptr)(
-        Coor,Idx,Prm+WallShapeParameterShift,DEval,Geo);
-    double dsq=DEval();
+    reinterpret_cast<DistFunc>(Prm[WallDistanceFunc].ptr)(
+        Coor,Idx,Prm+Prm[WallShapeParameterShift].u,DEval,Geo);
+    assert(DEval()>0.);
+    double dsq=DEval()*DEval();
     double ee;
     efunc(dsq,Prm+WallBaseNumberParameter,ee);
     Energy+=ee;
@@ -35,9 +36,10 @@ namespace std {
     typedef void (*DistFunc)(
                 const Vector<double>*,const unsigned int*,
                 const UniqueParameter*,DistEvalMethod&,const GeomType&);
-    static_cast<DistFunc>(Prm[WallDistanceFunc].ptr)(
-        Coor,Idx,Prm+WallShapeParameterShift,DEval,Geo);
-    double dsq=DEval();
+    reinterpret_cast<DistFunc>(Prm[WallDistanceFunc].ptr)(
+        Coor,Idx,Prm+Prm[WallShapeParameterShift].u,DEval,Geo);
+    assert(DEval()>0.);
+    double dsq=DEval()*DEval();
     double ef;
     gfunc(dsq,Prm+WallBaseNumberParameter,ef);
     shift(Gradient[Idx[0]],+ef,DEval.displacementvec);
@@ -53,9 +55,10 @@ namespace std {
     typedef void (*DistFunc)(
                 const Vector<double>*,const unsigned int*,
                 const UniqueParameter*,DistEvalMethod&,const GeomType&);
-    static_cast<DistFunc>(Prm[WallDistanceFunc].ptr)(
-        Coor,Idx,Prm+WallShapeParameterShift,DEval,Geo);
-    double dsq=DEval();
+    reinterpret_cast<DistFunc>(Prm[WallDistanceFunc].ptr)(
+        Coor,Idx,Prm+Prm[WallShapeParameterShift].u,DEval,Geo);
+    assert(DEval()>0.);
+    double dsq=DEval()*DEval();
     double ee,ef;
     bfunc(dsq,Prm+WallBaseNumberParameter,ee,ef);
     Energy+=ee;
