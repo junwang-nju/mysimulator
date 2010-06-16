@@ -7,14 +7,14 @@
 namespace std {
 
   enum WallTypeName {
-    PlaneType=0,
-    SphereType
+    PlaneWallType=0,
+    SphereWallType
   };
 
   const unsigned int WallShapeDataSize(const unsigned int walltype,
                                        const unsigned int dim) {
-    if(walltype==PlaneType) return dim+dim;
-    else if(walltype==SphereType) return 2+dim;
+    if(walltype==PlaneWallType) return dim+dim;
+    else if(walltype==SphereWallType) return 2+dim;
     else myError("Unknown Wall Type!");
     return 0;
   }
@@ -25,9 +25,9 @@ namespace std {
                 const Vector<double>*,const unsigned int*,
                 const UniqueParameter*,DistEvalMethod&,const GeomType&);
     DFType df=NULL;
-    if(walltype==PlaneType)
+    if(walltype==PlaneWallType)
       df=(DistanceDisplacement2Plane<DistEvalMethod,GeomType>);
-    else if(walltype==SphereType)
+    else if(walltype==SphereWallType)
       df=(DistanceDisplacement2Sphere<DistEvalMethod,GeomType>);
     else myError("Unknown Wall Type!");
     return reinterpret_cast<void*>(df);

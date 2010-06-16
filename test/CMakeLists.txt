@@ -226,6 +226,9 @@ target_link_libraries (test-distance-evaluate-wall.run blas)
 add_executable (test-interaction-wall-corelj612.run test-interaction-wall-corelj612.cxx)
 target_link_libraries (test-interaction-wall-corelj612.run blas)
 
+add_executable (test-interaction-wall-lj612cut.run test-interaction-wall-lj612cut.cxx)
+target_link_libraries (test-interaction-wall-lj612cut.run blas)
+
 
 ########################
 add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
