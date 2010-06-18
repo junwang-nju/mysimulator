@@ -26,7 +26,7 @@ int main() {
   idx[0]=0;
 
   Vector<UniqueParameter> prm;
-  allocateWallCoreLJ612Parameter(prm,PlaneType,3);
+  allocateWallCoreLJ612Parameter(prm,PlaneWallType,3);
   prm[WallCoreLJ612Radius]=1.;
   prm[WallCoreLJ612EnergyDepth]=1.5;
   prm[prm[WallShapeParameterShift].u+0]=1.;

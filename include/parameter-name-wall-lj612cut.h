@@ -14,7 +14,7 @@ namespace std {
     WallLJ612CutCutRSQ=WallBaseNumberParameter+LJ612CutCutRSQ,
     WallLJ612CutVc=WallBaseNumberParameter+LJ612CutVc,
     WallLJ612CutKc=WallBaseNumberParameter+LJ612CutKc,
-    WallLJ612CutRealSigma6=WallBaseNumberParameter+LJ612CutRealSigma,
+    WallLJ612CutRealSigma6=WallBaseNumberParameter+LJ612CutRealSigma6,
     WallLJ612CutRealStrength=WallBaseNumberParameter+LJ612CutRealStrength,
     WallLJ612CutTwlfRealStrength=
         WallBaseNumberParameter+LJ612CutTwlfRealStrength,
@@ -28,7 +28,40 @@ namespace std {
 
 namespace std {
 
-  void allocateWallLJ612Cut
+  void allocateWallLJ612CutParameter(UniqueParameter* prm,
+                                     const unsigned int walltype,
+                                     const unsigned int dim) {
+    unsigned int n=WallLJ612CutParameterEnd+WallShapeDataSize(walltype,dim);
+    prm=new UniqueParameter[n];
+    prm[WallShapeName]=walltype;
+    prm[WallLJ612CutNumberParameter]=n;
+    prm[WallShapeParameterShift]=WallLJ612CutParameterEnd;
+  }
+
+  void allocateWallLJ612CutParameter(Vector<UniqueParameter>& prm,
+                                     const unsigned int walltype,
+                                     const unsigned int dim) {
+    unsigned int n=WallLJ612CutParameterEnd+WallShapeDataSize(walltype,dim);
+    allocate(prm,n);
+    prm[WallShapeName]=walltype;
+    prm[WallLJ612CutNumberParameter]=n;
+    prm[WallShapeParameterShift]=WallLJ612CutParameterEnd;
+  }
+
+  template <typename DistEvalMethod, typename GeomType>
+  void GenerateParameterWallLJ612Cut(UniqueParameter* prm,
+                                     const DistEvalMethod&,const GeomType&) {
+    GenerateParameterLJ612Cut(prm+WallBaseNumberParameter);
+    prm[WallDistanceFunc]=
+      WallDistanceFuncPointer<DistEvalMethod,GeomType>(prm[WallShapeName].u);
+  }
+
+  template <typename DistEvalMethod, typename GeomType>
+  void GenerateParameterWallLJ612Cut(Vector<UniqueParameter>& prm,
+                                     const DistEvalMethod& DEM,
+                                     const GeomType& Geo) {
+    GenerateParameterWallLJ612Cut(prm(),DEM,Geo);
+  }
 
 }
 

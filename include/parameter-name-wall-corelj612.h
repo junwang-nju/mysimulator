@@ -13,7 +13,7 @@ namespace std {
     WallCoreLJ612RadiusSQ=CoreLJ612RadiusSQ+WallBaseNumberParameter,
     WallCoreLJ612TwlfEnergyDepth=
       CoreLJ612TwlfEnergyDepth+WallBaseNumberParameter,
-    WallCoreLJ612ParameterNumber,
+    WallCoreLJ612NumberParameter,
     WallCoreLJ612ParameterEnd,
   };
 
@@ -29,7 +29,7 @@ namespace std {
     unsigned int n=WallCoreLJ612ParameterEnd+WallShapeDataSize(walltype,dim);
     prm=new UniqueParameter[n];
     prm[WallShapeName]=walltype;
-    prm[WallCoreLJ612ParameterNumber]=n;
+    prm[WallCoreLJ612NumberParameter]=n;
     prm[WallShapeParameterShift]=WallCoreLJ612ParameterEnd;
   }
 
@@ -39,7 +39,7 @@ namespace std {
     unsigned int n=WallCoreLJ612ParameterEnd+WallShapeDataSize(walltype,dim);
     allocate(prm,n);
     prm[WallShapeName]=walltype;
-    prm[WallCoreLJ612ParameterNumber]=n;
+    prm[WallCoreLJ612NumberParameter]=n;
     prm[WallShapeParameterShift]=WallCoreLJ612ParameterEnd;
   }
 
