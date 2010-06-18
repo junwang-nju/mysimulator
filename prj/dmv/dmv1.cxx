@@ -8,7 +8,7 @@ int main() {
   allocate(gng);
   init(gng,21389217);
 
-  double T=0.1;
+  double T=0.5;
   double gamma=1;
   double dt=0.001;
   double DPI=M_PI+M_PI;
@@ -33,27 +33,39 @@ int main() {
 
   gl=gh=0;
   gh=2*k*(xh-xl);
-  gl=-gh+sin(xl*DPI)*DPI;
+  gl=-gh+10*sin(xl*DPI)*DPI;
 
-  for(unsigned int rt=0;rt<10000000;++rt) {
+  double tau[]={15000,1000};
+  int count, state;
+  count=0;
+  state=0;
+
+  for(unsigned int rt=0;rt<1000000;++rt) {
+    if(count>=tau[state]) {
+      state=1-state;
+      count=0;
+    }
     vl*=flb;
-    vl+=-gl*dt*0.5+rl*rand(gng);
+    vl+=-gl*dt*0.5/ml+rl*rand(gng);
     vh*=fhb;
-    vh+=-gh*dt*0.5+rh*rand(gng);
+    vh+=-gh*dt*0.5/mh+rh*rand(gng);
 
     xl+=vl*dt;
     xh+=vh*dt;
 
     gl=gh=0;
     gh=2*k*(xh-xl);
-    gl=-gh+sin(xl*DPI)*DPI;
+    gl=-gh;
+    if(state==0)
+      gl+=+10*sin(xl*DPI)*DPI;
 
-    vl+=-gl*dt*0.5+rl*rand(gng);
+    vl+=-gl*dt*0.5/ml+rl*rand(gng);
     vl*=fla;
-    vh+=-gh*dt*0.5+rh*rand(gng);
+    vh+=-gh*dt*0.5/mh+rh*rand(gng);
     vh*=fha;
     if(rt%100==0)
     cout<<rt*dt<<"\t"<<xl<<"\t"<<xh<<endl;
+    count++;
   }
 
   return 0;
