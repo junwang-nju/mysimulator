@@ -176,6 +176,24 @@ namespace std {
         assign(sz,Dim,4);
         allocate(*(IM.tmpvec),sz,4);
         break;
+      case DihedralPeriodic:
+        IM.EFunc=EFuncDihedralPeriodic<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncDihedralPeriodic<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncDihedralPeriodic<DistEvalMethod,GeomType>;
+        sz=new unsigned int[6];
+        assign(sz,Dim,6);
+        allocate(*(IM.tmpvec),sz,6);
+        break;
+      case WallCoreLJ612:
+        IM.EFunc=EFuncWallCoreLJ612<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncWallCoreLJ612<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncWallCoreLJ612<DistEvalMethod,GeomType>;
+        break;
+      case WallLJ612Cut:
+        IM.EFunc=EFuncWallLJ612Cut<DistEvalMethod,GeomType>;
+        IM.GFunc=GFuncWallLJ612Cut<DistEvalMethod,GeomType>;
+        IM.BFunc=BFuncWallLJ612Cut<DistEvalMethod,GeomType>;
+        break;
       default:
         myError("Unknown Interaction Type");
     }
