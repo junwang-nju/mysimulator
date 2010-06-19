@@ -229,8 +229,8 @@ target_link_libraries (test-interaction-wall-corelj612.run blas)
 add_executable (test-interaction-wall-lj612cut.run test-interaction-wall-lj612cut.cxx)
 target_link_libraries (test-interaction-wall-lj612cut.run blas)
 
-add_executable (test-pdb-data-structure.run test-pdb-data-structure.cxx)
-target_link_libraries (test-pdb-data-structure.run Base blas)
+add_executable (test-pdb-data.run test-pdb-data.cxx)
+target_link_libraries (test-pdb-data.run blas)
 
 
 ########################

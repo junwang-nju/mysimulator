@@ -1,5 +1,5 @@
 
-#include "pdb-data-structure.h"
+#include "pdb-data.h"
 using namespace std;
 
 int main() {
