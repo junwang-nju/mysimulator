@@ -1,6 +1,6 @@
 
-#ifndef _PDB_Data_Atom_Name_H_
-#define _PDB_Data_Atom_Name_H_
+#ifndef _PDB_Data_Atom_H_
+#define _PDB_Data_Atom_H_
 
 #include "vector-impl.h"
 #include <cstring>
