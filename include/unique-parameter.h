@@ -63,7 +63,8 @@ namespace std {
     /**
      * @brief default initiator
      *
-     * initialize all the bits as zero through \c unsigned \c long \c long interface.
+     * initialize all the bits as zero through \c unsigned \c long \c long
+     * interface.
      */
     UniqueParameter() : ull(0) {}
     
@@ -124,8 +125,20 @@ namespace std {
      * @return the reference to the resultant UniqueParameter object
      */
     Type& operator=(const unsigned int uv) { u=uv; return *this; }
+
+    /**
+     * @brief copy from an \c int value
+     *
+     * copy through \c int interface.
+     *
+     * @param iv [in] the input \c int value
+     * @return the reference to the resultant UniqueParameter object
+     */
     Type& operator=(const int iv) { i=iv; return *this; } 
 
+    /**
+     * @brief access content as \c double variable
+     */
     double& operator()() { return d; }
     const double& operator()() const { return d; }
 
