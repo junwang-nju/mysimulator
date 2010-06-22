@@ -83,7 +83,7 @@ namespace std {
      * @brief copy from another UniqueParameter object
      *
      * Just copy the internal data of input UniqueParameter object through
-     * \c unsigned \c int \c int interface. This enables the precise copy
+     * \c unsigned \c long \c long interface. This enables the precise copy
      * of all information.
      *
      * @param UP [in] the input UniqueParameter object
@@ -138,12 +138,45 @@ namespace std {
 
     /**
      * @brief access content as \c double variable
+     *
+     * This is a method to access content as double-type value.
+     *
+     * @return the reference to the content as \c double value.
+     * @note \c double type is the most used case in simulations. 
+     *       It is the reason to define this method.
      */
     double& operator()() { return d; }
+
+    /**
+     * @brief visit content as \c double value
+     *
+     * This is a method to visit content as double-type value.
+     *
+     * @return the const reference to the content as \c double value
+     * @note This is const version of the method to access the
+     *       content of UniqueParameter object.
+     */
     const double& operator()() const { return d; }
 
   };
 
+  /**
+   * @brief read a UniqueParameter object from istream
+   *
+   * Since the UniqueParameter object may store multiple types of data,
+   * a flag indicating the type of data is read at first. Then, based
+   * on the type, the data is imported. For unknown type, a failbit
+   * is produced. Here, D(d) means \c double, U(u) means \c unsigned
+   * \c int, I(i) indicates \c int, and P(p) gives pointer. If there
+   * are no flags, the data would be regarded as \c unsigned \c long
+   * \c long \c int when the import content is a number. Otherwise,
+   * errors would be produced.
+   *
+   * @param is [in,out] the istream object, which would be accessed and
+   *                    altered during the reading
+   * @param UP [out] the UniqueParameter object storing the data
+   * @return the istream after reading.
+   */
   istream& operator>>(istream& is, UniqueParameter& UP) {
     static char flag;
     is>>flag;
@@ -159,6 +192,17 @@ namespace std {
     return is;
   }
 
+  /**
+   * @brief write a UniqueParameter object to ostream
+   *
+   * Just write out the \c unsigned \c long \c long \c int interface
+   * as output to keep all bit information.
+   *
+   * @param os [in,out] the ostream object which would be changed
+   *                    after output operation.
+   * @param UP [in] the UniqueParameter object to be output.
+   * @return the ostream object after output.
+   */
   ostream& operator<<(ostream& os, const UniqueParameter& UP) {
     os<<UP.ull;
     return os;
