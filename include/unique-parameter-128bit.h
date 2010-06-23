@@ -1,4 +1,15 @@
 
+/**
+ * @file unique-parameter-128bit.h
+ * @brief 128-bit data with many interfaces
+ *
+ * This file defines a 128-bit structure with various interfaces. This
+ * is implemented with 128-bit registers related to SSE operations.
+ * This is used for random generators.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Unique_Parameter_128bit_H_
 #define _Unique_Parameter_128bit_H_
 
@@ -11,24 +22,85 @@
 
 namespace std {
 
+  /**
+   * @brief 128-bit data with various interfaces
+   *
+   * This object encapsulates the __m128i (128-bit int), __m128d (128-bit
+   * double), long double, double, unsigned int, int, unsigned long long
+   * int, void pointer. All the bits could be accessed with various
+   * interfaces. This is different from UniqueParameter object. The
+   * interface with larger size may ease the operation of the data.
+   */
   union UniqueParameter128b {
 
 #ifdef HAVE_SSE2
+    /**
+     * @brief the 128-bit int object
+     */
     __m128i si;
+    /**
+     * @brief the 128-bit double object
+     */
     __m128d sd;
 #endif
+    /**
+     * @brief \c long \c double interface
+     */
     long double ld;
+    /**
+     * @brief \c double interface
+     */
     double d[2];
+    /**
+     * @brief \c unsigned \c int interface
+     */
     unsigned int u[4];
+    /**
+     * @brief \c int interface
+     */
     int i[4];
+    /**
+     * @brief \c unsigned \c long \c long \c int interface
+     */
     unsigned long long int ull[2];
+    /**
+     * @brief \c void pointer interface
+     */
     void* ptr[4];
 
+    /**
+     * @brief abbreviation for unique-parameter-128bit object
+     */
     typedef UniqueParameter128b   Type;
+    
+    /**
+     * @brief default initiator
+     *
+     * initialize all the bits through \c unsigned \c long \c long
+     * interface.
+     */
     UniqueParameter128b() { ull[0]=0; ull[1]=0; }
-    UniqueParameter128b(const Type&) {
+    
+    /**
+     * @brief initiator from another UniqueParameter128b object
+     *
+     * This is prohibited and pop-up an error message.
+     *
+     * @param UP [in] the input UniqueParameter128b object
+     */
+    UniqueParameter128b(const Type& UP) {
       myError("Cannot create from 128bit Unique Parameter");
     }
+    
+    /**
+     * @brief copy from another UniqueParameter128b object
+     *
+     * It is implemented through the copy operation for \c unsigned
+     * \c long \c long \c int object.
+     *
+     * @param UP [in] the input UniqueParameter128b object
+     * @return the reference to the resultant UniqueParameter128b object
+     */
     Type& operator=(const Type& UP) { return operator=(UP.ull); }
     Type& operator=(const long double rld) { ld=rld; return *this; }
     Type& operator=(const double rd[2]) { assign(d,rd,2); return *this; }
