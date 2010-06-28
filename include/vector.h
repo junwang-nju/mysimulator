@@ -376,6 +376,13 @@ namespace std {
    * number of elements involved in this operation is the minimum of the
    * size of two concerned vectors. The concerned vectors are required
    * to be available before this operation.
+   *
+   * T is the type of elements in vectors
+   *
+   * @param v [in,out] the Vector object to be shifted
+   * @param fac [in] the size factor along the direction to be shifted
+   * @param vfac [in] the Vector object indicating the direction to shift
+   * @return nothing
    */
   template <typename T>
   inline void shift(Vector<T>& v, const T& fac, const Vector<T>& vfac) {
@@ -387,29 +394,98 @@ namespace std {
 
   /**
    * @brief shift Vector along direction with unit step
+   *
+   * It is implemented with the corresponding operation for array. The
+   * number of elements involved in this operation is the minimum of the
+   * size of two concerned vectors. The concerned vectors are required to
+   * be available before this operation.
+   *
+   * T is the type of elements in vectors
+   *
+   * @param v [in,out] the Vector object to be shifted
+   * @param vfac [in] the Vector object indicating the direction to shift
+   * @return nothing
    */
   template <typename T>
   inline void shift(Vector<T>& v, const Vector<T>& vfac) {
+    assert(IsAvailable(v));
+    assert(IsAvailable(vfac));
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     shift(v(),vfac(),n);
   }
 
+  /**
+   * @brief shift components of Vector with a constant
+   *
+   * It is implemented by the corresponding operation for array. The number
+   * of elements to be operated is the number of elements in Vector object.
+   * This Vector object is checked for its availability before this operation.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in,out] the Vector object to be shifted.
+   * @param fac [in] the factor used in shifting elements of Vector.
+   * @return nothing
+   */ 
   template <typename T>
-  inline void shift(Vector<T>& v, const T& fac) { shift(v(),fac,v.size); }
+  inline void shift(Vector<T>& v, const T& fac) {
+    assert(IsAvailable(v));
+    shift(v(),fac,v.size);
+  }
 
+  /**
+   * @brief shift Vector along certain direction with certain step (different parameter order)
+   *
+   * This is a version to match different order of parameters. It is
+   * implemented with another shift function with direction and step
+   * as parameters.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in,out] the Vector object to be shifted
+   * @param vfac [in] the Vector object indicating the direction to shift
+   * @param fac [in] the size factor along the direction to be shifted
+   * @return nothing
+   */
   template <typename T>
   inline void shift(Vector<T>& v, const Vector<T>& vfac, const T& fac) {
     shift(v,fac,vfac);
   }
 
+  /**
+   * @brief composite of scale and shift operations with heterogeneous shifting step.
+   *
+   * This is implemented with the corresponding operation for array.
+   * This operation scales the Vector and then shifts it along a
+   * direction with a step. The number of elements involved in this
+   * operation is the minimum of all three concerned Vector objects.
+   * These Vectors are also checked for their availability before
+   * this operation.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in,out] the Vector to be scaled and shifted.
+   * @param dfac [in] the factor to scale the Vector object v.
+   * @param fac [in] the factor indicating the step to shift
+   * @param sfac [in] the Vector object as the heterogeneous scale factor
+   *                  for Vector object vfac
+   * @param vfac [in] the Vector object as the direction to shift.
+   * @return nothing
+   */
   template <typename T>
   inline void scaleshift(Vector<T>& v, const T& dfac, const T& fac,
                   const Vector<T>& sfac, const Vector<T>& vfac) {
+    assert(IsAvailable(v));
+    assert(IsAvailable(sfac));
+    assert(IsAvailable(vfac));
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     n=(n<sfac.size?n:sfac.size);
     scaleshift(v(),dfac,fac,sfac(),vfac(),n);
   }
 
+  /**
+   * @brief composite of scale and shift operations with isotropic shifting step.
+   */
   template <typename T>
   inline void scaleshift(Vector<T>& v, const T& dfac, const T& fac,
                   const Vector<T>& vfac) {
