@@ -239,8 +239,7 @@ namespace std {
    *
    * This operation is implemented with the method for two arrays.
    * The number of elements related to the operation takes the
-   * minimum of two concerned Vectors. The two Vectors are also
-   * required to be available before this operation.
+   * minimum of two concerned Vectors.
    *
    * T is the type of data for vector.
    *
@@ -251,8 +250,6 @@ namespace std {
    */
   template <typename T>
   inline void assign(Vector<T>& dest, const Vector<T>& src) {
-    assert(IsAvailable(dest));
-    assert(IsAvailable(src));
     unsigned int n=(dest.size<src.size?dest.size:src.size);
     assign(dest(),src(),n);
   }
@@ -261,8 +258,7 @@ namespace std {
    * @brief assign Vector with a value
    *
    * It is implemented with corresponding operation to assign array
-   * with value. The Vector is required to be available before this
-   * operation.
+   * with value.
    *
    * T is the type of data for vector.
    *
@@ -273,10 +269,7 @@ namespace std {
    *       match exactly with element in vector.
    */
   template <typename T>
-  inline void assign(Vector<T>& v, const T& value) {
-    assert(IsAvailable(v));
-    assign(v(),value,v.size);
-  }
+  inline void assign(Vector<T>& v, const T& value){ assign(v(),value,v.size); }
 
   /**
    * @brief assign unsigned-int-type Vector with unsigned-int value
@@ -292,7 +285,6 @@ namespace std {
    *       assign the type of constant explicitly.
    */
   inline void assign(Vector<unsigned int>& v, const unsigned int value) {
-    assert(IsAvailable(v));
     assign(v(),value,v.size);
   }
 
@@ -310,7 +302,6 @@ namespace std {
    *       assign the type of constant explicitly.
    */
   inline void assign(Vector<int>& v, const int value) {
-    assert(IsAvailable(v));
     assign(v(),value,v.size);
   }
 
@@ -328,7 +319,6 @@ namespace std {
    *       assign the type of constant explicitly.
    */
   inline void assign(Vector<double>& v, const double value) {
-    assert(IsAvailable(v));
     assign(v(),value,v.size);
   }
 
@@ -352,8 +342,7 @@ namespace std {
    *
    * It is implemented with the corresponding operation for array. The
    * number of element involved in this operation is the minimum of the
-   * size of two vectors. These two vectors are required to be
-   * available before this operation.
+   * size of two vectors.
    *
    * T is the type of data for vector.
    *
@@ -363,8 +352,6 @@ namespace std {
    */
   template <typename T>
   inline void scale(Vector<T>& v, const Vector<T>& vf) {
-    assert(IsAvailable(v));
-    assert(IsAvailable(vf));
     unsigned int n=(v.size<vf.size?v.size:vf.size);
     scale(v(),vf(),n);
   }
@@ -374,19 +361,33 @@ namespace std {
    *
    * It is implemented with the corresponding operation for array. The
    * number of elements involved in this operation is the minimum of the
-   * size of two concerned vectors. The concerned vectors are required
-   * to be available before this operation.
+   * size of two concerned vectors.
+   *
+   * T is the type of elements in vectors
+   *
+   * @param v [in,out] the Vector object to be shifted
+   * @param fac [in] the size factor along the direction to be shifted
+   * @param vfac [in] the Vector object indicating the direction to shift
+   * @return nothing
    */
   template <typename T>
   inline void shift(Vector<T>& v, const T& fac, const Vector<T>& vfac) {
-    assert(IsAvailable(v));
-    assert(IsAvailable(vfac));
     unsigned int n=(v.size<vfac.size?v.size:vfac.size);
     shift(v(),fac,vfac(),n);
   }
 
   /**
    * @brief shift Vector along direction with unit step
+   *
+   * It is implemented with the corresponding operation for array. The
+   * number of elements involved in this operation is the minimum of the
+   * size of two concerned vectors.
+   *
+   * T is the type of elements in vectors
+   *
+   * @param v [in,out] the Vector object to be shifted
+   * @param vfac [in] the Vector object indicating the direction to shift
+   * @return nothing
    */
   template <typename T>
   inline void shift(Vector<T>& v, const Vector<T>& vfac) {
@@ -394,14 +395,58 @@ namespace std {
     shift(v(),vfac(),n);
   }
 
+  /**
+   * @brief shift components of Vector with a constant
+   *
+   * It is implemented by the corresponding operation for array. The number
+   * of elements to be operated is the number of elements in Vector object.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in,out] the Vector object to be shifted.
+   * @param fac [in] the factor used in shifting elements of Vector.
+   * @return nothing
+   */ 
   template <typename T>
   inline void shift(Vector<T>& v, const T& fac) { shift(v(),fac,v.size); }
 
+  /**
+   * @brief shift Vector along certain direction with certain step (different parameter order)
+   *
+   * This is a version to match different order of parameters. It is
+   * implemented with another shift function with direction and step
+   * as parameters.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in,out] the Vector object to be shifted
+   * @param vfac [in] the Vector object indicating the direction to shift
+   * @param fac [in] the size factor along the direction to be shifted
+   * @return nothing
+   */
   template <typename T>
   inline void shift(Vector<T>& v, const Vector<T>& vfac, const T& fac) {
     shift(v,fac,vfac);
   }
 
+  /**
+   * @brief composite of scale and shift operations with heterogeneous shifting step.
+   *
+   * This is implemented with the corresponding operation for array.
+   * This operation scales the Vector and then shifts it along a
+   * direction with a step. The number of elements involved in this
+   * operation is the minimum of all three concerned Vector objects.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in,out] the Vector to be scaled and shifted.
+   * @param dfac [in] the factor to scale the Vector object v.
+   * @param fac [in] the factor indicating the step to shift
+   * @param sfac [in] the Vector object as the heterogeneous scale factor
+   *                  for Vector object vfac
+   * @param vfac [in] the Vector object as the direction to shift.
+   * @return nothing
+   */
   template <typename T>
   inline void scaleshift(Vector<T>& v, const T& dfac, const T& fac,
                   const Vector<T>& sfac, const Vector<T>& vfac) {
@@ -410,6 +455,22 @@ namespace std {
     scaleshift(v(),dfac,fac,sfac(),vfac(),n);
   }
 
+  /**
+   * @brief composite of scale and shift operations with isotropic shifting step.
+   *
+   * It is implemented with the corresponding operation for array. The
+   * factor indicating the step of shifting is just a constant. The number
+   * of elements involved in this operation is the minimum of the numbers
+   * of the elements in concerned vectors.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in,out] the Vector to be scaled and shifted.
+   * @param dfac [in] the factor to scale the Vector object v.
+   * @param fac [in] the factor indicating the step to shift
+   * @param vfac [in] the Vector object as the direction to shift.
+   * @return nothing
+   */
   template <typename T>
   inline void scaleshift(Vector<T>& v, const T& dfac, const T& fac,
                   const Vector<T>& vfac) {
@@ -417,6 +478,22 @@ namespace std {
     scaleshift(v(),dfac,fac,vfac(),n);
   }
 
+  /**
+   * @brief shift Vector along a direction with heterogeneous steps
+   *
+   * It is implemented with the corresponding operation for array.
+   * The number of elements involved in this operation is the minimum
+   * of the numbers of elements in concerned vectors.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in,out] the Vector to be scaled and shifted.
+   * @param fac [in] the factor indicating the step to shift
+   * @param sfac [in] the Vector object as the heterogeneous scale factor
+   *                  for Vector object vfac
+   * @param vfac [in] the Vector object as the direction to shift.
+   * @return nothing
+   */
   template <typename T>
   inline void shift(Vector<T>& v, const T& fac, const Vector<T>& sfac,
              const Vector<T>& vfac) {
@@ -425,12 +502,37 @@ namespace std {
     shift(v(),fac,sfac(),vfac(),n);
   }
 
+  /**
+   * @brief exchange contents of two vectors
+   *
+   * It is implemented with the corresponding operation for array. The number
+   * of the elements involved in this operation is the minimum of the number
+   * of elements in concerned vectors.
+   *
+   * T is the type of data in vectors
+   *
+   * @param va,vb [in,out] the Vector objects to be exchanged.
+   * @return nothing
+   */ 
   template <typename T>
   inline void exchange(Vector<T>& va, Vector<T>& vb) {
     unsigned int n=(va.size<vb.size?va.size:vb.size);
     exchange(va(),vb(),n);
   }
 
+  /**
+   * @brief swap two vectors
+   *
+   * This operation swaps the storages of two Vector objects. It is implemented
+   * by exchanging the pointers and the properties. This is efficient than
+   * exchange operation when the storage is large. This operation is also
+   * independent of the sizes of storages.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param va,vb [in,out] the Vector objects to be swapped.
+   * @return nothing
+   */
   template <typename T>
   inline void swap(Vector<T>& va, Vector<T>& vb) {
     swap(va.data,vb.data);
@@ -438,20 +540,81 @@ namespace std {
     swap(va.state,vb.state);
   }
 
+  /**
+   * @brief dot product of two Vector objects
+   *
+   * It is implemented with the corresponding operation for array.
+   * The number of elements involved in this operation is the minimum of
+   * the numbers of elements in concerned vectors.
+   *
+   * T is the type of data in vectors
+   *
+   * @param va,vb [in] the Vector objects to carry out dot product.
+   * @return the dot product of the input Vector objects.
+   */
   template <typename T>
   inline T dot(const Vector<T>& va, const Vector<T>& vb) {
     unsigned int n=(va.size<vb.size?va.size:vb.size);
     return dot(va(),vb(),n);
   }
 
+  /**
+   * @brief the square of the norm of a Vector object
+   *
+   * It is implemented with the corresponding operation for array. The
+   * number of elements involved in this operation is the number of
+   * elements of concerned Vector object.
+   *
+   * T is the type of data in Vector object.
+   *
+   * @param v [in] the input Vector object
+   * @return the square of the norm of the input Vector object.
+   */
   template <typename T>
   inline T normSQ(const Vector<T>& v) { return normSQ(v(),v.size); }
 
+  /**
+   * @brief the square of the norm of a Vector object with \c double elements
+   *
+   * This is a specification of normSQ operation for the Vector object with
+   * \c double elements. It is implemented with the corresponding operation
+   * for array. The number of the elements involved in this operation is
+   * the size of the Vector object.
+   *
+   * @param v [in] the Vector object with \c double elements
+   * @return the  \c double value of the square of the norm of the input
+   *         Vector object.
+   */
   double norm(const Vector<double>& v) { return norm(v(),v.size); }
 
+  /**
+   * @brief the summation of the absolute values of elements of Vector object
+   *
+   * It is implemented with the corresponding operation for array. The number
+   * of the elements involved in this operation is the size of the concerned
+   * Vector object.
+   *
+   * T is the type of data in vectors.
+   *
+   * @param v [in] the input Vector object.
+   * @return the summation result of the absolute values of elements in
+   *         the input Vector object.
+   */
   template <typename T>
   inline T asum(const Vector<T>& v) { return asum(v(),v.size); }
 
+  /**
+   * @brief output Vector object to ostream
+   *
+   * The elements are written to ostream with tab as their separations.
+   * The input Vector object is required to be available before using.
+   *
+   * T is the type of data in vector.
+   *
+   * @param os [in,out] the ostream to output
+   * @param v [in] the Vector object to be output.
+   * @return the ostream after output operation
+   */
   template <typename T>
   ostream& operator<<(ostream& os, const Vector<T>& v) {
     assert(IsAvailable(v));
@@ -460,6 +623,19 @@ namespace std {
     return os;
   }
 
+  /**
+   * @brief read Vector object from istream
+   *
+   * The elements of the concerned Vector object are read one by one from
+   * istream. The concerned Vector object is checked for its availability
+   * before read operations.
+   *
+   * T is the type of data in vector.
+   *
+   * @param is [in,out] the istream to provide data source
+   * @param v [out] the Vector object storing input data
+   * @return the istream after read operation
+   */
   template <typename T>
   istream& operator>>(istream& is, Vector<T>& v) {
     assert(IsAvailable(v));
@@ -467,6 +643,25 @@ namespace std {
     return is;
   }
 
+  /**
+   * @brief cross product of vectors with offsets and steps for elements
+   *
+   * It is implemented with the corresponding operation for array. The
+   * numbers of elements of the concerned vectors are used as parameters
+   * indicating the sizes of the concerned arrays.
+   *
+   * @param va,vb [in] the Vector objects to be multiplied for cross product
+   * @param v [out] the Vector object storing the output of cross product
+   * @param aoff,boff,off [in] the offsets for the first used element in
+                               the Vector objects va, vb, v.
+   *                           They takes the default value iZero.
+   * @param astep,bstep,step [in] the steps between the used elements in
+   *                              the Vector objects va, vb, v.
+   *                              They takes the default value lOne.
+   * @return nothing
+   * @note cross product only works for 3-dimensional space. That is, only
+   *       three elements are used.
+   */
   void crossProd(const Vector<double>& va, const Vector<double>& vb,
                  Vector<double>& v,
                  const unsigned int aoff=iZero, const unsigned int astep=lOne,

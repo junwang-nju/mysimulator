@@ -21,6 +21,23 @@
 
 namespace std {
 
+  /**
+   * @brief allocate a pointer pointing to a number of elements
+   *
+   * This is a wrapper for classical allocation (new operator). Several
+   * checks are carried out for memory management.
+   * The pointer is required to be NULL before allocation to avoid to
+   * overwite existent storage (namely leak of memory). The input
+   * expected number of elements is also required to be larger than
+   * zero, which makes the allocation is not trivial. Then the allocation
+   * is implementated with new operator.
+   *
+   * T is the type of data pointed by the concerned pointer.
+   *
+   * @param dest [in,out] the reference to the pointer to T-type data
+   * @param N [in] the expected number of elements
+   * @return nothing
+   */
   template <typename T>
   inline void allocate(T* &dest, const unsigned int N) {
     assert(dest==NULL);
@@ -28,9 +45,43 @@ namespace std {
     dest=new T[N];
   }
 
+  /**
+   * @brief release storage pointed by a pointer
+   *
+   * This is implementated by the function safe_delete_array for pointer
+   * to some storage. The resultant pointer would have the value NULL.
+   *
+   *  T is the type of data pointed by the input pointer.
+   *
+   * @param dest [in,out] the pointer of storage to be freed.
+   * @return nothing
+   */
   template <typename T>
   inline void release(T* &dest) { safe_delete_array(dest); }
 
+  /**
+   * @brief assign an array from another array with offsets and steps
+   *
+   * This is a generic form of assign operation. The elements in the
+   * source array src are copied into the destination array dest one by one.
+   * The copy action is started from the elements indicated by offsets,
+   * and the neighboring elements have the separation of steps. Before
+   * this operation, the availability of the concerned pointers are checked
+   * at first.
+   *
+   * T is the type of data in the arrays.
+   *
+   * @param dest [out] the pointer to the array storing data after copy
+   * @param src [in] the pointer to the array storing data used for copy
+   * @param ncopy [in] the number of elements involved in copy operation
+   * @param soff,doff [in] the offsets indicating the first elements in
+   *                       array src and dest. They take the default value
+   *                       iZero.
+   * @param sstep,dstep [in] the separations between neighbor elements used
+   *                         for copy action in array src and dest.  They
+   *                         takes the default value lOne.
+   * @return nothing.
+   */
   template <typename T>
   inline void assign(T* dest, const T* src, const long ncopy,
               const int soff=iZero, const long sstep=lOne,
