@@ -1,4 +1,16 @@
 
+/**
+ * @file btree.h
+ * @brief the data structure and operation of binary tree
+ *
+ * This file describes the data structure and operations for binary
+ * tree. This data structure may be efficient in searching certain items.
+ * The rate is in logarithm manner in average, which is faster than
+ * the linear manner along an array.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Binary_Tree_H_
 #define _Binary_Tree_H_
 
@@ -6,26 +18,93 @@
 
 namespace std {
 
+  /**
+   * @brief data structure of binary tree
+   *
+   * Binary tree is a kind of tree structure. Binary tree arranges
+   * the elements based on their relation (larger or smaller). All
+   * the elements smaller than a certain element are arranged on the
+   * left branch, and the others are put on the right branch. Each
+   * element is a combination (or pair) of key and value. 
+   *
+   * KeyType is the type of keys. ValueType is the type of values.
+   *
+   * @note The binary tree is not unique for a set of data. The arrangement
+   *       of elements depends on the order to insert elements.
+   */
   template <typename KeyType, typename ValueType>
   struct BTree {
 
+    /**
+     * @brief definition of node type
+     */
     typedef BTreeNode<KeyType,ValueType>  NodeType;
+    /**
+     * @brief abbreviation of the type of binary tree
+     */
     typedef BTree<KeyType,ValueType>      Type;
 
+    /**
+     * @brief the pointer of root node in the tree
+     *
+     * This pointer gives out the entrance of the tree.
+     */
     NodeType *root;
 
+    /**
+     * @brief default initiator
+     *
+     * Just assign the pointer to the root node as NULL.
+     */
     BTree() : root(NULL) {}
-    BTree(const Type&) { myError("Cannot create from BinaryTree"); }
+
+    /**
+     * @brief initiator from another binary tree
+     *
+     * It is prohibited and an eror message is pop-up.
+     *
+     * @param BT [in] the input BTree object
+     */
+    BTree(const Type& BT) { myError("Cannot create from BinaryTree"); }
+
+    /**
+     * @brief copy from another BTree object
+     *
+     * It is implemented with assign function.
+     *
+     * @param BT [in] the input BTree object
+     * @return the reference to the resultant BTree object
+     */
     Type& operator=(const Type& BT) { assign(*this,BT); return *this; }
+
+    /**
+     * @brief destructor
+     *
+     * It is implemented with release function.
+     */
     ~BTree() { release(*this); }
 
   };
 
+  /**
+   * @brief check if a BTree object is available
+   *
+   * It is implemented by checking the availability of pointer of root node.
+   *
+   * KeyType is the type of keys. ValueType is the type of values.
+   *
+   * @param BT [in] the BTree object to be checked.
+   */
   template <typename KeyType, typename ValueType>
   bool IsAvailable(const BTree<KeyType,ValueType>& BT) {
     return IsAvailable(BT.root);
   }
 
+  /**
+   * @brief release a BTree object
+   *
+   * KeyType is the type of keys. ValueType is the type of values.
+   */
   template <typename KeyType, typename ValueType>
   void release(BTree<KeyType,ValueType>& BT) {
     BTreeNode<KeyType,ValueType> *present, *tofree;

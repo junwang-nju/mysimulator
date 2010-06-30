@@ -102,14 +102,71 @@ namespace std {
      * @return the reference to the resultant UniqueParameter128b object
      */
     Type& operator=(const Type& UP) { return operator=(UP.ull); }
+
+    /**
+     * @brief copy from a \c long \c double value
+     *
+     * copy through \c long \c double interface.
+     *
+     * @param rld [in] the input \c long \c double value
+     * @return the reference to the resultant UniqueParameter128b object
+     */
     Type& operator=(const long double rld) { ld=rld; return *this; }
+
+    /**
+     * @brief copy from \c double array
+     *
+     * copy through \c double interface.
+     *
+     * @param rd [in] the input \c double array with 2 elements
+     * @return the reference to the resultant UniqueParameter128b object
+     */
     Type& operator=(const double rd[2]) { assign(d,rd,2); return *this; }
+
+    /**
+     * @brief copy from \c unsigned \c int array
+     *
+     * copy through \c unsigned \c int interface.
+     *
+     * @param ru [in] the input \c unsigned \c int array with 4 elements
+     * @return the reference to the resultant UniqueParameter128b object
+     */
     Type& operator=(const unsigned int ru[4]) { assign(u,ru,4); return *this; }
+
+    /**
+     * @brief copy from \c int array
+     *
+     * copy through \c int interface.
+     *
+     * @param ri [in] the input \c int array with 8 elements
+     * @return the reference to the resultant UniqueParameter128b object
+     */
     Type& operator=(const int ri[8]) { assign(i,ri,4); return *this; }
+
+    /**
+     * @brief copy from \c unsigned \c long \c long array
+     *
+     * copy through \c unsigned \c long \c long interface.
+     *
+     * @param rull [in] the input \c unsigned \c long \c long array
+     *                  with 2 elements
+     * @return the reference to the resultant UniqueParameter128b object
+     */
     Type& operator=(const unsigned long long rull[2]) {
       assign(ull,rull,2);
       return *this;
     }
+    
+    /**
+     * @brief copy from pointer array
+     *
+     * copy through pointer interface.
+     *
+     * T is the type of data that the pointers point to.
+     *
+     * @param rptr [in] the input array of pointers to T-type data.
+     * @return the reference to the resultant UniqueParameter128b object
+     */ 
     template <typename T>
     Type& operator=(T* const rptr[4]) {
       assign(reinterpret_cast<unsigned int*>(ptr),
@@ -117,11 +174,44 @@ namespace std {
       return *this;
     }
 
+    /**
+     * @brief access content as \c long \c double variable
+     *
+     * This is a method to access the content as a \c long \c double value.
+     *
+     * @return the reference to content as \c long \c double value
+     * @note this method is defined because \c long \c double type is an
+     *       intrinsic 128-bit type of data.
+     */
     long double& operator()() { return ld; }
+    
+    /**
+     * @brief visit content as \c long \c double value
+     *
+     * This is a method to visit content as a \c long \c double value.
+     *
+     * @return the const reference to the content as \c long \c double value
+     * @note this is const version of the method to access the content of
+     *       UniqueParameter128b object.
+     */ 
     const long double& operator()() const { return ld; }
 
   };
 
+  /**
+   * @brief assign UniqueParameter128b array from another array (with offset)
+   *
+   * It is implemented by converting the UniqueParameter128b object as
+   * double value. The assign function for double-type values is used.
+   * One UniqueParameter128b element corresponds to two double values.
+   *
+   * @param dest [out] the output UniqueParameter128b array
+   * @param src [in] the input UniqueParameter128b array
+   * @param size [in] the number of elements related to the assign operation
+   * @param soff [in] the offset of elements in the array src
+   * @param doff [in] the offset of elements in the array dest
+   * @return nothing
+   */
   void assign(UniqueParameter128b* dest, const UniqueParameter128b* src,
               const unsigned int size,
               const int soff=iZero, const int doff=iZero) {
@@ -130,6 +220,23 @@ namespace std {
            soff+soff,lOne,doff+doff,lOne);
   }
 
+  /**
+   * @brief assign UniqueParameter128b array from another array (with offset and step)
+   *
+   * It is implemented by converting the UniqueParameter128b object as
+   * double value. The assign function for double-type values is used.
+   * Since one UniqueParameter128b object contains two double values,
+   * two assign operations are used.
+   *
+   * @param dest [out] the output UniqueParameter128b array
+   * @param src [in] the input UniqueParameter128b array
+   * @param size [in] the number of elements related to the assign operation
+   * @param soff [in] the offset of elements in the array src
+   * @param sstep [in] the step between elements in the array src
+   * @param doff [in] the offset of elements in the array dest
+   * @param dstep [in] the step between elements in the array dest
+   * @return nothing
+   */
   void assign(UniqueParameter128b* dest, const UniqueParameter128b* src,
               const unsigned int size,
               const int soff, const long sstep,
@@ -142,12 +249,38 @@ namespace std {
            soff+soff+1,sstep+sstep,doff+doff+1,dstep+dstep);
   }
 
+  /**
+   * @brief assign UniqueParameter128b array from a UniqueParameter128b value (with offset and step)
+   *
+   * It is implemented with array copy operation.
+   *
+   * @param dest [out] the output UniqueParameter128b array
+   * @param src [in] the input UniqueParameter128b object
+   * @param size [in] the number of elements related to the copy operation
+   * @param doff [in] the offset of elements in the array dest
+   * @param dstep [in] the step between elements in the array dest
+   */
   void assign(UniqueParameter128b* dest, const UniqueParameter128b& src,
               const unsigned int size,
               const int doff=iZero, const long dstep=lOne) {
     assign(dest,&src,size,uZero,uZero,doff,dstep);
   }
 
+  /**
+   * @brief read a UniqueParameter128b object from istream
+   *
+   * Since UniqueParameter128b object may store multiple types data,
+   * a flag indicating the type is read at first. Then, based on the
+   * type information, the data is imported. For unknown types, a failbit
+   * is produced. Here, G(g) means \c long \c double, D(d) means \c double,
+   * U(u) means \c unsigned \c int, I(i) means \c int, L(l) means \c unsigned
+   * \c long \c long, P(p) means pointer.
+   *
+   * @param is [in,out] the istream object, which would be accessed and
+   *                    altered during reading
+   * @param UP [out] the UniqueParameter128b object storing input data
+   * @return the istream after reading.
+   */
   istream& operator>>(istream& is, UniqueParameter128b& UP) {
     static char flag;
     static char buff[1024];
@@ -167,6 +300,17 @@ namespace std {
     return is;
   }
 
+  /**
+   * @brief write a UniqueParameter128b object to ostream
+   *
+   * Just write out the data through \c unsigned \c long \c long \c int
+   * interface as output to keep all bit information
+   *
+   * @param os [in,out] the ostream object which would be changed after
+   *                    output operation.
+   * @param UP [in] the UniqueParameter128b object to be output
+   * @return the ostream object after output.
+   */
   ostream& operator<<(ostream& os, const UniqueParameter128b& UP) {
     os<<"L [ "<<UP.ull[0]<<"  "<<UP.ull[1]<<" ] ";
     return os;

@@ -165,7 +165,7 @@ namespace std {
    *
    * Since the UniqueParameter object may store multiple types of data,
    * a flag indicating the type of data is read at first. Then, based
-   * on the type, the data is imported. For unknown type, a failbit
+   * on the type, the data is imported. For unknown types, a failbit
    * is produced. Here, D(d) means \c double, U(u) means \c unsigned
    * \c int, I(i) indicates \c int, and P(p) gives pointer. If there
    * are no flags, the data would be regarded as \c unsigned \c long
