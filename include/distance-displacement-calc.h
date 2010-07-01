@@ -1,4 +1,9 @@
 
+/**
+ * @file distance-displacement-calc.h
+ * @brief the functions to calculate distance and displacement
+ */
+
 #ifndef _Distance_Displacement_Calculation_H_
 #define _Distance_Displacement_Calculation_H_
 
