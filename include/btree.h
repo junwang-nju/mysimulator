@@ -103,7 +103,18 @@ namespace std {
   /**
    * @brief release a BTree object
    *
+   * The release operation is implemented by iteratively releasing the
+   * leafs of tree. In my procedure, a node is checked if it has child.
+   * if a child is found, the procedure goes to the child leaf to do the
+   * same check until it is just a leaf. The leaf is deleted then, left
+   * first and right later. It is a depth-first search.  
+   * 
    * KeyType is the type of keys. ValueType is the type of values.
+   *
+   * @param BT [in,out] The BTree object to be freed. After this operation,
+   *                    the pointer of root node in this object is set as
+   *                    NULL.
+   * @return nothing
    */
   template <typename KeyType, typename ValueType>
   void release(BTree<KeyType,ValueType>& BT) {
@@ -125,6 +136,30 @@ namespace std {
     BT.root=NULL;
   }
 
+  /**
+   * @brief assign a part of BTree object to another based on node pointer
+   *
+   * This assign operation copies the content of a BTree object into another.
+   * The inputs are the root pointers of destination and souce BTree objects.
+   * This increases the flexibility. As a supplementation, the expected
+   * parent node for destination BTree and the branch type from this parent
+   * node are also given. Then the nodes in the source tree are enumerated,
+   * and corresponding nodes in destination tree are allocated and assigned.
+   * The resultant tree is a copy (not a reference) to the source tree. The
+   * pointer to destination tree is freed at first to avoid memory leak.
+   *
+   * KeyType is the type of keys. ValueType is the type of values.
+   *
+   * @param destBN [out] pointer to root node of BTree object as destination
+   * @param srcBN [in] pointer to root node of BTree object as source
+   * @param destPN [in] pointer to parent node of BTree object pointed by
+   *                    destBN.
+   * @param destBR [in] the branch flag indicating which branch the BTree
+   *                    object pointed by destBN belongs to.
+   * @return nothing
+   * @note the free operation for destBN may not remove the original tree
+   *       under the pointer destBN since this operation is just for a node.
+   */
   template <typename KeyType, typename ValueType>
   void assign(BTreeNode<KeyType,ValueType>*& destBN,
               const BTreeNode<KeyType,ValueType>* srcBN,
@@ -148,6 +183,19 @@ namespace std {
     }
   }
 
+  /**
+   * @brief assign a BTree object from another
+   *
+   * This is implemented with the assign operation based on the pointers to
+   * the root nodes of BTree objects. The destination BTree object is released
+   * at first to avoid memory leak.
+   *
+   * KeyType is the type of keys. ValueType is the type of values.
+   *
+   * @param destBT [out] the BTree object containing the data
+   * @param srcBT [in] the BTree object inputing the data
+   * @return nothing
+   */
   template <typename KeyType, typename ValueType>
   void assign(BTree<KeyType,ValueType>& destBT,
               const BTree<KeyType,ValueType>& srcBT) {
@@ -157,6 +205,24 @@ namespace std {
            Unassigned);
   }
 
+  /**
+   * @brief insert a node with certain content in a BTree object
+   *
+   * A node for BTre is newly allocated. Its contents is copied or refered
+   * based on the input data and flag. Then through comparing with existed
+   * nodes, this node is inserted into a BTree object. If the new node is
+   * small, it would be put in left branch, otherwise in right branch.
+   * This new node generally becomes a new leaf in the concerned tree.
+   * 
+   * KeyType is the type of keys. ValueType is the type of values.
+   *
+   * @param destBT [in,out] the BTree object to accept the insert node
+   * @param key,value [in] the expected data for key and value of the new node
+   * @param kflag,vflag [in] the flags indicating the input key and value
+   *                         should be refered ot copied. The default mode
+   *                         is to refer the input data for efficiency.
+   * @return nothing
+   */
   template <typename KeyType, typename ValueType>
   void insert(BTree<KeyType,ValueType>& destBT,
               const KeyType& key, const ValueType& value,
@@ -235,6 +301,21 @@ namespace std {
     destBT.root->valuestate=vflag;
   }
 
+  /**
+   * @brief get a value based on the key from a BTree object
+   *
+   * It is implemented with the getNode operation. The related node is
+   * found out firstly. The pointer to the concerned value is output then.
+   *
+   * KeyType is the type of keys. ValueType is the type of values.
+   *
+   * @param BT [in] the BTree object to be touched.
+   * @param key [in] the key to be used to search for value.
+   * @return the const pointer to the corresponding value, and NULL for
+   *         no-match-found case. 
+   * @note Here, we use the pointer to value is to be compatible with
+   *       the case that the key does not in the BTree object.
+   */
   template <typename KeyType, typename ValueType>
   const ValueType* get(
       const BTree<KeyType,ValueType>& BT, const KeyType& key) {
