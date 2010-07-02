@@ -1,4 +1,15 @@
 
+/**
+ * @file distance-evaluate-base.h
+ * @brief the base object for distance evaluation
+ *
+ * To evaluate distance may relate to some temporary storage for distances.
+ * This file defines the base object for distance evaluation and the
+ * related operations.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Distance_Evaluate_Base_H_
 #define _Distance_Evaluate_Base_H_
 
@@ -8,11 +19,28 @@
 
 namespace std {
 
+  /**
+   * @brief declaration of base object for distance evaluation
+   */
   struct DistanceEvalBase;
 
+  /**
+   * @brief declaration of assign function for DistanceEvalBase
+   */ 
   void assign(DistanceEvalBase&, const DistanceEvalBase&);
+  /**
+   * @brief declaration of release function for DistanceEvalBase
+   */
   void release(DistanceEvalBase&);
 
+  /**
+   * @brief the base object with the data for distance evaluation
+   *
+   * This data structure contains the basic data for distance evaluation,
+   * including the storage for displacement and square of distance. The
+   * dimension and number of units are also included. These data objects
+   * are common for various child classes.
+   */
   struct DistanceEvalBase {
 
     typedef DistanceEvalBase  Type;
