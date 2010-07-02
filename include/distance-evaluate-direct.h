@@ -1,4 +1,15 @@
 
+/**
+ * @file distance-evaluate-direct.h
+ * @brief data structure related to direct calculation of distance
+ *
+ * This file describes the data structure and related operations related to
+ * direct calculation of distance and displacement. This related data structure
+ * is a child of the DistanceEvalBase class.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Distance_Evaluate_Direct_H_
 #define _Distance_Evaluate_Direct_H_
 
@@ -7,9 +18,21 @@
 
 namespace std {
 
+  /**
+   * @brief the data structure related to direct distance evaluation
+   *
+   * This is a child class of DistanceEvalBase class. There are no new
+   * components inrtoduced.
+   */
   struct DistanceEvalDirect : public DistanceEvalBase {
 
+    /**
+     * @brief abbreviation of the type of direct distance evaluation
+     */
     typedef DistanceEvalDirect  Type;
+    /**
+     * @brief abbreviation of the parent base type of distance evaluation
+     */
     typedef DistanceEvalBase    ParentType;
 
     DistanceEvalDirect() : ParentType() {}

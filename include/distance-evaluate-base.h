@@ -6,6 +6,10 @@
  * To evaluate distance may relate to some temporary storage for distances.
  * This file defines the base object for distance evaluation and the
  * related operations.
+
+ * @note IsDistanceEvalMethod function is defined to check the type of
+ *       objects. This kind of functions help to avoid definitions of
+ *       constants to indicate the type of objects.
  *
  * @author Jun Wang (junwang.nju@gmail.com)
  */
@@ -188,6 +192,19 @@ namespace std {
     assign(dest.displacement,src.displacement,n);
   }
 
+  /**
+   * @brief allocate a DistanceEvalBase object
+   *
+   * The displacement and square of distance are allocated based on the input
+   * parameters. Other internal parameters are also assigned. Before this
+   * operation, the input DistanceEvalBase object is released to avoid
+   * memory leak.
+   *
+   * @param DEB [out] the DistanceEvalBase object to be allocated
+   * @param dim [in] the dimension of space
+   * @param nunit [in] the number of units
+   * @return nothing
+   */
   void allocate(DistanceEvalBase& DEB,
                 const unsigned int dim, const unsigned int nunit) {
     release(DEB);
@@ -199,6 +216,17 @@ namespace std {
     DEB.state=Allocated;
   }
 
+  /**
+   * @brief refer to another DistanceEvalBase object
+   *
+   * it is implemented by copying all the pointers and flags from source
+   * object into the destination. Before this operation, the destination
+   * object is released to avoid memory leak.
+   *
+   * @param dest [out] the DistanceEvalBase object to accept input
+   * @param src [in] the DistanceEvalBase object storing input information
+   * @return nothing
+   */
   void refer(DistanceEvalBase& dest, const DistanceEvalBase& src) {
     release(dest);
     dest.displacement=src.displacement;
@@ -223,7 +251,16 @@ namespace std {
   template <typename T>
   bool IsDistanceEvalMethod(const T&t ) { return false; }
 
-  bool IsDistanceEvalMethod(const DistanceEvalBase&) { return true; }
+  /**
+   * @brief check if the DistanceEvalBase object is a method for distance evaluation
+   *
+   * The answer is always true since DistanceEvalBase object is generally
+   * used for distance evaluation.
+   *
+   * @param DEB [in] the input DistanceEvalBase object
+   * @return true.
+   */
+  bool IsDistanceEvalMethod(const DistanceEvalBase& DEB) { return true; }
 
 }
 
