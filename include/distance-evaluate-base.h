@@ -24,13 +24,7 @@ namespace std {
    */
   struct DistanceEvalBase;
 
-  /**
-   * @brief declaration of assign function for DistanceEvalBase
-   */ 
   void assign(DistanceEvalBase&, const DistanceEvalBase&);
-  /**
-   * @brief declaration of release function for DistanceEvalBase
-   */
   void release(DistanceEvalBase&);
 
   /**
@@ -43,33 +37,122 @@ namespace std {
    */
   struct DistanceEvalBase {
 
+    /**
+     * @brief abbreviation for base type of distance evaluation
+     */
     typedef DistanceEvalBase  Type;
 
+    /**
+     * @brief data of displacement
+     */
     double* displacement;
+    /**
+     * @brief data of square of distance
+     */
     double* distancesq;
+    /**
+     * @brief size of displacement array (namely the dimension)
+     */
     unsigned int size;
+    /**
+     * @brief number of units
+     */
     unsigned int nunit;
+    /**
+     * @brief Vector interface of displacement
+     */
     Vector<double> displacementvec;
+    /**
+     * @brief storage state for this base class
+     */
     unsigned int state;
 
+    /**
+     * @brief default initiator
+     *
+     * Just initiate the pointers and data with null information
+     */
     DistanceEvalBase()
       : displacement(NULL), distancesq(NULL), size(0), nunit(0),
         displacementvec(), state(Unused) {}
-    DistanceEvalBase(const Type&) {
+    /**
+     * @brief initiator from another DistanceEvalBase object
+     *
+     * it is prohibited and pop up an error message
+     *
+     * @param DEB [in] the input DistanceEvalBase object
+     */
+    DistanceEvalBase(const Type& DEB) {
       myError("Cannot create from Distance Evaluate Base");
     }
+    /**
+     * @brief copy from another DistanceEvalBase object
+     *
+     * It is implemented with the assign operation.
+     *
+     * @param DEB [in] the input DistanceEvalBase object
+     * @return the reference to the resultant DistanceEvalBase object
+     */
     Type& operator=(const Type& DEB) { assign(*this,DEB); return *this; }
+    /**
+     * @brief destructor
+     *
+     * It is implemented with release operation
+     */
     ~DistanceEvalBase() { release(*this); }
 
-    double& operator()() { return *distancesq; }
-    const double& operator()() const { return *distancesq; }
+    /**
+     * @brief access the square of distance
+     *
+     * It is accessed through the pointer to the square of distance.
+     * The concerned pointer is checked for the availability before
+     * this operation.
+     *
+     * @return the reference to the square of distance
+     */
+    double& operator()() {
+      assert(IsAvailable(distancesq));
+      return *distancesq;
+    }
+    /**
+     * @brief visit the square of the distance
+     *
+     * It is visited through the pointer of square of distance. The concerned
+     * pointer is checked for the availability before the operation.
+     *
+     * @return the const reference to the square of distance
+     */
+    const double& operator()() const {
+      assert(IsAvailable(distancesq)); 
+      return *distancesq;
+    }
 
   };
 
+  /**
+   * @brief check the availability of DistanceEvalBase object
+   *
+   * It is implemented by checking the availability of the pointer
+   * to the square of distance.
+   *
+   * @param DEB [in] the concerned DistanceEvalBase object
+   * @return the availability of the input DistanceEvalBase object
+   */
   bool IsAvailable(const DistanceEvalBase& DEB) {
     return IsAvailable(DEB.distancesq);
   }
 
+  /**
+   * @brief release the storage of DistanceEvalBase object
+   *
+   * The data of displacement and the square of distance are cleaned
+   * and the corresponding storage are freed when they are allocated.
+   * Other components are nullified correspondingly. The flag of
+   * storage state is set as Unused.
+   *
+   * @param DEB [in,out] the DistanceEvalBase object to be released
+   * @return nothing
+   */
   void release(DistanceEvalBase& DEB) {
     if(DEB.state==Allocated) {
       safe_delete_array(DEB.displacement);
@@ -84,6 +167,19 @@ namespace std {
     DEB.state=Unused;
   }
 
+  /**
+   * @brief assign DistanceEvalBase object from another
+   *
+   * This operation just copy the data from source DistanceEvalBase object
+   * to the destination DistanceEvalBase object, including the square
+   * of distance and displacement. The minimum of the size of displacement
+   * array is used during the copy of displacement. These two DistanceEvalBase
+   * objects are also checked for their availability.
+   *
+   * @param dest [out] the DistanceEvalBase object to accept input
+   * @param src [in] the DistanceEvalBase object storing the input
+   * @return nothing
+   */
   void assign(DistanceEvalBase& dest, const DistanceEvalBase& src) {
     assert(IsAvailable(src));
     assert(IsAvailable(dest));
@@ -113,8 +209,19 @@ namespace std {
     dest.state=Reference;
   }
 
+  /**
+   * @brief check if this is a method for distance evaluation
+   *
+   * This is a check for generic type as a screening for unexpected types.
+   * It generally returns false.
+   *
+   * T is the type of the input object.
+   *
+   * @param t [in] the object with type T.
+   * @return false always to screen generic types.
+   */
   template <typename T>
-  bool IsDistanceEvalMethod(const T&) { return false; }
+  bool IsDistanceEvalMethod(const T&t ) { return false; }
 
   bool IsDistanceEvalMethod(const DistanceEvalBase&) { return true; }
 
