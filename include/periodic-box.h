@@ -2,7 +2,7 @@
 #ifndef _Periodic_Box_H_
 #define _Periodic_Box_H_
 
-#include "geometry.h"
+#include "geometry-name.h"
 #include "displacement-direct.h"
 
 namespace std {

@@ -234,7 +234,7 @@ target_link_libraries (test-pdb-data.run blas)
 
 
 ########################
-add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
-target_link_libraries (test-pdb-data-structure-op.run Base blas)
+#add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
+#target_link_libraries (test-pdb-data-structure-op.run Base blas)
 
 

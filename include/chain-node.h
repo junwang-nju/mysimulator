@@ -17,6 +17,7 @@
 #include "storage-state-name.h"
 #include "memory.h"
 #include "util.h"
+#include <cassert>
 
 namespace std {
 
