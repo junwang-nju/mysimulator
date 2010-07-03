@@ -1,4 +1,15 @@
 
+/**
+ * @file periodic-box.h
+ * @brief the geometry with periodic boundary
+ *
+ * This file describes the geometry with periodic boundary and some related
+ * operations for displacement calcution. It is a popular geometry for
+ * extended system.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Periodic_Box_H_
 #define _Periodic_Box_H_
 
@@ -7,11 +18,17 @@
 
 namespace std {
 
+  /**
+   * @brief declaration of the geometry with periodic boundary
+   */
   struct PeriodicBox;
 
   void assign(PeriodicBox&, const PeriodicBox&);
   void release(PeriodicBox&);
 
+  /**
+   * @brief the name of state of the periodicity
+   */
   enum PeriodicStateName {
     HavePeriodic=1,
     NoPeriodic=0
