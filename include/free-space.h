@@ -1,7 +1,7 @@
 
 /**
  * @file free-space.h
- * @brief the gepmetry with no boundary
+ * @brief the geometry with no boundary
  *
  * This file describes the geometry with no boundary. This is regularly
  * used for isolated or small-size systems.
