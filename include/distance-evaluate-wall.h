@@ -1,4 +1,15 @@
 
+/**
+ * @file distance-evaluate-wall.h
+ * @brief Distance Evaluation with wall
+ *
+ * This file describes the operations for distance evaluation related
+ * to wall. The wall is generally considered as the boundary with fixed
+ * location and various interactions with particles.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Distance_Evaluate_Wall_H_
 #define _Distance_Evaluate_Wall_H_
 
@@ -8,6 +19,22 @@
 
 namespace std {
 
+  /**
+   * @brief calculate distance and displacement related to plane wall
+   *
+   * To interact a plane wall, the force is perpendicular to the plane.
+   * The distance is defined as the perpendicular distance to the plane.
+   *
+   * DistEvalMethod is the type of the method for distance evaluation.
+   * GeomType is the type of geometry.
+   *
+   * @param Coor [in] the pointer to the list of coordinated
+   * @param Idx [in] the pointer to the list of indices
+   * @param Plane [in] the parameters describing the plane
+   * @param DEval [in,out] the method for distance evaluation
+   * @param Geo [in] the geometry
+   * @return nothing
+   */
   template <typename DistEvalMethod, typename GeomType>
   void DistanceDisplacement2Plane(
       const Vector<double>* Coor, const unsigned int* Idx, 
@@ -23,6 +50,23 @@ namespace std {
     scale(DEval.displacementvec,DEval());
   }
 
+  /**
+   * @brief calculate distance and displacement related to sphere wall
+   *
+   * To interact a sphere wall, the force is perpendicular to the sphere
+   * shell. The distance is defined as the perpendicular distance to the
+   * sphere shall (along radius).
+   *
+   * DistEvalMethod is the type of the method for distance evaluation.
+   * GeomType is the type of geometry.
+   *
+   * @param Coor [in] the pointer to the list of coordinated
+   * @param Idx [in] the pointer to the list of indices
+   * @param Sphere [in] the parameters describing the sphere
+   * @param DEval [in,out] the method for distance evaluation
+   * @param Geo [in] the geometry
+   * @return nothing
+   */
   template <typename DistEvalMethod, typename GeomType>
   void DistanceDisplacement2Sphere(
       const Vector<double>* Coor, const unsigned int* Idx,
