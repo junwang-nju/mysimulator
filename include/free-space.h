@@ -68,7 +68,7 @@ namespace std {
   /**
    * @brief the ID for this kind of geometry
    *
-   * It thakes the value of FreeSpaceType, and is used for type reflection
+   * It takes the value of FreeSpaceType, and is used for type reflection
    */
   const unsigned int FreeSpace::TypeID=FreeSpaceType;
 
