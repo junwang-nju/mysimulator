@@ -1,4 +1,16 @@
 
+/**
+ * @file parameter-list.h
+ * @brief data structure for list of parameter
+ *
+ * This file includes the data structure for a list of parameters
+ * with a map between keys and values. Some operations to
+ * read values based on the keys are also offered. This provides
+ * an efficient frame to store and extract key-value maps.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Parameter_List_H_
 #define _Parameter_List_H_
 
@@ -9,21 +21,58 @@
 
 namespace std {
 
+  /**
+   * @brief declaration of the type for the list of parameter
+   */
   struct ParameterList;
 
   void assign(ParameterList&,const ParameterList&);
   void release(ParameterList&);
 
+  /**
+   * @brief the data structure for list of parameter
+   *
+   * This contains lists of keys and of values, and the hash-tree structure
+   * to search the map relation. The map relation is one-to-one for
+   * each index. The hash-tree structure is used to accelerate the search
+   * the map for a value based on a key. This is regularly used as
+   * the storage of library of prameters.
+   */
   struct ParameterList {
 
+    /**
+     * @brief abbreviation for the type of the list of parameters
+     */
     typedef ParameterList Type;
+    /**
+     * @brief abbreivation for the binary tree between ParameterKey and Vector object of UniqueParameter
+     */
     typedef BTree<ParameterKey,Vector<UniqueParameter> > BTreeType;
 
+    /**
+     * @brief internal object for combination of hash and tree structures
+     *
+     * It contains an array of object of binary tree. Based on hash result,
+     * a certain tree could be picked out. In this implementation,
+     * the size of array is taken as 0xFFFFU.
+     */
     struct HashTreeType { BTreeType hash[0xFFFFU]; };
 
+    /**
+     * @brief the pointer to array of ParameterKey
+     */
     ParameterKey *key;
+    /**
+     * @brief Vector object of UniqueParameter as parameter value
+     */
     Vector<UniqueParameter> *value;
+    /**
+     * @brief size of keys or values
+     */
     unsigned int size;
+    /**
+     * @brief the pointer to hash-tree structure
+     */
     HashTreeType *tree;
     unsigned int state;
 
