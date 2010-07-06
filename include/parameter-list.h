@@ -74,23 +74,89 @@ namespace std {
      * @brief the pointer to hash-tree structure
      */
     HashTreeType *tree;
+    /**
+     * @brief the storage state of list of parameters
+     */
     unsigned int state;
 
+    /**
+     * @brief default initiator
+     *
+     * Just initiate the pointers with NULL, and initiate flags with
+     * no information
+     */
     ParameterList()
       : key(NULL), value(NULL), size(0), tree(NULL), state(Unused) {}
-    ParameterList(const Type&){ myError("Cannot create from Parameter List"); }
+    /**
+     * @brief initiator from another list of parameter
+     *
+     * It is prohibited and pop up an error message
+     *
+     * @param PL [in] the input ParameterList object
+     */
+    ParameterList(const Type& PL){
+      myError("Cannot create from Parameter List");
+    }
+    /**
+     * @brief copy from another ParameterList object
+     *
+     * It is implemented with assign operation
+     *
+     * @param PL [in] the input ParameterList object
+     * @return the reference to the resultant ParameterList object
+     */
     Type& operator=(const Type& PL) { assign(*this,PL); return *this; }
+    /**
+     * @brief destructor
+     *
+     * It is implemented with release operation
+     */
     ~ParameterList() { release(*this); }
 
+    /**
+     * @brief access the tree corresponding to hash value I
+     *
+     * It is a simplification of the way to access the tree corresponding
+     * to the hash value I.
+     *
+     * @param I [in] the input hash value
+     * @return the reference to binary tree corrsponding to input hash value
+     */
     BTreeType& operator[](const unsigned int I) { return (*tree).hash[I]; }
+    /**
+     * @brief visit the tree corresponding to the hash value I
+     *
+     * It is a simplification of the way to visit the tree corresponding
+     * to the hash value I.
+     *
+     * @param I [in] the input hash value
+     * @return the const reference to the binary tree corrsponding to
+     *         input hash value
+     */
     const BTreeType& operator[](const unsigned int I) const {
       return (*tree).hash[I];
     }
 
   };
 
+  /**
+   * @brief check the availability of the list of parameter
+   *
+   * It is implemented by checking the internal pointer to the tree array
+   *
+   * @param PL [in] the ParameterList object to be checked
+   * @return the availability of the input ParameterList object
+   */
   bool IsAvailable(const ParameterList& PL) { return IsAvailable(PL.tree); }
 
+  /**
+   * @brief update the tree in ParameterList object
+   *
+   * At first, the contents of the original tree are released. Then,
+   * the internal key-value map are inserted into the tree. The concerned
+   * ParameterList object is checked for its availability before this
+   * operation.
+   */
   void updatetree(ParameterList& PL) {
     assert(IsAvailable(PL));
     for(unsigned int i=0;i<0xFFFFU;++i) release(PL[i]);
@@ -98,6 +164,20 @@ namespace std {
       insert(PL[(PL.key[i].hash[0]&0xFFFF0000U)>>16],PL.key[i],PL.value[i]);
   }
 
+  /**
+   * @brief assign ParameterList object from another
+   *
+   * It is implemented by copying the keys and values of source object
+   * into those in destination object. The number of the concerned
+   * keys or values is the minimum of the numbers of keys or values
+   * in source and destination objects. Then, the tree in the ParameterList
+   * object is updated. The concerned ParameterList objects are
+   * checked for their availability before this operation.
+   *
+   * @param dest [out] the ParameterList object to accept input
+   * @param src [in] the ParameterList object storing input
+   * @return nothing
+   */
   void assign(ParameterList& dest, const ParameterList& src) {
     assert(IsAvailable(dest));
     assert(IsAvailable(src));
@@ -109,6 +189,15 @@ namespace std {
     updatetree(dest);
   }
 
+  /**
+   * @brief release the ParameterList object
+   *
+   * based on the internal storage state, the internal storage in ParameterList
+   * object is released. The flags are also updated.
+   *
+   * @param PL [out] the ParameterList object to be released
+   * @return nothing
+   */
   void release(ParameterList& PL) {
     if(IsAvailable(PL)) {
       if(PL.state==Reference) {
@@ -130,6 +219,17 @@ namespace std {
     PL.state=Unused;
   }
 
+  /**
+   * @brief allocate ParameterList object with constant size of key and value
+   *
+   * The internal key, value and tree are allocated based on the input
+   * information. The state are also updated.
+   *
+   * @param PL [out] the ParameterList object to be allocated
+   * @param ksize,vsize [in] the sizes of a key and of a value
+   * @param nitem [in] the number of keys and values
+   * @return nothing
+   */
   void allocate(ParameterList& PL,
                 const unsigned int ksize, const unsigned int vsize,
                 const unsigned int nitem) {
@@ -144,6 +244,22 @@ namespace std {
     PL.state=Allocated;
   }
 
+  /**
+   * @brief allocate ParameterList object with various size of keys and constant size of values
+   *
+   * The internal key, value and tree are allocated based on the input
+   * information. The state are also updated.
+   *
+   * @param PL [out] the ParameterList object to be allocated
+   * @param ksize [in] the array containing the sizes of keys
+   * @param vsize [in] the size of values
+   * @param nitem [in] the number of keys and values
+   * @param koff [in] the offset for the first element in array ksize.
+   *                  It takes a default value of uZero.
+   * @param kstep [in] the separation between elements in array ksize.
+   *                   It takes a default value of uOne
+   * @return nothing
+   */
   void allocate(ParameterList& PL,
                 const unsigned int *ksize, const unsigned int vsize,
                 const unsigned int nitem,
@@ -160,6 +276,22 @@ namespace std {
     PL.state=Allocated;
   }
 
+  /**
+   * @brief allocate ParameterList object with constant size of keys and various size of values
+   *
+   * The internal key, value and tree are allocated based on the input
+   * information. The state are also updated.
+   *
+   * @param PL [out] the ParameterList object to be allocated
+   * @param ksize [in] the size of keys
+   * @param vsize [in] the array containing the sizes of values
+   * @param nitem [in] the number of keys and values
+   * @param voff [in] the offset for the first element in array vsize.
+   *                  It takes a default value of uZero.
+   * @param vstep [in] the separation between elements in array vsize.
+   *                   It takes a default value of uOne
+   * @return nothing
+   */
   void allocate(ParameterList& PL,
                 const unsigned int ksize, const unsigned int *vsize,
                 const unsigned int nitem,
@@ -176,6 +308,22 @@ namespace std {
     PL.state=Allocated;
   }
 
+  /**
+   * @brief allocate ParameterList object with various size of keys and values
+   *
+   * The internal key, value and tree are allocated based on the input
+   * information. The state are also updated.
+   *
+   * @param PL [out] the ParameterList object to be allocated
+   * @param ksize [in] the array containing the sizes of keys
+   * @param vsize [in] the array containing the sizes of values
+   * @param nitem [in] the number of keys and values
+   * @param koff, voff [in] the offset for the first element in array ksize
+   *                        and vsize. They take default value of uZero.
+   * @param kstep, vstep [in] the separation between elements in array ksize
+   *                          and vsize. They take default value of uOne
+   * @return nothing
+   */
   void allocate(ParameterList& PL,
                 const unsigned int *ksize, const unsigned int *vsize,
                 const unsigned int nitem,
@@ -194,6 +342,16 @@ namespace std {
     PL.state=Allocated;
   }
 
+  /**
+   * @brief refer to another ParameterList object
+   *
+   * Just copy the pointers and flags in source object into
+   * those of the destinate object.
+   *
+   * @param dest [out] the ParameterList object to accept input
+   * @param src [in] the ParameterList object storing input
+   * @return nothing
+   */
   void refer(ParameterList& dest, const ParameterList& src) {
     assert(IsAvailable(src));
     release(dest);
@@ -204,6 +362,23 @@ namespace std {
     dest.state=Reference;
   }
 
+  /**
+   * @brief get the pointer of value corresponding to a value
+   *
+   * A temporary key is generated based on the input indices. The pointer
+   * of values based on this key is found out.
+   *
+   * @param PL [in] the ParameterList object containing the library of
+   *                parameters. It uses a reference to ease the get operation
+   * @param idx [in] the array containing indices
+   * @param nidx [in] the number of indices
+   * @param ioff [in] the offset of the first element in the array idx.
+   *                  it takes the default value of iZero.
+   * @param istep [in] the separation between used elements in array idx.
+   *                   it takes the default values of lOne.
+   * @return the pointer to the Vector of values corresponding to the input
+   *         indices.
+   */
   const Vector<UniqueParameter>*
     get(ParameterList& PL, const unsigned int* idx, const unsigned int nidx,
                            const int ioff=iZero, const long istep=lOne) {
@@ -214,6 +389,15 @@ namespace std {
     return get(PL[(K.hash[0]&0xFFFF0000U)>>16],K);
   }
 
+  /**
+   * @brief read ParameterList object from istream
+   *
+   * read the keys and values from istream, and update the tree accordingly.
+   *
+   * @param is [in,out] the istream to be read
+   * @param PL [out] the ParameterList to accept input
+   * @return the istream after input
+   */
   istream& operator>>(istream& is, ParameterList& PL) {
     assert(IsAvailable(PL));
     for(unsigned int i=0;i<PL.size;++i) is>>PL.key[i]>>PL.value[i];
