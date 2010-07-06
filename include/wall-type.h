@@ -1,4 +1,14 @@
 
+/**
+ * @file wall-type.h
+ * @brief the name and operation for various walls
+ *
+ * This file contains the name for various walls and some procedures
+ * to obtain the properties of walls.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Wall_Type_H_
 #define _Wall_Type_H_
 
@@ -6,6 +16,12 @@
 
 namespace std {
 
+  /**
+   * @brief the name of various kinds of walls
+   *
+   * Here give the names of various kinds of walls. This eases the
+   * access of wall types.
+   */
   enum WallTypeName {
     PlaneWallType=0,
     SphereWallType
