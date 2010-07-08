@@ -23,10 +23,19 @@ namespace std {
    * access of wall types.
    */
   enum WallTypeName {
+    /**
+     * @brief the type for plane wall
+     */
     PlaneWallType=0,
+    /**
+     * @brief the type of spherical wall
+     */
     SphereWallType
   };
 
+  /**
+   * @brief the size of a certain shape of wall
+   */
   const unsigned int WallShapeDataSize(const unsigned int walltype,
                                        const unsigned int dim) {
     if(walltype==PlaneWallType) return dim+dim;
