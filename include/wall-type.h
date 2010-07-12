@@ -34,7 +34,14 @@ namespace std {
   };
 
   /**
-   * @brief the size of a certain shape of wall
+   * @brief get the size of a certain shape of wall
+   *
+   * The size of data depends on the type of wall and the dimension
+   * of the concerned space.
+   *
+   * @param walltype [in] the type of wall
+   * @param dim [in] the dimension of the space
+   * @return the size of data to describe wall
    */
   const unsigned int WallShapeDataSize(const unsigned int walltype,
                                        const unsigned int dim) {
@@ -44,6 +51,21 @@ namespace std {
     return 0;
   }
 
+  /**
+   * @brief get the function pointer of distance calculation for a wall
+   *
+   * The function pointer for distance from a point to a wall depends
+   * on the type of wall only. This is implemented by only a judgement.
+   *
+   * DistEvalMethod is the type of functor for distance evaluation.
+   * GeomType is the type of the cncerned geometry.
+   *
+   * @param walltype [in] the type of wall
+   * @return the pointer of the function to calculate distance from
+   *         a point to a wall.
+   * @note the output pointer is converted as pointer to void, so that
+   *       the pointer usage is easier.
+   */
   template <typename DistEvalMethod, typename GeomType>
   void* WallDistanceFuncPointer(const unsigned int walltype) {
     typedef void (*DFType)(
