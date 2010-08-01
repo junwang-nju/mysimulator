@@ -34,6 +34,8 @@ int main() {
   runHead=0;
 
   unsigned int NS=0;
+  Vector<unsigned int> Hist;
+  allocate(Hist,10);
   int rX,rY;
   do {
     ++runHead;
@@ -51,7 +53,7 @@ int main() {
       if((X[i]==rX)&&(Y[i]==rY)) { incflag=false; break; }
     if(incflag&&(runHead==L1)) {
       if(YTurnHead==0)  YTurnHead=L1;
-      cout<<E(X,Y)<<endl;
+      ++Hist[static_cast<unsigned int>(-E(X,Y)+0.5)];
       ++NS;
     }
     if(runHead==L1) incflag=false;
@@ -69,6 +71,7 @@ int main() {
     }
   } while(runHead>=1);
   cout<<NS<<endl;
+  for(unsigned int i=0;i<Hist.size;++i) cout<<i<<"\t"<<Hist[i]<<endl;
   
   return 0;
 }

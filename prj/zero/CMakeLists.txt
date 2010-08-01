@@ -14,3 +14,6 @@ target_link_libraries (eqsolve.run blas)
 add_executable (2dcase1.run 2d-conf-case1.cxx)
 target_link_libraries (2dcase1.run blas)
 
+add_executable (zero-solver.run zero-solver.cxx)
+target_link_libraries (zero-solver.run blas)
+
