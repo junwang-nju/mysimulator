@@ -59,7 +59,7 @@ double startpoint(const unsigned int n, const Vector<double>& a) {
   double r,u,min;
   r=log(fabs(a[n]));
   min=exp((r-log(fabs(a[0])))/n);
-  for(unsigned int i=0;i<n;++i)
+  for(unsigned int i=1;i<n;++i)
     if(a[i]!=0) {
       u=exp((r-log(fabs(a[i])))/(n-i));
       if(u<min) min=u;
@@ -116,21 +116,22 @@ int newton_real(const unsigned int m, const Vector<double>& coef,
   Vector<double> a,a1;
   allocate(a,n+1);
   allocate(a1,n);
+  a=coef;
 
   int err=0;
-  for(;a[n]==0.0;--n) res[n]=dcomplex(0.);
+  for(;fabs(a[n])<1e-16;--n) res[n]=dcomplex(0.);
 
   double u,r,r0,eps;
   double f,f0,ff,f2,fw;
   dcomplex z,z0,dz,fz,fwz,wz,fz0,fz1;
-
+  
   while(n>2) {
     for(unsigned int i=0;i<n;++i) a1[i]=a[i]*(n-i);
     u=startpoint(n,a);
     z0=dcomplex(0);
     f0=ff=2.0*a[n]*a[n];
-    fz0=dcomplex(a[n-1]);
-    z=dcomplex((a[n-1]==0.0?1:-a[n]/a[n-1]),0);
+    fz0=dcomplex(a[n-1],0);
+    z=dcomplex((fabs(a[n-1])<1e-16?1:-a[n]/a[n-1]),0.);
     z=dcomplex(z.real()*u*0.5/fabs(z.real()),0.);
     dz=z;
     f=feval(n,a,z,fz);
@@ -138,9 +139,9 @@ int newton_real(const unsigned int m, const Vector<double>& coef,
     r=sqrt(norm(dz));
     eps=4*n*n*f0*pow(2,-16*2);
     unsigned int stg,iter;
-    for(stg=1,iter=0;(z+dz!=z)&&(f>eps)&&(iter<50);++iter) {
+    for(stg=1,iter=0;(z+dz!=z)&&(fabs(f)>eps)&&(iter<50);++iter) {
       u=feval(n-1,a1,z,fz1);
-      if(u==0.0)  alterdirection(dz,5.0);
+      if(fabs(u)<1e-16)  alterdirection(dz,5.0);
       else {
         dz=dcomplex((fz.real()*fz1.real()+fz.imag()*fz1.imag())/u,
                     (fz.imag()*fz1.real()-fz.real()*fz1.imag())/u);
@@ -188,10 +189,9 @@ iter2:
         if(z+dz!=z)  goto iter2;
       }
     }
-    if(iter>=50)
-      err--;
+    if(iter>=50)  err--;
     z0=dcomplex(z.real(),0);
-    if(feval(n,a,z0,fz)<=f) {
+    if(feval(n,a,z0,fz)<=f+DRelDelta) {
       res[n]=z0;
       n=realdeflation(n,a,z.real());
     } else {
@@ -209,13 +209,23 @@ iter2:
 int main() {
   Vector<double> a;
   Vector<dcomplex> res;
-  allocate(a,3);
-  allocate(res,3);
-  assign(a,0.);
-  a[0]=1;
-  a[2]=-1;
-  newton_real(2,a,res);
+  ifstream ifs("16.e.f0");
+  unsigned int n,m;
+  ifs>>n;
+  allocate(a,n+1);
+  allocate(res,n+1);
+  for(unsigned int i=0;i<=n;++i) {
+    ifs>>m;
+    ifs>>a[n-m];
+  }
+  for(unsigned int i=1;i<=n;++i)  a[i]/=a[0];
+  a[0]=1.;
+
+  newton_real(n,a,res);
   cout<<res<<endl;
+  res[1].real()=-35.90346173424521;
+  res[1].imag()=0;
+  cout<<feval(n,a,res[1],res[0])<<endl;
   return 0;
 }
 
