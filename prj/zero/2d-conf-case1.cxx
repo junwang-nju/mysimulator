@@ -16,7 +16,7 @@ double E(const Vector<int>& X, const Vector<int>& Y) {
 }
 
 int main() {
-  unsigned int L=16;
+  unsigned int L=25;
   unsigned int L1=L-1;
 
   Vector<int> dirc;
@@ -35,7 +35,7 @@ int main() {
 
   unsigned int NS=0;
   Vector<unsigned int> Hist;
-  allocate(Hist,10);
+  allocate(Hist,20);
   int rX,rY;
   do {
     ++runHead;

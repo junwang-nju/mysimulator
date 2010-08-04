@@ -1,0 +1,46 @@
+
+#include "vector.h"
+#include "random-generator.h"
+using namespace std;
+
+double potential(const double& x) {
+  double d;
+  d=x*x;
+  return d*d-2*d-0.3*x;
+}
+
+double gradient(const double& x) {
+  double d;
+  d=x*x;
+  return 4*(d-1)*x-0.3;
+}
+
+int main() {
+  double x,v,f;
+  x=-1;
+  v=0;
+  f=-gradient(x);
+
+  double dt;
+  double gamma;
+  double T;
+  double rsize;
+  GaussianRNG grng;
+  dt=0.001;
+  gamma=1.;
+  T=1;
+  rsize=sqrt(2*gamma*T*(dt*0.5));
+  allocate(grng);
+
+  for(unsigned int i=0;i<200000;++i) {
+    v+=(f-gamma*v)*dt*0.5;
+    v+=rand(grng)*rsize;
+    x+=v*dt;
+    f=-gradient(x);
+    v+=f*dt*0.5+rand(grng)*rsize;
+    v/=(1+gamma*dt*0.5);
+    cout<<i<<"\t"<<x<<"\t"<<v<<"\t"<<potential(x)+0.5*v*v<<endl;
+  }
+  return 0;
+}
+
