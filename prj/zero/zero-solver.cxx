@@ -1,10 +1,13 @@
 
+#define _DBL_RADIX    2
+
 #include "vector.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
 #include <complex>
 #include <fstream>
+#include <cfloat>
 using namespace std;
 
 typedef complex<double> dcomplex;
@@ -24,11 +27,13 @@ void quadratic(const unsigned int n, const Vector<double>& a,
       }
     } else {
       r=1-4*a[0]*a[2]/(a[1]*a[1]);
+      double d;
+      d=a[1]/(a[0]*2);
       if(r<0) {
-        res[1]=dcomplex(-a[1]/(a[0]*2),a[1]*sqrt(-r)/(2*a[0]));
+        res[1]=dcomplex(-d,d*sqrt(-r));
         res[2]=dcomplex(res[1].real(),-res[1].imag());
       } else {
-        res[1]=dcomplex(-a[1]/(2*a[0])*(1+sqrt(r)),0.);
+        res[1]=dcomplex(-d*(1+sqrt(r)),0.);
         res[2]=dcomplex(a[2]/(a[0]*res[1].real()),0.);
       }
     }
@@ -82,7 +87,8 @@ double upperbound(const unsigned int n, const Vector<double>& a,
   }
   t=a[n]+z.real()*r-q*s;
   e=u*e+fabs(t);
-  e=(9.0*e-7.0*(fabs(t)+fabs(r)*u)+fabs(z.real())*fabs(r)*2.0)*pow(2,-16+1);
+  e=(9.0*e-7.0*(fabs(t)+fabs(r)*u)+fabs(z.real())*fabs(r)*2.0)*
+    pow(_DBL_RADIX,-DBL_MANT_DIG+1);
   return e*e;
 }
 
@@ -119,11 +125,12 @@ int newton_real(const unsigned int m, const Vector<double>& coef,
   a=coef;
 
   int err=0;
-  for(;fabs(a[n])<1e-16;--n) res[n]=dcomplex(0.);
+  for(;a[n]==0.0;--n) res[n]=dcomplex(0.);
 
   double u,r,r0,eps;
   double f,f0,ff,f2,fw;
   dcomplex z,z0,dz,fz,fwz,wz,fz0,fz1;
+  unsigned int stg,iter;
   
   while(n>2) {
     for(unsigned int i=0;i<n;++i) a1[i]=a[i]*(n-i);
@@ -131,17 +138,16 @@ int newton_real(const unsigned int m, const Vector<double>& coef,
     z0=dcomplex(0);
     f0=ff=2.0*a[n]*a[n];
     fz0=dcomplex(a[n-1],0);
-    z=dcomplex((fabs(a[n-1])<1e-16?1:-a[n]/a[n-1]),0.);
+    z=dcomplex((a[n-1]==0.0?1:-a[n]/a[n-1]),0.);
     z=dcomplex(z.real()*u*0.5/fabs(z.real()),0.);
     dz=z;
     f=feval(n,a,z,fz);
     r0=2.5*u;
     r=sqrt(norm(dz));
-    eps=4*n*n*f0*pow(2,-16*2);
-    unsigned int stg,iter;
-    for(stg=1,iter=0;(z+dz!=z)&&(fabs(f)>eps)&&(iter<50);++iter) {
+    eps=4*n*n*f0*pow(_DBL_RADIX,-DBL_MANT_DIG*2);
+    for(stg=1,iter=0;(z+dz!=z)&&(f>eps)&&(iter<50);++iter) {
       u=feval(n-1,a1,z,fz1);
-      if(fabs(u)<1e-16)  alterdirection(dz,5.0);
+      if(u==0.0)  alterdirection(dz,5.0);
       else {
         dz=dcomplex((fz.real()*fz1.real()+fz.imag()*fz1.imag())/u,
                     (fz.imag()*fz1.real()-fz.real()*fz1.imag())/u);
@@ -165,9 +171,8 @@ iter2:
           if(div2) {
             dz*=dcomplex(0.5);
             wz=z0-dz;
-          } else {
+          } else
             wz-=dz;
-          }
           fw=feval(n,a,wz,fwz);
           if(fw>=f) break;
           f=fw;
@@ -180,10 +185,9 @@ iter2:
             break;
           }
         }
-      } else {
+      } else
         eps=upperbound(n,a,z);
-      }
-      if((r<sqrt(norm(z))*pow(2,-8))&&(f>=f0)) {
+      if((r<sqrt(norm(z))*pow(_DBL_RADIX,-DBL_MANT_DIG/2))&&(f>=f0)) {
         z=z0;
         alterdirection(dz,0.5);
         if(z+dz!=z)  goto iter2;
@@ -191,7 +195,7 @@ iter2:
     }
     if(iter>=50)  err--;
     z0=dcomplex(z.real(),0);
-    if(feval(n,a,z0,fz)<=f+DRelDelta) {
+    if(feval(n,a,z0,fz)<=f) {
       res[n]=z0;
       n=realdeflation(n,a,z.real());
     } else {
@@ -209,6 +213,7 @@ iter2:
 int main() {
   Vector<double> a;
   Vector<dcomplex> res;
+
   ifstream ifs("16.e.f0");
   unsigned int n,m;
   ifs>>n;
@@ -223,9 +228,10 @@ int main() {
 
   newton_real(n,a,res);
   cout<<res<<endl;
-  res[1].real()=-35.90346173424521;
-  res[1].imag()=0;
-  cout<<feval(n,a,res[1],res[0])<<endl;
+
+  for(unsigned int i=1;i<=n;++i)
+    cout<<feval(n,a,res[1],res[0])<<endl;
+
   return 0;
 }
 
