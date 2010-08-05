@@ -1007,7 +1007,23 @@ namespace std {
            const_cast<long*>(&astep),srcB+boff,const_cast<long*>(&bstep));
   }
 
-  inline int dot(const int* srcA, const int* srcB,const long ndot,
+  /**
+   * @brief dot product for \c int arrays
+   *
+   * It is implemented by calculating summation of the corresponding
+   * products. The arrays are checked for their availability before
+   * this operation.
+   *
+   * @param srcA, srcB [in] the arrays to calculate dot product
+   * @param ndot [in] the number of elements for dot product
+   * @param aoff, boff [in] the offsets for the first elements in
+   *                        the arrays srcA, srcB. They take the default
+   *                        value of iZero.
+   * @param astep, bstep [in] the steps between elements in the arrays
+   *                          srcA, srcB. They take the default value lOne.
+   * @return the dot product of the concerned arrays.
+   */
+  inline int dot(const int* srcA, const int* srcB, const long ndot,
                  const int aoff=iZero, const long astep=lOne,
                  const int boff=iZero, const long bstep=lOne) {
     assert(srcA!=NULL);
@@ -1020,6 +1036,22 @@ namespace std {
     return s;
   }
 
+  /**
+   * @brief dot product for \c unsigned \c int arrays
+   *
+   * It is implemented by calculating summation of the corresponding
+   * products. The arrays are checked for their availability before
+   * this operation.
+   *
+   * @param srcA, srcB [in] the arrays to calculate dot product
+   * @param ndot [in] the number of elements for dot product
+   * @param aoff, boff [in] the offsets for the first elements in
+   *                        the arrays srcA, srcB. They take the default
+   *                        value of iZero.
+   * @param astep, bstep [in] the steps between elements in the arrays
+   *                          srcA, srcB. They take the default value lOne.
+   * @return the dot product of the concerned arrays.
+   */
   inline unsigned int dot(const unsigned int* srcA, const unsigned int* srcB,
                           const long ndot,
                           const int aoff=iZero, const long astep=lOne,
@@ -1035,6 +1067,21 @@ namespace std {
     return s;
   }
 
+  /**
+   * @brief dot product for \c double arrays
+   *
+   * It is implemented by BLAS operation ddot_. The arrays are checked
+   * for their availability before this operation.
+   *
+   * @param srcA, srcB [in] the arrays to calculate dot product
+   * @param ndot [in] the number of elements for dot product
+   * @param aoff, boff [in] the offsets for the first elements in
+   *                        the arrays srcA, srcB. They take the default
+   *                        value of iZero.
+   * @param astep, bstep [in] the steps between elements in the arrays
+   *                          srcA, srcB. They take the default value lOne.
+   * @return the dot product of the concerned arrays.
+   */
   inline double dot(const double* srcA, const double* srcB, const long ndot,
                     const int aoff=iZero, const long astep=lOne,
                     const int boff=iZero, const long bstep=lOne) {
@@ -1045,26 +1092,82 @@ namespace std {
                  const_cast<long*>(&bstep));
   }
 
+  /**
+   * @brief the square of norm of \c int array
+   *
+   * It is implemented with dot operation.
+   *
+   * @param src [in] the array for the norm calculation
+   * @param nnormsq [in] the number of elements in concerned calculation
+   * @param off [in] the offset for the first element in array src. It takes
+   *                 the default value iZero.
+   * @param step [in] the step between elements in array src. It takes
+   *                  the default value lOne.
+   * @return the square of the norm of the input array.
+   */
   inline int normSQ(const int* src, const long nnormsq,
                     const int off=iZero, const long step=lOne) {
     return dot(src,src,nnormsq,off,step,off,step);
   }
 
+  /**
+   * @brief the square of norm of \c unsigned \c int array
+   *
+   * It is implemented with dot operation.
+   *
+   * @param src [in] the array for the norm calculation
+   * @param nnormsq [in] the number of elements in concerned calculation
+   * @param off [in] the offset for the first element in array src. It takes
+   *                 the default value iZero.
+   * @param step [in] the step between elements in array src. It takes
+   *                  the default value lOne.
+   * @return the square of the norm of the input array.
+   */
   inline unsigned int normSQ(const unsigned int* src, const long nnormsq,
                              const int off=iZero, const long step=lOne) {
     return dot(src,src,nnormsq,off,step,off,step);
   }
 
+  /**
+   * @brief the square of norm of \c double array
+   *
+   * It is implemented with dot operation.
+   *
+   * @param src [in] the array for the norm calculation
+   * @param nnormsq [in] the number of elements in concerned calculation
+   * @param off [in] the offset for the first element in array src. It takes
+   *                 the default value iZero.
+   * @param step [in] the step between elements in array src. It takes
+   *                  the default value lOne.
+   * @return the square of the norm of the input array.
+   */
   inline double normSQ(const double* src, const long nnormsq,
                        const int off=iZero, const long step=lOne) {
     return dot(src,src,nnormsq,off,step,off,step);
   }
 
+  /**
+   * @brief norm of \c double array
+   *
+   * It is implemented with BLAS operation dnrm2_. The array is checked
+   * for the availability before this operation.
+   *
+   * @param src [in] the array for norm calculation
+   * @param nnorm [in] the number of elements in calculation
+   * @param soff [in] the offset for the first element in array src. It takes
+   *                  the default value iZero.
+   * @param sstep [in] the step between elements in array src. It takes
+   *                   the default value lOne.
+   * @return the norm of the input array
+   * @note For the norm, the result is probably not integer even when the
+   *       input array is composed of integers. Therefore, this procedure
+   *       is only used for \c double data.
+   */
   inline double norm(const double* src, const long nnorm,
-                     const int off=iZero, const long step=lOne) {
+                     const int soff=iZero, const long sstep=lOne) {
     assert(src!=NULL);
-    return dnrm2_(const_cast<long*>(&nnorm),const_cast<double*>(src)+off,
-                  const_cast<long*>(&step));
+    return dnrm2_(const_cast<long*>(&nnorm),const_cast<double*>(src)+soff,
+                  const_cast<long*>(&sstep));
   }
 
   inline int asum(const int* src, const long nasum,
