@@ -30,7 +30,7 @@ namespace std {
    * overwite existent storage (namely leak of memory). The input
    * expected number of elements is also required to be larger than
    * zero, which makes the allocation is not trivial. Then the allocation
-   * is implementated with new operator.
+   * is implemented with new operator.
    *
    * T is the type of data pointed by the concerned pointer.
    *
@@ -48,7 +48,7 @@ namespace std {
   /**
    * @brief release storage pointed by a pointer
    *
-   * This is implementated by the function safe_delete_array for pointer
+   * This is implemented by the function safe_delete_array for pointer
    * to some storage. The resultant pointer would have the value NULL.
    *
    *  T is the type of data pointed by the input pointer.
@@ -96,7 +96,7 @@ namespace std {
   /**
    * @brief copy \c double array with offsets and steps.
    *
-   * It is implementated with BLAS function dcopy_. The pointers
+   * It is implemented with BLAS function dcopy_. The pointers
    * of input and output arrays are checked for their availability
    * before this operation.
    *
@@ -125,7 +125,7 @@ namespace std {
   /**
    * @brief copy \c int array with offsets and steps.
    *
-   * It is implementated with BLAS function scopy_. The pointers
+   * It is implemented with BLAS function scopy_. The pointers
    * of input and output arrays are checked for their availability
    * before this operation. The compatibility of the sizes of
    * the \c int data and the internal \c float format is also checked.
@@ -158,7 +158,7 @@ namespace std {
   /**
    * @brief copy \c unsigned \c int array with offsets and steps.
    *
-   * It is implementated with BLAS function scopy_. The pointers
+   * It is implemented with BLAS function scopy_. The pointers
    * of input and output arrays are checked for their availability
    * before this operation. The compatibility of the sizes of
    * the \c unsigned \c int data and the internal \c float format is
@@ -193,7 +193,7 @@ namespace std {
   /**
    * @brief copy a constant to an array with offset and step
    *
-   * It is implementated with the assign operation between arrays.
+   * It is implemented with the assign operation between arrays.
    *
    * T is the type of the input data
    *
@@ -215,7 +215,7 @@ namespace std {
   /**
    * @brief copy \c unsigned \c int constant to array with offset and step
    *
-   * It is implementated with assign operation for \c unsigned \c int array.
+   * It is implemented with assign operation for \c unsigned \c int array.
    *
    * @param dest [out] the array to accept input
    * @param value [in] the input \c unsigned \c int constant
@@ -238,7 +238,7 @@ namespace std {
   /**
    * @brief copy \c double constant to array with offset and step
    *
-   * It is implementated with assign operation for \c double array.
+   * It is implemented with assign operation for \c double array.
    *
    * @param dest [out] the array to accept input
    * @param value [in] the input \c double constant
@@ -329,7 +329,7 @@ namespace std {
   /**
    * @brief scale \c int array by another \c int array offsets and steps
    *
-   * It is implementated by looping over all the elements. The concerned
+   * It is implemented by looping over all the elements. The concerned
    * arrays are checked for their availability before this operation.
    *
    * @param dest [in,out] the array to be scaled
@@ -355,7 +355,7 @@ namespace std {
   /**
    * @brief scale \c unsigned \c int array by another \c int array offsets and steps
    *
-   * It is implementated by looping over all the elements. The concerned
+   * It is implemented by looping over all the elements. The concerned
    * arrays are checked for their availability before this operation.
    *
    * @param dest [in,out] the array to be scaled
@@ -382,7 +382,7 @@ namespace std {
   /**
    * @brief scale \c int array by another \c int array offsets and steps
    *
-   * It is implementated by looping over all the elements. The concerned
+   * It is implemented by looping over all the elements. The concerned
    * arrays are checked for their availability before this operation.
    *
    * @param dest [in,out] the array to be scaled
@@ -492,7 +492,7 @@ namespace std {
   /**
    * @brief shift \c int array with another one considering offsets and steps
    *
-   * It is implementated with the shift operation with constant factor iOne
+   * It is implemented with the shift operation with constant factor iOne
    * and variable factor in input array.
    *
    * @param dest [in,out] the array to be shifted
@@ -513,7 +513,7 @@ namespace std {
   /**
    * @brief shift \c unsigned \c int array with another one considering offsets and steps
    *
-   * It is implementated with the shift operation with constant factor iOne
+   * It is implemented with the shift operation with constant factor iOne
    * and variable factor in input array.
    *
    * @param dest [in,out] the array to be shifted
@@ -535,7 +535,7 @@ namespace std {
   /**
    * @brief shift \c double array with another one considering offsets and steps
    *
-   * It is implementated with the shift operation with constant factor iOne
+   * It is implemented with the shift operation with constant factor iOne
    * and variable factor in input array.
    *
    * @param dest [in,out] the array to be shifted
@@ -556,7 +556,7 @@ namespace std {
   /**
    * @brief shift \c int array with a constant considering offset and step
    *
-   * it is implementated with the shift operation with a constant as
+   * it is implemented with the shift operation with a constant as
    * the array factor.
    *
    * @param dest [in,out] the array to be shifted
@@ -576,7 +576,7 @@ namespace std {
   /**
    * @brief shift \c unsigned \c int array with a constant considering offset and step
    *
-   * it is implementated with the shift operation with a constant as
+   * it is implemented with the shift operation with a constant as
    * the array factor.
    *
    * @param dest [in,out] the array to be shifted
@@ -597,7 +597,7 @@ namespace std {
   /**
    * @brief shift \c double array with a constant considering offset and step
    *
-   * it is implementated with the shift operation with a constant as
+   * it is implemented with the shift operation with a constant as
    * the array factor.
    *
    * @param dest [in,out] the array to be shifted
@@ -1099,15 +1099,15 @@ namespace std {
    *
    * @param src [in] the array for the norm calculation
    * @param nnormsq [in] the number of elements in concerned calculation
-   * @param off [in] the offset for the first element in array src. It takes
-   *                 the default value iZero.
-   * @param step [in] the step between elements in array src. It takes
-   *                  the default value lOne.
+   * @param noff [in] the offset for the first element in array src. It takes
+   *                  the default value iZero.
+   * @param nstep [in] the step between elements in array src. It takes
+   *                   the default value lOne.
    * @return the square of the norm of the input array.
    */
   inline int normSQ(const int* src, const long nnormsq,
-                    const int off=iZero, const long step=lOne) {
-    return dot(src,src,nnormsq,off,step,off,step);
+                    const int noff=iZero, const long nstep=lOne) {
+    return dot(src,src,nnormsq,noff,nstep,noff,nstep);
   }
 
   /**
@@ -1117,15 +1117,15 @@ namespace std {
    *
    * @param src [in] the array for the norm calculation
    * @param nnormsq [in] the number of elements in concerned calculation
-   * @param off [in] the offset for the first element in array src. It takes
-   *                 the default value iZero.
-   * @param step [in] the step between elements in array src. It takes
-   *                  the default value lOne.
+   * @param noff [in] the offset for the first element in array src. It takes
+   *                  the default value iZero.
+   * @param nstep [in] the step between elements in array src. It takes
+   *                   the default value lOne.
    * @return the square of the norm of the input array.
    */
   inline unsigned int normSQ(const unsigned int* src, const long nnormsq,
-                             const int off=iZero, const long step=lOne) {
-    return dot(src,src,nnormsq,off,step,off,step);
+                             const int noff=iZero, const long nstep=lOne) {
+    return dot(src,src,nnormsq,noff,nstep,noff,nstep);
   }
 
   /**
@@ -1135,15 +1135,15 @@ namespace std {
    *
    * @param src [in] the array for the norm calculation
    * @param nnormsq [in] the number of elements in concerned calculation
-   * @param off [in] the offset for the first element in array src. It takes
-   *                 the default value iZero.
-   * @param step [in] the step between elements in array src. It takes
-   *                  the default value lOne.
+   * @param noff [in] the offset for the first element in array src. It takes
+   *                  the default value iZero.
+   * @param nstep [in] the step between elements in array src. It takes
+   *                   the default value lOne.
    * @return the square of the norm of the input array.
    */
   inline double normSQ(const double* src, const long nnormsq,
-                       const int off=iZero, const long step=lOne) {
-    return dot(src,src,nnormsq,off,step,off,step);
+                       const int noff=iZero, const long nstep=lOne) {
+    return dot(src,src,nnormsq,noff,nstep,noff,nstep);
   }
 
   /**
@@ -1170,47 +1170,110 @@ namespace std {
                   const_cast<long*>(&sstep));
   }
 
+  /**
+   * @brief summation of the absolute value of elements in \c int array
+   *
+   * It is implemented by summing the absolute values of elements in the
+   * concerned array. The array is checked for its availability before
+   * this operation.
+   *
+   * @param src [in] the array for summation operation
+   * @param nasum [in] the number of elements involved in this operation
+   * @param aoff [in] the offset for the first element in the array src.
+   *                  It takes the default value iZero.
+   * @param astep [in] the step between elements in the array src. It takes
+   *                   the default value lOne.
+   * @return the summation of the absolute values of elements in input array
+   */
   inline int asum(const int* src, const long nasum,
-                  const int off=iZero, const long step=lOne) {
+                  const int aoff=iZero, const long astep=lOne) {
     assert(src!=NULL);
-    int *Ptr=const_cast<int*>(src)+off;
+    int *Ptr=const_cast<int*>(src)+aoff;
     int s=0;
-    for(unsigned int i=0;i<static_cast<unsigned int>(nasum);++i,Ptr+=step)
+    for(unsigned int i=0;i<static_cast<unsigned int>(nasum);++i,Ptr+=astep)
       s+=abs(*Ptr);
     return s;
   }
 
+  /**
+   * @brief summation of the absolute value of elements in \c unsigned \c int array
+   *
+   * It is implemented by summing the absolute values of elements in the
+   * concerned array. The array is checked for its availability before
+   * this operation.
+   *
+   * @param src [in] the array for summation operation
+   * @param nasum [in] the number of elements involved in this operation
+   * @param aoff [in] the offset for the first element in the array src.
+   *                  It takes the default value iZero.
+   * @param astep [in] the step between elements in the array src. It takes
+   *                   the default value lOne.
+   * @return the summation of the absolute values of elements in input array
+   */
   inline unsigned int asum(const unsigned int* src, const long nasum,
-                           const int off=iZero, const long step=lOne) {
+                           const int aoff=iZero, const long astep=lOne) {
     assert(src!=NULL);
-    unsigned int *Ptr=const_cast<unsigned int*>(src)+off;
+    unsigned int *Ptr=const_cast<unsigned int*>(src)+aoff;
     unsigned int s=0;
-    for(unsigned int i=0;i<static_cast<unsigned int>(nasum);++i,Ptr+=step)
+    for(unsigned int i=0;i<static_cast<unsigned int>(nasum);++i,Ptr+=astep)
       s+=*Ptr;
     return s;
   }
 
+  /**
+   * @brief summation of the absolute value of elements in \c double array
+   *
+   * It is implemented with BLAS operation dasum_. The array is checked for
+   * its availability before this operation.
+   *
+   * @param src [in] the array for summation operation
+   * @param nasum [in] the number of elements involved in this operation
+   * @param aoff [in] the offset for the first element in the array src.
+   *                  It takes the default value iZero.
+   * @param astep [in] the step between elements in the array src. It takes
+   *                   the default value lOne.
+   * @return the summation of the absolute values of elements in input array
+   */
   inline double asum(const double* src, const long nasum,
-                     const int off=iZero, const long step=lOne) {
+                     const int aoff=iZero, const long astep=lOne) {
     assert(src!=NULL);
-    return dasum_(const_cast<long*>(&nasum),const_cast<double*>(src)+off,
-                  const_cast<long*>(&step));
+    return dasum_(const_cast<long*>(&nasum),const_cast<double*>(src)+aoff,
+                  const_cast<long*>(&astep));
   }
 
+  /**
+   * @brief cross product of 3-d arrays
+   *
+   * It is implemented based on the basic definition of cross product.
+   * The related arrays are checked for their availability before this
+   * operation.
+   *
+   * @param va,vb [in] the input arrays for cross product
+   * @param v [out] the array storing the output
+   * @param asize, bsize, size [in] the sizes of the arrays va, vb, and v
+   * @param aoff, boff, coff [in] the offsets for the first elements of
+   *                              the arrays va, vb, and v. They takes the
+   *                              default value iZero.
+   * @param astep, bstep, cstep [in] the steps between elements in arrays
+   *                                 va, vb, v. They takes the default
+   *                                 value lOne.
+   * @return nothing.
+   * @note this operation works for 3-d vectors only.
+   */
   void crossProd(const double* va, const double* vb, double* v,
                  const unsigned int asize, const unsigned int bsize,
                  const unsigned int size,
                  const unsigned int aoff=iZero, const unsigned int astep=lOne,
                  const unsigned int boff=iZero, const unsigned int bstep=lOne,
-                 const unsigned int off=iZero, const unsigned int step=lOne) {
+                 const unsigned int coff=iZero, const unsigned int cstep=lOne) {
     assert(aoff+astep*2<=asize);
     assert(boff+bstep*2<=bsize);
-    assert(off+step*2<=size);
+    assert(coff+cstep*2<=size);
     double *pa=const_cast<double*>(va)+aoff, *pb=const_cast<double*>(vb)+boff;
-    double *p=v+off;
-    unsigned int dastep=astep+astep, dbstep=bstep+bstep, dstep=step+step;
+    double *p=v+coff;
+    unsigned int dastep=astep+astep, dbstep=bstep+bstep, dstep=cstep+cstep;
     p[0]    = pa[astep] *pb[dbstep] -pa[dastep] *pb[bstep];
-    p[step] = pa[dastep]*pb[0]      -pa[0]      *pb[dbstep];
+    p[cstep]= pa[dastep]*pb[0]      -pa[0]      *pb[dbstep];
     p[dstep]= pa[0]     *pb[bstep]  -pa[astep]  *pb[0];
   }
 
