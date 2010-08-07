@@ -1,4 +1,14 @@
 
+/**
+ * @file random-generator-boxmuller.h
+ * @brief random generator with Box-Muller method
+ *
+ * This file gives the random generator with gaussian distribution which is
+ * implemented using Box-Muller Method.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Random_Generator_BoxMuller_H_
 #define _Random_Generator_BoxMuller_H_
 
@@ -10,20 +20,61 @@
 
 namespace std {
 
+  /**
+   * @brief random generator with Box-Muller method
+   *
+   * This is a random generator to generate random numbers with gaussian
+   * distribution. This generator uses the box-muller method, which is the
+   * most popular method to produce gaussian-distributed random numbers.
+   * Only \c double value output is produced in this generator. 
+   *
+   * UniformRNG is the type for the random generator producing numbers with
+   * uniform distribution
+   */
   template <typename UniformRNG>
   struct BoxMuller {
 
+    /**
+     * @brief abbreviation for random generator with Box-Muller method
+     */
     typedef BoxMuller<UniformRNG>   Type;
 
+    /**
+     * @brief the pointer to the random generator with uniform distribution
+     */
     UniformRNG *urng;
+    /**
+     * @brief the array containing \c double factor
+     */
     double *DbFac;
+    /**
+     * @brief the pointer to the flag indicating if the second value is used
+     */
     bool *isSecond;
+    /**
+     * @brief the pointer to the \c double value for output
+     */
     double *output;
+    /**
+     * @brief the flag indicating the storage state of this object
+     */
     unsigned int state;
 
+    /**
+     * @brief default initiator
+     *
+     * Just initiate the pointers with NULL and the state with Unused flag.
+     */
     BoxMuller()
       : urng(NULL), DbFac(NULL), isSecond(NULL), output(NULL), state(Unused) {}
-    BoxMuller(const Type&) { myError("Cannot create from BoxMuller"); }
+    /**
+     * @brief initiator from another BoxMuller generator
+     *
+     * It is prohibited and pops up an error message
+     *
+     * @param BM [in] the input BoxMuller generator
+     */
+    BoxMuller(const Type& BM) { myError("Cannot create from BoxMuller"); }
     Type& operator=(const Type& BM) { assign(*this,BM); return *this; }
     ~BoxMuller() { release(*this); }
 
