@@ -75,7 +75,22 @@ namespace std {
      * @param BM [in] the input BoxMuller generator
      */
     BoxMuller(const Type& BM) { myError("Cannot create from BoxMuller"); }
+
+    /**
+     * @brief copy from another BoxMuller generator
+     *
+     * It is implemented with assign operation.
+     *
+     * @param BM [in] the input BoxMuller generator
+     * @return the reference to the resultant BoxMuller generator
+     */
     Type& operator=(const Type& BM) { assign(*this,BM); return *this; }
+
+    /**
+     * @brief destructor
+     *
+     * It is implemented with release operation
+     */
     ~BoxMuller() { release(*this); }
 
     void Init(const unsigned  int seed) { init(*this,seed); }
