@@ -28,7 +28,7 @@ namespace std {
    * most popular method to produce gaussian-distributed random numbers.
    * Only \c double value output is produced in this generator. 
    *
-   * UniformRNG is the type for the random generator producing numbers with
+   * UniformRNG is the type of the random generator producing numbers with
    * uniform distribution
    */
   template <typename UniformRNG>
@@ -93,8 +93,26 @@ namespace std {
      */
     ~BoxMuller() { release(*this); }
 
+    /**
+     * @brief initialize the generator with a \c unsigned \c int seed
+     *
+     * It is implemented with the init operation.
+     *
+     * @param seed [in] the \c unsigned \c int as the seed
+     * @return nothing
+     */
     void Init(const unsigned  int seed) { init(*this,seed); }
 
+    /**
+     * @brief produce a \c double number with normal distribution
+     *
+     * This is the core part of the generator. It uses box-muller method.
+     * It is a combination of the inverse method and the trial method.
+     * The resultant number follows the gaussian distribution with
+     * zero average and unit variance.
+     *
+     * @return the \c double number of gaussian distribution
+     */
     const double& DoubleNormal() {
       if(*isSecond) *output=DbFac[1]*DbFac[2];
       else {
@@ -112,15 +130,51 @@ namespace std {
 
   };
 
+  /**
+   * @brief check if the storage of the generator is available
+   *
+   * It is implemented by checking the availability of the
+   * pointer to the internal random generator with uniform generator.
+   *
+   * UniformRNG is the type of the generator with uniform distribution.
+   *
+   * @param bm [in] the random generator with gaussian distribution to be
+   *                checked
+   * @return the flag indicating the availability of input generator
+   */
   template <typename UniformRNG>
   bool IsAvailable(const BoxMuller<UniformRNG>& bm) {
     return IsAvailable(bm.urng);
   }
+  
+  /**
+   * @brief check if this object is random generator
+   *
+   * The BoxMuller object is definitely a random generator
+   *
+   * UniformRNG is the type of the generator with uniform distribution.
+   *
+   * @param bm [in] the input BoxMuller generator
+   * @return true flag indicating BoxMuller generator is a random generator
+   */
   template <typename UniformRNG>
-  bool IsRandomGenerator(const BoxMuller<UniformRNG>&) { return true; }
+  bool IsRandomGenerator(const BoxMuller<UniformRNG>& bm) { return true; }
 
+  /**
+   * @brief allocate BoxMuller generator
+   *
+   * It is implemented by allocating each component and set the state flag
+   * as Allocated. It would be released before this operation.
+   * This would avoid the dual allocation for storage.
+   *
+   * UniformRNG is the type of the generator with uniform distribution.
+   *
+   * @param BM [in,out] the BoxMuller generator to be allocated
+   * @return nothing
+   */
   template <typename UniformRNG>
   void allocate(BoxMuller<UniformRNG>& BM) {
+    release(BM);
     BM.urng=new UniformRNG;
     allocate(*BM.urng);
     BM.DbFac=new double[3];
@@ -130,6 +184,17 @@ namespace std {
     *BM.isSecond=true;
   }
 
+  /**
+   * @brief release BoxMuller generator
+   *
+   * The internal storages are released when the state flag is Allocated.
+   * Otherwise, the pointers are nullified. The flag is set as Unused.
+   *
+   * UniformRNG is the type of the generator with uniform distribution.
+   *
+   * @param BM [out] the BoxMuller generator to be released
+   * @return nothing
+   */
   template <typename UniformRNG>
   void release(BoxMuller<UniformRNG>& BM) {
     if(BM.state==Allocated) {
@@ -146,6 +211,20 @@ namespace std {
     BM.state=Unused;
   }
 
+  /**
+   * @brief refer to another BoxMuller generator
+   *
+   * it is implemented by assigning pointers in dest object with those
+   * in src object. The src generator is checked for its availability.
+   * The dest object is released before refer operation to avoid dual
+   * allocation of pointers.
+   *
+   * UniformRNG is the type of generator with uniform distribution.
+   *
+   * @param dest [out] the BoxMuller generator to accept the input
+   * @param src [in] the BoxMuller generator to store the input
+   * @return nothing
+   */
   template <typename UniformRNG>
   void refer(BoxMuller<UniformRNG>& dest, const BoxMuller<UniformRNG>& src) {
     assert(IsAvailable(src));
@@ -157,6 +236,19 @@ namespace std {
     dest.state=Reference;
   }
 
+  /**
+   * @brief assign BoxMuller object from another
+   *
+   * It is implemented by copy internal generator with uniform distribution
+   * and some factors. The concerned dest and src objects are checked before
+   * this operation.
+   *
+   * UniformRNG is the type of generator with uniform distribution.
+   *
+   * @param dest [out] the BoxMuller generator to accept the input
+   * @param src [in] the BoxMuller generator to store the input
+   * @return nothing
+   */
   template <typename UniformRNG>
   void assign(BoxMuller<UniformRNG>& dest, const BoxMuller<UniformRNG>& src) {
     assert(IsAvailable(dest));
@@ -166,6 +258,19 @@ namespace std {
     *(dest.isSecond)=*(src.isSecond);
   }
 
+  /**
+   * @brief initiate a BoxMuller generator with a seed
+   *
+   * It is implemented by initializing the internal generator with uniform
+   * distribution with the input seed. The output flag is also assigned.
+   * The concerned BoxMuller object is checked before this operation.
+   *
+   * UniformRNG is the type of generator with uniform distribution.
+   *
+   * @param bm [in,out] the BoxMuller object to be initialized
+   * @param seed [in] the \c unsigned \c int number as the seed
+   * @return nothing
+   */
   template <typename UniformRNG>
   void init(BoxMuller<UniformRNG>& bm, const unsigned int seed) {
     assert(IsAvailable(bm));
