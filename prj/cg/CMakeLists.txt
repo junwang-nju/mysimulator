@@ -11,3 +11,6 @@ target_link_libraries (dw.run blas)
 add_executable (cg-dw.run cg-dual-well.cxx)
 target_link_libraries (cg-dw.run blas)
 
+add_executable (bd-dw.run bd-dual-wall.cxx)
+target_link_libraries (bd-dw.run blas)
+
