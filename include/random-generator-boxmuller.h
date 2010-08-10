@@ -278,92 +278,376 @@ namespace std {
     *bm.isSecond=false;
   }
 
+  /**
+   * @brief generate \c double random number
+   *
+   * This function generates the \c double random number with gaussian
+   * distribution. It is implemented with the method of generator.
+   *
+   * UniformRNG is the type of generator with uniform distribution
+   *
+   * @param bm [in,out] the BoxMuller generator to produce random number
+   * @return the random number following the gaussian distribution
+   */ 
   template <typename UniformRNG>
   const double& rand(BoxMuller<UniformRNG>& bm) { return bm.DoubleNormal(); }
 
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using MT_Standard generator
+   * @return T-type zero
+   */
   template <typename T>
-  const T& rand(BoxMuller<MT_Standard>&) {
+  const T& rand(BoxMuller<MT_Standard>& bm) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<521> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<521> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<1279> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<1279> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<2203> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<2203> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<4253> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<4253> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<11213> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<11213> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<19937> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<19937> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<44497> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<44497> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<86243> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<86243> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<132049> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<132049> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using dSFMT<216091> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<dSFMT<216091> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<607> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<607> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<1279> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<1279> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<2281> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<2281> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<4253> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<4253> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<11213> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<11213> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<19937> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<19937> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<44497> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<44497> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<86243> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<86243> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<132049> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<132049> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
+  /**
+   * @brief generate T-type random number
+   *
+   * For generic type, this procedure is prohibited. Error messages are
+   * proposed. This provides the generic interface to use rand method.
+   *
+   * T is the type of number to be output.
+   *
+   * @param bm [in,out] the BoxMuller generator with the internal generator
+   *                    implemented using SFMT<216091> generator
+   * @return T-type zero
+   */
   template <typename T>
   const T& rand(BoxMuller<SFMT<216091> >&) {
     myError("Default form is prohibited");
+    return static_cast<T>(0);
   }
 
   template <>

@@ -38,7 +38,8 @@ int main() {
   for(unsigned int i=0;i<10000;++i) {
     tx=x+igamma*f*dt+rsize*rand(grng);
     tf=-gradient(tx);
-    x=x+(tx-x)*0.5+igamma*(tf*dt+rsize*rand(grng))*0.5;
+    x+=igamma*0.5*(f+tf)*dt+rsize*rand(grng);
+    //x+=(tx-x)*0.5+igamma*(tf*dt+rsize*rand(grng))*0.5;
     f=-gradient(x);
     cout<<i<<"\t"<<x<<endl;
   }
