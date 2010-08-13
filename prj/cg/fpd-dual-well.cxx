@@ -26,7 +26,7 @@ int main() {
   assign(prob2,0.);
   assign(nprob,0.);
   prob1[-100+zI]=100;
-  prob2[-10+zI]=100;
+  prob2[+150+zI]=100;
 
   double h=0.01;
   double dt=1e-6;
@@ -34,7 +34,7 @@ int main() {
   double gamma=5.;
   double rsize=sqrt(2*T/gamma);
 
-  double d;
+  double d,d1,d2;
 
   for(unsigned int z=0;z<5000000;++z) {
     if(z%100==0) {
@@ -42,19 +42,39 @@ int main() {
       for(unsigned int i=1;i<400;++i)
         d+=fabs(prob1[i]-prob2[i]);
       d*=h;
-      cout<<z*dt<<"\t"<<d<<endl;
+      d1=0;
+      for(unsigned int i=1;i<400;++i)
+        d1+=fabs(prob1[i]);
+      d1*=h;
+      d2=0;
+      for(unsigned int i=1;i<400;++i)
+        d2+=fabs(prob1[i]);
+      d2*=h;
+      cout<<z*dt<<"\t"<<d<<"\t"<<d1<<"\t"<<d2<<endl;
     }
-    for(unsigned int i=1;i<400;++i) {
+    for(unsigned int i=2;i<399;++i) {
       d=(gradient((i+1)*0.01-2.)*prob1[i+1]-gradient((i-1)*0.01-2.)*prob1[i-1])*0.5/h;
       d+=T*(prob1[i-1]+prob1[i+1]-2*prob1[i])/(h*h);
       nprob[i]=prob1[i]+d*rsize*dt;
     }
+    d=(gradient(2*0.01-2.)*prob1[2]+gradient(0.01-2.)*prob1[1])*0.5/h;
+    d+=(prob1[2]-prob1[1])/(h*h);
+    nprob[1]=prob1[1]+d*rsize*dt;
+    d=(-gradient(399*0.01-2.)*prob1[399]-gradient(398*0.01-2.)*prob1[398])*0.5/h;
+    d+=(prob1[398]-prob1[399])/(h*h);
+    nprob[399]=prob1[399]+d*rsize*dt;
     prob1=nprob;
-    for(unsigned int i=1;i<400;++i) {
+    for(unsigned int i=2;i<399;++i) {
       d=(gradient((i+1)*0.01-2.)*prob2[i+1]-gradient((i-1)*0.01-2.)*prob2[i-1])*0.5/h;
       d+=T*(prob2[i-1]+prob2[i+1]-2*prob2[i])/(h*h);
       nprob[i]=prob2[i]+d*rsize*dt;
     }
+    d=(gradient(2*0.01-2.)*prob2[2]+gradient(0.01-2.)*prob2[1])*0.5/h;
+    d+=(prob2[2]-prob2[1])/(h*h);
+    nprob[1]=prob2[1]+d*rsize*dt;
+    d=(-gradient(399*0.01-2.)*prob2[399]-gradient(398*0.01-2.)*prob2[398])*0.5/h;
+    d+=(prob2[398]-prob2[399])/(h*h);
+    nprob[399]=prob2[399]+d*rsize*dt;
     prob2=nprob;
   }
   d=0;
