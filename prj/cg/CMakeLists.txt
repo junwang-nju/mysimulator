@@ -20,3 +20,6 @@ target_link_libraries (fp-dw.run blas)
 add_executable (fpd-dw.run fpd-dual-well.cxx)
 target_link_libraries (fpd-dw.run blas)
 
+add_executable (fpdist.run fpdist-dual-well.cxx)
+target_link_libraries (fpdist.run blas)
+

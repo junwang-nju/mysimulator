@@ -36,7 +36,7 @@ int main() {
 
   double d,d1,d2;
 
-  for(unsigned int z=0;z<5000000;++z) {
+  for(unsigned int z=0;z<9000000;++z) {
     if(z%100==0) {
       d=0;
       for(unsigned int i=1;i<400;++i)
@@ -81,7 +81,7 @@ int main() {
   for(unsigned int i=1;i<400;++i)
     d+=fabs(prob1[i]-prob2[i]);
   d*=h;
-  cout<<5000000*dt<<"\t"<<d<<endl;
+  cout<<9000000*dt<<"\t"<<d<<endl;
   return 0;
 }
 
