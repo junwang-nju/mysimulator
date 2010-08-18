@@ -1,4 +1,14 @@
 
+/**
+ * @file random-generator-mt-dsfmt.h
+ * @brief random generator with MT-dSFMT algorithm
+ *
+ * This file implements the generator with uniform distribution
+ * using MT-dSFMT algorithm.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Random_Generator_MT_DSFMT_H_
 #define _Random_Generator_MT_DSFMT_H_
 
