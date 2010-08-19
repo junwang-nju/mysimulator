@@ -1,4 +1,14 @@
 
+/**
+ * @file random-generator-mt-standard.h
+ * @brief the random generator with standard MT algorithm
+ *
+ * This file describes a random generator with uniform distribution
+ * which is implemented with standard MT algorithm.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Random_Generator_MT_Standard_H_
 #define _Random_Generator_MT_Standard_H_
 
@@ -7,15 +17,39 @@
 
 namespace std {
 
+  /**
+   * @brief declaration of MT_Standard object
+   */
   struct MT_Standard;
 
+  /**
+   * @brief declaration of assign operation for MT_Standard object from another
+   */
   void assign(MT_Standard&,const MT_Standard&);
+  /**
+   * @brief declaration of release operation for MT_Standard
+   */
   void release(MT_Standard&);
+  /**
+   * @brief declaration of init operation for MT_Standard from an \c int
+   */
   void init(MT_Standard&, const unsigned int);
+  /**
+   * @brief declaration of init operation for MT_Standard from an array
+   */
   void init(MT_Standard&, const unsigned int*, const unsigned int,
                           const unsigned int, const unsigned int);
+  /**
+   * @brief declaration of init operation for MT_Standard from a vector
+   */
   void init(MT_Standard&, const Vector<unsigned int>&);
 
+  /**
+   * @brief the random generator using standard MT algorithm
+   *
+   * It is based on the MT algorithm. There are no accelerations with
+   * SSE instructions. It is stable in various platform.
+   */
   struct MT_Standard {
 
     static const unsigned int N;
@@ -28,6 +62,13 @@ namespace std {
     static const unsigned int LowMask;
     static const unsigned int Mag01[2];
     static const unsigned int Mask32b;
+    /**
+     * @brief the array to store random numbers internally
+     *
+     * This buffer stores random numbers and enables the operations for
+     * these numbers to re-shuffle them, so that the output numbers
+     * are more random in statistical sense.
+     */
     unsigned int *mt;
     unsigned int *mti;
     UniqueParameter128b *output;
