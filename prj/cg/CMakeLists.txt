@@ -23,3 +23,8 @@ target_link_libraries (fpd-dw.run blas)
 add_executable (fpdist.run fpdist-dual-well.cxx)
 target_link_libraries (fpdist.run blas)
 
+add_executable (fp-2d.run fp-2d-funnel.cxx)
+target_link_libraries (fp-2d.run blas)
+
+add_executable (bd-2d.run bd-2d-funnel.cxx)
+target_link_libraries (bd-2d.run blas)

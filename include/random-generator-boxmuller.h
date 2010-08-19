@@ -322,7 +322,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<521> >&) {
+  const T& rand(BoxMuller<dSFMT<521> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -339,7 +339,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<1279> >&) {
+  const T& rand(BoxMuller<dSFMT<1279> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -356,7 +356,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<2203> >&) {
+  const T& rand(BoxMuller<dSFMT<2203> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -373,7 +373,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<4253> >&) {
+  const T& rand(BoxMuller<dSFMT<4253> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -390,7 +390,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<11213> >&) {
+  const T& rand(BoxMuller<dSFMT<11213> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -407,7 +407,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<19937> >&) {
+  const T& rand(BoxMuller<dSFMT<19937> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -424,7 +424,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<44497> >&) {
+  const T& rand(BoxMuller<dSFMT<44497> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -441,7 +441,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<86243> >&) {
+  const T& rand(BoxMuller<dSFMT<86243> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -458,7 +458,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<132049> >&) {
+  const T& rand(BoxMuller<dSFMT<132049> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -475,7 +475,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<dSFMT<216091> >&) {
+  const T& rand(BoxMuller<dSFMT<216091> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -492,7 +492,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<607> >&) {
+  const T& rand(BoxMuller<SFMT<607> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -509,7 +509,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<1279> >&) {
+  const T& rand(BoxMuller<SFMT<1279> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -526,7 +526,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<2281> >&) {
+  const T& rand(BoxMuller<SFMT<2281> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -543,7 +543,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<4253> >&) {
+  const T& rand(BoxMuller<SFMT<4253> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -560,7 +560,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<11213> >&) {
+  const T& rand(BoxMuller<SFMT<11213> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -577,7 +577,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<19937> >&) {
+  const T& rand(BoxMuller<SFMT<19937> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -594,7 +594,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<44497> >&) {
+  const T& rand(BoxMuller<SFMT<44497> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -611,7 +611,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<86243> >&) {
+  const T& rand(BoxMuller<SFMT<86243> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -628,7 +628,7 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<132049> >&) {
+  const T& rand(BoxMuller<SFMT<132049> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
@@ -645,54 +645,278 @@ namespace std {
    * @return T-type zero
    */
   template <typename T>
-  const T& rand(BoxMuller<SFMT<216091> >&) {
+  const T& rand(BoxMuller<SFMT<216091> >& bm) {
     myError("Default form is prohibited");
     return static_cast<T>(0);
   }
 
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using MT_Standard generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<MT_Standard>& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<521> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<521> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<1279> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<1279> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<2203> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<2203> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<4253> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<4253> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<11213> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<11213> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<19937> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<19937> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<44497> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<44497> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<86243> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<86243> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<132049> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<132049> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using dSFMT<216091> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<dSFMT<216091> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<607> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<607> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<607> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<1279> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<2281> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<2281> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<4253> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<4253> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<11213> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<11213> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<19937> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<19937> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<44497> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<44497> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<86243> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<86243> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<132049> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<132049> >& bm) { return rand(bm); }
+  /**
+   * @brief generator \c double random number
+   *
+   * This is a specification of rand operation for \c double type.
+   * It is implemented with basic rand operation.
+   *
+   * @param bm [out] the BoxMuller generator with the internal generator
+   *                 implemented using SFMT<216091> generator
+   * @return \c double type random number
+   */
   template <>
   const double& rand<double>(BoxMuller<SFMT<216091> >& bm) { return rand(bm); }
 
+  /**
+   * @brief output a BoxMuller generator to ostream
+   *
+   * The internal generator with uniform distribution is output at first.
+   * The other flags are also written out.
+   *
+   * UniformRNG is the type of internal random-number generator with
+   * uniform distribution. The separation between elements is the tab
+   * character.
+   *
+   * @param os [out] the ostream to accept output
+   * @param bm [in] the BoxMuller generator to be output
+   * @return the ostream after output operation
+   */
   template <typename UniformRNG>
   ostream& operator<<(ostream& os, const BoxMuller<UniformRNG>& bm) {
     os<<*bm.urng<<"\t";
@@ -703,6 +927,16 @@ namespace std {
     return os;
   }
 
+  /**
+   * @brief read BoxMuller generator from istream
+   *
+   * The internal generator with uniform distribution is read at first.
+   * The other flags are also read.
+   *
+   * @param is [in,out] the istream containing the input information
+   * @param bm [out] BoxMuller generator to contain information from istream
+   * @return the istream after reading
+   */
   template <typename UniformRNG>
   istream& operator>>(istream& is, BoxMuller<UniformRNG>& bm) {
     is>>*bm.urng;
