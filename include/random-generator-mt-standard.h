@@ -70,10 +70,27 @@ namespace std {
      * are more random in statistical sense.
      */
     unsigned int *mt;
+    /**
+     * @brief pointer to the running number
+     *
+     * This is used as a temporary internal variable.
+     */
     unsigned int *mti;
+    /**
+     * @brief output parameter
+     *
+     * This is a temporary internal parameter to avoid allocation
+     * instance when output
+     */
     UniqueParameter128b *output;
+    /**
+     * @brief storage state of the generator
+     */
     unsigned int state;
 
+    /**
+     * @brief abbreviation for MT_Standard object
+     */
     typedef MT_Standard Type;
 
     MT_Standard() : mt(NULL), mti(NULL), output(NULL), state(Unused) {}
