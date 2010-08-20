@@ -19,26 +19,79 @@
 namespace std {
 
 #ifdef HAVE_SSE2
+  /**
+   * @brief a mask for SSE2 calculation which is a type of 128-bit \c int
+   */
   __m128i   dSFMT_SSE2_ParamMask;
+  /**
+   * @brief a 128-bit \c int with the value of one
+   */
   __m128i   dSFMT_SSE2_IntOne;
+  /**
+   * @brief a 128-bit \c double with the value of two
+   */
   __m128d   dSFMT_SSE2_DoubleTwo;
+  /**
+   * @brief a 128-bit \c double with the value of negative one
+   */
   __m128d   dSFMT_SSE2_DoubleMOne;  
 #endif
 
-  void ConvertClose1Open2(UniqueParameter128b&) {}
+  /**
+   * @brief convert parameter to the region [1,2)
+   *
+   * This procedure does nothing, and only provides an interface.
+   *
+   * @param w [in,out] the parameter to be converted
+   * @return nothing
+   */
+  void ConvertClose1Open2(UniqueParameter128b& w) {}
 #ifdef HAVE_SSE2
+  /**
+   * @brief convert parameter to region [0,1) with SSE2 instruction
+   *
+   * It uses the SSE2 instructions to carry out the convert operation.
+   *
+   * @param w [in,out] the parameter to be converted
+   * @return nothing
+   *
+   * @note Several loadu instructions are used to avoid align problem.
+   *       However the penalty of efficiency may occur.
+   */
   void ConvertClose0Open1(UniqueParameter128b& w) {
     __m128d wd,cd;
     wd=_mm_loadu_pd(w.d);
     cd=_mm_loadu_pd((double*)(&dSFMT_SSE2_DoubleMOne));
     _mm_storeu_pd(w.d,_mm_add_pd(wd,cd));
   }
+  /**
+   * @brief convert parameter to region (0,1] with SSE2 instruction
+   *
+   * It uses the SSE2 instructions to carry out the convert operation.
+   *
+   * @param w [in,out] the parameter to be converted
+   * @return nothing
+   *
+   * @note Several loadu instructions are used to avoid align problem.
+   *       However the penalty of efficiency may occur.
+   */
   void ConvertOpen0Close1(UniqueParameter128b& w) {
     __m128d wd,cd;
     wd=_mm_loadu_pd(w.d);
     cd=_mm_loadu_pd((double*)(&dSFMT_SSE2_DoubleTwo));
     _mm_storeu_pd(w.d,_mm_sub_pd(cd,wd));
   }
+  /**
+   * @brief convert parameter to region (0,1) with SSE2 instruction
+   *
+   * It uses the SSE2 instructions to carry out the convert operation.
+   *
+   * @param w [in,out] the parameter to be converted
+   * @return nothing
+   *
+   * @note Several loadu instructions are used to avoid align problem.
+   *       However the penalty of efficiency may occur.
+   */
   void ConvertOpen0Open1(UniqueParameter128b& w) {
     __m128i wi,ci;
     wi=_mm_loadu_si128(&(w.si));
@@ -50,6 +103,9 @@ namespace std {
     _mm_storeu_pd(w.d,_mm_add_pd(wd,cd));
   }
 #else
+  /**
+   * @brief convert parameter to region [0,1) without SSE2 instruction
+   */
   void ConvertClose0Open1(UniqueParameter128b& w) { w.d[0]-=1.0; w.d[1]-=1.0; }
   void ConvertOpen0Close1(UniqueParameter128b& w) {
     w.d[0]=2.0-w.d[0];
