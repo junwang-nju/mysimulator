@@ -27,7 +27,7 @@ namespace std {
    * @param dsq [in] the square of distance
    * @param prm [in] the array of parameters to define CoreLJ612-type function
    * @param func [out] the output function value
-   * @param nothing
+   * @return nothing
    */
   void FuncCoreLJ612(const double dsq, const UniqueParameter* prm,
                      double& func) {
@@ -50,7 +50,6 @@ namespace std {
    * @param prm [in] the array of parameters to define CoreLJ612-type function
    * @param diff [out] the output differentiation value
    * @return nothing
-   */
    */
   void DiffCoreLJ612(const double dsq, const UniqueParameter* prm,
                      double& diff) {

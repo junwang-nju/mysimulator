@@ -93,8 +93,21 @@ namespace std {
      */
     typedef MT_Standard Type;
 
+    /**
+     * @brief defualt initiator
+     *
+     * Just initiate the pointers with NULL and set the storage state as
+     * Unused.
+     */
     MT_Standard() : mt(NULL), mti(NULL), output(NULL), state(Unused) {}
-    MT_Standard(const Type&) { myError("Cannot create from MT Standard"); }
+    /**
+     * @brief initiator from anothe MT_Standard generator
+     *
+     * It is prohibited and pops up an error message.
+     *
+     * @param MS [in] the input MT_Standard generator
+     */
+    MT_Standard(const Type& MS) { myError("Cannot create from MT Standard"); }
     Type& operator=(const Type& MS) { assign(*this,MS); return *this; }
     ~MT_Standard() { release(*this); }
 
