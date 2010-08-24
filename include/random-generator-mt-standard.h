@@ -108,6 +108,14 @@ namespace std {
      * @param MS [in] the input MT_Standard generator
      */
     MT_Standard(const Type& MS) { myError("Cannot create from MT Standard"); }
+    /**
+     * @brief copy from another generator
+     *
+     * It is implemented with assign method.
+     *
+     * @param MS [in] the input MT_Standard generator
+     * @return the reference to the resultant generator
+     */
     Type& operator=(const Type& MS) { assign(*this,MS); return *this; }
     ~MT_Standard() { release(*this); }
 
