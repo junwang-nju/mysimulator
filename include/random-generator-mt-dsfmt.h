@@ -105,12 +105,37 @@ namespace std {
 #else
   /**
    * @brief convert parameter to region [0,1) without SSE2 instruction
+   *
+   * Just minus the parameter with unit. It is assumed that the parameter
+   * contains \c double values in region [1,2)
+   *
+   * @param w [in,out] the parameter to be converted
+   * @return nothing
    */
   void ConvertClose0Open1(UniqueParameter128b& w) { w.d[0]-=1.0; w.d[1]-=1.0; }
+  /**
+   * @brief convert parameter to region (0,1] without SSE2 instruction
+   *
+   * Just the result is 2 minus the parameter. It is assumed that the parameter
+   * contains \c double values in region [1,2)
+   *
+   * @param w [in,out] the parameter to be converted
+   * @return nothing
+   */
   void ConvertOpen0Close1(UniqueParameter128b& w) {
     w.d[0]=2.0-w.d[0];
     w.d[1]=2.0-w.d[1];
   }
+  /**
+   * @brief convert parameter to region (0,1) without SSE2 instruction
+   *
+   * It firstly masks the lowest bit. Then, the result is the parameter
+   * minus unit. It is assumed that the parameter contains \c double values
+   * in region [1,2)
+   *
+   * @param w [in,out] the parameter to be converted
+   * @return nothing
+   */
   void ConvertOpen0Open1(UniqueParameter128b& w) {
     w.ull[0]|=1;
     w.ull[1]|=1;
@@ -119,6 +144,15 @@ namespace std {
   }
 #endif
 
+  /**
+   * @brief dSFMT generator
+   *
+   * This is a generator to produce random numbers with uniform distribution.
+   * It is said that this kind of generator is efficient to produce
+   * \c double values.
+   *
+   * LoopFac is the factor related to the size of internal storage.
+   */ 
   template <unsigned int LoopFac=19937>
   struct dSFMT {
 
@@ -153,48 +187,160 @@ namespace std {
     static const unsigned long long int pcv[2];
     static const unsigned int IsFacAvailable;
 
+    /**
+     * @brief the internal storage storing status
+     */
     UniqueParameter128b *status;
+    /**
+     * @brief the pointer to the location indicator
+     */
     unsigned int *idx;
+    /**
+     * @brief the pointer to the parameter storing output information
+     */
     UniqueParameter128b *output;
+    /**
+     * @brief the storage state for dSFMT generator
+     */
     unsigned int state;
 
+    /**
+     * @brief abbreviation of the name for dSFMT generator
+     */
     typedef dSFMT<LoopFac>    Type;
+    /**
+     * @brief the type of the function pointer to convert function
+     */
     typedef void (*ConvertFuncType)(UniqueParameter128b&);
 
+    /**
+     * @brief default initiator
+     *
+     * Just set all the pointers as NULL and initiate the state as Unused.
+     * Besides, the check for the availability of the LoopFac factor is
+     * also done.
+     */
     dSFMT() : status(NULL), idx(NULL), output(NULL), state(Unused) {
       assert(IsFacAvailable!=0);
     }
-    dSFMT(const Type&) { myError("Cannot create from dSFMT generator"); }
+    /**
+     * @brief initiator with another dSFMT generator
+     *
+     * It is prohibited and pop up an error message.
+     *
+     * @param dg [in] the input dSFMT generator.
+     */ 
+    dSFMT(const Type& dg) { myError("Cannot create from dSFMT generator"); }
+    /**
+     * @brief copy from another dSFMT generator
+     *
+     * It is implemented with assign operation.
+     *
+     * @param dg [in] the input dSFMT generator
+     * @return the reference to the resultant dSFMT generator
+     */
     Type& operator=(const Type& dg) { assign(*this,dg); return *this; }
+    /**
+     * @brief destructor
+     *
+     * it is implemented with release operation.
+     */
     ~dSFMT() { release(*this); }
 
+    /**
+     * @brief initiate generator with \c unsigned \c int seed
+     *
+     * It is implemented with init operation.
+     *
+     * @param seed [in] the \c unsigned \c int as seed
+     * @return nothing
+     */
     void Init(const unsigned int seed) { init(*this,seed); }
+    /**
+     * @brief initiate generator with an array
+     *
+     * It is implemented with init operation.
+     *
+     * @param key [in] the array containing seeds
+     * @param len [in] the number of seeds
+     * @param off [in] the offset for the first element in array key. It
+     *                 takes the default value of uZero.
+     * @param step [in] the step between elements in array key. It takes
+     *                  the default value of uOne.
+     * @return nothing
+     */
     void Init(const unsigned int* key, const unsigned int len,
               const unsigned int off=uZero, const unsigned int step=uOne) {
       init(*this,key,len,off,step);
     }
+    /**
+     * @brief initiate generator with a vector
+     *
+     * It is implemented with init operation.
+     *
+     * @param key [in] the vector containing seeds
+     * @return nothing
+     */
     void Init(const Vector<unsigned int>& key) { init(*this,key); }
 
+    /**
+     * @brief produce a \c unsigned \c int value
+     *
+     * First set the parameter array as the type of \c unsigned \c long
+     * \c long. Certain element is picked out as output.
+     *
+     * @return the \c unsigned \c int value.
+     */
     const unsigned int& UInt32() {
       unsigned long long int *pSFMT=&(status[0].ull[0]);
       if(*idx>=N64) { GenRandAll(); *idx=0; }
       output->u[0]=pSFMT[(*idx)++]&0xFFFFFFFFUL;
       return output->u[0];
     }
+    /**
+     * @brief produce a \c double value in region [1,2)
+     *
+     * First set the parameter array as the type of \c double. Certain
+     * element is picked up as output.
+     *
+     * @return the \c double value in region [1,2) 
+     */
     const double& DoubleClose1Open2() {
       double* pSFMT=&(status[0].d[0]);
       if(*idx>=N64) { GenRandAll(); *idx=0; }
       output->d[0]=pSFMT[(*idx)++];
       return output->d[0];
     }
+    /**
+     * @brief produce a \c double value in region [0,1)
+     *
+     * Just shift the \c double value from [1,2) to [0,1)
+     *
+     * @return the \c double value in region [0,1)
+     */
     const double& DoubleClose0Open1() {
       output->d[1]=DoubleClose1Open2()-1.0;
       return output->d[1];
     }
+    /**
+     * @brief produce a \c double value in region (0,1]
+     *
+     * Just shift the \c double value from [1,2) to (0,1]
+     *
+     * @return the \c double value in region (0,1]
+     */
     const double& DoubleOpen0Close1() {
       output->d[1]=2.0-DoubleClose1Open2();
       return output->d[1];
     }
+    /**
+     * @brief produce a \c double value in region (0,1)
+     *
+     * Just shift the \c double value from [1,2) to (0,1) after masking
+     * the lowest bit.
+     *
+     * @return the \c double value in region (0,1)
+     */
     const double& DoubleOpen0Open1() {
       double *pSFMT=&(status[0].d[0]);
       if(*idx>=N64) { GenRandAll(); *idx=0; }
@@ -204,18 +350,58 @@ namespace std {
       return output->d[1];
     }
 
+    /**
+     * @brief fill array with numbers in region [1,2)
+     *
+     * It is implemented with the internal module to produce a series of
+     * random numbers in region [1,2)
+     *
+     * @param array [out] the array to be filled with
+     * @param sz [in] the number of elements in array
+     * @return nothing
+     */
     void fillarrayClose1Open2(double* array, const unsigned int sz) {
       FillArrayImpl(array,sz,ConvertClose1Open2);
     }
 
+    /**
+     * @brief fill array with number in region [0,1)
+     *
+     * It is implemented with the internal module to produce a series of
+     * random numbers in region [0,1)
+     *
+     * @param array [out] the array to be filled with
+     * @param sz [in] the number of elements in array
+     * @return nothing
+     */
     void fillarrayClose0Open1(double* array, const unsigned int sz) {
       FillArrayImpl(array,sz,ConvertClose0Open1);
     }
 
+    /**
+     * @brief fill array with number in region (0,1]
+     *
+     * It is implemented with the internal module to produce a series of
+     * random numbers in region (0,1]
+     *
+     * @param array [out] the array to be filled with
+     * @param sz [in] the number of elements in array
+     * @return nothing
+     */
     void fillarrayOpen0Close1(double* array, const unsigned int sz) {
       FillArrayImpl(array,sz,ConvertOpen0Close1);
     }
 
+    /**
+     * @brief fill array with number in region (0,1)
+     *
+     * It is implemented with the internal module to produce a series of
+     * random numbers in region (0,1)
+     *
+     * @param array [out] the array to be filled with
+     * @param sz [in] the number of elements in array
+     * @return nothing
+     */
     void fillarrayOpen0Open1(double* array, const unsigned int sz) {
       FillArrayImpl(array,sz,ConvertOpen0Open1);
     }

@@ -551,29 +551,97 @@ namespace std {
     init(MS,key(),key.size);
   }
 
+  /**
+   * @brief produce a \c double value defaultly
+   *
+   * The default way is to produce a 53-bit \c double value in region [0,1).
+   *
+   * @param MS [in,out] the MT_Standard generator
+   * @return a 53-bit \c double value in region [0,1)
+   */
   const double& rand(MT_Standard& MS) { return MS.Double53Close0Open1(); }
 
+  /**
+   * @brief produce a value of generic type with MT_Standard generator
+   *
+   * It is prohibited and pop an error message.
+   *
+   * T is the type of the returned value.
+   *
+   * @param MS [in,out] the MT_Standard generator
+   * @return a T-type value of zero, which cannot be reached.
+   */
   template <typename T>
-  const T& rand(MT_Standard& MS) { myError("Default Form is prohibited"); }
+  const T& rand(MT_Standard& MS) {
+    myError("Default Form is prohibited");
+    return static_cast<T>(0);
+  }
 
+  /**
+   * @brief produce a \c unsigned \c int value with MT_Standard generator
+   *
+   * it is implemented with UInt32 method of MT_Standard generator. it is
+   * a specification of the function for generic type.
+   *
+   * @param MS [in,out] the MT_Standard generator
+   * @return the \c unsigned \c int value
+   */
   template <>
   const unsigned int& rand<unsigned int>(MT_Standard& MS) {
     return MS.UInt32();
   }
 
+  /**
+   * @brief produce a \c int value of MT_Standard generator
+   *
+   * it is implemented with Int31 method of MT_Standard generator. it is
+   * a specification of the function for generic type.
+   *
+   * @param MS [in,out] the MT_Standard generator
+   * @return the \c int value.
+   */
   template <>
   const int& rand<int>(MT_Standard& MS) { return MS.Int31(); }
 
+  /**
+   * @brief produce a \c double value of MT_Standard generator
+   *
+   * it is implemented with Double53Close0Open1 method of MT_Standard
+   * generator. it is a specification of the function for generic type.
+   *
+   * @param MS [in,out] the MT_Standard generator
+   * @return the 53-bit \c double value.
+   */
   template <>
   const double& rand<double>(MT_Standard& MS) {
     return MS.Double53Close0Open1();
   }
 
+  /**
+   * @brief produce a \c long \c double value of MT_Standard generator
+   *
+   * it is implemented with Double63Close0Open1 method of MT_Standard
+   * generator. it is a specification of the function for generic type.
+   *
+   * @param MS [in,out] the MT_Standard generator
+   * @return the 63-bit \c long \c double value.
+   */
   template <>
   const long double& rand<long double>(MT_Standard& MS) {
     return MS.LDouble63Close0Open1();
   }
 
+  /**
+   * @brief output the status of the MT_Standard generator
+   *
+   * The internal storage and the location indicator of input MT_Standard
+   * generator are written out to the ostream. The input MT_Standard
+   * generator is checked for its availability before output.
+   *
+   * @param os [in,out] the ostream
+   * @param MS [in] the input MT_Standard generator
+   * @return the ostream after output
+   */
   ostream& operator<<(ostream& os, const MT_Standard& MS) {
     assert(IsAvailable(MS));
     for(unsigned int i=0;i<MT_Standard::N;++i)  os<<MS.mt[i]<<"\t";
@@ -581,6 +649,16 @@ namespace std {
     return os;
   }
 
+  /**
+   * @brief load status of the MT_Standard generator
+   *
+   * The internal storage and the location indicator are loaded from istream.
+   * The input MT_Standard is checked for its availability before input.
+   *
+   * @param is [in,out] the istream containing status
+   * @param MS [out] the MT_Standard generator to accept status
+   * @return the istream after the reading operation.
+   */
   istream& operator>>(istream& is, MT_Standard& MS) {
     assert(IsAvailable(MS));
     for(unsigned int i=0;i<MT_Standard::N;++i)  is>>MS.mt[i];
