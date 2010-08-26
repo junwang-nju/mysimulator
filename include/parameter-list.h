@@ -156,6 +156,9 @@ namespace std {
    * the internal key-value map are inserted into the tree. The concerned
    * ParameterList object is checked for its availability before this
    * operation.
+   *
+   * @param PL [in,out] the parameter list to be updated
+   * @return nothing
    */
   void updatetree(ParameterList& PL) {
     assert(IsAvailable(PL));
@@ -374,14 +377,15 @@ namespace std {
    * @param nidx [in] the number of indices
    * @param ioff [in] the offset of the first element in the array idx.
    *                  it takes the default value of iZero.
-   * @param istep [in] the separation between used elements in array idx.
+   * @param istep [i  n] the separation between used elements in array idx.
    *                   it takes the default values of lOne.
    * @return the pointer to the Vector of values corresponding to the input
    *         indices.
    */
   const Vector<UniqueParameter>*
-    get(ParameterList& PL, const unsigned int* idx, const unsigned int nidx,
-                           const int ioff=iZero, const long istep=lOne) {
+    get(const ParameterList& PL,
+        const unsigned int* idx, const unsigned int nidx,
+        const int ioff=iZero, const long istep=lOne) {
     static ParameterKey K;
     allocate(K,nidx);
     assign(K.index,idx,nidx,ioff,istep);
