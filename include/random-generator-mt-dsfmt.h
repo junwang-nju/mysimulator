@@ -407,6 +407,14 @@ namespace std {
     }
 
 #ifdef HAVE_SSE2
+    /**
+     * @brief initiate the constants related to SSE2 operation
+     *
+     * The global variables for SSE2 operation are initiated. A flag
+     * is set to disable further operations.
+     *
+     * @return nothing
+     */
     void InitConst() {
       static bool first=true;
       if(!first)  return;
@@ -417,6 +425,16 @@ namespace std {
       dSFMT_SSE2_DoubleMOne=_mm_set_pd(-1.0,-1.0);
       first=false;
     }
+    /**
+     * @brief the complex operation related to a series of variables (SSE2 Version)
+     *
+     * This is complex bit operations for a series of variables using
+     * SSE2 commands. This is core part of generator.
+     *
+     * @param a,b [in] two constant variables
+     * @param r,u [in,out] two variables as input and containing output
+     * @return nothing
+     */
     void DoRecursion(const UniqueParameter128b& a,
                      const UniqueParameter128b& b,
                      UniqueParameter128b& r, UniqueParameter128b& u) {
@@ -436,6 +454,16 @@ namespace std {
       _mm_storeu_si128(&(u.si),y);
     }
 #else
+    /**
+     * @brief the complex operation related to a series of parameters
+     *
+     * This is complex bit operations for a series of variables.
+     * This is core part of generator.
+     *
+     * @param a,b [in] two constant variables
+     * @param r,u [in,out] two variables as input and containing output
+     * @return nothing
+     */
     void DoRecursion(const UniqueParameter128b& a,
                      const UniqueParameter128b& b,
                      UniqueParameter128b& r, UniqueParameter128b& u) {
@@ -451,6 +479,17 @@ namespace std {
     }
 #endif
 
+    /**
+     * @brief basic implementation to generate array of random numbers
+     *
+     * It uses DoRecursion operation to generate and to operate
+     * the array of random numbers.
+     *
+     * @param array [in,out] the array to be operated. It also stores
+     *                       the numbers to output
+     * @param size [in] the number of elements in array
+     * @param cvfunc [in] the pointer of convert function
+     */
     void GenRandArrayImpl(UniqueParameter128b* array, const unsigned int size,
                           const ConvertFuncType& cvfunc) {
       unsigned int i,j;
@@ -475,20 +514,54 @@ namespace std {
       status[N]=lung;
     }
 
+    /**
+     * @brief the function-1 for initiation
+     *
+     * This function operates the input number, and acts as the
+     * transformation-2 to another number.
+     *
+     * @param x [in] the \c unsigned \c int
+     * @return the result after this operation
+     */
     unsigned int initfunc1(const unsigned int x) {
       return (x^(x>>27))*1664525UL;
     }
 
+    /**
+     * @brief the function-2 for initiation
+     *
+     * This function operates the input number, and acts as the
+     * transformation-2 to another number.
+     *
+     * @param x [in] the \c unsigned \c int
+     * @return the result after this operation
+     */
     unsigned int initfunc2(const unsigned int x) {
       return (x^(x>>27))*1566083941UL;
     }
 
+    /**
+     * @brief mask internal storage
+     *
+     * The internal storage is masked with certain masks. It is a basic
+     * operation for initiation.
+     *
+     * @return nothing
+     */
     void initmask() {
       unsigned long long int *pSFMT;
       pSFMT=&(status[0].ull[0]);
       for(unsigned int i=0;i<N+N;++i) pSFMT[i]=(pSFMT[i]&LowMask)|HighConst;
     }
 
+    /**
+     * @brief modification for period certification
+     *
+     * Based on the certain elements, the period for generator is controlled.
+     *
+     * @return nothing
+     * @note the actual meaning for this function is not clean.
+     */
     void PeriodCertification() {
       unsigned long long int tmp[2], inner;
       tmp[0]=status[N].ull[0]^Fix1;
@@ -502,6 +575,14 @@ namespace std {
       return;
     }
 
+    /**
+     * @brief generate all the numbers in internal storage
+     *
+     * The internal storage is filled withrandom numbers for further
+     * usage.
+     *
+     * @return nothing
+     */
     void GenRandAll() {
       unsigned int i;
       UniqueParameter128b lung;
@@ -512,6 +593,18 @@ namespace std {
       status[N]=lung;
     }
 
+    /**
+     * @brief the implementation for the operation to fill an array
+     *
+     * it is implemented with GenRandArrayImpl operation. It is required
+     * that the size of double in array is larger than N64 and should be
+     * even (to match the requirement of UniqueParameter128b type.
+     *
+     * @param array [in,out] the array to be filled with
+     * @param size [in] the number of \c double elements in array
+     * @param cvfunc [in] the pointer to convert function
+     * @return nothing
+     */
     void FillArrayImpl(double *array, unsigned int size,
                        const ConvertFuncType& cvfunc) {
       assert((size&1)==0);
@@ -522,71 +615,246 @@ namespace std {
 
   };
 
+  /**
+   * @brief the exponent for dSFMT generator
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This exponent equals to the template parameter LoopFac.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::MExp=LoopFac;
+  /**
+   * @brief the size of internal storage in dSFMT generator
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::N=((dSFMT<LoopFac>::MExp-128)/104+1);
+  /**
+   * @brief the number of elements for status
+   *
+   * LoopFac is the template \c int to define the generator.
+   */ 
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::NStatus=dSFMT<LoopFac>::N+1;
+  /**
+   * @brief the number of 32-bit elements in status
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * Typical parameter type in this kind of generator is UniqueParameter128b,
+   * which is 4 times of 32-bit data.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::NStatusU32=dSFMT<LoopFac>::NStatus*4;
+  /**
+   * @brief the number of bytes in status
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * Since parameter type in this generator is UniqueParameter128b, the
+   * number of bytes is 16 times of bytes.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::NStatusByte=dSFMT<LoopFac>::NStatus*16;
+  /** @brief lag factor for this generator
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Lag=
     (dSFMT<LoopFac>::NStatusU32>=623?11:
     (dSFMT<LoopFac>::NStatusU32>68?7:
     (dSFMT<LoopFac>::NStatusU32>39?5:3)));
+  /**
+   * @brief the mid-number in status
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Mid=
     (dSFMT<LoopFac>::NStatusU32-dSFMT<LoopFac>::Lag)/2;
+  /**
+   * @brief the temporary summation of lag and mid-number
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::LagMid=
     dSFMT<LoopFac>::Lag+dSFMT<LoopFac>::Mid;
+  /**
+   * @brief the number of 32-bit elements in storage
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::N32=dSFMT<LoopFac>::N*4;
+  /**
+   * @brief the number of 64-bit elements in storage
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::N64=dSFMT<LoopFac>::N*2;
+  /**
+   * @brief the mask for lower bits
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::LowMask=0x000FFFFFFFFFFFFFULL;
+  /**
+   * @brief the mask for upper bits
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::HighConst=0x3FF0000000000000ULL;
+  /**
+   * @brief a factor named as SR
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::SR=12;
 #ifdef HAVE_SSE2
+  /**
+   * @brief the factor related to shuffle with SSE2 operations
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::SSE2_Shuff=0x1BU;
 #endif 
+  /**
+   * @brief the first 32-bit mask
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * It takes the upper 32-bit of the mask Msk1.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_1=
     (dSFMT<LoopFac>::Msk1>>32)&0xFFFFFFFFUL;
+  /**
+   * @brief the second 32-bit mask
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * It takes the lower 32-bit of the mask Msk1.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_2=dSFMT<LoopFac>::Msk1&0xFFFFFFFFUL;
+  /**
+   * @brief the third 32-bit mask
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * It takes the upper 32-bit of the mask Msk2.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_3=
     (dSFMT<LoopFac>::Msk2>>32)&0xFFFFFFFFUL;
+  /**
+   * @brief the fourth 32-bit mask
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * It takes the lower 32-bit of the mask Msk2.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Msk32_4=dSFMT<LoopFac>::Msk1&0xFFFFFFFFUL;
+  /**
+   * @brief an array of two factors
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * the array may ease the access these elements with their indices easily.
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::pcv[2]={dSFMT<LoopFac>::Pcv1,
                                                        dSFMT<LoopFac>::Pcv2};
-
+  /**
+   * @brief the Pos1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::Pos1=0U;
+  /**
+   * @brief the SL1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::SL1=0U;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Msk1=0ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Msk2=0ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Fix1=0ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Fix2=0ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Pcv1=0ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases
+   */
   template <unsigned int LoopFac>
   const unsigned long long int dSFMT<LoopFac>::Pcv2=0ULL;
+  /**
+   * @brief the availability flag
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * it is defined as zero for generic cases, which indicates that the
+   * generator with generic factor is not availability.
+   */
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::IsFacAvailable=0;
 
