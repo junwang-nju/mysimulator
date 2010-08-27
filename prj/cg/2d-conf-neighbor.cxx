@@ -16,18 +16,21 @@ void convert(unsigned int* seq, const unsigned int size) {
 }
 
 void check_move(unsigned int* seq, const unsigned int size,
+                const unsigned int sID,
                 ParameterList& PL, Vector<unsigned int>& IDSet) {
   Vector<UniqueParameter>* pID;
   bool fg;
   convert(seq,size);
   pID=const_cast<Vector<UniqueParameter>*>(get(PL,seq,size));
   if(pID!=0) {
-    fg=false;
-    for(unsigned int z=1;z<=IDSet[0];++z)
-      if((*pID)[0].u==IDSet[z]) { fg=true; break; }
-    if(!fg) {
-      IDSet[0]++;
-      IDSet[IDSet[0]]=(*pID)[0].u;
+    if((*pID)[0].u!=sID) {
+      fg=false;
+      for(unsigned int z=1;z<=IDSet[0];++z)
+        if((*pID)[0].u==IDSet[z]) { fg=true; break; }
+      if(!fg) {
+        IDSet[0]++;
+        IDSet[IDSet[0]]=(*pID)[0].u;
+      }
     }
   }
 }
@@ -58,20 +61,31 @@ int main() {
     IDSet[0]=0;
     assign(rConf.data,ConfLib.key[i].index,11);
     rConf[0]=(rConf[0]+2)%4;
-    check_move(rConf.data,11,ConfLib,IDSet);
+    check_move(rConf.data,11,i,ConfLib,IDSet);
     assign(rConf.data,ConfLib.key[i].index,11);
     rConf[0]=3-(rConf[0]+2)%4;
-    check_move(rConf.data,11,ConfLib,IDSet);
+    check_move(rConf.data,11,i,ConfLib,IDSet);
     for(unsigned int k=1;k<11;++k) {
       assign(rConf.data,ConfLib.key[i].index,11);
+      if(rConf[k-1]!=rConf[k]) {
+        swap(rConf[k],rConf[k-1]);
+        check_move(rConf.data,11,i,ConfLib,IDSet);
+      }
+    }
+    for(unsigned int k=1;k<10;++k) {
+      assign(rConf.data,ConfLib.key[i].index,11);
+      if(rConf[k-1]+rConf[k+1]==3) {
+        swap(rConf[k-1],rConf[k+1]);
+        check_move(rConf.data,11,i,ConfLib,IDSet);
+      }
     }
     assign(rConf.data,ConfLib.key[i].index,11);
     rConf[10]=(rConf[10]+2)%4;
-    check_move(rConf.data,11,ConfLib,IDSet);
+    check_move(rConf.data,11,i,ConfLib,IDSet);
     assign(rConf.data,ConfLib.key[i].index,11);
     rConf[10]=3-(rConf[10]+2)%4;
-    check_move(rConf.data,11,ConfLib,IDSet);
-    for(unsigned int z=1;z<=IDSet[0];++z)
+    check_move(rConf.data,11,i,ConfLib,IDSet);
+    for(unsigned int z=0;z<=IDSet[0];++z)
       cout<<"\t"<<IDSet[z];
     cout<<endl;
   }

@@ -35,3 +35,6 @@ target_link_libraries (l2denum.run blas)
 add_executable (l2dneib.run 2d-conf-neighbor.cxx)
 target_link_libraries (l2dneib.run blas Base)
 
+add_executable (l2ddifu.run 2d-conf-diffuse.cxx)
+target_link_libraries (l2ddifu.run blas)
+
