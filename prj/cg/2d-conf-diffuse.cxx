@@ -98,44 +98,36 @@ int main() {
     }
   }
 
-  Vector<double> Ma,Mb,dM;
+  Vector<double> M,dM;
   double rM,S;
-  allocate(Ma,15037);
-  allocate(Mb,15037);
+  allocate(M,15037);
   allocate(dM,15037);
 
+  unsigned int rt;
   for(unsigned int u=0;u<15037;++u)
   for(unsigned int v=0;v<nbID[u].size;++v) {
     if(u>nbID[u][v])  continue;
-    assign(Ma,0.);
-    assign(Mb,0.);
-    Ma[u]=1;
-    Mb[nbID[u][v]]=1;
+    assign(M,0.);
+    M[u]=1;
+    M[nbID[u][v]]=-1;
 
     S=1;
-    for(unsigned int rt=0;rt<100000;++rt) {
+    for(rt=0;rt<800000000;++rt) {
       assign(dM,0.);
       for(unsigned int i=0;i<15037;++i)
         for(unsigned int k=0;k<nbID[i].size;++k) {
-          rM=Ma[i]*transP[i][k];
+          rM=M[i]*transP[i][k];
           dM[nbID[i][k]]+=rM;
           dM[i]-=rM;
         }
-      shift(Ma,dM);
-      assign(dM,0.);
-      for(unsigned int i=0;i<15037;++i)
-        for(unsigned int k=0;k<nbID[i].size;++k) {
-          rM=Mb[i]*transP[i][k];
-          dM[nbID[i][k]]+=rM;
-          dM[i]-=rM;
-        }
-      shift(Mb,dM);
-      rM=0;
-      for(unsigned int i=0;i<15037;++i) rM+=fabs(Ma[i]-Mb[i]);
-      S+=rM;
+      shift(M,dM);
+      rM=asum(M);
+      if(rM<1e-3) {
+        S+=0.5*rM;  break;
+      } else
+        S+=rM;
     }
-    S-=rM*0.5;
-    cout<<u<<"\t"<<nbID[u][v]<<"\t"<<S<<endl;
+    cout<<u<<"\t"<<nbID[u][v]<<"\t"<<S<<"\t"<<rt<<endl;
   }
 
   return 0;
