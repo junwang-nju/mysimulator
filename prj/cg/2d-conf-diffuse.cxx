@@ -32,7 +32,8 @@ double Energy(const Vector<unsigned int>& Conf, PropertyList<int>& Coor,
   return e;
 }
 
-int main() {
+int main(int argc, char** argv) {
+  if(argc<3)  return 1;
   ifstream ifs;
   Vector<unsigned int> sz;
 
@@ -103,8 +104,10 @@ int main() {
   allocate(M,15037);
   allocate(dM,15037);
 
-  unsigned int rt;
-  for(unsigned int u=0;u<15037;++u)
+  unsigned int bu,eu,rt;
+  bu=atoi(argv[1]);
+  eu=atoi(argv[2]);
+  for(unsigned int u=bu;u<eu;++u)
   for(unsigned int v=0;v<nbID[u].size;++v) {
     if(u>nbID[u][v])  continue;
     assign(M,0.);
