@@ -858,172 +858,654 @@ namespace std {
   template <unsigned int LoopFac>
   const unsigned int dSFMT<LoopFac>::IsFacAvailable=0;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <> const unsigned int dSFMT<521>::Pos1=3;
+  /**
+   * @brief the SL1 factor for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <> const unsigned int dSFMT<521>::SL1=25;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <>
   const unsigned long long int dSFMT<521>::Msk1=0x000FBFEFFF77EFFFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <>
   const unsigned long long int dSFMT<521>::Msk2=0x000FFEEBFBDFBFDFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <>
   const unsigned long long int dSFMT<521>::Fix1=0xCFB393D661638469ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <>
   const unsigned long long int dSFMT<521>::Fix2=0xC166867883AE2ADBULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <>
   const unsigned long long int dSFMT<521>::Pcv1=0xCCAA588000000000ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <>
   const unsigned long long int dSFMT<521>::Pcv2=0x0000000000000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 521
+   *
+   * This is a specification for the case with LoopFac of 521
+   */
   template <> const unsigned int dSFMT<521>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <> const unsigned int dSFMT<1279>::Pos1=9;
+  /**
+   * @brief the SL1 factor for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <> const unsigned int dSFMT<1279>::SL1=19;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <>
   const unsigned long long int dSFMT<1279>::Msk1=0x000EFFF7FFDDFFEEULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <>
   const unsigned long long int dSFMT<1279>::Msk2=0x000FBFFFFFF77FFFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <>
   const unsigned long long int dSFMT<1279>::Fix1=0xB66627623D1A31BEULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <>
   const unsigned long long int dSFMT<1279>::Fix2=0x04B6C51147B6109BULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <>
   const unsigned long long int dSFMT<1279>::Pcv1=0x7049F2DA382A6AEBULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <>
   const unsigned long long int dSFMT<1279>::Pcv2=0xDE4CA84A40000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 1279
+   *
+   * This is a specification for the case with LoopFac of 1279
+   */
   template <> const unsigned int dSFMT<1279>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203
+   */
   template <> const unsigned int dSFMT<2203>::Pos1=7;
+  /**
+   * @brief the SL1 factor for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203
+   */
   template <> const unsigned int dSFMT<2203>::SL1=19;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203
+   */
   template <>
   const unsigned long long int dSFMT<2203>::Msk1=0x000FDFFFF5EDBFFFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203
+   */
   template <>
   const unsigned long long int dSFMT<2203>::Msk2=0x000F77FFFFFFFBFEULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203
+   */
   template <>
   const unsigned long long int dSFMT<2203>::Fix1=0xB14E907A39338485ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203
+   */
   template <>
   const unsigned long long int dSFMT<2203>::Fix2=0xF98F0735C637EF90ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203 
+   */
   template <>
   const unsigned long long int dSFMT<2203>::Pcv1=0x8000000000000000ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203 
+   */
   template <>
   const unsigned long long int dSFMT<2203>::Pcv2=0x0000000000000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 2203
+   *
+   * This is a specification for the case with LoopFac of 2203
+   */
   template <> const unsigned int dSFMT<2203>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <> const unsigned int dSFMT<4253>::Pos1=19;
+  /**
+   * @brief the SL1 factor for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <> const unsigned int dSFMT<4253>::SL1=19;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <>
   const unsigned long long int dSFMT<4253>::Msk1=0x0007B7FFFEF5FEFFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <>
   const unsigned long long int dSFMT<4253>::Msk2=0x000FFDFFEFFEFBFCULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <>
   const unsigned long long int dSFMT<4253>::Fix1=0x80901B5FD7A11C65ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <>
   const unsigned long long int dSFMT<4253>::Fix2=0x5A63FF0E7CB0BA74ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <>
   const unsigned long long int dSFMT<4253>::Pcv1=0x1AD277BE12000000ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <>
   const unsigned long long int dSFMT<4253>::Pcv2=0x0000000000000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 4253
+   *
+   * This is a specification for the case with LoopFac of 4253
+   */
   template <> const unsigned int dSFMT<4253>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <> const unsigned int dSFMT<11213>::Pos1=37;
+  /**
+   * @brief the SL1 factor for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <> const unsigned int dSFMT<11213>::SL1=19;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <>
   const unsigned long long int dSFMT<11213>::Msk1=0x000FFFFFFDF7FFFDULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <>
   const unsigned long long int dSFMT<11213>::Msk2=0x000DFFFFFFF6BFFFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <>
   const unsigned long long int dSFMT<11213>::Fix1=0xD0EF7B7C75B06793ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <>
   const unsigned long long int dSFMT<11213>::Fix2=0x9C50FF4CAAE0A641ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <>
   const unsigned long long int dSFMT<11213>::Pcv1=0x8234C51207C80000ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <>
   const unsigned long long int dSFMT<11213>::Pcv2=0x0000000000000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 11213
+   *
+   * This is a specification for the case with LoopFac of 11213
+   */
   template <> const unsigned int dSFMT<11213>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <> const unsigned int dSFMT<19937>::Pos1=117;
+  /**
+   * @brief the SL1 factor for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <> const unsigned int dSFMT<19937>::SL1=19;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <>
   const unsigned long long int dSFMT<19937>::Msk1=0x000FFAFFFFFFFB3FULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <>
   const unsigned long long int dSFMT<19937>::Msk2=0x000FFDFFFC90FFFDULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <>
   const unsigned long long int dSFMT<19937>::Fix1=0x90014964B32F4329ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <>
   const unsigned long long int dSFMT<19937>::Fix2=0x3B8D12AC548A7C7AULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <>
   const unsigned long long int dSFMT<19937>::Pcv1=0x3D84E1AC0DC82880ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <>
   const unsigned long long int dSFMT<19937>::Pcv2=0x0000000000000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 19937
+   *
+   * This is a specification for the case with LoopFac of 19937
+   */
   template <> const unsigned int dSFMT<19937>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <> const unsigned int dSFMT<44497>::Pos1=304;
+  /**
+   * @brief the SL1 factor for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <> const unsigned int dSFMT<44497>::SL1=19;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <>
   const unsigned long long int dSFMT<44497>::Msk1=0x000FF6DFFFFFFFEFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <>
   const unsigned long long int dSFMT<44497>::Msk2=0x0007FFDDDEEFFF6FULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <>
   const unsigned long long int dSFMT<44497>::Fix1=0x75D910F235F6E10EULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <>
   const unsigned long long int dSFMT<44497>::Fix2=0x7B32158AEDC8E969ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <>
   const unsigned long long int dSFMT<44497>::Pcv1=0x4C3356B2A0000000ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <>
   const unsigned long long int dSFMT<44497>::Pcv2=0x0000000000000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 44497
+   *
+   * This is a specification for the case with LoopFac of 44497
+   */
   template <> const unsigned int dSFMT<44497>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <> const unsigned int dSFMT<86243>::Pos1=231;
+  /**
+   * @brief the SL1 factor for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <> const unsigned int dSFMT<86243>::SL1=13;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <>
   const unsigned long long int dSFMT<86243>::Msk1=0x000FFEDFF6FFFFDFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <>
   const unsigned long long int dSFMT<86243>::Msk2=0x000FFFF7FDFFFF7EULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <>
   const unsigned long long int dSFMT<86243>::Fix1=0x1D553E776B975E68ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <>
   const unsigned long long int dSFMT<86243>::Fix2=0x648FAADF1416BF91ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <>
   const unsigned long long int dSFMT<86243>::Pcv1=0x5F2CD03E2758A373ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <>
   const unsigned long long int dSFMT<86243>::Pcv2=0xC0B7EB8410000001ULL;
+  /*
+   * @brief the availability flag for LoopFac of 86243
+   *
+   * This is a specification for the case with LoopFac of 86243
+   */
   template <> const unsigned int dSFMT<86243>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <> const unsigned int dSFMT<132049>::Pos1=371;
+  /**
+   * @brief the SL1 factor for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <> const unsigned int dSFMT<132049>::SL1=23;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <>
   const unsigned long long int dSFMT<132049>::Msk1=0x000FB9F4EFF4BF77ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <>
   const unsigned long long int dSFMT<132049>::Msk2=0x000FFFFFBFEFFF37ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <>
   const unsigned long long int dSFMT<132049>::Fix1=0x4CE24C0E4E234F3BULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <>
   const unsigned long long int dSFMT<132049>::Fix2=0x62612409B5665C2DULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <>
   const unsigned long long int dSFMT<132049>::Pcv1=0x181232889145D000ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <>
   const unsigned long long int dSFMT<132049>::Pcv2=0x0000000000000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 132049
+   *
+   * This is a specification for the case with LoopFac of 132049
+   */
   template <> const unsigned int dSFMT<132049>::IsFacAvailable=1;
 
+  /**
+   * @brief the Pos1 factor for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <> const unsigned int dSFMT<216091>::Pos1=1890;
+  /**
+   * @brief the SL1 factor for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <> const unsigned int dSFMT<216091>::SL1=23;
+  /**
+   * @brief the \c unsigned \c long \c long Msk1 factor for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <>
   const unsigned long long int dSFMT<216091>::Msk1=0x000BF7DF7FEFCFFFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Msk2 factor for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <>
   const unsigned long long int dSFMT<216091>::Msk2=0x000E7FFFFEF737FFULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix1 factor for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <>
   const unsigned long long int dSFMT<216091>::Fix1=0xD7F95A04764C27D7ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Fix2 factor for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <>
   const unsigned long long int dSFMT<216091>::Fix2=0x6A483861810BEBC2ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv1 factor for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <>
   const unsigned long long int dSFMT<216091>::Pcv1=0x3AF0A8F3D5600000ULL;
+  /**
+   * @brief the \c unsigned \c long \c long Pcv2 factor for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <>
   const unsigned long long int dSFMT<216091>::Pcv2=0x0000000000000001ULL;
+  /**
+   * @brief the availability flag for LoopFac of 216091
+   *
+   * This is a specification for the case with LoopFac of 216091
+   */
   template <> const unsigned int dSFMT<216091>::IsFacAvailable=1;
 
+  /**
+   * @brief check the availability of dSFMT generator
+   *
+   * It is implemented by checking the availability of status in generator.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dg [in] the dSFMT generator
+   * @return the flag indicating if the generator is available
+   */
   template <unsigned int LoopFac>
   bool IsAvailable(const dSFMT<LoopFac>& dg) { return IsAvailable(dg.status); }
 
+  /**
+   * @brief check if the dSFMT generator is a random generator
+   *
+   * It always gives out true flag since dSFMT generator is random generator.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dg [in] the dSFMT generator
+   * @return the true flag indicating that dSFMT generator is a random generator
+   */
   template <unsigned int LoopFac>
-  bool IsRandomGenerator(const dSFMT<LoopFac>&) { return true; }
+  bool IsRandomGenerator(const dSFMT<LoopFac>& dg) { return true; }
 
+  /**
+   * @brief assign dSFMT generator from another
+   *
+   * Just copy the content of status and index. The concerned generators
+   * are checked for their availability before this operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dest [out] the generator to accept the input
+   * @param src [in] the generator storing the input
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void assign(dSFMT<LoopFac>& dest, const dSFMT<LoopFac>& src) {
     assert(IsAvailable(dest));
@@ -1032,6 +1514,17 @@ namespace std {
     *dest.idx=*src.idx;
   }
 
+  /**
+   * @brief release a dSFMT generator
+   *
+   * The internal storages of status, index and output are freed in this
+   * procedure. The state of generator is updated as Unused.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dg [in,out] the generator to be released
+   * @return nothing.
+   */
   template <unsigned int LoopFac>
   void release(dSFMT<LoopFac>& dg) {
     if(dg.state==Allocated) {
@@ -1046,6 +1539,18 @@ namespace std {
     dg.state=Unused;
   }
 
+  /**
+   * @brief allocate dSFMT generator
+   *
+   * The internal storages of status, index, and output are allocated.
+   * The state is updated as Allocated. The generator is then initiated
+   * with default seed 5489. This generator is released before this operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dg [in,out] the generator to be allocated
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void allocate(dSFMT<LoopFac>& dg) {
     release(dg);
@@ -1056,6 +1561,20 @@ namespace std {
     dg.Init(5489UL);
   }
 
+  /**
+   * @brief refer to another dSFMT generator
+   *
+   * Just copy the pointers of the status, index, and output of source
+   * generator to destination generator. The source generator is checked
+   * for its availability for this operation. The destination generator
+   * is released before the refer-to operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dest [in,out] the generator to accept the input
+   * @param src [in] the generator storing the input
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void refer(dSFMT<LoopFac>& dest, const dSFMT<LoopFac>& src) {
     assert(IsAvailable(src));
@@ -1066,6 +1585,18 @@ namespace std {
     dest.state=Reference;
   }
 
+  /**
+   * @brief initiate dSFMT generator with a \c unsigned \c int seed
+   *
+   * It is implemented by filling the internal status with regular
+   * algorithm. For the case with SSE2 enabled, the related constants
+   * are also initiated. The generator is checked for availability
+   * before this operation.
+   *
+   * @param dg [out] the generator to be initiated.
+   * @param seed [in] the seed for generator
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void init(dSFMT<LoopFac>& dg, const unsigned int seed) {
     assert(IsAvailable(dg));
@@ -1086,10 +1617,30 @@ namespace std {
 #endif
   }
 
+  /**
+   * @brief initiate the dSFMT generator with an array of seeds
+   *
+   * it is implemented with complex operations for the elements in arrays
+   * and the status in generator. The generator is checked for its
+   * availability before this operation. For the case with SSE2 enabled,
+   * the related constants are also initiated.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dg [in,out] the generator to be initiated
+   * @param key [in] the array containing seeds
+   * @param len [in] the number of seeds
+   * @param off [in] the offset of the first element in array key. It takes
+   *                 the default value of uZero.
+   * @param step [in] the step between elements in array key. It takes the
+   *                  default value of uOne.
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void init(dSFMT<LoopFac>& dg,
             const unsigned int* key, const unsigned int len,
             const unsigned int off=uZero, const unsigned int step=uOne) {
+    assert(IsAvailable(dg));
     unsigned int i,j,g,count,tmid,r, *pSFMT;
     pSFMT=&dg.status[0].u[0];
     memset(dg.status,0x8B,dSFMT<LoopFac>::NStatusByte);
@@ -1139,14 +1690,46 @@ namespace std {
 #endif
   }
 
+  /**
+   * @brief initiate dSFMT generator with a vector
+   *
+   * It is implemented with the operation to initiate generator with
+   * an array.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dg [in,out] the generator to be initiated
+   * @param key [in] the vector containing seeds
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void init(dSFMT<LoopFac>& dg, const Vector<unsigned int>& key) {
     init(dg,key(),key.size);
   }
 
+  /**
+   * @brief generate a random \c double value
+   *
+   * It generates a random number in the region [0,1).
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dg [in,out] the dSFMT generator for this generation
+   * @return the generated \c double number 
+   */
   template <unsigned int LoopFac>
   const double& rand(dSFMT<LoopFac>& dg) { return dg.DoubleClose0Open1(); }
 
+  /**
+   * @brief generate a T-type number with dSFMT generator
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<521>& dg) { myError("Default Form is prohibited"); }
   template <typename T>
