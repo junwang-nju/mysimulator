@@ -38,3 +38,6 @@ target_link_libraries (l2dneib.run blas Base)
 add_executable (l2ddifu.run 2d-conf-diffuse.cxx)
 target_link_libraries (l2ddifu.run blas)
 
+add_executable (fk.run fk.cxx)
+target_link_libraries (fk.run blas)
+
