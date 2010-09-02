@@ -1721,7 +1721,7 @@ namespace std {
   const double& rand(dSFMT<LoopFac>& dg) { return dg.DoubleClose0Open1(); }
 
   /**
-   * @brief generate a T-type number with dSFMT generator
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 521
    *
    * This gives the generic form. It is prohibited and pops up a message.
    *
@@ -1732,90 +1732,384 @@ namespace std {
    */
   template <typename T>
   const T& rand(dSFMT<521>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 1279
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<1279>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 2203
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<2203>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 4253
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<4253>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 11213
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<11213>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 19937
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<19937>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 44497
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<44497>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 86243
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<86243>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 132049
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<132049>& dg) { myError("Default Form is prohibited"); }
+  /**
+   * @brief generate a T-type number with dSFMT generator for LoopFac of 216091
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
   const T& rand(dSFMT<216091>& dg) { myError("Default Form is prohibited"); }
 
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 521
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<521>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 1279
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<1279>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 2203
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<2203>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 4253
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<4253>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 11213
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<11213>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 19937
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<19937>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 44497
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<44497>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 86243
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<86243>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 132049
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<132049>& dg) { return rand(dg); }
+  /**
+   * @brief generate a \c double number with dSFMT generator for LoopFac of 216091
+   *
+   * This is the specification for \c double type. It is implemented by
+   * rand operation.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(dSFMT<216091>& dg) { return rand(dg); }
 
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 521
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<521>& dg){ return dg.UInt32(); }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 1279
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<1279>& dg) {
     return dg.UInt32();
   }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 2203
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<2203>& dg) {
     return dg.UInt32();
   }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 4253
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<4253>& dg) {
     return dg.UInt32();
   }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 11213
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<11213>& dg) {
     return dg.UInt32();
   }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 19937
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<19937>& dg) {
     return dg.UInt32();
   }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 44497
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<44497>& dg) {
     return dg.UInt32();
   }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 86243
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<86243>& dg) {
     return dg.UInt32();
   }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 132049
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<132049>& dg) {
     return dg.UInt32();
   }
+  /**
+   * @brief generate a \c unsigned \c int number with dSFMT generator for LoopFac of 216091
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * UInt32 method of dSFMT generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(dSFMT<216091>& dg) {
     return dg.UInt32();
   }
 
+  /**
+   * @brief fill \c double array using dSFMT generator
+   *
+   * Just fill the array with the fillarrayClose0Open1 method.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dg [in,out] the dSFMT generator
+   * @param array [out] the array to be filled with
+   * @param size [in] the number of elements in array
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void fillarray(dSFMT<LoopFac>& dg, double* array, const unsigned int size) {
     dg.fillarrayClose0Open1(array,size);
   }
 
+  /**
+   * @brief output the status of dSFMT generator to ostream
+   *
+   * Just output the LoopFac and the status, index of the generator.
+   * This generator is checked for its availability before this operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param os [in,out] the ostream to accept information of dSFMT generator
+   * @param dg [in] the dSFMT generator to be output
+   * @return the ostream after the output operation
+   */
   template <unsigned int LoopFac>
   ostream& operator<<(ostream& os, const dSFMT<LoopFac>& dg) {
     assert(IsAvailable(dg));
@@ -1825,6 +2119,20 @@ namespace std {
     return os;
   }
 
+  /**
+   * @brief read status of dSFMT generator from istream
+   *
+   * The status and index are imported from istream. The LoopFac in istream is
+   * compared with that for the generator to ensure the compatibility of
+   * storage and input data. The generator is also checked for their
+   * availability before this operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param is [in,out] the istream containing the data for generator
+   * @param dg [in,out] the dSFMT generator
+   * @return the istream after input operation
+   */
   template <unsigned int LoopFac>
   istream& operator>>(istream& is, dSFMT<LoopFac>& dg) {
     assert(IsAvailable(dg));

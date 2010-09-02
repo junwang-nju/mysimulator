@@ -1,4 +1,15 @@
 
+/**
+ * @file random-generator-mt-sfmt.h
+ * @brief the random generator with SFMT implementation
+ *
+ * This file gives the random generator using SFMT implementation. This
+ * kind of generator is said to be efficient for integer generation
+ * comparing with dSFMT implementation.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Random_Generator_MT_SFMT_H_
 #define _Random_Generator_MT_SFMT_H_
 
@@ -13,9 +24,27 @@
 namespace std {
 
 #ifdef HAVE_SSE2
+  /**
+   * @brief the mask for parameter used in SSE2 implementation
+   *
+   * It is implemented with 128-bit integer
+   */
   __m128i SFMT_SSE2_ParamMask;
 #endif
 
+  /**
+   * @brief the random generator with SFMT implementation
+   *
+   * This is a generator to produce random numbers with uniform distribution.
+   * It is said that this kind of generator is efficient to produce
+   * \c unsigned \c int values.
+   *
+   * LoopFac is the factor related to the size of internal storage. It takes
+   * 19937 as its default value.
+   *
+   * @note It uses UniqueParameter128b are basic internal storage. This object
+   *       is useful as a generic form for internal data.
+   */
   template <unsigned int LoopFac=19937>
   struct SFMT {
     static const unsigned int MExp;
@@ -42,31 +71,117 @@ namespace std {
     static const unsigned int Parity4;
     static const unsigned int Parity[4];
 
+    /**
+     * @brief the status array in the generator
+     */
     UniqueParameter128b *status;
+    /**
+     * @brief the pointer to the index to the output element
+     */
     unsigned int *idx;
+    /**
+     * @brief the pointer to the output parameter
+     */
     UniqueParameter128b *output;
+    /**
+     * @brief the state flag for the generator
+     */
     unsigned int state;
 
+    /**
+     * @brief the abbreviation of the type of SFMT generator
+     */
     typedef SFMT<LoopFac> Type;
 
+    /**
+     * @brief default initiator
+     *
+     * Just initiate the pointers with NULL and initiate the state flag
+     * with Unused.
+     */
     SFMT()
       : status(NULL), idx(NULL), output(NULL), state(Unused) {}
-    SFMT(const Type&) { myError("Cannot create from SFMT generator"); }
+    /**
+     * @brief initiator from another SFMT generator
+     *
+     * It is prohibited and pops up an error message
+     *
+     * @param sg [in] the input SFMT generator
+     */
+    SFMT(const Type& sg) { myError("Cannot create from SFMT generator"); }
+    /**
+     * @brief copy from another SFMT generator
+     *
+     * It is implemented with assign operation.
+     *
+     * @param sg [in] the input SFMT generator
+     * @return the reference to the resultant SFMT generator
+     */
     Type& operator=(const Type& sg) { assign(*this,sg); return *this; }
+    /**
+     * @brief the destructor
+     *
+     * It is implemented with release operation
+     */
     ~SFMT() { release(*this); }
 
+    /**
+     * @brief initiate the generator with an \c unsigned \c int seed
+     *
+     * it is implemented with init operation.
+     *
+     * @param seed [in] the \c unsigned \c int as the seed for generator
+     * @return nothing
+     */
     void Init(const unsigned int seed) { init(*this,seed); }
+    /**
+     * @brief initiate the generator with \c unsigned \c int array
+     *
+     * it is implemented with init operation
+     *
+     * @param key [in] the arrays containing seeds
+     * @param len [in] the number of seeds
+     * @param off [in] the offset of the first element in array, it takes
+     *                 the default value of uZero.
+     * @param step [in] the separation between elements in array, it takes
+     *                  the default value of uOne.
+     * @return nothing
+     */
     void Init(const unsigned int* key, const unsigned int len,
               const unsigned int off=uZero, const unsigned int step=uOne) {
       init(*this,key,len,off,step);
     }
+    /**
+     * @brief initiate the generator with a vector
+     *
+     * It is implemented with init operation.
+     *
+     * @param key [in] the vector containing the seeds
+     * @return nothing
+     */
     void Init(const Vector<unsigned int>& key) { init(*this,key); }
 
+    /**
+     * @brief generate a 32-bit \c unsigned \c int value
+     *
+     * One of the \c unsigned \c int number is picked up from internal
+     * storage. When the storage is used up, it is re-generated.
+     *
+     * @return the 32-bit \c unsigned \c int value
+     */
     const unsigned int& UInt32() {
       if(*idx>=SFMT<LoopFac>::N32) { GenRandAll(); *idx=0; }
       return status->u[(*idx)++];
     }
 
+    /**
+     * @brief generate a 64-bit \c unsigned \c long \c long \c int value
+     *
+     * The \c unsigned \c long \c long \c int value is picked up from
+     * internal storage. The storage may be updated when it is used out.
+     *
+     * @return an \c unsigned \c long \c long \c int value
+     */
     const unsigned long long int& UInt64() {
       assert(((*idx)&1)==0);
       if(*idx>=SFMT<LoopFac>::N32) { GenRandAll(); *idx=0; }
@@ -75,21 +190,54 @@ namespace std {
       return output->ull[0];
     }
 
+    /**
+     * @brief generate \c double value in region [0,1]
+     *
+     * It is implemented based on linear map of \c unsigned \c int to
+     * \c double value in region [0,1]
+     *
+     * @return the \c double value in region [0,1]
+     */
     const double& DoubleClose0Close1() {
       output->d[0]=static_cast<double>(static_cast<int>(UInt32()))
                   *(1./4294967295.0)+(0.5+0.5/4294967295.0);
       return output->d[0];
     }
+    /**
+     * @brief generate \c double value in region [0,1)
+     *
+     * It is implemented based on linear map of \c unsigned \c int to
+     * \c double value in region [0,1)
+     *
+     * @return the \c double value in region [0,1)
+     */
     const double& DoubleClose0Open1() {
       output->d[0]=static_cast<double>(static_cast<int>(UInt32()))
                   *(1./4294967296.0)+0.5;
       return output->d[0];
     }
+    /**
+     * @brief generate \c double value in region (0,1)
+     *
+     * It is implemented based on linear map of \c unsigned \c int to
+     * \c double value in region (0,1)
+     *
+     * @return the \c double value in region (0,1)
+     */
     const double& DoubleOpen0Open1() {
       output->d[0]=static_cast<double>(static_cast<int>(UInt32()))
                   *(1./4294967296.0)+(0.5+0.5/4294967296.0);
       return output->d[0];
     }
+    /**
+     * @brief generate 53-bit \c double value in region [0,1)
+     *
+     * It is implemented based on linear map of two \c unsigned \c int to
+     * \c double value in region [0,1). The certain bits are picked up
+     * for this operation.
+     *
+     * @return the 53-bit \c double value in region [0,1)
+     */
     const double& Double53Close0Open1() {
       long x,y;
       x=static_cast<long>(UInt32()>>5);
@@ -97,6 +245,17 @@ namespace std {
       output->d[0]=(x*67108864.0+y)*(1./9007199254740992.0);
       return output->d[0];
     }
+    /**
+     * @brief generate 53-bit \c double value in region [0,1) (slow method)
+     *
+     * It is implemented based on linear map of two \c unsigned \c int to
+     * \c double value in region [0,1). The certain bits are picked up
+     * for this operation.
+     *
+     * @return the 53-bit \c double value in region [0,1)
+     * @note it is said that this is a slow method since conversion from 
+     *       \c unsigned \c int to \c double is slow. This is not tested.
+     */
     const double& Double53Close0Open1Slow() {
       unsigned int x,y;
       x=UInt32()>>5;
@@ -104,11 +263,32 @@ namespace std {
       output->d[0]=(x*67108864.0+y)*(1./9007199254740992.0);
       return output->d[0];
     }
+    /**
+     * @brief generate 63-bit \c long \c double value in region [0,1)
+     *
+     * It is implemented based on linear map of two \c unsigned \c int to
+     * \c double value in region [0,1). The certain bits are picked up
+     * for this operation.
+     *
+     * @return the 63-bit \c long \c double value in region [0,1)
+     */
     const long double& LDouble63Close0Open1() {
       output->ld=static_cast<long double>(static_cast<long long>(UInt64()))
                 *(1./18446744073709551616.0L)+0.5;
       return output->ld;
     }
+    /**
+     * @brief generate 63-bit \c long \c double value in region [0,1) (slow method)
+     *
+     * It is implemented based on linear map of two \c unsigned \c int to
+     * \c double value in region [0,1). The certain bits are picked up
+     * for this operation.
+     *
+     * @return the 63-bit \c long \c double value in region [0,1)
+     * @note it is said that this is a slow method since conversion from 
+     *       \c unsigned \c int to \c long \c double is slow. This is not
+     *       tested.
+     */
     const long double& LDouble63Close0Open1Slow() {
       unsigned int x,y;
       x=UInt32();
@@ -119,12 +299,30 @@ namespace std {
     }
 
 #ifdef HAVE_SSE2
+    /**
+     * @brief initiate constant (SSE2 operation)
+     *
+     * Just assign the mask for parameter in the first run.
+     *
+     * @return nothing
+     */
     void InitConst() {
       static bool first=true;
       if(!first)  return;
       _mm_storeu_si128(&SFMT_SSE2_ParamMask,_mm_set_epi32(Msk4,Msk3,Msk2,Msk1));
       first=false;
     }
+    /**
+     * @brief a basic complex operation for a series of 128-bit integers
+     *
+     * This is a basic step with a series of complex operations.
+     *
+     * @param a,b,c,d [in] the 128-bit integers as input
+     * @return the resultant 128-bit integer
+     *
+     * @note to avoid that the problem of bit alignment, the SSE2 operations
+     *       without bit-alignment requirement are used.
+     */
     __m128i DoRecursion(const __m128i& a, const __m128i& b, const __m128i& c,
                         const __m128i& d) {
       __m128i v,x,y,z;
@@ -143,6 +341,14 @@ namespace std {
       z=_mm_xor_si128(z,y);
       return z;
     }
+    /**
+     * @brief generate all the elements of status
+     *
+     * It is a procedure to generate all status in the internal storage.
+     * It uses the DoRecursion operation.
+     *
+     * @return nothing
+     */
     void GenRandAll() {
       unsigned int i;
       __m128i r,r1,r2;
@@ -161,6 +367,16 @@ namespace std {
         r2=r;
       }
     }
+    /**
+     * @brief generate array with SFMT generator
+     *
+     * It is implemented with the operation combined with elements of
+     * input array and internal status.
+     *
+     * @param array [in,out] the array containing parameters
+     * @param size [in] the number of elements in array
+     * @return nothing
+     */
     void GenRandArray(UniqueParameter128b* array, const unsigned int size) {
       assert(size>=N);
       unsigned int i,j;
