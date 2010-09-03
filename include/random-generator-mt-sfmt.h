@@ -414,6 +414,16 @@ namespace std {
       }
     }
 #else
+    /**
+     * @brief a basic complex operation for a series of 128-bit integers
+     *
+     * This is a version without SSE2 instruction. With a series of
+     * bit operations, a parameter is produced based the input
+     * parameters.
+     *
+     * @param a,b,c,d [in] the 128-bit parameters
+     * @return the resultant 128-bit parameter
+     */
     UniqueParameter128b& DoRecursion(
         const UniqueParameter128b& a, const UniqueParameter128b& b,
         const UniqueParameter128b& c, const UniqueParameter128b& d) {
@@ -426,6 +436,14 @@ namespace std {
       r.u[3]=a.u[3]^x.u[3]^((b.u[3]>>SR1)&Msk4)^y.u[3]^(d.u[3]<<SL1);
       return r;
     }
+    /**
+     * @brief generate all status
+     *
+     * This is a version with SSE2 instruction. It is implemented with
+     * the corresponding DoRecursion operation.
+     *
+     * @return nothing
+     */
     void GenRandAll() {
       unsigned int i;
       UniqueParameter128b *r1=&status[N-2];
@@ -441,6 +459,17 @@ namespace std {
         r2=&status[i];
       }
     }
+    /**
+     * @brief generate an array of parameter
+     *
+     * It is a version without SSE2 instruction. it is implemented with
+     * the DoRecursion operation. The status and the concerned array
+     * are operated in a mixed manner.
+     *
+     * @param array [in,out] the array to be generated.
+     * @param size [in] the number of parameters
+     * @return nothing
+     */
     void GenRandArray(UniqueParameter128b* array, const unsigned int size) {
       unsigned int i,j;
       UniqueParameter128b *r1=&status[N-2];
