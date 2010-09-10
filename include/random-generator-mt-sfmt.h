@@ -675,150 +675,633 @@ namespace std {
   template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::LagMid=
     SFMT<LoopFac>::Lag+SFMT<LoopFac>::Mid;
+  /**
+   * @brief the array storing the parity constants
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This array contains 4 constants, Parity1, Parity2, Parity3, and Parity4.
+   */
   template <unsigned int LoopFac>
   const unsigned int SFMT<LoopFac>::Parity[4]={
     SFMT<LoopFac>::Parity1, SFMT<LoopFac>::Parity2,
     SFMT<LoopFac>::Parity3, SFMT<LoopFac>::Parity4 };
 
+  /**
+   * the Pos1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Pos1=0;
+  /**
+   * the SL1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::SL1=0;
+  /**
+   * the SL2 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::SL2=0;
+  /**
+   * the SR1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::SR1=0;
+  /**
+   * the SR2 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::SR2=0;
+  /**
+   * the Msk1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Msk1=0;
+  /**
+   * the Msk2 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Msk2=0;
+  /**
+   * the Msk3 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Msk3=0;
+  /**
+   * the Msk4 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Msk4=0;
+  /**
+   * the Parity1 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Parity1=0;
+  /**
+   * the Parity2 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Parity2=0;
+  /**
+   * the Parity3 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Parity3=0;
+  /**
+   * the Parity4 factor
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * This factor is defined as zero for generic case
+   */
   template <unsigned int LoopFac> const unsigned int SFMT<LoopFac>::Parity4=0;
 
+  /**
+   * the Pos1 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::Pos1=2;
   template <> const unsigned int SFMT<607>::SL1=15;
   template <> const unsigned int SFMT<607>::SL2=3;
   template <> const unsigned int SFMT<607>::SR1=13;
   template <> const unsigned int SFMT<607>::SR2=3;
+  /**
+   * the Msk1 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::Msk1=0xFDFF37FFU;
+  /**
+   * the Msk2 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::Msk2=0xEF7F3F7DU;
+  /**
+   * the Msk3 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::Msk3=0xFF777B7DU;
+  /**
+   * the Msk4 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::Msk4=0x7FF7FB2FU;
+  /**
+   * the Parity1 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::Parity1=0x00000001U;
+  /**
+   * the Parity4 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::Parity4=0x5986F054U;
 
+  /**
+   * the Pos1 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::Pos1=7;
   template <> const unsigned int SFMT<1279>::SL1=14;
   template <> const unsigned int SFMT<1279>::SL2=3;
   template <> const unsigned int SFMT<1279>::SR1=5;
   template <> const unsigned int SFMT<1279>::SR2=1;
+  /**
+   * the Msk1 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::Msk1=0xF7FEFFFDU;
+  /**
+   * the Msk2 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::Msk2=0x7FEFCFFFU;
+  /**
+   * the Msk3 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::Msk3=0xAFF3EF3FU;
+  /**
+   * the Msk4 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::Msk4=0xB5FFFF7FU;
+  /**
+   * the Parity1 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::Parity1=0x00000001U;
+  /**
+   * the Parity4 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::Parity4=0x20000000U;
 
+  /**
+   * the Pos1 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::Pos1=68;
   template <> const unsigned int SFMT<11213>::SL1=14;
   template <> const unsigned int SFMT<11213>::SL2=3;
   template <> const unsigned int SFMT<11213>::SR1=7;
   template <> const unsigned int SFMT<11213>::SR2=3;
+  /**
+   * the Msk1 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::Msk1=0xEFFFF7F8U;
+  /**
+   * the Msk2 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::Msk2=0xFFFFFFEFU;
+  /**
+   * the Msk3 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::Msk3=0xDFDFBFFFU;
+  /**
+   * the Msk4 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::Msk4=0x7FFFDBFDU;
+  /**
+   * the Parity1 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::Parity1=0x00000001U;
+  /**
+   * the Parity3 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::Parity3=0xE8148000U;
+  /**
+   * the Parity4 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::Parity4=0xD0C7AFA3U;
 
+  /**
+   * the Pos1 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::Pos1=122;
   template <> const unsigned int SFMT<19937>::SL1=18;
   template <> const unsigned int SFMT<19937>::SL2=1;
   template <> const unsigned int SFMT<19937>::SR1=11;
   template <> const unsigned int SFMT<19937>::SR2=1;
+  /**
+   * the Msk1 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::Msk1=0xDFFFFFEFU;
+  /**
+   * the Msk2 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::Msk2=0xDDFECB7FU;
+  /**
+   * the Msk3 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::Msk3=0xBFFAFFFFU;
+  /**
+   * the Msk4 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::Msk4=0xBFFFFFF6U;
+  /**
+   * the Parity1 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::Parity1=0x00000001U;
+  /**
+   * the Parity4 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::Parity4=0x13C9E684U;
 
+  /**
+   * the Pos1 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::Pos1=110;
   template <> const unsigned int SFMT<132049>::SL1=19;
   template <> const unsigned int SFMT<132049>::SL2=1;
   template <> const unsigned int SFMT<132049>::SR1=21;
   template <> const unsigned int SFMT<132049>::SR2=1;
+  /**
+   * the Msk1 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::Msk1=0xFFFFBB5FU;
+  /**
+   * the Msk2 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::Msk2=0xFB6EBF95U;
+  /**
+   * the Msk3 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::Msk3=0xFFFEFFFAU;
+  /**
+   * the Msk4 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::Msk4=0xCFF77FFFU;
+  /**
+   * the Parity1 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::Parity1=0x00000001U;
+  /**
+   * the Parity3 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::Parity3=0xCB520000U;
+  /**
+   * the Parity4 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::Parity4=0xC7E91C7DU;
 
+  /**
+   * the Pos1 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Pos1=627;
   template <> const unsigned int SFMT<216091>::SL1=11;
   template <> const unsigned int SFMT<216091>::SL2=3;
   template <> const unsigned int SFMT<216091>::SR1=10;
   template <> const unsigned int SFMT<216091>::SR2=1;
+  /**
+   * the Msk1 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Msk1=0xBFF7BFF7U;
+  /**
+   * the Msk2 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Msk2=0xBFFFFFFFU;
+  /**
+   * the Msk3 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Msk3=0xBFFFFA7FU;
+  /**
+   * the Msk4 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Msk4=0xFFDDFBFBU;
+  /**
+   * the Parity1 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Parity1=0xF8000001U;
+  /**
+   * the Parity2 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Parity2=0x89E80709U;
+  /**
+   * the Parity3 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Parity3=0x3BD2B64BU;
+  /**
+   * the Parity4 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::Parity4=0x0C64B1E4U;
 
+  /**
+   * the Pos1 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::Pos1=12;
   template <> const unsigned int SFMT<2281>::SL1=19;
   template <> const unsigned int SFMT<2281>::SL2=1;
   template <> const unsigned int SFMT<2281>::SR1=5;
   template <> const unsigned int SFMT<2281>::SR2=1;
+  /**
+   * the Msk1 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::Msk1=0xBFF7FFBFU;
+  /**
+   * the Msk2 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::Msk2=0xFDFFFFFEU;
+  /**
+   * the Msk3 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::Msk3=0xF7FFEF7FU;
+  /**
+   * the Msk4 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::Msk4=0xF2F7CBBFU;
+  /**
+   * the Parity1 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::Parity1=0x00000001U;
+  /**
+   * the Parity4 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::Parity4=0x41DFA600U;
 
+  /**
+   * the Pos1 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Pos1=17;
   template <> const unsigned int SFMT<4253>::SL1=20;
   template <> const unsigned int SFMT<4253>::SL2=1;
   template <> const unsigned int SFMT<4253>::SR1=7;
   template <> const unsigned int SFMT<4253>::SR2=1;
+  /**
+   * the Msk1 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Msk1=0x9F7BFFFFU;
+  /**
+   * the Msk2 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Msk2=0x9FFFFF5FU;
+  /**
+   * the Msk3 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Msk3=0x3EFFFFFBU;
+  /**
+   * the Msk4 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Msk4=0xFFFFF7BBU;
+  /**
+   * the Parity1 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Parity1=0x00000001U;
+  /**
+   * the Parity2 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Parity2=0xAF5390A3U;
+  /**
+   * the Parity3 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Parity3=0xB740B3F8U;
+  /**
+   * the Parity4 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::Parity4=0x6C11486DU;
 
+  /**
+   * the Pos1 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::Pos1=330;
   template <> const unsigned int SFMT<44497>::SL1=5;
   template <> const unsigned int SFMT<44497>::SL2=3;
   template <> const unsigned int SFMT<44497>::SR1=9;
   template <> const unsigned int SFMT<44497>::SR2=3;
+  /**
+   * the Msk1 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::Msk1=0xEFFFFFFBU;
+  /**
+   * the Msk2 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::Msk2=0xDFBEBFFFU;
+  /**
+   * the Msk3 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::Msk3=0xBFBF7BEFU;
+  /**
+   * the Msk4 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::Msk4=0x9FFD7BFFU;
+  /**
+   * the Parity1 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::Parity1=0x00000001U;
+  /**
+   * the Parity3 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::Parity3=0xA3AC4000U;
+  /**
+   * the Parity4 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::Parity4=0xECC1327AU;
 
+  /**
+   * the Pos1 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::Pos1=366;
   template <> const unsigned int SFMT<86243>::SL1=6;
   template <> const unsigned int SFMT<86243>::SL2=7;
   template <> const unsigned int SFMT<86243>::SR1=19;
   template <> const unsigned int SFMT<86243>::SR2=1;
+  /**
+   * the Msk1 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::Msk1=0xFDBFFBFFU;
+  /**
+   * the Msk2 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::Msk2=0xBFF7FF3FU;
+  /**
+   * the Msk3 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::Msk3=0xFD77EFFFU;
+  /**
+   * the Msk4 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::Msk4=0xBF9FF3FFU;
+  /**
+   * the Parity1 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::Parity1=0x00000001U;
+  /**
+   * the Parity4 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::Parity4=0xE9528D85U;
 
   template <unsigned int LoopFac>
