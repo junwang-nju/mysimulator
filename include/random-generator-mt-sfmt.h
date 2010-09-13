@@ -798,9 +798,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<607>::Pos1=2;
+  /**
+   * the SL1 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::SL1=15;
+  /**
+   * the SL2 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::SL2=3;
+  /**
+   * the SR1 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::SR1=13;
+  /**
+   * the SR2 factor for LoopFac of 607
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<607>::SR2=3;
   /**
    * the Msk1 factor for LoopFac of 607
@@ -845,9 +865,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<1279>::Pos1=7;
+  /**
+   * the SL1 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::SL1=14;
+  /**
+   * the SL2 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::SL2=3;
+  /**
+   * the SR1 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::SR1=5;
+  /**
+   * the SR2 factor for LoopFac of 1279
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<1279>::SR2=1;
   /**
    * the Msk1 factor for LoopFac of 1279
@@ -892,9 +932,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<11213>::Pos1=68;
+  /**
+   * the SL1 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::SL1=14;
+  /**
+   * the SL2 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::SL2=3;
+  /**
+   * the SR1 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::SR1=7;
+  /**
+   * the SR2 factor for LoopFac of 11213
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<11213>::SR2=3;
   /**
    * the Msk1 factor for LoopFac of 11213
@@ -945,9 +1005,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<19937>::Pos1=122;
+  /**
+   * the SL1 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::SL1=18;
+  /**
+   * the SL2 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::SL2=1;
+  /**
+   * the SR1 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::SR1=11;
+  /**
+   * the SR2 factor for LoopFac of 19937
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<19937>::SR2=1;
   /**
    * the Msk1 factor for LoopFac of 19937
@@ -992,9 +1072,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<132049>::Pos1=110;
+  /**
+   * the SL1 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::SL1=19;
+  /**
+   * the SL2 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::SL2=1;
+  /**
+   * the SR1 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::SR1=21;
+  /**
+   * the SR2 factor for LoopFac of 132049
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<132049>::SR2=1;
   /**
    * the Msk1 factor for LoopFac of 132049
@@ -1045,9 +1145,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<216091>::Pos1=627;
+  /**
+   * the SL1 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::SL1=11;
+  /**
+   * the SL2 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::SL2=3;
+  /**
+   * the SR1 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::SR1=10;
+  /**
+   * the SR2 factor for LoopFac of 216091
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<216091>::SR2=1;
   /**
    * the Msk1 factor for LoopFac of 216091
@@ -1104,9 +1224,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<2281>::Pos1=12;
+  /**
+   * the SL1 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::SL1=19;
+  /**
+   * the SL2 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::SL2=1;
+  /**
+   * the SR1 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::SR1=5;
+  /**
+   * the SR2 factor for LoopFac of 2281
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<2281>::SR2=1;
   /**
    * the Msk1 factor for LoopFac of 2281
@@ -1151,9 +1291,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<4253>::Pos1=17;
+  /**
+   * the SL1 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::SL1=20;
+  /**
+   * the SL2 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::SL2=1;
+  /**
+   * the SR1 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::SR1=7;
+  /**
+   * the SR2 factor for LoopFac of 4253
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<4253>::SR2=1;
   /**
    * the Msk1 factor for LoopFac of 4253
@@ -1210,9 +1370,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<44497>::Pos1=330;
+  /**
+   * the SL1 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::SL1=5;
+  /**
+   * the SL2 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::SL2=3;
+  /**
+   * the SR1 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::SR1=9;
+  /**
+   * the SR2 factor for LoopFac of 44497
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<44497>::SR2=3;
   /**
    * the Msk1 factor for LoopFac of 44497
@@ -1263,9 +1443,29 @@ namespace std {
    * LoopFac is the template \c int to define the generator.
    */
   template <> const unsigned int SFMT<86243>::Pos1=366;
+  /**
+   * the SL1 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::SL1=6;
+  /**
+   * the SL2 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::SL2=7;
+  /**
+   * the SR1 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::SR1=19;
+  /**
+   * the SR2 factor for LoopFac of 86243
+   *
+   * LoopFac is the template \c int to define the generator.
+   */
   template <> const unsigned int SFMT<86243>::SR2=1;
   /**
    * the Msk1 factor for LoopFac of 86243
@@ -1304,12 +1504,44 @@ namespace std {
    */
   template <> const unsigned int SFMT<86243>::Parity4=0xE9528D85U;
 
+  /**
+   * @brief check the availability of SFMT generator
+   *
+   * It is implemented by checking the availability of the internal
+   * status storage.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param sg [in] the SFMT generator to be checked
+   * @return the flag indicating if the generator is available
+   */
   template <unsigned int LoopFac>
   bool IsAvailable(const SFMT<LoopFac>& sg) { return IsAvailable(sg.status); }
 
+  /**
+   * @brief check if SFMT generator is random generator
+   *
+   * This gives out the true flag since the SFMT generator is a random
+   * generator.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param sg [in] the SFMT generator to be checked
+   * @return always true flag indicating SFMT generator is a random generator
+   */
   template <unsigned int LoopFac>
-  void IsRandomGenerator(const SFMT<LoopFac>&) { return true; }
+  void IsRandomGenerator(const SFMT<LoopFac>& sg) { return true; }
 
+  /**
+   * @brief release SFMT generator
+   *
+   * The internal storages are released based on the type of storage.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param sg [in,out] the SFMT generator to be released
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void release(SFMT<LoopFac>& sg) {
     if(sg.state==Allocated) {
@@ -1324,6 +1556,15 @@ namespace std {
     sg.state=Unused;
   }
 
+  /**
+   * @brief allocate SFMT generator
+   *
+   * The internal storage is allocated. The generator is released before this
+   * operation. Then, the generator is initiated with a default seed 5489.
+   *
+   * @param sg [out] the SFMT generator to be allocated
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void allocate(SFMT<LoopFac>& sg) {
     release(sg);
@@ -1334,6 +1575,20 @@ namespace std {
     init(sg,5489U);
   }
 
+  /**
+   * @brief assign SFMT generator from another
+   *
+   * Just assign the internal status of the destinate generator
+   * from the source. The internal index is also copied. The
+   * concerned generators are checked for their availability
+   * before this operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dest [out] the destinate generator to accept input data
+   * @param src [in] the source generator containing input data
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void assign(SFMT<LoopFac>& dest, const SFMT<LoopFac>& src) {
     assert(IsAvailable(dest));
@@ -1342,6 +1597,19 @@ namespace std {
     *dest.idx=*src.idx;
   }
 
+  /**
+   * @brief refer to another SFMT generator
+   *
+   * Just copy the pointers from source to destinate. The source
+   * generator is checked for its availability before this operation.
+   * The destinate generator is released before this operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param dest [out] the destinate generator to accept input data
+   * @param src [in] the source generator containing input data
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void refer(SFMT<LoopFac>& dest, const SFMT<LoopFac>& src) {
     assert(IsAvailable(src));
@@ -1352,6 +1620,18 @@ namespace std {
     dest.state=Reference;
   }
 
+  /**
+   * @brief initiate SFMT generator with an \c unsigned \c int seed
+   *
+   * It is generated with simple generation method for the status
+   * in generator.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param sg [out] the SFMT generator to be initiated
+   * @param seed [in] the \c unsigned \c int as the seed
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void init(SFMT<LoopFac>& sg, const unsigned int seed) {
     assert(IsAvailable(sg));
