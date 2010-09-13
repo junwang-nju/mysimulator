@@ -41,3 +41,7 @@ target_link_libraries (l2ddifu.run blas)
 add_executable (fk.run fk.cxx)
 target_link_libraries (fk.run blas)
 
+add_executable (l2dana.run 2d-conf-analysis.cxx)
+target_link_libraries (l2dana.run blas)
+
+
