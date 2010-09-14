@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-
+#include <cstdio>
 using namespace std;
 
 int main() {
@@ -27,7 +27,7 @@ int main() {
     ifs>>tu;
     ifs>>tu;
     for(unsigned int k=0;k<sz[i];++k)
-    ifs>>nbID[i][k];
+      ifs>>nbID[i][k];
   }
   ifs.close();
   ifs.open("12623.df");
@@ -44,26 +44,29 @@ int main() {
   }
   ifs.close();
 
-  Vector<unsigned int> maxdI;
-  Vector<double> maxdf;
-  allocate(maxdI,15037);
-  allocate(maxdf,15037);
+  Vector<unsigned int> mindI;
+  Vector<double> mindf;
+  allocate(mindI,15037);
+  allocate(mindf,15037);
   for(unsigned int i=0,tu;i<15037;++i) {
-    td=-1;
+    td=1e10;
     tu=0;
     for(unsigned int k=0;k<sz[i];++k)
-      if(df[i][k]>td) { td=df[i][k]; tu=k; }
-    maxdI[i]=nbID[i][tu];
-    maxdf[i]=td;
+      if(df[i][k]<td) { td=df[i][k]; tu=k; }
+    mindI[i]=nbID[i][tu];
+    mindf[i]=td;
   }
 
-  for(unsigned int i=0;i<15037;++i) {
-    if(maxdI[i]>i) {
-      if(maxdI[maxdI[i]]==i) {
-        for(unsigned int k=0;k<sz[i];k++)
-          if(nbID[i][k]==maxdI[i]) { nbID[i][k]=i; break; }
-        for(unsigned int k=0;k<sz[maxdI[i]];k++)
-          if(nbID[maxdI[i]][k]==i) { nbID[maxdI[i]][k]=maxdI[i]; break; }
+  for(unsigned int i=0,j;i<15037;++i) {
+    for(unsigned int k=0;k<sz[i];++k) {
+      j=nbID[i][k];
+      if(j==mindI[i])  continue;
+      if(j>i) {
+        if(mindI[j]==i) continue;
+        //cout<<i<<"\t"<<j<<endl;
+        nbID[i][k]=i;
+        for(unsigned int l=0;l<sz[j];++l)
+          if(nbID[j][l]==i) { nbID[j][l]=j; break; }
       }
     }
   }
@@ -99,8 +102,48 @@ int main() {
     } while (ncache!=0);
     ++nowc;
   }
-  for(unsigned int i=0;i<15037;++i)
-    cout<<i<<"\t"<<cstate[i]<<endl;
+  //for(unsigned int i=0;i<15037;++i)
+  //  cout<<i<<"\t"<<cstate[i]<<endl;
+  /*
+  nowc=0;
+  for(unsigned int z=0;z<6000;++z) {
+    nowc=0;
+    for(unsigned int i=0;i<15037;++i)
+      if(cstate[i]==z)  { cout<<i<<" "; nowc++; }
+    cout<<nowc<<endl;
+  }
+  */
+  ifs.open("12-conf.basic-move");
+  for(unsigned int i=0,tu;i<15037;++i) {
+    ifs>>tu;
+    ifs>>tu;
+    for(unsigned int k=0;k<sz[i];++k)
+      ifs>>nbID[i][k];
+  }
+  ifs.close();
+  double maxCB,minCB;
+  for(int u=0;u<5000;++u)
+  for(int v=u+1;v<5000;++v) {
+    minCB=1e10;
+    maxCB=0;
+    nowc=0;
+    for(unsigned int i=0,j;i<15037;++i) {
+      if((cstate[i]!=u)&&(cstate[i]!=v))  continue;
+      for(unsigned int k=0;k<sz[i];++k) {
+        j=nbID[i][k];
+        if(i>=j) continue;
+        if(((cstate[i]==u)&&(cstate[j]==v))||
+           ((cstate[i]==v)&&(cstate[j]==u))) {
+          ++nowc;
+          td=df[i][k];
+          if(minCB>td)  minCB=td;
+          if(maxCB<td)  maxCB=td;
+        }
+      }
+    }
+    if(nowc>0)
+      cout<<u<<"\t"<<v<<"\t"<<minCB<<"\t"<<maxCB<<endl;
+  }
   return 0;
 }
 

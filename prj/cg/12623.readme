@@ -1,0 +1,14 @@
+12623.peak
+  this file gives the bonds with locally maximal diffusion time
+12623.peak.group
+  this file gives the grouping seperated by removing bonds in 12623.peak
+12623.saddle
+  this file give the bonds with local saddles (including maximal)
+  saddle means being maximal along certain direction
+12623.saddle.group
+  this file gives the grouping seperated by removing bonds in 12623.saddle
+12623.saddle.group.minmax
+  this file gives the diffusion speeds (minimal ans maximal) between groups
+12623.saddle.group.clustering
+  this is clustering records to the above group based on minimal diffusion
+  speed
