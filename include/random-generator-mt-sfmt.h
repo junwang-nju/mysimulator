@@ -2411,6 +2411,18 @@ namespace std {
     return sg.LDouble63Close0Open1();
   }
 
+  /**
+   * @brief output the status of SFMT generator to ostream
+   *
+   * Just output the LoopFac and the status, index of the generator.
+   * This generator is checked for its availability before this operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param os [in,out] the ostream to accept information of SFMT generator
+   * @param sg [in] the SFMT generator to be output
+   * @return the ostream after the output operation
+   */
   template <unsigned int LoopFac>
   ostream& operator<<(ostream& os, const SFMT<LoopFac>& sg) {
     assert(IsAvailable(sg));
@@ -2420,6 +2432,20 @@ namespace std {
     return os;
   }
 
+  /**
+   * @brief read status of SFMT generator from istream
+   *
+   * The status and index are imported from istream. The LoopFac in istream is
+   * compared with that for the generator to ensure the compatibility of
+   * storage and input data. The generator is also checked for their
+   * availability before this operation.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param is [in,out] the istream containing the data for generator
+   * @param sg [in,out] the SFMT generator
+   * @return the istream after input operation
+   */
   template <unsigned int LoopFac>
   istream& operator>>(istream& is, SFMT<LoopFac>& sg) {
     assert(IsAvailable(sg));
