@@ -1646,6 +1646,24 @@ namespace std {
     sg.PeriodCertification();
   }
 
+  /**
+   * @brief initiate SFMT generator with an \c unsigned \c int array
+   *
+   * This procedure could offer more input bits for initiation.
+   * It could produce distribution with better statistical
+   * property.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param sg [out] the SFMT generator to be initiated.
+   * @param key [in] the array containing the seeds
+   * @param len [in] the number of seeds in array key
+   * @param off [in] the offset for the first elements in array key,
+   *                 which takes the default value of uZero.
+   * @param step [in] the separation between elements in array key,
+   *                  which takes the default value of uOne
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void init(SFMT<LoopFac>& sg,
             const unsigned int *key, const unsigned int len,
@@ -1695,11 +1713,34 @@ namespace std {
     sg.PeriodCertification();
   }
 
+  /**
+   * @brief initiate SFMT generator with a vector
+   *
+   * It is implemented with the init procedure for array.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param sg [out] the SFMT generator to be initiated.
+   * @param key [in] the vector containing the seeds
+   * @return nothing
+   */
   template <unsigned int LoopFac>
   void init(SFMT<LoopFac>& sg, const Vector<unsigned int>& key) {
     init(sg,key(),key.size);
   }
 
+  /**
+   * @brief fill \c unsigned \c int array with SFMT generator
+   *
+   * an array with \c unsigned \c int elements could be filled
+   * with this procedure. It requires that the internal storage
+   * in the generator is just used out. it is implemented with
+   * GenRandArray method of SFMT generator.
+   *
+   * @note It is said that this operation is faster than the
+   *       regular generation of numbers in one-by-one manner.
+   * @note There are restrictions for the size of the output array
+   */
   template <unsigned int LoopFac>
   void fillarray(SFMT<LoopFac>& sg,
                  unsigned int* array, const unsigned int size) {
@@ -1710,6 +1751,18 @@ namespace std {
     *(sg.idx)=SFMT<LoopFac>::N32;
   }
 
+  /**
+   * @brief fill \c unsigned \c long \c long \c int array with SFMT generator
+   *
+   * an array with \c unsigned \c long \c long \c int elements could be filled
+   * with this procedure. It requires that the internal storage
+   * in the generator is just used out. it is implemented with
+   * GenRandArray method of SFMT generator.
+   *
+   * @note It is said that this operation is faster than the
+   *       regular generation of numbers in one-by-one manner.
+   * @note There are restrictions for the size of the output array
+   */
   template <unsigned int LoopFac>
   void fillarray(SFMT<LoopFac>& sg,
                  unsigned long long int* array, const unsigned int size) {
@@ -1720,169 +1773,639 @@ namespace std {
     *(sg.idx)=SFMT<LoopFac>::N32;
   }
 
+  /**
+   * @brief generate a 32-bit \c unsigned \c int value
+   *
+   * It is implemented with UInt32 method of generator.
+   *
+   * LoopFac is the template \c int to define the generator.
+   *
+   * @param sg [in,out] the SFMT generator used for value generation
+   * @return a 32-bit \c unsigned \c int value
+   */
   template <unsigned int LoopFac>
   const unsigned int& rand(SFMT<LoopFac>& sg) { return sg.UInt32(); }
 
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 607
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<607>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<607>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 1789
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<1279>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<1279>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 2281
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<2281>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<2281>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 4253
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<4253>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<4253>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 11213
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<11213>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<11213>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 19937
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<19937>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<19937>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 44497
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<44497>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<44497>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 86243
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<86243>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<86243>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 132049
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<132049>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<132049>& sg) { myError("Default form is prohibited!"); }
+  /**
+   * @brief generate a T-type number with SFMT generator for LoopFac of 216091
+   *
+   * This gives the generic form. It is prohibited and pops up a message.
+   *
+   * T is the type of the output number
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated T-type number
+   */
   template <typename T>
-  const T& rand(SFMT<216091>&) { myError("Default form is prohibited!"); }
+  const T& rand(SFMT<216091>& sg) { myError("Default form is prohibited!"); }
 
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 607
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<607>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 1279
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<1279>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 2281
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<2281>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 4253
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<4253>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 11213
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<11213>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 19937
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<19937>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 44497
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<44497>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 86243
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<86243>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 132049
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<132049>& sg) { return rand(sg); }
+  /**
+   * @brief generate a \c unsigned \c int number with SFMT generator for LoopFac of 216091
+   *
+   * This is the specification for \c unsigned \c int type. It is implemented by
+   * rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c int number
+   */
   template <>
   const unsigned int& rand<unsigned int>(SFMT<216091>& sg) { return rand(sg); }
 
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 607
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<607>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 1297
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<1279>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 2281
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<2281>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 4253
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<4253>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 11213
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<11213>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 19937
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<19937>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 44497
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<44497>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 86243
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<86243>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 132049
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<132049>& sg) {
     return sg.UInt64();
   }
+  /**
+   * @brief generate a \c unsigned \c long \c long \c int number with SFMT generator for LoopFac of 216091
+   *
+   * This is the specification for \c unsigned \c long \c long \c int type.
+   * It is implemented by rand operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c unsigned \c long \c long \c int number
+   */
   template <>
   const unsigned long long int& rand<unsigned long long int>(SFMT<216091>& sg) {
     return sg.UInt64();
   }
 
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 607
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<607>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 1279
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<1279>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 2281
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<2281>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 4253
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<4253>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 11213
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<11213>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 19937
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<19937>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 44497
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<44497>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 86243
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<86243>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 132049
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<132049>& sg) {
     return sg.Double53Close0Open1();
   }
+  /**
+   * @brief generate a \c double number with SFMT generator for LoopFac of 216091
+   *
+   * This is the specification for \c double int type.
+   * It is implemented by Double53Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated \c double number
+   */
   template <>
   const double& rand<double>(SFMT<216091>& sg) {
     return sg.Double53Close0Open1();
   }
 
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 607
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<607>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 1279
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<1279>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 2281
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<2281>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 4253
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<4253>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 11213
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<11213>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 19937
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<19937>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 44497
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<44497>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 86243
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<86243>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 132049
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<132049>& sg) {
     return sg.LDouble63Close0Open1();
   }
+  /**
+   * @brief generate a \c long \c double number with SFMT generator for LoopFac of 216091
+   *
+   * This is the specification for \c long \c double int type.
+   * It is implemented by Double63Close0Open1 operation.
+   *
+   * @param sg [in,out] the SFMT generator
+   * @return the generated c long \c double number
+   */
   template <>
   const long double& rand<long double>(SFMT<216091>& sg) {
     return sg.LDouble63Close0Open1();
