@@ -47,5 +47,6 @@ target_link_libraries (l2dana.run blas)
 add_executable (clus.run cluster.cxx)
 target_link_libraries (clus.run blas)
 
-
+add_executable (l3denum.run 3d-conf-enum.cxx)
+target_link_libraries (l3denum.run blas)
 
