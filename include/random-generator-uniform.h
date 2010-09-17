@@ -1,6 +1,6 @@
 
 /**
- * @brief random-generator-uniform.h
+ * @file random-generator-uniform.h
  * @brief random generators with uniform distribution
  *
  * This file contains head files describing the random generators
