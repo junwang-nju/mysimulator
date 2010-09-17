@@ -19,7 +19,7 @@ void nextXY(const int X0, const int Y0, const int Z0,
 }
 
 int main() {
-  unsigned int L=12;
+  unsigned int L=17;
   unsigned int L1=L-1;
 
   Vector<int> dirc;
@@ -38,7 +38,7 @@ int main() {
   ZTurnHead=0;
   runHead=0;
 
-  unsigned int NS=0;
+  unsigned long long int NS=0;
   int rX,rY,rZ;
   do {
     ++runHead;
@@ -58,26 +58,26 @@ int main() {
     for(int i=runHead-2;i>=0;i-=2)
       if((X[i]==rX)&&(Y[i]==rY)&&(Z[i]==rZ)) { incflag=false; break; }
     if(incflag&&(runHead==L1)) {
-      if(YTurnHead==0)  YTurnHead=L1;
-      if(ZTurnHead==0)  ZTurnHead=L1;
-      cout<<dirc<<endl;getchar();
+      if(YTurnHead==0)  YTurnHead=L1-1;
+      if(ZTurnHead==0)  ZTurnHead=L1-1;
+      //cout<<dirc<<endl;
       ++NS;
     }
     if(runHead==L1) incflag=false;
     if(!incflag)    --runHead;
-    if(YTurnHead>runHead) { YTurnHead=runHead;  ZTurnHead=L1; }
-    else if(ZTurnHead>runHead)  ZTurnHead=runHead;
+    if(YTurnHead>runHead) { YTurnHead=runHead;  ZTurnHead=0; }
+    else if((ZTurnHead>runHead)&&(dirc[runHead]==1))  ZTurnHead=runHead;
     ++dirc[runHead];
-    if((dirc[runHead]>2)&&(ZTurnHead==runHead)) dirc[runHead]=6;
+    if((dirc[runHead]==3)&&(ZTurnHead==runHead)) { dirc[runHead]=4; ZTurnHead=0; }
     else if((dirc[runHead]>1)&&(YTurnHead==runHead)) dirc[runHead]=6;
     while(dirc[runHead]>5) {
       dirc[runHead]=-1;
       --runHead;
       if(runHead<1) break;
-      if(YTurnHead>runHead) { YTurnHead=runHead;  ZTurnHead=L1; }
-      else if(ZTurnHead>runHead)  ZTurnHead=runHead;
+      if(YTurnHead>runHead) { YTurnHead=runHead;  ZTurnHead=0; }
+      else if((ZTurnHead>runHead)&&(dirc[runHead]==1))  ZTurnHead=runHead;
       ++dirc[runHead];
-      if((dirc[runHead]>2)&&(ZTurnHead==runHead)) dirc[runHead]=6;
+      if((dirc[runHead]==3)&&(ZTurnHead==runHead)) { dirc[runHead]++; ZTurnHead=0; }
       else if((dirc[runHead]>1)&&(YTurnHead==runHead)) dirc[runHead]=6;
     }
   } while(runHead>=1);
