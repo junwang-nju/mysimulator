@@ -19,7 +19,7 @@ void nextXY(const int X0, const int Y0, const int Z0,
 }
 
 int main() {
-  unsigned int L=17;
+  unsigned int L=12;
   unsigned int L1=L-1;
 
   Vector<int> dirc;
@@ -60,7 +60,7 @@ int main() {
     if(incflag&&(runHead==L1)) {
       if(YTurnHead==0)  YTurnHead=L1-1;
       if(ZTurnHead==0)  ZTurnHead=L1-1;
-      //cout<<dirc<<endl;
+      cout<<dirc<<endl;
       ++NS;
     }
     if(runHead==L1) incflag=false;

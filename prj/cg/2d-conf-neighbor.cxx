@@ -6,9 +6,11 @@ using namespace std;
 
 void convert(unsigned int* seq, const unsigned int size) {
   unsigned int map[4];
-  map[seq[0]]=0; map[3-seq[0]]=3;
+  unsigned int reg[4];
+  map[seq[0]]=0;  map[3-seq[0]]=3;
+  reg[0]=seq[0];  reg[1]=3-seq[0];
   for(unsigned int i=1;i<size;++i)
-    if(seq[i]!=seq[0]) {
+    if((seq[i]!=reg[0])&&(seq[i]!=reg[1])) {
       map[seq[i]]=1; map[3-seq[i]]=2;
       break;
     }

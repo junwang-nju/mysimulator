@@ -50,3 +50,6 @@ target_link_libraries (clus.run blas)
 add_executable (l3denum.run 3d-conf-enum.cxx)
 target_link_libraries (l3denum.run blas)
 
+add_executable (l3dneib.run 3d-conf-neighbor.cxx)
+target_link_libraries (l3dneib.run blas Base)
+
