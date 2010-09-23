@@ -26,7 +26,7 @@ namespace std {
    * parameters are also included for flexibility.
    *
    * @param dsq [in] the square of distance
-   * @param prm [in] the array of parameters define the concerend function
+   * @param prm [in] the array of parameters to define the concerend function
    * @param func [out] the output function value
    * @return nothing
    */
@@ -50,7 +50,7 @@ namespace std {
    * also included for flexibility.
    *
    * @param dsq [in] the square of distance
-   * @param prm [in] the array of parameters define the concerend function
+   * @param prm [in] the array of parameters to define the concerend function
    * @param diff [out] the output differentiation value
    * @return nothing
    */
@@ -72,11 +72,11 @@ namespace std {
    * @brief function value and differentiation for LJ612 function with cutoff
    *
    * Based on the input distance information, the value and differentiation
-   * of LJ612 function with cutoff are calculated at the same time The
+   * of LJ612 function with cutoff are calculated at the same time. The
    * corresponding parameters are included for flexibility.
    *
    * @param dsq [in] the square of distance
-   * @param prm [in] the array of parameters define the concerend function
+   * @param prm [in] the array of parameters to define the concerend function
    * @param func [out] the output function value
    * @param diff [out] the output differentiation value
    * @return nothing
