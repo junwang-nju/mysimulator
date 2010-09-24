@@ -1,4 +1,15 @@
 
+/**
+ * @file minimizer-base.h
+ * @brief the Base Structure for minimizer
+ *
+ * This file contains the base data structure for minimizer and some
+ * related operations. These defines the basic interface for generic
+ * minimizer.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Minimizer_Base_H_
 #define _Minimizer_Base_H_
 
@@ -10,6 +21,14 @@
 
 namespace std {
 
+  /**
+   * @brief The base data structure for minimizer
+   *
+   * This data structure includes the common data for minimizer.
+   *
+   * SpaceDataType is the type of the data describing the spatial vector.
+   * ParameterType is the type of the parameter vector.
+   */
   template <typename SpaceDataType, typename ParameterType>
   struct MinimizerKernelBase {
 

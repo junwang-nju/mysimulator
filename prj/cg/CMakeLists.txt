@@ -53,3 +53,6 @@ target_link_libraries (l3denum.run blas)
 add_executable (l3dneib.run 3d-conf-neighbor.cxx)
 target_link_libraries (l3dneib.run blas Base)
 
+add_executable (l3ddifu.run 3d-conf-diffuse.cxx)
+target_link_libraries (l3ddifu.run blas)
+

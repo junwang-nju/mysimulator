@@ -1,4 +1,11 @@
 
+/**
+ * @file interaction-4listset.h
+ * @brief Calculate energy and/or gradient for a certain set of lists
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Interaction_for_List_Set_H_
 #define _Interaction_for_List_Set_H_
 

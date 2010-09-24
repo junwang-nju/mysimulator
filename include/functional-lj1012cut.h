@@ -1,4 +1,14 @@
 
+/**
+ * @file functional-lj1012cut.h
+ * @brief the functional format for Lennard-Jones 10-12 function with cutoff
+ *
+ * This file gives the functions to calculate value and/or gradient of
+ * Lennard-Jones 10-12 function with cutoff. The distance and parameters
+ * are inputs for the corresponding functions.
+ *
+ * @author Jun Wnag (junwang.nju@gmail.com)
+ */
 #ifndef _Functional_LJ1012Cut_H_
 #define _Functional_LJ1012Cut_H_
 
@@ -7,6 +17,18 @@
 
 namespace std {
 
+  /**
+   * @brief calculate value of LJ1012-type function with cutoff
+   *
+   * Based on the input distance information, the corresponding value of
+   * LJ1012-type function with cutoff is calculated. The corresponding
+   * parameters are also included for flexibility.
+   *
+   * @param dsq [in] the square of distance
+   * @param prm [in] the array of parameters to define the concerned function
+   * @param func [out] the output function value
+   * @return nothing
+   */
   void FuncLJ1012Cut(const double dsq, const UniqueParameter* prm,
                      double& func) {
     if(dsq>prm[LJ1012CutCutRSQ].d)  func=0.;
@@ -22,6 +44,18 @@ namespace std {
     }
   }
 
+  /**
+   * @brief differentiation for LJ1012-type interaction with cutoff
+   *
+   * Based on the input distance information, the differentiation of LJ1012
+   * function with cutoff is calculated. The corresponding parameters are
+   * also included for flexibility.
+   *
+   * @param dsq [in] the square of distance
+   * @param prm [in] the array of parameters to define the concerned function
+   * @param diff [out] the output differentiation value
+   * @return nothing
+   */
   void DiffLJ1012Cut(const double dsq, const UniqueParameter* prm,
                      double& diff) {
     if(dsq>prm[LJ1012CutCutRSQ].d)  diff=0.;
@@ -37,6 +71,19 @@ namespace std {
     }
   }
 
+  /**
+   * @brief function value and differentiation for LJ1012 function with cutoff
+   *
+   * Based on the input distance information, the value and differentiation
+   * of LJ1012 function with cutoff are calculated at the same time. The
+   * corresponding parameters are included for flexibility.
+   * 
+   * @param dsq [in] the square of distance
+   * @param prm [in] the array of parameters to define the concerned function
+   * @param func [out] the output function value
+   * @param diff [out] the output differentiation value
+   * @return nothing
+   */
   void BothLJ1012Cut(const double dsq, const UniqueParameter* prm,
                      double& func, double& diff) {
     if(dsq>prm[LJ1012CutCutRSQ].d)  func=diff=0.;
