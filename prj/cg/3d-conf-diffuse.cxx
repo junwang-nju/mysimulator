@@ -95,7 +95,7 @@ int main(int argc, char** argv) {
   ifs.close();
 
   const double Temperature=0.6;
-  const double A=1e-3;
+  const double A=1e-2;
   double dE;
   for(unsigned int i=0;i<885641;++i) {
     for(unsigned int k=0;k<nbID[i].size;++k) {
@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     M[nbID[u][v]]=-1;
 
     S=1;
-    for(rt=0;rt<100000;++rt) {
+    for(rt=0;rt<5000;++rt) {
       assign(dM,0.);
       for(unsigned int i=0;i<885641;++i)
         for(unsigned int k=0;k<nbID[i].size;++k) {
@@ -130,13 +130,11 @@ int main(int argc, char** argv) {
         }
       shift(M,dM);
       rM=asum(M);
-      cout<<rt<<"\t"<<rM<<endl;
       if(rM<1e-3) {
         S+=0.5*rM;  break;
       } else
         S+=rM;
     }
-    break;
     cout<<u<<"\t"<<nbID[u][v]<<"\t"<<S<<"\t"<<rt<<endl;
   }
 
