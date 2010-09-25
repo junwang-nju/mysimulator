@@ -44,6 +44,9 @@ target_link_libraries (fk.run blas)
 add_executable (l2dana.run 2d-conf-analysis.cxx)
 target_link_libraries (l2dana.run blas)
 
+add_executable (l2deigen.run 2d-conf-eigen.cxx)
+target_link_libraries (l2deigen.run blas)
+
 add_executable (clus.run cluster.cxx)
 target_link_libraries (clus.run blas)
 
