@@ -28,11 +28,30 @@ extern "C" {
    *                  -vectors. When it is 'N', only eigen values
    *                  are calculated. When it is 'V', eigen vectors
    *                  are also calculated.
-   * @param UpLo
+   * @param UpLo [in] the flag indicating which part of matrix is
+   *                  used. When it is 'U', the upper part is used.
+   *                  When it is 'L', the lower part is used.
+   * @param N [in] the pointer to the dimension of matrix
+   * @param A [in,out] the matrix to be diagonalized. after the operation,
+   *                   the orthonormal eigen vectors are stored
+   * @param LDA [in] the pointer to leading dimension of matrix
+   * @param W [out] the array to contain eigen values
+   * @param Work [out] the temporary data with \c double data, whose size
+   *                   is LWork.
+   * @param LWork [in] the size of array Work. When JobZ is 'V', LWork takes
+   *                   the value larger than 1+6N+2N^2. When JobZ is 'N',
+   *                   LWork takes the value of 1+2N.
+   * @param IWork [out] the temporary data with \c int data, whose size
+   *                    is LIWork.
+   * @param LIWork [in] the size of array IWork. When JobZ is 'V', LIWork
+   *                    takes the value larger than 3+5N. When JobZ is 'N',
+   *                    LIWork takes the value larger than 1.
+   * @param info [out] the flag indicating if this operation is successful.
+   * @return nothing
    */
   void dsyevd_(char* JobZ, char* UpLo, int* N, double* A, int* LDA,
                double* W, double* Work, int* LWork, int* IWork,
-               int* LIWork, int*info);
+               int* LIWork, int* info);
   void ssyevd_(char* JobZ, char* UpLo, int* N, float* A, int* LDA,
                float* W, float* Work, int* LWork, int* IWork,
                int* LIWork, int*info);
