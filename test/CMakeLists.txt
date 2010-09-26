@@ -232,6 +232,8 @@ target_link_libraries (test-interaction-wall-lj612cut.run blas)
 add_executable (test-pdb-data.run test-pdb-data.cxx)
 target_link_libraries (test-pdb-data.run blas)
 
+add_executable (test-lapack.run test-lapack.cxx)
+target_link_libraries (test-lapack.run lapack)
 
 ########################
 #add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
