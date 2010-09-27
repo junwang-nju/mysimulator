@@ -58,7 +58,7 @@ extern "C" {
   void dspevd_(char* JobZ, char* UpLo, int* N, double* AP, double* W,
                double* Z, int* LDA, double* Work, int* LWork,
                int* IWork, int* LIWork, int* info);
-  void sspevd_(char* JobZ, char* UpLo, int* N, flaot* AP, float* W,
+  void sspevd_(char* JobZ, char* UpLo, int* N, float* AP, float* W,
                float* Z, int* LDA, float* Work, int* LWork,
                int* IWork, int* LIWork, int* info);
 
