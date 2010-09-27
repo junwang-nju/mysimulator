@@ -1,5 +1,6 @@
 
 #include "property-list.h"
+#include "lapack.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -67,6 +68,8 @@ int main() {
 
   for(unsigned int i=0;i<15037;++i) E[i]=Energy(Conf[i],Coor,PotMat);
 
+  release(Conf);
+
   PropertyList<unsigned int> nbID;
   PropertyList<double> transP;
   char buff[2048];
@@ -91,24 +94,48 @@ int main() {
   ifs.close();
 
   const double Temperature=0.6;
-  const double A=1e-3;
+  //const double A=1e-3;
   double dE,sumP;
   for(unsigned int i=0;i<15037;++i) {
     sumP=0.;
     for(unsigned int k=1;k<nbID[i].size;++k) {
       dE=E[nbID[i][k]]-E[i];
-      transP[i][k]=(dE<0?1.:exp(-dE/Temperature))*A;
-      sumP+=transP[i][k];
+      transP[i][k]=(dE<0?1.:exp(-dE/Temperature));
+      sumP+=(dE>0?1.:exp(dE/Temperature));
     }
-    transP[i][0]=1-sumP;
+    transP[i][0]=-sumP;
   }
 
-  Vector<double> eV,neV;
-  allocate(eV,15037);
-  allocate(neV,15037);
-  
-  assign(eV,1.);
+  PropertyList<double> Mat;
+  allocate(sz,15037);
+  assign(sz,15037);
+  allocate(Mat,sz);
+  for(unsigned int i=0;i<15037;++i) {
+    for(unsigned int k=0;k<nbID[i].size;++k)
+      Mat[i][nbID[i][k]]=-transP[i][k];
+  }
+  release(nbID);
+  release(transP);
 
+  Vector<double> eV,Work;
+  Vector<int> IWork;
+  int N,LWork,LIWork;
+  N=15037;
+  LWork=1+6*15037+2*15037*15037;
+  LIWork=1+2*15037;
+  allocate(eV,15037);
+  cout<<"==============="<<endl;getchar();
+  allocate(Work,LWork);
+  cout<<"==============="<<endl;getchar();
+  allocate(IWork,LIWork);
+  cout<<"==============="<<endl;
+
+  int LDA,info;
+  LDA=15037;
+  char J='V',P='U';
+
+  dsyevd_(&J,&P,&N,Mat.data,&LDA,eV.data,Work.data,&LWork,IWork.data,&LIWork,
+          &info);
   return 0;
 }
 
