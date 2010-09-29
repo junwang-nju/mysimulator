@@ -99,14 +99,12 @@ int main(int argc, char** argv) {
     }
   }
 
-  Vector<double> M,dM,gM,mM,fdM;
-  double tM,rM,S,pM,uM;
-  double aT;
+  Vector<double> M,dM,mM;
+  double tM,rM,S,pM,uM,gM0,gM1;
+  //double aT;
   allocate(M,15037);
   allocate(dM,15037);
   allocate(mM,15037);
-  allocate(fdM,15037);
-  allocate(gM,15037);
 
   unsigned int bu,eu,rt;
   bu=atoi(argv[1]);
@@ -120,115 +118,77 @@ int main(int argc, char** argv) {
 
     A=1e-2;
     S=0;
-    aT=0.;
+    //aT=0.;
     pM=2.;
-    uM=0;
-    cout<<aT<<"\t"<<2<<"\t"<<A<<"\t"<<uM<<endl;
     for(rt=0;rt<80000000;++rt) {
-      assign(gM,M);
-      assign(fdM,0);
+      assign(dM,0);
       for(unsigned int i=0;i<15037;++i) {
         tM=M[i];
+        uM=0.;
         for(unsigned int k=0;k<nbID[i].size;++k) {
             rM=tM*transP[i][k];
-            fdM[nbID[i][k]]+=rM;
-            fdM[i]-=rM;
+            dM[nbID[i][k]]+=rM;
+            uM-=rM;
         }
+        dM[i]+=uM;
       }
       assign(mM,M);
-      shift(mM,0.5*A,fdM);
+      shift(mM,0.5*A,dM);
       assign(dM,0);
       for(unsigned int i=0;i<15037;++i) {
         tM=mM[i];
+        uM=0.;
         for(unsigned int k=0;k<nbID[i].size;++k) {
             rM=tM*transP[i][k];
             dM[nbID[i][k]]+=rM;
-            dM[i]-=rM;
+            uM-=rM;
         }
+        dM[i]+=uM;
       }
       shift(M,A,dM);
-      aT+=A;
+      //aT+=A;
       rM=asum(M);
       S+=(pM+rM)*0.5*A;
-      //cout<<aT<<"\t"<<rM<<"\t"<<A<<"\t"<<uM<<endl;
       pM=rM;
-      assign(dM,0.);
-      for(unsigned int i=0;i<15037;++i) {
-        tM=M[i];
-        for(unsigned int k=0;k<nbID[i].size;++k) {
-            rM=tM*transP[i][k];
-            dM[nbID[i][k]]+=rM;
-            dM[i]-=rM;
-        }
-      }
-      assign(mM,M);
-      shift(mM,A*0.5,dM);
-      assign(dM,0);
-      for(unsigned int i=0;i<15037;++i) {
-        tM=mM[i];
-        for(unsigned int k=0;k<nbID[i].size;++k) {
-            rM=tM*transP[i][k];
-            dM[nbID[i][k]]+=rM;
-            dM[i]-=rM;
-        }
-      }
-      shift(M,A,dM);
-      aT+=A;
-      rM=asum(M);
-      S+=(pM+rM)*0.5*A;
-      cout<<aT<<"\t"<<rM<<"\t"<<A<<"\t"<<uM<<endl;
-      pM=rM;
-      /*
-      assign(mM,gM);
-      shift(mM,A,fdM);
-      assign(dM,0.);
-      for(unsigned int i=0;i<15037;++i) {
-        tM=mM[i];
-        for(unsigned int k=0;k<nbID[i].size;++k) {
-            rM=tM*transP[i][k];
-            dM[nbID[i][k]]+=rM;
-            dM[i]-=rM;
-        }
-      }
-      shift(gM,A+A,dM);
-      shift(gM,-1.,M);
-      uM=asum(gM)/asum(M);
-      if(uM<1e-8) A+=1e-4;
-      */
-      for(unsigned int w=0;w<10;++w) {
-        assign(dM,0.);
-        for(unsigned int i=0;i<15037;++i) {
-          tM=M[i];
-          for(unsigned int k=0;k<nbID[i].size;++k) {
-            rM=tM*transP[i][k];
-            dM[nbID[i][k]]+=rM;
-            dM[i]-=rM;
-          }
-        }
-        assign(mM,M);
-        shift(mM,0.5*A,dM);
-        assign(dM,0);
-        for(unsigned int i=0;i<15037;++i) {
-          tM=mM[i];
-          for(unsigned int k=0;k<nbID[i].size;++k) {
-              rM=tM*transP[i][k];
-              dM[nbID[i][k]]+=rM;
-              dM[i]-=rM;
-          }
-        }
-        shift(M,A,dM);
-        aT+=A;
-        rM=asum(M);
-        S+=(pM+rM)*0.5*A;
-        //cout<<aT<<"\t"<<rM<<"\t"<<A<<"\t"<<uM<<endl;
-        pM=rM;
-      }
+      //cout<<rt*A<<"\t"<<rM<<"\t"<<A<<"\t"<<uM<<endl;
 
-      if(rM<1e-3) break;
+      if(rM<1e-4) break;
     }
-    u=eu+1;
-    break;
-    cout<<u<<"\t"<<nbID[u][v]<<"\t"<<S<<"\t"<<rt<<endl;
+    gM0=pM;
+    for(rt=0;rt<1000;++rt) {
+      assign(dM,0);
+      for(unsigned int i=0;i<15037;++i) {
+        tM=M[i];
+        uM=0.;
+        for(unsigned int k=0;k<nbID[i].size;++k) {
+            rM=tM*transP[i][k];
+            dM[nbID[i][k]]+=rM;
+            uM-=rM;
+        }
+        dM[i]+=uM;
+      }
+      assign(mM,M);
+      shift(mM,0.5*A,dM);
+      assign(dM,0);
+      for(unsigned int i=0;i<15037;++i) {
+        tM=mM[i];
+        uM=0.;
+        for(unsigned int k=0;k<nbID[i].size;++k) {
+            rM=tM*transP[i][k];
+            dM[nbID[i][k]]+=rM;
+            uM-=rM;
+        }
+        dM[i]+=uM;
+      }
+      shift(M,A,dM);
+      //aT+=A;
+      rM=asum(M);
+      S+=(pM+rM)*0.5*A;
+      pM=rM;
+    }
+    gM1=pM;
+    S+=gM0/((log(gM0)-log(gM1))*(1000.*A));
+    cout<<u<<"\t"<<nbID[u][v]<<"\t"<<S<<endl;
   }
 
   return 0;
