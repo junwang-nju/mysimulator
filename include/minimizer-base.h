@@ -32,6 +32,9 @@ namespace std {
   template <typename SpaceDataType, typename ParameterType>
   struct MinimizerKernelBase {
 
+    /**
+     * @brief abbreviation for base type of minimizer
+     */
     typedef MinimizerKernelBase<SpaceDataType,ParameterType>  Type;
     typedef void (*EFuncType)(const SpaceDataType&, double&, ParameterType&);
     typedef void (*GFuncType)(const SpaceDataType&, SpaceDataType&,
