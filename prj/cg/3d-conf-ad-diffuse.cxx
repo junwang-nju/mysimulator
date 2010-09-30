@@ -104,14 +104,12 @@ int main(int argc, char** argv) {
     }
   }
 
-  Vector<double> M,dM,gM,mM,fdM;
-  double tM,rM,S,pM,uM;
+  Vector<double> M,dM,mM;
+  double tM,rM,S,pM,uM,gM0,gM1;
   double aT;
   allocate(M,885641);
   allocate(dM,885641);
-  allocate(gM,885641);
   allocate(mM,885641);
-  allocate(fdM,885641);
 
   unsigned int bu,eu,rt;
   bu=atoi(argv[1]);
@@ -123,116 +121,82 @@ int main(int argc, char** argv) {
     M[u]=1;
     M[nbID[u][v]]=-1;
 
-    A=6e-2;
+    A=7e-2;
     S=0;
     aT=0.;
     pM=2.;
-    uM=0.;
-    cout<<aT<<"\t"<<2.<<"\t"<<A<<"\t"<<0<<endl;
-    for(rt=0;rt<800000000;++rt) {
-      assign(gM,M);
-      assign(fdM,0.);
-      for(unsigned int i=0;i<885641;++i) {
-        tM=M[i];
-        for(unsigned int k=0;k<nbID[i].size;++k) {
-          rM=tM*transP[i][k];
-          fdM[nbID[i][k]]+=rM;
-          fdM[i]-=rM;
-        }
-      }
-      assign(mM,M);
-      shift(mM,0.5*A,fdM);
-      assign(dM,0.);
-      for(unsigned int i=0;i<885641;++i) {
-        tM=mM[i];
-        for(unsigned int k=0;k<nbID[i].size;++k) {
-          rM=tM*transP[i][k];
-          dM[nbID[i][k]]+=rM;
-          dM[i]-=rM;
-        }
-      }
-      shift(M,A,dM);
-      aT+=A;
-      rM=asum(M);
-      S+=(pM+rM)*0.5*A;
-      pM=rM;
-      cout<<aT<<"\t"<<rM<<"\t"<<A<<"\t"<<uM<<endl;
+    cout<<0<<"\t"<<2.<<"\t"<<A<<endl;
+    for(rt=0;rt<10000;++rt) {
       assign(dM,0.);
       for(unsigned int i=0;i<885641;++i) {
         tM=M[i];
+        uM=0.;
         for(unsigned int k=0;k<nbID[i].size;++k) {
           rM=tM*transP[i][k];
           dM[nbID[i][k]]+=rM;
-          dM[i]-=rM;
+          uM-=rM;
         }
+        dM[i]+=uM;
       }
       assign(mM,M);
       shift(mM,0.5*A,dM);
       assign(dM,0.);
       for(unsigned int i=0;i<885641;++i) {
         tM=mM[i];
+        uM=0.;
         for(unsigned int k=0;k<nbID[i].size;++k) {
           rM=tM*transP[i][k];
           dM[nbID[i][k]]+=rM;
-          dM[i]-=rM;
+          uM-=rM;
         }
+        dM[i]+=uM;
       }
       shift(M,A,dM);
       aT+=A;
       rM=asum(M);
       S+=(pM+rM)*0.5*A;
       pM=rM;
-      //cout<<aT<<"\t"<<rM<<"\t"<<A<<"\t"<<uM<<endl;
-      /*
-      assign(mM,gM);
-      shift(mM,A,fdM);
+      cout<<(rt+1)*A<<"\t"<<rM<<endl;
+
+      if(rM<5e-3) break;
+
+    }
+    gM0=pM;
+    for(rt=0;rt<500;++rt) {
       assign(dM,0.);
       for(unsigned int i=0;i<885641;++i) {
-        tM=mM[i];
+        tM=M[i];
+        uM=0.;
         for(unsigned int k=0;k<nbID[i].size;++k) {
           rM=tM*transP[i][k];
           dM[nbID[i][k]]+=rM;
-          dM[i]-=rM;
+          uM-=rM;
         }
+        dM[i]+=uM;
       }
-      shift(gM,A+A,dM);
-      shift(gM,-1.,M);
-      uM=asum(gM)/asum(M);
-      if(uM<1e-8) A+=1e-4;
-      */
-      for(unsigned int w=0;w<10;++w) {
-        assign(dM,0.);
-        for(unsigned int i=0;i<885641;++i) {
-          tM=M[i];
-          for(unsigned int k=0;k<nbID[i].size;++k) {
-            rM=tM*transP[i][k];
-            dM[nbID[i][k]]+=rM;
-            dM[i]-=rM;
-          }
+      assign(mM,M);
+      shift(mM,0.5*A,dM);
+      assign(dM,0.);
+      for(unsigned int i=0;i<885641;++i) {
+        tM=mM[i];
+        uM=0.;
+        for(unsigned int k=0;k<nbID[i].size;++k) {
+          rM=tM*transP[i][k];
+          dM[nbID[i][k]]+=rM;
+          uM-=rM;
         }
-        assign(mM,M);
-        shift(mM,0.5*A,dM);
-        assign(dM,0.);
-        for(unsigned int i=0;i<885641;++i) {
-          tM=mM[i];
-          for(unsigned int k=0;k<nbID[i].size;++k) {
-            rM=tM*transP[i][k];
-            dM[nbID[i][k]]+=rM;
-            dM[i]-=rM;
-          }
-        }
-        shift(M,A,dM);
-        aT+=A;
-        rM=asum(M);
-        S+=(pM+rM)*0.5*A;
-        pM=rM;
-        //cout<<aT<<"\t"<<rM<<"\t"<<A<<"\t"<<uM<<endl;
+        dM[i]+=uM;
       }
-      if(rM<1e-3) break;
-
+      shift(M,A,dM);
+      aT+=A;
+      rM=asum(M);
+      S+=(pM+rM)*0.5*A;
+      pM=rM;
     }
+    gM1=pM;
+    S+=gM0/((log(gM0)-log(gM1))*(500*A));
+    //cout<<u<<"\t"<<nbID[u][v]<<"\t"<<S<<endl;
     u=eu+1; break;
-    cout<<u<<"\t"<<nbID[u][v]<<"\t"<<S<<"\t"<<rt<<endl;
   }
 
   return 0;
