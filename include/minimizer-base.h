@@ -281,6 +281,26 @@ namespace std {
     dest.state=Reference;
   }
 
+  /**
+   * @brief generate new location from origin along a direction
+   *
+   * New location is calculated from the assigned origin along
+   * a certain direction. The related gradient, energy, and 
+   * project distance are updated.
+   *
+   * SpaceDataType is the type of the data describing the spatial vector.
+   * ParameterType is the type of the parameter vector.
+   *
+   * @param M [in] the base minimizer
+   * @param Origin [in] the origin location
+   * @param Dirc [in] the direction vector
+   * @param step [in] the spatial step to extrapolate along direction
+   * @param Dest [out] the destination coordinate
+   * @param DestY [out] the energy corresponding to destination
+   * @param DestG [out] the gradient corresponding to destination
+   * @param DestPrj [out] the projection distance related to this move
+   * @return nothing
+   */
   template <typename SpaceDataType, typename ParameterType>
   void GenerateNewLocation(
       const MinimizerKernelBase<SpaceDataType,ParameterType>& M,
