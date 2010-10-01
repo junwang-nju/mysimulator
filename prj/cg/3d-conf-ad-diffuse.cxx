@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
     aT=0.;
     pM=2.;
     cout<<0<<"\t"<<2.<<"\t"<<A<<endl;
-    for(rt=0;rt<10000;++rt) {
+    for(rt=0;rt<2000;++rt) {
       assign(dM,0.);
       for(unsigned int i=0;i<885641;++i) {
         tM=M[i];
@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
 
     }
     gM0=pM;
-    for(rt=0;rt<500;++rt) {
+    for(rt=0;rt<100;++rt) {
       assign(dM,0.);
       for(unsigned int i=0;i<885641;++i) {
         tM=M[i];
@@ -194,7 +194,7 @@ int main(int argc, char** argv) {
       pM=rM;
     }
     gM1=pM;
-    S+=gM0/((log(gM0)-log(gM1))*(500*A));
+    S+=gM0/((log(gM0)-log(gM1))*(100*A));
     //cout<<u<<"\t"<<nbID[u][v]<<"\t"<<S<<endl;
     u=eu+1; break;
   }
