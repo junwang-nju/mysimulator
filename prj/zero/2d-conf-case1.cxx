@@ -11,12 +11,12 @@ double E(const Vector<int>& X, const Vector<int>& Y) {
   for(unsigned int i=0;i<n;++i)
   for(unsigned int j=i+3;j<n;++j)
     if(abs(X[i]-X[j])+abs(Y[i]-Y[j])==1)  e+=-1.;
-  e+=0.0*abs(X[n-1]-X[0]);
+  //e+=0.0*abs(X[n-1]-X[0]);
   return e;
 }
 
 int main() {
-  unsigned int L=25;
+  unsigned int L=24;
   unsigned int L1=L-1;
 
   Vector<int> dirc;
