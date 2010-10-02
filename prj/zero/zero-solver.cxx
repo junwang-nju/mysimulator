@@ -226,11 +226,12 @@ int main() {
   for(unsigned int i=1;i<=n;++i)  a[i]/=a[0];
   a[0]=1.;
 
+  cout.precision(12);
   newton_real(n,a,res);
   cout<<res<<endl;
 
   for(unsigned int i=1;i<=n;++i)
-    cout<<feval(n,a,res[1],res[0])<<endl;
+    cout<<feval(n,a,res[i],res[0])<<endl;
 
   return 0;
 }
