@@ -214,7 +214,7 @@ int main() {
   Vector<double> a;
   Vector<dcomplex> res;
 
-  ifstream ifs("25.e.f0");
+  ifstream ifs("26.e.f0");
   unsigned int n,m;
   ifs>>n;
   allocate(a,n+1);
