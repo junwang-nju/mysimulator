@@ -1,4 +1,14 @@
 
+/**
+ * @file matrix.h
+ * @brief the data structure of Matrix
+ *
+ * This file contains the data structures of matrix and some related
+ * operations.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Matrix_H_
 #define _Matrix_H_
 
@@ -7,39 +17,137 @@
 
 namespace std {
 
+  /**
+   * @brief the names of various properties in base type of matrix
+   *
+   * This enumerator contains the set of the names for various properties.
+   * THese names defines the order (location) of the features in the
+   * storage of properties.
+   */
   enum MatrixBasePropertyName {
+    /**
+     * @brief the type of matrix
+     */
     MatrixType=0,
+    /**
+     * @brief the number of elements in matrix
+     */
     MatrixNumberElement,
+    /**
+     * @brief the number of rows in matrix
+     */
     MatrixNumberRow,
+    /**
+     * @brief the number of columns in martix
+     */
     MatrixNumberColumn,
+    /**
+     * @brief the state of data storage
+     */
     MatrixDataState,
+    /**
+     * @brief the order of data arrangement
+     */
     MatrixDataOrder,
+    /**
+     * @brief the flag indicating if the matrix is transposed
+     */
     MatrixTransposeForm,
+    /**
+     * @brief the actual order of data arrangement in matrix
+     *
+     * This is determined by the Order and the transpose state of the matrix
+     */
     MatrixActualOrder,
+    /**
+     * @brief the number of the common properties of matrix
+     */
     MatrixCommonNumberProperty,
   };
 
+  /**
+   * @brief the name of the type of matrix
+   *
+   * This enumerator contains the type name for various kinds of matrices.
+   * This could be extended.
+   */
   enum MatrixTypeName {
+    /**
+     * @brief the type indicating a matrix with a rectangle shape
+     */
     RectangleMatrix=0,
+    /**
+     * @brief the type indicating a matrix with a triangle shape
+     */
     TriangleMatrix
   };
 
+  /**
+   * @brief the name of the order type for data arrangement in matrix
+   *
+   * This enumerator contains the names for various orders to arrange data
+   * in matrix.
+   */
   enum MatrixDataOrderName {
+    /**
+     * @brief the order resembling the 2-d array in C-language (namely column first)
+     */
     COrder=0,
+    /**
+     * @brief the order resembling the 2-d array in Fortran-language (namely row first)
+     */
     FortranOrder,
+    /**
+     * @brief the order to arrange data along the diagonal direction.
+     */
     DiagonalOrder
   };
 
+  /**
+   * @brief the name of the transpose states of matrix.
+   *
+   * This enumerator contains the names for various transpose states.
+   */
   enum MatrixTransposeFormName {
+    /**
+     * @brief the state indicating that there are no transpose for matrix.
+     */
     NoTranspose=0,
+    /**
+     * @brief the state indicating that the matrix is transposed.
+     */
     Transposed
   };
 
+  /**
+   * @brief The data structure with matrix shape 
+   *
+   * This data structure is established to describe the matrix data, the
+   * data with two dimensions. Various shapes and internal organizations
+   * are available. The operations for different kinds of matrices are
+   * implemented with generic programming.
+   *
+   * T is the type of the elements in matrix.
+   *
+   * @todo the sparse matrix is not implemented here. It is not sure if
+   *       that kind of data could fit with the present structure. 
+   */
   template <typename T>
   struct Matrix : public Vector<T> {
 
+    /**
+     * @brief abbreviation for the type of matrix
+     */
     typedef Matrix<T> Type;
+    /**
+     * @brief the abbreviation for the parent type of matrix.
+     *
+     * It is a vector of data to enable the operations for vector.
+     */
     typedef Vector<T> ParentType;
+    /**
+     * @brief the type of function pointer to get a certain element
+     */
     typedef T& (*GetFuncType)(T**,const unsigned int,const unsigned int,T&);
 
     T** structure;
