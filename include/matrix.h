@@ -150,21 +150,90 @@ namespace std {
      */
     typedef T& (*GetFuncType)(T**,const unsigned int,const unsigned int,T&);
 
+    /**
+     * @brief the internal structure for matrix
+     *
+     * This structure offers the row/column structure to ease the data
+     * access.
+     */
     T** structure;
+    /**
+     * @brief the properties of matrix
+     *
+     * The names of various properties follow the enumerator
+     * MatrixBasePropertyName.
+     */
     unsigned int *property;
+    /**
+     * @brief the pointer to the elements not to be access through structure
+     *
+     * For some special matrices, such as triangle, some elements cannot
+     * be accessed (or not necessary to be accessed) through the data pointer,
+     * structure. This pointer offers a way to access this kind of data.
+     */
     T* PtrOtherElement;
+    /**
+     * @brief the function pointer to access elements
+     */
     GetFuncType GetFunc;
 
+    /**
+     * @brief default initiator
+     *
+     * Just initiate all the pointers with NULL.
+     */ 
     Matrix()
       : ParentType(), structure(NULL), property(NULL), PtrOtherElement(NULL),
         GetFunc(NULL) {}
+    /**
+     * @brief initiator from another Matrix object
+     *
+     * It is prohibited and pops out an error message.
+     *
+     * @param MB [in] the input Matrix object
+     */
     Matrix(const Type& MB) { myError("Cannot create Matrix"); }
+    /**
+     * @brief copy Matrix from another Matrix object
+     *
+     * It is implemented with the assign operation.
+     *
+     * @param M [in] the input Matrix object
+     * @return the reference to the resultant Matrix.
+     */
     Type& operator=(const Type& M) { assign(*this,M); return *this; }
+    /**
+     * @brief destructor
+     *
+     * It is implemented with release operation.
+     */
     ~Matrix() { release(*this); }
 
+    /**
+     * @brief access the elements with the indices
+     *
+     * It is implemented with the function pointed by the internal
+     * function pointer.
+     *
+     * @param I,J [in] the row, column index for the element
+     * @return the reference to the expected elements. If the elements
+     *         cannot be accessed with regular method, the reference to
+     *         the specific element is returned.
+     */
     T& operator()(const unsigned int I, const unsigned int J) {
       return GetFunc(structure,I,J,*PtrOtherElement);
     }
+    /**
+     * @brief visit the elements with the indices
+     *
+     * It is implemented with the function pointed by the internal
+     * function pointer.
+     *
+     * @param I,J [in] the row, column index for the element
+     * @return the const reference to the expected elements. If the elements
+     *         cannot be visited with regular method, the const reference to
+     *         the specific element is returned.
+     */
     const T& operator()(const unsigned int I, const unsigned int J) const {
       return GetFunc(const_cast<T**>(structure),I,J,
                      const_cast<T&>(*PtrOtherElement));
@@ -172,11 +241,31 @@ namespace std {
 
   };
 
+  /**
+   * @brief check the availability of the Matrix object
+   *
+   * It is implemented by checking the parent vector of the matrix object.
+   *
+   * T is the type of the elements in matrix.
+   *
+   * @param M [in] the matrix object to be checked.
+   * @return the flag indicating if the matrix is available.
+   */
   template <typename T>
   bool IsAvailable(const Matrix<T>& M) {
     return IsAvailable(static_cast<const Vector<T>&>(M));
   }
 
+  /**
+   *  @brief release a matrix object
+   *
+   * Just release the internal storage and release the parent vector object.
+   *
+   * T is the type of the elements in matrix.
+   *
+   * @param M [out] the matrix object to be released.
+   * @return nothing
+   */
   template <typename T>
   void release(Matrix<T>& M) {
     if(M.state==Allocated) {
@@ -192,6 +281,20 @@ namespace std {
     release(static_cast<Vector<T>&>(M));
   }
 
+  /**
+   * @brief refer to another matrix object
+   *
+   * Just assign the internal pointers of the destinate matrix with those
+   * in source matrix, and the parent vector is referred to that of the
+   * source matrix. Before these operations, the source matrix is checked
+   *  for its availability, and the destinate matrix is released.
+   *
+   * T is the type of elements in matrices.
+   *
+   * @param destM [out] the matrix to accept the input
+   * @param srcM [in] the matrix containing the input information
+   * @return nothing
+   */
   template <typename T>
   void refer(Matrix<T>& destM, const Matrix<T>& srcM) {
     assert(IsAvailable(srcM));
@@ -203,6 +306,18 @@ namespace std {
     refer(static_cast<Vector<T>&>(destM),static_cast<const Vector<T>&>(srcM));
   }
 
+  /**
+   * @brief output the matrix through ostream
+   *
+   * Just write the matrix row by row. Tabs are used to separate elements
+   * in lines.
+   *
+   * T is the type of elements in matrix.
+   *
+   * @param os [in,out] the ostream to accept the input
+   * @param M [in] the matrix to be written out.
+   * @return the ostream after this output operation.
+   */
   template <typename T>
   ostream& operator<<(ostream& os, const Matrix<T>& M) {
     os<<M(0,0);
@@ -216,6 +331,24 @@ namespace std {
     return os;
   }
 
+  /**
+   * @brief allocate matrix based on the input information
+   *
+   * The concerned matrix is allocated based on the expected type and
+   * other information in variable parameter list. It uses some
+   * presumed allocation functions.
+   *
+   * T is the type of elements in matrix.
+   *
+   * @param M [out] the matrix to be allocated.
+   * @param MatrixType [in] the expected type of matrix to be allocated.
+   * @return nothing
+   *
+   * @note a variable list is used to fit different interface of allocation
+   *       for various matrices. 
+   * @note since the allocation function is not generic with same
+   *       interface, no common pointer are assigned inside the matrix object.
+   */
   template <typename T>
   void allocate(Matrix<T>& M, const unsigned int MatrixType, ...) {
     release(M);
@@ -240,6 +373,16 @@ namespace std {
     va_end(vl);
   }
 
+  /**
+   * @brief swap two matrix objects
+   *
+   * Swap the internal pointers as well as the parent vector objects.
+   *
+   * T is the type of elements in matrix.
+   *
+   * @param Ma,Mb [in,out] the matrices to be swapped.
+   * @return nothing
+   */
   template <typename T>
   void swap(Matrix<T>& Ma, Matrix<T>& Mb) {
     swap(Ma.structure,Mb.structure);
@@ -249,6 +392,16 @@ namespace std {
     swap(static_cast<Vector<T>&>(Ma),static_cast<Vector<T>&>(Mb));
   }
 
+  /**
+   * @brief set up the actual order based on internal information
+   *
+   * The actual order is determined by the original order and the
+   * transpose state. The order and transpose state are checked
+   * during running.
+   *
+   * @param property [in,out] the array containing properties
+   * @return nothing
+   */
   void SetMatrixActualOrder(unsigned int* property) {
     if(property[MatrixTransposeForm]==NoTranspose)
       property[MatrixActualOrder]=property[MatrixDataOrder];
@@ -270,6 +423,30 @@ namespace std {
 
 namespace std {
 
+  /**
+   * @brief assign matrix from another
+   *
+   * It is implemented by assigning corresponding elements one by one
+   * in destinate matrix with source matrix. The part of matrix of also
+   * picked up.
+   *
+   * T is the type of elements in matrix.
+   *
+   * @param destM [in,out] the matrix to accept the input data
+   * @param srcM [in] the matrix containing the input information
+   * @param nrow, ncol [in] the numbers of rows and columns
+   * @param sroff, scoff, droff, dcoff [in] the offests for the starting
+   *                                        rows or columns in destM or
+   *                                        srcM. They takes default value of
+   *                                        uZero.
+   * @param srstep,scstep,drstep,dcstep [in] the steps between the rows or
+   *                                         columns in destM or srcM. They
+   *                                         takes default value of uOne.
+   * @return nothing
+   *
+   * @note Regularly, the assignment only works between matrices with
+   *       similar structures. The checks are carried out inside the loop.
+   */
   template <typename T>
   void assign(Matrix<T>& destM, const Matrix<T>& srcM,
               const unsigned int nrow=uZero, const unsigned int ncol=uZero,
