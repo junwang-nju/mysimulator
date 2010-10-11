@@ -1,4 +1,14 @@
 
+/**
+ * @file matrix-storage-item.h
+ * @brief The item object related to matrix-like storage
+ *
+ * This file contains the declaration of the object describing the
+ * items which are used in storage with the shape of matrix.
+ *
+ * @author Jun Wang (junwang.nju@gmail.com)
+ */
+
 #ifndef _Matrix_Storage_Item_H_
 #define _Matrix_Storage_Item_H_
 
