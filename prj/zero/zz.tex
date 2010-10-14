@@ -83,10 +83,90 @@ method with partition function zeros.
 
 \section{Models and Methods}
 
-The lattice polymer is simulated as a self-avoided chain on the square
-lattice. The length is defined as the number of the monomers in the chain.
-The neighboring monomers which are not connected by a bond
-would have an attractive interaction with the strength $\epsilon$.
+\subsection{Lattice models of polymers}
+
+The lattice polymer is modeled as a two-dimensional self-avoided chain on
+the square lattice. The length is defined as the number $N$ of the monomers in
+the chain. For this kind of model of polymers, the position of the
+monomer $i$ is ${\mathbf r}_i=(x_i,y_i)$ relative to the presumed origin, where
+$x_i$ and $y_i$ are integers. The bonds of chain connect the monomers with
+the neighboring indeices and have the length of unit, namely $|{\mathbf r}_{i+1}
+-{\mathbf r}_i|=1$. The exclusive volume effect prohibites the overlaps of the
+chain, that is, there are no monomers sharing the same coordinates, ${\mathbf r}_i
+\neq {\mathbf r}_j$ for $i\neq j$. 
+
+To consider the hydrophobic interaction between monomers, the spatially
+neighboring monomers which are not connected by a bond would have an attractive
+interaction with the strength $\epsilon>0$. The Hamiltonian of the polymer thus
+takes the form,
+\begin{equation}
+{\mathcal H}=-\sum_{i<j-1}\epsilon \Delta(|{\mathbf r}_i-{\mathbf r}_j|)=
+-\epsilon K \, ,
+\end{equation}
+in which $\Delta(D)=1$ when $D=1$, and zero otherwise, and the integer $K$
+is the number of the contacts between monomers and marks the energy level
+that the concerned conformation belongs to. Therefore, the partition
+function of the polymer would be written as a polynomial,
+\begin{equation}
+Z=\sum_{K=0}^{K_{\text{max}}} \Omega(K) s^K \, ,
+\end{equation}
+where the quantity $s=exp(\epsilon/T)=exp(\beta\epsilon)$, $\Omega(K)$ is the dentisty
+of states (DOS) of the system ans records the number 
+of conformations on the energy level $K$ and $K_{\text{max}}$ is the
+maximum of the index $K$. When the DOS is obtained, the partition function and
+the related thermodynamic functions could be determined easily.
+
+\subsection{Partition Function Zeros}
+
+The zeros of partition function $Z$ is defined as the roots $\beta=1/T$
+for the equation $Z(\beta)=\sum_E n(E)e^{-\beta E}0$ in complex plane. These
+roots are declared to be
+tightly related to the phase transition of the system described with the
+partition function $Z$ by Yang and Lee, and Fisher. This offers a new insight
+and method to determine the properties of the phase transitions, and has been
+used in critical phenomena, helix-coil transition, and the folding transition of
+proteins and heteropolymers. In this work, we apply this method to investigate
+the collapse transition of homopolymer systems.
+
+Clearly, when $\beta=\beta_c=1/T_c$ is a root of the equation $Z(\beta)=0$, all
+the thermodynamic potentials would be divergent at the temperature $T_c$. When
+$T_c$ is a positive real number, this kind of divergence indicates a phase
+transition with the discontinuity of thermodynamic potentiaks. For the systems
+with finite size, there are no real roots for the equation $Z=0$. The locus of
+the zeros would intersect with the real axis at $N\rightarrow\infty$, which
+indicates the phase transition at the thermodynamic limit. Therefore, the zeros
+close to the real axis and the trends of the zeros to approach to the real axis
+would bring us a lot of information about the transitions. This establishes a
+method to analysis the phase transition based on the models woth finite sizes.
+
+Close to the transition temperature $T_{\theta}$, the collapse transition would
+have scaling behavior. It is easy to derive that the partition function around
+the transition temperature also follows the scaling law,
+\begin{equation}
+\ln Z_N(\tau) \sim N^{-(\alpha+2)\phi} g(\tau N^{\phi}) \,
+\end{equation}
+in which $\tau=(T-T_{\theta})/T_{\theta}$, and $\alpha$ and $\phi$ are the
+concerned critical exponents. The definition of the function $g(x)$ could be
+refer to the references. This kind of scaling is rationally assumed to be also
+valid in the complex plane. For the equation $Z(\tau)=0$, the root has to
+satisfy the relation that $\tau N^{\phi}$ is invariant considering the scaling
+behavior. This gives out the trend of the zeros $\tau_c \sim N^{-\phi}$ in the
+complex plane when the zeros are close to the real axis. Therefore, the
+transtion temperature $T_{\theta}$ and the critical exponent $\phi$ could be
+extrapolated based on this relation. This simple relation could help us to find
+out the characteristics much more easily.
+
+Practically, for a system with only discrete energy levels, the partition
+function could be
+re-formulated as a polynomial $Z(s)=\sum_J n(J) s^J$ where the variable
+$s=exp(-\beta\epsilon)$ and $J=E/\epsilon$. Here $\epsilon$ should be carefully
+selected so that the quantity $J=E/\epsilon$ is an integer for all the energy
+$E$. For discrete energy levels, $\epsilon$ is generally possible, such as
+taking the value of the minimal scale in energy measurements. In this case, the
+original equation could be transformed as the problem to solve the polynomial
+equation $Z(s)=0$, which would be easy to implement. The precise determination
+of the zeros may avoid the fluctuations of physical quantities with other
+methods (such as Monte Carlo simulations).
 
 \section{Results and Discussions}
 

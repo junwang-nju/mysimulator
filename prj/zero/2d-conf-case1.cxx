@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-  unsigned int L=30;
+  unsigned int L=31;
   unsigned int L1=L-1;
 
   PropertyList<int> RowAlign;
@@ -39,8 +39,8 @@ int main() {
   YTurnHead=0;
   runHead=0;
 
-  unsigned int NS=0;
-  Vector<unsigned int> Hist;
+  unsigned long long int NS=0;
+  Vector<unsigned long long int> Hist;
   allocate(Hist,30);
   int rX,rY;
   do {
