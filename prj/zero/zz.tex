@@ -13,7 +13,8 @@
 polymer with partition function zeros}
 \author{Ling-Hong Zeng}
 
-\affiliation{Physics Department, Advanced Normal School of Liuzhou, xxxx}
+\affiliation{Physics Department, Liuzhou Teachers College,
+Liuzhou 545004}
 
 \date{\today}
 
@@ -27,78 +28,89 @@ polymer with partition function zeros}
 
 \section{Introduction}
 
-Polymer is a kind of system with many complex phase transitions, such as
-the collapse transition, the glass transition, and so on. These transitions
-generally are the results of the interplay between the complex interaction
-and conformation entropy, and have attracted a lot of physical interests.
+Polymer is a kind of system with many complex phase transitions
+\cite{LifshitzRMP78}, such as the collapse transition\cite{FloryJCP49,
+FloryBOOK67,WilliamsARPC81}, the glass transition\cite{GibbsJCP58,JackleRPP86}, and
+so on. These transitions generally are the results of the interplay
+between the complex interaction and conformation entropy, and have
+attracted a lot of physical interests\cite{LifshitzRMP78,FloryJCP49,
+FloryBOOK67,WilliamsARPC81,GibbsJCP58,JackleRPP86,deGennesBook79,
+StephenPLA75,RigByJCP1987,BellRMP93,ChengARMR,PrivmanBook81,ZivPCCP09,
+ChengBook08}.
 
-The collapse transition of homopolymers is a typical and fundamental example
-of the transitions in polymeric systems. In good solvent regime or at the
-high temperature, a homopolymer
-would have swollen conformations with large gyration radii. This kind of
-state (or phase) has large conformational entropy. Differently, in the poor
-solvent regime or at low temperatures, the polymer chain would take compact
+The collapse transition of homopolymers is a typical and fundamental
+example of the transitions in polymeric systems\cite{LifshitzRMP78,
+FloryBOOK67,deGennesBook79,ZivPCCP09,ChengBook08}. In good solvent
+regime or at the high temperature, a homopolymer would have swollen
+conformations with large gyration radii. This kind of state (or phase)
+has large conformational entropy. Differently, in the poor solvent
+regime or at low temperatures, the polymer chain would take compact
 conformations. These conformations are generally the results of the
-nonspecific attractive
-interactions between monomers. The transition between the swollen and the
-compact states of homopolymers following the changes of solvent condition
-or temperatures is defined as the collapse transition. The transition
-condition generally marks the balance of the energy and the entropy of
-the homopolymer, and the corresponding transition temperature is historically
-called theta temperature, or Flory temperature $T_{\theta}$. The collapse
-transition and the related critical exponents have been studied for a
-long time with theoretical and computational methods, and has become
-the basic problem in polymer physics.
+nonspecific attractive interactions between monomers. The transition
+between the swollen and the compact states of homopolymers following
+the changes of solvent condition or temperatures is defined as the
+collapse transition. The transition condition generally marks the
+balance of the energy and the entropy of the homopolymer, and the
+corresponding transition temperature is historically called theta
+temperature, or Flory temperature $T_{\theta}$\cite{FloryJCP49}.
+The collapse transition and the related critical exponents have been
+studied for a long time with theoretical and computational methods
+\cite{deGennesBook79,PrivmanBook81,ZivPCCP09,SaleurJSP86,
+DuplantierPRL87,StanleyPRB89,BinderBook95,OYJCP08,CaparicaCPC09,
+BinderBook10}, and has become the basic problem in polymer physics
+\cite{LifshitzRMP78,deGennesBook79,ZivPCCP09,ChengBook08}.
 
-In the computational studies on the collapse transition, the two-dimensional
-lattice model with exclusive volume effect is one of the most popular models.
-due to its simplicity. Both exact enumerations and Monte Carlo simulations
-are used in the related studies. The transition temperature and the
-critical exponents related to the collapse transition are evaluated with
-this kind of lattice models. However, the results from various calculations
-are not consistent with each other quantitatively. For example, the transition
-temperature varies from $1.31$ to $1.55$ on the square lattice, and the
-crossover exponent $\phi$ is estimated to be in the region between $0.419$
-and $0.86$. These differences are apparently larger than the computational
-errors.
-This may be partially attributed to the finite-size effect or the errors
-during the evaluations of the concerned physical quantities. It is expected
-to have a precise calculation for the features of the collapse transition.
-The analysis of the collapse transition is still a non-trivial work, and
-the results and methods would be valuable to understand various transitions
-in more complicated polymeric systems (such as proteins).
+In the computational studies on the collapse transition, the
+two-dimensional lattice model with exclusive volume effect is
+one of the most popular models due to its simplicity. Both exact
+enumerations and Monte Carlo simulations are used in the related
+studies\cite{SaleurJSP86,DuplantierPRL87,StanleyPRB89,OYJCP08,
+DerridaJPA85,SenoJP88,ChangPRE93,HeegerJP95,MurthyPRE01}. The
+transition temperature and the critical exponents related to the
+collapse transition are evaluated with this kind of lattice models.
+However, the results from various calculations are diverse
+quantitatively. For example, the transition temperature varies from
+$1.31$ to $1.55$ on the square lattice, and the crossover exponent
+$\phi$ is estimated to be in the region between $0.419$ and $0.86$.
+These differences are apparently larger than the computational
+errors. This may be partially attributed to the finite-size effect
+and the errors during the evaluations of the concerned physical
+quantities. It is expected to have a precise calculation for the
+features of the collapse transition. The analysis of the collapse
+transition is still a non-trivial work, and the results and methods
+would be valuable to understand various transitions in more
+complicated polymeric systems (such as proteins\cite{ZivPCCP09}).
 
-\textcolor{blue}{exclusive volume effect is not declared here.}
-
-In this work, the transition temperature and the related crossover exponent
-are determined based on the analysis on the partition function zeros of
-the two-dimensional model on square lattice. In detail, the exact
-partition function zeros are determined for the chains with the length
-from $12$ up to $27$. Based on the asymptotical trends of the locations of 
-the zeros (especially of the first zero), the transition temperature
-and the crossover exponent are determined with high precisions. These
-results gives out the precise characteristics of the collapse transitions
-of two-dimensional lattice polymers, and demonstrates the power of the
+In this work, the order of the transition, the transition temperature
+and the related crossover exponent are determined based on the analysis
+using the partition function zeros of the two-dimensional models
+on square lattice. In detail, the exact partition function zeros are
+determined for the chains with the length from $12$ up to $31$. Based
+on the asymptotical trends of the locations of the zeros (especially
+of the zeros around real axis), the transition temperature and the
+crossover exponent are determined with high precisions. These results
+gives out the precise characteristics of the collapse transitions of
+two-dimensional lattice polymers, and demonstrates the power of the
 method with partition function zeros.
 
 \section{Models and Methods}
 
 \subsection{Lattice models of polymers}
 
-The lattice polymer is modeled as a two-dimensional self-avoided chain on
-the square lattice. The length is defined as the number $N$ of the monomers in
-the chain. For this kind of model of polymers, the position of the
-monomer $i$ is ${\mathbf r}_i=(x_i,y_i)$ relative to the presumed origin, where
-$x_i$ and $y_i$ are integers. The bonds of chain connect the monomers with
-the neighboring indeices and have the length of unit, namely $|{\mathbf r}_{i+1}
--{\mathbf r}_i|=1$. The exclusive volume effect prohibites the overlaps of the
-chain, that is, there are no monomers sharing the same coordinates, ${\mathbf r}_i
-\neq {\mathbf r}_j$ for $i\neq j$. 
+The lattice polymer is modeled as a two-dimensional self-avoided chain
+on the square lattice. The length is defined as the number $N$ of the
+monomers in the chain. For this kind of model of polymers, the position
+of the monomer $i$ is ${\mathbf r}_i=(x_i,y_i)$ relative to the presumed
+origin, where $x_i$ and $y_i$ are integers. The bonds of chain connect
+the monomers with the neighboring indeices and have the length of unit,
+namely $|{\mathbf r}_{i+1}-{\mathbf r}_i|=1$. The exclusive volume effect
+prohibites the overlaps of the chain, that is, there are no monomers sharing
+the same coordinates, ${\mathbf r}_i\neq {\mathbf r}_j$ for $i\neq j$. 
 
 To consider the hydrophobic interaction between the monomers, the spatially
-neighboring monomers which are not connected by a bond would have an attractive
-interaction with the strength $\epsilon>0$. The Hamiltonian of the polymer thus
-takes the form,
+neighboring monomers which are not connected by a bond would have an
+attractive interaction with the strength $\epsilon>0$. The Hamiltonian of
+the polymer thus takes the form,
 \begin{equation}
 {\mathcal H}=-\sum_{i<j-1}\epsilon \Delta(|{\mathbf r}_i-{\mathbf r}_j|)=
 -\epsilon K \, ,
@@ -110,57 +122,69 @@ function of the polymer would be written as a polynomial,
 \begin{equation}
 Z=\sum_{K=0}^{K_{\text{max}}} \Omega(K) s^K \, ,
 \end{equation}
-where the quantity $s=exp(\epsilon/T)=exp(\beta\epsilon)$, $\Omega(K)$ is the dentisty
-of states (DOS) of the system ans records the number 
+where the quantity $s=exp(\epsilon/T)=exp(\beta\epsilon)$, $\Omega(K)$ is
+the dentisty of states (DOS) of the system ans records the number 
 of conformations on the energy level $K$ and $K_{\text{max}}$ is the
-maximum of the index $K$. When the DOS is obtained, the partition function and
-the related thermodynamic functions could be determined easily. In this work,
-the DOS of the lattice polymers with various lengths are determined with
-enumerations.
+maximum of the index $K$. When the DOS is obtained, the partition function
+and the related thermodynamic functions could be determined easily.
+
+In this work, the DOS of the lattice polymers with various lengths are
+determined with enumerations. Practically, a conformation is represented
+as a string of directions. All the direction strings are enumerated. It is
+worth noting the conformations which share a same direction string after
+rotation and/or reflection operations are regarded as the same conformation.
+This kind of operation has been widely used in lattice enumerations
+\cite{CieplakPRL98,PandePRL96}.
 
 \subsection{Partition Function Zeros}
 
-The zeros of partition function $Z$ is defined as the roots $\beta=1/T$
-for the equation $Z(\beta)=\sum_E n(E)e^{-\beta E}0$ in complex plane. These
-roots are declared to be
-tightly related to the phase transition of the system described with the
-partition function $Z$ by Yang and Lee, and Fisher. This offers a new insight
-and method to determine the properties of the phase transitions, and has been
-used in critical phenomena, helix-coil transition, and the folding transition of
-proteins and heteropolymers. In this work, we apply this method to investigate
+The zeros of partition function $Z$ are defined as the roots $\beta=1/T$
+for the equation $Z(\beta)=\sum_E n(E)e^{-\beta E}$ in the complex plane.
+These roots are declared to be tightly related to the phase transition
+of the system described with the partition function $Z$ by Yang and Lee
+\cite{LYPR52}, and Fisher\cite{FisherBook}. This offers a powerful method
+to determine the properties of the phase transitions, and has been used
+in critical phenomena\cite{LipowskiIJMPB05}, the helix-coil transition
+\cite{HansmannPRL00,HansmannPA01}, and the folding transition of
+proteins and heteropolymers\cite{WangJCP03,ChenPA05}.
+In this work, we apply this method to investigate
 the collapse transition of homopolymer systems.
 
 Clearly, when $\beta=\beta_c=1/T_c$ is a root of the equation $Z(\beta)=0$, all
 the thermodynamic potentials would be divergent at the temperature $T_c$. When
 $T_c$ is a positive real number, this kind of divergence indicates a phase
 transition with the discontinuity of thermodynamic potentiaks. For the systems
-with finite size, there are no real roots for the equation $Z=0$. The locus of
-the zeros would intersect with the real axis at $N\rightarrow\infty$, which
-indicates the phase transition at the thermodynamic limit. Therefore, the zeros
-close to the real axis and the trends of the zeros to approach to the real axis
-would bring us a lot of information about the transitions. This establishes a
-method to analysis the phase transition based on the models woth finite sizes.
+with finite size, there are generally no real roots for the equation $Z=0$.
+If the locus of the zeros close to the real axis could intersect with the
+real axis when $N\rightarrow\infty$, the system would have a phase transition
+at the thermodynamic limit. Therefore, the zeros close to the real axis and
+the trends of the zeros to approach to the real axis would bring us a lot of
+information about the transitions. This establishes a paradigm to analysis
+the phase transition based on the models woth finite sizes.
 
-Close to the transition temperature $T_{\theta}$, the collapse transition would
-have scaling behavior. It is easy to derive that the partition function around
-the transition temperature also follows the scaling law,
+Close to the transition temperature $T_{\theta}$, the collapse transition
+would have scaling behavior. It is easy to derive that the partition
+function around the transition temperature also follows the scaling law,
 \begin{equation}
-\ln Z_N(\tau) \sim N^{-(\alpha+2)\phi} g(\tau N^{\phi}) \,
+\ln Z_N(\beta) \sim N^{-(\alpha+2)\phi} g(\tau N^{\phi}) \,
 \end{equation}
-in which $\tau=(T-T_{\theta})/T_{\theta}$, and $\alpha$ and $\phi$ are the
-concerned critical exponents. The definition of the function $g(x)$ could be
-refer to the references. This kind of scaling is rationally assumed to be also
-valid in the complex plane. For the equation $Z(\tau)=0$, the root has to
-satisfy the relation that $\tau N^{\phi}$ is invariant considering the scaling
-behavior. This gives out the trend of the zeros $\tau_c \sim N^{-\phi}$ in the
-complex plane when the zeros are close to the real axis. Therefore, the
+in which $\tau=(\beta-\beta_{\theta})/\beta_{\theta}$, and $\alpha$ and
+$\phi$ are the concerned critical exponents. The definition of the function
+$g(x)$ could be refer to the references\cite{ChangPRE93}. This kind of
+scaling is rationally assumed to be also valid around the real axis in
+the complex plane. For the equation $Z(\beta)=0$, the root has to satisfy
+the relation that $\tau N^{\phi}$ is invariant considering the scaling
+behavior. This gives out the trend of the zeros as 
+$\beta-\beta_c \sim N^{-\phi}$ in the complex plane when the zeros are
+close to the real axis. Therefore, the
 transtion temperature $T_{\theta}$ and the critical exponent $\phi$ could be
-extrapolated based on this relation. This simple relation could help us to find
-out the characteristics much more easily.
+extrapolated based on this relation. This simple relation could help us to
+find out the characteristics of phase transition at the thermodynamic limit
+much more easily.
 
 Besides, based on sophisticated derivation, some other factors could be used
 to characterized the phase transition, such as the factors $\gamma$ and
-$\alpha$ in the reference \cite{Adermann2004}. The factor $\gamma=d R_T/d I_T$
+$\alpha$ in the reference \cite{WangJCP03}. The factor $\gamma=d R_T/d I_T$
 (where $R_T$ and $I_T$ are the real and image parts of the complex temperature
 corresponding to the roots of equation $Z=0$) defines the slopes in the locus
 of zeros to cut the real axis, and reflects the strength of the phase
@@ -177,14 +201,16 @@ selected so that the quantity $J=E/\epsilon$ is an integer for all the energy
 $E$. For discrete energy levels, $\epsilon$ is generally possible, such as
 taking the value of the minimal scale in energy measurements. In this case, the
 original equation could be transformed as the problem to solve the polynomial
-equation $Z(s)=0$, which would be easy to implement. The precise determination
-of the zeros may avoid the fluctuations of physical quantities with other
-methods (such as Monte Carlo simulations).
+equation $Z(s)=0$, which would be easy to implement. The resultant solutions
+of $\beta$ could be obtained with the transformation $\beta=-\ln s/\epsilon$.
+The precise determination of the zeros may avoid the fluctuations of physical
+quantities with other methods (such as Monte Carlo simulations).
 
 \section{Results and Discussions}
 
-The normalized DOS for the polymers of various lengths ($N=12-31$) are given
-in Fig.1(a). It is found that the DOS has a peak with a small number $K$ of
+The normalized DOS, $P(E)=N(E)/\sum_E N(E)$, for the polymers of various
+lengths ($N=12-31$) are given in \textcolor{red}{Fig.1(a)}. 
+It is found that the DOS has a peak with a small number $K$ of
 contacts, and then decreases repaidly when $K$ increases. The DOS generally
 takes a concave shape in the region with large $K$. This feature ensures the
 existence of the collapse transition. The heat capacities at various
@@ -221,18 +247,155 @@ the relation between the real part $R_{TZ}$ of zeros and the scaled length
 $N^{-\phi}$ (as shown in Fig.3(c)). The resultant $R_{\theta}=xx \pm xx$ and
 the corresponding transition temperature is $T_{\theta}=xxx \pm xx$.
 
-The slope of the zeros to cutting the real axis is also determined
-with the similar procedures.
+The exponent $\alpha$ is also determined with the similar procedure. The local
+density of zeros around real axis is calculated with the middle-point
+approximation. The fitting is carried out for the chains $N\ge 20$. The
+resultant $\alpha=xxx$. Clearly, this exponent is larger than zero. THis
+indicates that this transition is a second-order transition, which is
+consistent with the conclusions from previous stidues.
+
+Comparing with the previous studies, our transition temperature is rather
+similar to that with transfer matrix, and has a smaller error comparing with
+other results with Monte Carlo simulations. 
 
 \section{Conclusion}
+
+The method partition function zeros provides an unique way to analyze various
+aspects of the phase transition. In this work, the collpase transition of the
+homopolymer is systematically studied. Accompanied with the knowledge of the
+length scaling, the transition temperature, critical exponent, and the order
+of the transition at the thermodynamic limit are determined. Comparing with
+previous results, this method is efficient and precise with few statistical
+errors. This work demonstrates the power of the method with partition function
+zeros. This method could be further applied to other systems with more
+complexity.
 
 \section*{ACKNOWLEDGMENT}
 
 \begin{thebibliography}{10}
 
-\bibitem{Adermann2004}
-K. Adermann, H. John, L. Standker, and W. G. Forssmann.
-{\it Curr. Opin. Biotech.} {\bf 15}, 599 (2004).
+\bibitem{LifshitzRMP78}
+I. M. Lifshitz, A. Yu. Grosberg, and A. R. Khokhlov, Rev. Mod. Phys.
+{\bf 50}, 683 (1978).
+
+\bibitem{FloryJCP49}
+P. J. Flory, J. Chem. Phys. {\bf 17}, 303 (1949).
+
+\bibitem{FloryBOOK67}
+P. J. Flory, {\it Principles of Polymer Chemistry} (Cornell University
+Press, Ithaca, 167)
+
+\bibitem{WilliamsARPC81}
+C. Williams, F. Brochard, and H. L. Frisch, Ann. Rev. Phys. Chem.
+{\bf 32}, 433 (1981).
+
+\bibitem{GibbsJCP58}
+J. H. Gibbs and E. A. DiMarzio, J. Chem. Phys. {\bf 28}, 373 (1958).
+
+\bibitem{JackleRPP86}
+J. Jackle, Rep. Prog. Phys. {\bf 49}, 171 (1986).
+
+\bibitem{StephenPLA75}
+M. J. Stephen, Phys. Lett. A {\bf 53}, 363 (1975).
+
+\bibitem{RigByJCP1987}
+D. Rigby, and R.-J. Roe, J. Chem. Phys. {\bf 87}, 7285 (1987).
+
+\bibitem{BellRMP93}
+K. DeBell, and T. Lookman, Rev. Mod. Phys. {\bf 65}, 87 (1993).
+
+\bibitem{ChengARMR}
+S. Z. D. Cheng and A. Keller, Ann. Rev. Mat. Sci. {\bf 28}, 533 (1998).
+
+\bibitem{ChengBook08}
+S. Z. D. Cheng, {\it Phase Transitions in Polymers: the role of
+metastable states} (Elsevier Publications, Netherlands, 2008).
+
+\bibitem{deGennesBook79}
+P.G. de Gennes, {\it Scaling Concepts in Polymer Physics} (Cornell
+University Press, Ithaca, 1979).
+
+\bibitem{ZivPCCP09}
+G. Ziv, D. Thirumalai, and G. Haran, Phys. Chem. Chem. Phys. {\bf 11},
+83 (2009).
+
+\bibitem{PrivmanBook81}
+{\it Finit Size Scaling and Numerical Simulation of Statistical Systems},
+Ed. V.Privman (World Scientific, Singapore, 1981).
+
+\bibitem{SaleurJSP86}
+H. Saleur, J. Stat. Phys. {\bf 45}, 419 (1986).
+
+\bibitem{DuplantierPRL87}
+B. Duplantier and H. Saleur, Phys. Rev. Lett. {\bf 59} 539 (1987).
+
+\bibitem{StanleyPRB89}
+P.H. Poole, A. Coniglio, N. Jan, and H. E. Stanley, Phys. Rev. B
+{\bf 39} 495 (1989).
+
+\bibitem{BinderBook95}
+K. Binder, {\it Monte Carlo and Molecular Dynamics Simulations in
+Polymer Science} (Oxford University Press, New York, 1995).
+
+\bibitem{OYJCP08}
+J. Zhou, Z.C. Ou-Yang, and H. Zhou, J. Chem. Phys. {\bf 128}
+124905 (2008).
+
+\bibitem{CaparicaCPC09}
+A. G. Cunha-Netto, R. Dickman, and A. A. Caparica, Comput. Phys. Comm.
+{\bf 180}, 583 (2009).
+
+\bibitem{BinderBook10}
+K. Binder and D. W. Heermann, {\it Monte Carlo Simulation in
+Statistical Physics: An Introduction} (Springer-Verlag, Berlin, 2010).
+
+\bibitem{DerridaJPA85}
+B. Derrida, and H. Saleur, J. Phys. A {\bf 18}, L1075 (1985).
+
+\bibitem{SenoJP88}
+F. Seno, and A. L. Stella, J. Phys France {\bf 49}, 739 (1988).
+
+\bibitem{ChangPRE93}
+I. Chang and H. Meirovitch, PHys. Rev. E {\bf 48}, 3656 (1993).
+
+\bibitem{HeegerJP95}
+P. Grassberger and R. Heeger, J. Phys. I {\bf 5} 597 (1995).
+
+\bibitem{MurthyPRE01}
+S. L. Narasimhan, P.S. Krishna, K. P. N. Murthy, and M. Ramanadham,
+Phys. Rev. E {\bf 65}, 010801(R) (2001).
+
+\bibitem {CieplakPRL98}
+M. Cieplak, M. Henkel, J. Karbowski, and J. R. Banavar,
+Phys. Rev. Lett. {\bf 80}, 3654 (1998).
+
+\bibitem{PandePRL96}
+V. S. Pande, A. Yu Grosberg, C. Joerg, and T. Tanaka,
+Phys. Rev. Lett. {\bf 76}, 3987 (1996).
+
+\bibitem{LYPR52}
+C. N. Yang, and T. D. Lee, Phys. Rev. {\bf 97}, 404 (1952); 
+{\bf 87}, 410(1952)
+
+\bibitem{FisherBook}
+M. E. Fisher, {\it Lectures in Theoretical Physics} (University of Colorado
+Press, Boulder, 1965).
+
+\bibitem{LipowskiIJMPB05}
+I. Bena, M. Droz, and A. Lipowski, Int. J. Mod. Phys. B {\bf 19},
+4269 (2005).
+
+\bibitem{HansmannPRL00}
+N. A. Alves and U. H. E. Hansmann, Phys. Rev. Lett. {\bf 84}, 1836 (2000)
+
+\bibitem{HansmannPA01}
+N. A. Alves and U. H. E. Hansmann, Physica A {\bf 292}, 509 (2001)
+
+\bibitem{WangJCP03}
+J. Wang and W. Wang, J. Chem. Phys. {\bf 118}, 2952 (2003).
+
+\bibitem{ChenPA05}
+C. N. Chen and C. Y. Lin, Phsyica A {\bf 350}, 45 (2005).
 
 \end{thebibliography}
 
