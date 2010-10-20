@@ -98,7 +98,7 @@ method with partition function zeros.
 \subsection{Lattice models of polymers}
 
 The lattice polymer is modeled as a two-dimensional self-avoided chain
-on the square lattice. The length is defined as the number $N$ of the
+on the square lattice. The length $L$ is defined as the number of the
 monomers in the chain. For this kind of model of polymers, the position
 of the monomer $i$ is ${\mathbf r}_i=(x_i,y_i)$ relative to the presumed
 origin, where $x_i$ and $y_i$ are integers. The bonds of chain connect
@@ -209,7 +209,9 @@ quantities with other methods (such as Monte Carlo simulations).
 \section{Results and Discussions}
 
 The normalized DOS, $P(E)=N(E)/\sum_E N(E)$, for the polymers of various
-lengths ($N=12-31$) are given in \textcolor{red}{Fig.1(a)}. 
+lengths ($N=12-31$) are given in \textcolor{red}{Fig.1(a)}. The total
+numbers $N=\sum_E N(E)$ for the chains with various lengths are listed
+in the Table I.
 It is found that the DOS has a peak with a small number $K$ of
 contacts, and then decreases repaidly when $K$ increases. The DOS generally
 takes a concave shape in the region with large $K$. This feature ensures the
@@ -419,15 +421,32 @@ Sequences of the ionic-complementary EAK16-family peptides.
 
 \begin{table}
   \centering
-  \caption{}
-  \begin{tabular}[t]{c|c}
+  \begin{tabular}[t]{cc|cc|cc}
+    \toprule
+     L & N  & L & N & L & N \\
     \hline
-     Name & Sequence \\
-    \hline
-     EAK16-I  & AEAKAEAKAEAKAEAK \\
-     EAK16-II & AEAEAKAKAEAEAKAK \\
-     EAK16-IV & AEAEAEAEAKAKAKAK \\
-    \hline
+     12 & 15037 &
+     13 & 40617 &
+     14 & 110188 \\
+     15 & 296806 &
+     16 & 802075 &
+     17 & 2155667 \\
+     18 & 5808335 &
+     19 & 15582342 &
+     20 & 41889578 \\
+     21 & 112212146 &
+     22 & 301100754 &
+     23 & 805570061 \\
+     24 & 2158326727 &
+     25 & 5768299665 &
+     26 & 15435169364 \\
+     27 & 41214098278 &
+     28 & 110164686454 &
+     29 & 293922322781 \\
+     30 & 784924528667 &
+     31 & 2092744741919 &
+        & \\
+    \toprule
   \end{tabular}
 \end{table}
 
