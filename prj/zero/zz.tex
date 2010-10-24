@@ -227,54 +227,70 @@ the trend toward thermodynamic limit.
 The zeros of the partition functions of the polymers with various lengths are
 calculated with PLOY algorithm (using Scilab). Since the coefficients of the
 equation $Z(s)=0$ are all real, the roots generally form the conjugate pairs
-except the real roots. In these solutions of $\beta$, there are no positive real
-roots for all partition functions. This kind of observation indicates there are no
-phase transitions for the polymers with finite sizes. This is consistent with the
-physics of the polymer system. The complex zeros $\beta$ for some chains with
-representative lengths are shown in Fig.2. They are almost aligned in lines. The
-complex zero $\beta_S$ with the smallest image component (namely the zero
-closest to the real axis) is generally approaching toward the real axis following
-the increase of the chain length. When the length increases to the infinite (namely
-$L\rightarrow\infty$), this kind of zeros would reach the real axis to produce a
-phase transition. Physically, this transition would be the collapse transition of the
-polymer system. The line of $\beta_S(L)$ contains a lot of information about the
-phase transition. Presently, the line $\beta_S(L)$ is estimated with the calculated
-$\beta_S$ for some chains of finite size. The related complex zeros ($\beta_S$)
-for the polymers with various lengths are collected (as shown in Fig.3(a)). These
-points approach to the real axis gradually following the increase of the length. Based
-on the dicussion in Section ``Model and Method'', these zeros would have a scaling
-behavior when they are close to their limit. For their real and image components
-$\beta_S^R$ and $\beta_S^I$, the trends would have the forms,
+except the real roots. In these solutions of $\beta$, there are no positive
+real roots for all partition functions. This kind of observation indicates
+there are no phase transitions for the polymers with finite sizes. This is
+consistent with the physics of the polymer system. The complex zeros $\beta$
+for some chains with representative lengths are shown in Fig.2. They are
+almost aligned in lines. The complex zero $\beta_S$ with the smallest image
+component (namely the zero closest to the real axis) is generally approaching
+toward the real axis following the increase of the chain length. When the
+length increases to the infinite (namely $L\rightarrow\infty$), this kind of
+zeros would reach the real axis to produce a phase transition. Physically,
+this transition would be the collapse transition of the polymer system. The
+line of $\beta_S(L)$ contains a lot of information about the phase transition.
+Presently, the line $\beta_S(L)$ is estimated with the calculated $\beta_S$
+for some chains of finite size. The related complex zeros ($\beta_S$) for the
+polymers with various lengths are collected (as shown in Fig.3(a)). These
+points approach to the real axis gradually following the increase of the
+length. Based on the dicussion in Section ``Model and Method'', these zeros
+would have a scaling behavior when they are close to their limit. For their
+real and image components $\beta_S^R$ and $\beta_S^I$, the trends would have
+the forms,
 \begin{eqnarray}
 \beta_S^R - \beta_{\theta}  &\sim&  L^{-\phi} \, , \\
 \beta_S^I  &\sim&  L^{-\phi} \, ,
 \end{eqnarray}
 Here,
-$\beta_{\theta}$ defines the limit of the zero $\beta(L)$ in real axis, which is
-related to the collapse transition temperature. Therefore, the critical exponent
-$\phi$ could be determined easily through the linear fitting for the log-log plot
-of the relation between the image part $\beta_S^I$ of zeros and the chain length
-$L$ (as shown in Fig.3(b)). It is worth noting that the scaling would be valid when
-the length is large enough. To avoid the deviation of the chains with small sizes,
-the fitting procedure is carried out for the chains with their lengths larger than
-$20$. The corresponding exponent $\phi=xx \pm xx$. With this exponent, the
-collapse transition temperature $T_{\theta}$ could be determined through the
-linear fitting for the relation between the real part $\beta_S^R$ of zeros and
-the scaled length $L^{-\phi}$ (as shown in Fig.3(c)). The resultant 
-$\beta_{\theta}=xx \pm xx$ and the corresponding collapse transition
-temperature is $T_{\theta}=xxx \pm xx$.
+$\beta_{\theta}$ defines the limit of the zero $\beta(L)$ in real axis, which
+is related to the collapse transition temperature. Therefore, the critical
+exponent $\phi$ could be determined easily through the linear fitting for the
+log-log plot of the relation between the image part $\beta_S^I$ of zeros and
+the chain length $L$ (as shown in Fig.3(b)). It is worth noting that the
+scaling would be valid when the length is large enough. To avoid the deviation
+of the chains with small sizes, the fitting procedure is carried out for the
+chains with their lengths larger than $20$. The corresponding exponent
+$\phi=xx \pm xx$. With this exponent, the collapse transition temperature
+$T_{\theta}$ could be determined through the linear fitting for the relation
+between the real part $\beta_S^R$ of zeros and the scaled length $L^{-\phi}$
+(as shown in Fig.3(c)). The resultant $\beta_{\theta}=xx \pm xx$ and the
+corresponding collapse transition temperature is $T_{\theta}=xxx \pm xx$.
 
-The exponent $\alpha$ is another important quantity related to the transition. It
-could also be determined with the similar procedure to that for the exponent $\phi$.
-This exponent is related to the local density of zeros close to real axis, $\rho_S$.
-This kind of density is also a quantity depending on the length of the polymers. 
-The local density of zeros around real axis is calculated with the middle-point
-approximation. The fitting is carried out for the chains $N\ge 20$. The
-resultant $\alpha=xxx$. Clearly, this exponent is larger than zero. THis
-indicates that this transition is a second-order transition, which is
-consistent with the conclusions from previous stidues.
+The exponent $\alpha$ is another important quantity related to the transition.
+It could also be determined with the similar procedure to that for the
+exponent $\phi$. This exponent is related to the local density of zeros close
+to real axis, $\rho_S$. Practically, this density is estimated with a
+three-point approximation,
+\begin{equation}
+\rho_S=\frac{2}{|\beta_0-\beta_1|+|\beta_1-\beta_2|} \, ,
+\end{equation}
+in which $|x|$ gives the norm of the complex number $x$, and the factors
+$\beta_0$, $\beta_1$, and $\beta_2$ are indexed with increasing image parts of
+the $\beta$. Clearly, the factor $\rho_S$ here is an estimation for the desity
+of zeros around real axis based on the discrete zeros. When the length of the
+polymer increases approaches to infinity, this quantity would converge to
+the expect density related to the thermodynamic limit. Based on the analysis
+in the section ``Model and Method'', the density $\rho_S$ would also have a
+scaling behavior when the system is close to the thermodynamic limit. The
+exponent could be obtained by the fitting procedure similar to the above
+calculations. Practically, the fitting is carried out for the chains $N\ge
+20$. The resultant exponent $\alpha=xxx$. Clearly, this exponent is obviously
+larger than zero. This result indicates that this transition is a second-order
+phase transition. This is consistent with the conclusions obtained from other
+studies.
 
-Comparing with the previous studies, our transition temperature is rather
+Comparing with other previous studies, our analysis has some advantages.
+Firstly, the order of phase transition can be determined without ambiguity. transition temperature is rather
 similar to that with transfer matrix, and has a smaller error comparing with
 other results with Monte Carlo simulations. 
 
