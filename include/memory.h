@@ -7,6 +7,7 @@
 #ifndef _Memory_H_
 #define _Memory_H_
 
+#include "storage-state-name.h"
 #include <cstdlib>
 
 namespace std {
@@ -43,6 +44,12 @@ namespace std {
     delete[] ptr;
     ptr=NULL;
     return 1;
+  }
+
+  template <typename T>
+  inline void safe_release(T*& ptr, const unsigned int state) {
+    if(state==Allocated)  safe_delete_array(ptr);
+    else ptr=NULL;
   }
 
 }

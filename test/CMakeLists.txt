@@ -235,6 +235,9 @@ target_link_libraries (test-pdb-data.run blas)
 add_executable (test-lapack.run test-lapack.cxx)
 target_link_libraries (test-lapack.run lapack)
 
+add_executable (test-double-vector.run test-double-vector.cxx)
+target_link_libraries (test-double-vector.run blas)
+
 ########################
 #add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 #target_link_libraries (test-pdb-data-structure-op.run Base blas)
