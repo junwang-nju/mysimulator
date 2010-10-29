@@ -117,7 +117,9 @@ the polymer thus takes the form,
 \end{equation}
 in which $\Delta(D)=1$ when $D=1$, and zero otherwise, and the integer $K$
 is the number of the contacts between monomers and marks the energy level
-that the concerned conformation belongs to. Therefore, the partition
+that the concerned conformation belongs to. The quantity $\epsilon$ here
+represents the strength of the contact interaction, which is generally taken
+as the unit of the energy (namely $\epsilon=1$. Therefore, the partition
 function of the polymer would be written as a polynomial,
 \begin{equation}
 Z=\sum_{K=0}^{K_{\text{max}}} \Omega(K) s^K \, ,
@@ -209,7 +211,7 @@ quantities with other methods (such as Monte Carlo simulations).
 \section{Results and Discussions}
 
 The normalized DOS, $P(E)=N(E)/\sum_E N(E)$, for the polymers of various
-lengths ($L=12-31$) are given in \textcolor{red}{Fig.1(a)}. The total
+lengths ($L=12-31$) are given in Fig.1. The total
 numbers $N=\sum_E N(E)$ for the chains with various lengths are listed
 in the Table I. It is found that the DOS has a peak with a small number $K$ of
 contacts, and then decreases rapidly when the contact number $K$ increases.
@@ -289,19 +291,32 @@ larger than zero. This result indicates that this transition is a second-order
 phase transition. This is consistent with the conclusions obtained from other
 studies.
 
-Comparing with other previous studies, our analysis has some advantages.
-Firstly, the order of phase transition can be determined without ambiguity. transition temperature is rather
-similar to that with transfer matrix, and has a smaller error comparing with
-other results with Monte Carlo simulations. 
+Previously, the transition temperature of lattice polymers on square lattice
+was estimated as $1.31$\cite{JP82}, $1.55$\cite{BirshteinPolymer85} or
+$1.505$\cite{OYJCP08} with Monte Carlo simulations. Their maximal lengths of
+simulated polymers are $1.60$, $200$, and $300$. Similar to the calculations
+of the transition temperature, the critical exponent $\phi$ is also diverse in
+varius works, such as $0.6$\cite{BirshteinPolymer85} with Monte Carlo
+simulations, $0.48$\cite{SaleurJSP86} with transfer matrix, and
+$0.435$\cite{HeegerJP95} with growth method. Our result is in between
+these results. Clearly, our results have no numerical errors for the zeros
+related to the polymers with various lengths. It is reasonable that there are
+statistical errors in our results. More importantly, the image parts of zeros
+help us to determine the exponent more precisely since there are no shift
+parameters during fitting. Differently, the processing of the simlation
+results related to Monte Carlo simulations may have some artifacts in
+parameter fitting. Therefore, our results would probably match the
+case in thermodynamic limit. This also demonstrates the power of the method
+with partition function zeros.
 
 \section{Conclusion}
 
-The method partition function zeros provides an unique way to analyze various
+The method partition function zeros provides a unique way to analyze various
 aspects of the phase transition. In this work, the collpase transition of the
 homopolymer is systematically studied. Accompanied with the knowledge of the
 length scaling, the transition temperature, critical exponent, and the order
 of the transition at the thermodynamic limit are determined. Comparing with
-previous results, this method is efficient and precise with few statistical
+previous results, this method is efficient and precise with no statistical
 errors. This work demonstrates the power of the method with partition function
 zeros. This method could be further applied to other systems with more
 complexity.
@@ -432,6 +447,13 @@ J. Wang and W. Wang, J. Chem. Phys. {\bf 118}, 2952 (2003).
 
 \bibitem{ChenPA05}
 C. N. Chen and C. Y. Lin, Phsyica A {\bf 350}, 45 (2005).
+
+\bibitem{JP82}
+A. Baumgartner, J. Phys. {\bf 43}, 1407 (1982).
+
+\bibitem{BirshteinPolymer85}
+T. M. Birshtein, S. V. Buldyrev, and A. M. Elyashevitch, Polymer {\bf 26},
+1814 (1985).
 
 \end{thebibliography}
 
