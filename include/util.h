@@ -349,6 +349,77 @@ namespace std {
    */
   inline void updateParameter(int& p) {}
 
+  void copy(double& d, const double& rd) { d=rd; }
+  void copy(double& d, const float& rd) { d=rd; }
+  void copy(double& d, const int& rd) { d=rd; }
+  void copy(double& d, const unsigned int& rd) { d=rd; }
+  void copy(float& d, const double& rd) { d=rd; }
+  void copy(float& d, const float& rd) { d=rd; }
+  void copy(float& d, const int& rd) { d=rd; }
+  void copy(float& d, const unsigned int& rd) { d=rd; }
+  void copy(int& d, const int& rd) { d=rd; }
+  void copy(int& d, const unsigned int& rd) { d=rd; }
+  void copy(unsigned int& d, const unsigned int& rd) {d=rd; }
+
+  void scale(double& d, const double& sd) { d*=sd; }
+  void scale(double& d, const float& sd) { d*=sd; }
+  void scale(double& d, const int& sd) { d*=sd; }
+  void scale(double& d, const unsigned int& sd) { d*=sd; }
+  void scale(float& d, const double& sd) { d*=sd; }
+  void scale(float& d, const float& sd) { d*=sd; }
+  void scale(float& d, const int& sd) { d*=sd; }
+  void scale(float& d, const unsigned int& sd) { d*=sd; }
+  void scale(int& d, const int& sd) { d*=sd; }
+  void scale(int& d, const unsigned int& sd) { d*=sd; }
+  void scale(unsigned int& d, const unsigned int& sd) { d*=sd; }
+
+  void shift(double& d, const double& fd, const double& sd) { d+=fd*sd; }
+  void shift(double& d, const double& fd, const float& sd) { d+=fd*sd; }
+  void shift(double& d, const double& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const double& fd, const unsigned  int& sd){ d+=fd*sd; }
+  void shift(double& d, const float& fd, const double& sd) { d+=fd*sd; }
+  void shift(double& d, const float& fd, const float& sd) { d+=fd*sd; }
+  void shift(double& d, const float& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const float& fd, const unsigned int& sd) { d+=fd*sd; }
+  void shift(double& d, const int& fd, const double& sd) { d+=fd*sd; }
+  void shift(double& d, const int& fd, const float& sd) { d+=fd*sd; }
+  void shift(double& d, const int& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const int& fd, const unsigned int& sd) { d+=fd*sd; }
+  void shift(double& d, const unsigned int& fd, const double& sd) { d+=fd*sd; }
+  void shift(double& d, const unsigned int& fd, const float& sd) { d+=fd*sd; }
+  void shift(double& d, const unsigned int& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const unsigned int& fd, const unsigned int& sd) {
+    d+=fd*sd;
+  }
+  void shift(float& d, const double& fd, const double& sd) { d+=fd*sd; }
+  void shift(float& d, const double& fd, const float& sd) { d+=fd*sd; }
+  void shift(float& d, const double& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const double& fd, const unsigned  int& sd){ d+=fd*sd; }
+  void shift(float& d, const float& fd, const double& sd) { d+=fd*sd; }
+  void shift(float& d, const float& fd, const float& sd) { d+=fd*sd; }
+  void shift(float& d, const float& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const float& fd, const unsigned int& sd) { d+=fd*sd; }
+  void shift(float& d, const int& fd, const double& sd) { d+=fd*sd; }
+  void shift(float& d, const int& fd, const float& sd) { d+=fd*sd; }
+  void shift(float& d, const int& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const int& fd, const unsigned int& sd) { d+=fd*sd; }
+  void shift(float& d, const unsigned int& fd, const double& sd) { d+=fd*sd; }
+  void shift(float& d, const unsigned int& fd, const float& sd) { d+=fd*sd; }
+  void shift(float& d, const unsigned int& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const unsigned int& fd, const unsigned int& sd) {
+    d+=fd*sd;
+  }
+
+  void shift(int& d, const int& fd, const int& sd) { d+=fd*sd; }
+  void shift(int& d, const int& fd, const unsigned int& sd) { d+=fd*sd; }
+  void shift(int& d, const unsigned int& fd, const int& sd) { d+=fd*sd; }
+  void shift(int& d, const unsigned int& fd, const unsigned int& sd) {
+    d+=fd*sd;
+  }
+  void shift(unsigned int& d, const unsigned int& fd, const unsigned int& sd) {
+    d+=fd*sd;
+  }
+
 }
 
 #endif
