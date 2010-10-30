@@ -252,9 +252,9 @@ namespace std {
    * @param [in] fac,src The double values related to this operation.
    * @return nothing
    */
-  void shift(double& dest, const double fac, const double src) {
-    dest+=fac*src;
-  }
+//  void shift(double& dest, const double fac, const double src) {
+//    dest+=fac*src;
+//  }
 
   /**
    * @brief shift unsigned int variable
@@ -266,10 +266,10 @@ namespace std {
    * @param [in] fac,src The unsigned int values related to this operation.
    * @return nothing
    */
-  void shift(unsigned int& dest, const unsigned int fac,
-             const unsigned int src) {
-    dest+=fac*src;
-  }
+//  void shift(unsigned int& dest, const unsigned int fac,
+//             const unsigned int src) {
+//    dest+=fac*src;
+//  }
 
   /**
    * @brief shift int variable
@@ -281,7 +281,7 @@ namespace std {
    * @param [in] fac,src The int values related to this operation.
    * @return nothing
    */
-  void shift(int& dest, const int fac, const int src) { dest+=fac*src; }
+//  void shift(int& dest, const int fac, const int src) { dest+=fac*src; }
 
   /**
    * @brief dot product between two double values
@@ -418,6 +418,15 @@ namespace std {
   }
   void shift(unsigned int& d, const unsigned int& fd, const unsigned int& sd) {
     d+=fd*sd;
+  }
+
+  void exchange(double& da, double& db) { double d=da; da=db; db=d; }
+  void exchange(double& da, float& db) { double d=da; da=db; db=d; }
+  void exchange(float& da, double& db) { double d=db; db=da; da=d; }
+  void exchange(float& da, float& db) { float d=da; da=db; db=d; }
+  void exchange(int& da, int& db) { int d=da; da=db; db=d; }
+  void exchange(unsigned int& da, unsigned int& db) {
+    unsigned int d=da; da=db; db=d;
   }
 
 }

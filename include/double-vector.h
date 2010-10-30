@@ -285,8 +285,8 @@ namespace std {
 
   void shift(Vector<float>& V, const float& d) {
     assert(IsAvailable(V));
-    daxpy_(reinterpret_cast<long*>(&(V.size)),
-           const_cast<float*>(&d),const_cast<float*>(&dOne),
+    saxpy_(reinterpret_cast<long*>(&(V.size)),
+           const_cast<float*>(&d),const_cast<float*>(&fOne),
            const_cast<long*>(&lZero),V.data,const_cast<long*>(&lOne));
   }
 
@@ -311,6 +311,220 @@ namespace std {
     shift(V,dd);
   }
 
+  void scaleshift(Vector<double>& V, const double& d, const double& sd,
+                  const Vector<double>& fV, const Vector<double>& sV) {
+    assert(IsAvailable(V));
+    assert(IsAvailable(fV));
+    assert(IsAvailable(sV));
+    long n=(V.size<fV.size?V.size:fV.size);
+    n=(static_cast<unsigned int>(n)<sV.size?n:sV.size);
+    static char flag[]="L";
+    dsbmv_(flag,&n,const_cast<long*>(&lZero),const_cast<double*>(&sd),
+           const_cast<double*>(fV.data),const_cast<long*>(&lOne),
+           const_cast<double*>(sV.data),const_cast<long*>(&lOne),
+           const_cast<double*>(&d),V.data,const_cast<long*>(&lOne));
+  }
+
+  void scaleshift(Vector<float>& V, const float& d, const float& sd,
+                  const Vector<float>& fV, const Vector<float>& sV) {
+    assert(IsAvailable(V));
+    assert(IsAvailable(fV));
+    assert(IsAvailable(sV));
+    long n=(V.size<fV.size?V.size:fV.size);
+    n=(static_cast<unsigned int>(n)<sV.size?n:sV.size);
+    static char flag[]="L";
+    ssbmv_(flag,&n,const_cast<long*>(&lZero),const_cast<float*>(&sd),
+           const_cast<float*>(fV.data),const_cast<long*>(&lOne),
+           const_cast<float*>(sV.data),const_cast<long*>(&lOne),
+           const_cast<float*>(&d),V.data,const_cast<long*>(&lOne));
+  }
+
+  template <typename T, typename dT, typename sT, typename fT, typename svT>
+  void scaleshift(Vector<T>& V, const dT& d, const sT& sd,
+                  const Vector<fT>& fV, const Vector<svT>& sV) {
+    assert(IsAvailable(V));
+    assert(IsAvailable(fV));
+    assert(IsAvailable(sV));
+    unsigned int n=(V.size<fV.size?V.size:fV.size);
+    n=(n<sV.size?n:sV.size);
+    T* p=V.data;
+    fT* fp=const_cast<fT*>(fV.data);
+    svT* svp=const_cast<svT*>(sV.data);
+    for(unsigned int i=0;i<n;++i,++p,++fp,++svp) {
+      scale(*p,d);
+      shift(*p,sd*(*fp),*svp);
+    }
+  }
+
+  template <typename dT, typename sT>
+  void scaleshift(Vector<double>& V, const dT& d, const sT& sd,
+                  const Vector<double>& fV, const Vector<double>& sV) {
+    double dd,dsd;
+    copy(dd,d);
+    copy(dsd,sd);
+    scaleshift(V,dd,dsd,fV,sV);
+  }
+
+  template <typename dT, typename sT>
+  void scaleshift(Vector<float>& V, const dT& d, const sT& sd,
+                  const Vector<float>& fV, const Vector<float>& sV) {
+    float dd,dsd;
+    copy(dd,d);
+    copy(dsd,sd);
+    scaleshift(V,dd,dsd,fV,sV);
+  }
+
+  template <typename T,typename dT,typename fT,typename svT>
+  void scaleshift(Vector<T>& V, const dT& d, const Vector<fT>& fV,
+                  const Vector<svT>& sV) {
+    scaleshift(V,d,iOne,fV,sV);
+  }
+
+  template <typename T, typename sT, typename fT, typename svT>
+  void shift(Vector<T>& V, const sT& sd, const Vector<fT>& fV,
+             const Vector<svT>& sV) {
+    scaleshift(V,iOne,sd,fV,sV);
+  }
+
+  template <typename T, typename fT, typename svT>
+  void shift(Vector<T>& V, const Vector<fT>& fV, const Vector<svT>& sV) {
+    scaleshift(V,iOne,iOne,fV,sV);
+  }
+
+  void exchange(Vector<double>& Va, Vector<double>& Vb) {
+    assert(IsAvailable(Va));
+    assert(IsAvailable(Vb));
+    long n=(Va.size<Vb.size?Va.size:Vb.size);
+    dswap_(&n,Va.data,const_cast<long*>(&lOne),
+              Vb.data,const_cast<long*>(&lOne));
+  }
+
+  void exchange(Vector<float>& Va, Vector<float>& Vb) {
+    assert(IsAvailable(Va));
+    assert(IsAvailable(Vb));
+    long n=(Va.size<Vb.size?Va.size:Vb.size);
+    sswap_(&n,Va.data,const_cast<long*>(&lOne),
+              Vb.data,const_cast<long*>(&lOne));
+  }
+
+  void exchange(Vector<int>& Va, Vector<int>& Vb) {
+    assert(IsAvailable(Va));
+    assert(IsAvailable(Vb));
+    long n=(Va.size<Vb.size?Va.size:Vb.size);
+    sswap_(&n,reinterpret_cast<float*>(Va.data),const_cast<long*>(&lOne),
+              reinterpret_cast<float*>(Vb.data),const_cast<long*>(&lOne));
+  }
+
+  void exchange(Vector<unsigned int>& Va, Vector<unsigned int>& Vb) {
+    assert(IsAvailable(Va));
+    assert(IsAvailable(Vb));
+    long n=(Va.size<Vb.size?Va.size:Vb.size);
+    sswap_(&n,reinterpret_cast<float*>(Va.data),const_cast<long*>(&lOne),
+              reinterpret_cast<float*>(Vb.data),const_cast<long*>(&lOne));
+  }
+
+  template <typename TA, typename TB>
+  void exchange(Vector<TA>& Va, Vector<TB>& Vb) {
+    assert(IsAvailable(Va));
+    assert(IsAvailable(Vb));
+    unsigned int n=(Va.size<Vb.size?Va.size:Vb.size);
+    TA* pa=Va.data;
+    TB* pb=Vb.data;
+    for(unsigned int i=0;i<n;++i,++pa,++pb) exchange(*pa,*pb);
+  }
+
+  template <typename T>
+  void swap(Vector<T>& Va, Vector<T>& Vb) {
+    swap(Va.data,Vb.data);
+    swap(Va.size,Vb.size);
+    swap(Va.state,Vb.state);
+  }
+
+  double dot(const Vector<double>& Va, const Vector<double>& Vb) {
+    assert(IsAvailable(Va));
+    assert(IsAvailable(Vb));
+    long n=(Va.size<Vb.size?Va.size:Vb.size);
+    return ddot_(&n,const_cast<double*>(Va.data),const_cast<long*>(&lOne),
+                    const_cast<double*>(Vb.data),const_cast<long*>(&lOne));
+  }
+
+  float dot(const Vector<float>& Va, const Vector<float>& Vb) {
+    assert(IsAvailable(Va));
+    assert(IsAvailable(Vb));
+    long n=(Va.size<Vb.size?Va.size:Vb.size);
+    return sdot_(&n,const_cast<float*>(Va.data),const_cast<long*>(&lOne),
+                    const_cast<float*>(Vb.data),const_cast<long*>(&lOne));
+  }
+
+  template <typename T, typename TA, typename TB>
+  T dotrun(const Vector<TA>& Va, const Vector<TB>& Vb) {
+    assert(IsAvailable(Va));
+    assert(IsAvailable(Vb));
+    unsigned int n=(Va.size<Vb.size?Va.size:Vb.size);
+    T sum=0.;
+    TA* ap=Va.data;
+    TB* bp=Vb.data;
+    for(unsigned int i=0;i<n;++i,++ap,++bp)  shift(sum,*ap,*bp);
+    return sum;
+  }
+  
+  template <typename T>
+  double dot(const Vector<double>& Va, const Vector<T>& Vb) {
+    return dotrun<double>(Va,Vb);
+  }
+  template <typename T>
+  double dot(const Vector<T>& Va, const Vector<double>& Vb) {
+    return dotrun<double>(Va,Vb);
+  }
+
+  float dot(const Vector<float>& Va, const Vector<int>& Vb) {
+    return dotrun<float>(Va,Vb);
+  }
+  float dot(const Vector<int>& Va, const Vector<float>& Vb) {
+    return dotrun<float>(Va,Vb);
+  }
+
+  float dot(const Vector<float>& Va, const Vector<unsigned int>& Vb) {
+    return dotrun<float>(Va,Vb);
+  }
+  float dot(const Vector<unsigned int>& Va, const Vector<float>& Vb) {
+    return dotrun<float>(Va,Vb);
+  }
+
+  int dot(const Vector<int>& Va, const Vector<int>& Vb) {
+    return dotrun<int>(Va,Vb);
+  }
+  int dot(const Vector<int>& Va, const Vector<unsigned int>& Vb) {
+    return dotrun<int>(Va,Vb);
+  }
+  int dot(const Vector<unsigned int>& Va, const Vector<int>& Vb) {
+    return dotrun<int>(Va,Vb);
+  }
+  unsigned int dot(const Vector<unsigned int>& Va,
+                   const Vector<unsigned int>& Vb) {
+    return dotrun<unsigned int>(Va,Vb);
+  }
+
+  template <typename T>
+  T normSQ(const Vector<T>& V) { return dot(V,V); }
+
+  double norm(const Vector<double>& V) {
+    assert(IsAvailable(V));
+    return dnrm2_(reinterpret_cast<long*>(const_cast<unsigned int*>(&(V.size))),
+                  const_cast<double*>(V.data),const_cast<long*>(&lOne));
+  }
+
+  float norm(const Vector<float>& V) {
+    assert(IsAvailable(V));
+    return snrm2_(reinterpret_cast<long*>(const_cast<unsigned int*>(&(V.size))),
+                  const_cast<float*>(V.data),const_cast<long*>(&lOne));
+  }
+
+  double asum(const Vector<double>& V) {
+    assert(IsAvailable(V));
+    return dasum_(reinterpret_cast<long*>(const_cast<unsigned int*>(&(V.size))),
+                  const_cast<double*>(V.data),const_cast<long*>(&lOne));
+  }
 }
 
 #endif

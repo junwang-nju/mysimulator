@@ -50,6 +50,8 @@ namespace std {
    */
   static const double dOne=1.;
 
+  static const float fOne=1.;
+
   /**
    * @brief \c unsigned \c int type zero
    */
