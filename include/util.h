@@ -13,6 +13,7 @@
 
 #include <cstdlib>
 #include <cctype>
+#include <cmath>
 
 namespace std {
 
@@ -428,6 +429,11 @@ namespace std {
   void exchange(unsigned int& da, unsigned int& db) {
     unsigned int d=da; da=db; db=d;
   }
+
+  double absval(const double& d) { return fabs(d); }
+  float absval(const float& d) { return fabs(d); }
+  int absval(const int& d) { return abs(d); }
+  unsigned int absval(const unsigned int& d) { return d; }
 
 }
 

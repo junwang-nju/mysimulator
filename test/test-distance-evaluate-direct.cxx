@@ -19,8 +19,8 @@ int main() {
   Vector<double> va,vb;
   allocate(va,7);
   allocate(vb,19);
-  assign(va,1.);    va[2]=-15.;   va[3]=87.9;
-  assign(vb,57.63); vb[3]=123.45;
+  copy(va,1.);    va[2]=-15.;   va[3]=87.9;
+  copy(vb,57.63); vb[3]=123.45;
   FreeSpace FS;
   Evaluate(DED,va,vb,0,1,FS);
   cout<<DED.displacementvec<<endl;

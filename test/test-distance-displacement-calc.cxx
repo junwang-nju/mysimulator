@@ -10,8 +10,8 @@ int main() {
   allocate(va,5);
   allocate(vb,5);
   allocate(v,5);
-  assign(va,3);
-  assign(vb,5); vb[2]=9;
+  copy(va,3);
+  copy(vb,5); vb[2]=9;
   FreeSpace  FS;
 
   cout<<"Test -- distance and displacement for array"<<endl;

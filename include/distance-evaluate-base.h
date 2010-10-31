@@ -20,6 +20,7 @@
 #include "storage-state-name.h"
 #include "error-proc.h"
 #include "vector.h"
+#include "vector-impl.h"
 
 namespace std {
 

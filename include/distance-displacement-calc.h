@@ -17,6 +17,7 @@
 #define _Distance_Displacement_Calculation_H_
 
 #include "vector.h"
+#include "vector-impl.h"
 
 namespace std {
 

@@ -55,7 +55,7 @@ namespace std {
    */
   void DisplacementFunc(const Vector<double>& va, const Vector<double>& vb,
                         Vector<double>& Dsp) {
-    assign(Dsp,va);
+    copy(Dsp,va);
     shift(Dsp,-1.,vb);
   }
 
