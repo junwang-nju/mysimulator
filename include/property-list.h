@@ -16,10 +16,14 @@ namespace std {
     PropertyList() : ParentType(), structure(), nunit(0) {}
     PropertyList(const Type& L) { myError("Cannot create from PropertyList"); }
     Type& operator=(const Type& L) {
-      MyError("Cannot copy PropertyList");
+      myError("Cannot copy PropertyList");
       return *this;
     }
     ~PropertyList() { release(*this); }
+    Vector<T>& operator[](const unsigned int I) { return structure[I]; }
+    const Vector<T>& operator[](const unsigned int I) const {
+      return structure[I];
+    }
   };
 
   template <typename T>
@@ -46,6 +50,7 @@ namespace std {
   template <typename T>
   void allocate(PropertyList<T>& L,
                 const unsigned int* vsize, const unsigned int size) {
+    assert(IsAvailable(vsize));
     release(L);
     L.nunit=size;
     unsigned int dsize=0;
@@ -54,6 +59,38 @@ namespace std {
     L.structure=new Vector<T>[size];
     T* dPtr=L.data;
     for(unsigned int i=0;i<size;dPtr+=vsize[i],++i)  refer(L[i],dPtr,vsize[i]);
+  }
+
+  template <typename T>
+  void allocate(PropertyList<T>& L,
+                const Vector<unsigned int>& vsize) {
+    allocate(L,vsize.data,vsize.size);
+  }
+
+  template <typename T>
+  void refer(PropertyList<T>& L, const PropertyList<T>& rL) {
+    assert(IsAvailable(rL));
+    release(L);
+    L.structure=rL.structure;
+    L.nunit=rL.nunit;
+    refer(static_cast<Vector<T>&>(L),static_cast<const Vector<T>&>(rL));
+  }
+
+  template <typename T>
+  void swap(PropertyList<T>& LA, PropertyList<T>& LB) {
+    swap(LA.structure,LB.structure);
+    swap(LA.nunit,LB.nunit);
+    swap(static_cast<Vector<T>&>(LA),static_cast<Vector<T>&>(LB));
+  }
+
+  template <typename T>
+  ostream& operator<<(ostream& os, const PropertyList<T>& L) {
+    assert(IsAvailable(L));
+    cout<<L.nunit<<endl;
+    cout<<"====================="<<endl;
+    os<<L[0];
+    for(unsigned int k=0;k<L.nunit;++k) os<<endl<<L[k];
+    return os;
   }
 
 }

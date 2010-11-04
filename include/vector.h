@@ -39,7 +39,7 @@ namespace std {
   void allocate(Vector<T>& V, const unsigned int n) {
     assert(n>0);
     release(V);
-    V.data=new double[n];
+    V.data=new T[n];
     V.size=n;
     V.state=Allocated;
   }
@@ -90,14 +90,15 @@ namespace std {
     assert(IsAvailable(V));
     assert(IsAvailable(cV));
     long n=(V.size<cV.size?V.size:cV.size);
-    dcopy_(&n,V.data,const_cast<long*>(&lOne),
-              const_cast<double*>(cV.data),const_cast<long*>(&lOne));
+    dcopy_(&n,const_cast<double*>(cV.data),const_cast<long*>(&lOne),
+           V.data,const_cast<long*>(&lOne));
   }
 
   void copy(Vector<double>& V, const double& d) {
     assert(IsAvailable(V));
-    dcopy_(reinterpret_cast<long*>(&(V.size)),V.data,const_cast<long*>(&lOne),
-           const_cast<double*>(&d),const_cast<long*>(&lOne));
+    dcopy_(reinterpret_cast<long*>(&(V.size)),
+           const_cast<double*>(&d),const_cast<long*>(&lZero),
+           V.data,const_cast<long*>(&lOne));
   }
 
   template <typename T>
@@ -111,14 +112,15 @@ namespace std {
     assert(IsAvailable(V));
     assert(IsAvailable(cV));
     long n=(V.size<cV.size?V.size:cV.size);
-    scopy_(&n,V.data,const_cast<long*>(&lOne),
-              const_cast<float*>(cV.data),const_cast<long*>(&lOne));
+    scopy_(&n,const_cast<float*>(cV.data),const_cast<long*>(&lOne),
+           V.data,const_cast<long*>(&lOne));
   }
 
   void copy(Vector<float>& V, const float& d) {
     assert(IsAvailable(V));
-    scopy_(reinterpret_cast<long*>(&(V.size)),V.data,const_cast<long*>(&lOne),
-           const_cast<float*>(&d),const_cast<long*>(&lOne));
+    scopy_(reinterpret_cast<long*>(&(V.size)),
+           const_cast<float*>(&d),const_cast<long*>(&lZero),
+           V.data,const_cast<long*>(&lOne));
   }
 
   template <typename T>
@@ -132,34 +134,42 @@ namespace std {
     assert(IsAvailable(V));
     assert(IsAvailable(cV));
     long n=(V.size<cV.size?V.size:cV.size);
-    scopy_(&n,reinterpret_cast<float*>(V.data),const_cast<long*>(&lOne),
-              reinterpret_cast<float*>(const_cast<int*>(cV.data)),
-              const_cast<long*>(&lOne));
+    scopy_(&n,reinterpret_cast<float*>(const_cast<int*>(cV.data)),
+           const_cast<long*>(&lOne),
+           reinterpret_cast<float*>(V.data),const_cast<long*>(&lOne));
   }
 
   void copy(Vector<int>& V, const Vector<unsigned int>& cV) {
     assert(IsAvailable(V));
     assert(IsAvailable(cV));
     long n=(V.size<cV.size?V.size:cV.size);
-    scopy_(&n,reinterpret_cast<float*>(V.data),const_cast<long*>(&lOne),
-              reinterpret_cast<float*>(const_cast<unsigned int*>(cV.data)),
-              const_cast<long*>(&lOne));
+    scopy_(&n,reinterpret_cast<float*>(const_cast<unsigned int*>(cV.data)),
+           const_cast<long*>(&lOne),
+           reinterpret_cast<float*>(V.data),const_cast<long*>(&lOne));
   }
 
   void copy(Vector<int>& V, const int& d) {
     assert(IsAvailable(V));
     scopy_(reinterpret_cast<long*>(&V.size),
-           reinterpret_cast<float*>(V.data),const_cast<long*>(&lOne),
            reinterpret_cast<float*>(const_cast<int*>(&d)),
-           const_cast<long*>(&lOne));
+           const_cast<long*>(&lZero),
+           reinterpret_cast<float*>(V.data),const_cast<long*>(&lOne));
+  }
+
+  void copy(Vector<unsigned int>& V, const unsigned int& d) {
+    assert(IsAvailable(V));
+    scopy_(reinterpret_cast<long*>(&V.size),
+           reinterpret_cast<float*>(const_cast<unsigned int*>(&d)),
+           const_cast<long*>(&lZero),
+           reinterpret_cast<float*>(V.data),const_cast<long*>(&lOne));
   }
 
   void copy(Vector<int>& V, const unsigned int& d) {
-    assert(IsAvailable(V));
-    scopy_(reinterpret_cast<long*>(&V.size),
-           reinterpret_cast<float*>(V.data),const_cast<long*>(&lOne),
-           reinterpret_cast<float*>(const_cast<unsigned int*>(&d)),
-           const_cast<long*>(&lOne));
+    copy(V,static_cast<int>(d));
+  }
+
+  void copy(Vector<unsigned int>& V, const int& d) {
+    copy(V,static_cast<unsigned int>(d));
   }
 
   void scale(Vector<double>& V, const double& d) {

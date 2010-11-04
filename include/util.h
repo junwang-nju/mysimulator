@@ -361,6 +361,7 @@ namespace std {
   void copy(int& d, const int& rd) { d=rd; }
   void copy(int& d, const unsigned int& rd) { d=rd; }
   void copy(unsigned int& d, const unsigned int& rd) {d=rd; }
+  void copy(unsigned int& d, const int& rd) { d=rd; }
 
   void scale(double& d, const double& sd) { d*=sd; }
   void scale(double& d, const float& sd) { d*=sd; }

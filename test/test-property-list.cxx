@@ -8,16 +8,24 @@ int main() {
   cout<<IsAvailable(dPL)<<endl;
   Vector<unsigned int> sz;
   allocate(sz,5);
-  assign(sz,3);
+  cout<<"======"<<endl;
+  copy(sz,3);
+  cout<<sz<<endl;
   allocate(dPL,sz(),sz.size);
   cout<<IsAvailable(dPL)<<endl;
-  assign(dPL.data,2.3,dPL.size);
+  //double d;
+  //d=2.3;
+  //dcopy_(reinterpret_cast<long*>(&(dPL.size)),dPL.data,
+  //       const_cast<long*>(&lOne),
+  //       const_cast<double*>(&d),const_cast<long*>(&lZero));
+  copy(static_cast<Vector<double>&>(dPL),2.3);
+  //copy(dPL.data,2.3,dPL.size);
   cout<<dPL<<endl;
   PropertyList<double> dPL2;
   allocate(sz,4);
-  assign(sz,5);
+  copy(sz,5);
   allocate(dPL2,sz(),sz.size);
-  assign(dPL2,dPL);
+  copy(dPL2,dPL);
   cout<<dPL2<<endl;
   PropertyList<double> dPL3;
   refer(dPL3,dPL2);
