@@ -2,53 +2,52 @@
 #ifndef _Matrix_Rectangle_Allocator_H_
 #define _Matrix_Rectangle_Allocator_H_
 
-#include "matrix.h"
+#include "matrix-name.h"
 
 namespace std {
 
   template <typename T>
-  T& GetData4C(T** structure, const unsigned int I, const unsigned int J,T&) {
-    return structure[I][J];
-  }
-
-  template <typename T>
-  T& GetData4F(T** structure, const unsigned int I, const unsigned int J,T&) {
-    return structure[J][I];
-  }
+  struct Matrix;
 
   enum MatrixRectanglePropertyName {
-    MatrixRectangleNumberProperty=MatrixCommonNumberProperty
+    MatrixRectangleNumberProperty=MatrixCommonNumberProperty;
   };
 
   template <typename T>
-  void allocateRectangleMatrix(
-      Matrix<T>& M, const unsigned int nRow, const unsigned int nCol,
-                    const unsigned int DataOrder,
-                    const unsigned int TransposeForm) {
-    assert(DataOrder!=DiagonalOrder);
-    M.property=new unsigned int[MatrixRectangleNumberProperty];
+  T& GetData4C(Vector<T>* s, const int I, const int J, T&) { return s[I][J]; }
+
+  template <typename T>
+  T& GetData4F(Vector<T>* s, const int I, const int J, T&) { return s[J][I]; }
+
+  template <typename T>
+  void allocateRectangleMatrix(Matrix<T>& M,
+                               const unsigned int nRow,
+                               const unsigned int nCol,
+                               const unsigned int DOrder,
+                               const unsigned int TForm) {
+    assert(DOrder!=DiagonalOrder);
+    allocate(M.property,MatrixRectangleNumberProperty);
     M.property[MatrixType]=RectangleMatrix;
     M.property[MatrixNumberRow]=nRow;
     M.property[MatrixNumberColumn]=nCol;
     M.property[MatrixNumberElement]=nRow*nCol;
-    M.property[MatrixDataOrder]=DataOrder;
-    M.property[MatrixTransposeForm]=TransposeForm;
-    SetMatrixActualOrder(M.property);
-    allocate(static_cast<Vector<T>&>(M),M.property[MatrixNumberElement]);
-    T* PtrData=M.data;
+    M.property[MatrixDataOrder]=DOrder;
+    M.property[MatrixTransposeForm]=TForm;
+    M.SetActualOrder();
+    Vector<unsigned int> sz;
     if(M.property[MatrixActualOrder]==COrder) {
-      M.structure=new T*[nRow];
-      for(unsigned int i=0;i<nRow;++i,PtrData+=nCol)  M.structure[i]=PtrData;
+      allocate(sz,nRow);
+      copy(sz,nCol);
       M.GetFunc=GetData4C<T>;
     } else if(M.property[MatrixActualOrder]==FortranOrder) {
-      M.structure=new T*[nCol];
-      for(unsigned int i=0;i<nCol;++i,PtrData+=nRow)  M.structure[i]=PtrData;
+      allocate(sz,nCol);
+      copy(sz,nRow);
       M.GetFunc=GetData4F<T>;
-    } else myError("Unknown or Unimplemented Data Order of Matrix");
-    M.PtrOtherElement=NULL;
+    } else myError("Unknown Data Order");
+    allocate(static_cast<PropertyList<T>&>(M),sz);
+    M.ptrOther=NULL;
   }
 
 }
 
 #endif
-
