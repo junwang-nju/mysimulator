@@ -17,10 +17,8 @@ namespace std {
 
   template <typename T>
   void allocateRectangleMatrix(Matrix<T>& M,
-                               const unsigned int nRow,
-                               const unsigned int nCol,
-                               const unsigned int DOrder,
-                               const unsigned int TForm) {
+                               const int nRow, const int nCol,
+                               const int DOrder, const int TForm) {
     assert(DOrder!=DiagonalOrder);
     allocate(M.property,MatrixRectangleNumberProperty);
     M.property[MatrixType]=RectangleMatrix;

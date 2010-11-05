@@ -9,7 +9,7 @@ namespace std {
   template <typename T>
   struct Matrix;
 
-  template <typename T, unsigned int SFlag, unsigned DFlag>
+  template <typename T, int SFlag, int DFlag>
   T& GetData4CU(Vector<T>* s, const int I, const int J, T& OE) {
     if((DFlag==NullDiagonal)&&(I==J)) return OE;
     int rI=I, rJ=J;
@@ -17,7 +17,7 @@ namespace std {
     return s[rI][rJ-rI-(DFlag==NullDiagonal?1:0)];
   }
 
-  template <typename T, unsigned int SFlag, unsigned DFlag>
+  template <typename T, int SFlag, int DFlag>
   T& GetData4CL(Vector<T>* s, const int I, const int J, T& OE) {
     if((DFlag==NullDiagonal)&&(I==J)) return OE;
     int rI=I, rJ=J;
@@ -25,7 +25,7 @@ namespace std {
     return s[rI-(DFlag==NullDiagonal?1:0)][rJ];
   }
 
-  template <typename T, unsigned int SFlag, unsigned DFlag>
+  template <typename T, int SFlag, int DFlag>
   T& GetData4FU(Vector<T>* s, const int I, const int J, T& OE) {
     if((DFlag==NullDiagonal)&&(I==J)) return OE;
     int rI=I, rJ=J;
@@ -33,7 +33,7 @@ namespace std {
     return s[rJ-(DFlag==NullDiagonal?1:0)][rI];
   }
 
-  template <typename T, unsigned int SFlag, unsigned DFlag>
+  template <typename T, int SFlag, int DFlag>
   T& GetData4FL(Vector<T>* s, const int I, const int J, T& OE) {
     if((DFlag==NullDiagonal)&&(I==J)) return OE;
     int rI=I, rJ=J;
@@ -41,7 +41,7 @@ namespace std {
     return s[rJ][rI-rJ-(DFlag==NullDiagonal?1:0)];
   }
 
-  template <typename T, unsigned int SFlag, unsigned DFlag>
+  template <typename T, int SFlag, int DFlag>
   T& GetData4DU(Vector<T>* s, const int I, const int J, T& OE) {
     if((DFlag==NullDiagonal)&&(I==J)) return OE;
     int rI=I, rJ=J;
@@ -49,7 +49,7 @@ namespace std {
     return s[rJ-rI-(DFlag==NullDiagonal?1:0)][rI];
   }
 
-  template <typename T, unsigned int SFlag, unsigned DFlag>
+  template <typename T, int SFlag, int DFlag>
   T& GetData4DL(Vector<T>* s, const int I, const int J, T& OE) {
     if((DFlag==NullDiagonal)&&(I==J)) return OE;
     int rI=I, rJ=J;
@@ -59,10 +59,8 @@ namespace std {
 
   template <typename T>
   void allocateTriangleMatrix(Matrix<T>& M,
-                              const unsigned int Dim,
-                              const unsigned int DOrder,
-                              const unsigned int TForm,
-                              const unsigned int TPart,
+                              const int Dim, const int DOrder,
+                              const int TForm, const int TPart,
                               const bool SFlag, const bool DFlag) {
     allocate(M.property,MatrixTriangleNumberProperty);
     M.property[MatrixType]=TriangleMatrix;
@@ -161,12 +159,12 @@ namespace std {
             (GetData4DL<T,ASymmetryMatrix,NullDiagonal>)));
       } else myError("Unknown Triangle Part");
     } else myError("Unknown Data Order");
-    unsigned int rDim=Dim-(DFlag?0:1);
+    int rDim=Dim-(DFlag?0:1);
     M.property[MatrixActualDimension]=rDim;
     if((M.property[MatrixActualDataPattern]==COrderUpperType)||
        (M.property[MatrixActualDataPattern]==DiagonalType)) {
       M.property[MatrixLineSizeFirst]=M.property[MatrixActualDimension];
-      M.property[MatrixLineSizeShift]=static_cast<unsigned int>(-1);
+      M.property[MatrixLineSizeShift]=-1;
     } else if(M.property[MatrixActualDataPattern]==FortranOrderUpperType) {
       M.property[MatrixLineSizeFirst]=1;
       M.property[MatrixLineSizeShift]=1;
@@ -175,7 +173,7 @@ namespace std {
     Vector<unsigned int> sz;
     allocate(sz,rDim);
     sz[0]=M.property[MatrixLineSizeFirst];
-    for(unsigned int i=1;i<rDim;++i)
+    for(int i=1;i<rDim;++i)
       sz[i]=sz[i-1]+M.property[MatrixLineSizeShift];
     allocate(static_cast<PropertyList<T>&>(M),sz);
     M.ptrOther=(SFlag&&DFlag?NULL:new T);

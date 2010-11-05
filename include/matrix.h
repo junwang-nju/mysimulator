@@ -14,7 +14,7 @@ namespace std {
     typedef PropertyList<T> ParentType;
     typedef T& (*GetFuncType)(Vector<T>*,const int,const int,T&);
     
-    Vector<unsigned int> property;
+    Vector<int> property;
     T* ptrOther;
     GetFuncType GetFunc;
     
@@ -51,6 +51,17 @@ namespace std {
 
   template <typename T>
   bool IsAvailable(const Matrix<T>& M) { return IsAvailable(M.property); }
+
+  template <typename T>
+  bool IsPropertySame(const Matrix<T>& MA, const Matrix<T>& MB) {
+    assert(IsAvailable(MA));
+    assert(IsAvailable(MB));
+    unsigned int n=MA.property.size;
+    if(n!=MB.property.size) return false;
+    for(unsigned int i=0;i<n;++i)
+      if(MA.property[i]!=MB.property[i])  return false;
+    return true;
+  }
   
   template <typename T>
   void release(Matrix<T>& M) {
@@ -83,13 +94,19 @@ namespace std {
   template <typename T>
   ostream& operator<<(ostream& os, const Matrix<T>& M) {
     os<<M(0,0);
-    for(unsigned int j=1;j<M.property[MatrixNumberColumn];++j) os<<"\t"<<M(0,j);
-    for(unsigned int i=1;i<M.property[MatrixNumberRow];++i) {
+    for(int j=1;j<M.property[MatrixNumberColumn];++j) os<<"\t"<<M(0,j);
+    for(int i=1;i<M.property[MatrixNumberRow];++i) {
       os<<endl<<M(i,0);
-      for(unsigned int j=1;j<M.property[MatrixNumberColumn];++j)
-        os<<"\t"<<M(i,j);
+      for(int j=1;j<M.property[MatrixNumberColumn];++j) os<<"\t"<<M(i,j);
     }
     return os;
+  }
+
+  template <typename T>
+  void ecopy(Matrix<T>& M, const Matrix<T>& cM) {
+    assert(IsPropertySame(M,cM));
+    copy(static_cast<Vector<T>&>(M),
+         static_cast<const Vector<T>&>(cM));
   }
 
 }
@@ -99,8 +116,8 @@ namespace std {
 
 namespace std {
 
-  template <typename T>
-  void copy(Matrix<T>& M, const Matrix<T>& cM,
+  template <typename T, typename cT>
+  void copy(Matrix<T>& M, const Matrix<cT>& cM,
             const int nr=iZero, const int nc=iZero,
             const int croff=iZero, const int crstep=iOne,
             const int ccoff=iZero, const int ccstep=iOne,
@@ -125,7 +142,7 @@ namespace std {
            M.property[MatrixNumberColumn]:cM.property[MatrixNumberColumn]);
     for(int i=0,cr=croff,r=roff;i<rnr;++i,cr+=crstep,r+=rstep)
     for(int j=0,cc=ccoff,c=coff;j<rnc;++j,cc+=ccstep,c+=cstep)
-      M(r,c)=cM(cr,cc);
+      copy(M(r,c),cM(cr,cc));
   }
 
 }
@@ -136,21 +153,21 @@ namespace std {
 namespace std {
 
   template <typename T>
-  void allocate(Matrix<T>& M, const unsigned int MType, ...) {
+  void allocate(Matrix<T>& M, const int MType, ...) {
     release(M);
     va_list vl;
     va_start(vl,MType);
     if(MType==RectangleMatrix) {
-      unsigned int nRow=va_arg(vl,unsigned int);
-      unsigned int nColumn=va_arg(vl,unsigned int);
-      unsigned int DataOrder=va_arg(vl,unsigned int);
-      unsigned int TransForm=va_arg(vl,unsigned int);
+      int nRow=va_arg(vl,int);
+      int nColumn=va_arg(vl,int);
+      int DataOrder=va_arg(vl,int);
+      int TransForm=va_arg(vl,int);
       allocateRectangleMatrix(M,nRow,nColumn,DataOrder,TransForm);
     } else if(MType==TriangleMatrix) {
-      unsigned int Dim=va_arg(vl,unsigned int);
-      unsigned int DataOrder=va_arg(vl,unsigned int);
-      unsigned int TransForm=va_arg(vl,unsigned int);
-      unsigned int TPart=va_arg(vl,unsigned int);
+      int Dim=va_arg(vl,int);
+      int DataOrder=va_arg(vl,int);
+      int TransForm=va_arg(vl,int);
+      int TPart=va_arg(vl,int);
       bool SFlag=static_cast<bool>(va_arg(vl,int));
       bool DFlag=static_cast<bool>(va_arg(vl,int));
       allocateTriangleMatrix(M,Dim,DataOrder,TransForm,TPart,SFlag,DFlag);

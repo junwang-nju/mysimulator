@@ -26,6 +26,11 @@ int main() {
   copy(dM3,dM);
   cout<<dM3<<endl;
 
+  Matrix<double> dM4;
+  allocate(dM4,RectangleMatrix,4,3,COrder,NoTranspose);
+  ecopy(dM4,dM3);
+  cout<<dM4<<endl;
+
   return 1;
 }
 

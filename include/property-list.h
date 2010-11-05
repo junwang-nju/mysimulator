@@ -32,6 +32,17 @@ namespace std {
   }
 
   template <typename T>
+  bool IsStructureSame(const PropertyList<T>& LA, const PropertyList<T>& LB) {
+    assert(IsAvailable(LA));
+    assert(IsAvailable(LB));
+    unsigned int n=LA.nunit;
+    if(n!=LB.nunit) return false;
+    for(unsigned int i=0;i<n;++i)
+      if(LA.structure[i].size!=LB.structure[i].size)  return false;
+    return true;
+  }
+
+  template <typename T>
   void release(PropertyList<T>& L) {
     if(L.state==Allocated) safe_delete_array(L.structure);
     else L.structure=NULL;
@@ -39,12 +50,18 @@ namespace std {
     release(static_cast<Vector<T>&>(L));
   }
 
-  template <typename T>
-  void copy(PropertyList<T>& L, const PropertyList<T>& sL) {
+  template <typename T, typename cT>
+  void copy(PropertyList<T>& L, const PropertyList<cT>& sL) {
     assert(IsAvailable(L));
     assert(IsAvailable(sL));
     unsigned int n=(L.nunit<sL.nunit?L.nunit:sL.nunit);
     for(unsigned int i=0;i<n;++i) copy(L.structure[i],sL.structure[i]);
+  }
+
+  template <typename T>
+  void ecopy(PropertyList<T>& L, const PropertyList<T>& cL) {
+    assert(IsStructureSame(L,cL));
+    copy(static_cast<Vector<T>&>(L),static_cast<const Vector<T>&>(cL));
   }
 
   template <typename T>
@@ -86,8 +103,6 @@ namespace std {
   template <typename T>
   ostream& operator<<(ostream& os, const PropertyList<T>& L) {
     assert(IsAvailable(L));
-    cout<<L.nunit<<endl;
-    cout<<"====================="<<endl;
     os<<L[0];
     for(unsigned int k=0;k<L.nunit;++k) os<<endl<<L[k];
     return os;
