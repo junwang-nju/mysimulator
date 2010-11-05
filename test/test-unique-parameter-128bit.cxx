@@ -9,24 +9,24 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- assign and read"<<endl;
-  up=1.5;
+  copy(up,1.5);
   cout<<up.ld<<"\t\t"<<up.ull[0]<<"\t\t"<<up.ull[1]<<endl;
   double d[2]={123.445,-82321.76};
-  up=d;
+  copy(up,d);
   cout<<up.d[0]<<"\t"<<up.d[1]<<"\t\t"<<up.ull[0]<<"\t\t"<<up.ull[1]<<endl;
   unsigned int u[4]={123,456,97343,232942};
-  up=u;
+  copy(up,u);
   cout<<up.u[0]<<"\t"<<up.u[1]<<"\t"<<up.u[2]<<"\t"<<up.u[3]<<"\t\t"<<up.ull[0]<<"\t\t"<<up.ull[1]<<endl;
   int i[4]={-29382,8231,-232193,82932};
-  up=i;
+  copy(up,i);
   cout<<up.i[0]<<"\t"<<up.i[1]<<"\t"<<up.i[2]<<"\t"<<up.i[3]<<"\t\t"<<up.ull[0]<<"\t\t"<<up.ull[1]<<endl;
   unsigned long long int ull[2]={23234200,38374729};
-  up=ull;
+  copy(up,ull);
   cout<<up.ull[0]<<"\t\t"<<up.ull[1]<<endl;
   double* dptr[4];
   double da,db,dc,dd;
   dptr[0]=&da; dptr[1]=&db; dptr[2]=&dc;  dptr[3]=&dd;
-  up=dptr;
+  copy(up,dptr);
   cout<<up.ptr[0]<<"\t"<<up.ptr[1]<<"\t"<<up.ptr[2]<<"\t"<<up.ptr[3]<<"\t\t"<<up.ull[0]<<"\t\t"<<up.ull[1]<<endl;
   cout<<endl;
 

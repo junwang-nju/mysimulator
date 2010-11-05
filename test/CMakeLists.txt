@@ -25,6 +25,7 @@ add_executable (test-parameter-key.run test-parameter-key.cxx)
 target_link_libraries (test-parameter-key.run blas Base)
 
 add_executable (test-unique-parameter.run test-unique-parameter.cxx)
+target_link_libraries (test-unique-parameter.run blas)
 
 add_executable (test-parameter-list.run test-parameter-list.cxx)
 target_link_libraries (test-parameter-list.run blas Base)

@@ -2,7 +2,7 @@
 #ifndef _Unique_Parameter_H_
 #define _Unique_Parameter_H_
 
-#include "error-proc.h"
+#include "vector.h"
 #include <cstdlib>
 #include <cctype>
 
@@ -27,6 +27,7 @@ namespace std {
     }
   };
 
+  void copy(UniqueParameter& P, const UniqueParameter& cP) { P.ull=cP.ull; }
   void copy(UniqueParameter& P, const double& d) { P.d=d; }
   void copy(UniqueParameter& P, const float& f) { P.f=f; }
   void copy(UniqueParameter& P, const unsigned int& u) { P.u=u; }
@@ -46,6 +47,32 @@ namespace std {
     ptr=reinterpret_cast<T*>(const_cast<void*>(P.ptr));
   }
 
+  void copy(Vector<UniqueParameter>& P, const Vector<UniqueParameter>& cP) {
+    long n=(P.size<cP.size?P.size:cP.size);
+    dcopy_(&n,reinterpret_cast<double*>(const_cast<UniqueParameter*>(cP.data)),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(P.data),
+           const_cast<long*>(&lOne));
+  }
+
+  void copy(Vector<UniqueParameter>& P, const UniqueParameter& cP) {
+    dcopy_(reinterpret_cast<long*>(&(P.size)),
+           reinterpret_cast<double*>(const_cast<UniqueParameter*>(&cP)),
+           const_cast<long*>(&lZero),reinterpret_cast<double*>(P.data),
+           const_cast<long*>(&lOne));
+  }
+
+  void copy(Vector<UniqueParameter>& P, const Vector<double>& cD) {
+    long n=(P.size<cD.size?P.size:cD.size);
+    dcopy_(&n,const_cast<double*>(cD.data),const_cast<long*>(&lOne),
+           reinterpret_cast<double*>(P.data),const_cast<long*>(&lOne));
+  }
+
+  void copy(Vector<UniqueParameter>& P, const double& d) {
+    dcopy_(reinterpret_cast<long*>(&(P.size)),
+           const_cast<double*>(&d),const_cast<long*>(&lZero),
+           reinterpret_cast<double*>(P.data),const_cast<long*>(&lOne));
+  }
+
   istream& operator>>(istream& is, UniqueParameter& P) {
     static char flag;
     is>>flag;
@@ -59,7 +86,7 @@ namespace std {
     return is;
   }
 
-  ostream* operator<<(ostream& os, const UniqueParameter& P) {
+  ostream& operator<<(ostream& os, const UniqueParameter& P) {
     os<<P.ull;
     return os;
   }

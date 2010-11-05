@@ -39,6 +39,10 @@ namespace std {
    */
   static const long   lOne=1;
 
+  static const long   lTwo=2;
+
+  static const long   lFour=4;
+
   /**
    * @brief \c int type zero
    */
