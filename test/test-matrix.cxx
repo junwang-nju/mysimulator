@@ -10,15 +10,20 @@ int main() {
   release(dM);
   cout<<IsAvailable(dM)<<endl;
   allocate(dM,TriangleMatrix,5,COrder,NoTranspose,UpperTriangle,true,false);
-  *(dM.PtrOtherElement)=0;
+  cout<<"========="<<endl;
+  *(dM.ptrOther)=0;
+  cout<<"========="<<endl;
   Matrix<double> dM2;
   refer(dM2,dM);
-  assign(dM2.data,3,5);
+  long n=5;
+  double d=3;
+  dcopy_(&n,&d,const_cast<long*>(&lZero),dM2.data,const_cast<long*>(&lOne));
   cout<<dM<<endl;
+  cout<<dM(2,2)<<endl;
 
   Matrix<double> dM3;
   allocate(dM3,RectangleMatrix,4,3,COrder,NoTranspose);
-  dM3=dM;
+  copy(dM3,dM);
   cout<<dM3<<endl;
 
   return 1;

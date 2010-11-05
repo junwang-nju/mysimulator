@@ -2,16 +2,12 @@
 #ifndef _Matrix_Rectangle_Allocator_H_
 #define _Matrix_Rectangle_Allocator_H_
 
-#include "matrix-name.h"
+#include "matrix-rectangle-name.h"
 
 namespace std {
 
   template <typename T>
   struct Matrix;
-
-  enum MatrixRectanglePropertyName {
-    MatrixRectangleNumberProperty=MatrixCommonNumberProperty;
-  };
 
   template <typename T>
   T& GetData4C(Vector<T>* s, const int I, const int J, T&) { return s[I][J]; }
