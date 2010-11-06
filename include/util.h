@@ -355,14 +355,21 @@ namespace std {
   void copy(double& d, const int& rd) { d=rd; }
   void copy(double& d, const long int& rd) { d=rd; }
   void copy(double& d, const unsigned int& rd) { d=rd; }
+
   void copy(float& d, const double& rd) { d=rd; }
   void copy(float& d, const float& rd) { d=rd; }
   void copy(float& d, const int& rd) { d=rd; }
   void copy(float& d, const long int& rd) { d=rd; }
   void copy(float& d, const unsigned int& rd) { d=rd; }
+
   void copy(int& d, const int& rd) { d=rd; }
   void copy(int& d, const long int& rd) { d=rd; }
   void copy(int& d, const unsigned int& rd) { d=rd; }
+
+  void copy(long int& d, const int& rd) { d=rd; }
+  void copy(long int& d, const long int& rd) { d=rd; }
+  void copy(long int& d, const unsigned int& rd) { d=rd; }
+
   void copy(unsigned int& d, const unsigned int& rd) {d=rd; }
   void copy(unsigned int& d, const int& rd) { d=rd; }
   void copy(unsigned int& d, const long int& rd) { d=rd; }
@@ -370,48 +377,85 @@ namespace std {
   void scale(double& d, const double& sd) { d*=sd; }
   void scale(double& d, const float& sd) { d*=sd; }
   void scale(double& d, const int& sd) { d*=sd; }
+  void scale(double& d, const long int& sd) { d*=sd; }
   void scale(double& d, const unsigned int& sd) { d*=sd; }
+
   void scale(float& d, const double& sd) { d*=sd; }
   void scale(float& d, const float& sd) { d*=sd; }
   void scale(float& d, const int& sd) { d*=sd; }
+  void scale(float& d, const long int& sd) { d*=sd; }
   void scale(float& d, const unsigned int& sd) { d*=sd; }
+
   void scale(int& d, const int& sd) { d*=sd; }
   void scale(int& d, const unsigned int& sd) { d*=sd; }
+  void scale(int& d, const long int& sd) { d*=sd; }
+
   void scale(unsigned int& d, const unsigned int& sd) { d*=sd; }
 
   void shift(double& d, const double& fd, const double& sd) { d+=fd*sd; }
   void shift(double& d, const double& fd, const float& sd) { d+=fd*sd; }
   void shift(double& d, const double& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const double& fd, const long int& sd) { d+=fd*sd; }
   void shift(double& d, const double& fd, const unsigned  int& sd){ d+=fd*sd; }
+
   void shift(double& d, const float& fd, const double& sd) { d+=fd*sd; }
   void shift(double& d, const float& fd, const float& sd) { d+=fd*sd; }
   void shift(double& d, const float& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const float& fd, const long int& sd) { d+=fd*sd; }
   void shift(double& d, const float& fd, const unsigned int& sd) { d+=fd*sd; }
+
   void shift(double& d, const int& fd, const double& sd) { d+=fd*sd; }
   void shift(double& d, const int& fd, const float& sd) { d+=fd*sd; }
   void shift(double& d, const int& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const int& fd, const long int& sd) { d+=fd*sd; }
   void shift(double& d, const int& fd, const unsigned int& sd) { d+=fd*sd; }
+
+  void shift(double& d, const long int& fd, const double& sd) { d+=fd*sd; }
+  void shift(double& d, const long int& fd, const float& sd) { d+=fd*sd; }
+  void shift(double& d, const long int& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const long int& fd, const long int& sd) { d+=fd*sd; }
+  void shift(double& d, const long int& fd, const unsigned int& sd) {
+    d+=fd*sd;
+  }
+
   void shift(double& d, const unsigned int& fd, const double& sd) { d+=fd*sd; }
   void shift(double& d, const unsigned int& fd, const float& sd) { d+=fd*sd; }
   void shift(double& d, const unsigned int& fd, const int& sd) { d+=fd*sd; }
+  void shift(double& d, const unsigned int& fd, const long int& sd) {
+    d+=fd*sd;
+  }
   void shift(double& d, const unsigned int& fd, const unsigned int& sd) {
     d+=fd*sd;
   }
+
   void shift(float& d, const double& fd, const double& sd) { d+=fd*sd; }
   void shift(float& d, const double& fd, const float& sd) { d+=fd*sd; }
   void shift(float& d, const double& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const double& fd, const long int& sd) { d+=fd*sd; }
   void shift(float& d, const double& fd, const unsigned  int& sd){ d+=fd*sd; }
+
   void shift(float& d, const float& fd, const double& sd) { d+=fd*sd; }
   void shift(float& d, const float& fd, const float& sd) { d+=fd*sd; }
   void shift(float& d, const float& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const float& fd, const long int& sd) { d+=fd*sd; }
   void shift(float& d, const float& fd, const unsigned int& sd) { d+=fd*sd; }
+
   void shift(float& d, const int& fd, const double& sd) { d+=fd*sd; }
   void shift(float& d, const int& fd, const float& sd) { d+=fd*sd; }
   void shift(float& d, const int& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const int& fd, const long int& sd) { d+=fd*sd; }
   void shift(float& d, const int& fd, const unsigned int& sd) { d+=fd*sd; }
+
+  void shift(float& d, const long int& fd, const double& sd) { d+=fd*sd; }
+  void shift(float& d, const long int& fd, const float& sd) { d+=fd*sd; }
+  void shift(float& d, const long int& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const long int& fd, const long int& sd) { d+=fd*sd; }
+  void shift(float& d, const long int& fd, const unsigned int& sd) { d+=fd*sd; }
+
   void shift(float& d, const unsigned int& fd, const double& sd) { d+=fd*sd; }
   void shift(float& d, const unsigned int& fd, const float& sd) { d+=fd*sd; }
   void shift(float& d, const unsigned int& fd, const int& sd) { d+=fd*sd; }
+  void shift(float& d, const unsigned int& fd, const long int& sd) { d+=fd*sd; }
   void shift(float& d, const unsigned int& fd, const unsigned int& sd) {
     d+=fd*sd;
   }
@@ -419,9 +463,11 @@ namespace std {
   void shift(int& d, const int& fd, const int& sd) { d+=fd*sd; }
   void shift(int& d, const int& fd, const unsigned int& sd) { d+=fd*sd; }
   void shift(int& d, const int& fd, const long int& sd) { d+=fd*sd; }
+
   void shift(int& d, const long int& fd, const int& sd) { d+=fd*sd; }
   void shift(int& d, const long int& fd, const unsigned int& sd) { d+=fd*sd; }
   void shift(int& d, const long int& fd, const long int& sd) { d+=fd*sd; }
+
   void shift(int& d, const unsigned int& fd, const int& sd) { d+=fd*sd; }
   void shift(int& d, const unsigned int& fd, const unsigned int& sd) {
     d+=fd*sd;
@@ -429,6 +475,7 @@ namespace std {
   void shift(int& d, const unsigned int& fd, const long int& sd) {
     d+=fd*sd;
   }
+
   void shift(unsigned int& d, const unsigned int& fd, const unsigned int& sd) {
     d+=fd*sd;
   }
@@ -437,7 +484,12 @@ namespace std {
   void exchange(double& da, float& db) { double d=da; da=db; db=d; }
   void exchange(float& da, double& db) { double d=db; db=da; da=d; }
   void exchange(float& da, float& db) { float d=da; da=db; db=d; }
+
   void exchange(int& da, int& db) { int d=da; da=db; db=d; }
+  void exchange(long int& da, int& db) { int d=da; da=db; db=d; }
+  void exchange(int& da, long int& db) { int d=da; da=db; db=d; }
+  void exchange(long int& da, long int& db) { long int d=da; da=db; db=d; }
+
   void exchange(unsigned int& da, unsigned int& db) {
     unsigned int d=da; da=db; db=d;
   }
@@ -445,6 +497,7 @@ namespace std {
   double absval(const double& d) { return fabs(d); }
   float absval(const float& d) { return fabs(d); }
   int absval(const int& d) { return abs(d); }
+  long int absval(const long int& d) { return abs(d); }
   unsigned int absval(const unsigned int& d) { return d; }
 
 }
