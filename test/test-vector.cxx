@@ -112,9 +112,9 @@ int main() {
   for(unsigned int i=0;i<10;++i)  cout<<pInt[i]<<" "; cout<<endl;
   for(int i=0;i<4;++i)  pDBL[1+i]+=2.5*pDBL2[1+i];
   for(unsigned int i=0;i<10;++i)  cout<<pDBL[i]<<" "; cout<<endl;
-  shift(vInt,vInt2,lOne);
+  shift(vInt,vInt2);
   cout<<vInt<<endl;
-  shift(vDBL,vDBL2,lOne);
+  shift(vDBL,vDBL2);
   cout<<vDBL<<endl;
   cout<<endl;
 

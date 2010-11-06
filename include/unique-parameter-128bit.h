@@ -91,6 +91,7 @@ namespace std {
            reinterpret_cast<double*>(const_cast<unsigned long long int*>(&l)),
            const_cast<long*>(&lZero),P.d,const_cast<long*>(&lOne));
   }
+
   template <typename T>
   void copy(UniqueParameter128b& P,T* const ptr[4]) {
     dcopy_(const_cast<long*>(&lTwo),
@@ -105,9 +106,9 @@ namespace std {
            reinterpret_cast<float*>(P.i),const_cast<long*>(&lOne));
   }
 
-  void copy(UniqueParameter128b* P, const UniqueParameter128b* cP,
-            const unsigned int size,
-            const int off=iZero, const int coff=iZero) {
+  void ccopy(UniqueParameter128b* P, const UniqueParameter128b* cP,
+             const unsigned int size,
+             const int off=iZero, const int coff=iZero) {
     long sz=size+size;
     dcopy_(&sz,
            reinterpret_cast<double*>(const_cast<UniqueParameter128b*>(cP))
@@ -117,12 +118,12 @@ namespace std {
   void copy(Vector<UniqueParameter128b>& P,
             const Vector<UniqueParameter128b>& cP) {
     unsigned int n=(P.size<cP.size?P.size:cP.size);
-    copy(P.data,cP.data,n);
+    ccopy(P.data,cP.data,n);
   }
-  void copy(UniqueParameter128b* P, const UniqueParameter128b* cP,
-            const unsigned int size,
-            const int off=iZero, const int step=iOne,
-            const int coff=iZero, const int cstep=iOne) {
+  void dcopy(UniqueParameter128b* P, const UniqueParameter128b* cP,
+             const unsigned int size,
+             const int off=iZero, const int step=iOne,
+             const int coff=iZero, const int cstep=iOne) {
     int doff=off+off, dcoff=coff+coff;
     long dstep=step+step, cdstep=cstep+cstep;
     dcopy_(reinterpret_cast<long*>(const_cast<unsigned int*>(&size)),
@@ -133,7 +134,7 @@ namespace std {
            +dcoff+1,&cdstep,reinterpret_cast<double*>(P)+doff+1,&dstep);
   }
   void copy(Vector<UniqueParameter128b>& P, const UniqueParameter128b& cP) {
-    copy(P.data,&cP,P.size,iZero,iOne,iZero,iZero);
+    dcopy(P.data,&cP,P.size,iZero,iOne,iZero,iZero);
   }
 
   istream& operator>>(istream& is, UniqueParameter128b& P) {

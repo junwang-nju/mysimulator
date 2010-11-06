@@ -292,9 +292,6 @@ namespace std {
     shift(V,dd,sV);
   }
 
-//  template <typename T, typename cT>
-//  void shift(Vector<T>& V, const Vector<cT>& sV) { shift(V,lOne,sV); }
-
   void shift(Vector<double>& V, const double& d) {
     assert(IsAvailable(V));
     daxpy_(reinterpret_cast<long*>(&(V.size)),
@@ -318,17 +315,26 @@ namespace std {
   
   template <typename T>
   void shift(Vector<double>& V, const T& d) {
-    double& dd;
+    double dd;
     copy(dd,d);
     shift(V,dd);
   }
 
   template <typename T>
   void shift(Vector<float>& V, const T& d) {
-    float& dd;
+    float dd;
     copy(dd,d);
     shift(V,dd);
   }
+
+  template <typename T, typename cT>
+  void shift(Vector<T>& V, const Vector<cT>& sV) { shift(V,iOne,sV); }
+
+  template <typename T>
+  void shift(Vector<double>& V, const Vector<T>& sV) { shift(V,dOne,sV); }
+
+  template <typename T>
+  void shift(Vector<float>& V, const Vector<T>& sV) { shift(V,fOne,sV); }
 
   void scaleshift(Vector<double>& V, const double& d, const double& sd,
                   const Vector<double>& fV, const Vector<double>& sV) {

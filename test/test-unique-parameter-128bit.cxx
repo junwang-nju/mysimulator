@@ -32,7 +32,7 @@ int main() {
 
   cout<<"Test -- default access"<<endl;
   UniqueParameter128b up2;
-  up2=up;
+  copy(up2,up);
   cout<<up2<<endl;
   cout<<endl;
 
@@ -41,7 +41,7 @@ int main() {
   UniqueParameter128b *uv2=new UniqueParameter128b[8];
   for(unsigned int i=0;i<10;++i)
   for(unsigned int k=0;k<4;++k) uv1[i].u[k]=i*4+k;
-  copy(uv2,uv1,8);
+  ccopy(uv2,uv1,8);
   for(unsigned int i=0;i<8;++i) {
     for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
     cout<<endl;
@@ -54,7 +54,7 @@ int main() {
     for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
     cout<<endl;
   }
-  copy(uv2,uv1,2,0,1,1,2);
+  dcopy(uv2,uv1,2,0,1,1,2);
   for(unsigned int i=0;i<8;++i) {
     for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
     cout<<endl;
