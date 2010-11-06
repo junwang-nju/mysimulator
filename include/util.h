@@ -353,15 +353,19 @@ namespace std {
   void copy(double& d, const double& rd) { d=rd; }
   void copy(double& d, const float& rd) { d=rd; }
   void copy(double& d, const int& rd) { d=rd; }
+  void copy(double& d, const long int& rd) { d=rd; }
   void copy(double& d, const unsigned int& rd) { d=rd; }
   void copy(float& d, const double& rd) { d=rd; }
   void copy(float& d, const float& rd) { d=rd; }
   void copy(float& d, const int& rd) { d=rd; }
+  void copy(float& d, const long int& rd) { d=rd; }
   void copy(float& d, const unsigned int& rd) { d=rd; }
   void copy(int& d, const int& rd) { d=rd; }
+  void copy(int& d, const long int& rd) { d=rd; }
   void copy(int& d, const unsigned int& rd) { d=rd; }
   void copy(unsigned int& d, const unsigned int& rd) {d=rd; }
   void copy(unsigned int& d, const int& rd) { d=rd; }
+  void copy(unsigned int& d, const long int& rd) { d=rd; }
 
   void scale(double& d, const double& sd) { d*=sd; }
   void scale(double& d, const float& sd) { d*=sd; }
@@ -414,8 +418,15 @@ namespace std {
 
   void shift(int& d, const int& fd, const int& sd) { d+=fd*sd; }
   void shift(int& d, const int& fd, const unsigned int& sd) { d+=fd*sd; }
+  void shift(int& d, const int& fd, const long int& sd) { d+=fd*sd; }
+  void shift(int& d, const long int& fd, const int& sd) { d+=fd*sd; }
+  void shift(int& d, const long int& fd, const unsigned int& sd) { d+=fd*sd; }
+  void shift(int& d, const long int& fd, const long int& sd) { d+=fd*sd; }
   void shift(int& d, const unsigned int& fd, const int& sd) { d+=fd*sd; }
   void shift(int& d, const unsigned int& fd, const unsigned int& sd) {
+    d+=fd*sd;
+  }
+  void shift(int& d, const unsigned int& fd, const long int& sd) {
     d+=fd*sd;
   }
   void shift(unsigned int& d, const unsigned int& fd, const unsigned int& sd) {

@@ -112,9 +112,9 @@ int main() {
   for(unsigned int i=0;i<10;++i)  cout<<pInt[i]<<" "; cout<<endl;
   for(int i=0;i<4;++i)  pDBL[1+i]+=2.5*pDBL2[1+i];
   for(unsigned int i=0;i<10;++i)  cout<<pDBL[i]<<" "; cout<<endl;
-  shift(vInt,vInt2);
+  shift(vInt,vInt2,lOne);
   cout<<vInt<<endl;
-  shift(vDBL,vDBL2);
+  shift(vDBL,vDBL2,lOne);
   cout<<vDBL<<endl;
   cout<<endl;
 
@@ -182,9 +182,9 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- exchange two vectors"<<endl;
-  exchange(pInt,pInt2,5,2,1,1,2);
+  for(int i=0;i<5;++i) exchange(pInt[2+i],pInt2[1+i*2]);
   for(unsigned int i=0;i<10;++i)  cout<<pInt[i]<<" "; cout<<endl;
-  exchange(pDBL,pDBL2,5,2,1,1,2);
+  for(int i=0;i<5;++i) exchange(pDBL[2+i],pDBL2[1+i*2]);
   for(unsigned int i=0;i<10;++i)  cout<<pDBL[i]<<" "; cout<<endl;
   exchange(vInt,vInt2);
   cout<<vInt<<endl;
@@ -193,27 +193,36 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- dot operation"<<endl;
-  cout<<dot(pInt,pInt2,5,1,2,2,1)<<endl;
-  cout<<dot(pDBL,pDBL2,5,1,2,2,1)<<endl;
+  int gi;
+  gi=0; for(int i=0;i<5;++i) gi+=pInt[1+2*i]*pInt2[2+i];
+  cout<<gi<<endl;
+  double gd;
+  gd=0; for(int i=0;i<5;++i) gd+=pDBL[1+2*i]*pDBL2[2+i];
+  cout<<gd<<endl;
   cout<<dot(vInt,vInt2)<<endl;
   cout<<dot(vDBL,vDBL2)<<endl;
   cout<<endl;
 
   cout<<"Test -- norm square operation"<<endl;
-  cout<<normSQ(pInt,5,3,1)<<endl;
-  cout<<normSQ(pDBL,4,1,2)<<endl;
+  gi=0; for(int i=0;i<5;++i) gi+=pInt[3+i]*pInt[3+i];
+  cout<<gi<<endl;
+  gd=0; for(int i=0;i<4;++i) gd+=pDBL[1+i*2]*pDBL[1+i*2];
+  cout<<gd<<endl;
   cout<<normSQ(vInt)<<endl;
   cout<<normSQ(vDBL)<<endl;
   cout<<endl;
 
   cout<<"Test -- norm operation"<<endl;
-  cout<<norm(pDBL,3,2,2)<<endl;
+  gd=0; for(int i=0;i<3;++i) gd+=pDBL[2+i*2]*pDBL[2+i*2];
+  cout<<sqrt(gd)<<endl;
   cout<<norm(vDBL)<<endl;
   cout<<endl;
 
   cout<<"Test -- sum of absolute values"<<endl;
-  cout<<asum(pInt,5,1,2)<<endl;
-  cout<<asum(pDBL,5,1,2)<<endl;
+  gi=0; for(int i=0;i<5;++i)  gi+=absval(pInt[1+2*i]);
+  cout<<gi<<endl;
+  gd=0; for(int i=0;i<5;++i)  gd+=absval(pDBL[1+2*i]);
+  cout<<gd<<endl;
   cout<<asum(vInt)<<endl;
   cout<<asum(vDBL)<<endl;
   cout<<endl;
@@ -235,9 +244,9 @@ int main() {
   allocate(cva,3);
   allocate(cvb,10);
   allocate(cv,6);
-  assign(cva,1.);
+  copy(cva,1.);
   for(unsigned int i=0;i<10;i++)  cvb[i]=i;
-  assign(cv,0.);
+  copy(cv,0.);
   crossProd(cva,cvb,cv,0,1,1,3,1,2);
   cout<<cv<<endl;
   cout<<endl;

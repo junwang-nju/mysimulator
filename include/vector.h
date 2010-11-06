@@ -292,8 +292,8 @@ namespace std {
     shift(V,dd,sV);
   }
 
-  template <typename T, typename sT>
-  void shift(Vector<float>& V, const Vector<sT>& sV) { shift(V,lOne,sV); }
+//  template <typename T, typename cT>
+//  void shift(Vector<T>& V, const Vector<cT>& sV) { shift(V,lOne,sV); }
 
   void shift(Vector<double>& V, const double& d) {
     assert(IsAvailable(V));
@@ -564,6 +564,7 @@ namespace std {
     T* p=V.data;
     T sum;
     for(unsigned int i=0;i<V.size;++i,++p)  shift(sum,iOne,absval(*p));
+    return sum;
   }
 
   template <typename T>
