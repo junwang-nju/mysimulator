@@ -41,18 +41,20 @@ int main() {
   UniqueParameter128b *uv2=new UniqueParameter128b[8];
   for(unsigned int i=0;i<10;++i)
   for(unsigned int k=0;k<4;++k) uv1[i].u[k]=i*4+k;
-  assign(uv2,uv1,8);
+  copy(uv2,uv1,8);
   for(unsigned int i=0;i<8;++i) {
     for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
     cout<<endl;
   }
   for(unsigned int i=0;i<4;++i) uv1[9].u[i]=0;
-  assign(uv2,uv1[9],8);
+  Vector<UniqueParameter128b> uv2m;
+  refer(uv2m,uv2,8);
+  copy(uv2m,uv1[9]);
   for(unsigned int i=0;i<8;++i) {
     for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
     cout<<endl;
   }
-  assign(uv2,uv1,2,0,1,1,2);
+  copy(uv2,uv1,2,0,1,1,2);
   for(unsigned int i=0;i<8;++i) {
     for(unsigned int k=0;k<4;++k) cout<<uv2[i].u[k]<<"  ";
     cout<<endl;

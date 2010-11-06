@@ -20,6 +20,7 @@ namespace std {
 #endif
     long double ld;
     double d[2];
+    float f[4];
     unsigned int u[4];
     int i[4];
     unsigned long long int ull[2];
@@ -49,6 +50,14 @@ namespace std {
     dcopy_(const_cast<long*>(&lTwo),
            const_cast<double*>(&d),const_cast<long*>(&lZero),
            P.d,const_cast<long*>(&lOne));
+  }
+  void copy(UniqueParameter128b& P, const float f[4]) {
+    scopy_(const_cast<long*>(&lFour),const_cast<float*>(f),
+           const_cast<long*>(&lOne),P.f,const_cast<long*>(&lOne));
+  }
+  void copy(UniqueParameter128b& P, const float& f) {
+    scopy_(const_cast<long*>(&lFour),const_cast<float*>(&f),
+           const_cast<long*>(&lZero),P.f,const_cast<long*>(&lOne));
   }
   void copy(UniqueParameter128b& P, const unsigned int u[4]) {
     dcopy_(const_cast<long*>(&lTwo),
@@ -83,7 +92,7 @@ namespace std {
            const_cast<long*>(&lZero),P.d,const_cast<long*>(&lOne));
   }
   template <typename T>
-  void copy(UniqueParameter128b& P,const T* ptr[4]) {
+  void copy(UniqueParameter128b& P,T* const ptr[4]) {
     dcopy_(const_cast<long*>(&lTwo),
            reinterpret_cast<double*>(const_cast<T**>(ptr)),
            const_cast<long*>(&lOne),P.d,const_cast<long*>(&lOne));
@@ -109,6 +118,46 @@ namespace std {
             const Vector<UniqueParameter128b>& cP) {
     unsigned int n=(P.size<cP.size?P.size:cP.size);
     copy(P.data,cP.data,n);
+  }
+  void copy(UniqueParameter128b* P, const UniqueParameter128b* cP,
+            const unsigned int size,
+            const int off=iZero, const int step=iOne,
+            const int coff=iZero, const int cstep=iOne) {
+    int doff=off+off, dcoff=coff+coff;
+    long dstep=step+step, cdstep=cstep+cstep;
+    dcopy_(reinterpret_cast<long*>(const_cast<unsigned int*>(&size)),
+           reinterpret_cast<double*>(const_cast<UniqueParameter128b*>(cP))
+           +dcoff,&cdstep,reinterpret_cast<double*>(P)+doff,&dstep);
+    dcopy_(reinterpret_cast<long*>(const_cast<unsigned int*>(&size)),
+           reinterpret_cast<double*>(const_cast<UniqueParameter128b*>(cP))
+           +dcoff+1,&cdstep,reinterpret_cast<double*>(P)+doff+1,&dstep);
+  }
+  void copy(Vector<UniqueParameter128b>& P, const UniqueParameter128b& cP) {
+    copy(P.data,&cP,P.size,iZero,iOne,iZero,iZero);
+  }
+
+  istream& operator>>(istream& is, UniqueParameter128b& P) {
+    static char flag;
+    static char buff[1024];
+    is>>flag;
+    if((flag=='G')||(flag=='g'))  is>>P.ld;
+    else if((flag=='D')||(flag=='d')) is>>buff>>P.d[0]>>P.d[1]>>buff;
+    else if((flag=='F')||(flag=='f'))
+      is>>buff>>P.f[0]>>P.f[1]>>P.f[2]>>P.f[3]>>buff;
+    else if((flag=='U')||(flag=='u'))
+      is>>buff>>P.u[0]>>P.u[1]>>P.u[2]>>P.u[3]>>buff;
+    else if((flag=='I')||(flag=='i'))
+      is>>buff>>P.i[0]>>P.i[1]>>P.i[2]>>P.i[3]>>buff;
+    else if((flag=='L')||(flag=='l')) is>>buff>>P.ull[0]>>P.ull[1]>>buff;
+    else if((flag=='P')||(flag=='p'))
+      is>>buff>>P.ptr[0]>>P.ptr[1]>>P.ptr[2]>>P.ptr[3]>>buff;
+    else is.setstate(ios_base::failbit);
+    return is;
+  }
+
+  ostream& operator<<(ostream& os, const UniqueParameter128b& P) {
+    os<<"L ["<<P.ull[0]<<""<<P.ull[1]<<" ] ";
+    return os;
   }
 
 }

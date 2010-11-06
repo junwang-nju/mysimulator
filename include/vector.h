@@ -80,7 +80,7 @@ namespace std {
   }
 
   template <typename T, typename cT>
-  void copy(Vector<T>& V, const T& d) {
+  void copy(Vector<T>& V, const cT& d) {
     assert(IsAvailable(V));
     T* p=V.data;
     for(unsigned int i=0;i<V.size;++i,++p) copy(*p,d);
@@ -408,6 +408,13 @@ namespace std {
   template <typename T, typename fT, typename svT>
   void shift(Vector<T>& V, const Vector<fT>& fV, const Vector<svT>& sV) {
     scaleshift(V,iOne,iOne,fV,sV);
+  }
+
+  template <typename T, typename dT, typename sT, typename svT>
+  void scaleshift(Vector<T>& V, const dT& d, const sT& sd,
+                  const Vector<svT>& sV) {
+    scale(V,d);
+    shift(V,sd,sV);
   }
 
   void exchange(Vector<double>& Va, Vector<double>& Vb) {
