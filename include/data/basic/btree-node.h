@@ -12,10 +12,10 @@
 #ifndef _Binary_Tree_Node_H_
 #define _Binary_Tree_Node_H_
 
-#include "util.h"
-#include "storage-state-name.h"
-#include "error-proc.h"
-#include "memory.h"
+#include "operation/basic/util.h"
+#include "data/name/storage-state-name.h"
+#include "operation/basic/error-proc.h"
+#include "operation/basic/memory.h"
 #include <cstdlib>
 #include <cassert>
 
