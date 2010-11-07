@@ -50,9 +50,9 @@ namespace std {
 
   void allocate(ParameterKey& K, const unsigned int nidx) {
     release(K);
-    allocate(static_cast<Vector<unsigned int>&>(K));
+    allocate(static_cast<Vector<unsigned int>&>(K),nidx);
     copy(K,0);
-    hsize=4*nidx;
+    K.hsize=4*nidx;
     allocate(K.hash,3);
     copy(K.hash,0);
   }
@@ -67,7 +67,7 @@ namespace std {
   }
 
   istream& operator>>(istream& is, ParameterKey& K) {
-    is>>K; K.update(); return is;
+    is>>static_cast<Vector<unsigned int>&>(K); K.update(); return is;
   }
 
   int compare(const ParameterKey& KA, const ParameterKey& KB) {
