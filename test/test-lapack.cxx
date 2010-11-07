@@ -1,6 +1,6 @@
 
-#include "lapack.h"
-#include "vector.h"
+#include "operation/basic/lapack.h"
+#include "data/basic/vector.h"
 #include <iostream>
 using namespace std;
 
