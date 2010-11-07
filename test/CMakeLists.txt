@@ -19,16 +19,15 @@ add_executable (test-btree-node.run test-btree-node.cxx)
 add_executable (test-btree.run test-btree.cxx)
 
 add_executable (test-hash-func.run test-hash-func.cxx)
-target_link_libraries (test-hash-func.run Base)
 
 add_executable (test-parameter-key.run test-parameter-key.cxx)
-target_link_libraries (test-parameter-key.run blas Base)
+target_link_libraries (test-parameter-key.run blas)
 
 add_executable (test-unique-parameter.run test-unique-parameter.cxx)
 target_link_libraries (test-unique-parameter.run blas)
 
 add_executable (test-parameter-list.run test-parameter-list.cxx)
-target_link_libraries (test-parameter-list.run blas Base)
+target_link_libraries (test-parameter-list.run blas)
 
 add_executable (test-free-space.run test-free-space.cxx)
 target_link_libraries (test-free-space.run blas)
@@ -71,7 +70,7 @@ target_link_libraries (test-random-generator-mt-dsfmt-sse2.run blas)
 
 add_executable (test-random-generator-mt-sfmt-sse2.run test-random-generator-mt-sfmt.cxx)
 set_source_files_properties (test-random-generator-mt-sfmt.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
-target_link_libraries (test-random-generator-mt-sfmt-sse2.run Base blas)
+target_link_libraries (test-random-generator-mt-sfmt-sse2.run blas)
 
 add_executable (test-random-generator-boxmuller-sse2.run test-random-generator-boxmuller.cxx)
 set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
@@ -81,7 +80,7 @@ add_executable (test-interaction-method.run test-interaction-method.cxx)
 target_link_libraries (test-interaction-method.run blas)
 
 add_executable (test-interaction-4list.run test-interaction-4list.cxx)
-target_link_libraries (test-interaction-4list.run blas Base)
+target_link_libraries (test-interaction-4list.run blas)
 
 add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
 target_link_libraries (test-interaction-pairwise-base.run blas)
@@ -114,7 +113,7 @@ add_executable (test-interaction-pairwise-quadharm.run test-interaction-pairwise
 target_link_libraries (test-interaction-pairwise-quadharm.run blas)
 
 add_executable (test-interaction-4listset.run test-interaction-4listset.cxx)
-target_link_libraries (test-interaction-4listset.run blas Base)
+target_link_libraries (test-interaction-4listset.run blas)
 
 add_executable (test-minimizer-base.run test-minimizer-base.cxx)
 target_link_libraries (test-minimizer-base.run blas)

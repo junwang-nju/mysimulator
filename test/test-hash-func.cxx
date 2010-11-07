@@ -1,5 +1,5 @@
 
-#include "hash-func.h"
+#include "operation/basic/hash-func.h"
 #include <iostream>
 using namespace std;
 
