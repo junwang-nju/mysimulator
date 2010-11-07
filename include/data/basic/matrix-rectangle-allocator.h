@@ -2,7 +2,7 @@
 #ifndef _Matrix_Rectangle_Allocator_H_
 #define _Matrix_Rectangle_Allocator_H_
 
-#include "matrix-rectangle-name.h"
+#include "data/name/matrix-rectangle-name.h"
 
 namespace std {
 

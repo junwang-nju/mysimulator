@@ -2,8 +2,6 @@
 #ifndef _Matrix_Name_H_
 #define _Matrix_Name_H_
 
-#include "vector.h"
-
 namespace std {
 
   enum MatrixBasePropertyName {

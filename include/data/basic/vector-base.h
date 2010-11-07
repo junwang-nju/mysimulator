@@ -2,9 +2,9 @@
 #ifndef _Vector_Base_H_
 #define _Vector_Base_H_
 
-#include "constant.h"
-#include "storage-state-name.h"
-#include "error-proc.h"
+#include "data/name/constant.h"
+#include "data/name/storage-state-name.h"
+#include "operation/basic/error-proc.h"
 
 namespace std {
 

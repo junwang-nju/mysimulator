@@ -2,8 +2,8 @@
 #ifndef _Matrix_H_
 #define _Matrix_H_
 
-#include "matrix-name.h"
-#include "property-list.h"
+#include "data/name/matrix-name.h"
+#include "data/basic/property-list.h"
 #include <cstdarg>
 
 namespace std {
@@ -111,8 +111,8 @@ namespace std {
 
 }
 
-#include "matrix-rectangle-name.h"
-#include "matrix-triangle-name.h"
+#include "data/name/matrix-rectangle-name.h"
+#include "data/name/matrix-triangle-name.h"
 
 namespace std {
 
@@ -147,8 +147,8 @@ namespace std {
 
 }
 
-#include "matrix-rectangle-allocator.h"
-#include "matrix-triangle-allocator.h"
+#include "data/basic/matrix-rectangle-allocator.h"
+#include "data/basic/matrix-triangle-allocator.h"
 
 namespace std {
 

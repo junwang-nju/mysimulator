@@ -2,7 +2,7 @@
 #ifndef _Unique_Parameter_H_
 #define _Unique_Parameter_H_
 
-#include "vector.h"
+#include "data/basic/vector.h"
 #include <cstdlib>
 #include <cctype>
 

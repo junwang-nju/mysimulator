@@ -2,7 +2,7 @@
 #ifndef _Unique_Parameter_128bit_H_
 #define _Unique_Parameter_128bit_H_
 
-#include "vector.h"
+#include "data/basic/vector.h"
 
 #ifdef HAVE_SSE2
 #include <emmintrin.h>

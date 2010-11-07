@@ -7,7 +7,7 @@
 #ifndef _Memory_H_
 #define _Memory_H_
 
-#include "storage-state-name.h"
+#include "data/name/storage-state-name.h"
 #include <cstdlib>
 
 namespace std {
