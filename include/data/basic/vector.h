@@ -2,10 +2,10 @@
 #ifndef _Vector_H_
 #define _Vector_H_
 
-#include "vector-base.h"
-#include "blas.h"
-#include "memory.h"
-#include "util.h"
+#include "data/basic/vector-base.h"
+#include "operation/basic/blas.h"
+#include "operation/basic/memory.h"
+#include "operation/basic/util.h"
 #include <cassert>
 
 namespace std {
