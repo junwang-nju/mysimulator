@@ -2,8 +2,8 @@
 #ifndef _Parameter_Key_H_
 #define _Parameter_Key_H_
 
-#include "hash-func.h"
-#include "vector.h"
+#include "operation/basic/hash-func.h"
+#include "data/basic/vector.h"
 
 namespace std {
 

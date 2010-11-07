@@ -1,12 +1,12 @@
 
-#include "matrix-storage-item.h"
+#include "data/derived/pair-information-item.h"
 #include <iostream>
 using namespace std;
 
 int main() {
 
   cout<<"Test -- initialize"<<endl;
-  MatrixStorageItem<double> MSI;
+  PairItem<double> MSI;
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
@@ -20,9 +20,9 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- assign from another Item"<<endl;
-  MatrixStorageItem<double> MSI2;
+  PairItem<double> MSI2;
   allocate(MSI2);
-  assign(MSI2,MSI);
+  copy(MSI2,MSI);
   cout<<MSI2<<endl;
   cout<<endl;
 
