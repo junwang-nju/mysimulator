@@ -1,5 +1,5 @@
 
-#include "chain.h"
+#include "data/basic/chain.h"
 #include <iostream>
 using namespace std;
 
@@ -27,7 +27,7 @@ int main() {
 
   cout<<"Test -- copy from another Chain"<<endl;
   Chain<int> C2;
-  assign(C2,C);
+  copy(C2,C);
   cout<<*(C2.root->child->content)<<endl;
   cout<<*(C2.root->child->child->content)<<endl;
   cout<<*(C2.root->child->child->child->content)<<endl;

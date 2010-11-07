@@ -13,7 +13,7 @@
 #ifndef _Chain_H_
 #define _Chain_H_
 
-#include "chain-node.h"
+#include "data/basic/chain-node.h"
 #include <cassert>
 
 namespace std {
@@ -75,7 +75,7 @@ namespace std {
      * @param C [in] the input Chain object.
      * @return the reference to the resultant Chain object
      */
-    Type& operator=(const Type& C) { assign(*this,C); return *this; }
+    Type& operator=(const Type& C) { copy(*this,C); return *this; }
     /**
      * @brief destructor
      *
@@ -242,7 +242,7 @@ namespace std {
    * @return nothing
    */
   template <typename T>
-  void assign(Chain<T>& dest, const Chain<T>& src) {
+  void copy(Chain<T>& dest, const Chain<T>& src) {
     assert(IsAvailable(src));
     release(dest);
     allocate(dest);

@@ -13,10 +13,10 @@
 #ifndef _Chain_Node_H_
 #define _Chain_Node_H_
 
-#include "error-proc.h"
-#include "storage-state-name.h"
-#include "memory.h"
-#include "util.h"
+#include "operation/basic/error-proc.h"
+#include "data/name/storage-state-name.h"
+#include "operation/basic/memory.h"
+#include "operation/basic/util.h"
 #include <cassert>
 
 namespace std {
@@ -93,7 +93,7 @@ namespace std {
      * @param CN [in] the input node in chain
      * @return the reference to the resultant node in chain.
      */
-    Type& operator=(const Type& CN) { assign(*this,CN); return *this; }
+    Type& operator=(const Type& CN) { copy(*this,CN); return *this; }
     /**
      * @brief destructor
      *
@@ -185,7 +185,7 @@ namespace std {
    * @return nothing.  
    */
   template <typename T>
-  void assign(ChainNode<T>& dest, const ChainNode<T>& src) {
+  void copy(ChainNode<T>& dest, const ChainNode<T>& src) {
     assert(IsAvailable(dest));
     assert(IsAvailable(src));
     dest()=src();
