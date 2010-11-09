@@ -50,8 +50,8 @@ target_link_libraries (test-distance-evaluate-direct.run blas)
 
 add_executable (test-pair-item.run test-pair-item.cxx)
 
-add_executable (test-matrix-storage.run test-matrix-storage.cxx)
-target_link_libraries (test-matrix-storage.run blas)
+add_executable (test-pair-storage.run test-pair-storage.cxx)
+target_link_libraries (test-pair-storage.run blas)
 
 add_executable (test-distance-evaluate-with-storage.run test-distance-evaluate-with-storage.cxx)
 target_link_libraries (test-distance-evaluate-with-storage.run blas)

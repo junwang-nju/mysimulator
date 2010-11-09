@@ -1,12 +1,12 @@
 
-#include "matrix-storage.h"
+#include "data/derived/pair-information.h"
 #include <iostream>
 using namespace std;
 
 int main() {
 
   cout<<"Test -- Initialize"<<endl;
-  MatrixStorage<double> MS;
+  PairStorage<double> MS;
   cout<<endl;
 
   cout<<"Test --Allocate"<<endl;
@@ -14,26 +14,26 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- access the data"<<endl;
-  cout<<IsUpToDate(MS,1,3)<<endl;
-  update(MS,1,3,3.45);
-  cout<<IsUpToDate(MS,1,3)<<endl;
-  refresh(MS);
-  cout<<IsUpToDate(MS,1,3)<<endl;
-  update(MS,1,3,3.45);
-  cout<<IsUpToDate(MS,1,3)<<endl;
-  refresh(MS,1);
-  cout<<IsUpToDate(MS,1,3)<<endl;
-  update(MS,1,3,3.45);
-  cout<<IsUpToDate(MS,1,3)<<endl;
-  refresh(MS,1,3);
-  cout<<IsUpToDate(MS,1,3)<<endl;
+  cout<<IsUptodate(MS,1,3)<<endl;
+  MS.updateItem(1,3,3.45);
+  cout<<IsUptodate(MS,1,3)<<endl;
+  MS.refresh();
+  cout<<IsUptodate(MS,1,3)<<endl;
+  MS.updateItem(1,3,3.45);
+  cout<<IsUptodate(MS,1,3)<<endl;
+  MS.refresh(1);
+  cout<<IsUptodate(MS,1,3)<<endl;
+  MS.updateItem(1,3,3.45);
+  cout<<IsUptodate(MS,1,3)<<endl;
+  MS.refreshItem(1,3);
+  cout<<IsUptodate(MS,1,3)<<endl;
   cout<<endl;
 
   cout<<"Test -- assign from another Matrix Storage"<<endl;
-  MatrixStorage<double> MS2;
+  PairStorage<double> MS2;
   allocate(MS2,4);
-  assign(MS2,MS);
-  cout<<MS2(1,3)()<<endl;
+  copy(MS2,MS);
+  cout<<MS2(1,3).status<<endl;
   cout<<*(MS2.gstatus)<<endl;
   cout<<endl;
 
@@ -49,7 +49,7 @@ int main() {
 
   cout<<"Test -- refer operation"<<endl;
   refer(MS2,MS);
-  cout<<MS2(1,3)()<<endl;
+  cout<<MS2(1,3).status<<endl;
   cout<<*(MS2.gstatus)<<endl;
   cout<<endl;
 
