@@ -50,6 +50,9 @@ target_link_libraries (test-distance-evaluate-direct.run blas)
 
 add_executable (test-pair-item.run test-pair-item.cxx)
 
+add_executable (test-displacement-calc-direct.run test-displacement-calc-direct.cxx)
+target_link_libraries (test-displacement-calc-direct.run blas)
+
 add_executable (test-pair-storage.run test-pair-storage.cxx)
 target_link_libraries (test-pair-storage.run blas)
 
