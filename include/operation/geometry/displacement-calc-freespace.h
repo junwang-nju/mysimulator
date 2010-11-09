@@ -18,8 +18,8 @@ namespace std {
 
   template <typename TA, typename TB, typename TD>
   void Displacement(const Vector<TA>& va, const Vector<TB>& vb, Vector<TD>& vd,
-                    const unsigned int dim, const FreeSpace& G) {
-    Displacement(va,vb,vd,dim);
+                    const FreeSpace& G) {
+    Displacement(va,vb,vd);
   }
 
 }

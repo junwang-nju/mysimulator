@@ -1,5 +1,6 @@
 
-#include "free-space.h"
+#include "data/geometry/free-space.h"
+#include "operation/geometry/displacement-calc-freespace.h"
 #include <iostream>
 using namespace std;
 
@@ -10,7 +11,7 @@ int main() {
 
   cout<<"Test -- assign from another Free Space"<<endl;
   FreeSpace FS2;
-  FS2=FS;
+  copy(FS2,FS);
   cout<<endl;
 
   cout<<"Test -- refer another Free Space"<<endl;
@@ -18,7 +19,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- type id"<<endl;
-  cout<<FS.TypeID<<endl;
+  cout<<FS.Name<<endl;
   cout<<endl;
 
   cout<<"Test -- release"<<endl;
@@ -30,9 +31,9 @@ int main() {
   allocate(va,5);
   allocate(vb,5);
   allocate(v,6);
-  assign(va,3);
-  assign(vb,5); vb[2]=9;
-  DisplacementFunc(va,vb,v,FS);
+  copy(va,3);
+  copy(vb,5); vb[2]=9;
+  Displacement(va,vb,v,FS);
   cout<<v<<endl;
   cout<<endl;
 
