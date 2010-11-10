@@ -71,6 +71,19 @@ namespace std {
   }
 
   template <typename T>
+  void ecopy(PairStorage<T>& P, const PairStorage<T>& cP) {
+    assert(IsAvailable(P));
+    assert(IsAvailable(cP));
+    assert(P.property[MatrixDimension]==cP.property[MatrixDimension]);
+    *(P.gstatus)=*(cP.gstatus);
+    long n=sizeof(PairItem<T>)/sizeof(float);
+    n*=cP.property[MatrixNumberElement];
+    scopy_(&n,reinterpret_cast<float*>(const_cast<PairItem<double>*>(cP.data)),
+           const_cast<long*>(&lOne),reinterpret_cast<float*>(P.data),
+           const_cast<long*>(&lOne));
+  }
+
+  template <typename T>
   void allocate(PairStorage<T>& P, const unsigned int nunit) {
     release(P);
     P.gstatus=new unsigned int;

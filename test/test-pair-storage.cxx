@@ -30,10 +30,13 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- assign from another Matrix Storage"<<endl;
-  PairStorage<double> MS2;
+  PairStorage<double> MS2,MS3;
   allocate(MS2,4);
   copy(MS2,MS);
   cout<<MS2(1,3).status<<endl;
+  allocate(MS3,5);
+  ecopy(MS3,MS);
+  cout<<MS3(1,3).status<<endl;
   cout<<*(MS2.gstatus)<<endl;
   cout<<endl;
 
