@@ -1,12 +1,11 @@
 
-#include "distance-displacement-calc.h"
-#include "free-space.h"
+#include "operation/geometry/distance-calc.h"
+#include "operation/geometry/displacement-calc-freespace.h"
 #include <iostream>
 using namespace std;
 
 int main() {
   Vector<double> va,vb,v;
-  double d;
   allocate(va,5);
   allocate(vb,5);
   allocate(v,5);
@@ -15,15 +14,13 @@ int main() {
   FreeSpace  FS;
 
   cout<<"Test -- distance and displacement for array"<<endl;
-  DistanceDisplacementFunc(va(),vb(),3,v(),d,FS,0,1,0,2,1,1);
+  cout<<Distance(va(),vb(),v(),3,FS,0,1,0,2,1,1)<<endl;
   cout<<v<<endl;
-  cout<<d<<endl;
   cout<<endl;
 
   cout<<"Test -- distance and displacement for vector"<<endl;
-  DistanceDisplacementFunc(va,vb,v,d,FS);
+  cout<<Distance(va,vb,v,FS)<<endl;
   cout<<v<<endl;
-  cout<<d<<endl;
   cout<<endl;
 
   return 1;

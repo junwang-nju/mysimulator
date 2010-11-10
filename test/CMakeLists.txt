@@ -36,8 +36,8 @@ add_executable(test-chain.run test-chain.cxx)
 
 add_executable(test-chain-node.run test-chain-node.cxx)
 
-add_executable(test-distance-displacement-calc.run test-distance-displacement-calc.cxx)
-target_link_libraries (test-distance-displacement-calc.run blas)
+add_executable(test-distance-calc.run test-distance-calc.cxx)
+target_link_libraries (test-distance-calc.run blas)
 
 add_executable (test-periodic-box.run test-periodic-box.cxx)
 target_link_libraries (test-periodic-box.run blas)
