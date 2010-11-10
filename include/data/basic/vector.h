@@ -75,7 +75,7 @@ namespace std {
     assert(IsAvailable(cV));
     unsigned int n=(V.size<cV.size?V.size:cV.size);
     T* p=V.data;
-    T* cp=const_cast<T*>(cV.data);
+    cT* cp=const_cast<cT*>(cV.data);
     for(unsigned int i=0;i<n;++i,++p,++cp) copy(*p,*cp);
   }
 

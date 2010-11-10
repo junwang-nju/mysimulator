@@ -173,6 +173,13 @@ namespace std {
   template <typename T>
   inline bool IsAvailable(const T* ptr) { return ptr!=NULL; }
 
+  bool IsAvailable(const double& d) { return true; }
+  bool IsAvailable(const float& d) { return true; }
+  bool IsAvailable(const int& d) { return true; }
+  bool IsAvailable(const long int& d) { return true; }
+  bool IsAvailable(const unsigned int& d) { return true; }
+  bool IsAvailable(const bool& d) { return true; }
+
   /**
    * @brief check if the concerned object is geometry-related
    *
@@ -373,6 +380,10 @@ namespace std {
   void copy(unsigned int& d, const unsigned int& rd) {d=rd; }
   void copy(unsigned int& d, const int& rd) { d=rd; }
   void copy(unsigned int& d, const long int& rd) { d=rd; }
+
+  void copy(bool& d, const bool& rd) { d=rd; }
+  void copy(bool& d, const unsigned int& rd) { d=(rd==0?false:true); }
+  void copy(bool& d, const int& rd) { d=(rd==0?false:true); }
 
   void scale(double& d, const double& sd) { d*=sd; }
   void scale(double& d, const float& sd) { d*=sd; }
