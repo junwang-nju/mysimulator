@@ -511,6 +511,9 @@ namespace std {
   long int absval(const long int& d) { return abs(d); }
   unsigned int absval(const unsigned int& d) { return d; }
 
+  template <typename T>
+  bool IsDistanceBuffer(const T& t) { return false; }
+
 }
 
 #endif

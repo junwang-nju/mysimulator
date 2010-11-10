@@ -45,8 +45,8 @@ target_link_libraries (test-periodic-box.run blas)
 add_executable (test-distance-evaluate-base.run test-distance-evaluate-base.cxx)
 target_link_libraries (test-distance-evaluate-base.run blas)
 
-add_executable (test-distance-evaluate-direct.run test-distance-evaluate-direct.cxx)
-target_link_libraries (test-distance-evaluate-direct.run blas)
+add_executable (test-distance-calc-simplebuffer.run test-distance-calc-simplebuffer.cxx)
+target_link_libraries (test-distance-calc-simplebuffer.run blas)
 
 add_executable (test-pair-item.run test-pair-item.cxx)
 
