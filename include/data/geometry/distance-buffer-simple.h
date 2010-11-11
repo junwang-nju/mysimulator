@@ -32,7 +32,7 @@ namespace std {
     T& DistanceSquare() { return this->operator[](DistanceSQ).d; }
     const T& DistanceSquare() const { return this->operator[](DistanceSQ).d; }
 
-    void update() {}
+    void renew() {}
 
   };
 
@@ -62,6 +62,7 @@ namespace std {
                                             const unsigned int nunit) {
     allocate(B.DisplaceVec,dim);
     allocate(static_cast<Vector<UniqueParameter>&>(B),SimpleBufferSize);
+    copy(B[NumberUnit],nunit);
   }
 
   template <typename T>

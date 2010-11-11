@@ -56,8 +56,8 @@ target_link_libraries (test-displacement-calc-direct.run blas)
 add_executable (test-pair-storage.run test-pair-storage.cxx)
 target_link_libraries (test-pair-storage.run blas)
 
-add_executable (test-distance-evaluate-with-storage.run test-distance-evaluate-with-storage.cxx)
-target_link_libraries (test-distance-evaluate-with-storage.run blas)
+add_executable (test-distance-calc-pairbuffer.run test-distance-calc-pairbuffer.cxx)
+target_link_libraries (test-distance-calc-pairbuffer.run blas)
 
 add_executable (test-unique-parameter-128bit.run test-unique-parameter-128bit.cxx)
 target_link_libraries (test-unique-parameter-128bit.run blas)
