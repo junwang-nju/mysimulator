@@ -1,6 +1,6 @@
 
-#include "random-generator-mt-standard.h"
-#include "random-generator-generic.h"
+#include "operation/random/random-generator-mt-standard-op.h"
+#include "operation/random/random-generator-op.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -15,38 +15,30 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- init with a seed"<<endl;
-  MS.Init(122378);
+  init(MS,122378);
   cout<<endl;
 
   cout<<"Test -- init with an array"<<endl;
   unsigned int *v=new unsigned int[100];
   for(unsigned int i=0;i<100;++i) v[i]=(1+i)*(2+i);
-  MS.Init(v,40,1,2);
+  init(MS,v,40,1,2);
   Vector<unsigned int> rv;
   refer(rv,v,80);
-  MS.Init(rv);
+  init(MS,rv);
   delete[] v;
   cout<<endl;
 
   cout<<"Test -- generate random number"<<endl;
   cout.precision(20);
-  cout<<MS.UInt32()<<endl;
-  cout<<MS.Int31()<<endl;
-  cout<<MS.DoubleClose0Close1()<<endl;
-  cout<<MS.DoubleClose0Open1()<<endl;
-  cout<<MS.DoubleOpen0Open1()<<endl;
-  cout<<MS.Double53Close0Open1()<<endl;
-  cout<<MS.Double53Close0Open1Slow()<<endl;
-  cout<<MS.LDouble63Close0Open1()<<endl;
-  cout<<MS.LDouble63Close0Open1Slow()<<endl;
-  cout<<endl;
-
-  cout<<"Test -- other interface to generate random number"<<endl;
-  cout<<rand(MS)<<endl;
   cout<<rand<unsigned int>(MS)<<endl;
   cout<<rand<int>(MS)<<endl;
+  cout<<doubleClose0Close1(MS)<<endl;
+  cout<<doubleClose0Open1(MS)<<endl;
+  cout<<doubleOpen0Open1(MS)<<endl;
+  cout<<double53bitSlow(MS)<<endl;
   cout<<rand<double>(MS)<<endl;
   cout<<rand<long double>(MS)<<endl;
+  cout<<longdouble63bitSlow(MS)<<endl;
   cout<<endl;
 
   cout<<"Test -- generate a vector of random data"<<endl;
@@ -71,6 +63,7 @@ int main() {
     if(vbefore[i]!=vafter[i]) cout<<i<<"\tNot Equal!"<<endl;
   cout<<endl;
 
+  /*
   cout<<"Test -- degree of uniformness"<<endl;
   unsigned int nhist=100000, nrnd=nhist*1000;
   v=new unsigned int[nhist];
@@ -85,7 +78,9 @@ int main() {
   delete[] hv;
   delete[] v;
   cout<<endl;
+  */
 
-  return 1;
+  return 0;
+
 }
 

@@ -2,16 +2,17 @@
 #ifndef _Random_Generator_MT_Standard_H_
 #define _Random_Generator_MT_Standard_H_
 
-#include "vector.h"
+#include "data/basic/vector.h"
+#include "data/basic/unique-parameter-128bit.h"
 
 namespace std {
 
   struct MT_Standard : public Vector<unsigned int> {
-    static const int N;
-    static const int M;
-    static const int dNM;
-    static const int NmOne;
-    static const int MmOne;
+    static const unsigned int N;
+    static const unsigned int M;
+    static const unsigned int dNM;
+    static const unsigned int NmOne;
+    static const unsigned int MmOne;
     static const unsigned int MatrixA;
     static const unsigned int UppMask;
     static const unsigned int LowMask;
@@ -33,16 +34,18 @@ namespace std {
     ~MT_Standard() { release(*this); }
   };
 
-  const int MT_Standard::N=624;
-  const int MT_Standard::M=397;
-  const int MT_Standard::dNM=MT_Standard::N-MT_Standard::M;
-  const int MT_Standard::NmOne=MT_Standard::N-1;
-  const int MT_Standard::MmOne=MT_Standard::M-1;
+  const unsigned int MT_Standard::N=624;
+  const unsigned int MT_Standard::M=397;
+  const unsigned int MT_Standard::dNM=MT_Standard::N-MT_Standard::M;
+  const unsigned int MT_Standard::NmOne=MT_Standard::N-1;
+  const unsigned int MT_Standard::MmOne=MT_Standard::M-1;
   const unsigned int MT_Standard::MatrixA=0x9908B0DFUL;
   const unsigned int MT_Standard::UppMask=0x80000000UL;
   const unsigned int MT_Standard::LowMask=0x7FFFFFFFUL;
   const unsigned int MT_Standard::Mag01[2]={0x0UL,MT_Standard::MatrixA};
   const unsigned int MT_Standard::Mask32b=0xFFFFFFFFUL;
+
+  void init(MT_Standard&,const unsigned int);
 
   bool IsAvailable(const MT_Standard& G) {
     return IsAvailable(static_cast<const Vector<unsigned int>&>(G));
@@ -51,7 +54,7 @@ namespace std {
   void copy(MT_Standard& G, const MT_Standard& cG) {
     assert(IsAvailable(G));
     assert(IsAvailable(cG));
-    copy(static_cast<Vector<unsigned int>&>)(G),
+    copy(static_cast<Vector<unsigned int>&>(G),
          static_cast<const Vector<unsigned int>&>(cG));
     copy(*(G.mti),*(cG.mti));
     copy(G.output,cG.output);
@@ -60,49 +63,6 @@ namespace std {
     release(static_cast<Vector<unsigned int>&>(G));
     safe_delete(G.mti);
     copy(G.output,0);
-  }
-  void init(MT_Standard& G, const unsigned int seed) {
-    assert(IsAvailable(G));
-    unsigned int &idx=*(G.mti);
-    unsigned int rmt;
-    G[0]=seed&MT_Standard::Mask32b;
-    rmt=G[0];
-    for(ri=1;ri<MT_Standard::N;++ri) {
-      rmt=1812433253UL*(rmt^(rmt>>30))+ri;
-      rmt&=MT_Standard:Mask32b;
-      G[ri]=rmt;
-    }
-    *(G.mti)=1;
-  }
-  void init(MT_Standard& G, const unsigned int* key, const unsigned int len,
-                            const int off=iZero, const long step=lOne) {
-    assert(IsAvailable(G));
-    assert(IsAvailable(key));
-    unsigned int i,j,k,g,rmt;
-    init(G,19650218UL);
-    i=1;  j=0;  g=0ff;
-    rmt=G[0];
-    k=(MT_Standard::N>len?MT_Standard::N:len);
-    for(;k;--k) {
-      rmt=(G[i]^((rmt^(rmt>>30))*1664525UL))+key[g]+j;
-      rmt&=MT_Standard::Mask32b;
-      G[i]=rmt;
-      ++i;    ++j;    g+=step;
-      if(i>=MT_Standard::N) { G[0]=rmt; i=1; }
-      if(j>=len)  { j=0; g=off; }
-    }
-    for(k=MT_Standard::NmOne;k;--k) {
-      rmt=(G[i]^((rmt^(rmt>>30))*1566083941UL))-i;
-      rmt&=MT_Standard::Mask32b;
-      G[i]=rmt;
-      ++i;
-      if(i>=MT_Standard::N) { G[0]=rmt; i=1; }
-    }
-    G[0]=MT_Standard::UppMask;
-    *(G.mti)=1;
-  }
-  void init(MT_Standard& G, const Vector<unsigned int>& key) {
-    init(G,key.data,key.size);
   }
   void allocate(MT_Standard& G) {
     allocate(static_cast<Vector<unsigned int>&>(G),G.N);
@@ -113,6 +73,17 @@ namespace std {
     refer(static_cast<Vector<unsigned int>&>(G),
           static_cast<const Vector<unsigned int>&>(rG));
     G.mti=rG.mti;
+  }
+
+  ostream& operator<<(ostream& os, const MT_Standard& G) {
+    assert(IsAvailable(G));
+    os<<static_cast<const Vector<unsigned int>&>(G)<<"\t"<<*(G.mti);
+    return os;
+  }
+  istream& operator>>(istream& is, MT_Standard& G) {
+    assert(IsAvailable(G));
+    is>>static_cast<Vector<unsigned int>&>(G)>>*(G.mti);
+    return is;
   }
 
 }
