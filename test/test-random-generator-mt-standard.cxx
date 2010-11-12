@@ -63,22 +63,23 @@ int main() {
     if(vbefore[i]!=vafter[i]) cout<<i<<"\tNot Equal!"<<endl;
   cout<<endl;
 
-  /*
   cout<<"Test -- degree of uniformness"<<endl;
   unsigned int nhist=100000, nrnd=nhist*1000;
-  v=new unsigned int[nhist];
-  assign(v,0U,nhist);
+  allocate(rv,nhist);
+  copy(rv,0);
   for(unsigned int i=0;i<nrnd;++i)
-    v[static_cast<unsigned int>(rand(MS)*nhist)]++;
+    rv[static_cast<unsigned int>(rand<double>(MS)*nhist)]++;
+  cout<<"==========="<<endl;
   unsigned int nhhist=800;
-  unsigned int *hv=new unsigned int[nhhist];
-  assign(hv,0U,nhhist);
-  for(unsigned int i=0;i<nhist;++i) hv[v[i]-600]++;
+  Vector<unsigned int> hv(nhhist);
+  copy(hv,0);
+  for(unsigned int i=0;i<nhist;++i) hv[rv[i]-600]++;
+  cout<<"==========="<<endl;
+  for(unsigned int i=0;i<nhhist;++i)  cout<<i<<"\t"<<hv[i]<<endl;
   cout<<"(The data has been checked, but is not output here)"<<endl;
-  delete[] hv;
-  delete[] v;
+  release(hv);
+  release(rv);
   cout<<endl;
-  */
 
   return 0;
 
