@@ -96,61 +96,6 @@ namespace std {
       z=_mm_xor_si128(z,y);
       return z;
     }
-    void GenRandAll() {
-      unsigned int i;
-      __m128i r,r1,r2;
-      r1=_mm_loadu_si128(&(this->operator[](N-2).si));
-      r2=_mm_loadu_si128(&(this->operator[](N-1).si));
-      for(i=0;i<N-Pos1;++i) {
-        r=DoRecursion(this->operator[](i).si,this->operator[](i+Pos1).si,r1,r2);
-        _mm_storeu_si128(&(this->operator[](i).si),r);
-        r1=r2;
-        r2=r;
-      }
-      for(;i<N;++i) {
-        r=DoRecursion(this->operator[](i).si,this->operator[](i+Pos1-N).si,
-                      r1,r2);
-        _mm_storeu_si128(&(this->operator[](i).si),r);
-        r1=r2;
-        r2=r;
-      }
-    }
-    void GenRandArray(UniqueParameter128b* array, const unsigned int size) {
-      assert(size>=N);
-      unsigned i,j;
-      __m128i r,r1,r2;
-      r1=_mm_loadu_si128(&(this->operator[](N-2).si));
-      r2=_mm_loadu_si128(&(this->operator[](N-1).si));
-      for(i=0;i<N-Pos1;++i) {
-        r=DoRecursion(this->operator[](i).si,this->operator[](i+Pos1).si,r1,r2);
-        _mm_storeu_si128(&(array[i].si),r);
-        r1=r2;
-        r2=r;
-      }
-      for(;i<N;++i) {
-        r=DoRecursion(this->operator[](i).si,array[i+Pos1-N].si,r1,r2);
-        _mm_storeu_si128(&(array[i].si),r);
-        r1=r2;
-        r2=r;
-      }
-      for(;i+N<size;++i) {
-        r=DoRecursion(array[i-N].si,array[i+Pos1-N].si,r1,r2);
-        _mm_storeu_si128(&(array[i].si),r);
-        r1=r2;
-        r2=r;
-      }
-      for(j=0;j+size<N+N;++j) {
-        r=_mm_loadu_si128(&(array[j+size-N].si));
-        _mm_storeu_si128(&(this->operator[](j).si),r);
-      }
-      for(;i<size;++i) {
-        r=DoRecursion(array[i-N].si,array[i+Pos1-N].si,r1,r2);
-        _mm_storeu_si128(&(array[i].si),r);
-        _mm_storeu_si128(&(this->operator[](j++).si),r);
-        r1=r2;
-        r2=r;
-      }
-    }
 #else
     const UniqueParameter128b& DoRecursion(const UniqueParameter128b& a,
                                            const UniqueParameter128b& b,
@@ -164,54 +109,6 @@ namespace std {
       r.u[2]=a.u[2]^x.u[2]^((b.u[2]>>SR1)&Msk3)^y.u[2]^(d.u[2]<<SL1);
       r.u[3]=a.u[3]^x.u[3]^((b.u[3]>>SR1)&Msk4)^y.u[3]^(d.u[3]<<SL1);
       return r;
-    }
-    void GenRandAll() {
-      unsigned int i;
-      UniqueParameter128b *r1=&(this->operator[](N-2));
-      UniqueParameter128b *r2=&(this->operator[](N-1));
-      for(i=0;i<N-Pos1;++i) {
-        this->operator[](i)=DoRecursion(this->operator[](i),
-                                        this->operator[](i+Pos1),*r1,*r2);
-        r1=r2;
-        r2=&(this->operator[](i));
-      }
-      for(;i<N;++i) {
-        this->operator[](i)=DoRecursion(this->operator[](i),
-                                        this->operator[](i+Pos1-N),*r1,*r2);
-        r1=r2;
-        r2=r;
-      }
-    }
-    void GenRandArray(UniqueParameter128b* array, const unsigned int size) {
-      unsigned int i,j;
-      UniqueParameter128b *r1=&(this->operator[](N-2));
-      UniqueParameter128b *r2=&(this->operator[](N-1));
-      for(i=0;i<N-Pos1;++i) {
-        copy(array[i],
-             DoRecursion(this->operator[](i),this->operator[](i+Pos1),*r1,*r2));
-        r1=r2;
-        r2=&array[i];
-      }
-      for(;i<N;++i) {
-        copy(array[i],
-             DoRecursion(this->operator[](i),array[i+Pos1],*r1,*r2));
-        r1=r2;
-        r2=&array[i];
-      }
-      for(;i+N<size;++i) {
-        copy(array[i],
-             DoRecursion(array[i-N],array[i+Pos1-N],*r1,*r2))
-        r1=r2;
-        r2=&array[i];
-      }
-      for(j=0;j+size<N+N;++j) this->operator[](j)=array[j+size-N];
-      for(;i<size;++i,++j) {
-        copy(array[i],
-             DoRecursion(array[i-N],array[i+Pos1-N],*r1,*r2));
-             r1=r2;
-             r2=&array[i];
-             this->operator[](j)=array[i];
-      }
     }
 #endif
 

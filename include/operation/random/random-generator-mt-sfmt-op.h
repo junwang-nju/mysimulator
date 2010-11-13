@@ -7,6 +7,124 @@
 
 namespace std {
 
+#ifdef HAVE_SSE2
+  template <unsigned int LoopFac>
+  void GenRandAll(SFMT<LoopFac>& G) {
+    unsigned int i;
+    __m128i r,r1,r2;
+    r1=_mm_loadu_si128(&(G[SFMT<LoopFac>::N-2].si));
+    r2=_mm_loadu_si128(&(G[SFMT<LoopFac>::N-1].si));
+    for(i=0;i<SFMT<LoopFac>::N-SFMT<LoopFac>::Pos1;++i) {
+      r=G.DoRecursion(G[i].si,G[i+SFMT<LoopFac>::Pos1].si,r1,r2);
+      _mm_storeu_si128(&(G[i].si),r);
+      r1=r2;
+      r2=r;
+    }
+    for(;i<SFMT<LoopFac>::N;++i) {
+      r=G.DoRecursion(G[i].si,G[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N].si,
+                      r1,r2);
+      _mm_storeu_si128(&(G[i].si),r);
+      r1=r2;
+      r2=r;
+    }
+  }
+  template <unsigned int LoopFac>
+  void GenRandArray(SFMT<LoopFac>& G,
+                    UniqueParameter128b* array, const unsigned int size) {
+    assert(size>=SFMT<LoopFac>::N);
+    unsigned i,j;
+    __m128i r,r1,r2;
+    r1=_mm_loadu_si128(&(G[SFMT<LoopFac>::N-2].si));
+    r2=_mm_loadu_si128(&(G[SFMT<LoopFac>::N-1].si));
+    for(i=0;i<SFMT<LoopFac>::N-SFMT<LoopFac>::Pos1;++i) {
+      r=G.DoRecursion(G[i].si,G[i+SFMT<LoopFac>::Pos1].si,r1,r2);
+      _mm_storeu_si128(&(array[i].si),r);
+      r1=r2;
+      r2=r;
+    }
+    for(;i<SFMT<LoopFac>::N;++i) {
+      r=G.DoRecursion(G[i].si,array[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N].si,
+                      r1,r2);
+      _mm_storeu_si128(&(array[i].si),r);
+      r1=r2;
+      r2=r;
+    }
+    for(;i+SFMT<LoopFac>::N<size;++i) {
+      r=G.DoRecursion(array[i-SFMT<LoopFac>::N].si,
+                      array[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N].si,r1,r2);
+      _mm_storeu_si128(&(array[i].si),r);
+      r1=r2;
+      r2=r;
+    }
+    for(j=0;j+size<SFMT<LoopFac>::N*2;++j) {
+      r=_mm_loadu_si128(&(array[j+size-SFMT<LoopFac>::N].si));
+      _mm_storeu_si128(&(G[j].si),r);
+    }
+    for(;i<size;++i) {
+      r=G.DoRecursion(array[i-SFMT<LoopFac>::N].si,
+                      array[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N].si,r1,r2);
+      _mm_storeu_si128(&(array[i].si),r);
+      _mm_storeu_si128(&(G[j++].si),r);
+      r1=r2;
+      r2=r;
+    }
+  }
+#else
+  template <unsigned int LoopFac>
+  void GenRandAll(SFMT<LoopFac>& G) {
+    unsigned int i;
+    UniqueParameter128b *r1=&(G[SFMT<LoopFac>::N-2]);
+    UniqueParameter128b *r2=&(G[SFMT<LoopFac>::N-1]);
+    for(i=0;i<SFMT<LoopFac>::N-SFMT<LoopFac>::Pos1;++i) {
+      G[i]=G.DoRecursion(G[i],G[i+SFMT<LoopFac>::Pos1],*r1,*r2);
+      r1=r2;
+      r2=&(G[i]);
+    }
+    for(;i<N;++i) {
+      G[i]=G.DoRecursion(G[i],G[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N],
+                         *r1,*r2);
+      r1=r2;
+      r2=r;
+    }
+  }
+  template <unsigned int LoopFac>
+  void GenRandArray(SFMT<LoopFac>& G,
+                    UniqueParameter128b* array, const unsigned int size) {
+    unsigned int i,j;
+    UniqueParameter128b *r1=&(G[SFMT<LoopFac>::N-2]);
+    UniqueParameter128b *r2=&(G[SFMT<LoopFac>::N-1]);
+    for(i=0;i<SFMT<LoopFac>::N-SFMT<LoopFac>::Pos1;++i) {
+      copy(array[i],G.DoRecursion(G[i],G[i+SFMT<LoopFac>::Pos1],*r1,*r2));
+      r1=r2;
+      r2=&array[i];
+    }
+    for(;i<SFMT<LoopFac>::N;++i) {
+      copy(array[i],G.DoRecursion(G[i],array[i+SFMT<LoopFac>::Pos1],*r1,*r2));
+      r1=r2;
+      r2=&array[i];
+    }
+    for(;i+SFMT<LoopFac>::N<size;++i) {
+      copy(array[i],
+           G.DoRecursion(array[i-SFMT<LoopFac>::N],
+                         array[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N],
+                         *r1,*r2));
+      r1=r2;
+      r2=&array[i];
+    }
+    for(j=0;j+size<SFMT<LoopFac>::N*2;++j)
+      G[j]=array[j+size-SFMT<LoopFac>::N];
+    for(;i<size;++i,++j) {
+      copy(array[i],
+           G.DoRecursion(array[i-N],
+                         array[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N],
+                         *r1,*r2));
+           r1=r2;
+           r2=&array[i];
+           G[j]=array[i];
+    }
+  }
+#endif
+
   template <unsigned int LoopFac>
   void init(SFMT<LoopFac>& G, const unsigned int seed) {
     assert(IsAvailable(G));
@@ -87,7 +205,7 @@ namespace std {
 
   template <unsigned int LoopFac>
   const unsigned int& irand(SFMT<LoopFac>& G) {
-    if(*(G.idx)>=SFMT<LoopFac>::N32) { G.GenRandAll(); *(G.idx)=0; }
+    if(*(G.idx)>=SFMT<LoopFac>::N32) { GenRandAll(G); *(G.idx)=0; }
     G.output.u[0]=G[0].u[*(G.idx)];
     ++(*(G.idx));
     return G.output.u[0];
@@ -134,7 +252,7 @@ namespace std {
   template <unsigned int LoopFac>
   const unsigned long long int& lirand(SFMT<LoopFac>& G) {
     assert(((*(G.idx))&1)==0);
-    if(*(G.idx)>=SFMT<LoopFac>::N32) { G.GenRandAll(); *(G.idx)=0; }
+    if(*(G.idx)>=SFMT<LoopFac>::N32) { GenRandAll(G); *(G.idx)=0; }
     G.output.ull[0]=G[0].ull[(*(G.idx))>>1];
     *(G.idx)+=2;
     return G.output.ull[0];
@@ -288,7 +406,7 @@ namespace std {
     assert(*(G.idx)==SFMT<LoopFac>::N32);
     assert(size%4==0);
     assert(size>=SFMT<LoopFac>::N32);
-    G.GenRandArray(reinterpret_cast<UniqueParameter128b*>(array),size>>2);
+    GenRandArray(G,reinterpret_cast<UniqueParameter128b*>(array),size>>2);
     *(G.idx)=SFMT<LoopFac>::N32;
   }
 
