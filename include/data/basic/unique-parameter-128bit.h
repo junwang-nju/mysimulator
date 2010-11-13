@@ -140,7 +140,8 @@ namespace std {
   istream& operator>>(istream& is, UniqueParameter128b& P) {
     static char flag;
     static char buff[1024];
-    is>>flag;
+    is>>buff;
+    flag=buff[0];
     if((flag=='G')||(flag=='g'))  is>>P.ld;
     else if((flag=='D')||(flag=='d')) is>>buff>>P.d[0]>>P.d[1]>>buff;
     else if((flag=='F')||(flag=='f'))

@@ -60,8 +60,9 @@ namespace std {
     copy(G.output,cG.output);
   }
   void release(MT_Standard& G) {
+    if(G.state==Allocated)  safe_delete(G.mti);
+    else                    G.mti=NULL;
     release(static_cast<Vector<unsigned int>&>(G));
-    safe_delete(G.mti);
     copy(G.output,0);
   }
   void allocate(MT_Standard& G) {
