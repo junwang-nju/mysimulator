@@ -10,8 +10,8 @@ namespace std {
 #ifdef HAVE_SSE2
   __m128i   dSFMT_SSE2_ParamMask;
   __m128i   dSFMT_SSE2_IntOne;
-  __m128i   dSFMT_SSE2_DoubleTwo;
-  __m128i   dSFMT_SSE2_DoubleMOne;
+  __m128d   dSFMT_SSE2_DoubleTwo;
+  __m128d   dSFMT_SSE2_DoubleMOne;
 #endif
 
   template <unsigned int LoopFac=19937>
@@ -60,8 +60,12 @@ namespace std {
     }
     ~dSFMT() { release(*this); }
 
-    void initfunc1(const unsigned int x) { return (x^(x>>27))*1664525UL; }
-    void initfunc2(const unsigned int x) { return (x^(x>>27))*1566083941UL; }
+    unsigned int initfunc1(const unsigned int x) {
+      return (x^(x>>27))*1664525UL;
+    }
+    unsigned int initfunc2(const unsigned int x) {
+      return (x^(x>>27))*1566083941UL;
+    }
     void initMask() {
       unsigned long long int *pSFMT;
       pSFMT=&(this->data->ull[0]);
@@ -77,6 +81,36 @@ namespace std {
       dSFMT_SSE2_DoubleTwo=_mm_set_pd(2.0,2.0);
       dSFMT_SSE2_DoubleMOne=_mm_set_pd(-1.0,-1.0);
       first=false;
+    }
+    void DoRecursion(const UniqueParameter128b& a,const UniqueParameter128b& b,
+                     UniqueParameter128b& r, UniqueParameter128b& u) {
+      __m128i v,w,x,y,z,mask,bs;
+      mask=_mm_loadu_si128(&dSFMT_SSE2_ParamMask);
+      x=_mm_loadu_si128(&(a.si));
+      bs=_mm_loadu_si128(&(b.si));
+      z=_mm_slli_epi64(x,SL1);
+      y=_mm_shuffle_epi32(u.si,SSE2_Shuff);
+      z=_mm_xor_si128(z,bs);
+      y=_mm_xor_si128(y,z);
+      v=_mm_srli_epi64(y,SR);
+      w=_mm_and_si128(y,dSFMT_SSE2_ParamMask);
+      v=_mm_xor_si128(v,x);
+      v=_mm_xor_si128(v,w);
+      _mm_storeu_si128(&(r.si),v);
+      _mm_storeu_si128(&(u.si),y);
+    }
+#else
+    void DoRecursion(const UniqueParameter128b& a,const UniqueParameter128b& b,
+                     UniqueParameter128b& r, UniqueParameter128b& u) {
+      unsigned long long int t0,t1,L0,L1;
+      t0=a.ull[0];
+      t1=a.ull[1];
+      L0=u.ull[0];
+      L1=u.ull[1];
+      u.ull[0]=(t0<<SL1)^(L1>>32)^(L1<<32)^b.ull[0];
+      u.ull[1]=(t1<<SL1)^(L0>>32)^(L0<<32)^b.ull[1];
+      r.ull[0]=(u.ull[0]>>SR)^(u.ull[0]&Msk1)^t0;
+      r.ull[1]=(u.ull[1]>>SR)^(u.ull[1]&Msk1)^t1;
     }
 #endif
 
@@ -347,6 +381,30 @@ namespace std {
     refer(static_cast<Vector<UniqueParameter128b>&>(G),
           static_cast<const Vector<UniqueParameter128b>&>(rG));
     G.idx=rG.idx;
+  }
+
+  template <unsigned int LoopFac>
+  ostream& operator<<(ostream& os, const dSFMT<LoopFac>& G) {
+    assert(IsAvailable(G));
+    os<<LoopFac<<"\t";
+    for(unsigned int i=0;i<G.size;++i)
+    for(unsigned int k=0;k<4;++k)
+      os<<G[i].u[k]<<"\t";
+    os<<*(G.idx);
+    return os;
+  }
+
+  template <unsigned int LoopFac>
+  istream& operator>>(istream& is, dSFMT<LoopFac>& G) {
+    assert(IsAvailable(G));
+    unsigned int expLoopFac;
+    is>>expLoopFac;
+    if(expLoopFac!=LoopFac) myError("Imcompatiable LoopFac for dSFMT");
+    for(unsigned int i=0;i<G.size;++i)
+    for(unsigned int k=0;k<4;++k)
+      is>>G[i].u[k];
+    is>>*(G.idx);
+    return is;
   }
 
 }
