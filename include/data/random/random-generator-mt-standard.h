@@ -66,6 +66,7 @@ namespace std {
     copy(G.output,0);
   }
   void allocate(MT_Standard& G) {
+    release(G);
     allocate(static_cast<Vector<unsigned int>&>(G),G.N);
     G.mti=new unsigned int;
     init(G,5489UL);

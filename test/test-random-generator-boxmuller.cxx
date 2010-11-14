@@ -1,6 +1,6 @@
 
-#include "random-generator-boxmuller.h"
-#include "random-generator-generic.h"
+#include "operation/random/random-generator-boxmuller-op.h"
+#include "operation/random/random-generator-op.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -15,16 +15,10 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- init with a seed"<<endl;
-  bm.Init(1227389);
-  cout<<endl;
-
-  cout<<"Test -- generate random numbers"<<endl;
-  cout.precision(20);
-  cout<<bm.DoubleNormal()<<endl;
+  init(bm,1227389);
   cout<<endl;
 
   cout<<"Test -- other interfaces to generate random numbers"<<endl;
-  cout<<rand(bm)<<endl;
   cout<<rand<double>(bm)<<endl;
   cout<<endl;
 
@@ -52,13 +46,13 @@ int main() {
 
   cout<<"Test -- distribution"<<endl;
   unsigned int nhist=10000,nrnd=nhist*1000,hnhist=nhist/2,whist=1000;
-  unsigned int *iv=new unsigned int[nhist];
-  assign(iv,0U,nhist);
+  Vector<unsigned int> iv(nhist);
+  copy(iv,0U);
   for(unsigned int i=0,m;i<nrnd;++i) {
-    m=static_cast<unsigned int>(rand(bm)*whist+hnhist);
+    m=static_cast<unsigned int>(rand<double>(bm)*whist+hnhist);
     if((m>=0)&&(m<nhist)) iv[m]++;
   }
-  //for(unsigned int i=0;i<nhist;++i) cout<<i<<"\t"<<iv[i]<<endl;
+  for(unsigned int i=0;i<nhist;++i) cout<<i<<"\t"<<iv[i]<<endl;
   cout<<"(data has been checked, but is not output here)"<<endl;
   cout<<endl;
 
