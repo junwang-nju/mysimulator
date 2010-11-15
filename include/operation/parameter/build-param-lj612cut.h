@@ -1,30 +1,13 @@
 
-#ifndef _Parameter_Name_LJ612Cut_H_
-#define _Parameter_Name_LJ612Cut_H_
+#ifndef _Build_Parameter_LJ612Cut_H_
+#define _Build_Parameter_LJ612Cut_H_
+
+#include "data/name/parameter-lj612cut.h"
+#include "data/basic/unique-parameter.h"
 
 namespace std {
 
-  enum LJ612CutParameterName {
-    LJ612CutEqRadius=0,
-    LJ612CutEqEnergyDepth,
-    LJ612CutCutR,
-    LJ612CutCutRSQ,
-    LJ612CutVc,
-    LJ612CutKc,
-    LJ612CutRealSigma6,
-    LJ612CutRealStrength,
-    LJ612CutTwlfRealStrength,
-    LJ612CutNumberParameter
-  };
-
-}
-
-#include "unique-parameter.h"
-#include "vector.h"
-
-namespace std {
-
-  void GenerateParameterLJ612Cut(UniqueParameter* prm) {
+  void BuildParameterLJ612Cut(UniqueParameter* prm) {
     double r0rc,r0rc6,r06,rc6;
     r06=prm[LJ612CutEqRadius].d;
     rc6=prm[LJ612CutCutR].d;
@@ -50,9 +33,15 @@ namespace std {
     prm[LJ612CutTwlfRealStrength]=12*tmd;
   }
 
-  void GenerateParameterLJ612Cut(Vector<UniqueParameter>& prm) {
+}
+
+#include "data/basic/vector.h"
+
+namespace std {
+
+  void BuildParameterLJ612Cut(Vector<UniqueParameter>& prm) {
     assert(prm.size>=LJ612CutNumberParameter);
-    GenerateParameterLJ612Cut(prm());
+    GenerateParameterLJ612Cut(prm.data);
   }
 
 }
