@@ -6,16 +6,14 @@
 
 namespace std {
 
-  void FuncLJ1012Cut(const double& dsq, const UniqueParameter* prm,
-                     double& func) {
+  template <typename T>
+  void FuncLJ1012Cut(const T& dsq, const UniqueParameter* prm, T& func) {
   }
 
-  void DiffLJ1012Cut(const double& dsq, const UniqueParameter* prm,
-                     double& diff) {
+  void DiffLJ1012Cut(const T& dsq, const UniqueParameter* prm, T& diff) {
   }
 
-  void BothLJ1012Cut(const double& dsq, const UniqueParameter* prm,
-                     double& func, double& diff) {
+  void BothLJ1012Cut(const T& dsq, const UniqueParameter* prm,T& func,T& diff){
   }
 
 }

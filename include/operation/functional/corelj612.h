@@ -7,8 +7,8 @@
 
 namespace std {
 
-  void FuncCoreLJ612(const double dsq, const UniqueParameter* prm,
-                     double& func) {
+  template <typename T>
+  void FuncCoreLJ612(const T& dsq, const UniqueParameter* prm, T& func) {
     if(dsq>prm[CoreLJ612RadiusSQ].d)  func=0.;
     else {
       FuncLJ612(dsq,prm,func);
@@ -16,14 +16,15 @@ namespace std {
     }
   }
 
-  void DiffCoreLJ612(const double dsq, const UniqueParameter* prm,
-                     double& diff) {
+  template <typename T>
+  void DiffCoreLJ612(const T& dsq, const UniqueParameter* prm, T& diff) {
     if(dsq>prm[CoreLJ612RadiusSQ].d)  diff=0.;
     else DiffLJ612(dsq,prm,diff);
   }
 
-  void BothCoreLJ612(const double dsq, const UniqueParameter* prm,
-                     double& func, double& diff) {
+  template <typename T>
+  void BothCoreLJ612(const T& dsq, const UniqueParameter* prm,
+                     T& func, T& diff) {
     if(dsq>prm[CoreLJ612RadiusSQ].d)  diff=0.;
     else {
       BothLJ612(dsq,prm,func,diff);
