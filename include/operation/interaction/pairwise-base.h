@@ -7,9 +7,11 @@
 
 namespace std {
 
-  template <typename T>
+  template <typename T, typename DistBuffer>
   void EFuncPairwiseBase(
-      const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P) {
+      const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
+      DistBuffer<T>& B, const GeomType& Geo, T& Energy,
+      void (*efunc)(const T&,const UniqueParameter*,T&)) {
   }
 
 }

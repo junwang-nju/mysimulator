@@ -25,6 +25,15 @@ namespace std {
       myError("Cannot copy Unique Parameter");
       return *this;
     }
+
+    template <typename T>
+    T& operator()() { myError("Unknown Type"); return static_cast<T>(0); }
+    template <typename T>
+    const T& operator()() const {
+      myError("Unknown Type");
+      return static_cast<T>(0);
+    }
+
   };
 
   void copy(UniqueParameter& P, const UniqueParameter& cP) { P.ull=cP.ull; }
@@ -72,6 +81,40 @@ namespace std {
            const_cast<double*>(&d),const_cast<long*>(&lZero),
            reinterpret_cast<double*>(P.data),const_cast<long*>(&lOne));
   }
+
+  template <>
+  double& UniqueParameter::operator()<double>() { return d; }
+  template <>
+  const double& UniqueParameter::operator()<double>() const { return d; }
+
+  template <>
+  float& UniqueParameter::operator()<float>() { return f; }
+  template <>
+  const float& UniqueParameter::operator()<float>() const { return f; }
+
+  template <>
+  unsigned int& UniqueParameter::operator()<unsigned int>() { return u; }
+  template <>
+  const unsigned int& UniqueParameter::operator()<unsigned int>() const {
+    return u;
+  }
+
+  template <>
+  int& UniqueParameter::operator()<int>() { return i; }
+  template <>
+  const int& UniqueParameter::operator()<int>() const { return i; }
+
+  template <>
+  unsigned long long int&
+  UniqueParameter::operator()<unsigned long long int>() { return ull; }
+  template <>
+  const unsigned long long int&
+  UniqueParameter::operator()<unsigned long long int>() const { return ull; }
+
+  template <>
+  void*& UniqueParameter::operator()<void*>() { return ptr; }
+  template <>
+  void* const& UniqueParameter::operator()<void*>() const { return ptr; }
 
   istream& operator>>(istream& is, UniqueParameter& P) {
     static char flag;

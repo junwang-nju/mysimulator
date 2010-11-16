@@ -6,23 +6,25 @@
 
 namespace std {
 
-  void FuncLJ612(const double dsq, const UniqueParameter* prm, double& func) {
-    double tmd=prm[LJ612EqRadiusSQ].d/dsq;
+  template <typename T>
+  void FuncLJ612(const T& dsq, const UniqueParameter* prm, T& func) {
+    T tmd=prm[LJ612EqRadiusSQ].d/dsq;
     tmd*=tmd*tmd;
-    func=prm[LJ612EqEnergDepth].d*tmd*(tmd-2.);
+    func=prm[LJ612EqEnergDepth]<T>()*tmd*(tmd-2.);
   }
 
-  void DiffLJ612(const double dsq, const UniqueParameter* prm, double& diff) {
-    double ivd2=1./dsq;
-    oduble tmd=prm[LJ612EqRadiusSQ].d*ivd2;
+  template <typename T>
+  void DiffLJ612(const T& dsq, const UniqueParameter* prm, T& diff) {
+    T ivd2=1./dsq;
+    T tmd=prm[LJ612EqRadiusSQ].d*ivd2;
     tmd*=tmd*tmd;
-    diff=prm[LJ612TwlfEqEnergyDepth].d*tmd*(1.-tmd)*ivd2;
+    diff=prm[LJ612TwlfEqEnergyDepth]<T>()*tmd*(1.-tmd)*ivd2;
   }
 
-  void BothLJ612(const double dsq, const UniqueParameter* prm,
-                 double& func, double& diff) {
-    double ivd2=1./dsq;
-    oduble tmd=prm[LJ612EqRadiusSQ].d*ivd2;
+  template <typename T>
+  void BothLJ612(const T& dsq, const UniqueParameter* prm, T& func, T& diff) {
+    T ivd2=1./dsq;
+    T tmd=prm[LJ612EqRadiusSQ].d*ivd2;
     tmd*=tmd*tmd;
     func=prm[LJ612EqEnergDepth].d*tmd*(tmd-2.);
     diff=prm[LJ612TwlfEqEnergyDepth].d*tmd*(1.-tmd)*ivd2;
