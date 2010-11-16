@@ -30,9 +30,13 @@ int main() {
   PropertyList<double> dPL3;
   refer(dPL3,dPL2);
   cout<<dPL3<<endl;
+  cout<<"---------------"<<endl;
   swap(dPL,dPL2);
+  cout<<"---------------"<<endl;
   cout<<dPL2<<endl;
+  cout<<"---------------"<<endl;
   cout<<dPL3<<endl;
+  cout<<"---------------"<<endl;
   return 1;
 }
 

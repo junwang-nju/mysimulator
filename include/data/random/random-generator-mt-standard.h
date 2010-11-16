@@ -2,7 +2,6 @@
 #ifndef _Random_Generator_MT_Standard_H_
 #define _Random_Generator_MT_Standard_H_
 
-#include "data/basic/vector.h"
 #include "data/basic/unique-parameter-128bit.h"
 
 namespace std {

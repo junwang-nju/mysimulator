@@ -2,7 +2,6 @@
 #ifndef _Distance_Buffer_H_
 #define _Distance_Buffer_H_
 
-#include "data/basic/vector.h"
 #include "data/basic/unique-parameter.h"
 #include "data/name/distance-buffer-name.h"
 

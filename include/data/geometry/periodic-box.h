@@ -3,7 +3,7 @@
 #define _Periodic_Box_H_
 
 #include "data/name/geometry-name.h"
-#include "data/basic/vector.h"
+#include "operation/basic/vector-op.h"
 
 namespace std {
 

@@ -2,7 +2,7 @@
 #ifndef _Property_List_H_
 #define _Property_List_H_
 
-#include "data/basic/vector.h"
+#include "operation/basic/vector-op.h"
 
 namespace std {
 
@@ -97,7 +97,9 @@ namespace std {
   void swap(PropertyList<T>& LA, PropertyList<T>& LB) {
     swap(LA.structure,LB.structure);
     swap(LA.nunit,LB.nunit);
+  cout<<"-----A---------"<<endl;
     swap(static_cast<Vector<T>&>(LA),static_cast<Vector<T>&>(LB));
+  cout<<"-----B---------"<<endl;
   }
 
   template <typename T>
