@@ -41,7 +41,7 @@ namespace std {
 
   void BuildParameterLJ612Cut(Vector<UniqueParameter>& prm) {
     assert(prm.size>=LJ612CutNumberParameter);
-    GenerateParameterLJ612Cut(prm.data);
+    BuildParameterLJ612Cut(prm.data);
   }
 
 }
