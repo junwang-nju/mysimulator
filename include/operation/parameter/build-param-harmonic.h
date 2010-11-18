@@ -7,8 +7,9 @@
 
 namespace std {
 
+  template <typename T>
   void BuildParameterHarmonic(UniqueParameter* prm) {
-    copy(prm[HarmonicDualEqStrength],2*prm[HarmonicEqStrength].d);
+    copy(prm[HarmonicDualEqStrength],2*prm[HarmonicEqStrength]<T>());
   }
 
 }
@@ -17,9 +18,10 @@ namespace std {
 
 namespace std {
 
+  template <typename T>
   void BuildParameterHarmonic(Vector<UniqueParameter>& prm) {
     assert(prm.size>=HarmonicNumberParameter);
-    BuildParameterHarmonic(prm.data);
+    BuildParameterHarmonic<T>(prm.data);
   }
 
 }
