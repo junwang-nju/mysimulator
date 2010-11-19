@@ -1,31 +1,31 @@
 
-#ifndef _Interaction_Pairwise_LJ612_H_
-#define _Interaction_Pairwise_LJ612_H_
+#ifndef _Interaction_Pairwise_Coulomb_H_
+#define _Interaction_Pairwise_Coulomb_H_
 
 #include "operation/interaction/pairwise-base.h"
-#include "operation/functional/lj612.h"
+#include "operation/functional/coulomb.h"
 
 namespace std {
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
-  void EFuncLJ612(
+  void EFuncCoulomb(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy) {
-    EFuncPairwiseBase(X,idx,P,B,Geo,Energy,FuncLJ612);
+    EFuncPairwiseBase(X,idx,P,B,Geo,Energy,FuncCoulomb);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
-  void GFuncLJ612(
+  void GFuncCoulomb(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient) {
-    GFuncPairwiseBase(X,idx,P,B,Geo,Gradient,DiffLJ612);
+    GFuncPairwiseBase(X,idx,P,B,Geo,Gradient,DiffCoulomb);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
-  void BFuncLJ612(
+  void BFuncCoulomb(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient) {
-    BFuncPairwiseBase(X,idx,P,B,Geo,Energy,Gradient,BothLJ612);
+    BFuncPairwiseBase(X,idx,P,B,Geo,Energy,Gradient,BothCoulomb);
   }
 
 }

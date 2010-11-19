@@ -24,8 +24,7 @@ namespace std {
   template <typename T,template <typename> class DistBuffer,typename GeomType>
   void BFuncHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
-      DistBuffer<T>& B, const GeomType& Geo, double& Energy,
-      Vector<double>* Gradient) {
+      DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient) {
     BFuncPairwiseBase(X,idx,P,B,Geo,Energy,Gradient,BothHarmonic);
   }
 

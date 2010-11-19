@@ -33,8 +33,7 @@ namespace std {
   template <typename T,template <typename> class DistBuffer,typename GeomType>
   void BFuncPairwiseBase(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
-      DistBuffer<T>& B, const GeomType& Geo, double& Energy,
-      Vector<double>* Gradient,
+      DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
       void (*bfunc)(const double&,const UniqueParameter*,double&,double&)) {
     unsigned int I=idx[0], J=idx[1];
     T dsq=Distance(X[I],X[J],I,J,Geo,B),ee,ef;
