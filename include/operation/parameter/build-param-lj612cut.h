@@ -7,30 +7,31 @@
 
 namespace std {
 
+  template <typename T>
   void BuildParameterLJ612Cut(UniqueParameter* prm) {
-    double r0rc,r0rc6,r06,rc6;
-    r06=prm[LJ612CutEqRadius].d;
-    rc6=prm[LJ612CutCutR].d;
+    T r0rc,r0rc6,r06,rc6;
+    r06=prm[LJ612CutEqRadius]<T>();
+    rc6=prm[LJ612CutCutR]<T>();
     r0rc=r06/rc6;
     r06*=r06*r06;   r06*=r06;
     rc6*=rc6;
-    prm[LJ612CutCutRSQ]=rc6;
+    copy(prm[LJ612CutCutRSQ],rc6);
     rc6*=rc6*rc6;
     r0rc6=r06/rc6;
-    prm[LJ612CutRealSigma6]=r06*(1-r0rc6*r0rc)/(1-r0rc6*r0rc6*r0rc);
-    double sgrc6=prm[LJ612CutRealSigma6].d/rc6;
-    prm[LJ612CutVc]=sgrc6*(sgrc6-2.);
-    prm[LJ612CutKc]=12*sgrc6*(1.-sgrc6)/prm[LJ612CutCutR].d;
-    double sgr06=prm[LJ612CutRealSigma6].d/r06;
-    double e,tmd;
+    copy(prm[LJ612CutRealSigma6],r06*(1-r0rc6*r0rc)/(1-r0rc6*r0rc6*r0rc));
+    double sgrc6=prm[LJ612CutRealSigma6]<T>()/rc6;
+    copy(prm[LJ612CutVc],sgrc6*(sgrc6-2.));
+    copy(prm[LJ612CutKc],12*sgrc6*(1.-sgrc6)/prm[LJ612CutCutR]<T>());
+    T sgr06=prm[LJ612CutRealSigma6]<T>()/r06;
+    T e,tmd;
     e=sgr06*(sgr06-2.);
-    e-=prm[LJ612CutVc].d;
-    e-=prm[LJ612CutKc].d*(prm[LJ612CutEqRadius].d-prm[LJ612CutCutR].d);
-    tmd=-prm[LJ612CutEqEnergyDepth].d/e;
-    prm[LJ612CutRealStrength]=tmd;
-    prm[LJ612CutVc].d*=tmd;
-    prm[LJ612CutKc].d*=tmd;
-    prm[LJ612CutTwlfRealStrength]=12*tmd;
+    e-=prm[LJ612CutVc]<T>();
+    e-=prm[LJ612CutKc]<T>()*(prm[LJ612CutEqRadius]<T>()-prm[LJ612CutCutR]<T>());
+    tmd=-prm[LJ612CutEqEnergyDepth]<T>()/e;
+    copy(prm[LJ612CutRealStrength],tmd);
+    prm[LJ612CutVc]<T>()*=tmd;
+    prm[LJ612CutKc]<T>()*=tmd;
+    copy(prm[LJ612CutTwlfRealStrength],12*tmd);
   }
 
 }

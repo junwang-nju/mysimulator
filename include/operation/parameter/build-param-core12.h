@@ -7,8 +7,9 @@
 
 namespace std {
 
+  template <typename T>
   void BuildParameterCore12(UniqueParameter* prm) {
-    copy(prm[Core12TwlfEqStrength],12*prm[Core12EqStrength].d);
+    copy(prm[Core12TwlfEqStrength],12*prm[Core12EqStrength]<T>());
   }
 
 }
@@ -17,9 +18,10 @@ namespace std {
 
 namespace std {
 
+  template <typename T>
   void BuildParameterCore12(Vector<UniqueParameter>& prm) {
     assert(prm.size>=Core12NumberParameter);
-    BuildParameterCore12(prm.data);
+    BuildParameterCore12<T>(prm.data);
   }
 
 }

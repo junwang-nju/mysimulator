@@ -2,7 +2,7 @@
 #ifndef _Functional_Core12_H_
 #define _Functional_Core12_H_
 
-#include "operation/parameter/build-param-core12.h"
+#include "data/name/parameter-core12.h"
 
 namespace std {
 

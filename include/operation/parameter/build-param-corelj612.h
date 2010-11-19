@@ -7,12 +7,14 @@
 
 namespace std {
 
+  template <typename T>
   void BuildParameterCoreLJ612(UniqueParameter* prm) {
-    BuildParameterLJ612(prm);
+    BuildParameterLJ612<T>(prm);
   }
 
+  template <typename T>
   void BuildParameterCoreLJ612(Vector<UniqueParameter>& prm) {
-    BuildParameterLJ612(prm);
+    BuildParameterLJ612<T>(prm);
   }
 
 }

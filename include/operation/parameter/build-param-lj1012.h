@@ -7,9 +7,11 @@
 
 namespace std {
 
+  template <typename T>
   void BuildParameterLJ1012(UniqueParameter* prm) {
-    copy(prm[LJ1012EqRadiusSQ],prm[LJ1012EqRadius].d*prm[LJ1012EqRadius].d);
-    copy(prm[LJ1012SixtyEqEnergyDepth],prm[LJ1012EqEnergyDepth].d*60);
+    copy(prm[LJ1012EqRadiusSQ],
+         prm[LJ1012EqRadius]<T>()*prm[LJ1012EqRadius]<T>());
+    copy(prm[LJ1012SixtyEqEnergyDepth],prm[LJ1012EqEnergyDepth]<T>()*60);
   }
 
 }
@@ -18,9 +20,10 @@ namespace std {
 
 namespace std {
 
+  template <typename T>
   void BuildParameterLJ1012(Vector<UniqueParameter>& prm) {
     assert(prm.size>=LJ1012NumberParameter);
-    BuildParameterLJ1012(prm.data);
+    BuildParameterLJ1012<T>(prm.data);
   }
 
 }
