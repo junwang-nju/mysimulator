@@ -2,7 +2,7 @@
 #ifndef _Functional_LJ1012Cut_H_
 #define _Functional_LJ1012Cut_H_
 
-#include "operation/parameter/build-param-lj1012cut.h"
+#include "data/name/parameter-lj1012cut.h"
 
 namespace std {
 

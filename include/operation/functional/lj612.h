@@ -2,7 +2,7 @@
 #ifndef _Functional_LJ612_H_
 #define _Functional_LJ612_H_
 
-#include "operation/parameter/build-param-lj612.h"
+#include "data/name/parameter-lj612.h"
 
 namespace std {
 

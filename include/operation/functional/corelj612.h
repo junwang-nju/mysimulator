@@ -2,7 +2,7 @@
 #ifndef _Functiona_CoreLJ612_H_
 #define _Functiona_CoreLJ612_H_
 
-#include "operation/parameter/build-param-corelj612.h"
+#include "data/name/parameter-corelj612.h"
 #include "operation/functional/lj612.h"
 
 namespace std {
