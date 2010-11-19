@@ -1,5 +1,5 @@
 
-#include "interaction-pairwise-base.h"
+#include "operation/interaction/pairwise-base.h"
 #include <iostream>
 using namespace std;
 
