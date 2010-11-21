@@ -130,7 +130,6 @@ namespace std {
     L.size=nitem;
     allocateKeyValue(L.key,ksize,nitem,koff,kstep);
     allocateKeyValue(L.value,vsize,nitem,voff,vstep);
-    cout<<L.key<<"-----------"<<endl;
   }
 
   void allocate(ParameterList& L,
