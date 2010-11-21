@@ -3,6 +3,7 @@
 #define _Functional_Core12_H_
 
 #include "data/name/parameter-core12.h"
+#include "data/basic/unique-parameter.h"
 
 namespace std {
 
@@ -11,7 +12,7 @@ namespace std {
     T tmd=1./dsq;
     tmd*=tmd*tmd;
     tmd*=tmd;
-    func=prm[Core12EqStrength].d*tmd;
+    func=prm[Core12EqStrength].value<T>()*tmd;
   }
 
   template <typename T>
@@ -19,7 +20,7 @@ namespace std {
     T tmd=1./dsq;
     T tmd2=tmd*tmd;
     tmd2*=tmd2*tmd2;
-    diff=-prm[Core12TwlfEqStrength].d*tmd*tmd2;
+    diff=-prm[Core12TwlfEqStrength].value<T>()*tmd*tmd2;
   }
 
   template <typename T>
@@ -27,8 +28,8 @@ namespace std {
     T tmd=1./dsq;
     T tmd2=tmd*tmd;
     tmd2*=tmd2*tmd2;
-    func=prm[Core12EqStrength].d*tmd2;
-    diff=-prm[Core12TwlfEqStrength].d*tmd*tmd2;
+    func=prm[Core12EqStrength].value<T>()*tmd2;
+    diff=-prm[Core12TwlfEqStrength].value<T>()*tmd*tmd2;
   }
 
 }

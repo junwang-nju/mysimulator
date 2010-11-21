@@ -3,7 +3,6 @@
 #define _Random_Generator_BoxMuller_Operation_H_
 
 #include "data/random/random-generator-boxmuller.h"
-#include <cmath>
 
 namespace std {
 
@@ -37,7 +36,7 @@ namespace std {
         G[1]=rand<double>(*(G.urng)); G[1]+=G[1]; G[1]-=1.;
         G[2]=G[0]*G[0]+G[1]*G[1];
       } while((G[2]>1.)||(G[2]==0.));
-      G[2]=sqrt(-2.0*log(G[2])/G[2]);
+      G[2]=sqroot(-2.0*log(G[2])/G[2]);
       G.output=G[0]*G[2];
     }
     *(G.isSecond)=!(*(G.isSecond));

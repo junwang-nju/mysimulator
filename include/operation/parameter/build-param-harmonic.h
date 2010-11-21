@@ -9,7 +9,7 @@ namespace std {
 
   template <typename T>
   void BuildParameterHarmonic(UniqueParameter* prm) {
-    copy(prm[HarmonicDualEqStrength],2*prm[HarmonicEqStrength]<T>());
+    copy(prm[HarmonicDualEqStrength],2*prm[HarmonicEqStrength].value<T>());
   }
 
 }

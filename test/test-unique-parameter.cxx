@@ -60,6 +60,10 @@ int main() {
   cout<<"\t"<<up.ptr<<endl;
   cout<<endl;
 
+  cout<<"Test -- read method"<<endl;
+  cout<<up.value<double>()<<endl;
+  cout<<endl;
+
   return 1;
 }
 

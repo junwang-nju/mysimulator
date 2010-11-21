@@ -9,7 +9,7 @@ namespace std {
 
   template <typename T>
   void BuildParameterCore12(UniqueParameter* prm) {
-    copy(prm[Core12TwlfEqStrength],12*prm[Core12EqStrength]<T>());
+    copy(prm[Core12TwlfEqStrength],12*prm[Core12EqStrength].value<T>());
   }
 
 }

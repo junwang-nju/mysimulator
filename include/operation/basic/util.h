@@ -514,6 +514,10 @@ namespace std {
   template <typename T>
   bool IsDistanceBuffer(const T& t) { return false; }
 
+  double sqroot(const double& d) { return sqrt(d); }
+  float sqroot(const float& d) { return sqrtf(d); }
+  long double sqroot(const long double& d) { return sqrtl(d); }
+
 }
 
 #endif

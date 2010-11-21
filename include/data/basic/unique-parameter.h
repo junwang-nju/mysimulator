@@ -27,12 +27,9 @@ namespace std {
     }
 
     template <typename T>
-    T& operator()() { myError("Unknown Type"); return static_cast<T>(0); }
+    T& value() { myError("Unknown Type"); return static_cast<T>(0); }
     template <typename T>
-    const T& operator()() const {
-      myError("Unknown Type");
-      return static_cast<T>(0);
-    }
+    const T& value() const{ myError("Unknown Type"); return static_cast<T>(0); }
 
   };
 
@@ -83,38 +80,36 @@ namespace std {
   }
 
   template <>
-  double& UniqueParameter::operator()<double>() { return d; }
+  double& UniqueParameter::value<double>() { return d; }
   template <>
-  const double& UniqueParameter::operator()<double>() const { return d; }
+  const double& UniqueParameter::value<double>() const { return d; }
 
   template <>
-  float& UniqueParameter::operator()<float>() { return f; }
+  float& UniqueParameter::value<float>() { return f; }
   template <>
-  const float& UniqueParameter::operator()<float>() const { return f; }
+  const float& UniqueParameter::value<float>() const { return f; }
 
   template <>
-  unsigned int& UniqueParameter::operator()<unsigned int>() { return u; }
+  unsigned int& UniqueParameter::value<unsigned int>() { return u; }
   template <>
-  const unsigned int& UniqueParameter::operator()<unsigned int>() const {
-    return u;
-  }
+  const unsigned int& UniqueParameter::value<unsigned int>() const{ return u; }
 
   template <>
-  int& UniqueParameter::operator()<int>() { return i; }
+  int& UniqueParameter::value<int>() { return i; }
   template <>
-  const int& UniqueParameter::operator()<int>() const { return i; }
+  const int& UniqueParameter::value<int>() const { return i; }
 
   template <>
   unsigned long long int&
-  UniqueParameter::operator()<unsigned long long int>() { return ull; }
+  UniqueParameter::value<unsigned long long int>() { return ull; }
   template <>
   const unsigned long long int&
-  UniqueParameter::operator()<unsigned long long int>() const { return ull; }
+  UniqueParameter::value<unsigned long long int>() const { return ull; }
 
   template <>
-  void*& UniqueParameter::operator()<void*>() { return ptr; }
+  void*& UniqueParameter::value<void*>() { return ptr; }
   template <>
-  void* const& UniqueParameter::operator()<void*>() const { return ptr; }
+  void* const& UniqueParameter::value<void*>() const { return ptr; }
 
   istream& operator>>(istream& is, UniqueParameter& P) {
     static char flag;

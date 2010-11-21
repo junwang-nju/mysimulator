@@ -1,6 +1,6 @@
 
-#ifndef _Interaction_Pairwise_LJ1012_H_
-#define _Interaction_Pairwise_LJ1012_H_
+#ifndef _Interaction_Pairwise_LJ1012Cut_H_
+#define _Interaction_Pairwise_LJ1012Cut_H_
 
 #include "operation/interaction/pairwise-base.h"
 #include "operation/functional/lj1012cut.h"

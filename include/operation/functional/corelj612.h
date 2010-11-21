@@ -9,26 +9,26 @@ namespace std {
 
   template <typename T>
   void FuncCoreLJ612(const T& dsq, const UniqueParameter* prm, T& func) {
-    if(dsq>prm[CoreLJ612RadiusSQ].d)  func=0.;
+    if(dsq>prm[CoreLJ612RadiusSQ].value<T>())  func=0.;
     else {
       FuncLJ612(dsq,prm,func);
-      func+=prm[CoreLJ612EnergyDepth].d;
+      func+=prm[CoreLJ612EnergyDepth].value<T>();
     }
   }
 
   template <typename T>
   void DiffCoreLJ612(const T& dsq, const UniqueParameter* prm, T& diff) {
-    if(dsq>prm[CoreLJ612RadiusSQ].d)  diff=0.;
+    if(dsq>prm[CoreLJ612RadiusSQ].value<T>())  diff=0.;
     else DiffLJ612(dsq,prm,diff);
   }
 
   template <typename T>
   void BothCoreLJ612(const T& dsq, const UniqueParameter* prm,
                      T& func, T& diff) {
-    if(dsq>prm[CoreLJ612RadiusSQ].d)  diff=0.;
+    if(dsq>prm[CoreLJ612RadiusSQ].value<T>())  diff=0.;
     else {
       BothLJ612(dsq,prm,func,diff);
-      func+=prm[CoreLJ612EnergyDepth].d;
+      func+=prm[CoreLJ612EnergyDepth].value<T>();
     }
   }
 
