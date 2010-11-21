@@ -9,12 +9,13 @@ namespace std {
 
   template <typename T>
   void BuildParameterLJ1012Cut(UniqueParameter* prm) {
-    T r0rc2,r0rcTEN,r0rcTLF,r02,rc2;
+    T r0rc,r0rc2,r0rcTEN,r0rcTLF,r02,rc2;
     rc2=prm[LJ1012CutCutR].value<T>();
     rc2*=rc2;
     copy(prm[LJ1012CutCutRSQ],rc2);
     r02=prm[LJ1012CutEqRadius].value<T>();
     r02*=r02;
+    r0rc=prm[LJ1012CutEqRadius].value<T>()/prm[LJ1012CutCutR].value<T>();
     r0rc2=r02/rc2;
     r0rcTEN=r0rc2*r0rc2;
     r0rcTEN*=r0rcTEN;

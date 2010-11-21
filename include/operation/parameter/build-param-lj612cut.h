@@ -41,9 +41,10 @@ namespace std {
 
 namespace std {
 
+  template <typename T>
   void BuildParameterLJ612Cut(Vector<UniqueParameter>& prm) {
     assert(prm.size>=LJ612CutNumberParameter);
-    BuildParameterLJ612Cut(prm.data);
+    BuildParameterLJ612Cut<T>(prm.data);
   }
 
 }

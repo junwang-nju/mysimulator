@@ -28,7 +28,7 @@ namespace std {
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
       Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
-    BFuncPairwiseBase(X,idx,P,B,Geo,Gradient,BothCore12);
+    BFuncPairwiseBase(X,idx,P,B,Geo,Energy,Gradient,BothCore12);
   }
 
 }

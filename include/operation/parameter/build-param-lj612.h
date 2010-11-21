@@ -11,7 +11,7 @@ namespace std {
   void BuildParameterLJ612(UniqueParameter* prm) {
     copy(prm[LJ612EqRadiusSQ],
          prm[LJ612EqRadius].value<T>()*prm[LJ612EqRadius].value<T>());
-    copy(prm[LJ612TwlfEqEnergyDepth],12*prm[LJ612EqEnergDepth].value<T>());
+    copy(prm[LJ612TwlfEqEnergyDepth],12*prm[LJ612EqEnergyDepth].value<T>());
   }
 
 }

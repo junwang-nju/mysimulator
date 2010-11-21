@@ -104,7 +104,7 @@ namespace std {
   ostream& operator<<(ostream& os, const PropertyList<T>& L) {
     assert(IsAvailable(L));
     os<<L[0];
-    for(unsigned int k=0;k<L.nunit;++k) os<<endl<<L[k];
+    for(unsigned int k=1;k<L.nunit;++k) os<<endl<<L[k];
     return os;
   }
 
