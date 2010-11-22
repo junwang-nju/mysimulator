@@ -9,6 +9,7 @@ namespace std {
     ProjectInMinimization,
     MoveInMinimization,
     GradientCount,
+    Scale4Search,
     MinimizerNumberProperty
   };
 

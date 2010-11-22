@@ -40,6 +40,8 @@ namespace std {
     const unsigned int& GCalcCount() const {
       return MinProperty[GradientCount].u;
     }
+    double& SearchScale() { return MinProperty[Scale4Search].d; }
+    const double& SearchScale() const { return MinProperty[Scale4Search].d; }
   };
 
   template <typename IType,typename SpType,typename IdType,typename T>

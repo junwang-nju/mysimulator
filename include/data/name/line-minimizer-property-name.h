@@ -7,6 +7,13 @@
 namespace std {
 
   enum LineMinimizerPropertyName {
+    LineSearchCount=MinimizerNumberProperty,
+    RunningEnergy,
+    RunningProject,
+    DecreaseFactor,
+    CurvatureFactor,
+    GradientThreshold,
+    LineMinimizerNumberProperty
   };
 
 }
