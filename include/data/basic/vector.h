@@ -27,8 +27,11 @@ namespace std {
     ~Vector() { safe_release(data,state); }
     T*& operator()() { return data; }
     const T* operator()() const { return data; }
-    T& operator[](const int I) { return *(data+I); }
-    const T& operator[](const int I) const { return *(data+I); }
+    T& operator[](const int I) { assert(IsAvailable(data)); return *(data+I); }
+    const T& operator[](const int I) const {
+      assert(IsAvailable(data));
+      return *(data+I);
+    }
 
   };
 

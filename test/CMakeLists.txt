@@ -81,9 +81,6 @@ target_link_libraries (test-random-generator-boxmuller-sse2.run blas)
 add_executable (test-interaction-method.run test-interaction-method.cxx)
 target_link_libraries (test-interaction-method.run blas)
 
-add_executable (test-interaction-4list.run test-interaction-4list.cxx)
-target_link_libraries (test-interaction-4list.run blas)
-
 add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
 target_link_libraries (test-interaction-pairwise-base.run blas)
 
@@ -113,9 +110,6 @@ target_link_libraries (test-interaction-pairwise-coulomb.run blas)
 
 add_executable (test-interaction-pairwise-quadharm.run test-interaction-pairwise-quadharm.cxx)
 target_link_libraries (test-interaction-pairwise-quadharm.run blas)
-
-add_executable (test-interaction-4listset.run test-interaction-4listset.cxx)
-target_link_libraries (test-interaction-4listset.run blas)
 
 add_executable (test-minimizer-base.run test-minimizer-base.cxx)
 target_link_libraries (test-minimizer-base.run blas)

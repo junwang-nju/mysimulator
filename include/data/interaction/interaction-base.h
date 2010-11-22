@@ -72,14 +72,12 @@ namespace std {
             const InteractionBase<T,DBuffer,GType,PType>& rF) {
     assert(IsAvailable(F));
     assert(IsAvailable(rF));
+    assert(F.tag()==rF.tag());
     assert(F.prm.size==rF.prm.size);
     assert(F.tmvec.size==rF.tmvec.size);
-    assert(IsStructureSame(F.tmvec,rF.tmvec));
+    assert((!IsAvailable(F.tmvec))||(IsStructureSame(F.tmvec,rF.tmvec)));
     copy(F.prm,rF.prm);
     copy(F.property,rF.property);
-    F.EFunc=rF.EFunc;
-    F.GFunc=rF.GFunc;
-    F.BFunc=rF.BFunc;
     copy(F.dbuff,rF.dbuff);
     copy(F.geo,rF.geo);
   }
@@ -95,7 +93,7 @@ namespace std {
     F.EFunc=rF.EFunc;
     F.GFunc=rF.GFunc;
     F.BFunc=rF.BFunc;
-    refer(F.tmvec,rF.tmvec);
+    if(IsAvailable(rF.tmvec)) refer(F.tmvec,rF.tmvec);
     refer(F.dbuff,rF.dbuff);
     refer(F.geo,rF.geo);
   }

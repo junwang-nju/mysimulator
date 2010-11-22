@@ -178,6 +178,11 @@ namespace std {
     return get(L[(K.hash[0]&0xFFFF0000U)>>16],K);
   }
 
+  const ParameterValue* get(const ParameterList& L,
+                            const Vector<unsigned int>& idx) {
+    return get(L,idx.data,idx.size);
+  }
+
   istream& operator>>(istream& is, ParameterList& L) {
     assert(IsAvailable(L));
     for(unsigned int i=0;i<L.size;++i)  is>>L.key[i]>>L.value[i];
