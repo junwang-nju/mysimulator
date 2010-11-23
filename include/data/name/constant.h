@@ -79,11 +79,13 @@ namespace std {
    */
   static const double DRelDelta=1.1107651257113993e-16;
 
+  static const float FRelDelta=5.9604644775390625e-8;
   /**
    * @brief square root of minimal \c double type value relative to one
    */
   static const double DSqrtRelDelta=1.0539284253265965e-8;
   
+  static const float FSqrtRelDelta=0.000244140625;
   /**
    * @brief the factor for golden division
    */
