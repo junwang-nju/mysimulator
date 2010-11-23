@@ -520,5 +520,20 @@ namespace std {
 
 }
 
+#include "constant.h"
+
+namespace std {
+
+  template <typename T>
+  T RelDelta() {
+    myError("Unknown T-type Relative Delta");
+    return static_cast<T>(0);
+  }
+
+  template <> double RelDelta<double>() { return DRelDelta; }
+  template <> float RelDelta<float>() { return FRelDelta; }
+
+}
+
 #endif
 

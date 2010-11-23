@@ -10,6 +10,7 @@ namespace std {
     MoveInMinimization,
     GradientCount,
     Scale4Search,
+    DegreeFreedom,
     MinimizerNumberProperty
   };
 

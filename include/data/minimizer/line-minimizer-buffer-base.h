@@ -6,8 +6,8 @@
 
 namespace std {
 
-  template <typename InteractionType,typename SpaceType,typedef IdxType,
-            typename T>
+  template <typename InteractionType,template<typename> class SpaceType,
+            template<typename> class IdxType, typename T>
   struct LineMinimizerBufferBase
     : public MinimizerBufferBase<InteractionType,SpaceDataType,IdxType,T> {
     typedef LineMinimizerBufferBase<InteractionType,SpaceDataType,IdxType,T>
@@ -15,8 +15,8 @@ namespace std {
     typedef MinimizerBufferBase<InteractionType,SpaceType,IdxType,T>
             ParentType;
 
-    SpaceType RunX;
-    SpaceType RunG;
+    SpaceType<T> RunX;
+    SpaceType<T> RunG;
     
     LineMinimizerBufferBase() : ParentType(), RunX(), RunG() {}
     LineMinimizerBufferBase(const Type& B) {
@@ -32,8 +32,8 @@ namespace std {
     const unsigned int& LSearchCount() const {
       return MinProperty[LineSearchCount].u;
     }
-    double& RunE() { return MinProperty[RunningEnergy].d; }
-    const double& RunE() const { return MinProperty[RunningEnergy].d; }
+    double& RunY() { return MinProperty[RunningEnergy].d; }
+    const double& RunY() const { return MinProperty[RunningEnergy].d; }
     double& RunPrj() { return MinProperty[RunningProject].d; }
     const double& RunPrj() const { return MinProperty[RunningProject].d; }
     double& DecFac() { return MinProperty[DecreaseFactor].d; }
@@ -46,14 +46,16 @@ namespace std {
     }
   };
 
-  template <typename IType,typename SpType,typename IdType,typename T>
+  template <typename IType,template<typename> class SpType,
+            template<typename> class IdType,typename T>
   bool IsAvailable(LineMinimizerBufferBase<IType,SpType,IdType,T>& B) {
     typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
     return IsAvailable(static_cast<const MBType&>(B))&&
            IsAvailable(B.RunX)&&IsAvailable(B.RunG);
   }
 
-  template <typename IType,typename SpType,typename IdType,typename T>
+  template <typename IType,template<typename> class SpType,
+            template<typename> class IdType,typename T>
   void release(LineMinimizerBufferBase<IType,SpType,IdType,T>& B) {
     typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
     release(B.RunX);
@@ -61,7 +63,8 @@ namespace std {
     release(static_cast<MBType&>(B));
   }
 
-  template <typename IType,typename SpType,typename IdType,typename T>
+  template <typename IType,template<typename> class SpType,
+            template<typename> class IdType,typename T>
   void copy(LineMinimizerBufferBase<IType,SpType,IdType,T>& B,
             const LineMinimizerBufferBase<IType,SpType,IdType,B>& cB) {
     typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
@@ -72,7 +75,8 @@ namespace std {
     copy(static_cast<MBType&>(B),static_cast<const MBType&>(cB));
   }
 
-  template <typename IType,typename SpType,typename IdType,typename T>
+  template <typename IType,template<typename> class SpType,
+            template<typename> class IdType,typename T>
   void refer(LineMinimizerBufferBase<IType,SpType,IdType,T>& B,
              const LineMinimizerBufferBase<IType,SpType,IdType,T>& rB) {
     typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
@@ -83,10 +87,15 @@ namespace std {
     refer(static_cast<MBType&>(B),static_cast<const MBType&>(rB));
   }
 
-  template <typename IType,typename SpType,typename IdType,typename T>
+  template <typename IType,template<typename> class SpType,
+            template<typename> class IdType,typename T>
   void allocateMinimizerProperty(
       LineMinimizerBufferBase<IType,SpType,IdType,T>& B) {
     allocate(B.MinProperty,LineMinimizerNumberProperty);
+    B.LSearchCount()=0;
+    B.DecFac()=1e-4;
+    B.CurvFac()=0.4;
+    B.GradThreshold()=RelDelta<T>();
   }
 
 }
