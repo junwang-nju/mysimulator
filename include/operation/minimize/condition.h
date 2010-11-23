@@ -26,52 +26,55 @@ namespace std {
     return WolfeCondition(ry,rp,my,dp,cp,step)&&(rp<=-cp);
   }
 
-  template <typename T, unsigned int ConditionType>
-  bool Condition(const T& ry, const T& rp, const T& my, const T& dp,
-                 const T& cp, const T& step) {
-    myError("Unknown Data Type or Condition Type");
+  template <unsigned int ConditionType>
+  bool Condition(const double& ry, const double& rp, const double& my,
+                 const double& dp, const double& cp, const double& step) {
+    myError("Unknown Condition Type");
     return false;
   }
 
   template <>
-  bool Condition<double,Armijo>(const double& ry, const double& rp,
-                                const double& my, const double& dp,
-                                const double& cp, const double& step) {
+  bool Condition<Armijo>(const double& ry,const double& rp,const double& my,
+                         const double& dp,const double& cp,const double& step){
     return ArmijoCondition(ry,rp,my,dp,cp,step);
   }
 
   template <>
-  bool Condition<double,Wolfe>(const double& ry, const double& rp,
-                               const double& my, const double& dp,
-                               const double& cp, const double& step) {
+  bool Condition<Wolfe>(const double& ry,const double& rp,const double& my,
+                        const double& dp,const double& cp,const double& step) {
     return WolfeCondition(ry,rp,my,dp,cp,step);
   }
 
   template <>
-  bool Condition<double,StrongWolfe>(const double& ry, const double& rp,
-                                     const double& my, const double& dp,
-                                     const double& cp, const double& step) {
+  bool Condition<StrongWolfe>(const double& ry, const double& rp,
+                              const double& my, const double& dp,
+                              const double& cp, const double& step) {
     return StrongWolfeCondition(ry,rp,my,dp,cp,step);
   }
 
+  template <unsigned int ConditionType>
+  bool Condition(const float& ry, const float& rp, const float& my,
+                 const float& dp, const float& cp, const float& step) {
+    myError("Unknown Condition Type");
+    return false;
+  }
+
   template <>
-  bool Condition<float,Armijo>(const float& ry, const float& rp,
-                               const float& my, const float& dp,
-                               const float& cp, const float& step) {
+  bool Condition<Armijo>(const float& ry,const float& rp,const float& my,
+                         const float& dp,const float& cp,const float& step) {
     return ArmijoCondition(ry,rp,my,dp,cp,step);
   }
 
   template <>
-  bool Condition<float,Wolfe>(const float& ry, const float& rp,
-                              const float& my, const float& dp,
-                              const float& cp, const float& step) {
+  bool Condition<Wolfe>(const float& ry,const float& rp,const float& my,
+                        const float& dp,const float& cp,const float& step) {
     return WolfeCondition(ry,rp,my,dp,cp,step);
   }
 
   template <>
-  bool Condition<float,StrongWolfe>(const float& ry, const float& rp,
-                                    const float& my, const float& dp,
-                                    const float& cp, const float& step) {
+  bool Condition<StrongWolfe>(const float& ry,const float& rp,const float& my,
+                              const float& dp,const float& cp,
+                              const float& step) {
     return StrongWolfeCondition(ry,rp,my,dp,cp,step);
   }
 

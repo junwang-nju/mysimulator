@@ -6,7 +6,8 @@
 
 namespace std {
 
-  template <typename IType,template<typename> class SpType,
+  template <unsigned int CType,
+            typename IType,template<typename> class SpType,
             template<typename> class IdType,typename T>
   void Minimize(TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B,
                 const SpType& Dirc) {
@@ -20,9 +21,11 @@ namespace std {
     T c1pj=B.DecFac()*B.MinProject();
     T c2pj=B.CurvFac()*B.MinProject();
     do {
-      GenerateNewLocation(B,B.MinX,Dirc,step,B.RunX,B.RunY(),B.RunG,
+      GenerateNewLocation(B,B.MinX,Dirc,step,B.RunX,B.RunE(),B.RunG,
                           B.RunPrj());
-      xxx
+      if(Condition<CType>(B.RunE(),B.RunPrj(),B.MinEnergy(),c1pj,c2pj,step)) {
+        xxxx
+      }
     } while(absval(dstep)>mstep);
   }
 

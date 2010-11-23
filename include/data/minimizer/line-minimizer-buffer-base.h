@@ -32,8 +32,8 @@ namespace std {
     const unsigned int& LSearchCount() const {
       return MinProperty[LineSearchCount].u;
     }
-    double& RunY() { return MinProperty[RunningEnergy].d; }
-    const double& RunY() const { return MinProperty[RunningEnergy].d; }
+    double& RunE() { return MinProperty[RunningEnergy].d; }
+    const double& RunE() const { return MinProperty[RunningEnergy].d; }
     double& RunPrj() { return MinProperty[RunningProject].d; }
     const double& RunPrj() const { return MinProperty[RunningProject].d; }
     double& DecFac() { return MinProperty[DecreaseFactor].d; }
