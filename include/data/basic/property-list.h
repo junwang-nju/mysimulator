@@ -84,6 +84,14 @@ namespace std {
     allocate(L,vsize.data,vsize.size);
   }
 
+  template <typename T, typename aT>
+  void imprint(PropertyList<T>& L, const PropertyList<aT>& aL) {
+    assert(IsAvailable(aL));
+    Vector<unsigned int> sz(aL.nunit);
+    for(unsigned int i=0;i<aL.nunit;++i)  sz[i]=aL[i].size;
+    allocate(L,sz);
+  }
+
   template <typename T>
   void refer(PropertyList<T>& L, const PropertyList<T>& rL) {
     assert(IsAvailable(rL));

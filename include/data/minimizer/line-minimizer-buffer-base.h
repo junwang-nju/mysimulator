@@ -3,6 +3,7 @@
 #define _Line_Minimizer_Buffer_Base_H_
 
 #include "data/name/line-minimizer-property-name.h"
+#include "data/minimizer/minimizer-buffer-base.h"
 
 namespace std {
 
@@ -92,12 +93,17 @@ namespace std {
   void allocateMinimizerProperty(
       LineMinimizerBufferBase<IType,SpType,IdType,T>& B) {
     allocate(B.MinProperty,LineMinimizerNumberProperty);
+    initMinimizerProperty(B);
+  }
+
+  template <typename IType,template<typename> class SpType,
+            template<typename> class IdType,typename T>
+  void initMinimizerProperty(LineMinimizerBufferBase<IType,SpType,IdType,T>& B){
     B.LSearchCount()=0;
     B.DecFac()=1e-4;
     B.CurvFac()=0.4;
     B.GradThreshold()=RelDelta<T>();
   }
-
 }
 
 #endif

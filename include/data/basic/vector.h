@@ -47,6 +47,12 @@ namespace std {
     V.state=Allocated;
   }
 
+  template <typename T, typename aT>
+  void imprint(Vector<T>& v, const Vector<aT>& av) {
+    assert(IsAvailable(av));
+    allocate(v,av.size);
+  }
+
   template <typename T>
   void release(Vector<T>& V) {
     safe_release(V.data,V.state);

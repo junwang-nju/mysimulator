@@ -2,6 +2,9 @@
 #ifndef _Tracking_Line_Minimizer_Buffer_H_
 #define _Tracking_Line_Minimizer_Buffer_H_
 
+#include "data/minimizer/line-minimizer-buffer-base.h"
+#include "data/name/tracking-line-minimizer-property-name.h"
+
 namespace std {
 
   template <typename InteractionType,template<typename> class SpaceType,
@@ -62,6 +65,14 @@ namespace std {
   void allocateMinimizerProperty(
       TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B) {
     allocate(B.MinProperty,TrackingLineMinimizerNumberProperty);
+    initMinimizerProperty(B);
+  }
+
+  template <typename IType,template<typename> class SpType,
+            template<typename> class IdType,typename T>
+  void initMinimizerProperty(
+      TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B) {
+    B.TrackingFac()=Gold;
   }
 
 }

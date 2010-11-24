@@ -103,6 +103,12 @@ namespace std {
             template<typename> class IdType,typename T>
   void allocateMinimizerProperty(MinimizerBufferBase<IType,SpType,IdType,T>& B){
     allocate(B.MinProperty,MinimizerNumberProperty);
+    initMinimizerProperty(B);
+  }
+
+  template <typename IType,template<typename> class SpType,
+            template<typename> class IdType,typename T>
+  void initMinimizerProperty(MinimizerBufferBase<IType,SpType,IdType,T>& B) {
     B.GCalcCount()=0;
   }
 

@@ -24,9 +24,18 @@ namespace std {
       GenerateNewLocation(B,B.MinX,Dirc,step,B.RunX,B.RunE(),B.RunG,
                           B.RunPrj());
       if(Condition<CType>(B.RunE(),B.RunPrj(),B.MinEnergy(),c1pj,c2pj,step)) {
-        xxxx
+        swap(B.MinX,B.RunX);
+        swap(B.MinG,B.MinG);
+        B.MinEnergy()=B.RunE();
+        B.MinProject()=B.RunPrj();
+        B.MinMove()=step;
+        return 1;
       }
+      if((dstep>0)&&(B.RunPrj()>0.))  dstep*=-B.TrackingFac();
+      else if((dstep<0.)&&(B.RunPrj()<0))   dstep*=-B.TrackingFac();
+      step+=dstep;
     } while(absval(dstep)>mstep);
+    return 2;
   }
 
 }
