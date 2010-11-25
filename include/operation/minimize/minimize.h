@@ -3,6 +3,7 @@
 #define _Minimize_H_
 
 #include "data/minimizer/tracking-line-minimizer-buffer.h"
+#include "operation/minimize/minimizer-buffer-base-op.h"
 
 namespace std {
 
@@ -21,8 +22,8 @@ namespace std {
     T c1pj=B.DecFac()*B.MinProject();
     T c2pj=B.CurvFac()*B.MinProject();
     do {
-      GenerateNewLocation(B,B.MinX,Dirc,step,B.RunX,B.RunE(),B.RunG,
-                          B.RunPrj());
+      ProduceNewLocation(B,B.MinX,Dirc,step,B.RunX,B.RunE(),B.RunG,
+                         B.RunPrj());
       if(Condition<CType>(B.RunE(),B.RunPrj(),B.MinEnergy(),c1pj,c2pj,step)) {
         swap(B.MinX,B.RunX);
         swap(B.MinG,B.MinG);

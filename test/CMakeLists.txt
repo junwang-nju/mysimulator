@@ -111,8 +111,8 @@ target_link_libraries (test-interaction-pairwise-coulomb.run blas)
 add_executable (test-interaction-pairwise-quadharm.run test-interaction-pairwise-quadharm.cxx)
 target_link_libraries (test-interaction-pairwise-quadharm.run blas)
 
-add_executable (test-minimizer-base.run test-minimizer-base.cxx)
-target_link_libraries (test-minimizer-base.run blas)
+add_executable (test-minimizer-buffer-base.run test-minimizer-buffer-base.cxx)
+target_link_libraries (test-minimizer-buffer-base.run blas)
 
 add_executable (test-minimizer-line-base.run test-minimizer-line-base.cxx)
 target_link_libraries (test-minimizer-line-base.run blas)

@@ -8,7 +8,7 @@
 namespace std {
 
   template <typename InteractionType,template <typename> class SpaceType,
-            template <typename> class IdxType, typedef T>
+            template <typename> class IdxType, typename T>
   struct MinimizerBufferBase {
     InteractionType F;
     SpaceType<T> MinX;
@@ -16,7 +16,7 @@ namespace std {
     SpaceType<T> MinDMask;
     SpaceType<unsigned int> MinIMask;
     Vector<UniqueParameter> MinProperty;
-    SpaceType MinG;
+    SpaceType<T> MinG;
 
     typedef MinimizerBufferBase<InteractionType,SpaceType,IdxType,T>  Type;
     
@@ -31,20 +31,22 @@ namespace std {
     }
     ~MinimizerBufferBase() { release(*this); }
 
-    T& MinEnergy() { return MinProperty[MinimalEnergy]<T>(); }
-    const T& MinEnergy() const { return MinProperty[MinimalEnergy]<T>(); }
-    T& MinProject() { return MinProperty[ProjectInMinimization]<T>(); }
+    T& MinEnergy() { return MinProperty[MinimalEnergy].value<T>(); }
+    const T& MinEnergy() const { return MinProperty[MinimalEnergy].value<T>(); }
+    T& MinProject() { return MinProperty[ProjectInMinimization].value<T>(); }
     const T& MinProject() const {
-      return MinProperty[ProjectInMinimization]<T>();
+      return MinProperty[ProjectInMinimization].value<T>();
     }
-    T& MinMove() { return MinProperty[MoveInMinimization]<T>(); }
-    const T& MinMove() const { return MinProperty[MoveInMinimization]<T>(); }
+    T& MinMove() { return MinProperty[MoveInMinimization].value<T>(); }
+    const T& MinMove() const {
+      return MinProperty[MoveInMinimization].value<T>();
+    }
     unsigned int& GCalcCount() { return MinProperty[GradientCount].u; }
     const unsigned int& GCalcCount() const {
       return MinProperty[GradientCount].u;
     }
-    double& SearchScale() { return MinProperty[Scale4Search].d; }
-    const double& SearchScale() const { return MinProperty[Scale4Search].d; }
+    T& SearchScale() { return MinProperty[Scale4Search].value<T>(); }
+    const T& SearchScale()const{ return MinProperty[Scale4Search].value<T>(); }
     unsigned int& DOF() { return MinProperty[DegreeFreedom].u; }
     const unsigned int& DOF() const { return MinProperty[DegreeFreedom].u; }
   };
@@ -116,8 +118,8 @@ namespace std {
             template<typename> class IdType,typename T>
   void GenerateNewLocation(
       const MinimizerBufferBase<IType,SpType,IdType,T>& B,
-      const SpType& Origin, const SpType& Dirc, const T& step,
-      SpType& Dest, T& DestY, SpType& DestG, T& DestPrj) {
+      const SpType<T>& Origin, const SpType<T>& Dirc, const T& step,
+      SpType<T>& Dest, T& DestY, SpType<T>& DestG, T& DestPrj) {
     copy(Dest,Origin);
     shift(Dest,step,Dirc);
     DestY=0.;
