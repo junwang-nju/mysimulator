@@ -26,15 +26,22 @@ namespace std {
     }
     ~TrackingLineMinimizerBuffer() { release(*this); }
 
-    double& TrackingFac() { return MinProperty[TrackingFactor]; }
-    const double& TrackingFac() const { return MinProperty[TrackingFactor]; }
+    T& TrackingFac() {
+      typedef UniqueParameter UT;
+      return static_cast<UT&>(this->MinProperty[TrackingFactor]).value<T>();
+    }
+    const T& TrackingFac() const {
+      typedef UniqueParameter UT;
+      return
+      static_cast<const UT&>(this->MinProperty[TrackingFactor]).value<T>();
+    }
   };
 
   template <typename IType,template<typename> class SpType,
             template<typename> class IdType,typename T>
   bool IsAvailable(const TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B){
     typedef LineMinimizerBufferBase<IType,SpType,IdType,T>  LBType;
-    return IsAvailable(static_cast<const LBType&>(B))
+    return IsAvailable(static_cast<const LBType&>(B));
   }
 
   template <typename IType,template<typename> class SpType,

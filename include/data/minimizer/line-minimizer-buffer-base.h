@@ -35,19 +35,50 @@ namespace std {
     const unsigned int& LSearchCount() const {
       return this->MinProperty[LineSearchCount].u;
     }
-    double& RunE() { return this->MinProperty[RunningEnergy].d; }
-    const double& RunE() const { return this->MinProperty[RunningEnergy].d; }
-    double& RunPrj(){ return this->MinProperty[RunningProject].d; }
-    const double& RunPrj() const{ return this->MinProperty[RunningProject].d; }
-    double& DecFac() { return this->MinProperty[DecreaseFactor].d; }
-    const double& DecFac() const{ return this->MinProperty[DecreaseFactor].d; }
-    double& CurvFac() { return this->MinProperty[CurvatureFactor].d; }
-    const double& CurvFac() const {
-      return this->MinProperty[CurvatureFactor].d;
+    T& RunE() {
+      typedef UniqueParameter UT;
+      return static_cast<UT&>(this->MinProperty[RunningEnergy]).value<T>();
     }
-    double& GradThreshold() { return this->MinProperty[GradientThreshold].d; }
-    const double& GradThreshold() const {
-      return this->MinProperty[GradientThreshold].d;
+    const T& RunE() const {
+      typedef UniqueParameter UT;
+      return
+      static_cast<const UT&>(this->MinProperty[RunningEnergy]).value<T>();
+    }
+    T& RunPrj(){
+      typedef UniqueParameter UT;
+      return static_cast<UT&>(this->MinProperty[RunningProject]).value<T>();
+    }
+    const T& RunPrj() const {
+      typedef UniqueParameter UT;
+      return
+      static_cast<const UT&>(this->MinProperty[RunningProject]).value<T>();
+    }
+    T& DecFac() {
+      typedef UniqueParameter UT;
+      return static_cast<UT&>(this->MinProperty[DecreaseFactor]).value<T>();
+    }
+    const T& DecFac() const {
+      typedef UniqueParameter UT;
+      return
+      static_cast<const UT&>(this->MinProperty[DecreaseFactor]).value<T>();
+    }
+    T& CurvFac() {
+      typedef UniqueParameter UT;
+      return static_cast<UT&>(this->MinProperty[CurvatureFactor]).value<T>();
+    }
+    const T& CurvFac() const {
+      typedef UniqueParameter UT;
+      return
+      static_cast<const UT&>(this->MinProperty[CurvatureFactor]).value<T>();
+    }
+    T& GradThreshold() {
+      typedef UniqueParameter UT;
+      return static_cast<UT&>(this->MinProperty[GradientThreshold]).value<T>();
+    }
+    const T& GradThreshold() const {
+      typedef UniqueParameter UT;
+      return
+      static_cast<const UT&>(this->MinProperty[GradientThreshold]).value<T>();
     }
   };
 

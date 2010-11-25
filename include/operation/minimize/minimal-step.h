@@ -3,6 +3,7 @@
 #define _Minimal_Step_H_
 
 #include "data/basic/property-list.h"
+#include "data/minimizer/line-minimizer-buffer-base.h"
 
 namespace std {
 
