@@ -114,8 +114,8 @@ target_link_libraries (test-interaction-pairwise-quadharm.run blas)
 add_executable (test-minimizer-buffer-base.run test-minimizer-buffer-base.cxx)
 target_link_libraries (test-minimizer-buffer-base.run blas)
 
-add_executable (test-minimizer-line-base.run test-minimizer-line-base.cxx)
-target_link_libraries (test-minimizer-line-base.run blas)
+add_executable (test-line-minimizer-buffer-base.run test-line-minimizer-buffer-base.cxx)
+target_link_libraries (test-line-minimizer-buffer-base.run blas)
 
 add_executable (test-minimizer-parameter-flat-4propertylist.run test-minimizer-parameter-flat-4propertylist.cxx)
 target_link_libraries (test-minimizer-parameter-flat-4propertylist.run blas)
@@ -125,9 +125,6 @@ target_link_libraries (test-minimizer-parameter-hierarchy-4propertylist.run blas
 
 add_executable (test-minimizer-func-4propertylist.run test-minimizer-func-4propertylist.cxx)
 target_link_libraries (test-minimizer-func-4propertylist.run blas)
-
-add_executable (test-minimizer-line-base-4propertylist-op.run test-minimizer-line-base-4propertylist-op.cxx)
-target_link_libraries (test-minimizer-line-base-4propertylist-op.run blas)
 
 add_executable (test-minimizer-line-tracking.run test-minimizer-line-tracking.cxx)
 target_link_libraries (test-minimizer-line-tracking.run blas)

@@ -10,8 +10,8 @@ namespace std {
   template <typename InteractionType,template<typename> class SpaceType,
             template<typename> class IdxType, typename T>
   struct LineMinimizerBufferBase
-    : public MinimizerBufferBase<InteractionType,SpaceDataType,IdxType,T> {
-    typedef LineMinimizerBufferBase<InteractionType,SpaceDataType,IdxType,T>
+    : public MinimizerBufferBase<InteractionType,SpaceType,IdxType,T> {
+    typedef LineMinimizerBufferBase<InteractionType,SpaceType,IdxType,T>
             Type;
     typedef MinimizerBufferBase<InteractionType,SpaceType,IdxType,T>
             ParentType;
@@ -29,21 +29,25 @@ namespace std {
     }
     ~LineMinimizerBufferBase() { release(*this); }
 
-    unsigned int& LSearchCount() { return MinProperty[LineSearchCount].u; }
-    const unsigned int& LSearchCount() const {
-      return MinProperty[LineSearchCount].u;
+    unsigned int& LSearchCount() {
+      return this->MinProperty[LineSearchCount].u;
     }
-    double& RunE() { return MinProperty[RunningEnergy].d; }
-    const double& RunE() const { return MinProperty[RunningEnergy].d; }
-    double& RunPrj() { return MinProperty[RunningProject].d; }
-    const double& RunPrj() const { return MinProperty[RunningProject].d; }
-    double& DecFac() { return MinProperty[DecreaseFactor].d; }
-    const double& DecFac() const { return MinProperty[DecreaseFactor].d; }
-    double& CurvFac() { return MinProperty[CurvatureFactor].d; }
-    const double& CurvFac() const { return MinProperty[CurvatureFactor].d; }
-    double& GradThreshold() { return MinProperty[GradientThreshold].d; }
+    const unsigned int& LSearchCount() const {
+      return this->MinProperty[LineSearchCount].u;
+    }
+    double& RunE() { return this->MinProperty[RunningEnergy].d; }
+    const double& RunE() const { return this->MinProperty[RunningEnergy].d; }
+    double& RunPrj(){ return this->MinProperty[RunningProject].d; }
+    const double& RunPrj() const{ return this->MinProperty[RunningProject].d; }
+    double& DecFac() { return this->MinProperty[DecreaseFactor].d; }
+    const double& DecFac() const{ return this->MinProperty[DecreaseFactor].d; }
+    double& CurvFac() { return this->MinProperty[CurvatureFactor].d; }
+    const double& CurvFac() const {
+      return this->MinProperty[CurvatureFactor].d;
+    }
+    double& GradThreshold() { return this->MinProperty[GradientThreshold].d; }
     const double& GradThreshold() const {
-      return MinProperty[GradientThreshold].d;
+      return this->MinProperty[GradientThreshold].d;
     }
   };
 
@@ -67,7 +71,7 @@ namespace std {
   template <typename IType,template<typename> class SpType,
             template<typename> class IdType,typename T>
   void copy(LineMinimizerBufferBase<IType,SpType,IdType,T>& B,
-            const LineMinimizerBufferBase<IType,SpType,IdType,B>& cB) {
+            const LineMinimizerBufferBase<IType,SpType,IdType,T>& cB) {
     typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
     assert(IsAvailable(B));
     assert(IsAvailable(cB));

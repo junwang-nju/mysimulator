@@ -3,6 +3,7 @@
 #define _Line_Minimizer_Buffer_Base_Operation_H_
 
 #include "data/minimizer/line-minimizer-buffer-base.h"
+#include "operation/minimize/minimizer-buffer-base-op.h"
 
 namespace std {
 
