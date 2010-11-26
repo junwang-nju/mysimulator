@@ -134,6 +134,8 @@ namespace std {
   template <typename IType,template<typename> class SpType,
             template<typename> class IdType,typename T>
   void initMinimizerProperty(LineMinimizerBufferBase<IType,SpType,IdType,T>& B){
+    typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
+    initMinimizerProperty(static_cast<MBType&>(B));
     B.LSearchCount()=0;
     B.DecFac()=1e-4;
     B.CurvFac()=0.4;

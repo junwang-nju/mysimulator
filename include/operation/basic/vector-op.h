@@ -301,13 +301,9 @@ namespace std {
 
   template <typename T>
   void swap(Vector<T>& Va, Vector<T>& Vb) {
-  cout<<"------------1--"<<endl;
     swap(Va.data,Vb.data);
-  cout<<"------------2--"<<endl;
     swap(Va.size,Vb.size);
-  cout<<"------------3--"<<endl;
     swap(Va.state,Vb.state);
-  cout<<"------------4--"<<endl;
   }
 
   double dot(const Vector<double>& Va, const Vector<double>& Vb) {

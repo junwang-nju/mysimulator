@@ -79,6 +79,8 @@ namespace std {
             template<typename> class IdType,typename T>
   void initMinimizerProperty(
       TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B) {
+    typedef LineMinimizerBufferBase<IType,SpType,IdType,T>  LBType;
+    initMinimizerProperty(static_cast<LBType&>(B));
     B.TrackingFac()=Gold;
   }
 

@@ -4,14 +4,15 @@
 
 #include "data/minimizer/tracking-line-minimizer-buffer.h"
 #include "operation/minimize/minimizer-buffer-base-op.h"
+#include "operation/minimize/condition.h"
 
 namespace std {
 
   template <unsigned int CType,
             typename IType,template<typename> class SpType,
             template<typename> class IdType,typename T>
-  void Minimize(TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B,
-                const SpType& Dirc) {
+  int Minimize(TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B,
+               const SpType<T>& Dirc) {
     assert(IsAvailable(B));
     assert(IsAvailable(Dirc));
     assert(B.MinProject()<=0);

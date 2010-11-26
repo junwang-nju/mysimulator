@@ -2,6 +2,7 @@
 #include "data/minimizer/tracking-line-minimizer-buffer.h"
 #include "operation/minimize/minimal-step.h"
 #include "operation/minimize/line-minimizer-buffer-base-op.h"
+#include "operation/minimize/minimize.h"
 #include <iostream>
 using namespace std;
 
@@ -72,11 +73,18 @@ int main() {
   initMinimizerLocation(TLM,Coor,id);
   cout<<endl;
 
-  /*
   cout<<"Test -- assign"<<endl;
-  TrackingLineMinimizer<double,double> TLM2;
-  allocate(TLM2);
-  assign(TLM2,TLM);
+  TrackingLineMinimizerBuffer<TestInteraction,Vector,Vector,double> TLM2;
+  TLM2.F.EFunc=efunc;
+  TLM2.F.GFunc=gfunc;
+  TLM2.F.BFunc=bfunc;
+  TLM2.F.prm=10.;
+  Coor[0]=5;
+  msk[0]=0;
+  allocateMinimizerProperty(TLM2);
+  initMinimizerMask(TLM2,msk);
+  initMinimizerLocation(TLM2,Coor,id);
+  copy(TLM2,TLM);
   cout<<endl;
 
   cout<<"Test -- release"<<endl;
@@ -93,14 +101,14 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- minimize"<<endl;
-  GenerateNewLocation(TLM2,*(TLM2.MinCoor),-1.,0,*(TLM2.MinCoor),
-                      *(TLM2.MinEnergy),*(TLM2.MinGrad),*(TLM2.MinProject));
-  cout<<TLM2.Minimize<StrongWolfe>(-1.)<<endl;
-  cout<<*(TLM2.MinEnergy)<<endl;
-  cout<<*(TLM2.MinCoor)<<endl;
+  Vector<double> dirc(1);
+  dirc[0]=-1.;
+  ProduceNewLocation(TLM2,TLM2.MinX,dirc,0,TLM2.MinX,TLM2.MinEnergy(),
+                     TLM2.MinG,TLM2.MinProject());
+  cout<<Minimize<StrongWolfe>(TLM2,dirc)<<endl;
+  cout<<TLM2.MinEnergy()<<endl;
+  cout<<TLM2.MinX<<endl;
   cout<<endl;
-  */
   
   return 0;
 }
-

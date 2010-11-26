@@ -112,6 +112,7 @@ namespace std {
             template<typename> class IdType,typename T>
   void initMinimizerProperty(MinimizerBufferBase<IType,SpType,IdType,T>& B) {
     B.GCalcCount()=0;
+    B.SearchScale()=0.1;
   }
 
   template <typename IType,template<typename> class SpType,

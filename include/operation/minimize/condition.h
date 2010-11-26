@@ -3,6 +3,7 @@
 #define _Minimize_Condition_H_
 
 #include "operation/basic/error-proc.h"
+#include "data/name/minimize-condition-name.h"
 #include <cassert>
 
 namespace std {
@@ -10,7 +11,7 @@ namespace std {
   template <typename T>
   bool ArmijoCondition(const T& ry, const T& rp, const T& my, const T& dp,
                        const T& cp, const T& step) {
-    ry<=my+step*dp;
+    return ry<=my+step*dp;
   }
 
   template <typename T>

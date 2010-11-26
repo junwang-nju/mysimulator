@@ -33,10 +33,10 @@ namespace std {
   }
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            template<typename> class IdType,typename T,typename sT>
   void ProduceNewLocation(
       MinimizerBufferBase<IType,SpType,IdType,T>& B,
-      const SpType<T>& Origin, const SpType<T>& Dirc, const T& step,
+      const SpType<T>& Origin, const SpType<T>& Dirc, const sT& step,
       SpType<T>& Dest, T& DestY, SpType<T>& DestG, T& DestPrj) {
     copy(Dest,Origin);
     shift(Dest,step,Dirc);
