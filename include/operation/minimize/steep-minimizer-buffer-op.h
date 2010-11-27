@@ -14,7 +14,7 @@ namespace std {
       SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M,
       const SpType<T>& Coor, const IdType<unsigned int>& Idx) {
     typedef LineMin<IType,SpType,IdType,T>  LMType;
-    initMinimizerLocation(static_cast<LMType&>(M));
+    initMinimizerLocation(static_cast<LMType&>(M),Coor,Idx);
     imprint(M.Dirc,Coor);
   }
 

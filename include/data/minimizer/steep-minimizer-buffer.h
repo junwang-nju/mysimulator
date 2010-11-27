@@ -2,6 +2,9 @@
 #ifndef _Minimizer_Steepest_Descent_Buffer_H_
 #define _Minimizer_Steepest_Descent_Buffer_H_
 
+#include "operation/basic/error-proc.h"
+#include <cassert>
+
 namespace std {
 
   template <typename InteractionType, template <typename> class SpaceType,
@@ -52,7 +55,7 @@ namespace std {
             template <typename,template <typename> class,
                       template <typename> class,typename T> class LineMin>
   void release(
-      SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMinMethod>& M) {
+      SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M) {
     typedef LineMin<IType,SpType,IdType,T>    LMType;
     release(M.Dirc);
     release(static_cast<LMType&>(M));
@@ -79,7 +82,8 @@ namespace std {
   void refer(
       SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M,
       const SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& rM){
-    assert(IsAvailable(cM));
+    typedef LineMin<IType,SpType,IdType,T>  LMType;
+    assert(IsAvailable(rM));
     refer(M.Dirc,rM.Dirc);
     refer(static_cast<LMType&>(M),static_cast<const LMType&>(rM));
   }
