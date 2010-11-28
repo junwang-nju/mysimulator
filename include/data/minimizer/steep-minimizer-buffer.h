@@ -84,6 +84,7 @@ namespace std {
       const SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& rM){
     typedef LineMin<IType,SpType,IdType,T>  LMType;
     assert(IsAvailable(rM));
+    release(M);
     refer(M.Dirc,rM.Dirc);
     refer(static_cast<LMType&>(M),static_cast<const LMType&>(rM));
   }

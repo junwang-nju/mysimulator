@@ -85,4 +85,94 @@ namespace std {
 
 }
 
+#include "data/minimizer/conjg-minimizer-buffer.h"
+
+namespace std {
+
+  template <unsigned int CondType,
+            typename IType, template <typename> class SpType,
+            template <typename> class IdType, typename T,
+            template <typename,template<typename> class,
+                      template<typename> class,typename> class LineMin>
+  int Minimize(
+      ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LineMin>& B,
+      const unsigned int MaxIter=
+          ConjugateGradientMinimizerBuffer<IType,SpType,
+                                           IdType,T,LineMin>::DefaultMaxIter) {
+    typedef LineMin<IType,SpType,IdType,T>  LMType;
+    B.GCalcCount()=0;
+    B.LSearchCount()=0;
+    bool isSteep=true, nextMode;
+    T beta=0.;
+    T fnorm,fnorm2;
+    fnorm=norm(B.MinG);
+    fnorm2=fnorm*fnorm;
+    if(fnorm<B.GradThreshold())   return 3;
+    T tmd,oldfnorm2,dnorm;
+    for(unsigned int neval=0;neval<MaxIter;++neval) {
+      if(!isSteep) {
+        oldfnorm2=fnorm2;
+        fnorm=norm(B.MinG);
+        fnorm2=fnorm*fnorm;
+        tmd=dot(B.MinG,B.OldMinG);
+        beta=(fnorm2-tmd)/oldfnorm2;
+        if(absval(beta)>B.MaxBeta()) {
+          beta=0.;
+          isSteep=true;
+        } else isSteep=false;
+      }
+      if(!isSteep) {
+        tmd=beta*dnorm;
+        scaleshift(B.Dirc,tmd,-iOne,B.MinG);
+        B.MinProject()*=tmd;
+        dnorm=sqroot(tmd*tmd+fnorm2-2*B.MinProject());
+        B.MinProject()-=fnorm2;
+        if((B.MinProject()>0)||(dnorm<B.GradThreshold())) {
+          beta=0.;
+          isSteep=true;
+        }
+      }
+      if(isSteep) {
+        dnorm=fnorm;
+        if(dnorm<B.GradThreshold()) {
+          B.LSearchCount()=neval-1.;
+          return 4;
+        }
+        copy(B.Dirc,B.MinG);
+        scale(B.Dirc,-iOne);
+        B.MinProject()=-fnorm2;
+      }
+      tmd=1./dnorm;
+      scale(B.Dirc,tmd);
+      copy(B.OldMinG,B.MinG);
+      tmd=B.MinEnergy();
+      nextMode=false;
+      if(Minimize<CondType>(static_cast<LMType&>(B),B.Dirc)==2) {
+        if(isSteep) {
+          B.LSearchCount()=neval;
+          return 1;
+        } else {
+          nextMode=true;
+          --neval;
+        }
+      }
+      if(2*absval(tmd-B.MinEnergy())<(tmd+B.MinEnergy())*RelDelta<T>()) {
+        if(isSteep) {
+          B.LSearchCount()=neval;
+          return 2;
+        } else {
+          nextMode=true;
+          --neval;
+        }
+      }
+      isSteep=nextMode;
+      fnorm=norm(B.MinG);
+      fnorm2=fnorm*fnorm;
+    }
+    B.LSearchCount()=MaxIter;
+    return 0;
+  }
+
+}
+
 #endif

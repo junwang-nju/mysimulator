@@ -1,5 +1,5 @@
 
-#include "operation/minimize/steep-minimizer-buffer-op.h"
+#include "operation/minimize/conjg-minimizer-buffer-op.h"
 #include "operation/minimize/minimize.h"
 #include "operation/minimize/line-minimizer-buffer-base-op.h"
 #include "operation/minimize/minimal-step.h"
@@ -56,58 +56,58 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 int main() {
 
   cout<<"Test -- initialize"<<endl;
-  SteepestDescentMinimizerBuffer<TestInteraction,Vector,Vector,double,
-                                 TrackingLineMinimizerBuffer> SM;
+  ConjugateGradientMinimizerBuffer<TestInteraction,Vector,Vector,double,
+                                   TrackingLineMinimizerBuffer> CM;
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
-  SM.F.EFunc=efunc;
-  SM.F.GFunc=gfunc;
-  SM.F.BFunc=bfunc;
-  SM.F.prm=10.;
+  CM.F.EFunc=efunc;
+  CM.F.GFunc=gfunc;
+  CM.F.BFunc=bfunc;
+  CM.F.prm=10.;
   Vector<double> Coor(1);
-  Coor[0]=25;
+  Coor[0]=25.;
   Vector<unsigned int> id(1), msk(1);
   msk[0]=1;
-  allocateMinimizerProperty(SM);
-  initMinimizerMask(SM,msk);
-  initMinimizerLocation(SM,Coor,id);
+  allocateMinimizerProperty(CM);
+  initMinimizerMask(CM,msk);
+  initMinimizerLocation(CM,Coor,id);
   cout<<endl;
 
   cout<<"Test -- copy"<<endl;
-  SteepestDescentMinimizerBuffer<TestInteraction,Vector,Vector,double,
-                                 TrackingLineMinimizerBuffer> SM2;
-  SM2.F.EFunc=efunc;
-  SM2.F.GFunc=gfunc;
-  SM2.F.BFunc=bfunc;
-  SM2.F.prm=10.;
-  Coor[0]=5;
+  ConjugateGradientMinimizerBuffer<TestInteraction,Vector,Vector,double,
+                                   TrackingLineMinimizerBuffer> CM2;
+  CM2.F.EFunc=efunc;
+  CM2.F.GFunc=gfunc;
+  CM2.F.BFunc=bfunc;
+  CM2.F.prm=10.;
+  Coor[0]=2.;
   msk[0]=0;
-  allocateMinimizerProperty(SM2);
-  initMinimizerMask(SM2,msk);
-  initMinimizerLocation(SM2,Coor,id);
-  copy(SM2,SM);
+  allocateMinimizerProperty(CM2);
+  initMinimizerMask(CM2,msk);
+  initMinimizerLocation(CM2,Coor,id);
+  copy(CM2,CM);
   cout<<endl;
 
   cout<<"Test -- release"<<endl;
-  release(SM2);
+  release(CM2);
   cout<<endl;
 
   cout<<"Test -- check availability"<<endl;
-  cout<<IsAvailable(SM)<<endl;
-  cout<<IsAvailable(SM2)<<endl;
+  cout<<IsAvailable(CM)<<endl;
+  cout<<IsAvailable(CM2)<<endl;
   cout<<endl;
 
   cout<<"Test -- refer"<<endl;
-  refer(SM2,SM);
+  refer(CM2,CM);
   cout<<endl;
 
   cout<<"Test -- minimize"<<endl;
-  cout<<Minimize<StrongWolfe>(SM)<<endl;
-  cout<<SM.MinX<<endl;
-  cout<<SM.MinEnergy()<<endl;
-  cout<<SM.LSearchCount()<<endl;
-  cout<<SM.GCalcCount()<<endl;
+  cout<<Minimize<StrongWolfe>(CM)<<endl;
+  cout<<CM.MinX<<endl;
+  cout<<CM.MinEnergy()<<endl;
+  cout<<CM.LSearchCount()<<endl;
+  cout<<CM.GCalcCount()<<endl;
   cout<<endl;
 
   return 0;
