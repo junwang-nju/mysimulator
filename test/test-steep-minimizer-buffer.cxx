@@ -3,6 +3,13 @@
 #include "operation/minimize/minimize.h"
 #include "operation/minimize/line-minimizer-buffer-base-op.h"
 #include "operation/minimize/minimal-step.h"
+#include "operation/interaction/interaction-calc-4propertylist.h"
+#include "operation/interaction/interaction-calc.h"
+#include "operation/geometry/distance-calc-simplebuffer.h"
+#include "operation/geometry/displacement-calc-freespace.h"
+#include "operation/parameter/build-param-harmonic.h"
+#include "operation/parameter/build-param-lj612.h"
+#include "data/derived/parameter-list.h"
 #include <iostream>
 using namespace std;
 
@@ -68,9 +75,11 @@ int main() {
   Vector<double> Coor(1);
   Coor[0]=25;
   Vector<unsigned int> id(1), msk(1);
+  Vector<double> dmsk(1);
   msk[0]=1;
+  dmsk[0]=1.;
   allocateMinimizerProperty(SM);
-  initMinimizerMask(SM,msk);
+  initMinimizerMask(SM,msk,dmsk);
   initMinimizerLocation(SM,Coor,id);
   cout<<endl;
 
@@ -84,7 +93,7 @@ int main() {
   Coor[0]=5;
   msk[0]=0;
   allocateMinimizerProperty(SM2);
-  initMinimizerMask(SM2,msk);
+  initMinimizerMask(SM2,msk,dmsk);
   initMinimizerLocation(SM2,Coor,id);
   copy(SM2,SM);
   cout<<endl;
@@ -108,6 +117,118 @@ int main() {
   cout<<SM.MinEnergy()<<endl;
   cout<<SM.LSearchCount()<<endl;
   cout<<SM.GCalcCount()<<endl;
+  cout<<endl;
+
+  cout<<"Test -- minimize over complex data"<<endl;
+  SteepestDescentMinimizerBuffer<
+      Vector<Interaction<double,DistanceBufferSimple,FreeSpace> >,
+      PropertyList,PropertyList,double,TrackingLineMinimizerBuffer> CSM;
+  allocate(CSM.F,6);
+  for(unsigned int i=0;i<3;++i) allocate(CSM.F[i],Harmonic,3,2);
+  for(unsigned int i=3;i<6;++i) allocate(CSM.F[i],LJ612,3,2);
+  ParameterList PL;
+  Vector<unsigned int> sz;
+  allocate(sz,18);
+  for(unsigned int i=0;i<9;++i)   sz[i]=HarmonicNumberParameter;
+  for(unsigned int i=9;i<18;++i)  sz[i]=LJ612NumberParameter;
+  allocate(PL,3,sz);
+  for(unsigned int i=0,n=0;i<3;++i)
+  for(unsigned int j=0;j<3;++j,++n) {
+    PL.key[n][0]=Harmonic;
+    PL.key[n][1]=i;
+    PL.key[n][2]=j;
+    PL.key[n].update();
+  }
+  PL.value[0][HarmonicEqLength].d=1.;
+  PL.value[0][HarmonicEqStrength].d=100.;
+  PL.value[1][HarmonicEqLength].d=2.;
+  PL.value[1][HarmonicEqStrength].d=100.;
+  PL.value[2][HarmonicEqLength].d=0.5;
+  PL.value[2][HarmonicEqStrength].d=100.;
+  copy(PL.value[3],PL.value[1]);
+  PL.value[4][HarmonicEqLength].d=1.;
+  PL.value[4][HarmonicEqStrength].d=200.;
+  PL.value[5][HarmonicEqLength].d=1.;
+  PL.value[5][HarmonicEqStrength].d=30.;
+  copy(PL.value[6],PL.value[2]);
+  copy(PL.value[7],PL.value[5]);
+  PL.value[8][HarmonicEqLength].d=1.5;
+  PL.value[8][HarmonicEqStrength].d=2000.;
+  for(unsigned int i=0;i<9;++i) BuildParameterHarmonic<double>(PL.value[i]);
+  for(unsigned int i=0,n=9;i<3;++i)
+  for(unsigned int j=0;j<3;++j,++n) {
+    PL.key[n][0]=LJ612;
+    PL.key[n][1]=i;
+    PL.key[n][2]=j;
+    PL.key[n].update();
+  }
+  PL.value[9][LJ612EqRadius].d=1.;
+  PL.value[9][LJ612EqEnergyDepth].d=1.;
+  PL.value[10][LJ612EqRadius].d=0.8;
+  PL.value[10][LJ612EqEnergyDepth].d=2.;
+  PL.value[11][LJ612EqRadius].d=0.5;
+  PL.value[11][LJ612EqEnergyDepth].d=1.;
+  copy(PL.value[12],PL.value[10]);
+  PL.value[13][LJ612EqRadius].d=1.2;
+  PL.value[13][LJ612EqEnergyDepth].d=2.;
+  PL.value[14][LJ612EqRadius].d=1.1;
+  PL.value[14][LJ612EqEnergyDepth].d=3.;
+  copy(PL.value[15],PL.value[11]);
+  copy(PL.value[16],PL.value[14]);
+  PL.value[17][LJ612EqRadius].d=1.5;
+  PL.value[17][LJ612EqEnergyDepth].d=2.;
+  for(unsigned int i=9;i<18;++i)  BuildParameterLJ612<double>(PL.value[i]);
+  PL.update();
+  Vector<unsigned int> Kind(4);
+  copy(Kind,0);
+  Kind[1]=1;
+  Kind[3]=2;
+  PropertyList<unsigned int> cidx;
+  allocate(sz,6);
+  copy(sz,2);
+  allocate(cidx,sz);
+  cidx[0][0]=0;    cidx[0][1]=1;
+  cidx[1][0]=0;    cidx[1][1]=2;
+  cidx[2][0]=0;    cidx[2][1]=3;
+  cidx[3][0]=1;    cidx[3][1]=2;
+  cidx[4][0]=1;    cidx[4][1]=3;
+  cidx[5][0]=2;    cidx[5][1]=3;
+  allocate(sz,3);
+  for(unsigned int i=0;i<3;++i) {
+    sz[0]=Harmonic;
+    sz[1]=Kind[cidx[i][0]];
+    sz[2]=Kind[cidx[i][1]];
+    refer(CSM.F[i].prm,*get(PL,sz));
+  }
+  for(unsigned int i=3;i<6;++i) {
+    sz[0]=LJ612;
+    sz[1]=Kind[cidx[i][0]];
+    sz[2]=Kind[cidx[i][1]];
+    refer(CSM.F[i].prm,*get(PL,sz));
+  }
+  PropertyList<double> cv;
+  allocate(sz,4);
+  copy(sz,3);
+  allocate(cv,sz);
+  copy(cv,0.);
+  cv[1][1]=1.2;
+  cv[2][0]=1.3;    cv[2][1]=1.5;
+  cv[3][0]=0.8;    cv[3][1]=2.2;      cv[3][2]=1;
+  allocateMinimizerProperty(CSM);
+  PropertyList<unsigned int> cimsk;
+  PropertyList<double> cdmsk;
+  allocate(cimsk,sz);
+  allocate(cdmsk,sz);
+  copy(cimsk,1);
+  copy(cimsk[0],0);
+  copy<double,unsigned int>(cdmsk,cimsk);
+  initMinimizerMask(CSM,cimsk,cdmsk);
+  initMinimizerLocation(CSM,cv,cidx);
+  cout<<CSM.MinX<<endl;
+  cout<<CSM.MinEnergy()<<endl;
+  cout<<Minimize<StrongWolfe>(CSM)<<endl;
+  cout<<CSM.MinX<<endl;
+  cout<<CSM.MinEnergy()<<endl;
   cout<<endl;
 
   return 0;

@@ -68,9 +68,11 @@ int main() {
   Vector<double> Coor(1);
   Coor[0]=25.;
   Vector<unsigned int> id(1), msk(1);
+  Vector<double> dmsk(1);
   msk[0]=1;
+  dmsk[0]=1.;
   allocateMinimizerProperty(CM);
-  initMinimizerMask(CM,msk);
+  initMinimizerMask(CM,msk,dmsk);
   initMinimizerLocation(CM,Coor,id);
   cout<<endl;
 
@@ -84,7 +86,7 @@ int main() {
   Coor[0]=2.;
   msk[0]=0;
   allocateMinimizerProperty(CM2);
-  initMinimizerMask(CM2,msk);
+  initMinimizerMask(CM2,msk,dmsk);
   initMinimizerLocation(CM2,Coor,id);
   copy(CM2,CM);
   cout<<endl;

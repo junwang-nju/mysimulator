@@ -10,11 +10,12 @@ namespace std {
   template <typename IType,template <typename> class SpType,
             template <typename> class IdType,typename T>
   void initMinimizerMask(MinimizerBufferBase<IType,SpType,IdType,T>& B,
-                         const SpType<unsigned int>& Mask) {
+                         const SpType<unsigned int>& Mask,
+                         const SpType<T>& dMask) {
     imprint(B.MinIMask,Mask);
-    imprint(B.MinDMask,Mask);
+    imprint(B.MinDMask,dMask);
     copy(B.MinIMask,Mask);
-    copy<T,unsigned int>(B.MinDMask,Mask);
+    copy(B.MinDMask,dMask);
     B.DOF()=asum(Mask);
   }
 
@@ -39,11 +40,10 @@ namespace std {
       const SpType<T>& Origin, const SpType<T>& Dirc, const sT& step,
       SpType<T>& Dest, T& DestY, SpType<T>& DestG, T& DestPrj) {
     copy(Dest,Origin);
-    shift(Dest,step,Dirc);
+    shift(Dest,step,B.MinDMask,Dirc);
     DestY=0.;
     copy(DestG,0.);
     CalcInteraction(B.F,Dest,B.MinIdx,DestY,DestG);
-    scale(DestG,B.MinDMask);
     ++(B.GCalcCount());
     DestPrj=dot(DestG,Dirc);
   }

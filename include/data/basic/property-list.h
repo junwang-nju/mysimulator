@@ -55,7 +55,7 @@ namespace std {
     assert(IsAvailable(L));
     assert(IsAvailable(sL));
     unsigned int n=(L.nunit<sL.nunit?L.nunit:sL.nunit);
-    for(unsigned int i=0;i<n;++i) copy(L.structure[i],sL.structure[i]);
+    for(unsigned int i=0;i<n;++i) copy<T,cT>(L.structure[i],sL.structure[i]);
   }
 
   template <typename T>
