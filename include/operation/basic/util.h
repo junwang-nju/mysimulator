@@ -533,6 +533,14 @@ namespace std {
   template <> double RelDelta<double>() { return DRelDelta; }
   template <> float RelDelta<float>() { return FRelDelta; }
 
+  template <typename T>
+  T GoldValue() {
+    myError("Unknown T-type Golden Value");
+    return static_cast<T>(0);
+  }
+
+  template <> double GoldValue<double>() { return Gold; }
+
 }
 
 #endif

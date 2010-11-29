@@ -3,7 +3,7 @@
 #define _Minimizer_Conjugate_Gradient_Buffer_H_
 
 #include "data/basic/unique-parameter.h"
-#include "data/name/conjg-minimizer-property-name.h"
+#include "data/name/conjg-minimizer-self-property-name.h"
 
 namespace std {
 
@@ -21,6 +21,7 @@ namespace std {
     static const unsigned int DefaultMaxIter;
     SpaceType<T> Dirc;
     SpaceType<T> OldMinG;
+    Vector<UniqueParameter> selfProperty;
     
     ConjugateGradientMinimizerBuffer() : ParentType(), Dirc(), OldMinG() {}
     ConjugateGradientMinimizerBuffer(const Type& B) {
@@ -32,14 +33,8 @@ namespace std {
     }
     ~ConjugateGradientMinimizerBuffer() { release(*this); }
     
-    T& MaxBeta() {
-      typedef UniqueParameter UT;
-      return static_cast<UT&>(this->MinProperty[BetaMaximum]).value<T>();
-    }
-    const T& MaxBeta() const {
-      typedef UniqueParameter UT;
-      return static_cast<const UT&>(this->MinProperty[BetaMaximum]).value<T>();
-    }
+    T& MaxBeta() { return selfProperty[BetaMaximum].value<T>(); }
+    const T& MaxBeta() const { return selfProperty[BetaMaximum].value<T>(); }
   };
 
   template <typename IType,template <typename> class SpType,
@@ -109,7 +104,9 @@ namespace std {
                       template<typename>class,typename> class LineMin>
   void allocateMinimizerProperty(
       ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LineMin>& B) {
-    allocate(B.MinProperty,ConjugateGradientMinimizerNumberProperty);
+    typedef LineMin<IType,SpType,IdType,T>  LMType;
+    allocateMinimizerProperty(static_cast<LMType&>(B));
+    allocate(B.selfProperty,ConjugateGradientMinimizerNumberSelfProperty);
     initMinimizerProperty(B);
   }
 

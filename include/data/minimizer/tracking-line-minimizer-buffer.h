@@ -81,7 +81,7 @@ namespace std {
       TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B) {
     typedef LineMinimizerBufferBase<IType,SpType,IdType,T>  LBType;
     initMinimizerProperty(static_cast<LBType&>(B));
-    B.TrackingFac()=Gold;
+    B.TrackingFac()=GoldValue<T>();
   }
 
 }
