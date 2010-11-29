@@ -518,6 +518,10 @@ namespace std {
   float sqroot(const float& d) { return sqrtf(d); }
   long double sqroot(const long double& d) { return sqrtl(d); }
 
+  double arccos(const double& d) { return acos(d); }
+  float arccos(const float& d) { return acosf(d); }
+  long double arccos(const long double& d) { return acosl(d); }
+
 }
 
 #include "data/name/constant.h"
