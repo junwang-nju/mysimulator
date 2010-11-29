@@ -229,6 +229,8 @@ int main() {
   cout<<Minimize<StrongWolfe>(CSM)<<endl;
   cout<<CSM.MinX<<endl;
   cout<<CSM.MinEnergy()<<endl;
+  cout<<CSM.LSearchCount()<<endl;
+  cout<<CSM.GCalcCount()<<endl;
   cout<<endl;
 
   return 0;
