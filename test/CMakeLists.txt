@@ -141,8 +141,8 @@ target_link_libraries (test-conjg-minimizer-buffer.run blas)
 add_executable (test-minimizer-conjg-4propertylist-op.run test-minimizer-conjg-4propertylist-op.cxx)
 target_link_libraries (test-minimizer-conjg-4propertylist-op.run blas)
 
-add_executable (test-minimizer-lbfgs.run test-minimizer-lbfgs.cxx)
-target_link_libraries (test-minimizer-lbfgs.run blas)
+add_executable (test-lbfgs-minimizer-buffer.run test-lbfgs-minimizer-buffer.cxx)
+target_link_libraries (test-lbfgs-minimizer-buffer.run blas)
 
 add_executable (test-minimizer-lbfgs-4propertylist-op.run test-minimizer-lbfgs-4propertylist-op.cxx)
 target_link_libraries (test-minimizer-lbfgs-4propertylist-op.run blas)

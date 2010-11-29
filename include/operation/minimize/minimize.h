@@ -175,4 +175,108 @@ namespace std {
 
 }
 
+#include "data/minimizer/lbfgs-minimizer-buffer.h"
+
+namespace std {
+
+  template <unsigned int CondType,
+            typename IType, template <typename> class SpType,
+            template <typename> class IdType, typename T,
+            template <typename,template<typename>class,
+                      template<typename>class,typename> class LMin,
+            unsigned int MCorr>
+  int Minimize(LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B,
+               const unsigned int MaxIter=
+                  LBFGSMinimizerBuffer<IType,SpType,
+                                       IdType,T,LMin,MCorr>::DefaultMaxIter) {
+    assert(IsAvailable(B));
+    typedef LMin<IType,SpType,IdType,T>   LMType;
+    unsigned int nCorr;
+    T diag,dgdg,dgdx,beta;
+    B.GCalcCount()=0;
+    B.LSearchCount()=0;
+    bool isSteep=true, nextMode;
+    unsigned int point=0, cp;
+    T fnorm,fnorm2,dnorm,tmd;
+    fnorm=norm(B.MinG);
+    fnorm2=fnorm*fnorm;
+    if(fnorm<B.GradThreshold()) return 3;
+    for(unsigned int neval=0;neval<MaxIter;++neval) {
+      if(!isSteep) {
+        B.MinProject()=dot(B.Dirc,B.MinG);
+        dnorm=norm(B.Dirc);
+        if((B.MinProject()>0)||(dnorm<B.GradThreshold())) isSteep=true;
+      }
+      if(isSteep) {
+        nCorr=0;
+        copy(diag,iOne);
+        copy(B.Dirc,B.MinG);
+        scale(B.Dirc,-diag);
+        B.MinProject()=-fnorm2;
+        dnorm=fnorm;
+        if(dnorm<B.GradThreshold()) {
+          B.LSearchCount()=neval;
+          return 4;
+        }
+      }
+      scale(B.Dirc,1./dnorm);
+      copy(B.dX[point],B.Dirc);
+      copy(B.lastX,B.MinX);
+      copy(B.lastG,B.MinG);
+      nextMode=false;
+      tmd=B.MinEnergy();
+      if(Minimize<CondType>(static_cast<LMType&>(B),B.Dirc)==2) {
+        if(isSteep) {
+          B.LSearchCount()=neval;
+          return 1;
+        } else {
+          nextMode=true;
+          --neval;
+        }
+      }
+      if(2*absval(tmd-B.MinEnergy())<(tmd+B.MinEnergy())*RelDelta<T>()) {
+        if(isSteep) {
+          B.LSearchCount()=neval;
+          return 2;
+        } else {
+          nextMode=true;
+          --neval;
+        }
+      }
+      isSteep=nextMode;
+      fnorm=norm(B.MinG);
+      fnorm2=fnorm*fnorm;
+      if(!isSteep) {
+        if(nCorr<MCorr)   ++nCorr;
+        copy(B.dG[point],B.MinG);
+        shift(B.dG[point],-iOne,B.lastG);
+        scale(B.dX[point],B.MinMove());
+        dgdg=normSQ(B.dG[point]);
+        dgdx=dot(B.dG[point],B.dX[point]);
+        B.rho[point]=iOne/dgdx;
+        diag=dgdx*B.rho[point];
+        ++point;
+        if(point>=MCorr)  point=0;
+        copy(B.Dirc,B.MinG);
+        scale(B.Dirc,-iOne);
+        cp=point;
+        for(unsigned int k=0;k<nCorr;++k) {
+          cp=(cp==0?nCorr-1:cp-1);
+          B.alpha[cp]=B.rho[cp]*dot(B.dX[cp],B.Dirc);
+          shift(B.Dirc,-B.alpha[cp],B.dG[cp]);
+        }
+        scale(B.Dirc,diag);
+        for(unsigned int k=0;k<nCorr;++k) {
+          beta=B.alpha[cp]-B.rho[cp]*dot(B.Dirc,B.dG[cp]);
+          shift(B.Dirc,beta,B.dX[cp]);
+          cp=(cp==nCorr-1?0:cp+1);
+        }
+      }
+    }
+    B.LSearchCount()=MaxIter;
+    return 0;
+  }
+
+}
+
 #endif
