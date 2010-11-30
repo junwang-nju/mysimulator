@@ -16,7 +16,7 @@ namespace std {
     unsigned int I=idx[0], J=idx[1];
     T cdsq=Distance(X[I],X[J],I,J,Geo,B);
     T cd=sqroot(cdsq);
-    T d=cd-Prm[CoreExpandedCoreRadius]<T>();
+    T d=cd-P[CoreExpandedCoreRadius].value<T>();
     assert(d>=0.);
     T dsq=d*d,ee;
     efunc(dsq,P+CoreExpandedBaseNumberParameter,ee);
@@ -31,7 +31,7 @@ namespace std {
     unsigned int I=idx[0], J=idx[1];
     T cdsq=Distance(X[I],X[J],I,J,Geo,B);
     T cd=sqroot(cdsq);
-    T d=cd-Prm[CoreExpandedCoreRadius]<T>();
+    T d=cd-P[CoreExpandedCoreRadius].value<T>();
     assert(d>=0.);
     T dsq=d*d,ef;
     gfunc(dsq,P+CoreExpandedBaseNumberParameter,ef);
@@ -48,7 +48,7 @@ namespace std {
     unsigned int I=idx[0], J=idx[1];
     T cdsq=Distance(X[I],X[J],I,J,Geo,B);
     T cd=sqroot(cdsq);
-    T d=cd-Prm[CoreExpandedCoreRadius]<T>();
+    T d=cd-P[CoreExpandedCoreRadius].value<T>();
     assert(d>=0.);
     T dsq=d*d,ee,ef;
     bfunc(dsq,P+CoreExpandedBaseNumberParameter,ee,ef);

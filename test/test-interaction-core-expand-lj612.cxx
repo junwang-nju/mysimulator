@@ -1,26 +1,26 @@
 
-#include "parameter-name-core-expand-lj612.h"
-#include "interaction-core-expand-lj612.h"
-#include "distance-evaluate-direct.h"
-#include "free-space.h"
-#include "property-list.h"
+#include "operation/interaction/core-expanded-lj612.h"
+#include "operation/geometry/distance-calc-simplebuffer.h"
+#include "operation/geometry/displacement-calc-freespace.h"
+#include "operation/parameter/build-param-core-expanded-lj612.h"
+#include "data/basic/property-list.h"
 #include <iostream>
 using namespace std;
 
 int main() {
 
-  DistanceEvalDirect DED;
+  DistanceBufferSimple<double> DED;
   FreeSpace FS;
   allocate(DED,3,2);
   allocate(FS,3);
 
   PropertyList<double> v,g;
-  unsigned int *sz=new unsigned int[2];
-  assign(sz,2,2);
-  allocate(v,sz,2);
-  allocate(g,sz,2);
-  assign(v[0],0.);
-  assign(v[1],0.);    v[1][0]=0.8;
+  Vector<unsigned int> sz(2);
+  copy(sz,3);
+  allocate(v,sz);
+  allocate(g,sz);
+  copy(v[0],0.);
+  copy(v[1],0.);    v[1][0]=0.8;
 
   Vector<unsigned int> idx;
   allocate(idx,2);
@@ -28,28 +28,28 @@ int main() {
   idx[1]=1;
 
   Vector<UniqueParameter> prm;
-  allocate(prm,CoreExpLJ612NumberParameter);
-  prm[CoreExpCoreRadius]=0.3;
-  prm[CoreExpLJ612EqRadius]=1.;
-  prm[CoreExpLJ612EqEnergyDepth]=1.5;
-  GenerateParameterCoreExpandLJ612(prm);
+  allocate(prm,CoreExpandedLJ612NumberParameter);
+  prm[CoreExpandedCoreRadius].d=0.3;
+  prm[CoreExpandedLJ612EqRadius].d=1.;
+  prm[CoreExpandedLJ612EqEnergyDepth].d=1.5;
+  BuildParameterCoreExpandedLJ612<double>(prm);
 
   cout<<"Test -- EFunc"<<endl;
   double E=0.;
-  EFuncCoreExpandLJ612(v.structure,idx(),prm(),2,NULL,0,DED,FS,E);
+  EFuncCELJ612(v.structure,idx(),prm(),DED,FS,E);
   cout<<E<<endl;
   cout<<endl;
 
   cout<<"Test -- GFunc"<<endl;
-  assign(g.data,0.,g.size);
-  GFuncCoreExpandLJ612(v.structure,idx(),prm(),2,NULL,0,DED,FS,g.structure);
+  copy(g,0.);
+  GFuncCELJ612(v.structure,idx(),prm(),DED,FS,g.structure);
   cout<<g<<endl;
   cout<<endl;
 
   cout<<"Test -- BFunc"<<endl;
   E=0.;
-  assign(g.data,0.,g.size);
-  BFuncCoreExpandLJ612(v.structure,idx(),prm(),2,NULL,0,DED,FS,E,g.structure);
+  copy(g,0.);
+  BFuncCELJ612(v.structure,idx(),prm(),DED,FS,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;
