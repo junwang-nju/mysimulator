@@ -30,7 +30,10 @@ namespace std {
 
   void allocateDihPeriodicParameter(Vector<UniqueParameter>& prm,
                                     const unsigned int np) {
-    allocateDihPeriodicParameter(prm.data,np);
+    release(prm);
+    allocate(prm,2+np*4);
+    prm[DihPeriodicNumberPeriodicFunc].u=np;
+    prm[DihPeriodicNumberParameter].u=4*np+2;
   }
 
   template <typename T>

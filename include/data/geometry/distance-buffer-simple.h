@@ -28,9 +28,13 @@ namespace std {
     const unsigned int& NumberOfUnits() const {
       return this->operator[](NumberUnit).u;
     }
-    T& DistanceSquare() { return this->operator[](DistanceSQ).value<T>(); }
+    T& DistanceSquare() {
+      typedef UniqueParameter UT;
+      return static_cast<UT&>(this->operator[](DistanceSQ)).value<T>();
+    }
     const T& DistanceSquare() const {
-      return this->operator[](DistanceSQ).value<T>();
+      typedef UniqueParameter UT;
+      return static_cast<const UT&>(this->operator[](DistanceSQ)).value<T>();
     }
     const unsigned int Dimension() const { return DisplaceVec.size; }
 

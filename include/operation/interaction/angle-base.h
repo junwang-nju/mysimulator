@@ -2,7 +2,6 @@
 #ifndef _Interaction_Angle_Base_H_
 #define _Interaction_Angle_Base_H_
 
-#include "operation/basic/vector-op.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

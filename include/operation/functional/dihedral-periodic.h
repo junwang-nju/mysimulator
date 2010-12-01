@@ -13,7 +13,7 @@ namespace std {
     for(unsigned int i=0,s=2;i<prm[DihPeriodicNumberPeriodicFunc].u;++i,s+=4)
       func+=prm[DihPeriodicStrength+s].value<T>()*
             (cosine(prm[DihPeriodicFrequence+s].value<T>()*
-                    (dih+prm[DihPeriodicPhase].value<T>()))+1.);
+                    (dih+prm[DihPeriodicPhase+s].value<T>()))+1.);
   }
 
   template <typename T>
@@ -22,7 +22,7 @@ namespace std {
     for(unsigned int i=0,s=2;i<prm[DihPeriodicNumberPeriodicFunc].u;++i,s+=4)
       diff-=prm[DihPeriodicStrengthFrequence+s].value<T>()*
             sine(prm[DihPeriodicFrequence+s].value<T>()*
-                 (dih+prm[DihPeriodicPhase].value<T>()));
+                 (dih+prm[DihPeriodicPhase+s].value<T>()));
   }
 
   template <typename T>
@@ -32,7 +32,7 @@ namespace std {
     func=diff=0.;
     for(unsigned int i=0,s=2;i<prm[DihPeriodicNumberPeriodicFunc].u;++i,s+=4) {
       tmd=prm[DihPeriodicFrequence+s].value<T>()*
-          (dih+prm[DihPeriodicPhase].value<T>());
+          (dih+prm[DihPeriodicPhase+s].value<T>());
       func+=prm[DihPeriodicStrength+s].value<T>()*(cosine(tmd)+1.);
       diff-=prm[DihPeriodicStrengthFrequence+s].value<T>()*sine(tmd);
     }
