@@ -6,11 +6,13 @@ namespace std {
 
   enum FENEParameterName {
     FENEStrength=0,
-    FENEDeltaRadisuMax,
+    FENEEqLength,
+    FENEDeltaRadiusMax,
     FENEHalfStrength,
-    FENEDeltaRadisuMaxSQ,
-    FENEIvDeltaRadiusMax,
+    FENEDeltaRadiusMaxSQ,
+    FENEIvDeltaRadiusMaxSQ,
     FENEHalfStrengthDRadiusSQ,
+    FENEStrengthDRadiusSQ,
     FENENumberParameter
   };
 
