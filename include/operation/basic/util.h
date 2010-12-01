@@ -521,6 +521,11 @@ namespace std {
   double ln(const double& d) { return log(d); }
   float ln(const float& d) { return logf(d); }
 
+  double sine(const double& d) { return sin(d); }
+  float sine(const float& d) { return sin(d); }
+  double cosine(const double& d) { return cos(d); }
+  float cosine(const float& d) { return cosf(f); }
+
   double arccos(const double& d) { return acos(d); }
   float arccos(const float& d) { return acosf(d); }
   long double arccos(const long double& d) { return acosl(d); }
