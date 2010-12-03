@@ -2,92 +2,90 @@
 #ifndef _Interaction_H_
 #define _Interaction_H_
 
-#include "data/interaction/interaction-base.h"
+#include "data/basic/vector.h"
+#include "data/basic/unique-parameter.h"
 
 namespace std {
 
-  template <typename T,template <typename> class DistBuffer,typename GeomType>
-  struct Interaction
-    : public InteractionBase<T,DistBuffer,GeomType,Vector<UniqueParameter> > {
-    typedef Interaction<T,DistBuffer,GeomType>    Type;
-    typedef InteractionBase<T,DistBuffer,GeomType,Vector<UniqueParameter> >
-            ParentType;
+  template <typename InteractionUnitSet, typename T,
+            template<typename> class DistBuffer, typename GeomType>
+  struct Interaction : public InteractionUnitSet {
+    typedef Interaction<InteractionUnitSet> Type;
+    typedef InteractionUnitSet  ParentType;
 
-    Interaction() : ParentType() {}
-    Interaction(const Type& F) { myError("Cannot create Interaction"); }
+    Vector<unsigned int> property;
+    DistBuffer<T> B;
+    GeomType  Geo;
+
+    Interaction() : ParentType(), property(), B(), Geo() {}
+    Interaction(const Type& F) {
+      myError("Cannot create Interaction");
+    }
     Type& operator=(const Type& F) {
       myError("Cannot copy Interaction");
       return *this;
     }
     ~Interaction() { release(*this); }
 
+    unsigned int& Dimension() { return property[0]; }
+    unsigned int& NumMerUnit() { return property[1]; }
+    unsigned int& NumInteractionUnit() { return property[2]; }
+    const unsigned int& Dimension() const { return property[0]; }
+    const unsigned int& NumMerUnit() const { return property[1]; }
+    const unsigned int& NumInteractionUnit() const { return property[2]; }
+
   };
 
-  template <typename T,template <typename> class DistBuffer,typename GeomType>
-  bool IsAvailable(const Interaction<T,DistBuffer,GeomType>& F) {
-    typedef InteractionBase<T,DistBuffer,GeomType,
-                            Vector<UniqueParameter> >   IBType;
-    return IsAvailable(static_cast<const IBType&>(F));
+  template <typename IUSet,typename T,
+            template<typename> class DBuff, typename GType>
+  bool IsAvailable(const Interaction<IUSet,T,DBuff,GType>& F) {
+    return IsAvailable(static_cast<const IUSet&>(F))&&IsAvailable(F.property)&&
+           IsAvailable(F.B)&&IsAvailable(F.Geo);
   }
 
-  template <typename T,template <typename> class DistBuffer,typename GeomType>
-  void release(Interaction<T,DistBuffer,GeomType>& F) {
-    typedef InteractionBase<T,DistBuffer,GeomType,
-                            Vector<UniqueParameter> >   IBType;
-    release(static_cast<IBType&>(F));
+  template <typename IUSet,typename T,
+            template<typename> class DBuff, typename GType>
+  void release(Interaction<IUSet,T,DBuff,GType>& F) {
+    release(F.property);
+    release(F.B);
+    release(F.Geo);
+    release(static_cast<IUSet&>(F));
   }
 
-  template <typename T,template <typename> class DistBuffer,typename GeomType>
-  void copy(Interaction<T,DistBuffer,GeomType>& F,
-            const Interaction<T,DistBuffer,GeomType>& rF) {
-    typedef InteractionBase<T,DistBuffer,GeomType,
-                            Vector<UniqueParameter> >   IBType;
-    copy(static_cast<IBType&>(F),static_cast<const IBType&>(rF));
+  template <typename IUSet,typename T,
+            template<typename> class DBuff, typename GType>
+  void copy(Interaction<IUSet,T,DBuff,GType>& F,
+            const Interaction<IUset,T,DBuff,GType>& cF) {
+    assert(IsAvailable(F));
+    assert(IsAvailable(cF));
+    copy(F.property,cF.property);
+    copy(F.B,cF.B);
+    copy(F.Geo,cF.Geo);
+    copy(static_cast<IUSet&>(F),static_cast<const IUSet&>(cF));
   }
 
-  template <typename T,template <typename> class DistBuffer,typename GeomType>
-  void refer(Interaction<T,DistBuffer,GeomType>& F,
-             const Interaction<T,DistBuffer,GeomType>& rF) {
-    typedef InteractionBase<T,DistBuffer,GeomType,
-                            Vector<UniqueParameter> >   IBType;
-    refer(static_cast<IBType&>(F),static_cast<const IBType&>(rF));
+  template <typename IUSet,typename T,
+            template<typename> class DBuff, typename GType>
+  void refer(Interaction<IUSet,T,DBuff,Geo>& F,
+             const Interaction<IUSet,T,DBuff,Geo>& rF) {
+    assert(IsAvailable(rF));
+    release(F);
+    refer(F.property,rF.property);
+    refer(F.B,rF.B);
+    refer(F.Geo,rF.Geo);
+    refer(static_cast<IUSet&>(F),static_cast<const IUSet&>(rF));
   }
 
-  template <typename T,template <typename> class DistBuffer,typename GeomType>
-  void allocate(Interaction<T,DistBuffer,GeomType>& F,
-                const unsigned int iTag,
+  template <typename IUSet,typename T,
+            template<typename> class DBuff, typename GType>
+  void allocate(Interaction<IUSet,T,DBuff,GType>& F,
                 const unsigned int dim, const unsigned int nunit) {
-    typedef InteractionBase<T,DistBuffer,GeomType,
-                            Vector<UniqueParameter> >   IBType;
-    allocate(static_cast<IBType&>(F),iTag,dim,nunit);
-    switch(iTag) {
-      case Harmonic:
-        allocate(F.prm,HarmonicNumberParameter);
-        break;
-      case LJ612:
-        allocate(F.prm,LJ612NumberParameter);
-        break;
-      case LJ1012:
-        allocate(F.prm,LJ1012NumberParameter);
-        break;
-      case Core12:
-        allocate(F.prm,Core12NumberParameter);
-        break;
-      case CoreLJ612:
-        allocate(F.prm,CoreLJ612NumberParameter);
-        break;
-      case LJ612Cut:
-        allocate(F.prm,LJ612CutNumberParameter);
-        break;
-      case LJ1012Cut:
-        allocate(F.prm,LJ1012CutNumberParameter);
-        break;
-      case Coulomb:
-        allocate(F.prm,CoulombNumberParameter);
-        break;
-      default:
-        myError("Unknown interaction type");
-    }
+    release(F);
+    allocate(F.property,3);
+    F.Dimension()=dim;
+    F.NumMerUnit()=nunit;
+    allocate(F.B,dim,nunit);
+    allocate(F.Geo,dim);
   }
 
 }
