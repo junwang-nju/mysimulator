@@ -22,5 +22,17 @@ namespace std {
 
 }
 
+#include "data/basic/vector.h"
+
+namespace std {
+
+  template <typename T>
+  void BuildParameterPropagatorBase(Vector<UniqueParameter>& GP) {
+    assert(GP.size>=PropagatorBaseNumberParameter);
+    BuildParameterPropagatorBase<T>(GP.data);
+  }
+
+}
+
 #endif
 

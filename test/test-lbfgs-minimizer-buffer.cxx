@@ -62,8 +62,8 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 
 int main() {
   cout<<"Test -- initialize"<<endl;
-  LBFGSMinimizerBuffer<TestInteraction,Vector,Vector,double,
-                       TrackingLineMinimizerBuffer>   LM;
+  LBFGSMinimizerBuffer<TestInteraction,Vector,Vector<unsigned int>,
+                       double,TrackingLineMinimizerBuffer>   LM;
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
@@ -83,7 +83,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- copy"<<endl;
-  LBFGSMinimizerBuffer<TestInteraction,Vector,Vector,double,
+  LBFGSMinimizerBuffer<TestInteraction,Vector,Vector<unsigned int>,double,
                        TrackingLineMinimizerBuffer>   LM2;
   LM2.F.EFunc=efunc;
   LM2.F.GFunc=gfunc;
@@ -121,7 +121,8 @@ int main() {
   cout<<"Test -- minimize over complex data"<<endl;
   LBFGSMinimizerBuffer<
       Vector<Interaction<double,DistanceBufferSimple,FreeSpace> >,
-      PropertyList,PropertyList,double,TrackingLineMinimizerBuffer> CSM;
+      PropertyList,PropertyList<unsigned int>,double,
+      TrackingLineMinimizerBuffer> CSM;
   allocate(CSM.F,6);
   for(unsigned int i=0;i<3;++i) allocate(CSM.F[i],Harmonic,3,2);
   for(unsigned int i=3;i<6;++i) allocate(CSM.F[i],LJ612,3,2);

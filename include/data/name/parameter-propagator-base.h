@@ -5,7 +5,8 @@
 namespace std {
 
   enum PropagatorBaseParameterName {
-    DeltaTime=0,
+    PropagatorMode=0,
+    DeltaTime,
     HalfDeltaTime,
     StartTime,
     NowTime,

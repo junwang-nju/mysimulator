@@ -7,13 +7,13 @@
 namespace std {
 
   template <typename IType, template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LMin,
+                     typename,typename> class LMin,
             unsigned int MCorr>
   void initMinimizerLocation(
       LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B,
-      const SpType<T>& Coor, IdType<unsigned int>& Idx) {
+      const SpType<T>& Coor, IdType& Idx) {
     typedef LMin<IType,SpType,IdType,T> LMType;
     initMinimizerLocation(static_cast<LMType&>(B),Coor,Idx);
     imprint(B.Dirc,Coor);

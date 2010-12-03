@@ -7,12 +7,12 @@
 namespace std {
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LineMin>
+                     typename,typename> class LineMin>
   void initMinimizerLocation(
       ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LineMin>& B,
-      const SpType<T>& Coor, const IdType<unsigned int>& Idx) {
+      const SpType<T>& Coor, const IdType& Idx) {
     typedef LineMin<IType,SpType,IdType,T>  LMType;
     initMinimizerLocation(static_cast<LMType&>(B),Coor,Idx);
     imprint(B.Dirc,Coor);

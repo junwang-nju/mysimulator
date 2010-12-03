@@ -533,6 +533,7 @@ namespace std {
 }
 
 #include "data/name/constant.h"
+#include "error-proc.h"
 
 namespace std {
 

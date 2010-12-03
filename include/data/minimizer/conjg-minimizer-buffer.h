@@ -8,9 +8,9 @@
 namespace std {
 
   template <typename InteractType, template <typename> class SpaceType,
-            template <typename> class IdxType, typename T,
+            typename IdxType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LineMin>
+                     typename,typename> class LineMin>
   struct ConjugateGradientMinimizerBuffer 
     : public LineMin<InteractType,SpaceType,IdxType,T> {
     typedef
@@ -38,17 +38,17 @@ namespace std {
   };
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LMin>
+                      typename,typename> class LMin>
   const unsigned int
   ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LMin>::DefaultMaxIter
   =1000;
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LMin>
+                      typename,typename> class LMin>
   bool IsAvailable(
       const ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LMin>& B) {
     typedef LMin<IType,SpType,IdType,T> LMType;
@@ -57,9 +57,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LineMin>
+                      typename,typename> class LineMin>
   void release(
       ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LineMin>& B) {
     typedef LineMin<IType,SpType,IdType,T>  LMType;
@@ -69,9 +69,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LMin>
+                      typename,typename> class LMin>
   void copy(
       ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LMin>& B,
       const ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LMin>& cB) {
@@ -84,9 +84,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LMin>
+                      typename,typename> class LMin>
   void refer(
       ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LMin>& B,
       const ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LMin>& cB) {
@@ -99,9 +99,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LineMin>
+                      typename,typename> class LineMin>
   void allocateMinimizerProperty(
       ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LineMin>& B) {
     typedef LineMin<IType,SpType,IdType,T>  LMType;
@@ -111,9 +111,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LineMin>
+                      typename,typename> class LineMin>
   void initMinimizerProperty(
       ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LineMin>& B) {
     typedef LineMin<IType,SpType,IdType,T>  LMType;

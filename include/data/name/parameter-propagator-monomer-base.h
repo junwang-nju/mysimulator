@@ -6,6 +6,7 @@ namespace std {
 
   enum PropagatorMonomerBaseParameterName {
     MoveMode=0,
+    MonomerMode,
     KindNumber,
     pBuild,
     MassData,

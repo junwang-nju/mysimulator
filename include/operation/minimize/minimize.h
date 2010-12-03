@@ -10,7 +10,7 @@ namespace std {
 
   template <unsigned int CType,
             typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            typename IdType,typename T>
   int Minimize(TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B,
                const SpType<T>& Dirc) {
     assert(IsAvailable(B));
@@ -48,9 +48,9 @@ namespace std {
 
   template <unsigned int CondType,
             typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template <typename> class,
-                      template <typename> class, typename> class LineMin>
+                      typename, typename> class LineMin>
   int Minimize(
         SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& B,
         const unsigned int MaxIter=
@@ -91,9 +91,9 @@ namespace std {
 
   template <unsigned int CondType,
             typename IType, template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename> class,
-                      template<typename> class,typename> class LineMin>
+                      typename,typename> class LineMin>
   int Minimize(
       ConjugateGradientMinimizerBuffer<IType,SpType,IdType,T,LineMin>& B,
       const unsigned int MaxIter=
@@ -181,9 +181,9 @@ namespace std {
 
   template <unsigned int CondType,
             typename IType, template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LMin,
+                      typename,typename> class LMin,
             unsigned int MCorr>
   int Minimize(LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B,
                const unsigned int MaxIter=

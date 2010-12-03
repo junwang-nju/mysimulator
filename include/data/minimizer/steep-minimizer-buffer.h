@@ -8,9 +8,9 @@
 namespace std {
 
   template <typename InteractionType, template <typename> class SpaceType,
-            template <typename> class IdxType, typename T,
+            typename IdxType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LineMin>
+                      typename,typename> class LineMin>
   struct SteepestDescentMinimizerBuffer
     : public LineMin<InteractionType,SpaceType,IdxType,T> {
     typedef
@@ -33,17 +33,17 @@ namespace std {
   };
 
   template <typename IType, template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LineMin>
+                     typename,typename> class LineMin>
   const unsigned int
   SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>::DefaultMaxIter
   =10000;
 
   template <typename IType, template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LineMin>
+                     typename,typename> class LineMin>
   bool IsAvailable(
       const SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M) {
     typedef LineMin<IType,SpType,IdType,T>  LMType;
@@ -51,9 +51,9 @@ namespace std {
   }
 
   template <typename IType, template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template <typename> class,
-                      template <typename> class,typename T> class LineMin>
+                      typename,typename T> class LineMin>
   void release(
       SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M) {
     typedef LineMin<IType,SpType,IdType,T>    LMType;
@@ -62,9 +62,9 @@ namespace std {
   }
 
   template <typename IType, template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template <typename> class,
-                      template <typename> class,typename T> class LineMin>
+                      typename,typename T> class LineMin>
   void copy(
       SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M,
       const SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& cM){
@@ -76,9 +76,9 @@ namespace std {
   }
 
   template <typename IType, template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template <typename,template <typename> class,
-                      template <typename> class,typename T> class LineMin>
+                      typename,typename T> class LineMin>
   void refer(
       SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M,
       const SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& rM){

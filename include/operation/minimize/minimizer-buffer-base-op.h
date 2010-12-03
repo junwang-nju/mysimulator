@@ -8,7 +8,7 @@
 namespace std {
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType,typename T>
+            typename IdType,typename T>
   void initMinimizerMask(MinimizerBufferBase<IType,SpType,IdType,T>& B,
                          const SpType<unsigned int>& Mask,
                          const SpType<T>& dMask) {
@@ -20,10 +20,10 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType,typename T>
+            typename IdType,typename T>
   void initMinimizerLocation(MinimizerBufferBase<IType,SpType,IdType,T>& B,
                              const SpType<T>& Coor,
-                             const IdType<unsigned int>& Idx) {
+                             const IdType& Idx) {
     imprint(B.MinX,Coor);
     imprint(B.MinG,Coor);
     imprint(B.MinIdx,Idx);
@@ -34,7 +34,7 @@ namespace std {
   }
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T,typename sT>
+            typename IdType,typename T,typename sT>
   void ProduceNewLocation(
       MinimizerBufferBase<IType,SpType,IdType,T>& B,
       const SpType<T>& Origin, const SpType<T>& Dirc, const sT& step,

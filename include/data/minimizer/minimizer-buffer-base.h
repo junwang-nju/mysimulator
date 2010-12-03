@@ -8,11 +8,11 @@
 namespace std {
 
   template <typename InteractionType,template <typename> class SpaceType,
-            template <typename> class IdxType, typename T>
+            typename IdxType, typename T>
   struct MinimizerBufferBase {
     InteractionType F;
     SpaceType<T> MinX;
-    IdxType<unsigned int> MinIdx;
+    IdxType MinIdx;
     SpaceType<T> MinDMask;
     SpaceType<unsigned int> MinIMask;
     Vector<UniqueParameter> MinProperty;
@@ -52,7 +52,7 @@ namespace std {
   };
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            typename IdType,typename T>
   bool IsAvailable(const MinimizerBufferBase<IType,SpType,IdType,T>& B) {
     return IsAvailable(B.F)&&IsAvailable(B.MinX)&&IsAvailable(B.MinIdx)&&
            IsAvailable(B.MinDMask)&&IsAvailable(B.MinIMask)&&
@@ -60,7 +60,7 @@ namespace std {
   }
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            typename IdType,typename T>
   void release(MinimizerBufferBase<IType,SpType,IdType,T>& B) {
     release(B.F);
     release(B.MinX);
@@ -72,7 +72,7 @@ namespace std {
   }
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            typename IdType,typename T>
   void copy(MinimizerBufferBase<IType,SpType,IdType,T>& B,
             const MinimizerBufferBase<IType,SpType,IdType,T>& cB) {
     assert(IsAvailable(B));
@@ -87,7 +87,7 @@ namespace std {
   }
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            typename IdType,typename T>
   void refer(MinimizerBufferBase<IType,SpType,IdType,T>& B,
              const MinimizerBufferBase<IType,SpType,IdType,T>& rB) {
     assert(IsAvailable(rB));
@@ -102,21 +102,21 @@ namespace std {
   }
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            typename IdType,typename T>
   void allocateMinimizerProperty(MinimizerBufferBase<IType,SpType,IdType,T>& B){
     allocate(B.MinProperty,MinimizerNumberProperty);
     initMinimizerProperty(B);
   }
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            typename IdType,typename T>
   void initMinimizerProperty(MinimizerBufferBase<IType,SpType,IdType,T>& B) {
     B.GCalcCount()=0;
     B.SearchScale()=0.1;
   }
 
   template <typename IType,template<typename> class SpType,
-            template<typename> class IdType,typename T>
+            typename IdType,typename T>
   void GenerateNewLocation(
       const MinimizerBufferBase<IType,SpType,IdType,T>& B,
       const SpType<T>& Origin, const SpType<T>& Dirc, const T& step,

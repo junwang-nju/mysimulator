@@ -8,9 +8,9 @@
 namespace std {
 
   template <typename InteractionType, template <typename> class SpaceType,
-            template <typename> class IdxType, typename T,
+            typename IdxType, typename T,
             template <typename,template<typename>class,
-                      template<typename>class,typename> class LineMin,
+                      typename,typename> class LineMin,
             unsigned int MaxCorr=6>
   struct LBFGSMinimizerBuffer
     : public LineMin<InteractionType,SpaceType,IdxType,T> {
@@ -41,18 +41,18 @@ namespace std {
   };
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LMin,
+                     typename,typename> class LMin,
             unsigned int MCorr>
   const unsigned int
   LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>::DefaultMaxIter
   =1000;
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LMin,
+                     typename,typename> class LMin,
             unsigned int MCorr>
   bool IsAvailable(
       const LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B) {
@@ -63,9 +63,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LMin,
+                     typename,typename> class LMin,
             unsigned int MCorr>
   void release(LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B) {
     typedef LMin<IType,SpType,IdType,T> LMType;
@@ -80,9 +80,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LMin,
+                     typename,typename> class LMin,
             unsigned int MCorr>
   void copy(
       LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B,
@@ -101,9 +101,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LMin,
+                     typename,typename> class LMin,
             unsigned int MCorr>
   void refer(
       LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B,
@@ -122,9 +122,9 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            template <typename> class IdType, typename T,
+            typename IdType, typename T,
             template<typename,template<typename>class,
-                     template<typename>class,typename> class LMin,
+                     typename,typename> class LMin,
             unsigned int MCorr>
   void allocateMinimizerProperty(
       LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B) {

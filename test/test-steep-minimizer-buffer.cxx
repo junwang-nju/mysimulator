@@ -63,8 +63,8 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 int main() {
 
   cout<<"Test -- initialize"<<endl;
-  SteepestDescentMinimizerBuffer<TestInteraction,Vector,Vector,double,
-                                 TrackingLineMinimizerBuffer> SM;
+  SteepestDescentMinimizerBuffer<TestInteraction,Vector,Vector<unsigned int>,
+                                 double,TrackingLineMinimizerBuffer> SM;
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
@@ -84,8 +84,8 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- copy"<<endl;
-  SteepestDescentMinimizerBuffer<TestInteraction,Vector,Vector,double,
-                                 TrackingLineMinimizerBuffer> SM2;
+  SteepestDescentMinimizerBuffer<TestInteraction,Vector,Vector<unsigned int>,
+                                 double,TrackingLineMinimizerBuffer> SM2;
   SM2.F.EFunc=efunc;
   SM2.F.GFunc=gfunc;
   SM2.F.BFunc=bfunc;
@@ -122,7 +122,8 @@ int main() {
   cout<<"Test -- minimize over complex data"<<endl;
   SteepestDescentMinimizerBuffer<
       Vector<Interaction<double,DistanceBufferSimple,FreeSpace> >,
-      PropertyList,PropertyList,double,TrackingLineMinimizerBuffer> CSM;
+      PropertyList,PropertyList<unsigned int>,double,
+      TrackingLineMinimizerBuffer> CSM;
   allocate(CSM.F,6);
   for(unsigned int i=0;i<3;++i) allocate(CSM.F[i],Harmonic,3,2);
   for(unsigned int i=3;i<6;++i) allocate(CSM.F[i],LJ612,3,2);
