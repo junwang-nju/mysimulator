@@ -1,6 +1,6 @@
 
-#ifndef _Parameter_Propagator_ConstantE_VerlocityVerlet_H_
-#define _Parameter_Propagator_ConstantE_VerlocityVerlet_H_
+#ifndef _Parameter_Propagator_ConstantE_VelocityVerlet_H_
+#define _Parameter_Propagator_ConstantE_VelocityVerlet_H_
 
 #include "data/name/propagator-base.h"
 
