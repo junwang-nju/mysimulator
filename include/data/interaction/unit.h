@@ -2,7 +2,7 @@
 #ifndef _Interaction_Unit_H_
 #define _Interaction_Unit_H_
 
-#include "data/name/property-list.h"
+#include "data/basic/property-list.h"
 
 namespace std {
 
@@ -22,14 +22,14 @@ namespace std {
                   DistBuffer<T>&,const GeomType&,T&,Vector<T>*,
                   Vector<T>*,const unsigned int);
 
-    typedef InteractionUnit<T,ParameterType>  Type;
+    typedef InteractionUnit<T,ParameterType,DistBuffer,GeomType>  Type;
 
     InteractionUnit()
       : pTag(NULL), prm(), tmvec(), EFunc(NULL), GFunc(NULL), BFunc() {}
     InteractionUnit(const Type& U) {
       myError("Cannot create Interaction Unit");
     }
-    Type& operator=(const Tyep& U) {
+    Type& operator=(const Type& U) {
       myError("Cannot copy Interaction Unit");
       return *this;
     }
@@ -43,7 +43,7 @@ namespace std {
             template<typename> class DBuff,typename GType>
   bool IsAvailable(const InteractionUnit<T,PType,DBuff,GType>& U) {
     return IsAvailable(U.prm)&&IsAvailable(U.EFunc)&&IsAvailable(U.GFunc)&&
-           IsAvailable(U.BFunc)&&IsAvailable(pTag);
+           IsAvailable(U.BFunc)&&IsAvailable(U.pTag);
   }
 
   template <typename T,typename PType,
@@ -59,8 +59,8 @@ namespace std {
 
   template <typename T,typename PType,
             template<typename> class DBuff,typename GType>
-  copy(InteractionUnit<T,PType,DBuff,GType>& U,
-       const InteractionUnit<T,PType,DBuff,GType>& cU) {
+  void copy(InteractionUnit<T,PType,DBuff,GType>& U,
+            const InteractionUnit<T,PType,DBuff,GType>& cU) {
     assert(IsAvailable(U));
     assert(IsAvailable(cU));
     assert(U.iTag()==cU.iTag());
@@ -80,15 +80,17 @@ namespace std {
 
 }
 
-#include "data/name/interaction.h"
+#include "data/name/all-interaction.h"
 #include "operation/interaction/all.h"
 
 namespace std {
 
   template <typename T,typename PType,
             template<typename> class DBuff,typename GType>
-  void setInteractionUnitStatic(InteractionUnit<T,PType,DBuff,GType>& U,
-                                const unsigned int tag) {
+  void allocateInteractionUnitStatic(InteractionUnit<T,PType,DBuff,GType>& F,
+                                     const unsigned int& tag) {
+    F.pTag=new unsigned int;
+    F.iTag()=tag;
     switch(tag) {
       case Harmonic:
         F.EFunc=EFuncHarmonic<T,DBuff,GType>;

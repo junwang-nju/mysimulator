@@ -1,29 +1,32 @@
 
-#include "operation/interaction/interaction-calc.h"
+#include "operation/interaction/calc.h"
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
+#include "operation/parameter/alloc.h"
 #include "data/derived/parameter-list.h"
 using namespace std;
 
 int main() {
   cout<<"Test -- initialize interaction"<<endl;
-  Interaction<double,DistanceBufferSimple,FreeSpace> F;
+  SimpleInteraction<double,DistanceBufferSimple,FreeSpace> F;
   cout<<endl;
   
   cout<<"Test -- allocate Interaction"<<endl;
   allocate(F,Harmonic,3,2);
+  allocateParameter(F.prm,Harmonic);
   cout<<endl;
 
   cout<<"Test -- copy Interaction"<<endl;
-  Interaction<double,DistanceBufferSimple,FreeSpace> F2;
+  SimpleInteraction<double,DistanceBufferSimple,FreeSpace> F2;
   allocate(F2,Harmonic,3,2);
+  allocateParameter(F2.prm,Harmonic);
   copy(F2,F);
   cout<<endl;
   
   cout<<"Test -- refer Interaction"<<endl;
-  Interaction<double,DistanceBufferSimple,FreeSpace> F3;
+  SimpleInteraction<double,DistanceBufferSimple,FreeSpace> F3;
   refer(F3,F);
   cout<<endl;
 
@@ -131,7 +134,7 @@ int main() {
   Kind[1]=1;
   Kind[3]=2;
   allocate(sz,3);
-  for(unsigned int i=0;i<LF.NumList();++i) {
+  for(unsigned int i=0;i<LF.prm.size;++i) {
     sz[0]=Harmonic;
     sz[1]=Kind[lidx[i][0]];
     sz[2]=Kind[lidx[i][1]];
@@ -151,10 +154,11 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- Interaction Vector Calculation"<<endl;
-  Vector<Interaction<double,DistanceBufferSimple,FreeSpace> > VF;
-  allocate(VF,6);
-  for(unsigned int i=0;i<3;++i)   allocate(VF[i],Harmonic,3,2);
-  for(unsigned int i=3;i<6;++i)   allocate(VF[i],LJ612,3,2);
+  SimpleVectorInteraction<double,DistanceBufferSimple,FreeSpace> VF;
+  allocate(sz,6);
+  for(unsigned int i=0;i<3;++i) sz[i]=Harmonic;
+  for(unsigned int i=3;i<6;++i) sz[i]=LJ612;
+  allocate(VF,sz,3,4);
   release(PL);
   allocate(sz,18);
   for(unsigned int i=0;i<9;++i)   sz[i]=HarmonicNumberParameter;
@@ -234,10 +238,15 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- List Interaction Vector CalcInteraction"<<endl;
-  Vector<ListInteraction<double,DistanceBufferSimple,FreeSpace> > VLF;
-  allocate(VLF,2);
-  allocate(VLF[0],Harmonic,3,2,3);
-  allocate(VLF[1],LJ612,3,2,3);
+  ListVectorInteraction<double,DistanceBufferSimple,FreeSpace> VLF;
+  Vector<unsigned int> tg;
+  allocate(tg,2);
+  tg[0]=Harmonic;
+  tg[1]=LJ612;
+  allocate(sz,2);
+  sz[0]=3;
+  sz[1]=3;
+  allocate(VLF,tg,3,4,sz);
   Vector<PropertyList<unsigned int> > vlidx(2);
   allocate(sz,3);
   copy(sz,2);
@@ -259,7 +268,7 @@ int main() {
   cout<<g<<endl;
   E=0.;
   copy(g,0);
-  CalcInteraction(VLF,v.structure,vlidx.data,g.structure);
+  CalcInteraction(VLF,v.structure,vlidx.data,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;
