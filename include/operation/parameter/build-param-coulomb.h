@@ -3,7 +3,7 @@
 #define _Build_Parameter_Coulomb_H_
 
 #include "data/basic/unique-parameter.h"
-#include "data/name/parameter-coulomb.h"
+#include "data/name/coulomb.h"
 
 namespace std {
 

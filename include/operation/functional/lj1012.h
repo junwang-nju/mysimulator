@@ -2,7 +2,7 @@
 #ifndef _Functional_LJ1012_H_
 #define _Functional_LJ1012_H_
 
-#include "data/name/parameter-lj1012.h"
+#include "data/name/lj1012.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

@@ -2,7 +2,7 @@
 #ifndef _Build_Parameter_Core_Expanded_LJ612_H_
 #define _Build_Parameter_Core_Expanded_LJ612_H_
 
-#include "data/name/parameter-core-expanded-lj612.h"
+#include "data/name/core-expanded-lj612.h"
 #include "operation/parameter/build-param-lj612.h"
 
 namespace std {

@@ -2,7 +2,7 @@
 #ifndef _Interaction_Core_Expanded_Pairwise_Base_H_
 #define _Interaction_Core_Expanded_Pairwise_Base_H_
 
-#include "data/name/parameter-core-expanded-base.h"
+#include "data/name/core-expanded-base.h"
 #include "data/basic/unique-parameter.h"
 #include "operation/basic/vector-op.h"
 

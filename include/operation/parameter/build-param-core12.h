@@ -2,7 +2,7 @@
 #ifndef _Build_Parameter_Core12_H_
 #define _Build_Parameter_Core12_H_
 
-#include "data/name/parameter-core12.h"
+#include "data/name/core12.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

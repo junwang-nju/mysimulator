@@ -2,7 +2,7 @@
 #ifndef _Build_Parameter_Dihedral_Periodic_H_
 #define _Build_Parameter_Dihedral_Periodic_H_
 
-#include "data/name/parameter-dihedral-periodic.h"
+#include "data/name/dihedral-periodic.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

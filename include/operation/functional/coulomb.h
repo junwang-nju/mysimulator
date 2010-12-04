@@ -2,7 +2,7 @@
 #ifndef _Functional_Coulomb_H_
 #define _Functional_Coulomb_H_
 
-#include "data/name/parameter-coulomb.h"
+#include "data/name/coulomb.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

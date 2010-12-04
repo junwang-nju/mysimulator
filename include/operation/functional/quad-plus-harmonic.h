@@ -2,7 +2,7 @@
 #ifndef _Functional_Quadruple_Plus_Harmonic_H_
 #define _Functional_Quadruple_Plus_Harmonic_H_
 
-#include "data/name/parameter-quad-plus-harmonic.h"
+#include "data/name/quad-plus-harmonic.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

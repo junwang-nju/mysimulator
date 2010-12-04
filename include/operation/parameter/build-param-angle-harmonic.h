@@ -2,7 +2,7 @@
 #ifndef _Build_Parameter_Angle_Harmonic_H_
 #define _Build_Parameter_Angle_Harmonic_H_
 
-#include "data/name/parameter-angle-harmonic.h"
+#include "data/name/angle-harmonic.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

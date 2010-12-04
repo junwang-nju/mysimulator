@@ -2,7 +2,7 @@
 #ifndef _Build_Parameter_FENE_H_
 #define _Build_Parameter_FENE_H_
 
-#include "data/name/parameter-fene.h"
+#include "data/name/fene.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

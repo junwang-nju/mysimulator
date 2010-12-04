@@ -2,8 +2,8 @@
 #ifndef _Parameter_Core_Expanded_CoreLJ612_H_
 #define _Parameter_Core_Expanded_CoreLJ612_H_
 
-#include "data/name/parameter-core-expanded-base.h"
-#include "data/name/parameter-corelj612.h"
+#include "data/name/core-expanded-base.h"
+#include "data/name/corelj612.h"
 
 namespace std {
 

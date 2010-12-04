@@ -2,7 +2,7 @@
 #ifndef _Functional_Harmonic_H_
 #define _Functional_Harmonic_H_
 
-#include "data/name/parameter-harmonic.h"
+#include "data/name/harmonic.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {
