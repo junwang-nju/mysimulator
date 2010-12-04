@@ -3,7 +3,7 @@
 #define _Minimizer_Buffer_Base_H_
 
 #include "data/basic/unique-parameter.h"
-#include "data/name/minimizer-property-name.h"
+#include "data/name/minimizer-property.h"
 
 namespace std {
 

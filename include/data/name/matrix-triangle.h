@@ -2,7 +2,7 @@
 #ifndef _Matrix_Triangle_Name_H_
 #define _Matrix_Triangle_Name_H_
 
-#include "data/name/matrix-name.h"
+#include "data/name/matrix.h"
 
 namespace std {
 

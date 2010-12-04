@@ -3,7 +3,7 @@
 #define _Minimizer_Conjugate_Gradient_Buffer_H_
 
 #include "data/basic/unique-parameter.h"
-#include "data/name/conjg-minimizer-self-property-name.h"
+#include "data/name/conjg-minimizer-self-property.h"
 
 namespace std {
 

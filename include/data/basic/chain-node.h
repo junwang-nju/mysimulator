@@ -14,7 +14,7 @@
 #define _Chain_Node_H_
 
 #include "operation/basic/error-proc.h"
-#include "data/name/storage-state-name.h"
+#include "data/name/storage-state.h"
 #include "operation/basic/memory.h"
 #include "operation/basic/util.h"
 #include <cassert>

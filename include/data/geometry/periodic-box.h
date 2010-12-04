@@ -2,7 +2,7 @@
 #ifndef _Periodic_Box_H_
 #define _Periodic_Box_H_
 
-#include "data/name/geometry-name.h"
+#include "data/name/geometry.h"
 #include "operation/basic/vector-op.h"
 
 namespace std {

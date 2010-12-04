@@ -3,7 +3,7 @@
 #define _Minimize_Condition_H_
 
 #include "operation/basic/error-proc.h"
-#include "data/name/minimize-condition-name.h"
+#include "data/name/minimize-condition.h"
 #include <cassert>
 
 namespace std {

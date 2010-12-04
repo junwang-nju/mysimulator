@@ -2,7 +2,7 @@
 #ifndef _Line_Minimizer_Buffer_Base_H_
 #define _Line_Minimizer_Buffer_Base_H_
 
-#include "data/name/line-minimizer-property-name.h"
+#include "data/name/line-minimizer-property.h"
 #include "data/minimizer/minimizer-buffer-base.h"
 
 namespace std {

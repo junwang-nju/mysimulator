@@ -3,7 +3,7 @@
 #define _Distance_Buffer_H_
 
 #include "data/basic/unique-parameter.h"
-#include "data/name/distance-buffer-name.h"
+#include "data/name/distance-buffer-property.h"
 
 namespace std {
 

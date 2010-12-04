@@ -2,7 +2,7 @@
 #ifndef _Free_Space_H_
 #define _Free_Space_H_
 
-#include "data/name/geometry-name.h"
+#include "data/name/geometry.h"
 #include "operation/basic/error-proc.h"
 
 namespace std {

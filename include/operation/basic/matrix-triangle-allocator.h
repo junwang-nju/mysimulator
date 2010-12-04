@@ -2,7 +2,7 @@
 #ifndef _Matrix_Triangle_Allocator_H_
 #define _Matrix_Triangle_Allocator_H_
 
-#include "data/name/matrix-triangle-name.h"
+#include "data/name/matrix-triangle.h"
 
 namespace std {
 

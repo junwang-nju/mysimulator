@@ -1,6 +1,6 @@
 
 /**
- * @file storage-state-name.h
+ * @file storage-state.h
  * @brief the name for states of storage
  *
  * This file defines the names for the states of storage.

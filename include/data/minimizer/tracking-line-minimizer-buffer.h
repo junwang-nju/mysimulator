@@ -3,7 +3,7 @@
 #define _Tracking_Line_Minimizer_Buffer_H_
 
 #include "data/minimizer/line-minimizer-buffer-base.h"
-#include "data/name/tracking-line-minimizer-property-name.h"
+#include "data/name/tracking-line-minimizer-property.h"
 
 namespace std {
 
