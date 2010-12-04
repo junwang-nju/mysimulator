@@ -172,5 +172,104 @@ namespace std {
 
 }
 
+namespace std {
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      SimpleInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const Vector<unsigned int>& idx, T& Energy) {
+    CalcInteraction(F,X.structure,idx.data,Energy);
+  }
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      SimpleInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const Vector<unsigned int>& idx,
+      PropertyList<T>& Gradient) {
+    CalcInteraction(F,X.structure,idx.data,Gradient.srtucture);
+  }
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      SimpleInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const Vector<unsigned int>& idx,
+      T& Energy, PropertyList<T>& Gradient) {
+    CalcInteraction(F,X.structure,idx.data,Energy,Gradient.srtucture);
+  }
+
+  template <typename T, typename InteractionType>
+  void CalcInteraction(
+      InteractionType& F,
+      const PropertyList<T>& X, const PropertyList<unsigned int>& idx,
+      T& Energy) {
+    CalcInteraction(F,X.structure,idx.structure,Energy);
+  }
+
+  template <typename T, typename InteractionType>
+  void CalcInteraction(
+      InteractionType& F,
+      const PropertyList<T>& X, const PropertyList<unsigned int>& idx,
+      PropertyList<T>& Gradient) {
+    CalcInteraction(F,X.structure,idx.structure,Gradient.structure);
+  }
+
+  template <typename T, typename InteractionType>
+  void CalcInteraction(
+      InteractionType& F,
+      const PropertyList<T>& X, const PropertyList<unsigned int>& idx,
+      T& Energy, PropertyList<T>& Gradient) {
+    CalcInteraction(F,X.structure,idx.structure,Energy,Gradient.structure);
+  }
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      ListVectorInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const Vector<PropertyList<unsigned int> >& idx,
+      T& Energy) {
+    CalcInteraction(F,X.structure,idx.data,Energy);
+  }
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      ListVectorInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const Vector<PropertyList<unsigned int> >& idx,
+      PropertyList<T>& Gradient) {
+    CalcInteraction(F,X.structure,idx.data,Gradient.structure);
+  }
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      ListVectorInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const Vector<PropertyList<unsigned int> >& idx,
+      T& Energy, PropertyList<T>& Gradient) {
+    CalcInteraction(F,X.structure,idx.data,Energy,Gradient.structure);
+  }
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      ListVectorInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const PropertyList<Vector<unsigned int> >& idx,
+      T& Energy) {
+    CalcInteraction(F,X.structure.idx.structure,Energy);
+  }
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      ListVectorInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const PropertyList<Vector<unsigned int> >& idx,
+      PropertyList<T>& Gradient) {
+    CalcInteraction(F,X.structure.idx.structure,Gradient.structure);
+  }
+
+  template <typename T,template <typename> class DistBuffer,typename GeomType>
+  void CalcInteraction(
+      ListVectorInteraction<T,DistBuffer,GeomType>& F,
+      const PropertyList<T>& X, const PropertyList<Vector<unsigned int> >& idx,
+      T& Energy, PropertyList<T>& Gradient) {
+    CalcInteraction(F,X.structure.idx.structure,Energy,Gradient.structure);
+  }
+
+}
+
 #endif
 

@@ -3,8 +3,7 @@
 #include "operation/minimize/minimize.h"
 #include "operation/minimize/line-minimizer-buffer-base-op.h"
 #include "operation/minimize/minimal-step.h"
-#include "operation/interaction/interaction-calc-4propertylist.h"
-#include "operation/interaction/interaction-calc.h"
+#include "operation/interaction/calc.h"
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/build-param-harmonic.h"
@@ -121,14 +120,15 @@ int main() {
 
   cout<<"Test -- minimize over complex data"<<endl;
   ConjugateGradientMinimizerBuffer<
-      Vector<Interaction<double,DistanceBufferSimple,FreeSpace> >,
+      SimpleVectorInteraction<double,DistanceBufferSimple,FreeSpace>,
       PropertyList,PropertyList<unsigned int>,double,
       TrackingLineMinimizerBuffer> CSM;
-  allocate(CSM.F,6);
-  for(unsigned int i=0;i<3;++i) allocate(CSM.F[i],Harmonic,3,2);
-  for(unsigned int i=3;i<6;++i) allocate(CSM.F[i],LJ612,3,2);
-  ParameterList PL;
   Vector<unsigned int> sz;
+  allocate(sz,6);
+  for(unsigned int i=0;i<3;++i) sz[i]=Harmonic;
+  for(unsigned int i=3;i<6;++i) sz[i]=LJ612;
+  allocate(CSM.F,sz,3,4);
+  ParameterList PL;
   allocate(sz,18);
   for(unsigned int i=0;i<9;++i)   sz[i]=HarmonicNumberParameter;
   for(unsigned int i=9;i<18;++i)  sz[i]=LJ612NumberParameter;
