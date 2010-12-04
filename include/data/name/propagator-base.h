@@ -14,6 +14,8 @@ namespace std {
     OutputInterval,
     CountOutput,
     CountStepsInOutput,
+    StepMove,
+    OutputFunc,
     PropagatorBaseNumberParameter
   };
 

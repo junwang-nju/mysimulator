@@ -2,8 +2,8 @@
 #ifndef _Propagator_Monomer_PEV_Move_H_
 #define _Propagator_Monomer_PEV_Move_H_
 
-#include "data/name/parameter-propagator-monomer-particle-conste-vverlet.h"
-#include "data/name/parameter-propagator-conste-vverlet.h"
+#include "data/name/propagator-monomer-particle-conste-vverlet.h"
+#include "data/name/propagator-conste-vverlet.h"
 #include "data/basic/vector.h"
 #include "data/basic/unique-parameter.h"
 

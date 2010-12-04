@@ -2,7 +2,7 @@
 #ifndef _Build_Parameter_Propagator_Monomer_Base_H_
 #define _Build_Parameter_Propagator_Monomer_Base_H_
 
-#include "data/name/parameter-propagator-monomer-base.h"
+#include "data/name/propagator-monomer-base.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

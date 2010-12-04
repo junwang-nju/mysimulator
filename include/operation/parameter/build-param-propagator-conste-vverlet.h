@@ -4,14 +4,26 @@
 
 #include "data/basic/vector.h"
 #include "data/basic/unique-parameter.h"
-#include "data/name/parameter-propagator-type.h"
+#include "data/name/propagator-type.h"
+#include "data/name/propagator-conste-vverlet.h"
 #include "operation/parameter/build-param-propagator-base.h"
+#include "operation/propagate/EV-move.h"
 
 namespace std {
 
+  template <template<typename,template<typename>class,typename> class IType,
+            typename IdType, typename T, template<typename> class DBuffer,
+            typename GeomType>
   void allocatePropagatorEVParameter(Vector<UniqueParameter>& P) {
     allocate(P,PropagatorEVNumberParameter);
     P[PropagatorMode].u=ConstantE_VelocityVerlet;
+    typedef void (*MvFunc)(
+        IType<T,DBuffer,GeomType>&,Vector<T>*,Vector<T>*,Vector<T>*,
+        const Vector<T>*,const IdType&,Vector<UniqueParameter>&,
+        Vector<UniqueParameter>*,const unsigned int&);
+    P[StepMove].ptr=
+      reinterpret_cast<void*>(
+          static_cast<MvFunc>(EVMoveStep<IType,IdType,T,DBuffer,GeomType>));
   }
 
   template <typename T>

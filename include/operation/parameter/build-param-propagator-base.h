@@ -3,7 +3,8 @@
 #define _Build_Parameter_Propagator_Base_H_
 
 #include "data/basic/unique-parameter.h"
-#include "data/name/parameter-propagator-base.h"
+#include "data/name/propagator-base.h"
+#include <iostream>
 
 namespace std {
 
@@ -18,6 +19,18 @@ namespace std {
       static_cast<unsigned int>(
           GP[OutputInterval].value<T>()/GP[DeltaTime].value<T>()+0.5);
     if(GP[CountStepsInOutput].u==0) GP[CountStepsInOutput].u=1U;
+  }
+
+  template <template<typename,template<typename>class,typename> class IType,
+            typename IdType, typename T, template<typename> class DBuffer,
+            typename GeomType>
+  void SetOutput(
+      Vector<UniqueParameter>& P,
+      void (*OFunc)(IType<T,DBuffer,GeomType>&,Vector<T>*,Vector<T>*,
+                    Vector<T>*,const Vector<T>*,const IdType&,
+                    Vector<UniqueParameter>&,Vector<UniqueParameter>*,
+                    const unsigned int&,ostream&)) {
+    P[OutputFunc].ptr=reinterpret_cast<void*>(OFunc);
   }
 
 }

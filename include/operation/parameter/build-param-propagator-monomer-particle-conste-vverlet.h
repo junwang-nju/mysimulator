@@ -2,9 +2,9 @@
 #ifndef _Build_Parameter_Propagator_Monomer_Particle_ConstantE_VelVerlet_H_
 #define _Build_Parameter_Propagator_Monomer_Particle_ConstantE_VelVerlet_H_
 
-#include "data/name/parameter-propagator-type.h"
-#include "data/name/parameter-monomer-type.h"
-#include "operation/propagator/monomer-PEV-move.h"
+#include "data/name/propagator-type.h"
+#include "data/name/monomer-type.h"
+#include "operation/propagate/monomer-PEV-move.h"
 #include "operation/parameter/build-param-propagator-monomer-base.h"
 
 namespace std {
