@@ -4,7 +4,7 @@
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
-#include "operation/parameter/alloc.h"
+#include "operation/parameter/alloc-interaction-parameter.h"
 #include "data/derived/parameter-list.h"
 using namespace std;
 

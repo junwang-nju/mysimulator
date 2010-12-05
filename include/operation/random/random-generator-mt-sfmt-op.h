@@ -80,11 +80,11 @@ namespace std {
       r1=r2;
       r2=&(G[i]);
     }
-    for(;i<N;++i) {
+    for(;i<SFMT<LoopFac>::N;++i) {
       G[i]=G.DoRecursion(G[i],G[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N],
                          *r1,*r2);
       r1=r2;
-      r2=r;
+      r2=&(G[i]);
     }
   }
   template <unsigned int LoopFac>
@@ -115,7 +115,7 @@ namespace std {
       G[j]=array[j+size-SFMT<LoopFac>::N];
     for(;i<size;++i,++j) {
       copy(array[i],
-           G.DoRecursion(array[i-N],
+           G.DoRecursion(array[i-SFMT<LoopFac>::N],
                          array[i+SFMT<LoopFac>::Pos1-SFMT<LoopFac>::N],
                          *r1,*r2));
            r1=r2;

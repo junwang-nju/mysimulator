@@ -7,7 +7,7 @@
 #include "operation/parameter/build-param-propagator-conste-vverlet.h"
 #include "operation/parameter/build-param-propagator-monomer-particle-conste-vverlet.h"
 #include "operation/propagate/run.h"
-#include "operation/parameter/alloc.h"
+#include "operation/parameter/alloc-interaction-parameter.h"
 #include <iostream>
 using namespace std;
 
@@ -18,7 +18,7 @@ void OutFunc(IType<T,DBuffer,GeomType>& F,
              Vector<T>* X,Vector<T>* V,Vector<T>* G,const Vector<T>* dMsk,
              const IdType& idx,Vector<UniqueParameter>& GP,
              Vector<UniqueParameter>* MP,const unsigned int& nu, ostream& os) {
-  double E,kE;
+  T E,kE;
   E=kE=0.;
   CalcInteraction(F,X,idx,E);
   for(unsigned int i=0;i<nu;++i)

@@ -19,7 +19,7 @@ namespace std {
         Grad);
     GaussianRNG *grng=reinterpret_cast<GaussianRNG*>(GP[LV_GaussianRNG].ptr);
     Vector<T> rv;
-    refer(rv,reinterpret_cast<T*>(P[PLV_RandomVelocity].ptr),Grad.size);
+    refer(rv,*reinterpret_cast<Vector<T>*>(P[PLV_RandomVelocity].ptr));
     fillarray(*grng,rv);
     scale(rv,dMsk);
     shift(V,P[PLV_RandomVelocitySize].value<T>(),rv);
@@ -33,7 +33,7 @@ namespace std {
     shift(V,-P[PLV_HalfDeltaTIvM].value<T>(),Grad);
     GaussianRNG *grng=reinterpret_cast<GaussianRNG*>(GP[LV_GaussianRNG].ptr);
     Vector<T> rv;
-    refer(rv,reinterpret_cast<T*>(P[PLV_RandomVelocity].ptr),Grad.size);
+    refer(rv,*reinterpret_cast<Vector<T>*>(P[PLV_RandomVelocity].ptr));
     fillarray(*grng,rv);
     scale(rv,dMsk);
     shift(V,P[PLV_RandomVelocitySize].value<T>(),rv);

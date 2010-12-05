@@ -4,7 +4,9 @@
 
 #include "data/name/propagator-type.h"
 #include "data/name/monomer-type.h"
+#include "data/name/propagator-monomer-particle-langevin-vverlet.h"
 #include "operation/parameter/build-param-propagator-monomer-base.h"
+#include "operation/propagate/monomer-PLV-move.h"
 
 namespace std {
 
@@ -22,8 +24,8 @@ namespace std {
          P[IvMassData].value<T>());
     T tmd;
     tmd=P[PLV_HalfDeltaTIvM].value<T>()*P[PLV_FrictionCoef].value<T>();
-    copy(P[PLV_BeforeG],1.-tmd);
-    copy(P[PLV_AfterG],1./(1.+tmd));
+    copy(P[PLV_FactorBeforeG],1.-tmd);
+    copy(P[PLV_FactorAfterG],1./(1.+tmd));
   }
 
   template <typename T>

@@ -6,9 +6,9 @@
 #include "data/random/random-generator-boxmuller.h"
 
 namespace std {
-  typedef RandGenerator<dSFMT<216091>,double> UniformDbRNG;
+  typedef dSFMT<216091> UniformDbRNG;
 
-  typedef RandGenerator<BoxMuller<UniformDbRNG>,double> GaussianRNG;
+  typedef BoxMuller<UniformDbRNG> GaussianRNG;
 }
 
 #endif

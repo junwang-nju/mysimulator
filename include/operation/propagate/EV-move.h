@@ -2,7 +2,6 @@
 #ifndef _Propagator_ConstantE_VelocityVerlet_Move_H_
 #define _Propagator_ConstantE_VelocityVerlet_Move_H_
 
-#include "data/basic/vector.h"
 #include "data/basic/unique-parameter.h"
 #include "data/name/propagator-monomer-conste-vverlet.h"
 
@@ -17,8 +16,8 @@ namespace std {
       const Vector<T>* dMask, const IdxType& idx,
       Vector<UniqueParameter>& PGP, Vector<UniqueParameter>* MP,
       const unsigned int& nunit) {
-    typedef void (*MoveFunc)(Vector<T>&,Vector<T>&,Vector<T>&,const Vector<T>&,
-                             const Vector<UniqueParameter>&,
+    typedef void (*MoveFunc)(Vector<T>&,Vector<T>&,const Vector<T>&,
+                             const Vector<T>&,const Vector<UniqueParameter>&,
                              const Vector<UniqueParameter>&);
     for(unsigned int i=0;i<nunit;++i)
       reinterpret_cast<MoveFunc>(MP[i][EV_MoveBeforeG].ptr)(
