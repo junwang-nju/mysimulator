@@ -4,7 +4,6 @@
 
 #include "data/name/propagator-monomer-particle-conste-vverlet.h"
 #include "data/name/propagator-conste-vverlet.h"
-#include "data/basic/vector.h"
 #include "data/basic/unique-parameter.h"
 
 namespace std {

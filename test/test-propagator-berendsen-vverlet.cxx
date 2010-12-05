@@ -1,116 +1,105 @@
 
-#include "propagator-op.h"
-#include "distance-evaluate-direct.h"
-#include "free-space.h"
+#include "operation/propagate/run.h"
+#include "operation/geometry/distance-calc-simplebuffer.h"
+#include "operation/geometry/displacement-calc-freespace.h"
+#include "operation/interaction/calc.h"
+#include "operation/parameter/build-param-harmonic.h"
+#include "operation/parameter/build-param-lj612.h"
+#include "operation/parameter/build-param-propagator-berendsen-vverlet.h"
+#include "operation/parameter/build-param-propagator-monomer-particle-berendsen-vverlet.h"
+#include "operation/parameter/alloc-interaction-parameter.h"
 #include <iostream>
 using namespace std;
 
-template <typename DistEvalMethod, typename GeomType,
-          typename IdxLstType, typename PrmLstType>
-void OutFunc(ostream& os, const Propagator<DistEvalMethod,GeomType>& P,
-             InteractionMethod<DistEvalMethod,GeomType>* IMLst,
-             const Vector<double>* Coor, const Vector<double>* Vel,
-             const Vector<double>* Grad, const Vector<double>* Mass,
-             const Vector<double>* dMask,
-             const IdxLstType *IdxLst, const PrmLstType* PrmLst,
-             const unsigned int nunit, const unsigned int nlst,
-             DistEvalMethod& DEval, const GeomType& Geo) {
-  double E,kE;
+
+template <template<typename,template<typename>class,typename> class IType,
+          typename IdType,typename T,template<typename> class DBuffer,
+          typename GeomType>
+void OutFunc(IType<T,DBuffer,GeomType>& F,
+             Vector<T>* X,Vector<T>* V,Vector<T>* G,const Vector<T>* dMsk,
+             const IdType& idx,Vector<UniqueParameter>& GP,
+             Vector<UniqueParameter>* MP,const unsigned int& nu,ostream& os) {
+  T E,kE;
   E=kE=0.;
-  EFunc(Coor,IdxLst,PrmLst,IMLst,6,DEval,Geo,E);
-  for(unsigned int i=0;i<nunit;++i) kE+=normSQ(Vel[i])*Mass[i][0]*0.5;
-  cout<<P.GParam[NowTime].d<<"\t"<<Coor[0]<<"\t"<<E<<"\t"<<kE<<endl;
+  CalcInteraction(F,X,idx,E);
+  kE=0.5*GP[BV_DualKineticEnergy].value<T>();
+  os<<GP[NowTime].value<T>()<<"\t"<<E<<"\t"<<kE<<"\t"<<E+kE<<endl;
 }
 
 int main() {
-  PropertyList<double> Coor,Vel,Grad,Mass,iMass,dMask;
+  PropertyList<double> Coor,Vel,Grad,dMask;
   Vector<unsigned int> sz;
   allocate(sz,4);
-  assign(sz,2);
+  copy(sz,2);
   allocate(Coor,sz);
   allocate(Vel,sz);
   allocate(Grad,sz);
-  allocate(Mass,sz);
-  allocate(iMass,sz);
   allocate(dMask,sz);
 
   Coor[0][0]=0;       Coor[0][1]=0;
   Coor[1][0]=0;       Coor[1][1]=1.2;
   Coor[2][0]=1.3;     Coor[2][1]=1.5;
   Coor[3][0]=0.8;     Coor[3][1]=2.2;
-  assign(Vel,0.1);
-  assign(Mass,2);
-  assign(iMass,0.5);
-  assign(dMask,1.);
+  copy(Vel,0.1);
+  copy(dMask,1.);
 
-  Vector<InteractionMethod<DistanceEvalDirect,FreeSpace> > IMLst;
+  SimpleVectorInteraction<double,DistanceBufferSimple,FreeSpace> F;
 
-  allocate(IMLst,6);
-  for(unsigned int i=0;i<6;++i) allocate(IMLst[i]);
-  for(unsigned int i=0;i<3;++i) Set(IMLst[i],PairwiseHarmonic);
-  for(unsigned int i=3;i<6;++i) Set(IMLst[i],PairwiseLJ612);
-  Vector<Vector<UniqueParameter> > fParamLst;
-  allocate(fParamLst,6);
-  for(unsigned int i=0;i<3;++i) allocate(fParamLst[i],HarmonicNumberParameter);
-  for(unsigned int i=3;i<6;++i) allocate(fParamLst[i],LJ612NumberParameter);
-  PropertyList<unsigned int> fIdxLst;
   allocate(sz,6);
-  assign(sz,2);
-  allocate(fIdxLst,sz);
-  fParamLst[0][HarmonicEqLength]=1.;
-  fParamLst[0][HarmonicEqStrength]=100.;
-  fParamLst[1][HarmonicEqLength]=1.;
-  fParamLst[1][HarmonicEqStrength]=100.;
-  fParamLst[2][HarmonicEqLength]=1.;
-  fParamLst[2][HarmonicEqStrength]=100.;
-  for(unsigned int i=0;i<3;++i) GenerateParameterHarmonic(fParamLst[i]);
-  fParamLst[3][LJ612EqRadius]=1.;
-  fParamLst[3][LJ612EqEnergyDepth]=1.;
-  fParamLst[4][LJ612EqRadius]=1.;
-  fParamLst[4][LJ612EqEnergyDepth]=1.;
-  fParamLst[5][LJ612EqRadius]=1.;
-  fParamLst[5][LJ612EqEnergyDepth]=1.;
-  for(unsigned int i=3;i<6;++i) GenerateParameterLJ612(fParamLst[i]);
-  fIdxLst[0][0]=0;       fIdxLst[0][1]=1;
-  fIdxLst[1][0]=1;       fIdxLst[1][1]=2;
-  fIdxLst[2][0]=2;       fIdxLst[2][1]=3;
-  fIdxLst[3][0]=0;       fIdxLst[3][1]=2;
-  fIdxLst[4][0]=0;       fIdxLst[4][1]=3;
-  fIdxLst[5][0]=1;       fIdxLst[5][1]=3;
+  for(unsigned int i=0;i<3;++i) sz[i]=Harmonic;
+  for(unsigned int i=3;i<6;++i) sz[i]=LJ612;
+  allocate(F,sz,2,4);
+  for(unsigned int i=0;i<3;++i) allocateParameter(F[i].prm,Harmonic);
+  for(unsigned int i=3;i<6;++i) allocateParameter(F[i].prm,LJ612);
+  F[0].prm[HarmonicEqLength].d=1.;
+  F[0].prm[HarmonicEqStrength].d=100.;
+  F[1].prm[HarmonicEqLength].d=1.;
+  F[1].prm[HarmonicEqStrength].d=100.;
+  F[2].prm[HarmonicEqLength].d=1.;
+  F[2].prm[HarmonicEqStrength].d=100.;
+  for(unsigned int i=0;i<3;++i) BuildParameterHarmonic<double>(F[i].prm);
+  F[3].prm[LJ612EqRadius].d=1.;
+  F[3].prm[LJ612EqEnergyDepth].d=1.;
+  F[4].prm[LJ612EqRadius].d=1.;
+  F[4].prm[LJ612EqEnergyDepth].d=1.;
+  F[5].prm[LJ612EqRadius].d=1.;
+  F[5].prm[LJ612EqEnergyDepth].d=1.;
+  for(unsigned int i=3;i<6;++i) BuildParameterLJ612<double>(F[i].prm);
+  PropertyList<unsigned int> Idx;
+  allocate(sz,6);
+  copy(sz,2);
+  allocate(Idx,sz);
+  Idx[0][0]=0;       Idx[0][1]=1;
+  Idx[1][0]=1;       Idx[1][1]=2;
+  Idx[2][0]=2;       Idx[2][1]=3;
+  Idx[3][0]=0;       Idx[3][1]=2;
+  Idx[4][0]=0;       Idx[4][1]=3;
+  Idx[5][0]=1;       Idx[5][1]=3;
 
-  DistanceEvalDirect DEval;
-  FreeSpace FS;
-  allocate(DEval,2,4);
-  allocate(FS,2);
+  copy(Grad,0.);
+  CalcInteraction(F,Coor.structure,Idx.structure,Grad.structure);
 
-  assign(Grad,0.);
-  GFunc(Coor.structure,fIdxLst.structure,fParamLst(),IMLst(),6,
-        DEval,FS,Grad.structure);
+  Vector<UniqueParameter> GP;
+  Vector<Vector<UniqueParameter> > MP;
+  allocatePropagatorBVParameter<
+    SimpleVectorInteraction,Vector<unsigned int>*,double,
+    DistanceBufferSimple,FreeSpace>(GP);
+  allocate(MP,4);
+  for(unsigned int i=0;i<4;++i)
+    allocatePropagatorMonomerPBVParameter<double>(MP[i]);
+  GP[DeltaTime].d=0.001;
+  GP[StartTime].d=100.;
+  GP[TotalTime].d=0.01;
+  GP[OutputInterval].d=0.002;
+  GP[BV_Temperature].d=0.5;
+  GP[BV_RelaxTime].d=0.1;
+  GP[BV_DegreeFreedom].d=asum(dMask);
+  for(unsigned int i=0;i<4;++i) MP[i][MassData].d=2.;
+  double fac=0.;
+  for(unsigned int i=0;i<4;++i) fac+=MP[i][MassData].d*normSQ(Vel[i]);
+  GP[BV_DualKineticEnergy].d=fac;
+  BuildParameterPropagatorBV<double>(GP,MP);
 
-  Propagator<DistanceEvalDirect,FreeSpace> P;
-  allocate(P);
-  Set(P,Berendsen_VelocityVerlet);
-  allocate(sz,4);
-  assign(sz,ParticleType);
-  buildUnit(P,sz);
-  P.FOutput=OutFunc<DistanceEvalDirect,FreeSpace,
-                    Vector<unsigned int>,Vector<UniqueParameter> >;
-  P.HOutput=OutFunc<DistanceEvalDirect,FreeSpace,
-                    Vector<Vector<unsigned int> >,
-                    Vector<Vector<UniqueParameter> > >;
-
-  setparameter(P,TimeStepCommon,0.001);
-  setparameter(P,StartTimeCommon,100.);
-  setparameter(P,TotalTimeCommon,0.01);
-  setparameter(P,OutputTimeIntervalCommon,0.002);
-  setparameter(P,TemperatureBV,0.5);
-  setparameter(P,RelaxTimeBV,0.1);
-
-  cout<<"Test -- BV synchronize"<<endl;
-  BVSynchronize(iMass.structure,dMask.structure,Vel.structure,4,P.GParam());
-  cout<<endl;
-
-  synchronize(P,iMass.structure,dMask.structure,Vel.structure,4);
   cout<<"Test -- BV step"<<endl;
   cout<<"=== Coor:"<<endl;
   cout<<Coor<<endl;
@@ -118,9 +107,8 @@ int main() {
   cout<<Vel<<endl;
   cout<<"=== Grad:"<<endl;
   cout<<Grad<<endl;
-  BVStep(IMLst(),Coor.structure,Vel.structure,Grad.structure,Mass.structure,
-         dMask.structure,fIdxLst.structure,fParamLst(),P.GParam(),P.Unit(),
-         4,6,DEval,FS);
+  BVMoveStep(F,Coor.structure,Vel.structure,Grad.structure,
+             dMask.structure,Idx.structure,GP,MP.data,4);
   cout<<"=== Coor:"<<endl;
   cout<<Coor<<endl;
   cout<<"=== Vel:"<<endl;
@@ -130,11 +118,14 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- simulation"<<endl;
-  setparameter(P,TotalTimeCommon,10.);
-  setparameter(P,OutputTimeIntervalCommon,0.001);
-  synchronize(P,iMass.structure,dMask.structure,Vel.structure,4);
-  Run(P,Coor.structure,Vel.structure,Grad.structure,Mass.structure,
-      dMask.structure,IMLst(),fIdxLst.structure,fParamLst(),4,6,DEval,FS);
+  GP[TotalTime].d=100.;
+  GP[OutputInterval].d=0.001;
+  BuildParameterPropagatorBV<double>(GP,MP);
+  SetOutput(GP,
+            OutFunc<SimpleVectorInteraction,Vector<unsigned int>*,double,
+                    DistanceBufferSimple,FreeSpace>);
+  Run(F,Coor.structure,Vel.structure,Grad.structure,
+      dMask.structure,Idx.structure,GP,MP.data,4,cout);
   cout<<endl;
 
   return 0;

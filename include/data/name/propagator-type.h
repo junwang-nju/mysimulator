@@ -7,7 +7,7 @@ namespace std {
   enum PropagatorTypeName {
     UnknownPropagatorType=0,
     ConstantE_VelocityVerlet,
-    Berendsen_VelocityVerlity,
+    Berendsen_VelocityVerlet,
     Langevin_VelocityVerlet
   };
 
