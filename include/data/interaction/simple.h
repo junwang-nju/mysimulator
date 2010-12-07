@@ -4,19 +4,16 @@
 
 #include "data/interaction/base.h"
 #include "data/interaction/unit.h"
-#include "data/basic/unique-parameter.h"
 
 namespace std {
 
   template <typename T,template<typename> class DistBuffer,typename GeomType>
   struct SimpleInteraction
     : public 
-      InteractionBase<
-        InteractionUnit<T,Vector<UniqueParameter>,DistBuffer,GeomType>,
-        T,DistBuffer,GeomType> {
+      InteractionBase<InteractionUnit<T,DistBuffer,GeomType>,
+                      T,DistBuffer,GeomType> {
     typedef SimpleInteraction<T,DistBuffer,GeomType>  Type;
-    typedef InteractionUnit<T,Vector<UniqueParameter>,DistBuffer,GeomType>
-            IUType;
+    typedef InteractionUnit<T,DistBuffer,GeomType>  IUType;
     typedef InteractionBase<IUType,T,DistBuffer,GeomType> ParentType;
 
     SimpleInteraction() : ParentType() {}
@@ -33,12 +30,11 @@ namespace std {
   void allocate(SimpleInteraction<T,DBuffer,GType>& F,
                 const unsigned int& tag,
                 const unsigned int& dim, const unsigned int& nunit) {
-    typedef typename SimpleInteraction<T,DBuffer,GType>::IUType
-            IUType;
+    typedef InteractionUnit<T,DBuffer,GType>   IUType;
     typedef typename SimpleInteraction<T,DBuffer,GType>::ParentType
             Parent;
     allocate(static_cast<Parent&>(F),dim,nunit);
-    allocateInteractionUnitStatic(static_cast<IUType&>(F),tag);
+    allocate(static_cast<IUType&>(F),tag);
   }
 
 }

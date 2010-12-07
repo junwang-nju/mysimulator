@@ -38,7 +38,7 @@ namespace std {
     }
     const unsigned int Dimension() const { return DisplaceVec.size; }
 
-    void renew() {}
+    void renew(const Vector<T>* X) {}
 
   };
 

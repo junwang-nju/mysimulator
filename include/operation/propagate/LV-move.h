@@ -22,7 +22,7 @@ namespace std {
     for(unsigned int i=0;i<nunit;++i)
       reinterpret_cast<MoveFunc>(MP[i][LV_MoveBeforeG].ptr)(
           X[i],V[i],G[i],dMask[i],PGP,MP[i]);
-    F.B.renew();
+    F.B.renew(X);
     for(unsigned int i=0;i<nunit;++i) copy(G[i],0.);
     CalcInteraction(F,X,idx,G);
     for(unsigned int i=0;i<nunit;++i) scale(G[i],dMask[i]);

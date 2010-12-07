@@ -11,14 +11,11 @@ namespace std {
   template <typename T,template<typename> class DistBuffer,typename GeomType>
   struct ListInteraction
     : public
-      InteractionBase<
-      InteractionUnit<T,Vector<Vector<UniqueParameter> >,DistBuffer,GeomType>,
-      T,DistBuffer,GeomType> {
+      InteractionBase<Vector<InteractionUnit<T,DistBuffer,GeomType> >,
+                      T,DistBuffer,GeomType> {
     typedef ListInteraction<T,DistBuffer,GeomType>  Type;
-    typedef InteractionUnit<T,Vector<Vector<UniqueParameter> >,
-                            DistBuffer,GeomType>
-            IUType;
-    typedef InteractionBase<IUType,T,DistBuffer,GeomType> ParentType;
+    typedef InteractionUnit<T,DistBuffer,GeomType>  IUType;
+    typedef InteractionBase<Vector<IUType>,T,DistBuffer,GeomType> ParentType;
 
     ListInteraction() : ParentType() {}
     ListInteraction(const Type& F) {
@@ -32,16 +29,15 @@ namespace std {
 
   template <typename T,template<typename> class DBuffer,typename GType>
   void allocate(ListInteraction<T,DBuffer,GType>& F,
-                const unsigned int& tag,
-                const unsigned int& dim, const unsigned int& nunit,
-                const unsigned int& nlst) {
+                const Vector<unsigned int>& tags,
+                const unsigned int& dim, const unsigned int& nunit) {
     typedef typename ListInteraction<T,DBuffer,GType>::IUType
             IUType;
     typedef typename ListInteraction<T,DBuffer,GType>::ParentType
             Parent;
     allocate(static_cast<Parent&>(F),dim,nunit);
-    allocateInteractionUnitStatic(static_cast<IUType&>(F),tag);
-    allocate(F.prm,nlst);
+    allocate(static_cast<Vector<IUType>&>(F),tags.size);
+    for(unsigned int i=0;i<tags.size;++i) allocate(F[i],tags[i]);
   }
 
 }

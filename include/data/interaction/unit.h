@@ -6,11 +6,10 @@
 
 namespace std {
 
-  template <typename T, typename ParameterType,
+  template <typename T,
             template<typename> class DistBuffer,typename GeomType>
   struct InteractionUnit {
     unsigned int *pTag;
-    ParameterType prm;
     PropertyList<T> tmvec;
     void (*EFunc)(const Vector<T>*,const unsigned int*,const UniqueParameter*,
                   DistBuffer<T>&,const GeomType&,T&,
@@ -22,10 +21,10 @@ namespace std {
                   DistBuffer<T>&,const GeomType&,T&,Vector<T>*,
                   Vector<T>*,const unsigned int);
 
-    typedef InteractionUnit<T,ParameterType,DistBuffer,GeomType>  Type;
+    typedef InteractionUnit<T,DistBuffer,GeomType>  Type;
 
     InteractionUnit()
-      : pTag(NULL), prm(), tmvec(), EFunc(NULL), GFunc(NULL), BFunc() {}
+      : pTag(NULL), tmvec(), EFunc(NULL), GFunc(NULL), BFunc() {}
     InteractionUnit(const Type& U) {
       myError("Cannot create Interaction Unit");
     }
@@ -39,42 +38,35 @@ namespace std {
     const unsigned int& iTag() const { assert(pTag!=NULL); return *pTag; }
   };
 
-  template <typename T,typename PType,
-            template<typename> class DBuff,typename GType>
-  bool IsAvailable(const InteractionUnit<T,PType,DBuff,GType>& U) {
-    return IsAvailable(U.prm)&&IsAvailable(U.EFunc)&&IsAvailable(U.GFunc)&&
+  template <typename T,template<typename> class DBuff,typename GType>
+  bool IsAvailable(const InteractionUnit<T,DBuff,GType>& U) {
+    return IsAvailable(U.EFunc)&&IsAvailable(U.GFunc)&&
            IsAvailable(U.BFunc)&&IsAvailable(U.pTag);
   }
 
-  template <typename T,typename PType,
-            template<typename> class DBuff,typename GType>
-  void release(InteractionUnit<T,PType,DBuff,GType>& U) {
+  template <typename T,template<typename> class DBuff,typename GType>
+  void release(InteractionUnit<T,DBuff,GType>& U) {
     safe_delete(U.pTag);
-    release(U.prm);
     release(U.tmvec);
     U.EFunc=NULL;
     U.GFunc=NULL;
     U.BFunc=NULL;
   }
 
-  template <typename T,typename PType,
-            template<typename> class DBuff,typename GType>
-  void copy(InteractionUnit<T,PType,DBuff,GType>& U,
-            const InteractionUnit<T,PType,DBuff,GType>& cU) {
+  template <typename T,template<typename> class DBuff,typename GType>
+  void copy(InteractionUnit<T,DBuff,GType>& U,
+            const InteractionUnit<T,DBuff,GType>& cU) {
     assert(IsAvailable(U));
     assert(IsAvailable(cU));
     assert(U.iTag()==cU.iTag());
-    copy(U.prm,cU.prm);
   }
 
-  template <typename T,typename PType,
-            template<typename> class DBuff,typename GType>
-  void refer(InteractionUnit<T,PType,DBuff,GType>& U,
-             const InteractionUnit<T,PType,DBuff,GType>& rU) {
+  template <typename T,template<typename> class DBuff,typename GType>
+  void refer(InteractionUnit<T,DBuff,GType>& U,
+             const InteractionUnit<T,DBuff,GType>& rU) {
     assert(IsAvailable(rU));
     release(U);
     U.pTag=rU.pTag;
-    refer(U.prm,rU.prm);
     if(IsAvailable(rU.tmvec)) refer(U.tmvec,rU.tmvec);
   }
 
@@ -85,10 +77,8 @@ namespace std {
 
 namespace std {
 
-  template <typename T,typename PType,
-            template<typename> class DBuff,typename GType>
-  void allocateInteractionUnitStatic(InteractionUnit<T,PType,DBuff,GType>& F,
-                                     const unsigned int& tag) {
+  template <typename T, template<typename> class DBuff,typename GType>
+  void allocate(InteractionUnit<T,DBuff,GType>& F, const unsigned int& tag) {
     F.pTag=new unsigned int;
     F.iTag()=tag;
     switch(tag) {
