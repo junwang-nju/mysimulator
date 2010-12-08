@@ -7,14 +7,14 @@
 namespace std {
 
   template <typename IType,template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template <typename,template <typename> class,
                       typename, typename> class LineMin>
   void initMinimizerLocation(
-      SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M,
-      const SpType<T>& Coor, const IdType& Idx) {
-    typedef LineMin<IType,SpType,IdType,T>  LMType;
-    initMinimizerLocation(static_cast<LMType&>(M),Coor,Idx);
+      SteepestDescentMinimizerBuffer<IType,SpType,PmType,T,LineMin>& M,
+      const SpType<T>& Coor, const PmType& Pmx) {
+    typedef LineMin<IType,SpType,PmType,T>  LMType;
+    initMinimizerLocation(static_cast<LMType&>(M),Coor,Pmx);
     imprint(M.Dirc,Coor);
   }
 

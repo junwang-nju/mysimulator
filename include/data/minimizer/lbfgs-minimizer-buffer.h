@@ -8,16 +8,17 @@
 namespace std {
 
   template <typename InteractionType, template <typename> class SpaceType,
-            typename IdxType, typename T,
+            typename ParameterType, typename T,
             template <typename,template<typename>class,
                       typename,typename> class LineMin,
             unsigned int MaxCorr=6>
   struct LBFGSMinimizerBuffer
-    : public LineMin<InteractionType,SpaceType,IdxType,T> {
+    : public LineMin<InteractionType,SpaceType,ParameterType,T> {
     typedef
-    LBFGSMinimizerBuffer<InteractionType,SpaceType,IdxType,T,LineMin,MaxCorr>
+    LBFGSMinimizerBuffer<InteractionType,SpaceType,ParameterType,T,
+                         LineMin,MaxCorr>
     Type;
-    typedef LineMin<InteractionType,SpaceType,IdxType,T>  ParentType;
+    typedef LineMin<InteractionType,SpaceType,ParameterType,T>  ParentType;
 
     static const unsigned int DefaultMaxIter;
     SpaceType<T>  Dirc;
@@ -41,34 +42,34 @@ namespace std {
   };
 
   template <typename IType,template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LMin,
             unsigned int MCorr>
   const unsigned int
-  LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>::DefaultMaxIter
+  LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>::DefaultMaxIter
   =1000;
 
   template <typename IType,template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LMin,
             unsigned int MCorr>
   bool IsAvailable(
-      const LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B) {
-    typedef LMin<IType,SpType,IdType,T> LMType;
+      const LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>& B) {
+    typedef LMin<IType,SpType,PmType,T> LMType;
     return IsAvailable(static_cast<const LMType&>(B))&&IsAvailable(B.Dirc)&&
            IsAvailable(B.dX)&&IsAvailable(B.dG)&&IsAvailable(B.alpha)&&
            IsAvailable(B.rho)&&IsAvailable(B.lastX)&&IsAvailable(B.lastG);
   }
 
   template <typename IType,template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LMin,
             unsigned int MCorr>
-  void release(LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B) {
-    typedef LMin<IType,SpType,IdType,T> LMType;
+  void release(LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>& B) {
+    typedef LMin<IType,SpType,PmType,T> LMType;
     release(B.Dirc);
     release(B.dX);
     release(B.dG);
@@ -80,16 +81,16 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LMin,
             unsigned int MCorr>
   void copy(
-      LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B,
-      const LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& cB) {
+      LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>& B,
+      const LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>& cB) {
     assert(IsAvailable(B));
     assert(IsAvailable(cB));
-    typedef LMin<IType,SpType,IdType,T> LMType;
+    typedef LMin<IType,SpType,PmType,T> LMType;
     copy(B.Dirc,cB.Dirc);
     copy(B.dX,cB.dX);
     copy(B.dG,cB.dG);
@@ -101,16 +102,16 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LMin,
             unsigned int MCorr>
   void refer(
-      LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B,
-      const LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& cB) {
+      LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>& B,
+      const LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>& cB) {
     assert(IsAvailable(cB));
     release(B);
-    typedef LMin<IType,SpType,IdType,T> LMType;
+    typedef LMin<IType,SpType,PmType,T> LMType;
     refer(B.Dirc,cB.Dirc);
     refer(B.dX,cB.dX);
     refer(B.dG,cB.dG);
@@ -122,13 +123,13 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LMin,
             unsigned int MCorr>
   void allocateMinimizerProperty(
-      LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B) {
-    typedef LMin<IType,SpType,IdType,T> LMType;
+      LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>& B) {
+    typedef LMin<IType,SpType,PmType,T> LMType;
     allocateMinimizerProperty(static_cast<LMType&>(B));
     allocate(B.dX,MCorr);
     allocate(B.dG,MCorr);

@@ -8,8 +8,8 @@
 namespace std {
 
   template <typename IType,template <typename> class SpType,
-            typename IdType,typename T>
-  void initMinimizerMask(MinimizerBufferBase<IType,SpType,IdType,T>& B,
+            typename PmType,typename T>
+  void initMinimizerMask(MinimizerBufferBase<IType,SpType,PmType,T>& B,
                          const SpType<unsigned int>& Mask,
                          const SpType<T>& dMask) {
     imprint(B.MinIMask,Mask);
@@ -20,30 +20,30 @@ namespace std {
   }
 
   template <typename IType,template <typename> class SpType,
-            typename IdType,typename T>
-  void initMinimizerLocation(MinimizerBufferBase<IType,SpType,IdType,T>& B,
+            typename PmType,typename T>
+  void initMinimizerLocation(MinimizerBufferBase<IType,SpType,PmType,T>& B,
                              const SpType<T>& Coor,
-                             const IdType& Idx) {
+                             const PmType& Pmx) {
     imprint(B.MinX,Coor);
     imprint(B.MinG,Coor);
-    imprint(B.MinIdx,Idx);
+    imprint(B.MinParam,Pmx);
     copy(B.MinX,Coor);
-    copy(B.MinIdx,Idx);
+    copy(B.MinParam,Pmx);
     assert(IsAvailable(B.MinProperty));
-    CalcInteraction(B.F,Coor,Idx,B.MinEnergy(),B.MinG);
+    CalcInteraction(B.F,Coor,Pmx,B.MinEnergy(),B.MinG);
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T,typename sT>
+            typename PmType,typename T,typename sT>
   void ProduceNewLocation(
-      MinimizerBufferBase<IType,SpType,IdType,T>& B,
+      MinimizerBufferBase<IType,SpType,PmType,T>& B,
       const SpType<T>& Origin, const SpType<T>& Dirc, const sT& step,
       SpType<T>& Dest, T& DestY, SpType<T>& DestG, T& DestPrj) {
     copy(Dest,Origin);
     shift(Dest,step,B.MinDMask,Dirc);
     DestY=0.;
     copy(DestG,0.);
-    CalcInteraction(B.F,Dest,B.MinIdx,DestY,DestG);
+    CalcInteraction(B.F,Dest,B.MinParam,DestY,DestG);
     ++(B.GCalcCount());
     DestPrj=dot(DestG,Dirc);
   }

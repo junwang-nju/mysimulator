@@ -8,15 +8,16 @@
 namespace std {
 
   template <typename InteractionType, template <typename> class SpaceType,
-            typename IdxType, typename T,
+            typename ParameterType, typename T,
             template <typename,template<typename>class,
                       typename,typename> class LineMin>
   struct SteepestDescentMinimizerBuffer
-    : public LineMin<InteractionType,SpaceType,IdxType,T> {
+    : public LineMin<InteractionType,SpaceType,ParameterType,T> {
     typedef
-    SteepestDescentMinimizerBuffer<InteractionType,SpaceType,IdxType,T,LineMin>
+    SteepestDescentMinimizerBuffer<InteractionType,SpaceType,ParameterType,T,
+                                   LineMin>
     Type;
-    typedef LineMin<InteractionType,SpaceType,IdxType,T>  ParentType;
+    typedef LineMin<InteractionType,SpaceType,ParameterType,T>  ParentType;
 
     static const unsigned int DefaultMaxIter;
     SpaceType<T>  Dirc;
@@ -33,42 +34,42 @@ namespace std {
   };
 
   template <typename IType, template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LineMin>
   const unsigned int
-  SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>::DefaultMaxIter
+  SteepestDescentMinimizerBuffer<IType,SpType,PmType,T,LineMin>::DefaultMaxIter
   =10000;
 
   template <typename IType, template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LineMin>
   bool IsAvailable(
-      const SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M) {
-    typedef LineMin<IType,SpType,IdType,T>  LMType;
+      const SteepestDescentMinimizerBuffer<IType,SpType,PmType,T,LineMin>& M) {
+    typedef LineMin<IType,SpType,PmType,T>  LMType;
     return IsAvailable(static_cast<const LMType&>(M))&&IsAvailable(M.Dirc);
   }
 
   template <typename IType, template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template <typename,template <typename> class,
                       typename,typename T> class LineMin>
   void release(
-      SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M) {
-    typedef LineMin<IType,SpType,IdType,T>    LMType;
+      SteepestDescentMinimizerBuffer<IType,SpType,PmType,T,LineMin>& M) {
+    typedef LineMin<IType,SpType,PmType,T>    LMType;
     release(M.Dirc);
     release(static_cast<LMType&>(M));
   }
 
   template <typename IType, template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template <typename,template <typename> class,
                       typename,typename T> class LineMin>
   void copy(
-      SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M,
-      const SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& cM){
-    typedef LineMin<IType,SpType,IdType,T>  LMType;
+      SteepestDescentMinimizerBuffer<IType,SpType,PmType,T,LineMin>& M,
+      const SteepestDescentMinimizerBuffer<IType,SpType,PmType,T,LineMin>& cM){
+    typedef LineMin<IType,SpType,PmType,T>  LMType;
     assert(IsAvailable(M));
     assert(IsAvailable(cM));
     copy(M.Dirc,cM.Dirc);
@@ -76,13 +77,13 @@ namespace std {
   }
 
   template <typename IType, template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template <typename,template <typename> class,
                       typename,typename T> class LineMin>
   void refer(
-      SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& M,
-      const SteepestDescentMinimizerBuffer<IType,SpType,IdType,T,LineMin>& rM){
-    typedef LineMin<IType,SpType,IdType,T>  LMType;
+      SteepestDescentMinimizerBuffer<IType,SpType,PmType,T,LineMin>& M,
+      const SteepestDescentMinimizerBuffer<IType,SpType,PmType,T,LineMin>& rM){
+    typedef LineMin<IType,SpType,PmType,T>  LMType;
     assert(IsAvailable(rM));
     release(M);
     refer(M.Dirc,rM.Dirc);

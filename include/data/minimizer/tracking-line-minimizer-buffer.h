@@ -8,12 +8,14 @@
 namespace std {
 
   template <typename InteractionType,template<typename> class SpaceType,
-            typename IdxType, typename T>
+            typename ParameterType, typename T>
   struct TrackingLineMinimizerBuffer
-    : public LineMinimizerBufferBase<InteractionType,SpaceType,IdxType,T> {
-    typedef TrackingLineMinimizerBuffer<InteractionType,SpaceType,IdxType,T>
-            Type;
-    typedef LineMinimizerBufferBase<InteractionType,SpaceType,IdxType,T>
+    : public
+      LineMinimizerBufferBase<InteractionType,SpaceType,ParameterType,T> {
+    typedef
+      TrackingLineMinimizerBuffer<InteractionType,SpaceType,ParameterType,T>
+      Type;
+    typedef LineMinimizerBufferBase<InteractionType,SpaceType,ParameterType,T>
             ParentType;
     
     TrackingLineMinimizerBuffer() : ParentType() {}
@@ -38,48 +40,48 @@ namespace std {
   };
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  bool IsAvailable(const TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B){
-    typedef LineMinimizerBufferBase<IType,SpType,IdType,T>  LBType;
+            typename PmType,typename T>
+  bool IsAvailable(const TrackingLineMinimizerBuffer<IType,SpType,PmType,T>& B){
+    typedef LineMinimizerBufferBase<IType,SpType,PmType,T>  LBType;
     return IsAvailable(static_cast<const LBType&>(B));
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  void release(TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B) {
-    typedef LineMinimizerBufferBase<IType,SpType,IdType,T>  LBType;
+            typename PmType,typename T>
+  void release(TrackingLineMinimizerBuffer<IType,SpType,PmType,T>& B) {
+    typedef LineMinimizerBufferBase<IType,SpType,PmType,T>  LBType;
     release(static_cast<LBType&>(B));
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  void copy(TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B,
-            const TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& cB) {
-    typedef LineMinimizerBufferBase<IType,SpType,IdType,T>  LBType;
+            typename PmType,typename T>
+  void copy(TrackingLineMinimizerBuffer<IType,SpType,PmType,T>& B,
+            const TrackingLineMinimizerBuffer<IType,SpType,PmType,T>& cB) {
+    typedef LineMinimizerBufferBase<IType,SpType,PmType,T>  LBType;
     copy(static_cast<LBType&>(B),static_cast<const LBType&>(cB));
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  void refer(TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B,
-             const TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& rB) {
-    typedef LineMinimizerBufferBase<IType,SpType,IdType,T>  LBType;
+            typename PmType,typename T>
+  void refer(TrackingLineMinimizerBuffer<IType,SpType,PmType,T>& B,
+             const TrackingLineMinimizerBuffer<IType,SpType,PmType,T>& rB) {
+    typedef LineMinimizerBufferBase<IType,SpType,PmType,T>  LBType;
     refer(static_cast<LBType&>(B),static_cast<const LBType&>(rB));
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
+            typename PmType,typename T>
   void allocateMinimizerProperty(
-      TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B) {
+      TrackingLineMinimizerBuffer<IType,SpType,PmType,T>& B) {
     allocate(B.MinProperty,TrackingLineMinimizerNumberProperty);
     initMinimizerProperty(B);
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
+            typename PmType,typename T>
   void initMinimizerProperty(
-      TrackingLineMinimizerBuffer<IType,SpType,IdType,T>& B) {
-    typedef LineMinimizerBufferBase<IType,SpType,IdType,T>  LBType;
+      TrackingLineMinimizerBuffer<IType,SpType,PmType,T>& B) {
+    typedef LineMinimizerBufferBase<IType,SpType,PmType,T>  LBType;
     initMinimizerProperty(static_cast<LBType&>(B));
     B.TrackingFac()=GoldValue<T>();
   }

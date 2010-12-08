@@ -7,15 +7,15 @@
 namespace std {
 
   template <typename IType, template <typename> class SpType,
-            typename IdType, typename T,
+            typename PmType, typename T,
             template<typename,template<typename>class,
                      typename,typename> class LMin,
             unsigned int MCorr>
   void initMinimizerLocation(
-      LBFGSMinimizerBuffer<IType,SpType,IdType,T,LMin,MCorr>& B,
-      const SpType<T>& Coor, IdType& Idx) {
-    typedef LMin<IType,SpType,IdType,T> LMType;
-    initMinimizerLocation(static_cast<LMType&>(B),Coor,Idx);
+      LBFGSMinimizerBuffer<IType,SpType,PmType,T,LMin,MCorr>& B,
+      const SpType<T>& Coor, PmType& Pmx) {
+    typedef LMin<IType,SpType,PmType,T> LMType;
+    initMinimizerLocation(static_cast<LMType&>(B),Coor,Pmx);
     imprint(B.Dirc,Coor);
     for(unsigned int i=0;i<MCorr;++i) {
       imprint(B.dX[i],Coor);

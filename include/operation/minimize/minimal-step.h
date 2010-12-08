@@ -25,15 +25,15 @@ namespace std {
     return RelDelta<T>()*sqroot(dof/mstep);
   }
 
-  template <typename IType,typename IdType,typename T>
-  T MinimalStep(const LineMinimizerBufferBase<IType,Vector,IdType,T>& B,
+  template <typename IType,typename PmType,typename T>
+  T MinimalStep(const LineMinimizerBufferBase<IType,Vector,PmType,T>& B,
                 const Vector<T>& Origin, const Vector<T>& Dirc) {
     assert(IsAvailable(B));
     return MinimalStep(Origin,Dirc,B.MinIMask,B.DOF());
   }
 
-  template <typename IType,typename IdType,typename T>
-  T MinimalStep(const LineMinimizerBufferBase<IType,PropertyList,IdType,T>& B,
+  template <typename IType,typename PmType,typename T>
+  T MinimalStep(const LineMinimizerBufferBase<IType,PropertyList,PmType,T>& B,
                 const PropertyList<T>& Origin,const PropertyList<T>& Dirc) {
     assert(IsAvailable(B));
     return MinimalStep(static_cast<const Vector<T>&>(Origin),

@@ -214,7 +214,7 @@ namespace std {
   template <typename T, typename InteractionType>
   void CalcInteraction(
       InteractionType& F,
-      const PropertyList<T>& X, const Vector<unsigned int>& P,
+      const PropertyList<T>& X, const Vector<InteractionParameterUnit>& P,
       PropertyList<T>& Gradient) {
     CalcInteraction(F,X.structure,P,Gradient.structure);
   }
@@ -222,7 +222,7 @@ namespace std {
   template <typename T, typename InteractionType>
   void CalcInteraction(
       InteractionType& F,
-      const PropertyList<T>& X, const Vector<unsigned int>& P,
+      const PropertyList<T>& X, const Vector<InteractionParameterUnit>& P,
       T& Energy, PropertyList<T>& Gradient) {
     CalcInteraction(F,X.structure,P,Energy,Gradient.structure);
   }

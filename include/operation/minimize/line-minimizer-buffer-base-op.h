@@ -8,12 +8,12 @@
 namespace std {
 
   template <typename IType,template <typename> class SpType,
-            typename IdType, typename T>
-  void initMinimizerLocation(LineMinimizerBufferBase<IType,SpType,IdType,T>& B,
+            typename PmType, typename T>
+  void initMinimizerLocation(LineMinimizerBufferBase<IType,SpType,PmType,T>& B,
                              const SpType<T>& Coor,
-                             const IdType& Idx) {
-    typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
-    initMinimizerLocation(static_cast<MBType&>(B),Coor,Idx);
+                             const PmType& Pmx) {
+    typedef MinimizerBufferBase<IType,SpType,PmType,T>  MBType;
+    initMinimizerLocation(static_cast<MBType&>(B),Coor,Pmx);
     imprint(B.RunX,Coor);
     imprint(B.RunG,Coor);  
   }

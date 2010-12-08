@@ -44,7 +44,7 @@ namespace std {
     assert(IsAvailable(cP));
     assert(P.iTag()==cP.iTag());
     copy(P.prm,cP.prm);
-    copy(P.idx,cP.prm);
+    copy(P.idx,cP.idx);
   }
 
   void refer(InteractionParameterUnit& P, const InteractionParameterUnit& rP) {
@@ -116,6 +116,45 @@ namespace std {
                 const unsigned int& itag, const unsigned int nunit=0) {
     allocateIndex(P,itag,nunit);
     allocateParameter(P,itag);
+  }
+
+  void imprint(InteractionParameterUnit& P,
+               const InteractionParameterUnit& cP) {
+    imprint(P.prm,cP.prm);
+    imprint(P.idx,cP.idx);
+    allocate(P.tag,1);
+    P.iTag()=cP.iTag();
+  }
+
+  void imprint(Vector<InteractionParameterUnit>& P,
+               const Vector<InteractionParameterUnit>& cP) {
+    allocate(P,cP.size);
+    for(unsigned int i=0;i<P.size;++i)  imprint(P[i],cP[i]);
+  }
+
+  void imprint(Vector<Vector<InteractionParameterUnit> >& P,
+               const Vector<Vector<InteractionParameterUnit> >& cP) {
+    allocate(P,cP.size);
+    for(unsigned int i=0;i<P.size;++i)  allocate(P[i],cP[i].size);
+    for(unsigned int i=0;i<P.size;++i)
+    for(unsigned int j=0;j<P[i].size;++j)
+      imprint(P[i][j],cP[i][j]);
+  }
+
+}
+
+#include "data/basic/property-list.h"
+
+namespace std {
+
+  void imprint(PropertyList<InteractionParameterUnit>& P,
+               const PropertyList<InteractionParameterUnit>& cP) {
+    Vector<unsigned int> sz(cP.size);
+    for(unsigned int i=0;i<cP.size;++i) sz[i]=cP[i].size;
+    allocate(P,sz);
+    for(unsigned int i=0;i<P.size;++i)
+      for(unsigned int j=0;j<P[i].size;++j)
+        imprint(P[i][j],cP[i][j]);
   }
 
 }

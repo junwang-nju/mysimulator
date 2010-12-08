@@ -8,12 +8,12 @@
 namespace std {
 
   template <typename InteractionType,template<typename> class SpaceType,
-            typename IdxType, typename T>
+            typename ParameterType, typename T>
   struct LineMinimizerBufferBase
-    : public MinimizerBufferBase<InteractionType,SpaceType,IdxType,T> {
-    typedef LineMinimizerBufferBase<InteractionType,SpaceType,IdxType,T>
+    : public MinimizerBufferBase<InteractionType,SpaceType,ParameterType,T> {
+    typedef LineMinimizerBufferBase<InteractionType,SpaceType,ParameterType,T>
             Type;
-    typedef MinimizerBufferBase<InteractionType,SpaceType,IdxType,T>
+    typedef MinimizerBufferBase<InteractionType,SpaceType,ParameterType,T>
             ParentType;
 
     SpaceType<T> RunX;
@@ -83,27 +83,27 @@ namespace std {
   };
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  bool IsAvailable(LineMinimizerBufferBase<IType,SpType,IdType,T>& B) {
-    typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
+            typename PmType,typename T>
+  bool IsAvailable(LineMinimizerBufferBase<IType,SpType,PmType,T>& B) {
+    typedef MinimizerBufferBase<IType,SpType,PmType,T>  MBType;
     return IsAvailable(static_cast<const MBType&>(B))&&
            IsAvailable(B.RunX)&&IsAvailable(B.RunG);
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  void release(LineMinimizerBufferBase<IType,SpType,IdType,T>& B) {
-    typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
+            typename PmType,typename T>
+  void release(LineMinimizerBufferBase<IType,SpType,PmType,T>& B) {
+    typedef MinimizerBufferBase<IType,SpType,PmType,T>  MBType;
     release(B.RunX);
     release(B.RunG);
     release(static_cast<MBType&>(B));
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  void copy(LineMinimizerBufferBase<IType,SpType,IdType,T>& B,
-            const LineMinimizerBufferBase<IType,SpType,IdType,T>& cB) {
-    typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
+            typename PmType,typename T>
+  void copy(LineMinimizerBufferBase<IType,SpType,PmType,T>& B,
+            const LineMinimizerBufferBase<IType,SpType,PmType,T>& cB) {
+    typedef MinimizerBufferBase<IType,SpType,PmType,T>  MBType;
     assert(IsAvailable(B));
     assert(IsAvailable(cB));
     copy(B.RunX,cB.RunX);
@@ -112,10 +112,10 @@ namespace std {
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  void refer(LineMinimizerBufferBase<IType,SpType,IdType,T>& B,
-             const LineMinimizerBufferBase<IType,SpType,IdType,T>& rB) {
-    typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
+            typename PmType,typename T>
+  void refer(LineMinimizerBufferBase<IType,SpType,PmType,T>& B,
+             const LineMinimizerBufferBase<IType,SpType,PmType,T>& rB) {
+    typedef MinimizerBufferBase<IType,SpType,PmType,T>  MBType;
     assert(IsAvailable(rB));
     release(B);
     refer(B.RunX,rB.RunX);
@@ -124,17 +124,17 @@ namespace std {
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
+            typename PmType,typename T>
   void allocateMinimizerProperty(
-      LineMinimizerBufferBase<IType,SpType,IdType,T>& B) {
+      LineMinimizerBufferBase<IType,SpType,PmType,T>& B) {
     allocate(B.MinProperty,LineMinimizerNumberProperty);
     initMinimizerProperty(B);
   }
 
   template <typename IType,template<typename> class SpType,
-            typename IdType,typename T>
-  void initMinimizerProperty(LineMinimizerBufferBase<IType,SpType,IdType,T>& B){
-    typedef MinimizerBufferBase<IType,SpType,IdType,T>  MBType;
+            typename PmType,typename T>
+  void initMinimizerProperty(LineMinimizerBufferBase<IType,SpType,PmType,T>& B){
+    typedef MinimizerBufferBase<IType,SpType,PmType,T>  MBType;
     initMinimizerProperty(static_cast<MBType&>(B));
     B.LSearchCount()=0;
     B.DecFac()=1e-4;

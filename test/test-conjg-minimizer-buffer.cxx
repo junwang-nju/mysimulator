@@ -27,29 +27,45 @@ void bfunc(const Vector<double>& x, double& e, Vector<double>& g,
 }
 
 struct TestInteraction {
-  double prm;
   void (*EFunc)(const Vector<double>&,double&,const double&);
   void (*GFunc)(const Vector<double>&,Vector<double>&,const double&);
   void (*BFunc)(const Vector<double>&,double&,Vector<double>&,const double&);
   ~TestInteraction() {}
 };
 
+struct TestParameter {
+  double prm;
+  Vector<unsigned int> idx;
+};
+
+bool IsAvailable(const TestParameter& P) { return IsAvailable(P.idx); }
+void release(TestParameter& P) { release(P.idx); }
+void copy(TestParameter& P, const TestParameter& cP) {
+  copy(P.prm,cP.prm);
+  copy(P.idx,cP.idx);
+}
+void refer(TestParameter& P, const TestParameter& cP) {
+  refer(P.idx,cP.idx);
+}
+void imprint(TestParameter& P, const TestParameter& cP) {
+  imprint(P.idx,cP.idx);
+}
+
 void CalcInteraction(TestInteraction& TI,const Vector<double>& X,
-                     const Vector<unsigned int>& ID, double& E) {
-  TI.EFunc(X,E,TI.prm);
+                     const TestParameter& P, double& E) {
+  TI.EFunc(X,E,P.prm);
 }
 void CalcInteraction(TestInteraction& TI,const Vector<double>& X,
-                     const Vector<unsigned int>& ID, Vector<double>& G) {
-  TI.GFunc(X,G,TI.prm);
+                     const TestParameter& P, Vector<double>& G) {
+  TI.GFunc(X,G,P.prm);
 }
 void CalcInteraction(TestInteraction& TI,const Vector<double>& X,
-                     const Vector<unsigned int>& ID,
+                     const TestParameter& P,
                      double& E, Vector<double>& G) {
-  TI.BFunc(X,E,G,TI.prm);
+  TI.BFunc(X,E,G,P.prm);
 }
 void release(TestInteraction& TI) {}
 void copy(TestInteraction& TI, const TestInteraction& cTI) {
-  TI.prm=cTI.prm;
   TI.EFunc=cTI.EFunc;
   TI.GFunc=cTI.GFunc;
   TI.BFunc=cTI.BFunc;
@@ -62,38 +78,41 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 int main() {
 
   cout<<"Test -- initialize"<<endl;
-  ConjugateGradientMinimizerBuffer<TestInteraction,Vector,Vector<unsigned int>,
+  ConjugateGradientMinimizerBuffer<TestInteraction,Vector,TestParameter,
                                    double,TrackingLineMinimizerBuffer> CM;
+  TestParameter P;
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
   CM.F.EFunc=efunc;
   CM.F.GFunc=gfunc;
   CM.F.BFunc=bfunc;
-  CM.F.prm=10.;
   Vector<double> Coor(1);
   Coor[0]=25.;
-  Vector<unsigned int> id(1), msk(1);
+  TestParameter Pmx;
+  Pmx.prm=10.;
+  allocate(Pmx.idx,1);
+  Vector<unsigned int> msk(1);
   Vector<double> dmsk(1);
   msk[0]=1;
   dmsk[0]=1.;
   allocateMinimizerProperty(CM);
   initMinimizerMask(CM,msk,dmsk);
-  initMinimizerLocation(CM,Coor,id);
+  initMinimizerLocation(CM,Coor,Pmx);
   cout<<endl;
 
   cout<<"Test -- copy"<<endl;
-  ConjugateGradientMinimizerBuffer<TestInteraction,Vector,Vector<unsigned int>,
+  ConjugateGradientMinimizerBuffer<TestInteraction,Vector,TestParameter,
                                    double,TrackingLineMinimizerBuffer> CM2;
   CM2.F.EFunc=efunc;
   CM2.F.GFunc=gfunc;
   CM2.F.BFunc=bfunc;
-  CM2.F.prm=10.;
+  Pmx.prm=10.;
   Coor[0]=2.;
   msk[0]=0;
   allocateMinimizerProperty(CM2);
   initMinimizerMask(CM2,msk,dmsk);
-  initMinimizerLocation(CM2,Coor,id);
+  initMinimizerLocation(CM2,Coor,Pmx);
   copy(CM2,CM);
   cout<<endl;
 
@@ -120,14 +139,17 @@ int main() {
 
   cout<<"Test -- minimize over complex data"<<endl;
   ConjugateGradientMinimizerBuffer<
-      SimpleVectorInteraction<double,DistanceBufferSimple,FreeSpace>,
-      PropertyList,PropertyList<unsigned int>,double,
+      ListInteraction<double,DistanceBufferSimple,FreeSpace>,
+      PropertyList,Vector<InteractionParameterUnit>,double,
       TrackingLineMinimizerBuffer> CSM;
   Vector<unsigned int> sz;
   allocate(sz,6);
   for(unsigned int i=0;i<3;++i) sz[i]=Harmonic;
   for(unsigned int i=3;i<6;++i) sz[i]=LJ612;
   allocate(CSM.F,sz,3,4);
+  Vector<InteractionParameterUnit> RP(6);
+  for(unsigned int i=0;i<3;++i) allocate(RP[i],Harmonic);
+  for(unsigned int i=3;i<6;++i) allocate(RP[i],LJ612);
   ParameterList PL;
   allocate(sz,18);
   for(unsigned int i=0;i<9;++i)   sz[i]=HarmonicNumberParameter;
@@ -184,28 +206,24 @@ int main() {
   copy(Kind,0);
   Kind[1]=1;
   Kind[3]=2;
-  PropertyList<unsigned int> cidx;
-  allocate(sz,6);
-  copy(sz,2);
-  allocate(cidx,sz);
-  cidx[0][0]=0;    cidx[0][1]=1;
-  cidx[1][0]=0;    cidx[1][1]=2;
-  cidx[2][0]=0;    cidx[2][1]=3;
-  cidx[3][0]=1;    cidx[3][1]=2;
-  cidx[4][0]=1;    cidx[4][1]=3;
-  cidx[5][0]=2;    cidx[5][1]=3;
+  RP[0].idx[0]=0;    RP[0].idx[1]=1;
+  RP[1].idx[0]=0;    RP[1].idx[1]=2;
+  RP[2].idx[0]=0;    RP[2].idx[1]=3;
+  RP[3].idx[0]=1;    RP[3].idx[1]=2;
+  RP[4].idx[0]=1;    RP[4].idx[1]=3;
+  RP[5].idx[0]=2;    RP[5].idx[1]=3;
   allocate(sz,3);
   for(unsigned int i=0;i<3;++i) {
     sz[0]=Harmonic;
-    sz[1]=Kind[cidx[i][0]];
-    sz[2]=Kind[cidx[i][1]];
-    refer(CSM.F[i].prm,*get(PL,sz));
+    sz[1]=Kind[RP[i].idx[0]];
+    sz[2]=Kind[RP[i].idx[1]];
+    refer(RP[i].prm,*get(PL,sz));
   }
   for(unsigned int i=3;i<6;++i) {
     sz[0]=LJ612;
-    sz[1]=Kind[cidx[i][0]];
-    sz[2]=Kind[cidx[i][1]];
-    refer(CSM.F[i].prm,*get(PL,sz));
+    sz[1]=Kind[RP[i].idx[0]];
+    sz[2]=Kind[RP[i].idx[1]];
+    refer(RP[i].prm,*get(PL,sz));
   }
   PropertyList<double> cv;
   allocate(sz,4);
@@ -224,7 +242,7 @@ int main() {
   copy(cimsk[0],0);
   copy<double,unsigned int>(cdmsk,cimsk);
   initMinimizerMask(CSM,cimsk,cdmsk);
-  initMinimizerLocation(CSM,cv,cidx);
+  initMinimizerLocation(CSM,cv,RP);
   cout<<CSM.MinX<<endl;
   cout<<CSM.MinEnergy()<<endl;
   cout<<Minimize<StrongWolfe>(CSM)<<endl;
