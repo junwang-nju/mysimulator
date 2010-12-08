@@ -135,18 +135,21 @@ int main() {
   cout<<g<<endl;
   cout<<endl;
 
-  /*
   cout<<"Test -- initialize List Interaction"<<endl;
   ListInteraction<double,DistanceBufferSimple,FreeSpace> LF;
   cout<<endl;
 
   cout<<"Test -- allocate List Interaction"<<endl;
-  allocate(LF,Harmonic,3,2,6);
+  allocate(sz,6);
+  for(unsigned int i=0;i<6;++i) sz[i]=Harmonic;
+  allocate(LF,sz,3,4);
   cout<<endl;
 
   cout<<"Test -- copy List Interaction"<<endl;
   ListInteraction<double,DistanceBufferSimple,FreeSpace> LF2;
-  allocate(LF2,Harmonic,3,2,6);
+  allocate(sz,6);
+  for(unsigned int i=0;i<6;++i) sz[i]=Harmonic;
+  allocate(LF2,sz,3,4);
   copy(LF2,LF);
   cout<<endl;
 
@@ -160,81 +163,36 @@ int main() {
   cout<<endl;
   
   cout<<"Test -- List Interaction Calculation"<<endl;
-  Vector<InteractionParameterUnit> PL;
-  allocate(sz,4);
-  copy(sz,3);
-  allocate(v,sz);
-  allocate(g,sz);
-  copy(v,0.);
-  v[1][1]=1.2;
-  v[2][0]=1.3;    v[2][1]=1.5;
-  v[3][0]=0.8;    v[3][1]=2.2;
-  PropertyList<unsigned int> lidx;
-  allocate(sz,6);
-  copy(sz,2);
-  allocate(lidx,sz);
-  lidx[0][0]=0;     lidx[0][1]=1;
-  lidx[1][0]=0;     lidx[1][1]=2;
-  lidx[2][0]=0;     lidx[2][1]=3;
-  lidx[3][0]=1;     lidx[3][1]=2;
-  lidx[4][0]=1;     lidx[4][1]=3;
-  lidx[5][0]=2;     lidx[5][1]=3;
-  ParameterList PL;
-  allocate(PL,3,HarmonicNumberParameter,3*3);
-  for(unsigned int i=0,n=0;i<3;++i)
-  for(unsigned int j=0;j<3;++j,++n) {
-    PL.key[n][0]=Harmonic;
-    PL.key[n][1]=i;
-    PL.key[n][2]=j;
-    PL.key[n].update();
-  }
-  PL.value[0][HarmonicEqLength].d=1.;
-  PL.value[0][HarmonicEqStrength].d=100.;
-  PL.value[1][HarmonicEqLength].d=2.;
-  PL.value[1][HarmonicEqStrength].d=100.;
-  PL.value[2][HarmonicEqLength].d=0.5;
-  PL.value[2][HarmonicEqStrength].d=100.;
-  copy(PL.value[3],PL.value[1]);
-  PL.value[4][HarmonicEqLength].d=1.;
-  PL.value[4][HarmonicEqStrength].d=200.;
-  PL.value[5][HarmonicEqLength].d=1.;
-  PL.value[5][HarmonicEqStrength].d=30.;
-  copy(PL.value[6],PL.value[2]);
-  copy(PL.value[7],PL.value[5]);
-  PL.value[8][HarmonicEqLength].d=1.5;
-  PL.value[8][HarmonicEqStrength].d=2000.;
-  for(unsigned int i=0;i<9;++i) BuildParameterHarmonic<double>(PL.value[i]);
-  PL.update();
-  Vector<unsigned int> Kind(4);
-  copy(Kind,0);
-  Kind[1]=1;
-  Kind[3]=2;
-  allocate(sz,3);
-  for(unsigned int i=0;i<LF.prm.size;++i) {
-    sz[0]=Harmonic;
-    sz[1]=Kind[lidx[i][0]];
-    sz[2]=Kind[lidx[i][1]];
-    refer(LF.prm[i],*get(PL,sz));
-  }
   E=0.;
-  CalcInteraction(LF,v.structure,lidx.structure,E);
+  CalcInteraction(LF,v.structure,PV,E);
   cout<<E<<endl;
   copy(g,0);
-  CalcInteraction(LF,v.structure,lidx.structure,g.structure);
+  CalcInteraction(LF,v.structure,PV,g.structure);
   cout<<g<<endl;
   copy(g,0);
   E=0.;
-  CalcInteraction(LF,v.structure,lidx.structure,E,g.structure);
+  CalcInteraction(LF,v.structure,PV,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;
 
-  cout<<"Test -- Interaction Vector Calculation"<<endl;
-  SimpleVectorInteraction<double,DistanceBufferSimple,FreeSpace> VF;
-  allocate(sz,6);
-  for(unsigned int i=0;i<3;++i) sz[i]=Harmonic;
-  for(unsigned int i=3;i<6;++i) sz[i]=LJ612;
-  allocate(VF,sz,3,4);
+  cout<<"Test -- list interaction & property parameter"<<endl;
+  allocate(sz,2);
+  sz[0]=Harmonic;
+  sz[1]=LJ612;
+  allocate(LF,sz,3,4);
+  PropertyList<InteractionParameterUnit> PP;
+  allocate(sz,2);
+  copy(sz,3);
+  allocate(PP,sz);
+  for(unsigned int j=0;j<3;++j)   allocate(PP[0][j],Harmonic);
+  for(unsigned int j=0;j<3;++j)   allocate(PP[1][j],LJ612);
+  PP[0][0].idx[0]=0;     PP[0][0].idx[1]=1;
+  PP[0][1].idx[0]=0;     PP[0][1].idx[1]=2;
+  PP[0][2].idx[0]=0;     PP[0][2].idx[1]=3;
+  PP[1][0].idx[0]=1;     PP[1][0].idx[1]=2;
+  PP[1][1].idx[0]=1;     PP[1][1].idx[1]=3;
+  PP[1][2].idx[0]=2;     PP[1][2].idx[1]=3;
   release(PL);
   allocate(sz,18);
   for(unsigned int i=0;i<9;++i)   sz[i]=HarmonicNumberParameter;
@@ -290,65 +248,67 @@ int main() {
   allocate(sz,3);
   for(unsigned int i=0;i<3;++i) {
     sz[0]=Harmonic;
-    sz[1]=Kind[lidx[i][0]];
-    sz[2]=Kind[lidx[i][1]];
-    refer(VF[i].prm,*get(PL,sz));
+    sz[1]=Kind[PP[0][i].idx[0]];
+    sz[2]=Kind[PP[0][i].idx[1]];
+    refer(PP[0][i].prm,*get(PL,sz));
   }
-  for(unsigned int i=3;i<6;++i) {
+  for(unsigned int i=0;i<3;++i) {
     sz[0]=LJ612;
-    sz[1]=Kind[lidx[i][0]];
-    sz[2]=Kind[lidx[i][1]];
-    refer(VF[i].prm,*get(PL,sz));
+    sz[1]=Kind[PP[1][i].idx[0]];
+    sz[2]=Kind[PP[1][i].idx[1]];
+    refer(PP[1][i].prm,*get(PL,sz));
   }
   E=0.;
-  CalcInteraction(VF,v.structure,lidx.structure,E);
+  CalcInteraction(LF,v.structure,PP,E);
   cout<<E<<endl;
   copy(g,0.);
-  CalcInteraction(VF,v.structure,lidx.structure,g.structure);
+  CalcInteraction(LF,v.structure,PP,g.structure);
   cout<<g<<endl;
   E=0.;
   copy(g,0.);
-  CalcInteraction(VF,v.structure,lidx.structure,E,g.structure);
+  CalcInteraction(LF,v.structure,PP,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;
 
-  cout<<"Test -- List Interaction Vector CalcInteraction"<<endl;
-  ListVectorInteraction<double,DistanceBufferSimple,FreeSpace> VLF;
-  Vector<unsigned int> tg;
-  allocate(tg,2);
-  tg[0]=Harmonic;
-  tg[1]=LJ612;
-  allocate(sz,2);
-  sz[0]=3;
-  sz[1]=3;
-  allocate(VLF,tg,3,4,sz);
-  Vector<PropertyList<unsigned int> > vlidx(2);
+  cout<<"Test -- list interaction & vector-vector parameter"<<endl;
+  Vector<Vector<InteractionParameterUnit> > PVV;
+  allocate(PVV,2);
+  allocate(PVV[0],3);
+  allocate(PVV[1],3);
+  for(unsigned int i=0;i<3;++i) allocate(PVV[0][i],Harmonic);
+  for(unsigned int i=0;i<3;++i) allocate(PVV[1][i],Harmonic);
+  PVV[0][0].idx[0]=0;     PVV[0][0].idx[1]=1;
+  PVV[0][1].idx[0]=0;     PVV[0][1].idx[1]=2;
+  PVV[0][2].idx[0]=0;     PVV[0][2].idx[1]=3;
+  PVV[1][0].idx[0]=1;     PVV[1][0].idx[1]=2;
+  PVV[1][1].idx[0]=1;     PVV[1][1].idx[1]=3;
+  PVV[1][2].idx[0]=2;     PVV[1][2].idx[1]=3;
   allocate(sz,3);
-  copy(sz,2);
-  allocate(vlidx[0],sz);
-  allocate(vlidx[1],sz);
-  vlidx[0][0][0]=0;     vlidx[0][0][1]=1;
-  vlidx[0][1][0]=0;     vlidx[0][1][1]=2;
-  vlidx[0][2][0]=0;     vlidx[0][2][1]=3;
-  vlidx[1][0][0]=1;     vlidx[1][0][1]=2;
-  vlidx[1][1][0]=1;     vlidx[1][1][1]=3;
-  vlidx[1][2][0]=2;     vlidx[1][2][1]=3;
-  for(unsigned int i=0;i<3;i++)   refer(VLF[0].prm[i],VF[i].prm);
-  for(unsigned int i=0;i<3;i++)   refer(VLF[1].prm[i],VF[i+3].prm);
+  for(unsigned int i=0;i<3;++i) {
+    sz[0]=Harmonic;
+    sz[1]=Kind[PVV[0][i].idx[0]];
+    sz[2]=Kind[PVV[0][i].idx[1]];
+    refer(PVV[0][i].prm,*get(PL,sz));
+  }
+  for(unsigned int i=0;i<3;++i) {
+    sz[0]=LJ612;
+    sz[1]=Kind[PVV[1][i].idx[0]];
+    sz[2]=Kind[PVV[1][i].idx[1]];
+    refer(PVV[1][i].prm,*get(PL,sz));
+  }
   E=0.;
-  CalcInteraction(VLF,v.structure,vlidx.data,E);
+  CalcInteraction(LF,v.structure,PVV,E);
   cout<<E<<endl;
-  copy(g,0);
-  CalcInteraction(VLF,v.structure,vlidx.data,g.structure);
+  copy(g,0.);
+  CalcInteraction(LF,v.structure,PVV,g.structure);
   cout<<g<<endl;
   E=0.;
-  copy(g,0);
-  CalcInteraction(VLF,v.structure,vlidx.data,E,g.structure);
+  copy(g,0.);
+  CalcInteraction(LF,v.structure,PVV,E,g.structure);
   cout<<E<<endl;
   cout<<g<<endl;
   cout<<endl;
-  */
 
   return 0;
 }

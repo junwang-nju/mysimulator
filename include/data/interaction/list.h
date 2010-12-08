@@ -28,6 +28,14 @@ namespace std {
   };
 
   template <typename T,template<typename> class DBuffer,typename GType>
+  void copy(ListInteraction<T,DBuffer,GType>& F,
+            const ListInteraction<T,DBuffer,GType>& cF) {
+    typedef typename ListInteraction<T,DBuffer,GType>::ParentType
+            Parent;
+    copy(static_cast<Parent&>(F),static_cast<const Parent&>(cF));
+  }
+
+  template <typename T,template<typename> class DBuffer,typename GType>
   void allocate(ListInteraction<T,DBuffer,GType>& F,
                 const Vector<unsigned int>& tags,
                 const unsigned int& dim, const unsigned int& nunit) {
