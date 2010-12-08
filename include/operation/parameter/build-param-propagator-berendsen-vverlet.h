@@ -10,18 +10,18 @@
 namespace std {
 
   template <template<typename,template<typename>class,typename> class IType,
-            typename IdType, typename T, template<typename> class DBuffer,
+            typename PmType, typename T, template<typename> class DBuffer,
             typename GeomType>
   void allocatePropagatorBVParameter(Vector<UniqueParameter>& P) {
     allocate(P,PropagatorBVNumberParameter);
     P[PropagatorMode].u=Berendsen_VelocityVerlet;
     typedef void (*MvFunc)(
         IType<T,DBuffer,GeomType>&,Vector<T>*,Vector<T>*,Vector<T>*,
-        const Vector<T>*,const IdType&,Vector<UniqueParameter>&,
+        const Vector<T>*,const PmType&,Vector<UniqueParameter>&,
         Vector<UniqueParameter>*,const unsigned int&);
     P[StepMove].ptr=
       reinterpret_cast<void*>(
-          static_cast<MvFunc>(BVMoveStep<IType,IdType,T,DBuffer,GeomType>));
+          static_cast<MvFunc>(BVMoveStep<IType,PmType,T,DBuffer,GeomType>));
   }
 
   template <typename T>
