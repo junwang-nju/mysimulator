@@ -12,8 +12,9 @@ namespace std {
       monomerPropagator<T>& MP, const Vector<UniqueParameter>& GP) {
     assert(MP.size>=monomerPropagatorPBVNumberParameter);
     BuildParameterMonomerPropagatorBase<T>(MP);
-    copy(MP[PBV_HalfDeltaTIvM],
-         GP[HalfDeltaTime].value<T>()*MP[IvMassData].value<T>());
+    copy(MP[PBV_HalfTimeStepIvM],
+         GP[HalfTimeStep].value<T>()*
+         static_cast<UniqueParameter&>(MP[IvMassData]).value<T>());
   }
 
 }

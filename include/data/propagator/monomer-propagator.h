@@ -9,7 +9,7 @@ namespace std {
 
   template <typename T>
   struct monomerPropagator : public Vector<UniqueParameter> {
-    typename monomerPropagator<T> Type;
+    typedef monomerPropagator<T> Type;
     typedef Vector<UniqueParameter>   ParentType;
     
     monomerPropagator() : ParentType() {}
@@ -36,8 +36,9 @@ namespace std {
   template <typename T>
   void copy(monomerPropagator<T>& P, const monomerPropagator<T>& cP) {
     assert(
-        ((P[MoveMode].u==0)&&(P[MonomerMode].u==0)&&(P.size==cP.size))||
-        ((P[MoveMode].u==cP[MoveMode].u)&&
+        ((P[MonomerMoveMode].u==0)&&(P[MonomerMode].u==0)&&(P.size==cP.size))||
+        ((P[MonomerMoveMode].u==cP[MonomerMoveMode].u)&&
+         (P[MonomerEnsembleMode].u==cP[MonomerEnsembleMode].u)&&
          (P[MonomerMode].u==cP[MonomerMode].u)));
     copy(static_cast<Vector<UniqueParameter>&>(P),
          static_cast<const Vector<UniqueParameter>&>(cP));

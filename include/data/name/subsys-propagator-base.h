@@ -5,7 +5,8 @@
 namespace std {
 
   enum subsysPropagatorBaseParameterName {
-    PropagatorMode=0,
+    SubsysMoveMode=0,
+    SubsysEnsembleMode,
     TimeStep,
     HalfTimeStep,
     PropagateTrigger,

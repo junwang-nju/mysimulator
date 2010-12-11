@@ -25,11 +25,11 @@ namespace std {
   };
 
   template <typename T>
-  bool IsAvailable(const subsysPropagator<T>& SP) {
-    bool fg=IsAvailable(static_cast<const Vector<UniqueParameter>&>(SP))&&
-            IsAvailable(merPg);
+  bool IsAvailable(const subsysPropagator<T>& P) {
+    bool fg=IsAvailable(static_cast<const Vector<UniqueParameter>&>(P))&&
+            IsAvailable(P.merPg);
     if(fg)
-      for(unsigned int i=0;i<merPg.size;++i)  flag&&=IsAvailable(merPg[i]);
+      for(unsigned int i=0;i<P.merPg.size;++i)  fg=fg&&IsAvailable(P.merPg[i]);
     return fg; 
   }
 
@@ -55,7 +55,7 @@ namespace std {
     typedef Vector<UniqueParameter> VU;
     release(P);
     refer(P.merPg,rP.merPg);
-    refer(static_cast<VU&>(P),static_cast<const VU&>(cP));
+    refer(static_cast<VU&>(P),static_cast<const VU&>(rP));
   }
 
 }

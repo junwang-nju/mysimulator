@@ -19,7 +19,9 @@ namespace std {
 
 namespace std {
 
-  static const monomerPropagatorParameterSize[monomerPropagatorNumberType]={
+  static
+  const unsigned int
+  monomerPropagatorParameterSize[monomerPropagatorNumberType]={
     monomerPropagatorPEVNumberParameter,
     monomerPropagatorPBVNumberParameter,
     monomerPropagatorPLVNumberParameter

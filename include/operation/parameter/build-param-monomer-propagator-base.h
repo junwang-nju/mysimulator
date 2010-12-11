@@ -8,9 +8,10 @@
 namespace std {
 
   template <typename T>
-  void BuildParameterPropagatorMonomerBase(monomerPropagator<T>& MP) {
-    assert(MP[MassData].value<T>()>1e-8);
-    copy(MP[IvMassData],1./MP[MassData].value<T>());
+  void BuildParameterMonomerPropagatorBase(monomerPropagator<T>& MP) {
+    assert(static_cast<UniqueParameter&>(MP[MassData]).value<T>()>1e-8);
+    copy(MP[IvMassData],
+         1./static_cast<UniqueParameter&>(MP[MassData]).value<T>());
   }
 
 }

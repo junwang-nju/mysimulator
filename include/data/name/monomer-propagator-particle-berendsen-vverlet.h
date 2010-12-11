@@ -7,7 +7,7 @@
 namespace std {
 
   enum monomerPropagatorParticleBerendsenVVerletParameterName {
-    PBV_HalfDeltaTIvM=monomerPropagatorBVNumberParameter,
+    PBV_HalfTimeStepIvM=monomerPropagatorBVNumberParameter,
     monomerPropagatorPBVNumberParameter
   };
 

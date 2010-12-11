@@ -5,7 +5,8 @@
 namespace std {
 
   enum monomerPropagatorBaseParameterName {
-    MoveMode=0,
+    MonomerMoveMode=0,
+    MonomerEnsembleMode,
     MonomerMode,
     KindNumber,
     XVector,

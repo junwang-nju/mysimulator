@@ -4,7 +4,7 @@
 
 #include "data/propagator/monomer-propagator.h" 
 #include "data/name/monomer-propagator-particle-berendsen-vverlet.h"
-#include "data/name/propagator-berendsen-vverlet.h"
+#include "data/name/subsys-propagator-berendsen-vverlet.h"
 
 namespace std {
 
@@ -21,8 +21,10 @@ namespace std {
     Vector<T>& X=*reinterpret_cast<Vector<T>*>(MP[XVector].ptr);
     Vector<T>& V=*reinterpret_cast<Vector<T>*>(MP[VVector].ptr);
     Vector<T>& G=*reinterpret_cast<Vector<T>*>(MP[GVector].ptr);
-    shift(V,-MP[PBV_HalfDeltaTIvM].value<T>(),G);
-    shift(X,GP[DeltaTime].value<T>(),V);
+    shift(V,
+          -static_cast<UniqueParameter&>(MP[PBV_HalfTimeStepIvM]).value<T>(),
+          G);
+    shift(X,GP[TimeStep].value<T>(),V);
   }
 
   template <typename T>
@@ -30,7 +32,9 @@ namespace std {
       monomerPropagator<T>& MP, const Vector<UniqueParameter>& GP) {
     Vector<T>& V=*reinterpret_cast<Vector<T>*>(MP[VVector].ptr);
     Vector<T>& G=*reinterpret_cast<Vector<T>*>(MP[GVector].ptr);
-    shift(V,-MP[PBV_HalfDeltaTIvM].value<T>(),G);
+    shift(V,
+          -static_cast<UniqueParameter&>(MP[PBV_HalfTimeStepIvM]).value<T>(),
+          G);
   }
 
   template <typename T>

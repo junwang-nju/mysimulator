@@ -5,7 +5,7 @@
 namespace std {
 
   enum subsysPropagatorTypeName {
-    ConstantE_VelocityVerlet=0
+    ConstantE_VelocityVerlet=0,
     Berendsen_VelocityVerlet,
     Langevin_VelocityVerlet,
     subsysPropagatorNumberType
@@ -19,7 +19,9 @@ namespace std {
 
 namespace std {
 
-  static const subsysPropagatorParameterSize[subsysPropagatorNumberType]={
+  static
+  const unsigned int
+  subsysPropagatorParameterSize[subsysPropagatorNumberType]={
     subsysPropagatorEVNumberParameter,
     subsysPropagatorBVNumberParameter,
     subsysPropagatorLVNumberParameter

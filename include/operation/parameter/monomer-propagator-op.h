@@ -3,8 +3,9 @@
 #define _Monomer_Propagator_Operation_H_
 
 #include "data/name/monomer-propagator-type.h"
-#include "data/name/subsys-propagator-type.h"
+#include "data/name/move-type.h"
 #include "data/name/monomer-type.h"
+#include "data/name/ensemble-type.h"
 #include "operation/propagate/monomer-move.h"
 #include "operation/parameter/build-param-monomer-propagator.h"
 
@@ -14,13 +15,9 @@ namespace std {
   void assignMoveMode(monomerPropagator<T>& P, const unsigned int& mpgtype) {
     switch(mpgtype) {
       case ParticleConstEVVerlet:
-        P[MoveMode].u=ConstantE_VelocityVerlet;
-        break;
       case ParticleLangevinVVerlet:
-        P[MoveMode].u=Langevin_VelocityVerlet;
-        break;
       case ParticleBerendsenVVerlet:
-        P[MoveMode].u=Berendsen_VelocityVerlet;
+        P[MonomerMoveMode].u=VelocityVerlet;
         break;
       default:
         myError("unknown monomer propagator type");
@@ -41,8 +38,26 @@ namespace std {
   }
 
   template <typename T>
-  void assignBuild(monomerPropagator<T>& P, const unsigned int& mpgtype) {
-    typedef (*BuildFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
+  void assignEnsembleMode(monomerPropagator<T>& P,const unsigned int& mpgtype){
+    switch(mpgtype) {
+      case ParticleConstEVVerlet:
+        P[MonomerEnsembleMode].u=ConstantE;
+        break;
+      case ParticleLangevinVVerlet:
+        P[MonomerEnsembleMode].u=Langevin;
+        break;
+      case ParticleBerendsenVVerlet:
+        P[MonomerEnsembleMode].u=Berendsen;
+        break;
+      default:
+        myError("unknown monomer propagator type");
+    }
+  }
+
+  template <typename T>
+  void assignBuild(monomerPropagator<T>& MP, const unsigned int& mpgtype) {
+    typedef
+    void (*BuildFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
     switch(mpgtype) {
       case ParticleConstEVVerlet:
         MP[monomerPgBuild].ptr=
@@ -66,7 +81,8 @@ namespace std {
 
   template <typename T>
   void assignMove(monomerPropagator<T>& P, const unsigned int& mpgtype) {
-    typedef (*MoveFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
+    typedef
+    void (*MoveFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
     switch(mpgtype) {
       case ParticleConstEVVerlet:
         P[EV_MoveBeforeG].ptr=
@@ -82,13 +98,13 @@ namespace std {
         break;
       case ParticleBerendsenVVerlet:
         P[BV_MovePreProcess].ptr=
-          reinterpret_cast<void*>(static_cast<>(PBVMove_PreProcess));
+          reinterpret_cast<void*>(static_cast<MoveFunc>(PBVMove_PreProcess));
         P[BV_MoveBeforeG].ptr=
-          reinterpret_cast<void*>(static_cast<>(PBVMove_BeforeG));
+          reinterpret_cast<void*>(static_cast<MoveFunc>(PBVMove_BeforeG));
         P[BV_MoveAfterG].ptr=
-          reinterpret_cast<void*>(static_cast<>(PBVMove_AfterG));
+          reinterpret_cast<void*>(static_cast<MoveFunc>(PBVMove_AfterG));
         P[BV_MovePostProcess].ptr=
-          reinterpret_cast<void*>(static_cast<>(PBVMove_PostProcess));
+          reinterpret_cast<void*>(static_cast<MoveFunc>(PBVMove_PostProcess));
         break;
       default:
         myError("unknown monomer propagator type");
@@ -102,6 +118,7 @@ namespace std {
              monomerPropagatorParameterSize[mpgtype]);
     assignMonomerMode(P,mpgtype);
     assignMoveMode(P,mpgtype);
+    assignEnsembleMode(P,mpgtype);
     assignBuild(P,mpgtype);
     assignMove(P,mpgtype);
   }

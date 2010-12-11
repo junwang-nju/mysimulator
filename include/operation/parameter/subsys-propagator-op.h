@@ -2,11 +2,43 @@
 #ifndef _Subsystem_Propagator_Operation_H_
 #define _Subsystem_Propagator_Operation_H_
 
-#include "data/propagator/subsystem-propagator.h"
+#include "data/propagator/subsys-propagator.h"
 #include "data/name/subsys-propagator-type.h"
-#include "data/name/monomer-propagator-type.h"
+#include "operation/propagate/subsys-move.h"
+#include "operation/parameter/build-param-subsys-propagator.h"
+#include "operation/parameter/monomer-propagator-op.h"
 
 namespace std {
+
+  template <typename T>
+  void assignMoveMode(subsysPropagator<T>& SP,const unsigned int& spgtype) {
+    switch(spgtype) {
+      case ConstantE_VelocityVerlet:
+      case Berendsen_VelocityVerlet:
+      case Langevin_VelocityVerlet:
+        SP[SubsysMoveMode].u=VelocityVerlet;
+        break;
+      default:
+        myError("unknown subsystem propagator type");
+    }
+  }
+
+  template <typename T>
+  void assignEnsembleMode(subsysPropagator<T>& SP,const unsigned int& spgtype){
+    switch(spgtype) {
+      case ConstantE_VelocityVerlet:
+        SP[SubsysEnsembleMode].u=ConstantE;
+        break;
+      case Berendsen_VelocityVerlet:
+        SP[SubsysEnsembleMode].u=Berendsen;
+        break;
+      case Langevin_VelocityVerlet:
+        SP[SubsysEnsembleMode].u=Langevin;
+        break;
+      default:
+        myError("unknown subsystem propagator type");
+    }
+  }
 
   template <typename T>
   void assignBuild(subsysPropagator<T>& SP, const unsigned int& spgtype) {
@@ -28,7 +60,28 @@ namespace std {
               static_cast<BuildFunc>(BuildParameterSubsysPropagatorLV));
         break;
       default:
-        myError("unknown subsystem propagator");
+        myError("unknown subsystem propagator type");
+    }
+  }
+
+  template <typename T>
+  void assignMove(subsysPropagator<T>& SP, const unsigned int& spgtype) {
+    typedef void (*MoveFunc)(subsysPropagator<T>&);
+    switch(spgtype) {
+      case ConstantE_VelocityVerlet:
+        SP[VVerletMove_BeforeG].ptr=
+          reinterpret_cast<void*>(static_cast<MoveFunc>(EVMove_BeforeG));
+        break;
+      case Berendsen_VelocityVerlet:
+        SP[VVerletMove_BeforeG].ptr=
+          reinterpret_cast<void*>(static_cast<MoveFunc>(BVMove_BeforeG));
+        break;
+      case Langevin_VelocityVerlet:
+        SP[VVerletMove_BeforeG].ptr=
+          reinterpret_cast<void*>(static_cast<MoveFunc>(LVMove_BeforeG));
+        break;
+      default:
+        myError("unknown subsystem propagator type");
     }
   }
 
@@ -54,7 +107,10 @@ namespace std {
     release(SP);
     allocate(static_cast<Vector<UniqueParameter>&>(SP),
              subsysPropagatorParameterSize[spgtype]);
+    assignMoveMode(SP,spgtype);
+    assignEnsembleMode(SP,spgtype);
     assignBuild(SP,spgtype);
+    assignMove(SP,spgtype);
     allocate(SP.merPg,mtype.size);
     for(unsigned int i=0;i<mtype.size;++i)
       allocate(SP.merPg[i],composeMonomerPropagatorType(spgtype,mtype[i]));

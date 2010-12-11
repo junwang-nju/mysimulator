@@ -14,16 +14,21 @@ namespace std {
     void (*mBuildFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
     BuildParameterSubsysPropagatorBase<T>(SP);
     copy(SP[BV_TemperatureDOF],
-         SP[BV_Temperature].value<T>()*SP[BV_DegreeFreedom].value<T>());
-    copy(SP[BV_HalfDeltaTIvRelaxT],
-         SP[TimeStep].value<T>()/SP[BV_RelaxTime].value<T>());
-    copy(SP[BV_IvHalfDeltaTIvRelaxTPlusOne],
-         1./(SP[BV_HalfDeltaTIvRelaxT].value<T>()+1.));
+         static_cast<UniqueParameter&>(SP[BV_Temperature]).value<T>()*
+         static_cast<UniqueParameter&>(SP[BV_DegreeFreedom]).value<T>());
+    copy(SP[BV_HalfTimeStepIvRelaxT],
+         static_cast<UniqueParameter&>(SP[TimeStep]).value<T>()/
+         static_cast<UniqueParameter&>(SP[BV_RelaxTime]).value<T>());
+    copy(SP[BV_IvHalfTimeStepIvRelaxTPlusOne],
+         1./
+         (static_cast<UniqueParameter&>(SP[BV_HalfTimeStepIvRelaxT]).value<T>()
+          +1.));
     copy(SP[BV_TemperatureDOFIvDKineticEnergy],
-         SP[BV_TemperatureDOF].value<T>()/SP[BV_DualKineticEnergy].value<T>());
+         static_cast<UniqueParameter&>(SP[BV_TemperatureDOF]).value<T>()/
+         static_cast<UniqueParameter&>(SP[BV_DualKineticEnergy]).value<T>());
     for(unsigned int i=0;i<SP.merPg.size;++i)
-      reinterpret_cast<mBuildFunc>(P.merPg[i][monomerPgBuild].ptr)(
-          P.merPg[i],static_cast<const Vector<UniqueParameter>&>(SP));
+      reinterpret_cast<mBuildFunc>(SP.merPg[i][monomerPgBuild].ptr)(
+          SP.merPg[i],static_cast<const Vector<UniqueParameter>&>(SP));
   }
 
 }

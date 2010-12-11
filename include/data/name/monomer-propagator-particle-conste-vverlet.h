@@ -7,7 +7,7 @@
 namespace std {
 
   enum monomerPropagatorParticleConstEVVerletParameterName {
-    PEV_HalfDeltaTIvM=monomerPropagatorEVNumberParameter,
+    PEV_HalfTimeStepIvM=monomerPropagatorEVNumberParameter,
     monomerPropagatorPEVNumberParameter
   };
 
