@@ -3,6 +3,7 @@
 #define _Monomer_Propagator_H_
 
 #include "data/basic/unique-parameter.h"
+#include "data/name/monomer-propagator-base.h"
 
 namespace std {
 
@@ -34,12 +35,18 @@ namespace std {
 
   template <typename T>
   void copy(monomerPropagator<T>& P, const monomerPropagator<T>& cP) {
+    assert(
+        ((P[MoveMode].u==0)&&(P[MonomerMode].u==0)&&(P.size==cP.size))||
+        ((P[MoveMode].u==cP[MoveMode].u)&&
+         (P[MonomerMode].u==cP[MonomerMode].u)));
     copy(static_cast<Vector<UniqueParameter>&>(P),
          static_cast<const Vector<UniqueParameter>&>(cP));
   }
 
   template <typename T>
   void refer(monomerPropagator<T>& P, const monomerPropagator<T>& rP) {
+    assert(IsAvailable(rP));
+    release(P);
     refer(static_cast<Vector<UniqueParameter>&>(P),
           static_cast<const Vector<UniqueParameter>&>(rP));
   }

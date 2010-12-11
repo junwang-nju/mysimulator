@@ -1,6 +1,6 @@
 
-#ifndef _Build_Parameter_Propagator_Langevin_VelocityVerlet_H_
-#define _Build_Parameter_Propagator_Langevin_VelocityVerlet_H_
+#ifndef _Build_Parameter_Subsystem_Propagator_Langevin_VelocityVerlet_H_
+#define _Build_Parameter_Subsystem_Propagator_Langevin_VelocityVerlet_H_
 
 #include "data/name/propagator-type.h"
 #include "data/name/propagator-langevin-vverlet.h"

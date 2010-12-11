@@ -12,7 +12,7 @@ namespace std {
     VVector,
     GVector,
     MskVector,
-    Build,
+    monomerPgBuild,
     MassData,
     IvMassData,
     monomerPropagatorBaseNumberParameter

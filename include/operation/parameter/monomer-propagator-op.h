@@ -3,7 +3,7 @@
 #define _Monomer_Propagator_Operation_H_
 
 #include "data/name/monomer-propagator-type.h"
-#include "data/name/propagator-type.h"
+#include "data/name/subsys-propagator-type.h"
 #include "data/name/monomer-type.h"
 #include "operation/propagate/monomer-move.h"
 #include "operation/parameter/build-param-monomer-propagator.h"
@@ -45,17 +45,17 @@ namespace std {
     typedef (*BuildFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
     switch(mpgtype) {
       case ParticleConstEVVerlet:
-        MP[Build].ptr=
+        MP[monomerPgBuild].ptr=
           reinterpret_cast<void*>(
             static_cast<BuildFunc>(BuildParameterMonomerPropagatorPEV));
         break;
       case ParticleBerendsenVVerlet:
-        MP[Build].ptr=
+        MP[monomerPgBuild].ptr=
           reinterpret_cast<void*>(
             static_cast<BuildFunc>(BuildParameterMonomerPropagatorPBV));
         break;
       case ParticleLangevinVVerlet:
-        MP[Build].ptr=
+        MP[monomerPgBuild].ptr=
           reinterpret_cast<void*>(
             static_cast<BuildFunc>(BuildParameterMonomerPropagatorPLV));
         break;

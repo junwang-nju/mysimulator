@@ -1,10 +1,10 @@
 
-#ifndef _Parameter_Propagator_Base_H_
-#define _Parameter_Propagator_Base_H_
+#ifndef _Parameter_Subsystem_Propagator_Base_H_
+#define _Parameter_Subsystem_Propagator_Base_H_
 
 namespace std {
 
-  enum PropagatorBaseParameterName {
+  enum subsysPropagatorBaseParameterName {
     PropagatorMode=0,
     DeltaTime,
     HalfDeltaTime,
@@ -16,7 +16,7 @@ namespace std {
     CountStepsInOutput,
     StepMove,
     OutputFunc,
-    PropagatorBaseNumberParameter
+    subsysPropagatorBaseNumberParameter
   };
 
 }
