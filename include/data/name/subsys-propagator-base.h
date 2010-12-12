@@ -10,6 +10,7 @@ namespace std {
     TimeStep,
     HalfTimeStep,
     PropagateTrigger,
+    PropagateTriggerStep,
     subsysPgBuild,
     subsysPropagatorBaseNumberParameter
   };

@@ -3,7 +3,7 @@
 #define _Monomer_Propagator_Operation_H_
 
 #include "data/name/monomer-propagator-type.h"
-#include "data/name/move-type.h"
+#include "data/name/propagator-type.h"
 #include "data/name/monomer-type.h"
 #include "data/name/ensemble-type.h"
 #include "operation/propagate/monomer-move.h"

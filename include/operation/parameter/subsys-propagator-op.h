@@ -71,14 +71,20 @@ namespace std {
       case ConstantE_VelocityVerlet:
         SP[VVerletMove_BeforeG].ptr=
           reinterpret_cast<void*>(static_cast<MoveFunc>(EVMove_BeforeG));
+        SP[VVerletMove_AfterG].ptr=
+          reinterpret_cast<void*>(static_cast<MoveFunc>(EVMove_AfterG));
         break;
       case Berendsen_VelocityVerlet:
         SP[VVerletMove_BeforeG].ptr=
           reinterpret_cast<void*>(static_cast<MoveFunc>(BVMove_BeforeG));
+        SP[VVerletMove_AfterG].ptr=
+          reinterpret_cast<void*>(static_cast<MoveFunc>(BVMove_AfterG));
         break;
       case Langevin_VelocityVerlet:
         SP[VVerletMove_BeforeG].ptr=
           reinterpret_cast<void*>(static_cast<MoveFunc>(LVMove_BeforeG));
+        SP[VVerletMove_AfterG].ptr=
+          reinterpret_cast<void*>(static_cast<MoveFunc>(LVMove_AfterG));
         break;
       default:
         myError("unknown subsystem propagator type");
