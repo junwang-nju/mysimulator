@@ -162,8 +162,8 @@ target_link_libraries (test-monomer-propagator-particle-berendsen-vverlet.run bl
 add_executable (test-monomer-propagator-particle-langevin-vverlet.run test-monomer-propagator-particle-langevin-vverlet.cxx)
 target_link_libraries (test-monomer-propagator-particle-langevin-vverlet.run blas)
 
-add_executable (test-propagator.run test-propagator.cxx)
-target_link_libraries (test-propagator.run blas)
+add_executable (test-propagator-vverlet.run test-propagator-vverlet.cxx)
+target_link_libraries (test-propagator-vverlet.run blas)
 
 add_executable (test-propagator-op.run test-propagator-op.cxx)
 target_link_libraries (test-propagator-op.run blas)

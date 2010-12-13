@@ -34,7 +34,7 @@ namespace std {
   }
 
   template <typename T>
-  void release(const subsysPropagator<T>& SP) {
+  void release(subsysPropagator<T>& SP) {
     release(SP.merPg);
     release(static_cast<Vector<UniqueParameter>&>(SP));
   }

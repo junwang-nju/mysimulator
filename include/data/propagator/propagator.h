@@ -39,10 +39,10 @@ namespace std {
   template <typename T>
   void release(Propagator<T>& P) {
     release(P.sysPg);
-    releasr(P.X);
-    releasr(P.V);
-    releasr(P.G);
-    releasr(P.Msk);
+    release(P.X);
+    release(P.V);
+    release(P.G);
+    release(P.Msk);
     release(static_cast<Vector<UniqueParameter>&>(P));
   }
 
