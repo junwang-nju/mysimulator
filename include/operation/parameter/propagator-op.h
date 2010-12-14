@@ -52,6 +52,33 @@ namespace std {
                           mertype[i]);
   }
 
+  template <typename T>
+  void mapData(Propagator<T>& P, const Vector<unsigned int>* id) {
+    for(unsigned int i=0;i<P.sysPg.size;++i)
+      for(unsigned int k=0;k<P.sysPg[i].merPg.size;++k) {
+        P.sysPg[i].merPg[k][XVector].ptr=
+          reinterpret_cast<void*>(&(P.X[id[i][k]]));
+        P.sysPg[i].merPg[k][VVector].ptr=
+          reinterpret_cast<void*>(&(P.V[id[i][k]]));
+        P.sysPg[i].merPg[k][GVector].ptr=
+          reinterpret_cast<void*>(&(P.G[id[i][k]]));
+        P.sysPg[i].merPg[k][MskVector].ptr=
+          reinterpret_cast<void*>(&(P.Msk[id[i][k]]));
+      }
+  }
+
+  template <typename T>
+  void mapData(Propagator<T>& P, const PropertyList<unsigned int>& id) {
+    assert(P.sysPg.size<=id.nunit);
+    mapData(P,id.structure);
+  }
+
+  template <typename T>
+  void mapData(Propagator<T>& P, const Vector<Vector<unsigned int> >& id) {
+    assert(P.sysPg.size<=id.size);
+    mapData(P,id.data);
+  }
+
 }
 
 #endif
