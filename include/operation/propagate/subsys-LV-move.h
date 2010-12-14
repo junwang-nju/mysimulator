@@ -7,11 +7,8 @@
 
 namespace std {
 
-  template <typename T, typename ParameterType,
-            template<typename,template<typename>class,typename> class IType,
-            template<typename> class DBuffer, typename GeomType>
-  void LVMove_BeforeG(subsysPropagator<T>& SP,
-                      IType<T,DBuffer,GeomType>& F, const ParameterType& pmx){
+  template <typename T>
+  void LVMove_BeforeG(subsysPropagator<T>& SP) {
     typedef
     void (*mMoveFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
     for(unsigned int i=0;i<SP.merPg.size;++i)
@@ -19,11 +16,8 @@ namespace std {
           SP.merPg[i],static_cast<Vector<UniqueParameter>&>(SP));
   }
 
-  template <typename T, typename ParameterType,
-            template<typename,template<typename>class,typename> class IType,
-            template<typename> class DBuffer, typename GeomType>
-  void LVMove_AfterG(subsysPropagator<T>& SP,
-                     IType<T,DBuffer,GeomType>& F, const ParameterType& pmx){
+  template <typename T>
+  void LVMove_AfterG(subsysPropagator<T>& SP) {
     typedef
     void (*mMoveFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
     for(unsigned int i=0;i<SP.merPg.size;++i) {

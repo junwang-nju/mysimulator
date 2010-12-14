@@ -15,7 +15,7 @@ namespace std {
     void (*mBuildFunc)(monomerPropagator<T>&,const Vector<UniqueParameter>&);
     BuildParameterSubsysPropagatorBase<T>(SP);
     for(unsigned int i=0;i<SP.merPg.size;++i)
-      reinterpret_cast<mBuildFunc>(SP[i][monomerPgBuild].ptr)(
+      reinterpret_cast<mBuildFunc>(SP.merPg[i][monomerPgBuild].ptr)(
           SP.merPg[i],static_cast<const Vector<UniqueParameter>&>(SP));
   }
 

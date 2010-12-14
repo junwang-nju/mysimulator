@@ -11,7 +11,7 @@ namespace std {
   void initWithTime(RNG& rg) { init(rg,static_cast<unsigned int>(time(0))); }
 
   template <typename T, typename RNG>
-  void rand(RNG&);
+  const T& rand(RNG&);
 
   template <typename RNG, typename T>
   void fillarray(RNG& rg, T* array, const unsigned int size,

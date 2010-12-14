@@ -95,8 +95,53 @@ namespace std {
     copy(G[dSFMT<LoopFac>::N],lung);
   }
 
-  template <typename T, unsigned int LoopFac>
-  const T& rand(dSFMT<LoopFac>& G) {
+  template <typename T>
+  const T& rand(dSFMT<521>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<1279>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<2203>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<4253>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<11213>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<19937>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<44497>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<86243>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<132049>& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(dSFMT<216091>& G) {
     myError("Prohibit unknown type");
     return static_cast<T>(0);
   }
@@ -111,43 +156,25 @@ namespace std {
   }
 
   template <>
-  const unsigned int& rand<unsigned int,521>(dSFMT<521>& G){ return irand(G); }
+  const unsigned int& rand<unsigned int>(dSFMT<521>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,1279>(dSFMT<1279>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<1279>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,2203>(dSFMT<2203>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<2203>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,4253>(dSFMT<4253>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<4253>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,11213>(dSFMT<11213>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<11213>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,19937>(dSFMT<19937>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<19937>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,44497>(dSFMT<44497>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<44497>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,86243>(dSFMT<86243>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<86243>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,132049>(dSFMT<132049>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<132049>& G){ return irand(G); }
   template <>
-  const unsigned int& rand<unsigned int,216091>(dSFMT<216091>& G){
-    return irand(G);
-  }
+  const unsigned int& rand<unsigned int>(dSFMT<216091>& G){ return irand(G); }
 
   template <unsigned int LoopFac>
   const double& drand(dSFMT<LoopFac>& G) {
@@ -156,25 +183,25 @@ namespace std {
   }
 
   template <>
-  const double& rand<double,521>(dSFMT<521>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<521>& G) { return drand(G); }
   template <>
-  const double& rand<double,1279>(dSFMT<1279>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<1279>& G) { return drand(G); }
   template <>
-  const double& rand<double,2203>(dSFMT<2203>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<2203>& G) { return drand(G); }
   template <>
-  const double& rand<double,4253>(dSFMT<4253>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<4253>& G) { return drand(G); }
   template <>
-  const double& rand<double,11213>(dSFMT<11213>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<11213>& G) { return drand(G); }
   template <>
-  const double& rand<double,19937>(dSFMT<19937>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<19937>& G) { return drand(G); }
   template <>
-  const double& rand<double,44497>(dSFMT<44497>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<44497>& G) { return drand(G); }
   template <>
-  const double& rand<double,86243>(dSFMT<86243>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<86243>& G) { return drand(G); }
   template <>
-  const double& rand<double,132049>(dSFMT<132049>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<132049>& G) { return drand(G); }
   template <>
-  const double& rand<double,216091>(dSFMT<216091>& G) { return drand(G); }
+  const double& rand<double>(dSFMT<216091>& G) { return drand(G); }
 
   template <unsigned int LoopFac>
   const double& doubleClose1Open2(dSFMT<LoopFac>& G) {

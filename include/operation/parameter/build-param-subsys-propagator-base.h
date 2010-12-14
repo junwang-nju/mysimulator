@@ -11,7 +11,7 @@ namespace std {
   void BuildParameterSubsysPropagatorBase(subsysPropagator<T>& SP) {
     copy(SP[HalfTimeStep],
          0.5*static_cast<UniqueParameter&>(SP[TimeStep]).value<T>());
-    SP[PropagateTrigger].u=SP[PropagateTriggerStep];
+    SP[PropagateTrigger].u=SP[PropagateTriggerStep].u;
   }
 
 }

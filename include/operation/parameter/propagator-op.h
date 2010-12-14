@@ -4,6 +4,7 @@
 
 #include "data/propagator/propagator.h"
 #include "operation/parameter/subsys-propagator-op.h"
+#include "operation/propagate/vverlet-move.h"
 
 namespace std {
 
@@ -31,6 +32,7 @@ namespace std {
       else if(ensembletype==Langevin)   return Langevin_VelocityVerlet;
       else myError("unknown ensemble type");
     } else myError("unknown propagator type");
+    return 0;
   }
 
   template <typename ParameterType,
