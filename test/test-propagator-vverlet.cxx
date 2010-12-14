@@ -17,6 +17,10 @@ int main() {
   copy(mtype,ParticleType);
   allocate<Vector<InteractionParameterUnit>,ListInteraction,
            DistanceBufferSimple,FreeSpace>(P,VelocityVerlet,enstype,mtype);
+  
+  P[StartTime].d=100.;
+  P[TotalTime].d=10.;
+  P[OutputInterval].d=0.1;
   return 1;
 }
 

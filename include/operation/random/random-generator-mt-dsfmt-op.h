@@ -307,25 +307,26 @@ namespace std {
   }
 
   template <unsigned int LoopFac>
-  void fillarray(dSFMT<LoopFac>& G, double* array, const unsigned int size) {
+  void fillarrayFast(dSFMT<LoopFac>& G,
+                     double* array, const unsigned int size) {
     FillArrayImpl(G,array,size,ConvertClose0Open1);
   }
 
   template <unsigned int LoopFac>
-  void fillarrayClose1Open2(dSFMT<LoopFac>& G,
-                            double* array, const unsigned int size) {
+  void fillarrayClose1Open2Fast(dSFMT<LoopFac>& G,
+                                double* array, const unsigned int size) {
     FillArrayImpl(G,array,size,ConvertClose1Open2);
   }
 
   template <unsigned int LoopFac>
-  void fillarrayOpen0Close1(dSFMT<LoopFac>& G,
-                            double* array, const unsigned int size) {
+  void fillarrayOpen0Close1Fast(dSFMT<LoopFac>& G,
+                                double* array, const unsigned int size) {
     FillArrayImpl(G,array,size,ConvertOpen0Close1);
   }
 
   template <unsigned int LoopFac>
-  void fillarrayOpen0Open1(dSFMT<LoopFac>& G,
-                            double* array, const unsigned int size) {
+  void fillarrayOpen0Open1Fast(dSFMT<LoopFac>& G,
+                               double* array, const unsigned int size) {
     FillArrayImpl(G,array,size,ConvertOpen0Open1);
   }
 

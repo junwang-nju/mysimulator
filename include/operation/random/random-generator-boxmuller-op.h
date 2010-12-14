@@ -3,6 +3,9 @@
 #define _Random_Generator_BoxMuller_Operation_H_
 
 #include "data/random/random-generator-boxmuller.h"
+#include "operation/random/random-generator-mt-standard-op.h"
+#include "operation/random/random-generator-mt-sfmt-op.h"
+#include "operation/random/random-generator-mt-dsfmt-op.h"
 
 namespace std {
 
@@ -13,19 +16,111 @@ namespace std {
     *(G.isSecond)=false;
   }
 
-  template <typename T, typename UniformRNG>
-  const T& rand(BoxMuller<UniformRNG>& G) {
+  template <typename T>
+  const T& rand(BoxMuller<MT_Standard>& G) {
     myError("Prohibit unknown type");
     return static_cast<T>(0);
   }
-
-}
-
-#include "operation/random/random-generator-mt-standard-op.h"
-#include "operation/random/random-generator-mt-sfmt-op.h"
-#include "operation/random/random-generator-mt-dsfmt-op.h"
-
-namespace std {
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<607> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<1279> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<11213> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<19937> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<132049> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<216091> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<2281> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<4253> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<44497> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<SFMT<86243> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<521> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<1279> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<2203> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<4253> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<11213> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<19937> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<44497> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<86243> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<132049> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
+  template <typename T>
+  const T& rand(BoxMuller<dSFMT<216091> >& G) {
+    myError("Prohibit unknown type");
+    return static_cast<T>(0);
+  }
 
   template <typename UniformRNG>
   const double& drand(BoxMuller<UniformRNG>& G) {
@@ -44,89 +139,47 @@ namespace std {
   }
 
   template <>
-  const double& rand<double,MT_Standard>(BoxMuller<MT_Standard>& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<MT_Standard>& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<607> >(BoxMuller<SFMT<607> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<607> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<1279> >(BoxMuller<SFMT<1279> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<1279> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<11213> >(BoxMuller<SFMT<11213> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<11213> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<19937> >(BoxMuller<SFMT<19937> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<19937> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<132049> >(BoxMuller<SFMT<132049> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<132049> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<216091> >(BoxMuller<SFMT<216091> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<216091> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<2281> >(BoxMuller<SFMT<2281> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<2281> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<4253> >(BoxMuller<SFMT<4253> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<4253> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<44497> >(BoxMuller<SFMT<44497> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<44497> >& G) { return drand(G); }
   template <>
-  const double& rand<double,SFMT<86243> >(BoxMuller<SFMT<86243> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<SFMT<86243> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<521> >(BoxMuller<dSFMT<521> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<521> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<1279> >(BoxMuller<dSFMT<1279> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<1279> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<2203> >(BoxMuller<dSFMT<2203> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<2203> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<4253> >(BoxMuller<dSFMT<4253> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<4253> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<11213> >(BoxMuller<dSFMT<11213> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<11213> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<19937> >(BoxMuller<dSFMT<19937> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<19937> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<44497> >(BoxMuller<dSFMT<44497> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<44497> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<86243> >(BoxMuller<dSFMT<86243> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<86243> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<132049> >(BoxMuller<dSFMT<132049> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<132049> >& G) { return drand(G); }
   template <>
-  const double& rand<double,dSFMT<216091> >(BoxMuller<dSFMT<216091> >& G) {
-    return drand(G);
-  }
+  const double& rand<double>(BoxMuller<dSFMT<216091> >& G) { return drand(G); }
 
 }
 
