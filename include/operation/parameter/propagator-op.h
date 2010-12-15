@@ -79,6 +79,15 @@ namespace std {
     mapData(P,id.data);
   }
 
+  template <typename ParameterType,
+            template <typename,template<typename>class,typename> class IType,
+            template <typename> class DBuffer, typename GeomType, typename T>
+  void assignOutput(Propagator<T>& P,
+                    void (*OFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
+                                  const ParameterType&,ostream&)) {
+    P[PgOutput].ptr=reinterpret_cast<void*>(OFunc);
+  }
+
 }
 
 #endif
