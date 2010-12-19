@@ -27,6 +27,8 @@ namespace std {
 
     unsigned int& iTag() { return tag[0]; }
     const unsigned int& iTag() const { return tag[0]; }
+    unsigned int& enabled() { return tag[1]; }
+    const unsigned int& enabled() const { return tag[1]; }
   };
 
   bool IsAvailable(const InteractionParameterUnit& P) {
@@ -65,8 +67,9 @@ namespace std {
                      const unsigned int& itag, const unsigned int nunit=0) {
     assert((!IsAvailable(P.tag))||(P.iTag()==itag));
     if(!IsAvailable(P.tag)) {
-      allocate(P.tag,1);
+      allocate(P.tag,2);
       P.iTag()=itag;
+      P.enabled()=1;
     }
     switch(itag) {
       case Harmonic:
@@ -122,7 +125,7 @@ namespace std {
                const InteractionParameterUnit& cP) {
     imprint(P.prm,cP.prm);
     imprint(P.idx,cP.idx);
-    allocate(P.tag,1);
+    allocate(P.tag,2);
     P.iTag()=cP.iTag();
   }
 

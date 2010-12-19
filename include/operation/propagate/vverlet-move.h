@@ -19,7 +19,7 @@ namespace std {
       if(P[NowStepID].u==P.sysPg[i][PropagateTrigger].u)
         reinterpret_cast<sMoveFunc>(P.sysPg[i][VVerletMove_BeforeG].ptr)(
             P.sysPg[i]);
-    F.B.renew(P.X.structure);
+    F.B.renew();
     for(unsigned int i=0;i<P.G.nunit;++i)   copy(P.G[i],0.);
     CalcInteraction(F,P.X,pmx,P.G);
     for(unsigned int i=0;i<P.sysPg.size;++i)

@@ -1,0 +1,79 @@
+
+#ifndef _Parameter_Neighbor_List_H_
+#define _Parameter_Neighbor_List_H_
+
+#include "data/interaction/parameter-unit.h"
+#include "data/basic/property-list.h"
+
+namespace std {
+
+  template <template <typename> class ParameterShapeType, typename T>
+  struct ParameterWNeighborList
+      : public ParameterShapeType<InteractionParameterUnit> {
+    Vector<UniqueParameter> property;
+    ParameterShapeType<InteractionParameterUnit> possibleParameter;
+    ParameterShapeType<unsigned int> ParameterID;
+    PropertyList<T> XBackup;
+
+    typedef ParameterWNeighborList<ParameterShapeType,T>  Type;
+    typedef ParameterShapeType<InteractionParameterUnit>  ParentType;
+
+    ParameterWNeighborList()
+      : ParentType(), property(), possibleParameter(), XBackup() {}
+    ParameterWNeighborList(const Type& P) {
+      myError("Cannot create Parameter with Neighbor-List");
+    }
+    Type& operator=(const Type& P) {
+      myError("Cannot copy Parameter with Neighbor-List");
+      return *this;
+    }
+    ~ParameterWNeighborList() { release(*this); }
+
+    T& Cutoff() { return property[0]; }
+    const T& Cutoff() const { return property[0]; }
+    T& BufferDistance() { return property[1]; }
+    const T& BufferDistance() const { return property[1]; }
+    T& ListRadius() { return property[2]; }
+    const T& ListRadius() const { return property[2]; }
+  };
+
+  template <template <typename> class ParameterShapeType, typename T>
+  bool IsAvailable(const ParameterWNeighborList<ParameterShapeType,T>& P) {
+    return IsAvailable(static_cast<const ParameterType&>(P))&&
+           IsAvailable(P.property)&&IsAvailable(P.possibleParameter)&&
+           IsAvailable(P.XBackup);
+  }
+
+  template <template <typename> class ParameterShapeType, typename T>
+  void release(ParameterWNeighborList<ParameterShapeType,T>& P) {
+    release(P.property);
+    release(P.possibleParameter);
+    release(P.XBackup);
+    release(static_cast<ParameterType&>(P));
+  }
+
+  template <template <typename> class ParameterShapeType, typename T>
+  void copy(ParameterWNeighborList<ParameterShapeType,T>& P,
+            const ParameterWNeighborList<ParameterType,T>& cP) {
+    assert(IsAvailable(P));
+    assert(IsAvailable(cP));
+    copy(P.possibleParameter,cP.possibleParameter);
+    copy(P.property,cP.property);
+    copy(P.XBackup,cP.XBackup);
+  }
+
+  template <template <typename> class ParameterShapeType, typename T>
+  void refer(ParameterWNeighborList<ParameterShapeType,T>& P,
+             const ParameterWNeighborList<ParameterType,T>& rP) {
+    assert(IsAvailable(rP));
+    release(P);
+    refer(P.possibleParameter,rP.possibleParameter);
+    refer(P.property,rP.property);
+    refer(P.XBackup,rP.XBackup);
+    refer(static_cast<ParameterType&>(P),static_cast<const ParameterType&>(rP));
+  }
+
+}
+
+#endif
+

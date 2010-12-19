@@ -24,7 +24,7 @@ namespace std {
     }
     ~DistanceBufferPairStorage() { release(*this); }
 
-    void renew(const Vector<T>* X) { DsqMat.refresh(); }
+    void renew() { DsqMat.refresh(); }
 
   };
 

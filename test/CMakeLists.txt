@@ -42,9 +42,6 @@ target_link_libraries (test-distance-calc.run blas)
 add_executable (test-periodic-box.run test-periodic-box.cxx)
 target_link_libraries (test-periodic-box.run blas)
 
-add_executable (test-distance-evaluate-base.run test-distance-evaluate-base.cxx)
-target_link_libraries (test-distance-evaluate-base.run blas)
-
 add_executable (test-distance-calc-simplebuffer.run test-distance-calc-simplebuffer.cxx)
 target_link_libraries (test-distance-calc-simplebuffer.run blas)
 
@@ -192,9 +189,6 @@ target_link_libraries (test-interaction-centroid-harmonic.run blas)
 add_executable (test-interaction-pairwise-fene.run test-interaction-pairwise-fene.cxx)
 target_link_libraries (test-interaction-pairwise-fene.run blas)
 
-add_executable (test-interaction-angle-base.run test-interaction-angle-base.cxx)
-target_link_libraries (test-interaction-angle-base.run blas)
-
 add_executable (test-interaction-angle-harmonic.run test-interaction-angle-harmonic.cxx)
 target_link_libraries (test-interaction-angle-harmonic.run blas)
 
@@ -207,8 +201,8 @@ target_link_libraries (test-interaction-dihedral-periodic.run blas)
 add_executable (test-interaction-wall-base.run test-interaction-wall-base.cxx)
 target_link_libraries (test-interaction-wall-base.run blas)
 
-add_executable (test-distance-evaluate-wall.run test-distance-evaluate-wall.cxx)
-target_link_libraries (test-distance-evaluate-wall.run blas)
+#add_executable (test-distance-evaluate-wall.run test-distance-evaluate-wall.cxx)
+#target_link_libraries (test-distance-evaluate-wall.run blas)
 
 add_executable (test-interaction-wall-corelj612.run test-interaction-wall-corelj612.cxx)
 target_link_libraries (test-interaction-wall-corelj612.run blas)
@@ -221,9 +215,6 @@ target_link_libraries (test-pdb-data.run blas)
 
 add_executable (test-lapack.run test-lapack.cxx)
 target_link_libraries (test-lapack.run lapack)
-
-add_executable (test-double-vector.run test-double-vector.cxx)
-target_link_libraries (test-double-vector.run blas)
 
 add_executable (test-interaction-calc.run test-interaction-calc.cxx)
 target_link_libraries (test-interaction-calc.run blas)
