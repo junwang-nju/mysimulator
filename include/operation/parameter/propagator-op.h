@@ -5,7 +5,7 @@
 #include "data/propagator/propagator.h"
 #include "operation/parameter/subsys-propagator-op.h"
 #include "operation/propagate/vverlet-move.h"
-#include "data/derived/dual-vector.h'
+#include "data/derived/dual-vector.h"
 
 namespace std {
 
@@ -14,7 +14,7 @@ namespace std {
             template <typename> class DBuffer, typename GeomType, typename T>
   void assignMove(Propagator<T>& P, const unsigned int& pgtype) {
     typedef void (*MoveFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
-                             const ParameterType&);
+                             ParameterType&);
     switch(pgtype) {
       case VelocityVerlet:
         P[PgStep].ptr=

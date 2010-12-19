@@ -7,6 +7,7 @@
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
 #include "operation/propagate/run.h"
+#include "operation/parameter/interaction-parameter-regular-op.h"
 using namespace std;
 
 template <typename T, typename ParameterType,
@@ -29,17 +30,18 @@ void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
 int main() {
   Propagator<double> P;
   Vector<unsigned int> enstype;
-  Vector<Vector<unsigned int> > mtype;
+  DualVector<unsigned int> mtype;
+  Vector<unsigned int> sz;
   allocate(enstype,1);
-  allocate(mtype,1);
-  allocate(mtype[0],4);
+  allocate(sz,1);
+  copy(sz,4);
+  allocate(mtype,sz);
   enstype[0]=ConstantE;
-  copy(mtype,ParticleType);
+  copy(mtype[0],ParticleType);
   allocate<Vector<InteractionParameterUnit>,ListInteraction,
            DistanceBufferSimple,FreeSpace>(P,VelocityVerlet,enstype,mtype);
 
   PropertyList<double> X,V,G,dMsk;
-  Vector<unsigned int> sz;
   allocate(sz,4);
   copy(sz,2);
   allocate(X,sz);

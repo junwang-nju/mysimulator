@@ -22,7 +22,7 @@ namespace std {
 
   template <typename T>
   void allocate(DualVector<T>& V, const unsigned int* sz, const unsigned int n){
-    allocate(V,n);
+    allocate(static_cast<Vector<Vector<T> >&>(V),n);
     for(unsigned int i=0;i<n;++i)
       if(sz[i]>0) allocate(V[i],sz[i]);
   }
