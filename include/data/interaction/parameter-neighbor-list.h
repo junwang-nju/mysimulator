@@ -29,12 +29,12 @@ namespace std {
     }
     ~ParameterWNeighborList() { release(*this); }
 
-    T& Cutoff() { return property[0]; }
-    const T& Cutoff() const { return property[0]; }
-    T& BufferDistance() { return property[1]; }
-    const T& BufferDistance() const { return property[1]; }
-    T& ListRadius() { return property[2]; }
-    const T& ListRadius() const { return property[2]; }
+    T& Cutoff() { return property[0].value<T>(); }
+    const T& Cutoff() const { return property[0].value<T>(); }
+    T& BufferDistance() { return property[1].value<T>(); }
+    const T& BufferDistance() const { return property[1].value<T>(); }
+    T& ListRadiusSQ() { return property[2].value<T>(); }
+    const T& ListRadiusSQ() const { return property[2].value<T>(); }
   };
 
   template <template <typename> class ParameterShapeType, typename T>
