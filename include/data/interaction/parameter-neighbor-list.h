@@ -39,7 +39,8 @@ namespace std {
 
   template <template <typename> class ParameterShapeType, typename T>
   bool IsAvailable(const ParameterWNeighborList<ParameterShapeType,T>& P) {
-    return IsAvailable(static_cast<const ParameterType&>(P))&&
+    typedef ParameterShapeType<InteractionParameterUnit>  Parent;
+    return IsAvailable(static_cast<const Parent&>(P))&&
            IsAvailable(P.property)&&IsAvailable(P.possibleParameter)&&
            IsAvailable(P.XBackup);
   }
@@ -49,12 +50,13 @@ namespace std {
     release(P.property);
     release(P.possibleParameter);
     release(P.XBackup);
-    release(static_cast<ParameterType&>(P));
+    typedef ParameterShapeType<InteractionParameterUnit>  Parent;
+    release(static_cast<Parent&>(P));
   }
 
   template <template <typename> class ParameterShapeType, typename T>
   void copy(ParameterWNeighborList<ParameterShapeType,T>& P,
-            const ParameterWNeighborList<ParameterType,T>& cP) {
+            const ParameterWNeighborList<ParameterShapeType,T>& cP) {
     assert(IsAvailable(P));
     assert(IsAvailable(cP));
     copy(P.possibleParameter,cP.possibleParameter);
@@ -64,13 +66,14 @@ namespace std {
 
   template <template <typename> class ParameterShapeType, typename T>
   void refer(ParameterWNeighborList<ParameterShapeType,T>& P,
-             const ParameterWNeighborList<ParameterType,T>& rP) {
+             const ParameterWNeighborList<ParameterShapeType,T>& rP) {
     assert(IsAvailable(rP));
     release(P);
     refer(P.possibleParameter,rP.possibleParameter);
     refer(P.property,rP.property);
     refer(P.XBackup,rP.XBackup);
-    refer(static_cast<ParameterType&>(P),static_cast<const ParameterType&>(rP));
+    typedef ParameterShapeType<InteractionParameterUnit>  Parent;
+    refer(static_cast<Parent&>(P),static_cast<const Parent&>(rP));
   }
 
 }

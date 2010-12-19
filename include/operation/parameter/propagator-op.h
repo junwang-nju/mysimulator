@@ -5,6 +5,7 @@
 #include "data/propagator/propagator.h"
 #include "operation/parameter/subsys-propagator-op.h"
 #include "operation/propagate/vverlet-move.h"
+#include "data/derived/dual-vector.h'
 
 namespace std {
 
@@ -40,7 +41,7 @@ namespace std {
             template <typename> class DBuffer, typename GeomType, typename T>
   void allocate(Propagator<T>& P, const unsigned int& pgtype,
                 const Vector<unsigned int>& ensembletype,
-                const Vector<Vector<unsigned int> >& mertype) {
+                const DualVector<unsigned int>& mertype) {
     assert(ensembletype.size==mertype.size);
     allocate(static_cast<Vector<UniqueParameter>&>(P),
              PropagatorParameterSize[pgtype]);
@@ -74,7 +75,7 @@ namespace std {
   }
 
   template <typename T>
-  void mapData(Propagator<T>& P, const Vector<Vector<unsigned int> >& id) {
+  void mapData(Propagator<T>& P, const DualVector<unsigned int>& id) {
     assert(P.sysPg.size<=id.size);
     mapData(P,id.data);
   }

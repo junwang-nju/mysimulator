@@ -219,6 +219,9 @@ target_link_libraries (test-lapack.run lapack)
 add_executable (test-interaction-calc.run test-interaction-calc.cxx)
 target_link_libraries (test-interaction-calc.run blas)
 
+add_executable (test-neighbor-list.run test-neighbor-list.cxx)
+target_link_libraries (test-neighbor-list.run blas)
+
 ########################
 #add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 #target_link_libraries (test-pdb-data-structure-op.run Base blas)

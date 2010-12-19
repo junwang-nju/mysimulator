@@ -27,8 +27,6 @@ namespace std {
 
     unsigned int& iTag() { return tag[0]; }
     const unsigned int& iTag() const { return tag[0]; }
-    unsigned int& enabled() { return tag[1]; }
-    const unsigned int& enabled() const { return tag[1]; }
   };
 
   bool IsAvailable(const InteractionParameterUnit& P) {
@@ -67,9 +65,8 @@ namespace std {
                      const unsigned int& itag, const unsigned int nunit=0) {
     assert((!IsAvailable(P.tag))||(P.iTag()==itag));
     if(!IsAvailable(P.tag)) {
-      allocate(P.tag,2);
+      allocate(P.tag,1);
       P.iTag()=itag;
-      P.enabled()=1;
     }
     switch(itag) {
       case Harmonic:
@@ -125,7 +122,7 @@ namespace std {
                const InteractionParameterUnit& cP) {
     imprint(P.prm,cP.prm);
     imprint(P.idx,cP.idx);
-    allocate(P.tag,2);
+    allocate(P.tag,1);
     P.iTag()=cP.iTag();
   }
 
@@ -135,9 +132,15 @@ namespace std {
     for(unsigned int i=0;i<P.size;++i)  imprint(P[i],cP[i]);
   }
 
-  void imprint(Vector<Vector<InteractionParameterUnit> >& P,
-               const Vector<Vector<InteractionParameterUnit> >& cP) {
-    allocate(P,cP.size);
+}
+
+#include "data/derived/dual-vector.h"
+
+namespace std {
+
+  void imprint(DualVector<InteractionParameterUnit>& P,
+               const DualVector<InteractionParameterUnit>& cP) {
+    allocate<Vector<InteractionParameterUnit> >(P,cP.size);
     for(unsigned int i=0;i<P.size;++i)  allocate(P[i],cP[i].size);
     for(unsigned int i=0;i<P.size;++i)
     for(unsigned int j=0;j<P[i].size;++j)

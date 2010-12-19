@@ -1,10 +1,11 @@
 
-#ifndef _Parameter_Neighbor_List_Operation_H_
-#define _Parameter_Neighbor_List_Operation_H_
+#ifndef _Interaction_Parameter_Neighbor_List_Operation_H_
+#define _Interaction_Parameter_Neighbor_List_Operation_H_
 
 #include "data/interaction/parameter-neighbor-list.h"
 #include "data/interaction/parameter-unit.h" 
 #include "operation/geometry/distance-calc.h"
+#include "data/derived/dual-vector.h"
 
 namespace std {
 
@@ -45,9 +46,9 @@ namespace std {
       imprint(V,X[0]);
       for(unsigned int i=0;i<P.possibleParameter.size;++i) {
         if(P.possibleParameter[i].idx.size>2)   continue;
-        tmdist=Distance(X[P.possibleParameter[i].idx[0]],
-                        X[P.possibleParameter[i].idx[1]],V,Geo);
-        if(tmdist<P.ListRadius())   P.ParameterID[nP++]=i;
+        if(P.ListRadius()>Distance(X[P.possibleParameter[i].idx[0]],
+                                   X[P.possibleParameter[i].idx[1]],V,Geo))
+          P.ParameterID[nP++]=i;
       }
       allocate(static_cast<Vector<InteractionParameterUnit>&>(P),nP);
       for(unsigned int i=0;i<nP;++i)
@@ -57,25 +58,47 @@ namespace std {
   }
 
   template <typename T, typename GeomType>
-  void update(
-      ParameterWNeighborList<PropertyList,T>& P,
-      Vector<T>* X, const GeomType& Geo) {
+  void update(ParameterWNeighborList<PropertyList,T>& P,
+              Vector<T>* X, const GeomType& Geo) {
     if(Check(P,X,Geo)) {
       Vector<unsigned int> sz;
       allocate(sz,P.ParameterID.nunit);
       copy(sz,0);
-      T tmdist;
       Vector<T> V;
       imprint(V,X[0]);
       for(unsigned int i=0;i<P.possibleParameter.nunit;++i)
       for(unsigned int k=0;k<P.possibleParameter[i].size;++k){
         if(P.possibleParameter[i][k].idx.size>2)   continue;
-        tmdist=Distance(X[P.possibleParameter[i][k].idx[0]],
-                        X[P.possibleParameter[i][k].idx[1]],V,Geo);
-        if(tmdist<P.ListRadius())   P.ParameterID[i][sz[i]++]=k;
+        if(P.ListRadius()>Distance(X[P.possibleParameter[i][k].idx[0]],
+                                   X[P.possibleParameter[i][k].idx[1]],V,Geo))
+          P.ParameterID[i][sz[i]++]=k;
       }
-      allocate(static_cast<Vector<InteractionParameterUnit>&>(P),sz);
+      allocate(static_cast<PropertyList<InteractionParameterUnit>&>(P),sz);
       for(unsigned int i=0;i<P.nunit;++i)
+      for(unsigned int k=0;k<P[i].size;++k)
+        refer(P[i][k],P.possibleParameter[i][P.ParameterID[i][k]]);
+      for(unsigned int i=0;i<P.XBackup.nunit;++i) copy(P.XBackup[i],X[i]);
+    }
+  }
+
+  template <typename T, typename GeomType>
+  void update(ParameterWNeighborList<DualVector,T>& P,
+              Vector<T>* X, const GeomType& Geo) {
+    if(Check(P,X,Geo)) {
+      Vector<unsigned int> sz;
+      allocate(sz,P.ParameterID.size);
+      copy(sz,0);
+      Vector<T> V;
+      imprint(V,X[0]);
+      for(unsigned int i=0;i<P.possibleParameter.size;++i)
+      for(unsigned int k=0;k<P.possibleParameter[i].size;++k) {
+        if(P.possibleParameter[i][k].idx.size>2)   continue;
+        if(P.ListRadius()>Distance(X[P.possibleParameter[i][k].idx[0]],
+                                   X[P.possibleParameter[i][k].idx[1]],V,Geo))
+          P.ParameterID[i][sz[i]++]=k;
+      }
+      allocate(static_cast<DualVector<InteractionParameterUnit>&>(P),sz);
+      for(unsigned int i=0;i<P.size;++i)
       for(unsigned int k=0;k<P[i].size;++k)
         refer(P[i][k],P.possibleParameter[i][P.ParameterID[i][k]]);
       for(unsigned int i=0;i<P.XBackup.nunit;++i) copy(P.XBackup[i],X[i]);
