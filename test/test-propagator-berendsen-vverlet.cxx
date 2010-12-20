@@ -7,6 +7,7 @@
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
 #include "operation/propagate/run.h"
+#include "operation/parameter/interaction-parameter-regular-op.h"
 using namespace std;
 
 template <typename T, typename ParameterType,

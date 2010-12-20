@@ -138,10 +138,11 @@ namespace std {
 
 namespace std {
 
-  void imprint(DualVector<InteractionParameterUnit>& P,
-               const DualVector<InteractionParameterUnit>& cP) {
+  void imprint(Vector<Vector<InteractionParameterUnit> >& P,
+               const Vector<Vector<InteractionParameterUnit> >& cP) {
     allocate<Vector<InteractionParameterUnit> >(P,cP.size);
-    for(unsigned int i=0;i<P.size;++i)  allocate(P[i],cP[i].size);
+    for(unsigned int i=0;i<P.size;++i)
+      if(cP[i].size>0)  allocate(P[i],cP[i].size);
     for(unsigned int i=0;i<P.size;++i)
     for(unsigned int j=0;j<P[i].size;++j)
       imprint(P[i][j],cP[i][j]);

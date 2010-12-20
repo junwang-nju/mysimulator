@@ -27,14 +27,8 @@ namespace std {
               const Vector<T>* X, const GeomType& Geo) {
   }
 
-}
-
-#include "data/derived/dual-vector.h"
-
-namespace std {
-
   template <typename T, typename GeomType>
-  void update(DualVector<InteractionParameterUnit>& P,
+  void update(Vector<Vector<InteractionParameterUnit> >& P,
               const Vector<T>*X, const GeomType& Geo) {
   }
 

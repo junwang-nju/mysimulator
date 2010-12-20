@@ -31,6 +31,15 @@ namespace std {
   void allocate(DualVector<T>& V, const Vector<unsigned int>& sz) {
     allocate(V,sz.data,sz.size);
   }
+
+  template <typename T>
+  void imprint(Vector<Vector<T> >& V, const Vector<Vector<T> >& cV) {
+    assert(IsAvailable(cV));
+    allocate(V,cV.size);
+    for(unsigned int i=0;i<V.size;++i)
+      if(cV[i].size>0)  allocate(V[i],cV[i].size);
+  }
+
 }
 
 #endif

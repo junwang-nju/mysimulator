@@ -9,6 +9,7 @@
 #include "operation/propagate/run.h"
 #include "data/random/regular.h"
 #include "operation/random/random-generator-boxmuller-op.h"
+#include "operation/parameter/interaction-parameter-regular-op.h"
 using namespace std;
 
 template <typename T, typename ParameterType,
@@ -138,7 +139,7 @@ int main() {
   cout<<"========== G:"<<endl;
   cout<<P.G<<endl;
 
-  P[TotalTime].d=400;
+  P[TotalTime].d=40;
   P[OutputInterval].d=0.001;
   BuildParameterPropagatorVVerlet(P);
   assignOutput(P,OutFunc<double,Vector<InteractionParameterUnit>,

@@ -75,9 +75,6 @@ add_executable (test-random-generator-boxmuller-sse2.run test-random-generator-b
 set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 target_link_libraries (test-random-generator-boxmuller-sse2.run blas)
 
-add_executable (test-interaction-method.run test-interaction-method.cxx)
-target_link_libraries (test-interaction-method.run blas)
-
 add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
 target_link_libraries (test-interaction-pairwise-base.run blas)
 
@@ -114,53 +111,17 @@ target_link_libraries (test-minimizer-buffer-base.run blas)
 add_executable (test-line-minimizer-buffer-base.run test-line-minimizer-buffer-base.cxx)
 target_link_libraries (test-line-minimizer-buffer-base.run blas)
 
-add_executable (test-minimizer-parameter-flat-4propertylist.run test-minimizer-parameter-flat-4propertylist.cxx)
-target_link_libraries (test-minimizer-parameter-flat-4propertylist.run blas)
-
-add_executable (test-minimizer-parameter-hierarchy-4propertylist.run test-minimizer-parameter-hierarchy-4propertylist.cxx)
-target_link_libraries (test-minimizer-parameter-hierarchy-4propertylist.run blas)
-
-add_executable (test-minimizer-func-4propertylist.run test-minimizer-func-4propertylist.cxx)
-target_link_libraries (test-minimizer-func-4propertylist.run blas)
-
 add_executable (test-tracking-line-minimizer-buffer.run test-tracking-line-minimizer-buffer.cxx)
 target_link_libraries (test-tracking-line-minimizer-buffer.run blas)
 
 add_executable (test-steep-minimizer-buffer.run test-steep-minimizer-buffer.cxx)
 target_link_libraries (test-steep-minimizer-buffer.run blas)
 
-add_executable (test-minimizer-steep-4propertylist-op.run test-minimizer-steep-4propertylist-op.cxx)
-target_link_libraries (test-minimizer-steep-4propertylist-op.run blas)
-
 add_executable (test-conjg-minimizer-buffer.run test-conjg-minimizer-buffer.cxx)
 target_link_libraries (test-conjg-minimizer-buffer.run blas)
 
-add_executable (test-minimizer-conjg-4propertylist-op.run test-minimizer-conjg-4propertylist-op.cxx)
-target_link_libraries (test-minimizer-conjg-4propertylist-op.run blas)
-
 add_executable (test-lbfgs-minimizer-buffer.run test-lbfgs-minimizer-buffer.cxx)
 target_link_libraries (test-lbfgs-minimizer-buffer.run blas)
-
-add_executable (test-minimizer-lbfgs-4propertylist-op.run test-minimizer-lbfgs-4propertylist-op.cxx)
-target_link_libraries (test-minimizer-lbfgs-4propertylist-op.run blas)
-
-add_executable (test-monomer-propagator.run test-monomer-propagator.cxx)
-target_link_libraries (test-monomer-propagator.run blas)
-
-add_executable (test-monomer-propagator-op.run test-monomer-propagator-op.cxx)
-target_link_libraries (test-monomer-propagator-op.run blas)
-
-add_executable (test-monomer-propagator-particle-conste-vverlet.run test-monomer-propagator-particle-conste-vverlet.cxx)
-target_link_libraries (test-monomer-propagator-particle-conste-vverlet.run blas)
-
-add_executable (test-monomer-propagator-particle-berendsen-vverlet.run test-monomer-propagator-particle-berendsen-vverlet.cxx)
-target_link_libraries (test-monomer-propagator-particle-berendsen-vverlet.run blas)
-
-add_executable (test-monomer-propagator-particle-langevin-vverlet.run test-monomer-propagator-particle-langevin-vverlet.cxx)
-target_link_libraries (test-monomer-propagator-particle-langevin-vverlet.run blas)
-
-add_executable (test-propagator-op.run test-propagator-op.cxx)
-target_link_libraries (test-propagator-op.run blas)
 
 add_executable (test-propagator-conste-vverlet.run test-propagator-conste-vverlet.cxx)
 target_link_libraries (test-propagator-conste-vverlet.run blas)
@@ -180,11 +141,11 @@ target_link_libraries (test-interaction-core-expand-corelj612.run blas)
 add_executable (test-interaction-core-expand-lj612.run test-interaction-core-expand-lj612.cxx)
 target_link_libraries (test-interaction-core-expand-lj612.run blas)
 
-add_executable (test-interaction-centroid-base.run test-interaction-centroid-base.cxx)
-target_link_libraries (test-interaction-centroid-base.run blas)
+#add_executable (test-interaction-centroid-base.run test-interaction-centroid-base.cxx)
+#target_link_libraries (test-interaction-centroid-base.run blas)
 
-add_executable (test-interaction-centroid-harmonic.run test-interaction-centroid-harmonic.cxx)
-target_link_libraries (test-interaction-centroid-harmonic.run blas)
+#add_executable (test-interaction-centroid-harmonic.run test-interaction-centroid-harmonic.cxx)
+#target_link_libraries (test-interaction-centroid-harmonic.run blas)
 
 add_executable (test-interaction-pairwise-fene.run test-interaction-pairwise-fene.cxx)
 target_link_libraries (test-interaction-pairwise-fene.run blas)
@@ -192,26 +153,23 @@ target_link_libraries (test-interaction-pairwise-fene.run blas)
 add_executable (test-interaction-angle-harmonic.run test-interaction-angle-harmonic.cxx)
 target_link_libraries (test-interaction-angle-harmonic.run blas)
 
-add_executable (test-interaction-dihedral-base.run test-interaction-dihedral-base.cxx)
-target_link_libraries (test-interaction-dihedral-base.run blas)
-
 add_executable (test-interaction-dihedral-periodic.run test-interaction-dihedral-periodic.cxx)
 target_link_libraries (test-interaction-dihedral-periodic.run blas)
 
-add_executable (test-interaction-wall-base.run test-interaction-wall-base.cxx)
-target_link_libraries (test-interaction-wall-base.run blas)
+#add_executable (test-interaction-wall-base.run test-interaction-wall-base.cxx)
+#target_link_libraries (test-interaction-wall-base.run blas)
 
 #add_executable (test-distance-evaluate-wall.run test-distance-evaluate-wall.cxx)
 #target_link_libraries (test-distance-evaluate-wall.run blas)
 
-add_executable (test-interaction-wall-corelj612.run test-interaction-wall-corelj612.cxx)
-target_link_libraries (test-interaction-wall-corelj612.run blas)
+#add_executable (test-interaction-wall-corelj612.run test-interaction-wall-corelj612.cxx)
+#target_link_libraries (test-interaction-wall-corelj612.run blas)
 
-add_executable (test-interaction-wall-lj612cut.run test-interaction-wall-lj612cut.cxx)
-target_link_libraries (test-interaction-wall-lj612cut.run blas)
+#add_executable (test-interaction-wall-lj612cut.run test-interaction-wall-lj612cut.cxx)
+#target_link_libraries (test-interaction-wall-lj612cut.run blas)
 
-add_executable (test-pdb-data.run test-pdb-data.cxx)
-target_link_libraries (test-pdb-data.run blas)
+#add_executable (test-pdb-data.run test-pdb-data.cxx)
+#target_link_libraries (test-pdb-data.run blas)
 
 add_executable (test-lapack.run test-lapack.cxx)
 target_link_libraries (test-lapack.run lapack)

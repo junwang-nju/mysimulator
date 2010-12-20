@@ -26,7 +26,12 @@ void bfunc(const Vector<double>& x, double& e, Vector<double>& g,
   g[0]+=2*prm*x[0];
 }
 
+struct TestDistBuffer {
+  void renew() {}
+};
+
 struct TestInteraction {
+  TestDistBuffer  B;
   double prm;
   void (*EFunc)(const Vector<double>&,double&,const double&);
   void (*GFunc)(const Vector<double>&,Vector<double>&,const double&);

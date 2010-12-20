@@ -41,7 +41,7 @@ namespace std {
             template <typename> class DBuffer, typename GeomType, typename T>
   void allocate(Propagator<T>& P, const unsigned int& pgtype,
                 const Vector<unsigned int>& ensembletype,
-                const DualVector<unsigned int>& mertype) {
+                const Vector<Vector<unsigned int> >& mertype) {
     assert(ensembletype.size==mertype.size);
     allocate(static_cast<Vector<UniqueParameter>&>(P),
              PropagatorParameterSize[pgtype]);

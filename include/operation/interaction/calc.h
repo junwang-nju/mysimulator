@@ -148,7 +148,7 @@ namespace std {
   template <typename T,template <typename> class DistBuffer,typename GeomType>
   void CalcInteraction(
       ListInteraction<T,DistBuffer,GeomType>& F,
-      const Vector<T>* X, const DualVector<InteractionParameterUnit>& P,
+      const Vector<T>* X, const Vector<Vector<InteractionParameterUnit> >& P,
       T& Energy){
     assert(F.size==P.size);
     for(unsigned int i=0;i<P.size;++i)
@@ -160,7 +160,7 @@ namespace std {
   template <typename T,template <typename> class DistBuffer,typename GeomType>
   void CalcInteraction(
       ListInteraction<T,DistBuffer,GeomType>& F,
-      const Vector<T>* X, const DualVector<InteractionParameterUnit>& P,
+      const Vector<T>* X, const Vector<Vector<InteractionParameterUnit> >& P,
       Vector<T>* Gradient) {
     assert(F.size==P.size);
     for(unsigned int i=0;i<P.size;++i)
@@ -172,7 +172,7 @@ namespace std {
   template <typename T,template <typename> class DistBuffer,typename GeomType>
   void CalcInteraction(
       ListInteraction<T,DistBuffer,GeomType>& F,
-      const Vector<T>* X, const DualVector<InteractionParameterUnit>& P,
+      const Vector<T>* X, const Vector<Vector<InteractionParameterUnit> >& P,
       T& Energy, Vector<T>* Grad) {
     assert(F.size==P.size);
     for(unsigned int i=0;i<P.size;++i)
@@ -260,7 +260,8 @@ namespace std {
   template <typename T,template <typename> class DistBuffer,typename GeomType>
   void CalcInteraction(
       ListInteraction<T,DistBuffer,GeomType>& F,
-      const PropertyList<T>& X, const DualVector<InteractionParameterUnit>& P,
+      const PropertyList<T>& X,
+      const Vector<Vector<InteractionParameterUnit> >& P,
       T& Energy) {
     CalcInteraction(F,X.structure,P,Energy);
   }
@@ -268,7 +269,8 @@ namespace std {
   template <typename T,template <typename> class DistBuffer,typename GeomType>
   void CalcInteraction(
       ListInteraction<T,DistBuffer,GeomType>& F,
-      const PropertyList<T>& X, const DualVector<InteractionParameterUnit>& P,
+      const PropertyList<T>& X,
+      const Vector<Vector<InteractionParameterUnit> >& P,
       PropertyList<T>& Gradient) {
     CalcInteraction(F,X.structure,P,Gradient.structure);
   }
@@ -276,7 +278,8 @@ namespace std {
   template <typename T,template <typename> class DistBuffer,typename GeomType>
   void CalcInteraction(
       ListInteraction<T,DistBuffer,GeomType>& F,
-      const PropertyList<T>& X, const DualVector<InteractionParameterUnit>& P,
+      const PropertyList<T>& X,
+      const Vector<Vector<InteractionParameterUnit> >& P,
       T& Energy, PropertyList<T>& Gradient) {
     CalcInteraction(F,X.structure,P,Energy,Gradient.structure);
   }

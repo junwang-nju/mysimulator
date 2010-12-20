@@ -46,7 +46,7 @@ int main() {
   cout<<endl;
 
   cout<<"Test -- update"<<endl;
-  DED.renew(&va);
+  DED.renew();
   cout<<DED.DisplaceVec<<endl;
   cout<<DED.DistanceSquare()<<endl;
   cout<<endl;

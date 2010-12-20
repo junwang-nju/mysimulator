@@ -41,6 +41,7 @@ namespace std {
       SpType<T>& Dest, T& DestY, SpType<T>& DestG, T& DestPrj) {
     copy(Dest,Origin);
     shift(Dest,step,B.MinDMask,Dirc);
+    B.F.B.renew();
     DestY=0.;
     copy(DestG,0.);
     CalcInteraction(B.F,Dest,B.MinParam,DestY,DestG);
