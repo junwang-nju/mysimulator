@@ -20,30 +20,51 @@ void bfunc(const Vector<double>& x, double& e, Vector<double>& g,
   g[0]+=2*prm*x[0];
 }
 
+struct TestDistBuffer {
+  void renew() {}
+};
+
 struct TestInteraction {
-  double prm;
+  TestDistBuffer B;
   void (*EFunc)(const Vector<double>&,double&,const double&);
   void (*GFunc)(const Vector<double>&,Vector<double>&,const double&);
   void (*BFunc)(const Vector<double>&,double&,Vector<double>&,const double&);
   ~TestInteraction() {}
 };
 
+struct TestParameter {
+  double prm;
+  Vector<unsigned int> idx;
+};
+
+bool IsAvailable(const TestParameter& P) { return IsAvailable(P.idx); }
+void release(TestParameter& P) { release(P.idx); }
+void copy(TestParameter& P, const TestParameter& cP) {
+  copy(P.prm,cP.prm);
+  copy(P.idx,cP.idx);
+}
+void refer(TestParameter& P, const TestParameter& cP) {
+  refer(P.idx,cP.idx);
+}
+void imprint(TestParameter& P, const TestParameter& cP) {
+  imprint(P.idx,cP.idx);
+}
+
 void CalcInteraction(TestInteraction& TI,const Vector<double>& X,
-                     const Vector<unsigned int>& ID, double& E) {
-  TI.EFunc(X,E,TI.prm);
+                     const TestParameter& P, double& E) {
+  TI.EFunc(X,E,P.prm);
 }
 void CalcInteraction(TestInteraction& TI,const Vector<double>& X,
-                     const Vector<unsigned int>& ID, Vector<double>& G) {
-  TI.GFunc(X,G,TI.prm);
+                     const TestParameter& P, Vector<double>& G) {
+  TI.GFunc(X,G,P.prm);
 }
 void CalcInteraction(TestInteraction& TI,const Vector<double>& X,
-                     const Vector<unsigned int>& ID,
+                     const TestParameter& P,
                      double& E, Vector<double>& G) {
-  TI.BFunc(X,E,G,TI.prm);
+  TI.BFunc(X,E,G,P.prm);
 }
 void release(TestInteraction& TI) {}
 void copy(TestInteraction& TI, const TestInteraction& cTI) {
-  TI.prm=cTI.prm;
   TI.EFunc=cTI.EFunc;
   TI.GFunc=cTI.GFunc;
   TI.BFunc=cTI.BFunc;
@@ -56,34 +77,37 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 int main() {
 
   cout<<"Test -- initialize"<<endl;
-  TrackingLineMinimizerBuffer<TestInteraction,Vector,Vector,double> TLM;
+  TrackingLineMinimizerBuffer<TestInteraction,Vector,TestParameter,double> TLM;
   cout<<endl;
 
   cout<<"Test -- allocate"<<endl;
   TLM.F.EFunc=efunc;
   TLM.F.GFunc=gfunc;
   TLM.F.BFunc=bfunc;
-  TLM.F.prm=10.;
+  TestParameter Pmx;
+  Pmx.prm=10.;
   Vector<double> Coor(1);
   Coor[0]=25;
-  Vector<unsigned int> id(1), msk(1);
+  Vector<unsigned int> msk(1);
+  Vector<double> dmsk(1);
   msk[0]=1;
+  dmsk[0]=1.;
   allocateMinimizerProperty(TLM);
-  initMinimizerMask(TLM,msk);
-  initMinimizerLocation(TLM,Coor,id);
+  initMinimizerMask(TLM,msk,dmsk);
+  initMinimizerLocation(TLM,Coor,Pmx);
   cout<<endl;
 
   cout<<"Test -- assign"<<endl;
-  TrackingLineMinimizerBuffer<TestInteraction,Vector,Vector,double> TLM2;
+  TrackingLineMinimizerBuffer<TestInteraction,Vector,TestParameter,double> TLM2;
   TLM2.F.EFunc=efunc;
   TLM2.F.GFunc=gfunc;
   TLM2.F.BFunc=bfunc;
-  TLM2.F.prm=10.;
+  Pmx.prm=10.;
   Coor[0]=5;
   msk[0]=0;
   allocateMinimizerProperty(TLM2);
-  initMinimizerMask(TLM2,msk);
-  initMinimizerLocation(TLM2,Coor,id);
+  initMinimizerMask(TLM2,msk,dmsk);
+  initMinimizerLocation(TLM2,Coor,Pmx);
   copy(TLM2,TLM);
   cout<<endl;
 

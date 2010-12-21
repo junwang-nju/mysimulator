@@ -12,8 +12,6 @@ target_link_libraries (test-matrix.run blas)
 add_executable (test-property-list.run test-property-list.cxx)
 target_link_libraries (test-property-list.run blas)
 
-add_executable (test-util.run test-util.cxx)
-
 add_executable (test-btree-node.run test-btree-node.cxx)
 
 add_executable (test-btree.run test-btree.cxx)
@@ -132,8 +130,8 @@ target_link_libraries (test-propagator-berendsen-vverlet.run blas)
 add_executable (test-propagator-langevin-vverlet.run test-propagator-langevin-vverlet.cxx)
 target_link_libraries (test-propagator-langevin-vverlet.run blas)
 
-add_executable (test-system-op.run test-system-op.cxx)
-target_link_libraries (test-system-op.run blas)
+#add_executable (test-system-op.run test-system-op.cxx)
+#target_link_libraries (test-system-op.run blas)
 
 add_executable (test-interaction-core-expand-corelj612.run test-interaction-core-expand-corelj612.cxx)
 target_link_libraries (test-interaction-core-expand-corelj612.run blas)

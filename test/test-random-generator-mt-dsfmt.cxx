@@ -51,10 +51,11 @@ int main() {
   refer(rdv,ndv,ndvsize);
   fillarray(dg,rdv); 
   cout<<ndv[0]<<"\t"<<ndv[9999]<<endl;
+  fillarrayFast(dg,ndv,1000);
+  fillarrayClose1Open2Fast(dg,ndv,ndvsize);
+  fillarrayOpen0Close1Fast(dg,ndv,ndvsize);
+  fillarrayOpen0Open1Fast(dg,ndv,ndvsize);
   fillarray(dg,ndv,1000,1,3);
-  fillarrayClose1Open2(dg,ndv,ndvsize);
-  fillarrayOpen0Close1(dg,ndv,ndvsize);
-  fillarrayOpen0Open1(dg,ndv,ndvsize);
   cout<<endl;
 
   cout<<"Test -- save and load status of generator"<<endl;

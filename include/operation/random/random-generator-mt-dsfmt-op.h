@@ -313,6 +313,11 @@ namespace std {
   }
 
   template <unsigned int LoopFac>
+  void fillarrayFast(dSFMT<LoopFac>& G, Vector<double>& v) {
+    fillarrayFast(G,v.data,v.size);
+  }
+
+  template <unsigned int LoopFac>
   void fillarrayClose1Open2Fast(dSFMT<LoopFac>& G,
                                 double* array, const unsigned int size) {
     FillArrayImpl(G,array,size,ConvertClose1Open2);
