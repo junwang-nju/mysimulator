@@ -163,8 +163,8 @@ target_link_libraries (test-interaction-dihedral-periodic.run blas)
 #add_executable (test-interaction-wall-corelj612.run test-interaction-wall-corelj612.cxx)
 #target_link_libraries (test-interaction-wall-corelj612.run blas)
 
-#add_executable (test-interaction-wall-lj612cut.run test-interaction-wall-lj612cut.cxx)
-#target_link_libraries (test-interaction-wall-lj612cut.run blas)
+add_executable (test-interaction-wall-lj612cut.run test-interaction-wall-lj612cut.cxx)
+target_link_libraries (test-interaction-wall-lj612cut.run blas)
 
 #add_executable (test-pdb-data.run test-pdb-data.cxx)
 #target_link_libraries (test-pdb-data.run blas)

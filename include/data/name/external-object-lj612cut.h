@@ -8,7 +8,7 @@
 namespace std {
 
   enum ExtObjectLJ612CutParameterName {
-    ExtObjLJ612CutEqRadius=ExtObjectBaseParameterName+LJ612CutEqRadius,
+    ExtObjLJ612CutEqRadius=ExtObjectBaseNumberParameter+LJ612CutEqRadius,
     ExtObjLJ612CutEqEnergyDepth=
         ExtObjectBaseNumberParameter+LJ612CutEqEnergyDepth,
     ExtObjLJ612CutCutR=ExtObjectBaseNumberParameter+LJ612CutCutR,
@@ -20,7 +20,7 @@ namespace std {
         ExtObjectBaseNumberParameter+LJ612CutRealStrength,
     ExtObjLJ612CutTwlfRealStrength=
         ExtObjectBaseNumberParameter+LJ612CutTwlfRealStrength,
-    ExtObjLJ612CutNumber
+    ExtObjLJ612CutNumberParameter
   };
 
 }

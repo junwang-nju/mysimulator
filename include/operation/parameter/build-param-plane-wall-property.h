@@ -3,6 +3,7 @@
 #define _Build_Parameter_Plane_Wall_Property_H_
 
 #include "data/basic/unique-parameter.h"
+#include "data/name/plane-wall-property.h"
 
 namespace std {
 
@@ -16,6 +17,11 @@ namespace std {
     scale(tmv,1./tmvalue);
   }
 
+  template <typename T>
+  void BuildParameterPlaneWallProperty(Vector<UniqueParameter>& prm) {
+    assert(prm.size>=PlaneWallPropertyNumberParameter);
+    BuildParameterPlaneWallProperty<T>(prm.data);
+  }
 }
 
 #endif

@@ -2,7 +2,7 @@
 #ifndef _Build_Parameter_External_Object_LJ612Cut_H_
 #define _Build_Parameter_External_Object_LJ612Cut_H_
 
-#include "data/external-object-lj612cut.h"
+#include "data/name/external-object-lj612cut.h"
 #include "operation/parameter/build-param-lj612cut.h"
 
 namespace std {
@@ -14,7 +14,8 @@ namespace std {
 
   template <typename T>
   void BuildParameterExtObjLJ612Cut(Vector<UniqueParameter>& prm) {
-    BuildParameterExtObjLJ612Cut(prm.data);
+    assert(prm.size>=ExtObjLJ612CutNumberParameter);
+    BuildParameterExtObjLJ612Cut<T>(prm.data);
   }
 
 }

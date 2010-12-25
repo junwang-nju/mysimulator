@@ -6,7 +6,7 @@ namespace std {
 
   enum PlaneWallPropertyName {
     PlaneWallNormalDirectionPointer=0,
-    PlaneWallNumberParameter
+    PlaneWallPropertyNumberParameter
   };
 
 }
