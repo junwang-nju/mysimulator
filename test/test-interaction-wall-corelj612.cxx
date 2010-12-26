@@ -1,6 +1,7 @@
 
 #include "operation/interaction/plane-wall-corelj612.h"
 #include "operation/geometry/displacement-calc-freespace.h"
+#include "data/geometry/distance-buffer-simple.h"
 #include "data/basic/property-list.h"
 #include "operation/parameter/build-param-plane-wall-property.h"
 #include "operation/parameter/build-param-ext-object-corelj612.h"

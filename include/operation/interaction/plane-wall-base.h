@@ -5,7 +5,6 @@
 #include "data/name/external-object-base.h"
 #include "data/name/plane-wall-property.h"
 #include "data/basic/unique-parameter.h"
-#include "data/geometry/distance-buffer-simple.h"
 
 namespace std {
 
