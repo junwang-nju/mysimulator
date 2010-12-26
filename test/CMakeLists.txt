@@ -169,6 +169,9 @@ target_link_libraries (test-interaction-wall-lj612cut.run blas)
 add_executable (test-interaction-sphere-wall-lj612cut.run test-interaction-sphere-wall-lj612cut.cxx)
 target_link_libraries (test-interaction-sphere-wall-lj612cut.run blas)
 
+add_executable (test-interaction-sphere-wall-corelj612.run test-interaction-sphere-wall-corelj612.cxx)
+target_link_libraries (test-interaction-sphere-wall-corelj612.run blas)
+
 #add_executable (test-pdb-data.run test-pdb-data.cxx)
 #target_link_libraries (test-pdb-data.run blas)
 
