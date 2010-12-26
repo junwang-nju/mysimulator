@@ -20,8 +20,8 @@ namespace std {
     Displacement(X[I],vP,B.DisplaceVec,Geo);
     Vector<T>& nP=
       *reinterpret_cast<Vector<T>*>(
-          (*reinterpret_cast<Vector<UniqueParameter>*>(
-            P[ExtObjectPropertyPointer].ptr))[PlaneWallNormalDirectionPointer].ptr);
+     (*reinterpret_cast<Vector<UniqueParameter>*>(
+      P[ExtObjectPropertyPointer].ptr))[PlaneWallNormalDirectionPointer].ptr);
     T d=dot(B.DisplaceVec,nP);
     T dsq=d*d;
     T ee;
@@ -40,8 +40,8 @@ namespace std {
     Displacement(X[I],vP,B.DisplaceVec,Geo);
     Vector<T>& nP=
       *reinterpret_cast<Vector<T>*>(
-          (*reinterpret_cast<Vector<UniqueParameter>*>(
-            P[ExtObjectPropertyPointer].ptr))[PlaneWallNormalDirectionPointer].ptr);
+     (*reinterpret_cast<Vector<UniqueParameter>*>(
+      P[ExtObjectPropertyPointer].ptr))[PlaneWallNormalDirectionPointer].ptr);
     T d=dot(B.DisplaceVec,nP);
     T dsq=d*d;
     T ef;
@@ -61,8 +61,8 @@ namespace std {
     Displacement(X[I],vP,B.DisplaceVec,Geo);
     Vector<T>& nP=
       *reinterpret_cast<Vector<T>*>(
-          (*reinterpret_cast<Vector<UniqueParameter>*>(
-            P[ExtObjectPropertyPointer].ptr))[PlaneWallNormalDirectionPointer].ptr);
+     (*reinterpret_cast<Vector<UniqueParameter>*>(
+      P[ExtObjectPropertyPointer].ptr))[PlaneWallNormalDirectionPointer].ptr);
     T d=dot(B.DisplaceVec,nP);
     T dsq=d*d;
     T ee,ef;
