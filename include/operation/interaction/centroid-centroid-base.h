@@ -4,6 +4,7 @@
 
 #include "data/basic/unique-parameter.h"
 #include "operation/geometry/mass-center.h"
+#include "operation/geometry/distance-calc.h"
 
 namespace std {
 
@@ -34,8 +35,8 @@ namespace std {
     T dsq=displacement2distanceSQ(B.DisplaceVec);
     double ef,ef0,ef1;
     gfunc(dsq,P,ef);
-    ef0=ef/idx[0];
-    ef1=ef/idx[2];
+    ef0=ef/idx[1];
+    ef1=ef/idx[3];
     for(unsigned int i=0,n=idx[0];i<idx[1];++i,++n)
       shift(Gradient[idx[n]],+ef0,B.DisplaceVec);
     for(unsigned int i=0,n=idx[2];i<idx[3];++i,++n)
@@ -55,8 +56,8 @@ namespace std {
     double ee,ef,ef0,ef1;
     bfunc(dsq,P,ee,ef);
     Energy+=ee;
-    ef0=ef/idx[0];
-    ef1=ef/idx[2];
+    ef0=ef/idx[1];
+    ef1=ef/idx[3];
     for(unsigned int i=0,n=idx[0];i<idx[1];++i,++n)
       shift(Gradient[idx[n]],+ef0,B.DisplaceVec);
     for(unsigned int i=0,n=idx[2];i<idx[3];++i,++n)
