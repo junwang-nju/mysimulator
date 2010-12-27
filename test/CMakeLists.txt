@@ -142,8 +142,8 @@ target_link_libraries (test-interaction-core-expand-lj612.run blas)
 #add_executable (test-interaction-centroid-base.run test-interaction-centroid-base.cxx)
 #target_link_libraries (test-interaction-centroid-base.run blas)
 
-#add_executable (test-interaction-centroid-harmonic.run test-interaction-centroid-harmonic.cxx)
-#target_link_libraries (test-interaction-centroid-harmonic.run blas)
+add_executable (test-interaction-centroid-harmonic.run test-interaction-centroid-harmonic.cxx)
+target_link_libraries (test-interaction-centroid-harmonic.run blas)
 
 add_executable (test-interaction-pairwise-fene.run test-interaction-pairwise-fene.cxx)
 target_link_libraries (test-interaction-pairwise-fene.run blas)
