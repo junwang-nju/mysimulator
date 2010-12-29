@@ -135,7 +135,7 @@ namespace std {
       if(isSteep) {
         dnorm=fnorm;
         if(dnorm<B.GradThreshold()) {
-          B.LSearchCount()=neval-1.;
+          B.LSearchCount()=neval-1;
           return 4;
         }
         copy(B.Dirc,B.MinG);

@@ -327,7 +327,7 @@ namespace std {
     assert(IsAvailable(Va));
     assert(IsAvailable(Vb));
     unsigned int n=(Va.size<Vb.size?Va.size:Vb.size);
-    T sum=0.;
+    T sum=0;
     TA* ap=Va.data;
     TB* bp=Vb.data;
     for(unsigned int i=0;i<n;++i,++ap,++bp)  shift(sum,*ap,*bp);
