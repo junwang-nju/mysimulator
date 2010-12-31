@@ -90,7 +90,7 @@ int main() {
   for(unsigned int i=0;i<10;++i)  cout<<pInt[i]<<" "; cout<<endl;
   scale(vInt,vInt2);
   cout<<vInt<<endl;
-  for(int i=0;i<3;++i) pInt[1+i*3]*=pDBL2[i];
+  for(int i=0;i<3;++i) pInt[1+i*3]*=static_cast<int>(pDBL2[i]);
   for(unsigned int i=0;i<10;++i)  cout<<pDBL[i]<<" "; cout<<endl;
   scale(vDBL,vDBL2);
   cout<<vDBL<<endl;
