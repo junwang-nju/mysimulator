@@ -187,6 +187,9 @@ target_link_libraries (test-interaction-calc.run blas)
 add_executable (test-neighbor-list.run test-neighbor-list.cxx)
 target_link_libraries (test-neighbor-list.run blas)
 
+add_executable (test-lattice-sq2d-enum.run test-lattice-sq2d-enum.cxx)
+target_link_libraries (test-lattice-sq2d-enum.run blas)
+
 ########################
 #add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 #target_link_libraries (test-pdb-data-structure-op.run Base blas)
