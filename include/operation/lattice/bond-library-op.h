@@ -14,6 +14,8 @@ namespace std {
     for(unsigned int i=0;i<BondLib<LT,LD>::MotifNumber;++i)
     for(unsigned int k=0;k<BondLib<LT,LD>::BondNumber;++k)
       ifs>>BL.BondMapper[i][k];
+    for(unsigned int i=0;i<LD;++i)
+      ifs>>BL.property[i];
     ifs.close();
   }
 

@@ -15,6 +15,7 @@ namespace std {
     static const unsigned int MotifNumber;
     PropertyList<unsigned int> BondMapper;
     PropertyList<int> BondDirectionMapper;
+    Vector<int> property;
 
     typedef BondLib<LatticeType,LatticeDim> Type;
 
@@ -36,12 +37,14 @@ namespace std {
 
   template <unsigned int LT, unsigned int LD>
   bool IsAvailable(const BondLib<LT,LD>& BL) {
-    return IsAvailable(BL.BondMapper)&&IsAvailable(BL.BondDirectionMapper);
+    return IsAvailable(BL.BondMapper)&&IsAvailable(BL.BondDirectionMapper)&&
+           IsAvailable(BL.property);
   }
   template <unsigned int LT, unsigned int LD>
   void release(BondLib<LT,LD>& BL) {
     release(BL.BondMapper);
     release(BL.BondDirectionMapper);
+    release(BL.property);
   }
   template <unsigned int LT, unsigned int LD>
   void allocate(BondLib<LT,LD>& BL) {
@@ -50,6 +53,7 @@ namespace std {
     allocate(BL.BondMapper,sz);
     copy(sz,LD*BondLib<LT,LD>::BondNumber);
     allocate(BL.BondDirectionMapper,sz);
+    allocate(BL.property,LD);
   }
   template <unsigned int LT, unsigned int LD>
   void copy(BondLib<LT,LD>& BL, const BondLib<LT,LD>& cBL) {
@@ -57,6 +61,7 @@ namespace std {
     assert(IsAvailable(cBL));
     copy(BL.BondMapper,cBL.BondMapper);
     copy(BL.BondDirectionMapper,cBL.BondDirectionMapper);
+    copy(BL.property,cBL.property);
   }
   template <unsigned int LT, unsigned int LD>
   void refer(BondLib<LT,LD>& BL, const BondLib<LT,LD>& rBL) {
@@ -64,6 +69,7 @@ namespace std {
     release(BL);
     refer(BL.BondMapper,rBL.BondMapper);
     refer(BL.BondDirectionMapper,rBL.BondDirectionMapper);
+    refer(BL.property,rBL.property);
   }
 
   template<>
