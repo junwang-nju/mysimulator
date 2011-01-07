@@ -77,6 +77,8 @@ namespace std {
       case Coulomb:
       case Core12:
       case CoreLJ612:
+      case FENE:
+      case QuadPlusHarmonic:
         allocate(P.idx,2);    break;
       default:
         myError("Unknown Type of Interaction Parameter Unit");
