@@ -8,17 +8,58 @@ namespace std {
 
   template <unsigned int LT, unsigned int LD>
   unsigned int GetBond(const LatticeChain<LT,LD>& LC, const unsigned int n) {
-    unsigned int I=n/BN, J=n%BN;
+    const BondLib<LT,LD>& rBL=RunBondLibrary<LT,LD>();
+    unsigned int I=n/rBL.BondNumber();
+    unsigned int J=n%rBL.BondNumber();
     unsigned int motif=LC[I];
-    return fetchLib<LT,LD>().BondMapper[motif][J];
+    return rBL.Bond(motif)[J];
   }
 
   template <unsigned int LT, unsigned int LD>
   const int* GetBondDirection(const LatticeChain<LT,LD>& LC,
                               const unsigned int n) {
-    unsigned int I=n/BN, J=(n%BN)*LD;
+    const BondLib<LT,LD>& rBL=RunBondLibrary<LT,LD>();
+    unsigned int I=n/rBL.BondNumber();
+    unsigned int J=n%rBL.BondNumber();
     unsigned int motif=LC[I];
-    return fetchLib<LT,LD>().BondDirectionMapper[motif].data+J;
+    return rBL.Site(motif).data+J;
+  }
+
+  template <unsigned int LT, unsigned int LD>
+  void SetChain(LatticeChain<LT,LD>& LC, const Vector<unsigned int>& bv) {
+    const BondLib<LT,LD>& rBL=RunBondLibrary<LT,LD>();
+    allocate(LC,bv.size);
+    unsigned int I=bv.size/rBL.BondNumber();
+    unsigned int J=bv.size%rBL.BondNumber();
+    bool flag;
+    for(unsigned int i=0;i<I;++i)
+    for(unsigned int j=0;j<rBL.MotifNumber(0);++j) {
+      flag=true;
+      for(unsigned int k=0;k<rBL.BondNumber();++k)
+        if(bv[i*rBL.BondNumber()+k]!=rBL.Bond(j)[k]){
+          flag=false;
+          break;
+        }
+      if(flag) {
+        LC[i]=static_cast<unsigned char>(j);
+        break;
+      }
+    }
+    if(J!=0) {
+      unsigned int M=rBL.BondNumber()-J;
+      for(unsigned int j=0;j<rBL.MotifNumber(M);++j) {
+        flag=true;
+        for(unsigned int k=0;k<rBL.BondNumber();++k)
+          if(bv[I*rBL.BondNumber()+k]!=rBL.Bond(j)[k]){
+            flag=false;
+            break;
+          }
+        if(flag) {
+          LC[I]=static_cast<unsigned char>(j);
+          break;
+        }
+      }
+    }
   }
 
 }
