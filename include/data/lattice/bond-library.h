@@ -30,12 +30,13 @@ namespace std {
         for(unsigned int i=0;i<BondNumber();++i)
         for(unsigned int k=0;k<=LatticeDim;++k)
           ifs>>confShift[i][k];
-        for(unsigned int i=0;i<BondNumber();++i)
-          motifShift[i]=confShift[i][LatticeDim];
-        motifNumber[0]=motifShift[0];
+        motifShift[0]=0;
         for(unsigned int i=1;i<BondNumber();++i)
-          motifNumber[i]=motifShift[i]-motifShift[i-1];
-        allocate(sz,motifShift[BondNumber()-1]);
+          motifShift[i]=confShift[i-1][LatticeDim];
+        motifNumber[0]=confShift[0][LatticeDim];
+        for(unsigned int i=1;i<BondNumber();++i)
+          motifNumber[i]=confShift[i][LatticeDim]-confShift[i-1][LatticeDim];
+        allocate(sz,confShift[BondNumber()-1][LatticeDim]);
         for(unsigned int i=0,n=0;i<BondNumber();++i)
         for(unsigned int k=0;k<motifNumber[i];++k)
           sz[n++]=BondNumber()-i;

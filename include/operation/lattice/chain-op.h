@@ -47,9 +47,10 @@ namespace std {
     }
     if(J!=0) {
       unsigned int M=rBL.BondNumber()-J;
-      for(unsigned int j=0;j<rBL.MotifNumber(M);++j) {
+      for(unsigned int j=rBL.MotifShift(M);
+                       j<rBL.MotifShift(M)+rBL.MotifNumber(M);++j) {
         flag=true;
-        for(unsigned int k=0;k<rBL.BondNumber();++k)
+        for(unsigned int k=0;k<J;++k)
           if(bv[I*rBL.BondNumber()+k]!=rBL.Bond(j)[k]){
             flag=false;
             break;

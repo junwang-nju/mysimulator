@@ -1,9 +1,11 @@
 
+#include "operation/lattice/bond-library-op.h"
 #include "operation/lattice/chain-op.h"
 using namespace std;
 
 int main(int argc, char** argv) {
-  if(argc<2)  myError("please input ROOT directory");
+  if(argc<2)  LoadBondLibrary<SquareLattice,2>();
+  else        LoadBondLibrary<SquareLattice,2>(argv[1]);
   cout<<IsAvailable(RunBondLibrary<SquareLattice,2>())<<endl;
   cout<<RunBondLibrary<SquareLattice,2>().Bond(6)<<endl;
   LatticeChain<SquareLattice,2> LC;
@@ -21,6 +23,9 @@ int main(int argc, char** argv) {
   BV[9]=1;
   BV[10]=3;
   SetChain(LC,BV);
+  for(unsigned int i=0;i<LC.size;++i)  cout<<static_cast<int>(LC[i])<<"\t";
+  cout<<endl;
+  UnloadBondLibrary<SquareLattice,2>();
   return 0;
 }
 

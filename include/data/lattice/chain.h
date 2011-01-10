@@ -67,7 +67,7 @@ namespace std {
     const BondLib<LT,LD>& rBL=RunBondLibrary<LT,LD>();
     assert(n>0);
     allocate(static_cast<Vector<unsigned char>&>(LC),
-             ((n-1)/rBL.BondNumber()+1));
+             ((n-2)/rBL.BondNumber()+1));
     allocate(LC.property,1);
     LC.Length()=n;
   }
