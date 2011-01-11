@@ -1,6 +1,6 @@
 
 #include "operation/lattice/bond-library-op.h"
-#include "operation/lattice/chain-op.h"
+#include "operation/lattice/enumerate.h"
 using namespace std;
 
 int main(int argc, char** argv) {
@@ -25,6 +25,7 @@ int main(int argc, char** argv) {
   SetChain(LC,BV);
   for(unsigned int i=0;i<LC.size;++i)  cout<<static_cast<int>(LC[i])<<"\t";
   cout<<endl;
+  enumerate<SquareLattice,2>(4,cout);
   UnloadBondLibrary<SquareLattice,2>();
   return 0;
 }

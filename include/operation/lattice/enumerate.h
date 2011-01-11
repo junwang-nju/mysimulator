@@ -7,45 +7,87 @@
 namespace std {
 
   template <unsigned int LT, unsigned int LD>
-  void enumerate(const unsigned int N, istream& is) {
+  void enumerate(const unsigned int N, ostream& os) {
     myError("This Lattice Cannot be enumerated");
   }
 
   template <>
-  void enumerate<SquareLattice,2>(const unsigned int N, istream& is) {
-    PropertyList<int> Mesh;
-    Vector<unsigned int> sz(N+N-1);
+  void enumerate<SquareLattice,2>(const unsigned int N, ostream& os) {
+    const BondLib<SquareLattice,2>& rBL=RunBondLibrary<SquareLattice,2>();
+    PropertyList<int> Mesh,R;
+    LatticeChain<SquareLattice,2> LC;
+    Vector<unsigned int> ID,BN,BS;
+    Vector<unsigned char> BoundLow,BoundHigh;
+    Vector<unsigned int> sz;
+    int* tmR;
+
+    allocate(sz,N+N-1);
     copy(sz,N+N-1);
     allocate(Mesh,sz);
     copy(Mesh,-1);
-    LatticeChain<SquareLattice,2> LC;
-    allocate(LC,N-1);
-    PropertyList<int> R;
+
+    allocate(LC,N);
+
     allocate(sz,N);
     copy(sz,2);
     allocate(R,sz);
     R[0][0]=N-1;
     R[0][1]=N-1;
     Mesh[R[0][0]][R[0][1]]=0;
-    Vector<unsigned char> BoundLow,BoundHigh;
-    allocate(BoundLow,N-1);
-    allocate(BoundHigh,N-1);
-    int J=(N-1)%RunBondLibrary<SquareLattice,2>::BondNumber();
-    Vector<unsigned int> ID;
+
+    allocate(BoundLow,LC.size);
+    allocate(BoundHigh,LC.size);
     allocate(ID,LC.size);
+    allocate(BN,LC.size);
+    allocate(BS,LC.size);
+    copy(BN,rBL.BondNumber());
+    BN[BN.size-1]=LC.FinalByte();
     copy(ID,0);
-    if(J!=0)  ID[ID.size-1]=RunBondLibrary<SquareLattice,2>::BondNumber()-J;
-    int B=0,BC;
-    for(unsigned int i=0;i<LC.size-1;++i) {
-      BoundLow[i]=0;
-      BoundHigh[i]=confShift[0][HeadWithZero2D];
-      LC[i]=BoundLow[i];
-    }
-    BoundLow[LC.size-1]=MotifShift(ID[LC.size-1]);
-    BoundHigh[LC.size-1]=MotifShift(ID[LC.size-1])+
-                         confShift[ID[LC.size-1]][HeadWithZeroOne2D];
+    ID[ID.size-1]=rBL.BondNumber()-LC.FinalByte();
+    BS[0]=0;
+    for(unsigned int i=1;i<BS.size;++i) BS[i]=BS[i-1]+BN[i-1];
+
+    int B,BC;
+    bool oflag;
+    B=0;
+    BC=-1;
+    BoundLow[B]=rBL.MotifShift(ID[B]);
+    BoundHigh[B]=rBL.ConfShift(ID[B])[HeadWithZero2D];
+    LC[0]=BoundLow[0];
     do {
-    } while(B>0);
+      tmR=const_cast<int*>(GetBondDirection(LC,BS[B]));
+      oflag=false;
+      for(unsigned int i=1+BS[B],n=0;i<1+BS[B]+BN[B];++i) {
+        R[i][0]=R[BS[B]][0]+tmR[n++];
+        R[i][1]=R[BS[B]][1]+tmR[n++];
+        if(Mesh[R[i][0]][R[i][1]]>=0) { oflag=true; break; }
+      }
+      if(!oflag) {
+        for(unsigned int i=1+BS[B];i<1+BS[B]+BN[B];++i)
+          Mesh[R[i][0]][R[i][1]]=i;
+        if(B==static_cast<int>(LC.size-1))  os<<LC;
+      }
+      if((!oflag)&&(B<static_cast<int>(LC.size-1))) {
+        if((B-BC==1)&&(LC[B]==BoundLow[B])) BC++;
+        B++;
+        BoundLow[B]=rBL.MotifShift(ID[B]);
+        BoundHigh[B]=(B-BC==1?rBL.ConfShift(ID[B])[HeadWithZeroOne2D]:
+                              rBL.ConfShift(ID[B])[AllConfigures2D]);
+        LC[B]=BoundLow[B];
+      } else {
+        for(unsigned int i=1+BS[B];i<1+BS[B]+BN[B];++i)
+          Mesh[R[i][0]][R[i][1]]=-1;
+        LC[B]++;
+        while(LC[B]>=BoundHigh[B]) {
+          B--;
+          if(B<0) break;
+          if(B==BC) BC--;
+          for(unsigned int i=1+BS[B];i<1+BS[B]+BN[B];++i)
+            Mesh[R[i][0]][R[i][1]]=-1;
+          LC[B]++;
+        }
+      }
+    } while(B>=0);
   }
 
 }

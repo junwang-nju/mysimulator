@@ -85,6 +85,9 @@ namespace std {
       const unsigned int MotifShift(const unsigned int msize) const {
         return motifShift[msize];
       }
+      const Vector<unsigned int>& ConfShift(const unsigned int msize) const {
+        return confShift[msize];
+      }
       const Vector<unsigned int>& Bond(const unsigned int mid) const {
         return mapper[mid];
       }

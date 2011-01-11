@@ -24,6 +24,8 @@ namespace std {
 
     unsigned int& Length() { return property[LatChainLength]; }
     const unsigned int& Length() const { return property[LatChainLength]; }
+    unsigned int& FinalByte() { return property[BondsInLastByte]; }
+    const unsigned int& FinalByte() const { return property[BondsInLastByte]; }
   };
 
   template <unsigned int LType, unsigned int EDim>
@@ -68,8 +70,9 @@ namespace std {
     assert(n>0);
     allocate(static_cast<Vector<unsigned char>&>(LC),
              ((n-2)/rBL.BondNumber()+1));
-    allocate(LC.property,1);
+    allocate(LC.property,LatChainPropertyNumberParameter);
     LC.Length()=n;
+    LC.FinalByte()=(n-2)%rBL.BondNumber()+1;
   }
 
 }

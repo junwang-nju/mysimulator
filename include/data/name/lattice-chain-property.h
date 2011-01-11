@@ -6,6 +6,7 @@ namespace std {
 
   enum LatticeChainPropertyName {
     LatChainLength=0,
+    BondsInLastByte,
     LatChainPropertyNumberParameter
   };
 
