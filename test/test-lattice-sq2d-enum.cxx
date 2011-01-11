@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
   SetChain(LC,BV);
   for(unsigned int i=0;i<LC.size;++i)  cout<<static_cast<int>(LC[i])<<"\t";
   cout<<endl;
-  enumerate<SquareLattice,2>(4,cout);
+  enumerate<SquareLattice,2>(20,cout);
   UnloadBondLibrary<SquareLattice,2>();
   return 0;
 }
