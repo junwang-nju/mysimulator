@@ -181,6 +181,50 @@ namespace std {
     copy(V,static_cast<unsigned int>(d));
   }
 
+  void copy(Vector<unsigned char>& V, const Vector<unsigned char>& cV) {
+    assert(IsAvailable(V));
+    assert(IsAvailable(cV));
+    long n=(V.size<cV.size?V.size:cV.size);
+    long nd=n>>3,nc=n&7;
+    dcopy_(&nd,reinterpret_cast<double*>(const_cast<unsigned char*>(cV.data)),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(V.data),
+           const_cast<long*>(&lOne));
+    for(int i=n-nc;i<n;++i)  copy(V[i],cV[i]);
+  }
+
+  void copy(Vector<char>& V, const Vector<unsigned char>& cV) {
+    assert(IsAvailable(V));
+    assert(IsAvailable(cV));
+    long n=(V.size<cV.size?V.size:cV.size);
+    long nd=n>>3,nc=n&7;
+    dcopy_(&nd,reinterpret_cast<double*>(const_cast<unsigned char*>(cV.data)),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(V.data),
+           const_cast<long*>(&lOne));
+    for(int i=n-nc;i<n;++i)  copy(V[i],cV[i]);
+  }
+
+  void copy(Vector<unsigned char>& V, const Vector<char>& cV) {
+    assert(IsAvailable(V));
+    assert(IsAvailable(cV));
+    long n=(V.size<cV.size?V.size:cV.size);
+    long nd=n>>3,nc=n&7;
+    dcopy_(&nd,reinterpret_cast<double*>(const_cast<char*>(cV.data)),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(V.data),
+           const_cast<long*>(&lOne));
+    for(int i=n-nc;i<n;++i)  copy(V[i],cV[i]);
+  }
+
+  void copy(Vector<char>& V, const Vector<char>& cV) {
+    assert(IsAvailable(V));
+    assert(IsAvailable(cV));
+    long n=(V.size<cV.size?V.size:cV.size);
+    long nd=n>>3,nc=n&7;
+    dcopy_(&nd,reinterpret_cast<double*>(const_cast<char*>(cV.data)),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(V.data),
+           const_cast<long*>(&lOne));
+    for(int i=n-nc;i<n;++i)  copy(V[i],cV[i]);
+  }
+
   template <typename T>
   ostream& operator<<(ostream& os, const Vector<T>& v) {
     assert(IsAvailable(v));

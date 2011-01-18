@@ -63,6 +63,24 @@ namespace std {
     }
   }
 
+  void WriteSequence(const LatticeChain<SquareLattice,2>& LC, ostream& os,
+                     const unsigned int Z) {
+    os<<LC<<endl;
+  }
+
+}
+
+#include "data/lattice/chain-set.h"
+
+namespace std {
+
+  void WriteSequence(const LatticeChain<SquareLattice,2>& LC,
+                     LatticeChainSet<SquareLattice,2>& CS,
+                     const unsigned int Z) {
+    assert(LC.Length()==CS.Length());
+    copy(CS[Z],static_cast<const Vector<unsigned char>&>(LC));
+  } 
+
 }
 
 #endif

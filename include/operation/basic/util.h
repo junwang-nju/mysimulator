@@ -363,6 +363,7 @@ namespace std {
   void copy(double& d, const long int& rd) { d=rd; }
   void copy(double& d, const unsigned int& rd) { d=rd; }
   void copy(double& d, const char& c) { d=c; }
+  void copy(double& d, const unsigned char& c) { d=c; }
 
   void copy(float& d, const double& rd) { d=rd; }
   void copy(float& d, const float& rd) { d=rd; }
@@ -370,28 +371,36 @@ namespace std {
   void copy(float& d, const long int& rd) { d=rd; }
   void copy(float& d, const unsigned int& rd) { d=rd; }
   void copy(float& d, const char& c) { d=c; }
+  void copy(float& d, const unsigned char& c) { d=c; }
 
   void copy(int& d, const int& rd) { d=rd; }
   void copy(int& d, const long int& rd) { d=rd; }
   void copy(int& d, const unsigned int& rd) { d=rd; }
   void copy(int& d, const char& c) { d=c; }
+  void copy(int& d, const unsigned char& c) { d=c; }
 
   void copy(long int& d, const int& rd) { d=rd; }
   void copy(long int& d, const long int& rd) { d=rd; }
   void copy(long int& d, const unsigned int& rd) { d=rd; }
   void copy(long int& d, const char& c) { d=c; }
+  void copy(long int& d, const unsigned char& c) { d=c; }
 
   void copy(unsigned int& d, const unsigned int& rd) {d=rd; }
   void copy(unsigned int& d, const int& rd) { d=rd; }
   void copy(unsigned int& d, const long int& rd) { d=rd; }
   void copy(unsigned int& d, const char& c) { d=c; }
+  void copy(unsigned int& d, const unsigned char& c) { d=c; }
 
   void copy(bool& d, const bool& rd) { d=rd; }
   void copy(bool& d, const unsigned int& rd) { d=(rd==0?false:true); }
   void copy(bool& d, const int& rd) { d=(rd==0?false:true); }
   void copy(bool& d, const char& c) { d=(c==0?false:true); }
+  void copy(bool& d, const unsigned char& c) { d=(c==0?false:true); }
 
   void copy(char& d, const char& c) { d=c; }
+  void copy(char& d, const unsigned char& c) { d=c; }
+  void copy(unsigned char& d, const char& c) { d=c; }
+  void copy(unsigned char& d, const unsigned char& c) { d=c; }
 
   void scale(double& d, const double& sd) { d*=sd; }
   void scale(double& d, const float& sd) { d*=sd; }
