@@ -3,171 +3,136 @@
 #define _Bond_Library_H_
 
 #include "data/name/lattice-type.h"
-#include "data/name/bond-library-property.h"
 #include "data/basic/property-list.h"
 #include <fstream>
+#include <cstdio>
 
 namespace std {
 
   template <unsigned int LatticeType, unsigned int LatticeDim>
   struct BondLib {
-
-    private:
-      static Vector<unsigned int> property;
-      static Vector<unsigned int> motifNumber;
-      static Vector<unsigned int> motifShift;
-      static PropertyList<unsigned int> confShift;
-      static PropertyList<unsigned int> mapper;
-      static PropertyList<int> siteMapper;
-      void loadLib(const char*) { myError("This library is not available"); }
-      void readlib(const char* fname) {
-        allocate(motifNumber,BondNumber());
-        allocate(motifShift,BondNumber());
-        Vector<unsigned int> sz(BondNumber());
-        copy(sz,LatticeDim+1);
-        allocate(confShift,sz);
-        ifstream ifs(fname);
-        for(unsigned int i=0;i<BondNumber();++i)
-        for(unsigned int k=0;k<=LatticeDim;++k)
-          ifs>>confShift[i][k];
-        motifShift[0]=0;
-        for(unsigned int i=1;i<BondNumber();++i)
-          motifShift[i]=confShift[i-1][LatticeDim];
-        motifNumber[0]=confShift[0][LatticeDim];
-        for(unsigned int i=1;i<BondNumber();++i)
-          motifNumber[i]=confShift[i][LatticeDim]-confShift[i-1][LatticeDim];
-        allocate(sz,confShift[BondNumber()-1][LatticeDim]);
-        for(unsigned int i=0,n=0;i<BondNumber();++i)
-        for(unsigned int k=0;k<motifNumber[i];++k)
-          sz[n++]=BondNumber()-i;
-        allocate(mapper,sz);
+    static const unsigned int MaxBonds;
+    static const unsigned int NeighborNumber;
+    static const unsigned int MaxShiftConditions;
+    static PropertyList<unsigned int> mshift; 
+    static Vector<PropertyList<unsigned int> > mapper;
+    static Vector<PropertyList<int> > xmapper;
+    void loadlib(const char* ROOT) {
+      myError("The library is not available");
+    }
+    void readlib(const char* ftemplate) {
+      Vector<unsigned int> sz;
+      static char nmbuff[1024];
+      allocate(mapper,MaxBonds);
+      allocate(xmapper,MaxBonds);
+      allocate(sz,MaxBonds);
+      copy(sz,MaxShiftConditions);
+      allocate(mshift,sz);
+      fstream ifs;
+      unsigned int nmotif;
+      for(unsigned int i=0;i<MaxBonds;++i) {
+        sprintf(nmbuff,"%s.%d-bond",ftemplate,i+1);
+        ifs.open(nmbuff);
+        ifs>>mshift[i];
+        nmotif=mshift[i][MaxShiftConditions];
+        allocate(sz,nmotif);
+        copy(sz,i+1);
+        allocate(mapper[i],sz);
         scale(sz,LatticeDim);
-        allocate(siteMapper,sz);
-        for(unsigned int i=0;i<mapper.nunit;++i)
-          ifs>>mapper[i];
+        allocate(xmapper,sz);
+        for(unsigned int k=0;k<nmotif;++k)  ifs>>mapper[i][k];
         ifs.close();
       }
+    }
+    
+    typedef BondLib<LatticeType,LatticeDim>   Type;
+    
+    BondLib() { loadlib("."); }
+    BondLib(const char* ROOT) { loadlib(ROOT); }
+    BondLib(const Type& BL) { myError("This library is not available"); }
+    Type& operator=(const Type& BL) {
+      myError("This Library is not available");
+      return *this;
+    }
+    ~BondLib() { release(*this); }
+};
 
-    public:
+  template <unsigned int LT, unsigned int LD>
+  const unsigned int BondLib<LT,LD>::MaxBonds=0;
 
-      typedef BondLib<LatticeType,LatticeDim> Type;
+  template <unsigned int LT, unsigned int LD>
+  const unsigned int BondLib<LT,LD>::NeighborNumber=0;
 
-      BondLib() { loadLib("."); }
-      BondLib(const char* ROOT) { loadLib(ROOT); }
-      BondLib(const Type& BL) { myError("This Library is not available"); }
-      Type& operator=(const Type& BL) {
-        myError("This Library is not available");
-        return *this;
-      }
-      ~BondLib() { releaseLib(); }
-      void releaseLib() {
-        release(Type::property);
-        release(Type::motifNumber);
-        release(Type::motifShift);
-        release(Type::confShift);
-        release(Type::mapper);
-        release(Type::siteMapper);
-      }
-      const bool libAvailable() const {
-        return IsAvailable(property)&&IsAvailable(motifNumber)&&
-               IsAvailable(motifShift)&&IsAvailable(confShift)&&
-               IsAvailable(mapper)&&IsAvailable(siteMapper);
-      }
-      const unsigned int BondNumber() const {
-        return property[BondNumberPerByte];
-      }
-      const unsigned int NeighborNumber() const {
-        return property[NeighborNumberPerSite];
-      }
-      const unsigned int MotifNumber(const unsigned int msize) const {
-        return motifNumber[msize];
-      }
-      const unsigned int MotifShift(const unsigned int msize) const {
-        return motifShift[msize];
-      }
-      const Vector<unsigned int>& ConfShift(const unsigned int msize) const {
-        return confShift[msize];
-      }
-      const Vector<unsigned int>& Bond(const unsigned int mid) const {
-        return mapper[mid];
-      }
-      const Vector<int>& Site(const unsigned int mid) const {
-        return siteMapper[mid];
-      }
-  };
-  
+  template <unsigned int LT, unsigned int LD>
+  const unsigned int BondLib<LT,LD>::MaxShiftConditions=0;
+
+  template <unsigned int LT, unsigned int LD>
+  PropertyList<unsigned int> BondLib<LT,LD>::mshift;
+
+  template <unsigned int LT, unsigned int LD>
+  Vector<PropertyList<unsigned int> > BondLib<LT,LD>::mapper;
+
+  template <unsigned int LT, unsigned int LD>
+  Vector<PropertyList<int> > BondLib<LT,LD>::xmapper;
+
   template <unsigned int LT, unsigned int LD>
   bool IsAvailable(const BondLib<LT,LD>& BL) {
-    return BL.libAvailable();
+    typedef BondLib<LT,LD>  Type;
+    return IsAvailable(Type::mshift)&&IsAvailable(Type::mapper)&&
+           IsAvailable(Type::xmapper);
   }
+
   template <unsigned int LT, unsigned int LD>
   void release(BondLib<LT,LD>& BL) {
-    BL.releaseLib();
+    typedef BondLib<LT,LD>  Type;
+    release(Type::mshift);
+    release(Type::mapper);
+    release(Type::xmapper);
   }
-
-  template <unsigned int LT, unsigned int LD>
-  Vector<unsigned int> BondLib<LT,LD>::property;
-
-  template <unsigned int LT, unsigned int LD>
-  Vector<unsigned int> BondLib<LT,LD>::motifNumber;
-
-  template <unsigned int LT, unsigned int LD>
-  Vector<unsigned int> BondLib<LT,LD>::motifShift;
-
-  template <unsigned int LT, unsigned int LD>
-  PropertyList<unsigned int> BondLib<LT,LD>::confShift;
-
-  template <unsigned int LT, unsigned int LD>
-  PropertyList<unsigned int> BondLib<LT,LD>::mapper;
-
-  template <unsigned int LT, unsigned int LD>
-  PropertyList<int> BondLib<LT,LD>::siteMapper;
-
+  
   template <unsigned int LT, unsigned int LD>
   const BondLib<LT,LD>& RunBondLibrary() {
     myError("This Library is not available");
+    return BondLib<LT,LD>();
   }
-
-}
-
-#include <cstring>
-
-namespace std {
+  
+  template <>
+  const unsigned int BondLib<SquareLattice,2>::MaxBonds=12;
+  template <>
+  const unsigned int BondLib<SquareLattice,2>::NeighborNumber=4;
+  template <>
+  const unsigned int BondLib<SquareLattice,2>::MaxShiftConditions=2;
 
   template <>
-  void BondLib<SquareLattice,2>::loadLib(const char* ROOT) {
-    if(libAvailable())  return;
-    static char buff[1024];
-    strcpy(buff,ROOT);
-    strcat(buff,"/include/data/lattice/square-2d.conf");
-    allocate(property,BondLibraryPropertyNumberParameter);
-    property[BondNumberPerByte]=4;
-    property[NeighborNumberPerSite]=4;
-    readlib(buff);
+  void BondLib<SquareLattice,2>::loadlib(const char* ROOT) {
+    if(IsAvailable(*this))  return;
+    static char tmbuff[1024];
+    sprintf(tmbuff,"%s/include/data/lattice/square-2d",ROOT);
+    readlib(tmbuff);
     int x,y;
-    for(unsigned int i=0;i<mapper.nunit;++i) {
+    for(unsigned int i=0,nbond=i+1;i<MaxBonds;++i)
+    for(unsigned int k=0;k<mapper[i].nunit;++k) {
       x=y=0;
-      for(unsigned int k=0,n=0;k<mapper[i].size;++k) {
-        switch(mapper[i][k]) {
+      for(unsigned int l=0,n=0;l<nbond;++l) {
+        switch(mapper[i][k][l]) {
           case 0: ++x;  break;
           case 1: ++y;  break;
           case 2: --y;  break;
           case 3: --x;  break;
         }
-        siteMapper[i][n++]=x;
-        siteMapper[i][n++]=y;
+        xmapper[i][k][n++]=x;
+        xmapper[i][k][n++]=y;
       }
     }
   }
 
-  BondLib<SquareLattice,2> *pBondLibSquare2D;
-
+  BondLib<SquareLattice,2>  *pBondLibSquare2D;
+  
   template <>
   const BondLib<SquareLattice,2>& RunBondLibrary<SquareLattice,2>() {
     return *pBondLibSquare2D;
   }
-  
+
 }
 
 #endif
-
