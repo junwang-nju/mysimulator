@@ -6,40 +6,46 @@
 
 namespace std {
 
+  template <unsigned int LatType, unsigned int LatDim, typename OType>
+  int enumerate(const unsigned int N, OType& OObj) {
+    myError("The enumeration for this lattice is not available");
+    return 0;
+  }
+
+  int enumerateSquare2D_Init(
+      PropertyList<int>& Mesh, PropertyList<int>& R, 
+      LatticeChain<SquareLattice,2>& LC, Vector<unsigned short int>& BoundLow,
+      Vector<unsigned short int>& BoundHigh, Vector<unsigned int>& ID,
+      const unsigned int N) {
+    const BondLib<SquareLattice,2>& rBL=RunBondLibrary<SquareLattice,2>();
+    Vector<unsigned int> sz;
+    allocate(LC,N);
+    allocate(sz,N+N-1);
+    copy(sz,N+N-1);
+    allocate(Mesh,sz);
+    copy(Mesh,-1);
+    allocate(sz,N);
+    copy(sz,2);
+    allocate(R,sz);
+    R[0][0]=R[0][1]=N-1;
+    Mesh[N-1][N-1]=0;
+    allocate(BoundLow,LC.size);
+    allocate(BoundHigh,LC.size);
+    allocate(ID,LC.size);
+    copy(ID,LC.MaxBonds)-1;
+    ID[LC.Length()-1]=LC.ResidualBonds()-1;
+  }
+
   template <typename OutputType>
   int enumerateSquare2D(const unsigned int N, OutputType& OB) {
     const BondLib<SquareLattice,2>& rBL=RunBondLibrary<SquareLattice,2>();
     PropertyList<int> Mesh,R;
     LatticeChain<SquareLattice,2> LC;
-    Vector<unsigned int> ID,BS;
-    Vector<unsigned char> BoundLow,BoundHigh;
-    Vector<unsigned int> sz;
+    Vector<unsigned int> ID;
+    Vector<unsigned short int> BoundLow,BoundHigh;
     int* tmR;
 
-    allocate(sz,N+N-1);
-    copy(sz,N+N-1);
-    allocate(Mesh,sz);
-    copy(Mesh,-1);
-
-    allocate(LC,N);
-
-    allocate(sz,N);
-    copy(sz,2);
-    allocate(R,sz);
-    R[0][0]=N-1;
-    R[0][1]=N-1;
-    Mesh[R[0][0]][R[0][1]]=0;
-
-    allocate(BoundLow,LC.size);
-    allocate(BoundHigh,LC.size);
-    allocate(ID,LC.size);
-    allocate(BS,LC.size+1);
-    copy(BS,rBL.BondNumber());
-    BS[BS.size-1]=LC.FinalByte();
-    BS[0]=0;
-    for(unsigned int i=1;i<BS.size;++i) BS[i]+=BS[i-1];
-    copy(ID,0);
-    ID[ID.size-1]=rBL.BondNumber()-LC.FinalByte();
+    enumerateSquare2D_Init(Mesh,R,LC,BoundLow,BoundHigh,ID,N);
 
     int B,BC,X,Y,Xn,Yn,Z=0;
     bool oflag;

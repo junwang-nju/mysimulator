@@ -9,56 +9,57 @@ namespace std {
   template <unsigned int LT, unsigned int LD>
   unsigned int GetBond(const LatticeChain<LT,LD>& LC, const unsigned int n) {
     const BondLib<LT,LD>& rBL=RunBondLibrary<LT,LD>();
-    unsigned int I=n/rBL.BondNumber();
-    unsigned int J=n%rBL.BondNumber();
+    unsigned int I=n/rBL.MaxBonds;
+    unsigned int J=n%rBL.MaxBonds;
+    unsigned int NB=(I==LC.Length()-1?LC.ResidualBonds():rBL.MaxBonds);
     unsigned int motif=LC[I];
-    return rBL.Bond(motif)[J];
+    return rBL.mapper[NB][motif][J];
   }
 
   template <unsigned int LT, unsigned int LD>
   const int* GetBondDirection(const LatticeChain<LT,LD>& LC,
                               const unsigned int n) {
     const BondLib<LT,LD>& rBL=RunBondLibrary<LT,LD>();
-    unsigned int I=n/rBL.BondNumber();
-    unsigned int J=n%rBL.BondNumber();
+    unsigned int I=n/rBL.MaxBonds;
+    unsigned int J=n%rBL.MaxBonds;
+    unsigned int NB=(I==LC.Length()-1?LC.ResidualBonds():rBL.MaxBonds);
     unsigned int motif=LC[I];
-    return rBL.Site(motif).data+J;
+    return rBL.xmapper[NB][motif].data+J*LD;
   }
 
   template <unsigned int LT, unsigned int LD>
   void SetChain(LatticeChain<LT,LD>& LC, const Vector<unsigned int>& bv) {
     const BondLib<LT,LD>& rBL=RunBondLibrary<LT,LD>();
-    allocate(LC,bv.size);
-    unsigned int I=bv.size/rBL.BondNumber();
-    unsigned int J=bv.size%rBL.BondNumber();
+    allocate(LC,bv.size+1);
     bool flag;
-    for(unsigned int i=0;i<I;++i)
-    for(unsigned int j=0;j<rBL.MotifNumber(0);++j) {
-      flag=true;
-      for(unsigned int k=0;k<rBL.BondNumber();++k)
-        if(bv[i*rBL.BondNumber()+k]!=rBL.Bond(j)[k]){
-          flag=false;
-          break;
-        }
-      if(flag) {
-        LC[i]=static_cast<unsigned char>(j);
-        break;
-      }
-    }
-    if(J!=0) {
-      unsigned int M=rBL.BondNumber()-J;
-      for(unsigned int j=rBL.MotifShift(M);
-                       j<rBL.MotifShift(M)+rBL.MotifNumber(M);++j) {
+    unsigned int nmotif;
+    for(unsigned int i=0;i<LC.Length()-1;++i) {
+      nmotif=rBL.mshift[rBL.MaxBonds-1][1];
+      for(unsigned int j=0;j<nmotif;++j) {
         flag=true;
-        for(unsigned int k=0;k<J;++k)
-          if(bv[I*rBL.BondNumber()+k]!=rBL.Bond(j)[k]){
+        for(unsigned int k=0;k<rBL.MaxBonds;++k)
+          if(bv[i*rBL.MaxBonds+k]!=rBL.mapper[BL.MaxBonds-1][j][k]) {
             flag=false;
             break;
           }
         if(flag) {
-          LC[I]=static_cast<unsigned char>(j);
+          LC[i]=static_cast<unsigned short int>(j);
           break;
         }
+      }
+    }
+    unsigned int M=bv.size-rBL.ResidualBonds();
+    nmotif=rBL.mshift[rBL.ResidualBonds()-1][1];
+    for(unsigned int j=0;j<nmotif;++j) {
+      flag=true;
+      for(unsigned int k=0;k<rBL.ResidualBonds();++k)
+        if(bv[M+k]!=rBL.mapper[rBL.ResidualBonds()-1][j][k]) {
+          flag=false;
+          break;
+        }
+      if(flag) {
+        LC[LC.Length()-1]=static_cast<unsigned short int>(j);
+        break;
       }
     }
   }
@@ -78,7 +79,7 @@ namespace std {
                      LatticeChainSet<SquareLattice,2>& CS,
                      const unsigned int Z) {
     assert(LC.Length()==CS.Length());
-    copy(CS[Z],static_cast<const Vector<unsigned char>&>(LC));
+    copy(CS[Z],static_cast<const Vector<unsigned short int>&>(LC));
   } 
 
 }

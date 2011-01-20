@@ -362,6 +362,7 @@ namespace std {
   void copy(double& d, const int& rd) { d=rd; }
   void copy(double& d, const long int& rd) { d=rd; }
   void copy(double& d, const unsigned int& rd) { d=rd; }
+  void copy(double& d, const unsigned short int& rd) { d=rd; }
   void copy(double& d, const char& c) { d=c; }
   void copy(double& d, const unsigned char& c) { d=c; }
 
@@ -370,30 +371,39 @@ namespace std {
   void copy(float& d, const int& rd) { d=rd; }
   void copy(float& d, const long int& rd) { d=rd; }
   void copy(float& d, const unsigned int& rd) { d=rd; }
+  void copy(float& d, const unsigned short int& rd) { d=rd; }
   void copy(float& d, const char& c) { d=c; }
   void copy(float& d, const unsigned char& c) { d=c; }
 
   void copy(int& d, const int& rd) { d=rd; }
   void copy(int& d, const long int& rd) { d=rd; }
   void copy(int& d, const unsigned int& rd) { d=rd; }
+  void copy(int& d, const unsigned short int& rd) { d=rd; }
   void copy(int& d, const char& c) { d=c; }
   void copy(int& d, const unsigned char& c) { d=c; }
 
   void copy(long int& d, const int& rd) { d=rd; }
   void copy(long int& d, const long int& rd) { d=rd; }
   void copy(long int& d, const unsigned int& rd) { d=rd; }
+  void copy(long int& d, const unsigned short int& rd) { d=rd; }
   void copy(long int& d, const char& c) { d=c; }
   void copy(long int& d, const unsigned char& c) { d=c; }
 
   void copy(unsigned int& d, const unsigned int& rd) {d=rd; }
   void copy(unsigned int& d, const int& rd) { d=rd; }
   void copy(unsigned int& d, const long int& rd) { d=rd; }
+  void copy(unsigned int& d, const unsigned short int& rd) {d=rd; }
   void copy(unsigned int& d, const char& c) { d=c; }
   void copy(unsigned int& d, const unsigned char& c) { d=c; }
+
+  void copy(unsigned short int& d, const unsigned short int& rd) { d=rd; }
+  void copy(unsigned short int& d, const char& c) { d=c; }
+  void copy(unsigned short int& d, const unsigned char& c) { d=c; }
 
   void copy(bool& d, const bool& rd) { d=rd; }
   void copy(bool& d, const unsigned int& rd) { d=(rd==0?false:true); }
   void copy(bool& d, const int& rd) { d=(rd==0?false:true); }
+  void copy(bool& d, const unsigned short int& rd) { d=(rd==0?false:true); }
   void copy(bool& d, const char& c) { d=(c==0?false:true); }
   void copy(bool& d, const unsigned char& c) { d=(c==0?false:true); }
 
