@@ -101,7 +101,7 @@ namespace std {
   template <>
   const unsigned int BondLib<SquareLattice,2>::NeighborNumber=4;
   template <>
-  const unsigned int BondLib<SquareLattice,2>::MaxShiftConditions=2;
+  const unsigned int BondLib<SquareLattice,2>::MaxShiftConditions=3;
 
   template <>
   void BondLib<SquareLattice,2>::loadlib(const char* ROOT) {

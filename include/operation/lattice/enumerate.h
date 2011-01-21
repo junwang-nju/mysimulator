@@ -12,10 +12,10 @@ namespace std {
     return 0;
   }
 
-  int enumerateSquare2D_Init(
+  void enumerateSquare2D_Init(
       PropertyList<int>& Mesh, PropertyList<int>& R, 
-      LatticeChain<SquareLattice,2>& LC, Vector<unsigned short int>& BoundLow,
-      Vector<unsigned short int>& BoundHigh, Vector<unsigned int>& ID,
+      LatticeChain<SquareLattice,2>& LC, Vector<unsigned short int>& BoundHigh,
+      Vector<unsigned int>& Len, Vector<PropertyList<unsigned int> >& Motif,
       const unsigned int N) {
     const BondLib<SquareLattice,2>& rBL=RunBondLibrary<SquareLattice,2>();
     Vector<unsigned int> sz;
@@ -29,11 +29,30 @@ namespace std {
     allocate(R,sz);
     R[0][0]=R[0][1]=N-1;
     Mesh[N-1][N-1]=0;
-    allocate(BoundLow,LC.size);
     allocate(BoundHigh,LC.size);
-    allocate(ID,LC.size);
-    copy(ID,LC.MaxBonds)-1;
-    ID[LC.Length()-1]=LC.ResidualBonds()-1;
+    allocate(Len,LC.size);
+    copy(Len,rBL.MaxBonds);
+    Len[Len.size-1]=rBL.ResidualBonds();
+    allocate(Motif,LC.size);
+    for(unsigned int i=0;i<LC.size;++i) refer(Motif[i],rBL.mapper[Len[i]-1]);
+  }
+
+  bool enumerateSquare2D_Propagate(
+      const unsigned int B, const unsigned int BS, const unsigned int BSL,
+      const unsigned int BSH, const unsigned int LCB, const unsigned int LenB,
+      PropertyList<int>& R, const PropertyList<int>& Mesh) {
+    const BondLib<SquareLattice,2>& rBL=RunBondLibrary<SquareLattice,2>();
+    int* tmR=rBL.xmapper[LenB-1][LCB].data;
+    bool oflag=false;
+    int X=R[BS][0],Y=R[BS][1],Xn,Yn;
+    for(unsigned int i=BSL,n=0;i<BSH;++i) {
+      Xn=X+tmR[n++];
+      Yn=Y+tmR[n++];
+      R[i][0]=Xn;
+      R[i][1]=Yn;
+      if(Mesh[Xn][Yn]>=0) { oflag=true; break; }
+    }
+    return oflag;
   }
 
   template <typename OutputType>
@@ -41,39 +60,37 @@ namespace std {
     const BondLib<SquareLattice,2>& rBL=RunBondLibrary<SquareLattice,2>();
     PropertyList<int> Mesh,R;
     LatticeChain<SquareLattice,2> LC;
-    Vector<unsigned int> ID;
-    Vector<unsigned short int> BoundLow,BoundHigh;
+    Vector<unsigned int> Len;
+    Vector<PropertyList<unsigned int> > Motif;
+    Vector<unsigned short int> BoundHigh;
     int* tmR;
 
-    enumerateSquare2D_Init(Mesh,R,LC,BoundLow,BoundHigh,ID,N);
+    enumerateSquare2D_Init(Mesh,R,LC,BoundHigh,Len,Motif,N);
 
-    int B,BC,X,Y,Xn,Yn,Z=0;
+    int B,BS,BSL,BSH,BC,Z=0;
     bool oflag;
     B=0;
+    BS=0;
+    BSL=BS+1;
+    BSH=BSL+Len[B];
     BC=-1;
-    BoundLow[B]=rBL.MotifShift(ID[B]);
-    BoundHigh[B]=rBL.ConfShift(ID[B])[HeadWithZero2D];
-    LC[0]=BoundLow[0];
+    BoundHigh[B]=rBL.mshift[Len[B]-1][0];
+    LC[0]=0;
     do {
-      tmR=rBL.Site(LC[B]).data;
-      oflag=false;
-      X=R[BS[B]][0];
-      Y=R[BS[B]][1];
-      for(unsigned int i=1+BS[B],n=0;i<1+BS[B+1];++i) {
-        Xn=X+tmR[n++];
-        Yn=Y+tmR[n++];
-        R[i][0]=Xn;
-        R[i][1]=Yn;
-        if(Mesh[Xn][Yn]>=0) { oflag=true; break; }
-      }
+      oflag=enumerateSquare2D_Propagate(B,BS,BSL,BSH,LC[B],Len[B],R,Mesh);
       if(!oflag) {
-        for(unsigned int i=1+BS[B];i<1+BS[B+1];++i)
-          Mesh[R[i][0]][R[i][1]]=i;
-        if(B==static_cast<int>(LC.size-1)) {
+        if(B<static_cast<int>(LC.size-1)) {
+          for(unsigned int i=BSL;i<BSH;++i) Mesh[R[i][0]][R[i][1]]=i;
+          if((B-BC==1)&&(LC[B]==0)) ++BC;
+          BS+=Len[B]; ++B;
+          BoundHigh[B]=(B-BC==1?rBL.mshift[Len[B]-1][1]:
+                                rBL.mshift[Len[B]-1][2]);
+          LC[B]=0;
+        } else {
           WriteSequence(LC,OB,Z);
           ++Z;
         }
-      }
+      } ///
       if((!oflag)&&(B<static_cast<int>(LC.size-1))) {
         if((B-BC==1)&&(LC[B]==BoundLow[B])) BC++;
         B++;
