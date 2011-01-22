@@ -10,7 +10,7 @@ namespace std {
   template <unsigned int LatType, unsigned int EmbedDim>
   struct LatticeChainSet : public PropertyList<unsigned short int> {
     typedef LatticeChainSet<LatType,EmbedDim>   Type;
-    typedef PropertyList<unsigned unsigned int> ParentType;
+    typedef PropertyList<unsigned short int> ParentType;
     
     Vector<unsigned int> property;
     LatticeChainSet() : ParentType(), property() {}

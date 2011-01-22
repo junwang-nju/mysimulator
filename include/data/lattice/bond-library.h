@@ -34,12 +34,12 @@ namespace std {
         sprintf(nmbuff,"%s.%d-bond",ftemplate,i+1);
         ifs.open(nmbuff);
         ifs>>mshift[i];
-        nmotif=mshift[i][MaxShiftConditions];
+        nmotif=mshift[i][MaxShiftConditions-1];
         allocate(sz,nmotif);
         copy(sz,i+1);
         allocate(mapper[i],sz);
         scale(sz,LatticeDim);
-        allocate(xmapper,sz);
+        allocate(xmapper[i],sz);
         for(unsigned int k=0;k<nmotif;++k)  ifs>>mapper[i][k];
         ifs.close();
       }
@@ -97,7 +97,7 @@ namespace std {
   }
   
   template <>
-  const unsigned int BondLib<SquareLattice,2>::MaxBonds=12;
+  const unsigned int BondLib<SquareLattice,2>::MaxBonds=10;
   template <>
   const unsigned int BondLib<SquareLattice,2>::NeighborNumber=4;
   template <>
@@ -110,18 +110,20 @@ namespace std {
     sprintf(tmbuff,"%s/include/data/lattice/square-2d",ROOT);
     readlib(tmbuff);
     int x,y;
-    for(unsigned int i=0,nbond=i+1;i<MaxBonds;++i)
-    for(unsigned int k=0;k<mapper[i].nunit;++k) {
-      x=y=0;
-      for(unsigned int l=0,n=0;l<nbond;++l) {
-        switch(mapper[i][k][l]) {
-          case 0: ++x;  break;
-          case 1: ++y;  break;
-          case 2: --y;  break;
-          case 3: --x;  break;
+    for(unsigned int i=0,nbond=0;i<MaxBonds;++i) {
+      nbond=i+1;
+      for(unsigned int k=0;k<mapper[i].nunit;++k) {
+        x=y=0;
+        for(unsigned int l=0,n=0;l<nbond;++l) {
+          switch(mapper[i][k][l]) {
+            case 0: ++x;  break;
+            case 1: ++y;  break;
+            case 2: --y;  break;
+            case 3: --x;  break;
+          }
+          xmapper[i][k][n++]=x;
+          xmapper[i][k][n++]=y;
         }
-        xmapper[i][k][n++]=x;
-        xmapper[i][k][n++]=y;
       }
     }
   }

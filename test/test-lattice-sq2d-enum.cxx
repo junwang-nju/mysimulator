@@ -7,7 +7,8 @@ int main(int argc, char** argv) {
   if(argc<2)  LoadBondLibrary<SquareLattice,2>();
   else        LoadBondLibrary<SquareLattice,2>(argv[1]);
   cout<<IsAvailable(RunBondLibrary<SquareLattice,2>())<<endl;
-  cout<<RunBondLibrary<SquareLattice,2>().Bond(6)<<endl;
+  unsigned int g=RunBondLibrary<SquareLattice,2>().MaxBonds;
+  cout<<RunBondLibrary<SquareLattice,2>().mapper[g-1][6]<<endl;
   LatticeChain<SquareLattice,2> LC;
   Vector<unsigned int> BV;
   allocate(BV,11);
@@ -23,11 +24,11 @@ int main(int argc, char** argv) {
   BV[9]=1;
   BV[10]=3;
   SetChain(LC,BV);
-  for(unsigned int i=0;i<LC.size;++i)  cout<<static_cast<int>(LC[i])<<"\t";
-  cout<<endl;
+  cout<<LC[0]<<"\t"<<LC[1]<<endl;
   unsigned int Z;
-  Z=enumerateSquare2D(12,cout);
+  Z=enumerateSquare2D(8,cout);
   cout<<Z<<endl;
+  /*
   PropertyList<unsigned int> FB;
   Vector<unsigned int> sz;
   allocate(sz,5);
@@ -41,6 +42,7 @@ int main(int argc, char** argv) {
   cout<<FB<<endl;
   Z=enumerateSquare2DPart(12,FB,cout);
   cout<<Z<<endl;
+  */
   UnloadBondLibrary<SquareLattice,2>();
   return 0;
 }

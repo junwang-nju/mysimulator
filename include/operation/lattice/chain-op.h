@@ -33,12 +33,12 @@ namespace std {
     allocate(LC,bv.size+1);
     bool flag;
     unsigned int nmotif;
-    for(unsigned int i=0;i<LC.Length()-1;++i) {
-      nmotif=rBL.mshift[rBL.MaxBonds-1][1];
+    for(unsigned int i=0;i<LC.size-1;++i) {
+      nmotif=rBL.mshift[rBL.MaxBonds-1][2];
       for(unsigned int j=0;j<nmotif;++j) {
         flag=true;
         for(unsigned int k=0;k<rBL.MaxBonds;++k)
-          if(bv[i*rBL.MaxBonds+k]!=rBL.mapper[BL.MaxBonds-1][j][k]) {
+          if(bv[i*rBL.MaxBonds+k]!=rBL.mapper[rBL.MaxBonds-1][j][k]) {
             flag=false;
             break;
           }
@@ -48,17 +48,17 @@ namespace std {
         }
       }
     }
-    unsigned int M=bv.size-rBL.ResidualBonds();
-    nmotif=rBL.mshift[rBL.ResidualBonds()-1][1];
+    unsigned int M=bv.size-LC.ResidualBonds();
+    nmotif=rBL.mshift[LC.ResidualBonds()-1][2];
     for(unsigned int j=0;j<nmotif;++j) {
       flag=true;
-      for(unsigned int k=0;k<rBL.ResidualBonds();++k)
-        if(bv[M+k]!=rBL.mapper[rBL.ResidualBonds()-1][j][k]) {
+      for(unsigned int k=0;k<LC.ResidualBonds();++k)
+        if(bv[M+k]!=rBL.mapper[LC.ResidualBonds()-1][j][k]) {
           flag=false;
           break;
         }
       if(flag) {
-        LC[LC.Length()-1]=static_cast<unsigned short int>(j);
+        LC[LC.size-1]=static_cast<unsigned short int>(j);
         break;
       }
     }
