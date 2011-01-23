@@ -45,7 +45,7 @@ namespace std {
             Parent;
     allocate(static_cast<Parent&>(F),dim,nunit);
     allocate(static_cast<Vector<IUType>&>(F),tags.size);
-    for(unsigned int i=0;i<tags.size;++i) allocate(F[i],tags[i]);
+    for(unsigned int i=0;i<tags.size;++i) allocate(F[i],tags[i],dim);
   }
 
 }

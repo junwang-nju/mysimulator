@@ -78,9 +78,11 @@ namespace std {
 namespace std {
 
   template <typename T, template<typename> class DBuff,typename GType>
-  void allocate(InteractionUnit<T,DBuff,GType>& F, const unsigned int& tag) {
+  void allocate(InteractionUnit<T,DBuff,GType>& F,
+      const unsigned int& tag, const unsigned int& dim) {
     F.pTag=new unsigned int;
     F.iTag()=tag;
+    Vector<unsigned int> sz;
     switch(tag) {
       case Harmonic:
         F.EFunc=EFuncHarmonic<T,DBuff,GType>;
@@ -121,6 +123,83 @@ namespace std {
         F.EFunc=EFuncCoulomb<T,DBuff,GType>;
         F.GFunc=GFuncCoulomb<T,DBuff,GType>;
         F.BFunc=BFuncCoulomb<T,DBuff,GType>;
+        break;
+      case FENE:
+        F.EFunc=EFuncFENE<T,DBuff,GType>;
+        F.GFunc=GFuncFENE<T,DBuff,GType>;
+        F.BFunc=BFuncFENE<T,DBuff,GType>;
+        break;
+      case QuadPlusHarmonic:
+        F.EFunc=EFuncQuadHarmonic<T,DBuff,GType>;
+        F.GFunc=GFuncQuadHarmonic<T,DBuff,GType>;
+        F.BFunc=BFuncQuadHarmonic<T,DBuff,GType>;
+        break;
+      case AngleHarmonic:
+        allocate(sz,4);
+        copy(sz,dim);
+        allocate(F.tmvec,sz);
+        F.EFunc=EFuncAngleHarmonic<T,DBuff,GType>;
+        F.GFunc=GFuncAngleHarmonic<T,DBuff,GType>;
+        F.BFunc=BFuncAngleHarmonic<T,DBuff,GType>;
+        break;
+      case DihedralPeriodic:
+        allocate(sz,6);
+        copy(sz,dim);
+        allocate(F.tmvec,sz);
+        F.EFunc=EFuncDihPeriodic<T,DBuff,GType>;
+        F.GFunc=GFuncDihPeriodic<T,DBuff,GType>;
+        F.BFunc=BFuncDihPeriodic<T,DBuff,GType>;
+        break;
+      case CoreExpandedCoreLJ612:
+        F.EFunc=EFuncCECoreLJ612<T,DBuff,GType>;
+        F.GFunc=GFuncCECoreLJ612<T,DBuff,GType>;
+        F.BFunc=BFuncCECoreLJ612<T,DBuff,GType>;
+        break;
+      case CoreExpandedLJ612:
+        F.EFunc=EFuncCELJ612<T,DBuff,GType>;
+        F.GFunc=GFuncCELJ612<T,DBuff,GType>;
+        F.BFunc=BFuncCELJ612<T,DBuff,GType>;
+        break;
+      case CentroidCentroidHarmonic:
+        allocate(sz,2);
+        copy(sz,dim);
+        allocate(F.tmvec,sz);
+        F.EFunc=EFuncCentroidCentroidHarmonic<T,DBuff,GType>;
+        F.GFunc=GFuncCentroidCentroidHarmonic<T,DBuff,GType>;
+        F.BFunc=BFuncCentroidCentroidHarmonic<T,DBuff,GType>;
+        break;
+      case ParticleCentroidHarmonic:
+        allocate(sz,1);
+        copy(sz,dim);
+        allocate(F.tmvec,sz);
+        F.EFunc=EFuncParticleCentroidHarmonic<T,DBuff,GType>;
+        F.GFunc=GFuncParticleCentroidHarmonic<T,DBuff,GType>;
+        F.BFunc=BFuncParticleCentroidHarmonic<T,DBuff,GType>;
+        break;
+      case PlaneWallCoreLJ612:
+        F.EFunc=EFuncPlaneWallCoreLJ612<T,DBuff,GType>;
+        F.GFunc=GFuncPlaneWallCoreLJ612<T,DBuff,GType>;
+        F.BFunc=BFuncPlaneWallCoreLJ612<T,DBuff,GType>;
+        break;
+      case PlaneWallLJ612Cut:
+        F.EFunc=EFuncPlaneWallLJ612Cut<T,DBuff,GType>;
+        F.GFunc=GFuncPlaneWallLJ612Cut<T,DBuff,GType>;
+        F.BFunc=BFuncPlaneWallLJ612Cut<T,DBuff,GType>;
+        break;
+      case SphericShellCoreLJ612:
+        F.EFunc=EFuncSphericShellCoreLJ612<T,DBuff,GType>;
+        F.GFunc=GFuncSphericShellCoreLJ612<T,DBuff,GType>;
+        F.BFunc=BFuncSphericShellCoreLJ612<T,DBuff,GType>;
+        break;
+      case SphericShellLJ612Cut:
+        F.EFunc=EFuncSphericShellLJ612Cut<T,DBuff,GType>;
+        F.GFunc=GFuncSphericShellLJ612Cut<T,DBuff,GType>;
+        F.BFunc=BFuncSphericShellLJ612Cut<T,DBuff,GType>;
+        break;
+      case AncherPointHarmonic:
+        F.EFunc=EFuncAncherPointHarmonic<T,DBuff,GType>;
+        F.GFunc=GFuncAncherPointHarmonic<T,DBuff,GType>;
+        F.BFunc=BFuncAncherPointHarmonic<T,DBuff,GType>;
         break;
       default:
         myError("Unknown interaction type");

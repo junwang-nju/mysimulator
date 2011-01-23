@@ -34,7 +34,7 @@ namespace std {
     typedef typename SimpleInteraction<T,DBuffer,GType>::ParentType
             Parent;
     allocate(static_cast<Parent&>(F),dim,nunit);
-    allocate(static_cast<IUType&>(F),tag);
+    allocate(static_cast<IUType&>(F),tag,dim);
   }
 
 }

@@ -75,7 +75,16 @@ int main() {
   BuildParameterPropagatorVVerlet(P);
 
   ListInteraction<double,DistanceBufferSimple,FreeSpace> F;
-  allocate(sz,);
+  allocate(sz,(nunit*(nunit+1))/2);
+  for(unsigned int i=0;i<nunit;++i) sz[i]=SphericShellLJ612Cut;
+  for(unsigned int i=0,n=nunit;i<nunit-1;++i) sz[n++]=FENE;
+  for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
+  for(unsigned int j=i+2;j<nunit;++j)   sz[n++]=LJ612Cut;
+  allocate(allocate,F,sz,3,nunit);
+  
+  Vector<InteractionParameterUnit> Prm;
+  allocate(Prm,(nunit*(nunit+1))/2);
+  for(unsigned int i=0;i<nunit;++i) allocate(Prm[i],SphericShellLJ612Cut);
 
   return 0;
 }

@@ -79,7 +79,23 @@ namespace std {
       case CoreLJ612:
       case FENE:
       case QuadPlusHarmonic:
+      case CoreExpandedCoreLJ612:
+      case CoreExpandedLJ612:
         allocate(P.idx,2);    break;
+      case AngleHarmonic:
+        allocate(P.idx,3);    break;
+      case DihedralPeriodic:
+        allocate(P.idx,4);    break;
+      case CentroidCentroidHarmonic:
+        allocate(P.idx,4+nunit);    break;
+      case ParticleCentroidHarmonic:
+        allocate(P.idx,2+nunit);    break;
+      case PlaneWallCoreLJ612:
+      case PlaneWallLJ612Cut:
+      case SphericShellCoreLJ612:
+      case SphericShellLJ612Cut:
+      case AncherPointHarmonic:
+        allocate(P.idx,1);          break;
       default:
         myError("Unknown Type of Interaction Parameter Unit");
     }
@@ -109,6 +125,14 @@ namespace std {
         allocate(P.prm,Core12NumberParameter);  break;
       case CoreLJ612:
         allocate(P.prm,CoreLJ612NumberParameter); break;
+      case FENE:
+        allocate(P.prm,FENENumberParameter);  break;
+      case QuadPlusHarmonic:
+        allocate(P.prm,QuadHarmonicNumberParameter);  break;
+      case AngleHarmonic:
+        allocate(P.prm,AngleHarmonicNumberParameter); break;
+      case DihedralPeriodic:
+        allocate(P.prm,DihedralPeriodicParameterName);  break;
       default:
         myError("Unknown Type of Interaction Parameter Unit");
     }

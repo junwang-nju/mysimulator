@@ -36,6 +36,13 @@ namespace std {
     DihedralPeriodic,
     CoreExpandedLJ612,
     CoreExpandedCoreLJ612,
+    CentroidCentroidHarmonic,
+    ParticleCentroidHarmonic,
+    PlaneWallCoreLJ612,
+    PlaneWallLJ612Cut,
+    SphericShellCoreLJ612,
+    SphericShellLJ612Cut,
+    AncherPointHarmonic,
     InteractionTableTerminus,
     NumberInteractions=InteractionTableTerminus-1
   };
