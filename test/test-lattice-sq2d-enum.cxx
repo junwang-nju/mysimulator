@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
   unsigned int Z;
   Z=enumerateSquare2D(8,cout);
   cout<<Z<<endl;
-  /*
+
   PropertyList<unsigned int> FB;
   Vector<unsigned int> sz;
   allocate(sz,5);
@@ -40,9 +40,9 @@ int main(int argc, char** argv) {
   FB[3][0]=9;   FB[3][1]=1;
   FB[4][0]=10;  FB[4][1]=1;
   cout<<FB<<endl;
-  Z=enumerateSquare2DPart(12,FB,cout);
+  Z=enumerateSquare2DFixBond(12,FB,cout);
   cout<<Z<<endl;
-  */
+
   UnloadBondLibrary<SquareLattice,2>();
   return 0;
 }
