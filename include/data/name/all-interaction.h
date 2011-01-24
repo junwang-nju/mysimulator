@@ -19,6 +19,10 @@
 #include "data/name/core-expanded-lj612.h"
 #include "data/name/core-expanded-corelj612.h"
 
+#include "data/name/external-object-corelj612.h"
+#include "data/name/external-object-lj612cut.h"
+#include "data/name/external-object-harmonic.h"
+
 namespace std {
 
   enum InteractionName {

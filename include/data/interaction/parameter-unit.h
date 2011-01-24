@@ -110,6 +110,8 @@ namespace std {
     }
     switch(itag) {
       case Harmonic:
+      case CentroidCentroidHarmonic:
+      case ParticleCentroidHarmonic:
         allocate(P.prm,HarmonicNumberParameter);  break;
       case LJ612:
         allocate(P.prm,LJ612NumberParameter); break;
@@ -132,7 +134,21 @@ namespace std {
       case AngleHarmonic:
         allocate(P.prm,AngleHarmonicNumberParameter); break;
       case DihedralPeriodic:
-        allocate(P.prm,DihedralPeriodicParameterName);  break;
+        myWarn("Dihedral-Periodic Intercation should be allocated with extra parameter");   break;
+      case CoreExpandedCoreLJ612:
+        allocate(P.prm,CoreExpandedCoreLJ612NumberParameter);   break;
+      case CoreExpandedLJ612:
+        allocate(P.prm,CoreExpandedLJ612NumberParameter);   break;
+      case PlaneWallCoreLJ612:
+        allocate(P.prm,ExtObjCoreLJ612NumberParameter);   break;
+      case PlaneWallLJ612Cut:
+        allocate(P.prm,ExtObjLJ612CutNumberParameter);    break;
+      case SphericShellCoreLJ612:
+        allocate(P.prm,ExtObjCoreLJ612NumberParameter);   break;
+      case SphericShellLJ612Cut:
+        allocate(P.prm,ExtObjLJ612CutNumberParameter);    break;
+      case AncherPointHarmonic:
+        allocate(P.prm,ExtObjHarmonicNumberParameter);    break;
       default:
         myError("Unknown Type of Interaction Parameter Unit");
     }
