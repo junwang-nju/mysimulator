@@ -47,9 +47,60 @@ namespace std {
     SphericShellCoreLJ612,
     SphericShellLJ612Cut,
     AncherPointHarmonic,
-    InteractionTableTerminus,
-    NumberInteractions=InteractionTableTerminus-1
+    NumberInteractions
   };
+
+  static Vector<unsigned int> InteractionIdxSize;
+
+  void InitInteractionIndexSize() {
+    allocate(InteractionIdxSize,NumberInteractions);
+    copy(InteractionIdxSize,0);
+    InteractionIdxSize[Harmonic]=2;
+    InteractionIdxSize[LJ612]=2;
+    InteractionIdxSize[LJ612Cut]=2;
+    InteractionIdxSize[LJ1012]=2;
+    InteractionIdxSize[LJ1012Cut]=2;
+    InteractionIdxSize[Coulomb]=2;
+    InteractionIdxSize[Core12]=2;
+    InteractionIdxSize[CoreLJ612]=2;
+    InteractionIdxSize[FENE]=2;
+    InteractionIdxSize[QuadPlusHarmonic]=2;
+    InteractionIdxSize[CoreExpandedCoreLJ612]=2;
+    InteractionIdxSize[CoreExpandedLJ612]=2;
+    InteractionIdxSize[AngleHarmonic]=3;
+    InteractionIdxSize[DihedralPeriodic]=4;
+    InteractionIdxSize[PlaneWallCoreLJ612]=1;
+    InteractionIdxSize[PlaneWallLJ612Cut]=1;
+    InteractionIdxSize[SphericShellCoreLJ612]=1;
+    InteractionIdxSize[SphericShellLJ612Cut]=1;
+    InteractionIdxSize[AncherPointHarmonic]=1;
+  }
+
+  static Vector<unsigned int> InteractionPrmSize;
+  
+  void InitInteractionParameterSize() {
+    allocate(InteractionPrmSize,NumberInteractions);
+    copy(InteractionPrmSize,0);
+    InteractionPrmSize[Harmonic]=HarmonicNumberParameter;
+    InteractionPrmSize[LJ612]=LJ612NumberParameter;
+    InteractionPrmSize[LJ612Cut]=LJ612CutNumberParameter;
+    InteractionPrmSize[LJ1012]=LJ1012NumberParameter;
+    InteractionPrmSize[LJ1012Cut]=LJ1012CutNumberParameter;
+    InteractionPrmSize[Coulomb]=CoulombNumberParameter;
+    InteractionPrmSize[Core12]=Core12NumberParameter;
+    InteractionPrmSize[CoreLJ612]=CoreLJ612NumberParameter;
+    InteractionPrmSize[FENE]=FENENumberParameter;
+    InteractionPrmSize[QuadPlusHarmonic]=QuadHarmonicNumberParameter;
+    InteractionPrmSize[AngleHarmonic]=AngleHarmonicNumberParameter;
+    InteractionPrmSize[CoreExpandedCoreLJ612]=
+        CoreExpandedCoreLJ612NumberParameter;
+    InteractionPrmSize[CoreExpandedLJ612]=CoreExpandedLJ612NumberParameter;
+    InteractionPrmSize[PlaneWallCoreLJ612]=ExtObjCoreLJ612NumberParameter;
+    InteractionPrmSize[PlaneWallLJ612Cut]=ExtObjLJ612CutNumberParameter;
+    InteractionPrmSize[SphericShellCoreLJ612]=ExtObjCoreLJ612NumberParameter;
+    InteractionPrmSize[SphericShellLJ612Cut]=ExtObjLJ612CutNumberParameter;
+    InteractionPrmSize[AncherPointHarmonic]=ExtObjHarmonicNumberParameter;
+  }
 
 }
 

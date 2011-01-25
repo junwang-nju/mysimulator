@@ -58,106 +58,37 @@ namespace std {
 }
 
 #include "data/name/all-interaction.h"
+#include "operation/parameter/build-param-dihedral-periodic.h"
+#include <cstdarg>
 
 namespace std {
 
-  void allocateIndex(InteractionParameterUnit& P,
-                     const unsigned int& itag, const unsigned int nunit=0) {
+  void allocate(InteractionParameterUnit& P, const unsigned int& itag, ...) {
     assert((!IsAvailable(P.tag))||(P.iTag()==itag));
     if(!IsAvailable(P.tag)) {
       allocate(P.tag,1);
       P.iTag()=itag;
     }
-    switch(itag) {
-      case Harmonic:
-      case LJ612:
-      case LJ612Cut:
-      case LJ1012:
-      case LJ1012Cut:
-      case Coulomb:
-      case Core12:
-      case CoreLJ612:
-      case FENE:
-      case QuadPlusHarmonic:
-      case CoreExpandedCoreLJ612:
-      case CoreExpandedLJ612:
-        allocate(P.idx,2);    break;
-      case AngleHarmonic:
-        allocate(P.idx,3);    break;
-      case DihedralPeriodic:
-        allocate(P.idx,4);    break;
-      case CentroidCentroidHarmonic:
-        allocate(P.idx,4+nunit);    break;
-      case ParticleCentroidHarmonic:
-        allocate(P.idx,2+nunit);    break;
-      case PlaneWallCoreLJ612:
-      case PlaneWallLJ612Cut:
-      case SphericShellCoreLJ612:
-      case SphericShellLJ612Cut:
-      case AncherPointHarmonic:
-        allocate(P.idx,1);          break;
-      default:
-        myError("Unknown Type of Interaction Parameter Unit");
-    }
-  }
-
-  void allocateParameter(InteractionParameterUnit& P,
-                         const unsigned int& itag){
-    assert((!IsAvailable(P.tag))||(P.iTag()==itag));
-    if(!IsAvailable(P.tag)) {
-      allocate(P.tag,1);
-      P.iTag()=itag;
-    }
-    switch(itag) {
-      case Harmonic:
-      case CentroidCentroidHarmonic:
-      case ParticleCentroidHarmonic:
-        allocate(P.prm,HarmonicNumberParameter);  break;
-      case LJ612:
-        allocate(P.prm,LJ612NumberParameter); break;
-      case LJ612Cut:
-        allocate(P.prm,LJ612CutNumberParameter);  break;
-      case LJ1012:
-        allocate(P.prm,LJ1012NumberParameter);  break;
-      case LJ1012Cut:
-        allocate(P.prm,LJ1012CutNumberParameter); break;
-      case Coulomb:
-        allocate(P.prm,CoulombNumberParameter); break;
-      case Core12:
-        allocate(P.prm,Core12NumberParameter);  break;
-      case CoreLJ612:
-        allocate(P.prm,CoreLJ612NumberParameter); break;
-      case FENE:
-        allocate(P.prm,FENENumberParameter);  break;
-      case QuadPlusHarmonic:
-        allocate(P.prm,QuadHarmonicNumberParameter);  break;
-      case AngleHarmonic:
-        allocate(P.prm,AngleHarmonicNumberParameter); break;
-      case DihedralPeriodic:
-        myWarn("Dihedral-Periodic Intercation should be allocated with extra parameter");   break;
-      case CoreExpandedCoreLJ612:
-        allocate(P.prm,CoreExpandedCoreLJ612NumberParameter);   break;
-      case CoreExpandedLJ612:
-        allocate(P.prm,CoreExpandedLJ612NumberParameter);   break;
-      case PlaneWallCoreLJ612:
-        allocate(P.prm,ExtObjCoreLJ612NumberParameter);   break;
-      case PlaneWallLJ612Cut:
-        allocate(P.prm,ExtObjLJ612CutNumberParameter);    break;
-      case SphericShellCoreLJ612:
-        allocate(P.prm,ExtObjCoreLJ612NumberParameter);   break;
-      case SphericShellLJ612Cut:
-        allocate(P.prm,ExtObjLJ612CutNumberParameter);    break;
-      case AncherPointHarmonic:
-        allocate(P.prm,ExtObjHarmonicNumberParameter);    break;
-      default:
-        myError("Unknown Type of Interaction Parameter Unit");
-    }
-  }
-
-  void allocate(InteractionParameterUnit& P,
-                const unsigned int& itag, const unsigned int nunit=0) {
-    allocateIndex(P,itag,nunit);
-    allocateParameter(P,itag);
+    va_list vl;
+    va_start(vl,itag);
+    if(!IsAvailable(InteractionIdxSize))  InitInteractionIndexSize();
+    if(itag==CentroidCentroidHarmonic) {
+      unsigned int nunit=va_arg(vl,unsigned int);
+      allocate(P.idx,4+nunit);
+    } else if(itag==ParticleCentroidHarmonic) {
+      unsigned int nunit=va_arg(vl,unsigned int);
+      allocate(P.idx,2+nunit);
+    } else if(itag<NumberInteractions)
+      allocate(P.idx,InteractionIdxSize[itag]);
+    else  myError("Unknown Type of Interaction Parameter Unit");
+    if(!IsAvailable(InteractionPrmSize))  InitInteractionParameterSize();
+    if(itag==DihedralPeriodic) {
+      unsigned int nperiod=va_arg(vl,unsigned int);
+      allocateDihPeriodicParameter(P.prm,nperiod);
+    } else if(itag<NumberInteractions)
+      allocate(P.prm,InteractionPrmSize[itag]);
+    else  myError("Unknown Type of Interaction Parameter Unit");
+    va_end(vl);
   }
 
   void imprint(InteractionParameterUnit& P,

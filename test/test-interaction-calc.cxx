@@ -15,16 +15,14 @@ int main() {
   
   cout<<"Test -- allocate Interaction"<<endl;
   allocate(F,Harmonic,3,2);
-  allocateIndex(P,Harmonic);
-  allocateParameter(P,Harmonic);
+  allocate(P,Harmonic);
   cout<<endl;
 
   cout<<"Test -- copy Interaction"<<endl;
   SimpleInteraction<double,DistanceBufferSimple,FreeSpace> F2;
   InteractionParameterUnit P2;
   allocate(F2,Harmonic,3,2);
-  allocateIndex(P2,Harmonic);
-  allocateParameter(P2,Harmonic);
+  allocate(P2,Harmonic);
   copy(F2,F);
   copy(P2,P);
   cout<<endl;
