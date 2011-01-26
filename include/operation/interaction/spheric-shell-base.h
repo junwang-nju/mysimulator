@@ -22,8 +22,7 @@ namespace std {
     Vector<UniqueParameter>& sP=*reinterpret_cast<Vector<UniqueParameter>*>(
         P[ExtObjectPropertyPointer].ptr);
     T fg=sP[SphericShellDirection].value<T>();
-    T r2=sP[SphericShellRadiusSQ].value<T>();
-    assert((ddsq-r2)*fg>0);
+    assert((ddsq-sP[SphericShellRadiusSQ].value<T>())*fg>0);
     T d=(sqroot(ddsq)-sP[SphericShellRadius].value<T>())*fg;
     T dsq=d*d;
     T ee;
@@ -44,8 +43,7 @@ namespace std {
     Vector<UniqueParameter>& sP=*reinterpret_cast<Vector<UniqueParameter>*>(
         P[ExtObjectPropertyPointer].ptr);
     T fg=sP[SphericShellDirection].value<T>();
-    T r2=sP[SphericShellRadiusSQ].value<T>();
-    assert((ddsq-r2)*fg>0);
+    assert((ddsq-sP[SphericShellRadiusSQ].value<T>())*fg>0);
     T rd=sqroot(ddsq);
     T d=(rd-sP[SphericShellRadius].value<T>())*fg;
     T dsq=d*d;
@@ -68,8 +66,7 @@ namespace std {
     Vector<UniqueParameter>& sP=*reinterpret_cast<Vector<UniqueParameter>*>(
         P[ExtObjectPropertyPointer].ptr);
     T fg=sP[SphericShellDirection].value<T>();
-    T r2=sP[SphericShellRadiusSQ].value<T>();
-    assert((ddsq-r2)*fg>0);
+    assert((ddsq-sP[SphericShellRadiusSQ].value<T>())*fg>0);
     T rd=sqroot(ddsq);
     T d=(rd-sP[SphericShellRadius].value<T>())*fg;
     T dsq=d*d;

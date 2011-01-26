@@ -8,7 +8,20 @@
 #include "data/random/regular.h"
 #include "operation/random/random-generator-boxmuller-op.h"
 #include "operation/random/random-generator-op.h"
+#include "operation/parameter/build-param-ext-object-lj612cut.h"
+#include "operation/parameter/build-param-fene.h"
+#include "operation/parameter/build-param-lj612cut.h"
+#include "operation/parameter/build-param-spheric-shell-property.h"
+#include "operation/propagate/run.h"
 using namespace std;
+
+template <typename T, typename ParameterType,
+          template<typename,template<typename>class,typename> class IType,
+          template <typename> class DBuffer, typename GeomType>
+void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
+             const ParameterType& Pm, ostream& os) {
+}
+
 
 int main() {
 
@@ -80,11 +93,52 @@ int main() {
   for(unsigned int i=0,n=nunit;i<nunit-1;++i) sz[n++]=FENE;
   for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j)   sz[n++]=LJ612Cut;
-  allocate(allocate,F,sz,3,nunit);
+  allocate(F,sz,3,nunit);
   
   Vector<InteractionParameterUnit> Prm;
   allocate(Prm,(nunit*(nunit+1))/2);
   for(unsigned int i=0;i<nunit;++i) allocate(Prm[i],SphericShellLJ612Cut);
+  for(unsigned int i=0,n=nunit;i<nunit-1;++i) allocate(Prm[n++],FENE);
+  for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
+  for(unsigned int j=i+2;j<nunit;++j) allocate(Prm[n++],LJ612Cut);
+  
+  Vector<double> wv;
+  Vector<UniqueParameter> pprop;
+  allocate(wv,3);
+  allocate(pprop,SphericShellPropertyNumberParameter);
+  copy(wv,0.);
+  pprop[SphericShellRadius].d=5.;
+  pprop[SphericShellDirection].d=1;
+  BuildParameterSphericShellProperty<double>(pprop);
+  for(unsigned int i=0;i<nunit;++i) {
+    Prm[i].prm[ExtObjectLocationPointer].ptr=reinterpret_cast<void*>(&wv);
+    Prm[i].prm[ExtObjectPropertyPointer].ptr=reinterpret_cast<void*>(&pprop);
+    Prm[i].prm[ExtObjLJ612CutEqRadius].d=1.;
+    Prm[i].prm[ExtObjLJ612CutEqEnergyDepth].d=4.;
+    Prm[i].prm[ExtObjLJ612CutCutR].d=5.;
+    BuildParameterExtObjLJ612Cut<double>(Prm[i].prm);
+  }
+  for(unsigned int  i=0,n=nunit;i<nunit-1;++i,++n) {
+    Prm[n].prm[FENEStrength].d=1.;
+    Prm[n].prm[FENEEqLength].d=1.;
+    Prm[n].prm[FENEDeltaRadiusMax].d=0.1;
+    BuildParameterFENE<double>(Prm[n].prm);
+  }
+  for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
+  for(unsigned int j=i+2;j<nunit;++j,++n) {
+    Prm[n].prm[LJ612CutEqRadius].d=1.;
+    Prm[n].prm[LJ612CutEqEnergyDepth].d=0.1;
+    Prm[n].prm[LJ612CutCutR].d=5.0;
+    BuildParameterLJ612Cut<double>(Prm[n].prm);
+  }
+
+  copy(P.G,0.);
+  CalcInteraction(F,P.X,Prm,P.G);
+  cout<<P.G<<endl;
+
+  assignOutput(P,OutFunc<double,Vector<InteractionParameterUnit>,
+                         ListInteraction,DistanceBufferSimple,FreeSpace>);
+  Run(P,F,Prm);
 
   return 0;
 }
