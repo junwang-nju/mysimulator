@@ -13,6 +13,7 @@
 #include "data/random/regular.h"
 #include "operation/random/random-generator-boxmuller-op.h"
 #include "operation/random/random-generator-op.h"
+#include <cstdio>
 using namespace std;
 
 template <typename T, typename ParameterType,
@@ -20,8 +21,10 @@ template <typename T, typename ParameterType,
           template <typename> class DBuffer, typename GeomType>
 void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
              const ParameterType& Pm, ostream& os) {
-  T E,kE;
   static Vector<T> V(3);
+  copy(V,P.X[0]);
+  shift(V,-1.,P.X[1]);
+  T E,kE;
   E=kE=0.;
   CalcInteraction(F,P.X,Pm,E);
   for(unsigned int i=0;i<P.V.nunit;++i)
@@ -29,16 +32,14 @@ void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
     0.5*static_cast<UniqueParameter&>(P.sysPg[0].merPg[i][MassData]).value<T>()
        *normSQ(P.V[i]);
   os<<static_cast<UniqueParameter&>(P[NowTime]).value<T>();
-  os<<"\t"<<E<<"\t"<<kE<<"\t"<<norm(P.X[0])<<"\t"<<norm(P.X[1])<<"\t";
-  copy(V,P.X[0]);
-  shift(V,-1.,P.X[1]);
-  os<<norm(V)<<endl;
+  os<<"\t"<<E<<"\t"<<kE<<"\t"<<norm(V)<<endl;
 }
 
 
 int main() {
 
-  const unsigned int nunit=2;
+  cout.precision(16);
+  const unsigned int nunit=100;
 
   Propagator<double> P;
   Vector<unsigned int> enstype;
@@ -86,8 +87,8 @@ int main() {
 
   P[StartTime].d=0.;
   P[TotalTime].d=10;
-  P[OutputInterval].d=0.001;
-  P.sysPg[0][TimeStep].d=0.0001;
+  P[OutputInterval].d=0.01;
+  P.sysPg[0][TimeStep].d=0.001;
   for(unsigned int i=0;i<nunit;++i) P.sysPg[0].merPg[i][MassData].d=1.;
   BuildParameterPropagatorVVerlet(P);
 
@@ -118,12 +119,12 @@ int main() {
     Prm[i].prm[ExtObjectLocationPointer].ptr=reinterpret_cast<void*>(&wv);
     Prm[i].prm[ExtObjectPropertyPointer].ptr=reinterpret_cast<void*>(&pprop);
     Prm[i].prm[ExtObjLJ612CutEqRadius].d=1.;
-    Prm[i].prm[ExtObjLJ612CutEqEnergyDepth].d=0.;
+    Prm[i].prm[ExtObjLJ612CutEqEnergyDepth].d=4.;
     Prm[i].prm[ExtObjLJ612CutCutR].d=5.;
     BuildParameterExtObjLJ612Cut<double>(Prm[i].prm);
   }
   for(unsigned int  i=0,n=nunit;i<nunit-1;++i,++n) {
-    Prm[n].prm[FENEStrength].d=1.;
+    Prm[n].prm[FENEStrength].d=10000.;
     Prm[n].prm[FENEEqLength].d=1.;
     Prm[n].prm[FENEDeltaRadiusMax].d=0.1;
     BuildParameterFENE<double>(Prm[n].prm);
@@ -131,7 +132,7 @@ int main() {
   for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j,++n) {
     Prm[n].prm[LJ612CutEqRadius].d=1.;
-    Prm[n].prm[LJ612CutEqEnergyDepth].d=0.;
+    Prm[n].prm[LJ612CutEqEnergyDepth].d=0.1;
     Prm[n].prm[LJ612CutCutR].d=5.0;
     BuildParameterLJ612Cut<double>(Prm[n].prm);
   }
