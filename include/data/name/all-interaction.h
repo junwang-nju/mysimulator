@@ -10,7 +10,7 @@
 #include "data/name/corelj612.h"
 #include "data/name/coulomb.h"
 #include "data/name/harmonic.h"
-#include "data/name/fene.h"
+#include "data/name/shifted-fene.h"
 #include "data/name/quad-plus-harmonic.h"
 
 #include "data/name/angle-harmonic.h"
@@ -34,7 +34,7 @@ namespace std {
     Core12,
     CoreLJ612,
     Coulomb,
-    FENE,
+    ShiftedFENE,
     QuadPlusHarmonic,
     AngleHarmonic,
     DihedralPeriodic,
@@ -63,7 +63,7 @@ namespace std {
     InteractionIdxSize[Coulomb]=2;
     InteractionIdxSize[Core12]=2;
     InteractionIdxSize[CoreLJ612]=2;
-    InteractionIdxSize[FENE]=2;
+    InteractionIdxSize[ShiftedFENE]=2;
     InteractionIdxSize[QuadPlusHarmonic]=2;
     InteractionIdxSize[CoreExpandedCoreLJ612]=2;
     InteractionIdxSize[CoreExpandedLJ612]=2;
@@ -89,7 +89,7 @@ namespace std {
     InteractionPrmSize[Coulomb]=CoulombNumberParameter;
     InteractionPrmSize[Core12]=Core12NumberParameter;
     InteractionPrmSize[CoreLJ612]=CoreLJ612NumberParameter;
-    InteractionPrmSize[FENE]=FENENumberParameter;
+    InteractionPrmSize[ShiftedFENE]=SfFENENumberParameter;
     InteractionPrmSize[QuadPlusHarmonic]=QuadHarmonicNumberParameter;
     InteractionPrmSize[AngleHarmonic]=AngleHarmonicNumberParameter;
     InteractionPrmSize[CoreExpandedCoreLJ612]=

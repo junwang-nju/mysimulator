@@ -124,10 +124,10 @@ namespace std {
         F.GFunc=GFuncCoulomb<T,DBuff,GType>;
         F.BFunc=BFuncCoulomb<T,DBuff,GType>;
         break;
-      case FENE:
-        F.EFunc=EFuncFENE<T,DBuff,GType>;
-        F.GFunc=GFuncFENE<T,DBuff,GType>;
-        F.BFunc=BFuncFENE<T,DBuff,GType>;
+      case ShiftedFENE:
+        F.EFunc=EFuncShiftedFENE<T,DBuff,GType>;
+        F.GFunc=GFuncShiftedFENE<T,DBuff,GType>;
+        F.BFunc=BFuncShiftedFENE<T,DBuff,GType>;
         break;
       case QuadPlusHarmonic:
         F.EFunc=EFuncQuadHarmonic<T,DBuff,GType>;

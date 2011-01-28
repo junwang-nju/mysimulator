@@ -6,7 +6,7 @@
 #include "operation/interaction/calc.h"
 #include "operation/parameter/build-param-propagator-vverlet.h"
 #include "operation/parameter/build-param-ext-object-lj612cut.h"
-#include "operation/parameter/build-param-fene.h"
+#include "operation/parameter/build-param-shifted-fene.h"
 #include "operation/parameter/build-param-lj612cut.h"
 #include "operation/parameter/build-param-spheric-shell-property.h"
 #include "operation/propagate/run.h"
@@ -95,7 +95,7 @@ int main() {
   ListInteraction<double,DistanceBufferSimple,FreeSpace> F;
   allocate(sz,(nunit*(nunit+1))/2);
   for(unsigned int i=0;i<nunit;++i) sz[i]=SphericShellLJ612Cut;
-  for(unsigned int i=0,n=nunit;i<nunit-1;++i) sz[n++]=FENE;
+  for(unsigned int i=0,n=nunit;i<nunit-1;++i) sz[n++]=ShiftedFENE;
   for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j)   sz[n++]=LJ612Cut;
   allocate(F,sz,3,nunit);
@@ -103,7 +103,7 @@ int main() {
   Vector<InteractionParameterUnit> Prm;
   allocate(Prm,(nunit*(nunit+1))/2);
   for(unsigned int i=0;i<nunit;++i) allocate(Prm[i],SphericShellLJ612Cut);
-  for(unsigned int i=0,n=nunit;i<nunit-1;++i) allocate(Prm[n++],FENE);
+  for(unsigned int i=0,n=nunit;i<nunit-1;++i) allocate(Prm[n++],ShiftedFENE);
   for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j) allocate(Prm[n++],LJ612Cut);
   
@@ -124,10 +124,10 @@ int main() {
     BuildParameterExtObjLJ612Cut<double>(Prm[i].prm);
   }
   for(unsigned int  i=0,n=nunit;i<nunit-1;++i,++n) {
-    Prm[n].prm[FENEStrength].d=10000.;
-    Prm[n].prm[FENEEqLength].d=1.;
-    Prm[n].prm[FENEDeltaRadiusMax].d=0.1;
-    BuildParameterFENE<double>(Prm[n].prm);
+    Prm[n].prm[SfFENEStrength].d=10000.;
+    Prm[n].prm[SfFENEEqLength].d=1.;
+    Prm[n].prm[SfFENEDeltaRadiusMax].d=0.1;
+    BuildParameterShiftedFENE<double>(Prm[n].prm);
   }
   for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j,++n) {

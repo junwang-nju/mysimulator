@@ -10,7 +10,7 @@
 #include "operation/interaction/corelj612.h"
 #include "operation/interaction/coulomb.h"
 #include "operation/interaction/harmonic.h"
-#include "operation/interaction/fene.h"
+#include "operation/interaction/shifted-fene.h"
 #include "operation/interaction/quad-plus-harmonic.h"
 
 #include "operation/interaction/angle-harmonic.h"
