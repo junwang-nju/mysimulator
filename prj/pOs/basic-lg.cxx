@@ -21,9 +21,6 @@ template <typename T, typename ParameterType,
           template <typename> class DBuffer, typename GeomType>
 void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
              const ParameterType& Pm, ostream& os) {
-  static Vector<T> V(3);
-  copy(V,P.X[0]);
-  shift(V,-1.,P.X[1]);
   T E,kE;
   E=kE=0.;
   CalcInteraction(F,P.X,Pm,E);
@@ -32,7 +29,7 @@ void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
     0.5*static_cast<UniqueParameter&>(P.sysPg[0].merPg[i][MassData]).value<T>()
        *normSQ(P.V[i]);
   os<<static_cast<UniqueParameter&>(P[NowTime]).value<T>();
-  os<<"\t"<<E<<"\t"<<kE<<"\t"<<norm(V)<<endl;
+  os<<"\t"<<E<<"\t"<<kE<<endl;
 }
 
 
@@ -133,7 +130,7 @@ int main() {
     BuildParameterExtObjLJ612Cut<double>(Prm[i].prm);
   }
   for(unsigned int  i=0,n=nunit;i<nunit-1;++i,++n) {
-    Prm[n].prm[SfFENEStrength].d=100.;
+    Prm[n].prm[SfFENEStrength].d=500.;
     Prm[n].prm[SfFENEEqLength].d=1.;
     Prm[n].prm[SfFENEDeltaRadiusMax].d=0.1;
     BuildParameterShiftedFENE<double>(Prm[n].prm);
