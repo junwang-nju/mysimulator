@@ -7,6 +7,9 @@ add_definitions (-Wall -O3 -DNDEBUG -fno-tree-vectorize)
 add_executable (pOs-basic.run basic.cxx)
 target_link_libraries (pOs-basic.run blas)
 
+add_executable (pOs-basic-lg.run basic-lg.cxx)
+target_link_libraries (pOs-basic-lg.run blas)
+
 add_executable (pOs-constd.run const-d.cxx)
 target_link_libraries (pOs-constd.run blas)
 

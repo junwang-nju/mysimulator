@@ -21,7 +21,7 @@ namespace std {
       for(unsigned int k=0;k<P[NumberStepInOneOutput].u;++k)
         reinterpret_cast<MoveFunc>(P[PgStep].ptr)(P,F,Pm);
       static_cast<UniqueParameter&>(P[NowTime]).value<T>()+=
-        static_cast<UniqueParameter&>(P[RunTimeStep]).value<T>();
+        static_cast<UniqueParameter&>(P[OutputInterval]).value<T>();
       reinterpret_cast<OutputFunc>(P[PgOutput].ptr)(P,F,Pm,os);
     }
   }
