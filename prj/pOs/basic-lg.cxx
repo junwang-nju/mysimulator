@@ -86,7 +86,7 @@ int main() {
   P[StartTime].d=0.;
   P[TotalTime].d=1000;
   P[OutputInterval].d=0.01;
-  P.sysPg[0][TimeStep].d=0.0001;
+  P.sysPg[0][TimeStep].d=0.001;
   P.sysPg[0][LV_Temperature].d=0.1;
   P.sysPg[0][LV_Viscosity].d=0.5;
   P.sysPg[0][LV_GaussianRNG].ptr=reinterpret_cast<void*>(&grng);
@@ -130,9 +130,9 @@ int main() {
     BuildParameterExtObjLJ612Cut<double>(Prm[i].prm);
   }
   for(unsigned int  i=0,n=nunit;i<nunit-1;++i,++n) {
-    Prm[n].prm[SfFENEStrength].d=500.;
+    Prm[n].prm[SfFENEStrength].d=2*P.sysPg[0][LV_Temperature].d*100;
     Prm[n].prm[SfFENEEqLength].d=1.;
-    Prm[n].prm[SfFENEDeltaRadiusMax].d=0.1;
+    Prm[n].prm[SfFENEDeltaRadiusMax].d=0.3;
     BuildParameterShiftedFENE<double>(Prm[n].prm);
   }
   for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
