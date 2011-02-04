@@ -4,25 +4,23 @@
 
 namespace std {
 
-  template <typename InteractionUnitSet, typename T,
-            template<typename> class DistBuffer, typename GeomType,
-            template <typename,typename,template<typename>class,typename>
-            class IType>
+  template <typename T, template<typename> class DistBuffer, typename GeomType,
+            template <typename,template<typename>class,typename> class IType,
+            typename PType>
   struct MetaInteraction {
-    IType<InteractionUnitSet,T,DistBuffer,GeomType> inInteraction;
+    typedef IType<T,DistBuffer,GeomType>  RunIType;
+    typedef PType RunPType;
+    typedef MetaInteraction<T,DistBuffer,GeomType,IType,PType>  Type;
+
+    RunIType inInteraction;
     Vector<unsigned int> tag;
     PropertyList<T> tmvec;
-    void (*EFunc)(const Vector<T>*,const unsigned int*,const UniqueParameter*,
-                  DistBuffer<T>&,const GeomType&,T&,
-                  Vector<T>*,const unsigned int*);
-    void (*GFunc)(const Vector<T>*,const unsigned int*,const UniqueParameter*,
-                  DistBuffer<T>&,const GeomType&,Vector<T>*,
-                  Vector<T>*,const unsigned int*);
-    void (*BFunc)(const Vector<T>*,const unsigned int*,const UniqueParameter*,
-                  DistBuffer<T>&,const GeomType&,T&,Vector<T>*,
-                  Vector<T>*,const unsigned int*);
-
-    typedef MetaInteraction<IType>  Type;
+    void (*EFunc)(const Vector<T>*,RunIType&,RunPType&,const UniqueParameter*,
+                  T&,Vector<T>*);
+    void (*GFunc)(const Vector<T>*,RunIType&,RunPType&,const UniqueParameter*,
+                  Vector<T>*,Vector<T>*);
+    void (*BFunc)(const Vector<T>*,RunIType&,RunPType&,const UniqueParameter*,
+                  T&,Vector<T>*,Vector<T>*);
 
     MetaInteraction()
       : inInteraction(),tag(),tmvec(),EFunc(NULL),GFunc(NULL),BFunc(NULL) {}

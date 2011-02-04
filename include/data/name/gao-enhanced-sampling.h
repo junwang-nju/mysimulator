@@ -7,8 +7,10 @@ namespace std {
   enum GaoEnhancedSamplingParameterName {
     DensitySet=0,
     TemperatureSet,
+    RunTemperature,
     LnDensitySet,
     BetaSet,
+    RunBeta,
     GaoEnhancedSamplingNumberParameter
   };
 
