@@ -105,12 +105,6 @@ namespace std {
     for(unsigned int i=0;i<P.size;++i)  imprint(P[i],cP[i]);
   }
 
-}
-
-#include "data/derived/dual-vector.h"
-
-namespace std {
-
   void imprint(Vector<Vector<InteractionParameterUnit> >& P,
                const Vector<Vector<InteractionParameterUnit> >& cP) {
     allocate<Vector<InteractionParameterUnit> >(P,cP.size);
