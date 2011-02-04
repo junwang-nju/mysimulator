@@ -2,25 +2,34 @@
 #ifndef _Interaction_Meta_Parameter_H_
 #define _Interaction_Meta_Parameter_H_
 
-#include "data/name/all-interaction.h"
+#include "data/basic/unique-parameter.h"
+#include "data/basic/property-list.h"
 
 namespace std {
 
-  template <typename IPType>
+  template <typename IPType, typename IType, typename T>
   struct InteractionMetaParameter {
 
     IPType inprm;
     Vector<UniqueParameter> prm;
     Vector<unsigned int> tag;
+    PropertyList<T> tmvec;
+    void (*EFunc)(const Vector<T>*,IType&,IPType&,const UniqueParameter*,
+                  T&,Vector<T>*);
+    void (*GFunc)(const Vector<T>*,IType&,IPType&,const UniqueParameter*,
+                  Vector<T>*,Vector<T>*);
+    void (*BFunc)(const Vector<T>*,IType&,IPType&,const UniqueParameter*,
+                  T&,Vector<T>*,Vector<T>*);
 
-    typedef InteractionMetaParameter<IPType> Type;
+    typedef InteractionMetaParameter<IPType,IType,T> Type;
 
-    InteractionMetaParameter() : inprm(), prm(), tag() {}
+    InteractionMetaParameter()
+      : inprm(),prm(),tag(),tmvec(),EFunc(NULL),GFunc(NULL),BFunc(NULL) {}
     InteractionMetaParameter(const Type&) {
-      myError("Cannot create Interaction Parameter Meta-Unit");
+      myError("Cannot create Interaction Meta Parameter");
     }
     Type& operator=(const Type& P) {
-      myError("Cannot copy Interaction Parameter Meta-Unit");
+      myError("Cannot copy Interaction Meta Parameter");
       return *this;
     }
     ~InteractionMetaParameter() { release(*this); }
@@ -30,21 +39,26 @@ namespace std {
 
   };
 
-  template <typename IPType>
-  bool IsAvailable(const InteractionMetaParameter<IPType>& P) {
-    return IsAvailable(P.inprm)&&IsAvailable(P.prm)&&IsAvailable(P.tag);
+  template <typename IPType, typename IType, typename T>
+  bool IsAvailable(const InteractionMetaParameter<IPType,IType,T>& P) {
+    return IsAvailable(P.inprm)&&IsAvailable(P.prm)&&IsAvailable(P.tag)&&
+           IsAvailable(P.EFunc)&&IsAvailable(P.GFunc)&&IsAvailable(P.BFunc);
   }
 
-  template <typename IPType>
-  void release(InteractionMetaParameter<IPType>& P) {
+  template <typename IPType, typename IType, typename T>
+  void release(InteractionMetaParameter<IPType,IType,T>& P) {
     release(P.inprm);
     release(P.prm);
     release(P.tag);
+    release(P.tmvec);
+    P.EFunc=NULL;
+    P.GFunc=NULL;
+    P.BFunc=NULL;
   }
 
-  template <typename IPType>
-  void copy(InteractionMetaParameter<IPType>& P,
-            const InteractionMetaParameter<IPType>& cP) {
+  template <typename IPType, typename IType, typename T>
+  void copy(InteractionMetaParameter<IPType,IType,T>& P,
+            const InteractionMetaParameter<IPType,IType,T>& cP) {
     assert(IsAvailable(P));
     assert(IsAvailable(cP));
     assert(P.iTag()==cP.iTag());
@@ -52,33 +66,58 @@ namespace std {
     copy(P.prm,cP.prm);
   }
 
-  template <typename IPType>
-  void refer(InteractionMetaParameter<IPType>& P,
-             const InteractionMetaParameter<IPType>& rP) {
+  template <typename IPType, typename IType, typename T>
+  void refer(InteractionMetaParameter<IPType,IType,T>& P,
+             const InteractionMetaParameter<IPType,IType,T>& rP) {
     assert(IsAvailable(rP));
     release(P);
     refer(P.inprm,rP.inprm);
     refer(P.prm,rP.prm);
     refer(P.tag,rP.tag);
+    P.EFunc=rP.EFunc;
+    P.GFunc=rP.GFunc;
+    P.BFunc=rP.BFunc;
+    if(IsAvailable(rP.tmvec)) refer(P.tmvec,rP.tmvec);
   }
 
-  void allocate(InteractionMetaParameter<IPType>& P,
+}
+
+#include "data/name/all-interaction.h"
+#include "operation/interaction/all.h"
+
+namespace std {
+
+  template <typename IPType, typename IType, typename T>
+  void allocate(InteractionMetaParameter<IPType,IType,T>& P,
                 const unsigned int& mitag) {
-    if(!IsAvailable(P.tag)) {
-      allocate(P.tag,1);
-      P.iTag()=mitag;
-    }
-    If(!IsAvailable(InteractionMetaPrmSize))
+    allocate(P.tag,1);
+    P.iTag()=mitag;
+    if(!IsAvailable(InteractionMetaPrmSize))
       InitInteractionMetaParameterSize();
     allocate(P.prm,InteractionMetaPrmSize[mitag]);
+    Vector<unsigned int> sz;
+    switch(mitag) {
+      case GaoEnhancedSampling:
+        P.EFunc=EFuncGaoES<IPType,IType>;
+        P.GFunc=GFuncGaoES<IPType,IType>;
+        P.BFunc=BFuncGaoES<IPType,IType>;
+        break;
+      default:
+        myError("Unknown Meta Interaction Type");
+    }
   }
 
-  void imprint(InteractionMetaParameter<IPType>& P,
-               const InteractionMetaParameter<IPType>& cP) {
+  template <typename IPType, typename IType, typename T>
+  void imprint(InteractionMetaParameter<IPType,IType,T>& P,
+               const InteractionMetaParameter<IPType,IType,T>& cP) {
     imprint(P.inprm,cP.inprm);
     imprint(P.prm,cP.prm);
     allocate(P.tag,1);
     P.iTag()=cP.iTag();
+    P.EFunc=cP.EFunc;
+    P.GFunc=cP.GFunc;
+    P.BFunc=cP.BFunc;
+    if(IsAvailable(cP.tmvec)) imprint(P.tmvec,cP.tmvec);
   }
 
 }

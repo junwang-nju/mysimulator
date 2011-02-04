@@ -30,5 +30,7 @@
 
 #include "operation/interaction/ancher-point-harmonic.h"
 
+#include "operation/interaction/gao-enhanced-sampling.h"
+
 #endif
 

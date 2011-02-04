@@ -8,8 +8,10 @@ namespace std {
     DensitySet=0,
     TemperatureSet,
     RunTemperature,
+    GaoNumberAllUnits,
     LnDensitySet,
     BetaSet,
+    LnBetaDensitySet,
     RunBeta,
     GaoEnhancedSamplingNumberParameter
   };
