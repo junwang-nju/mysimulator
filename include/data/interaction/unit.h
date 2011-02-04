@@ -24,7 +24,7 @@ namespace std {
     typedef InteractionUnit<T,DistBuffer,GeomType>  Type;
 
     InteractionUnit()
-      : pTag(NULL), tmvec(), EFunc(NULL), GFunc(NULL), BFunc() {}
+      : pTag(NULL), tmvec(), EFunc(NULL), GFunc(NULL), BFunc(NULL) {}
     InteractionUnit(const Type& U) {
       myError("Cannot create Interaction Unit");
     }

@@ -1,18 +1,18 @@
 
-#ifndef _Parameter_Gao_Enhanced_Sampling_H_
-#define _Parameter_Gao_Enhanced_Sampling_H_
+#ifndef _Gao_Enhanced_Sampling_Parameter_Name_H_
+#define _Gao_Enhanced_Sampling_Parameter_Name_H_
 
 namespace std {
-  
-  enum GaoEnhancedSamplingName {
-    OriginalInteractionPtr=0,
+
+  enum GaoEnhancedSamplingParameterName {
+    DensitySet=0,
     TemperatureSet,
-    DensitySet,
-    BetaSet,
     LnDensitySet,
+    BetaSet,
     GaoEnhancedSamplingNumberParameter
   };
 
 }
 
 #endif
+
