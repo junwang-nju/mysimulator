@@ -36,6 +36,35 @@ namespace std {
     P.BFunc(X,F,P.inprm,P.prm.data,Energy,Gradient,P.tmvec.structure);
   }
 
+  template <typename T,template<typename> class DBuff, typename GeomType,
+            template <typename,template<typename> class,typename> class IType,
+            typename PType>
+  void CalcInteraction(
+      IType<T,DBuff,GeomType>& F, const PropertyList<T>& X,
+      InteractionMetaParameter<PType,IType<T,DBuff,GeomType>,T>& P, T& Energy){
+    CalcInteraction(F,X.structure,P,Energy);
+  }
+
+  template <typename T,template<typename> class DBuff, typename GeomType,
+            template <typename,template<typename> class,typename> class IType,
+            typename PType>
+  void CalcInteraction(
+      IType<T,DBuff,GeomType>& F, const PropertyList<T>& X,
+      InteractionMetaParameter<PType,IType<T,DBuff,GeomType>,T>& P,
+      PropertyList<T>& Gradient){
+    CalcInteraction(F,X.structure,P,Gradient.structure);
+  }
+
+  template <typename T,template<typename> class DBuff, typename GeomType,
+            template <typename,template<typename> class,typename> class IType,
+            typename PType>
+  void CalcInteraction(
+      IType<T,DBuff,GeomType>& F, const PropertyList<T>& X,
+      InteractionMetaParameter<PType,IType<T,DBuff,GeomType>,T>& P,
+      T& Energy,PropertyList<T>& Gradient){
+    CalcInteraction(F,X.structure,P,Energy,Gradient.structure);
+  }
+
 }
 
 #endif

@@ -68,6 +68,16 @@ int main() {
   cout<<g<<endl;
   cout<<endl;
 
+  double EE;
+  for(int i=-100;i<=100;++i) {
+    x[1][0]=1+i*0.02;
+    E=0.;
+    CalcInteraction(F,x.structure,MP,E);
+    EE=0.;
+    CalcInteraction(F,x.structure,MP.inprm,EE);
+    cout<<1+i*0.02<<"\t"<<EE<<"\t"<<E<<endl;
+  }
+
   return 0;
 }
 
