@@ -85,7 +85,7 @@ namespace std {
             template <typename> class DBuffer, typename GeomType, typename T>
   void assignOutput(Propagator<T>& P,
                     void (*OFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
-                                  const ParameterType&,ostream&)) {
+                                  ParameterType&,ostream&)) {
     P[PgOutput].ptr=reinterpret_cast<void*>(OFunc);
   }
 

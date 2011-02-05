@@ -37,7 +37,6 @@ namespace std {
       FU+=log1p(exp(lnbd[i]-tmu-FU));
       FL+=log1p(exp(lnd[i]-tmu-FL));
     }
-    cout<<FU<<"\t"<<FL<<endl;
     unsigned int n=MP[GaoNumberAllUnits].u;
     tmu=exp(FU-FL)*MP[RunTemperature].value<T>();
     for(unsigned int i=0;i<n;++i)   scale(Gradient[i],tmu);
