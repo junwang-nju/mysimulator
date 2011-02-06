@@ -23,7 +23,7 @@ namespace std {
     for(unsigned int i=0;i<SP.merPg.size;++i) {
       scale(*reinterpret_cast<Vector<T>*>(SP.merPg[i][GVector].ptr),
             *reinterpret_cast<Vector<T>*>(SP.merPg[i][MskVector].ptr));
-      reinterpret_cast<mMoveFunc>(SP.merPg[i][LV_MoveBeforeG].ptr)(
+      reinterpret_cast<mMoveFunc>(SP.merPg[i][LV_MoveAfterG].ptr)(
           SP.merPg[i],static_cast<Vector<UniqueParameter>&>(SP));
     }
   }

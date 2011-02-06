@@ -10,7 +10,7 @@ namespace std {
             template<typename,template<typename>class,typename> class IType,
             template <typename> class DBuffer, typename GeomType>
   void Run(Propagator<T>& P,
-           IType<T,DBuffer,GeomType>& F, const ParameterType& Pm,
+           IType<T,DBuffer,GeomType>& F, ParameterType& Pm,
            ostream& os=cout) {
     typedef void (*MoveFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
                              const ParameterType&);
