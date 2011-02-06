@@ -84,4 +84,14 @@ namespace std {
 
 }
 
+#include "data/basic/null-output-object.h"
+
+namespace std {
+
+  void WriteSequence(const LatticeChain<SquareLattice,2>& LC,
+                     NullOutputObject& NO, const unsigned int Z) {
+  }
+
+}
+
 #endif
