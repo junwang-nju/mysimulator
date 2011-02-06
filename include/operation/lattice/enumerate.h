@@ -233,6 +233,21 @@ namespace std {
     return flag;
   }
 
+  bool enumerateSquare2D_CheckNodeDistance(
+      const unsigned int NIDH, const unsigned int BSLast,
+      const PropertyList<int>& FixedNodes, const Vector<int>& RE) {
+    if(NIDH<FixedNodes.nunit) {
+      Vector<int>& nNode=const_cast<Vector<int>&>(FixedNodes[NIDH]);
+      unsigned int D;
+      if(BSLast<static_cast<unsigned int>(nNode[0])) {
+        D=absval(nNode[1]-RE[0]);
+        D+=absval(nNode[2]-RE[1]);
+        if(D>nNode[0]-BSLast) return true;
+      }
+    }
+    return false;
+  }
+
   template <typename OutputType>
   int enumerateSquare2DFixedNode(
       const unsigned int N, const PropertyList<int>& FixedNodes,
@@ -256,6 +271,8 @@ namespace std {
     do {
       oflag=enumerateSquare2D_Propagate(B,BS,BSL,BSH,LC[B],Len[B],R,Mesh);
       oflag=oflag||enumerateSquare2D_CheckNodes(NID[B],NID[B+1],rFixedNodes,R);
+      oflag=oflag||enumerateSquare2D_CheckNodeDistance(NID[B+1],BSH-1,
+                                                       rFixedNodes,R[BSH-1]);
       bflag=true;
       if(!oflag) {
         if(B<static_cast<int>(LC.size-1)) {
