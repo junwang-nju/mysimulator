@@ -3,6 +3,7 @@
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/interaction-parameter-regular-op.h"
+#include "operation/parameter/interaction-parameter-meta-op.h"
 #include "operation/interaction/meta-calc.h"
 #include "operation/parameter/build-param-propagator-vverlet.h"
 #include "operation/parameter/build-param-ext-object-lj612cut.h"
@@ -40,6 +41,12 @@ int main() {
   cout.precision(16);
   const unsigned int nunit=100;
 
+  typedef InteractionMetaParameter<Vector<InteractionParameterUnit>,
+                                   ListInteraction<double,DistanceBufferSimple,
+                                                   FreeSpace>,
+                                   double>
+  ParamType;
+
   Propagator<double> P;
   Vector<unsigned int> enstype;
   Vector<Vector<unsigned int> > mtype;
@@ -48,7 +55,7 @@ int main() {
   allocate(mtype[0],nunit);
   enstype[0]=Langevin;
   copy(mtype,ParticleType);
-  allocate<Vector<InteractionParameterUnit>,ListInteraction,
+  allocate<ParamType,ListInteraction,
            DistanceBufferSimple,FreeSpace>(P,VelocityVerlet,enstype,mtype);
 
   GaussianRNG grng;
@@ -89,7 +96,7 @@ int main() {
   P[TotalTime].d=1000;
   P[OutputInterval].d=0.01;
   P.sysPg[0][TimeStep].d=0.001;
-  P.sysPg[0][LV_Temperature].d=0.1;
+  P.sysPg[0][LV_Temperature].d=1;
   P.sysPg[0][LV_Viscosity].d=0.5;
   P.sysPg[0][LV_GaussianRNG].ptr=reinterpret_cast<void*>(&grng);
   for(unsigned int i=0;i<nunit;++i) {
@@ -132,7 +139,7 @@ int main() {
     BuildParameterExtObjLJ612Cut<double>(Prm[i].prm);
   }
   for(unsigned int  i=0,n=nunit;i<nunit-1;++i,++n) {
-    Prm[n].prm[SfFENEStrength].d=2*P.sysPg[0][LV_Temperature].d*100;
+    Prm[n].prm[SfFENEStrength].d=2*8*100;//2*P.sysPg[0][LV_Temperature].d*100;
     Prm[n].prm[SfFENEEqLength].d=1.;
     Prm[n].prm[SfFENEDeltaRadiusMax].d=0.3;
     BuildParameterShiftedFENE<double>(Prm[n].prm);
@@ -155,11 +162,6 @@ int main() {
     Prm[n].idx[1]=j;
   }
 
-  typedef InteractionMetaParameter<Vector<InteractionParameterUnit>,
-                                   ListInteraction<double,DistanceBufferSimple,
-                                                   FreeSpace>,
-                                   double>
-  ParamType;
   ParamType MP;
   allocate(MP,GaoEnhancedSampling);
   refer(MP.inprm,Prm);
@@ -175,8 +177,8 @@ int main() {
   ts[4]=1.2;
   ts[3]=1.6;
   ts[2]=2.;
-  ts[1]=4.;
-  ts[0]=8.;
+  ts[1]=3.;
+  ts[0]=5.;
   MP.prm[DensitySet].ptr=reinterpret_cast<void*>(&ds);
   MP.prm[TemperatureSet].ptr=reinterpret_cast<void*>(&ts);
   MP.prm[LnDensitySet].ptr=reinterpret_cast<void*>(&lnds);

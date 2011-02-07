@@ -13,9 +13,9 @@ namespace std {
            IType<T,DBuffer,GeomType>& F, ParameterType& Pm,
            ostream& os=cout) {
     typedef void (*MoveFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
-                             const ParameterType&);
+                             ParameterType&);
     typedef void (*OutputFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
-                               const ParameterType&,ostream&);
+                               ParameterType&,ostream&);
     reinterpret_cast<OutputFunc>(P[PgOutput].ptr)(P,F,Pm,os);
     for(unsigned int i=0;i<P[NumberOutput].u;++i) {
       for(unsigned int k=0;k<P[NumberStepInOneOutput].u;++k)
