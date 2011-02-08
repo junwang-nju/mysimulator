@@ -1,35 +1,36 @@
 
 #include "data/basic/matrix.h"
+#include "operation/basic/console-output.h"
 #include <iostream>
 using namespace std;
 
 int main() {
   Matrix<double> dM;
   allocate(dM,RectangleMatrix,4,5,COrder,NoTranspose);
-  cout<<IsAvailable(dM)<<endl;
+  COut<<IsAvailable(dM)<<Endl;
   release(dM);
-  cout<<IsAvailable(dM)<<endl;
+  COut<<IsAvailable(dM)<<Endl;
   allocate(dM,TriangleMatrix,5,COrder,NoTranspose,UpperTriangle,true,false);
-  cout<<"========="<<endl;
+  COut<<"========="<<Endl;
   *(dM.ptrOther)=0;
-  cout<<"========="<<endl;
+  COut<<"========="<<Endl;
   Matrix<double> dM2;
   refer(dM2,dM);
   long n=5;
   double d=3;
   dcopy_(&n,&d,const_cast<long*>(&lZero),dM2.data,const_cast<long*>(&lOne));
-  cout<<dM<<endl;
-  cout<<dM(2,2)<<endl;
+  COut<<dM<<Endl;
+  COut<<dM(2,2)<<Endl;
 
   Matrix<double> dM3;
   allocate(dM3,RectangleMatrix,4,3,COrder,NoTranspose);
   copy(dM3,dM);
-  cout<<dM3<<endl;
+  COut<<dM3<<Endl;
 
   Matrix<double> dM4;
   allocate(dM4,RectangleMatrix,4,3,COrder,NoTranspose);
   ecopy(dM4,dM3);
-  cout<<dM4<<endl;
+  COut<<dM4<<Endl;
 
   return 1;
 }

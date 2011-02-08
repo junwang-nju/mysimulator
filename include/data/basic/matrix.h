@@ -92,11 +92,11 @@ namespace std {
   }
 
   template <typename T>
-  ostream& operator<<(ostream& os, const Matrix<T>& M) {
+  OutputBase& operator<<(OutputBase& os, const Matrix<T>& M) {
     os<<M(0,0);
     for(int j=1;j<M.property[MatrixNumberColumn];++j) os<<"\t"<<M(0,j);
     for(int i=1;i<M.property[MatrixNumberRow];++i) {
-      os<<endl<<M(i,0);
+      os<<Endl<<M(i,0);
       for(int j=1;j<M.property[MatrixNumberColumn];++j) os<<"\t"<<M(i,j);
     }
     return os;

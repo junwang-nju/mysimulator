@@ -36,7 +36,7 @@ namespace std {
   }
 
   template <typename T>
-  ostream& operator<<(ostream& os, const PairItem<T>& P) {
+  OutputBase& operator<<(OutputBase& os, const PairItem<T>& P) {
     os<<"[ "<<P()<<"\t("<<P.status<<" )]";
     return os;
   }

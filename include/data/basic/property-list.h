@@ -109,10 +109,10 @@ namespace std {
   }
 
   template <typename T>
-  ostream& operator<<(ostream& os, const PropertyList<T>& L) {
+  OutputBase& operator<<(OutputBase& os, const PropertyList<T>& L) {
     assert(IsAvailable(L));
     os<<L[0];
-    for(unsigned int k=1;k<L.nunit;++k) os<<endl<<L[k];
+    for(unsigned int k=1;k<L.nunit;++k) os<<Endl<<L[k];
     return os;
   }
 
