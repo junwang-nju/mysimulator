@@ -157,8 +157,8 @@ namespace std {
     return is;
   }
 
-  ostream& operator<<(ostream& os, const UniqueParameter128b& P) {
-    os<<"L ["<<P.ull[0]<<""<<P.ull[1]<<" ] ";
+  OutputBase& operator<<(OutputBase& os, const UniqueParameter128b& P) {
+    os<<"L ["<<P.ull[0]<<"\t"<<P.ull[1]<<" ] ";
     return os;
   }
 

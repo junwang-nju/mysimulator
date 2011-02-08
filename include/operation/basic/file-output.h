@@ -39,9 +39,9 @@ namespace std {
     FileOutput& write(const unsigned int& ui) { return __write("%u",ui); }
     FileOutput& write(const long& l) { return __write("%d",l); }
     FileOutput& write(const unsigned long& ul) { return __write("%u",ul); }
-    FileOutput& write(const long long int& ll) { return __write("%ld",ll); }
+    FileOutput& write(const long long int& ll) { return __write("%lld",ll); }
     FileOutput& write(const unsigned long long int& ull) {
-      return __write("%lu",ull);
+      return __write("%llu",ull);
     }
     FileOutput& write(const float& f) { return __write("%g",f); }
     FileOutput& write(const double& d) { return __write("%g",d); }

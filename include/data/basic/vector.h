@@ -6,7 +6,8 @@
 #include "operation/basic/blas.h"
 #include "operation/basic/memory.h"
 #include "operation/basic/util.h"
-#include <cassert>
+#include "operation/basic/output-base.h"
+#include <iostream>
 
 namespace std {
 
@@ -226,7 +227,7 @@ namespace std {
   }
 
   template <typename T>
-  ostream& operator<<(ostream& os, const Vector<T>& v) {
+  OutputBase& operator<<(OutputBase& os, const Vector<T>& v) {
     assert(IsAvailable(v));
     os<<v[0];
     for(unsigned int i=1;i<v.size;++i)  os<<"\t"<<v[i];
