@@ -196,10 +196,10 @@ namespace std {
         F.GFunc=GFuncSphericShellLJ612Cut<T,DBuff,GType>;
         F.BFunc=BFuncSphericShellLJ612Cut<T,DBuff,GType>;
         break;
-      case AncherPointHarmonic:
-        F.EFunc=EFuncAncherPointHarmonic<T,DBuff,GType>;
-        F.GFunc=GFuncAncherPointHarmonic<T,DBuff,GType>;
-        F.BFunc=BFuncAncherPointHarmonic<T,DBuff,GType>;
+      case AnchorPointHarmonic:
+        F.EFunc=EFuncAnchorPointHarmonic<T,DBuff,GType>;
+        F.GFunc=GFuncAnchorPointHarmonic<T,DBuff,GType>;
+        F.BFunc=BFuncAnchorPointHarmonic<T,DBuff,GType>;
         break;
       default:
         myError("Unknown interaction type");

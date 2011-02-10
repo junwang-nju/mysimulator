@@ -46,7 +46,7 @@ namespace std {
     PlaneWallLJ612Cut,
     SphericShellCoreLJ612,
     SphericShellLJ612Cut,
-    AncherPointHarmonic,
+    AnchorPointHarmonic,
     NumberInteractions
   };
 
@@ -73,7 +73,7 @@ namespace std {
     InteractionIdxSize[PlaneWallLJ612Cut]=1;
     InteractionIdxSize[SphericShellCoreLJ612]=1;
     InteractionIdxSize[SphericShellLJ612Cut]=1;
-    InteractionIdxSize[AncherPointHarmonic]=1;
+    InteractionIdxSize[AnchorPointHarmonic]=1;
   }
 
   static Vector<unsigned int> InteractionPrmSize;
@@ -99,7 +99,7 @@ namespace std {
     InteractionPrmSize[PlaneWallLJ612Cut]=ExtObjLJ612CutNumberParameter;
     InteractionPrmSize[SphericShellCoreLJ612]=ExtObjCoreLJ612NumberParameter;
     InteractionPrmSize[SphericShellLJ612Cut]=ExtObjLJ612CutNumberParameter;
-    InteractionPrmSize[AncherPointHarmonic]=ExtObjHarmonicNumberParameter;
+    InteractionPrmSize[AnchorPointHarmonic]=ExtObjHarmonicNumberParameter;
   }
 
 }

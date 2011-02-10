@@ -171,8 +171,8 @@ target_link_libraries (test-interaction-sphere-wall-lj612cut.run blas)
 add_executable (test-interaction-sphere-wall-corelj612.run test-interaction-sphere-wall-corelj612.cxx)
 target_link_libraries (test-interaction-sphere-wall-corelj612.run blas)
 
-add_executable (test-interaction-ancher-harmonic.run test-interaction-ancher-harmonic.cxx)
-target_link_libraries (test-interaction-ancher-harmonic.run blas)
+add_executable (test-interaction-anchor-harmonic.run test-interaction-anchor-harmonic.cxx)
+target_link_libraries (test-interaction-anchor-harmonic.run blas)
 
 #add_executable (test-pdb-data.run test-pdb-data.cxx)
 #target_link_libraries (test-pdb-data.run blas)
