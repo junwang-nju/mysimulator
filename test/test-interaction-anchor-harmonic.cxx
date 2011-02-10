@@ -1,10 +1,10 @@
 
-#include "operation/interaction/ancher-point-harmonic.h"
+#include "operation/interaction/anchor-point-harmonic.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "data/geometry/distance-buffer-simple.h"
 #include "data/basic/property-list.h"
 #include "operation/parameter/build-param-ext-object-harmonic.h"
-#include <iostream>
+#include "operation/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -36,25 +36,25 @@ int main() {
   prm[ExtObjHarmonicEqStrength].d=100.;
   BuildParameterExtObjHarmonic<double>(prm);
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
-  EFuncAncherPointHarmonic(v.structure,idx.data,prm.data,DED,FS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  EFuncAnchorPointHarmonic(v.structure,idx.data,prm.data,DED,FS,E);
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
-  GFuncAncherPointHarmonic(v.structure,idx.data,prm.data,DED,FS,g.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  GFuncAnchorPointHarmonic(v.structure,idx.data,prm.data,DED,FS,g.structure);
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
-  BFuncAncherPointHarmonic(v.structure,idx.data,prm.data,DED,FS,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  BFuncAnchorPointHarmonic(v.structure,idx.data,prm.data,DED,FS,E,g.structure);
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }
