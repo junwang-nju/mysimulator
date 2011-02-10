@@ -1,25 +1,26 @@
 
 #include "data/derived/pair-information-item.h"
+#include "operation/basic/console-output.h"
 #include <iostream>
 using namespace std;
 
 int main() {
 
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   PairItem<double> MSI;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- access"<<endl;
+  COut<<"Test -- access"<<Endl;
   MSI()=23.4567;
   MSI.status=12;
-  cout<<MSI<<endl;
-  cout<<endl;
+  COut<<MSI<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign from another Item"<<endl;
+  COut<<"Test -- assign from another Item"<<Endl;
   PairItem<double> MSI2;
   copy(MSI2,MSI);
-  cout<<MSI2<<endl;
-  cout<<endl;
+  COut<<MSI2<<Endl;
+  COut<<Endl;
 
   return 1;
 }

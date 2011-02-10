@@ -12,7 +12,7 @@
 #ifndef _Error_Process_H_
 #define _Error_Process_H_
 
-#include <iostream>
+#include "operation/basic/console-output.h"
 #include <cstdlib>
 
 namespace std {
@@ -20,12 +20,12 @@ namespace std {
   /**
    * @brief pop up a warning
    *
-   * Just write the desired warning messages to cerr.
+   * Just write the desired warning messages to CErr.
    *
    * @param [in] msg
    *        The warning messages in C-style string
    */
-  static void myWarn(const char* msg) { cerr<<msg<<endl; }
+  void myWarn(const char* msg) { CErr<<msg<<Endl; }
   
   /**
    * @brief pop up an error
@@ -35,7 +35,7 @@ namespace std {
    * @param [in] msg
    *        The warning messages in C-style string
    */
-  static void myError(const char* msg) { myWarn(msg); exit(0); }
+  void myError(const char* msg) { myWarn(msg); exit(0); }
 
 }
 

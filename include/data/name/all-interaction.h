@@ -104,4 +104,23 @@ namespace std {
 
 }
 
+#include "data/name/gao-enhanced-sampling.h"
+
+namespace std {
+
+  enum MetaInteractionName {
+    GaoEnhancedSampling=0,
+    NumberMetaInteractions
+  };
+
+  static Vector<unsigned int> InteractionMetaPrmSize;
+
+  void InitInteractionMetaParameterSize() {
+    allocate(InteractionMetaPrmSize,NumberInteractions);
+    InteractionMetaPrmSize[GaoEnhancedSampling]=
+      GaoEnhancedSamplingNumberParameter;
+  }
+
+}
+
 #endif

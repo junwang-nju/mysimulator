@@ -124,7 +124,7 @@ namespace std {
     return is;
   }
 
-  ostream& operator<<(ostream& os, const UniqueParameter& P) {
+  OutputBase& operator<<(OutputBase& os, const UniqueParameter& P) {
     os<<P.ull;
     return os;
   }

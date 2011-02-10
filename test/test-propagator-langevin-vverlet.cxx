@@ -139,7 +139,7 @@ int main() {
   cout<<"========== G:"<<endl;
   cout<<P.G<<endl;
 
-  P[TotalTime].d=40;
+  P[TotalTime].d=200;
   P[OutputInterval].d=0.001;
   BuildParameterPropagatorVVerlet(P);
   assignOutput(P,OutFunc<double,Vector<InteractionParameterUnit>,

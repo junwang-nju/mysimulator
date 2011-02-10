@@ -1,68 +1,69 @@
 
 #include "data/basic/unique-parameter.h"
+#include "operation/basic/console-output.h"
 #include <iostream>
 using namespace std;
 
 int main() {
-  cout<<"Test -- create"<<endl;
+  COut<<"Test -- create"<<Endl;
   UniqueParameter up;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign and read"<<endl;
+  COut<<"Test -- assign and read"<<Endl;
   copy(up,1.5);
-  cout<<up.d<<"\t\t"<<up.ull<<endl;
+  COut<<up.d<<"\t\t"<<up.ull<<Endl;
   copy(up,1U);
-  cout<<up.u<<"\t\t"<<up.ull<<endl;
+  COut<<up.u<<"\t\t"<<up.ull<<Endl;
   copy(up,-1);
-  cout<<up.i<<"\t\t"<<up.ull<<endl;
+  COut<<up.i<<"\t\t"<<up.ull<<Endl;
   double p=9.6;
-  cout<<&p<<endl;
+  COut<<&p<<Endl;
   copy(up,&p);
-  cout<<up.ptr<<"\t\t"<<up.ull<<endl;
-  cout<<endl;
+  COut<<up.ptr<<"\t\t"<<up.ull<<Endl;
+  COut<<Endl;
 
-  cout<<"Test - assign from another unique parameter"<<endl;
+  COut<<"Test - assign from another unique parameter"<<Endl;
   UniqueParameter up2;
   copy(up2,up);
-  cout<<up2.ull<<endl;
-  cout<<endl;
+  COut<<up2.ull<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- read from istream"<<endl;
+  COut<<"Test -- read from istream"<<Endl;
   cin>>up;
-  cout<<up<<endl;
-  cout<<"\t"<<up.d<<endl;
-  cout<<"\t"<<up.u<<endl;
-  cout<<"\t"<<up.i<<endl;
-  cout<<"\t"<<up.ptr<<endl;
+  COut<<up<<Endl;
+  COut<<"\t"<<up.d<<Endl;
+  COut<<"\t"<<up.u<<Endl;
+  COut<<"\t"<<up.i<<Endl;
+  COut<<"\t"<<up.ptr<<Endl;
   cin>>up;
-  cout<<up<<endl;
-  cout<<"\t"<<up.d<<endl;
-  cout<<"\t"<<up.u<<endl;
-  cout<<"\t"<<up.i<<endl;
-  cout<<"\t"<<up.ptr<<endl;
+  COut<<up<<Endl;
+  COut<<"\t"<<up.d<<Endl;
+  COut<<"\t"<<up.u<<Endl;
+  COut<<"\t"<<up.i<<Endl;
+  COut<<"\t"<<up.ptr<<Endl;
   cin>>up;
-  cout<<up<<endl;
-  cout<<"\t"<<up.d<<endl;
-  cout<<"\t"<<up.u<<endl;
-  cout<<"\t"<<up.i<<endl;
-  cout<<"\t"<<up.ptr<<endl;
+  COut<<up<<Endl;
+  COut<<"\t"<<up.d<<Endl;
+  COut<<"\t"<<up.u<<Endl;
+  COut<<"\t"<<up.i<<Endl;
+  COut<<"\t"<<up.ptr<<Endl;
   cin>>up;
-  cout<<up<<endl;
-  cout<<"\t"<<up.d<<endl;
-  cout<<"\t"<<up.u<<endl;
-  cout<<"\t"<<up.i<<endl;
-  cout<<"\t"<<up.ptr<<endl;
+  COut<<up<<Endl;
+  COut<<"\t"<<up.d<<Endl;
+  COut<<"\t"<<up.u<<Endl;
+  COut<<"\t"<<up.i<<Endl;
+  COut<<"\t"<<up.ptr<<Endl;
   cin>>up;
-  cout<<up<<endl;
-  cout<<"\t"<<up.d<<endl;
-  cout<<"\t"<<up.u<<endl;
-  cout<<"\t"<<up.i<<endl;
-  cout<<"\t"<<up.ptr<<endl;
-  cout<<endl;
+  COut<<up<<Endl;
+  COut<<"\t"<<up.d<<Endl;
+  COut<<"\t"<<up.u<<Endl;
+  COut<<"\t"<<up.i<<Endl;
+  COut<<"\t"<<up.ptr<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- read method"<<endl;
-  cout<<up.value<double>()<<endl;
-  cout<<endl;
+  COut<<"Test -- read method"<<Endl;
+  COut<<up.value<double>()<<Endl;
+  COut<<Endl;
 
   return 1;
 }

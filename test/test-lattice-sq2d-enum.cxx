@@ -43,6 +43,24 @@ int main(int argc, char** argv) {
   Z=enumerateSquare2DFixBond(12,FB,cout);
   cout<<Z<<endl;
 
+  PropertyList<int> FN;
+  allocate(sz,6);
+  copy(sz,3);
+  allocate(FN,sz);
+  FN[0][0]=3;
+  FN[0][1]=2;   FN[0][2]=1;
+  FN[1][0]=6;
+  FN[1][1]=3;   FN[1][2]=1;
+  FN[2][0]=8;
+  FN[2][1]=2;   FN[2][2]=2;
+  FN[3][0]=12;
+  FN[3][1]=0;   FN[3][2]=4;
+  FN[4][0]=16;
+  FN[4][1]=2;   FN[4][2]=4;
+  FN[5][0]=24;
+  FN[5][1]=-1;  FN[5][2]=3;
+  cout<<enumerateSquare2DFixedNode(27,FN,NullOutput)<<endl;
+
   UnloadBondLibrary<SquareLattice,2>();
   return 0;
 }

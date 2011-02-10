@@ -189,6 +189,106 @@ namespace std {
     return Z;
   }
 
+  void enumerateSquare2D_FixedNodeIDInit(
+      Vector<unsigned int>& NID, PropertyList<int>& rFixedNodes,
+      const Vector<unsigned int>& Len, const PropertyList<int>& FixedNodes,
+      const Vector<int>& R0) {
+    allocate(NID,Len.size+1);
+    copy(NID,FixedNodes.nunit);
+    NID[0]=0;
+    int n,m;
+    n=0;
+    m=Len[n];
+    NID[n+1]=NID[n];
+    for(unsigned int i=0;i<FixedNodes.nunit;++i) {
+      if(FixedNodes[i][0]<m) ++NID[n+1];
+      else {
+        do {
+          ++n;
+          m+=Len[n];
+          NID[n+1]=NID[n];
+        } while(FixedNodes[i][0]>=m);
+        ++NID[n+1];
+      }
+    }
+    imprint(rFixedNodes,FixedNodes);
+    copy(rFixedNodes,FixedNodes);
+    for(unsigned int i=0;i<rFixedNodes.nunit;++i) {
+      rFixedNodes[i][1]+=R0[0];
+      rFixedNodes[i][2]+=R0[1];
+    }
+  }
+
+  bool enumerateSquare2D_CheckNodes(
+      const unsigned int NIDL, const unsigned int NIDH,
+      const PropertyList<int>& FixedNodes, const PropertyList<int>& R) {
+    bool flag=false;
+    for(unsigned int i=NIDL,n;i<NIDH;++i) {
+      n=FixedNodes[i][0];
+      if((R[n][0]!=FixedNodes[i][1])||(R[n][1]!=FixedNodes[i][2])) {
+        flag=true;
+        break;
+      }
+    }
+    return flag;
+  }
+
+  bool enumerateSquare2D_CheckNodeDistance(
+      const unsigned int NIDH, const unsigned int BSLast,
+      const PropertyList<int>& FixedNodes, const Vector<int>& RE) {
+    if(NIDH<FixedNodes.nunit) {
+      Vector<int>& nNode=const_cast<Vector<int>&>(FixedNodes[NIDH]);
+      unsigned int D;
+      if(BSLast<static_cast<unsigned int>(nNode[0])) {
+        D=absval(nNode[1]-RE[0]);
+        D+=absval(nNode[2]-RE[1]);
+        if(D>nNode[0]-BSLast) return true;
+      }
+    }
+    return false;
+  }
+
+  template <typename OutputType>
+  int enumerateSquare2DFixedNode(
+      const unsigned int N, const PropertyList<int>& FixedNodes,
+      OutputType& OB) {
+    PropertyList<int> Mesh,R;
+    LatticeChain<SquareLattice,2> LC;
+    Vector<unsigned int> Len;
+    Vector<PropertyList<unsigned int> > Motif;
+    Vector<unsigned short int> BoundHigh;
+
+    enumerateSquare2D_Init(Mesh,R,LC,BoundHigh,Len,Motif,N);
+
+    Vector<unsigned int> NID;
+    PropertyList<int> rFixedNodes;
+    enumerateSquare2D_FixedNodeIDInit(NID,rFixedNodes,Len,FixedNodes,R[0]);
+
+    int B,BS,BSL,BSH,BC,Z=0;
+    bool oflag,bflag;
+    B=0;
+    enumerateSquare2D_InitFirstBond(BC,BS,BSL,BSH,LC[B],BoundHigh[B],Len[B]);
+    do {
+      oflag=enumerateSquare2D_Propagate(B,BS,BSL,BSH,LC[B],Len[B],R,Mesh);
+      oflag=oflag||enumerateSquare2D_CheckNodes(NID[B],NID[B+1],rFixedNodes,R);
+      oflag=oflag||enumerateSquare2D_CheckNodeDistance(NID[B+1],BSH-1,
+                                                       rFixedNodes,R[BSH-1]);
+      bflag=true;
+      if(!oflag) {
+        if(B<static_cast<int>(LC.size-1)) {
+          enumerateSquare2D_NewBond(B,BC,BS,BSL,BSH,R,Mesh,LC,Len,BoundHigh);
+          bflag=false;
+        } else {
+          WriteSequence(LC,OB,Z);
+          ++Z;
+        }
+      }
+      if(bflag)
+        enumerateSquare2D_IncBond(B,BC,BS,BSL,BSH,R,Mesh,LC,Len,BoundHigh);
+    } while(B>=0);
+    return Z;
+  }
+
 }
 
 #endif
