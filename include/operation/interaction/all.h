@@ -28,7 +28,7 @@
 #include "operation/interaction/spheric-shell-corelj612.h"
 #include "operation/interaction/spheric-shell-lj612cut.h"
 
-#include "operation/interaction/ancher-point-harmonic.h"
+#include "operation/interaction/anchor-point-harmonic.h"
 
 #endif
 

@@ -1,6 +1,6 @@
 
-#ifndef _Interaction_Ancher_Point_Base_H_
-#define _Interaction_Ancher_Point_Base_H_
+#ifndef _Interaction_Anchor_Point_Base_H_
+#define _Interaction_Anchor_Point_Base_H_
 
 #include "data/name/external-object-base.h"
 #include "data/basic/unique-parameter.h"
@@ -9,7 +9,7 @@
 namespace std {
 
   template <typename T, template<typename> class DBuffer, typename GeomType>
-  void EFuncAncherPointBase(
+  void EFuncAnchorPointBase(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy,
       void (*efunc)(const T&, const UniqueParameter*, T&)) {
@@ -24,7 +24,7 @@ namespace std {
   }
 
   template <typename T, template<typename> class DBuffer, typename GeomType>
-  void GFuncAncherPointBase(
+  void GFuncAnchorPointBase(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
       void (*gfunc)(const T&, const UniqueParameter*, T&)) {
@@ -39,7 +39,7 @@ namespace std {
   }
 
   template <typename T, template<typename> class DBuffer, typename GeomType>
-  void BFuncAncherPointBase(
+  void BFuncAnchorPointBase(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
       void (*bfunc)(const T&,const UniqueParameter*,T&,T&)) {
