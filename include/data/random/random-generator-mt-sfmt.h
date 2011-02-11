@@ -359,7 +359,7 @@ namespace std {
   }
 
   template <unsigned int LoopFac>
-  ostream& operator<<(ostream& os, const SFMT<LoopFac>& G) {
+  OutputBase& operator<<(OutputBase& os, const SFMT<LoopFac>& G) {
     assert(IsAvailable(G));
     os<<LoopFac<<"\t";
     for(unsigned int i=0;i<SFMT<LoopFac>::NStatus;++i)

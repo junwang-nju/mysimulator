@@ -5,6 +5,7 @@
 #include "operation/basic/output-base.h"
 #include "operation/basic/util.h"
 #include <cstdio>
+#include <cstdlib>
 #include <cassert>
 
 namespace std {
@@ -18,9 +19,12 @@ namespace std {
     FileOutput() : fpoint(NULL), rflag(false) {}
     FileOutput(const FILE* fp) : fpoint(const_cast<FILE*>(fp)), rflag(true) {}
     FileOutput(const FileOutput& FO) {
-      fprintf(stderr,"%s\n","Cannot create FileOutput"); }
+      fprintf(stderr,"%s\n","Cannot create FileOutput");
+      exit(0);
+    }
     FileOutput& operator=(const FileOutput& FO) {
       fprintf(stderr,"%s\n","Cannot copy FileOutput");
+      exit(0);
       return *this;
     }
     ~FileOutput() { release(*this); }

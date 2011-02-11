@@ -76,7 +76,7 @@ namespace std {
     G.mti=rG.mti;
   }
 
-  ostream& operator<<(ostream& os, const MT_Standard& G) {
+  OutputBase& operator<<(OutputBase& os, const MT_Standard& G) {
     assert(IsAvailable(G));
     os<<static_cast<const Vector<unsigned int>&>(G)<<"\t"<<*(G.mti);
     return os;

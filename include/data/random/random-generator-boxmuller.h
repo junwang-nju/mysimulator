@@ -71,7 +71,7 @@ namespace std {
   }
 
   template <typename UniformRNG>
-  ostream& operator<<(ostream& os, const BoxMuller<UniformRNG>& G) {
+  OutputBase& operator<<(OutputBase& os, const BoxMuller<UniformRNG>& G) {
     os<<*(G.urng)<<"\t";
     unsigned long long int *p;
     p=reinterpret_cast<unsigned long long int*>(const_cast<double*>(G.data));

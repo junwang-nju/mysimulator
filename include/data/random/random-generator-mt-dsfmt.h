@@ -384,7 +384,7 @@ namespace std {
   }
 
   template <unsigned int LoopFac>
-  ostream& operator<<(ostream& os, const dSFMT<LoopFac>& G) {
+  OutputBase& operator<<(OutputBase& os, const dSFMT<LoopFac>& G) {
     assert(IsAvailable(G));
     os<<LoopFac<<"\t";
     for(unsigned int i=0;i<G.size;++i)
