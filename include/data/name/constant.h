@@ -96,6 +96,8 @@ namespace std {
    */
   static const double IvGold=1.618033988749894848205; 
 
+  static const char CharEOF=static_cast<char>(26);
+
 }
 
 #include "operation/basic/error-proc.h"

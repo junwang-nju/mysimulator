@@ -5,6 +5,7 @@
 #include "operation/basic/input-base.h"
 #include "operation/basic/memory.h"
 #include "operation/basic/util.h"
+#include "data/name/constant.h"
 #include <cstdio>
 #include <cassert>
 
@@ -52,16 +53,31 @@ namespace std {
     FileInput& read(long long int& ll) { return __read("%lld",ll); }
     FileInput& read(unsigned long long int& ull) { return __read("%llu",ull); }
     FileInput& read(float& f) { return __read("%f",f); }
-    FileInput& read(double& d) { return __read("%f",d); }
+    FileInput& read(double& d) { return __read("%lf",d); }
     FileInput& read(long double& ld) { return __read("%Lf",ld); }
     FileInput& read(void*& ptr) { return __read("%p",ptr); }
     FileInput& read(char* s) {
       assert(IsAvailable(fpoint));
-      fscanf(fpoint,"%s",s);
+      char c;
+      read(c);
+      while(isspace(c)) read(c);
+      int i=0;
+      while((!isspace(c))&&(s[i]!=CharEOF)) {
+        s[i++]=c;
+        read(c);
+      }
+      if(s[i]==CharEOF) ungetc(c,fpoint);
+      s[i]='\0';
       return *this;
     }
 
   };
+
+  void initString(char* s, const unsigned int len) {
+    unsigned int last=len-1;
+    for(unsigned int i=0;i<last;++i) s[i]='\0';
+    s[last]=static_cast<char>(26);
+  }
 
   bool IsAvailable(const FileInput& I) { return IsAvailable(I.fpoint); }
   void release(FileInput& I) {
