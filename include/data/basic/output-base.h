@@ -2,9 +2,21 @@
 #ifndef _Output_Base_H_
 #define _Output_Base_H_
 
+#include "data/basic/input-output-base.h"
+
 namespace std {
   
-  struct OutputBase {
+  struct OutputBase;
+  void release(OutputBase&);
+  
+  struct OutputBase : public InputOutputBase {
+    OutputBase() : InputOutputBase() {}
+    OutputBase(const OutputBase&) { Error("Cannot create Output Base"); }
+    OutputBase& operator=(const OutputBase&) {
+      Error("Cannot copy Output Base");
+      return *this;
+    }
+    ~OutputBase() { release(*this); }
     virtual OutputBase& write(const bool&)=0;
     virtual OutputBase& write(const char&)=0;
     virtual OutputBase& write(const unsigned char&)=0;
@@ -22,6 +34,23 @@ namespace std {
     virtual OutputBase& write(const void*)=0;
     virtual OutputBase& write(const char*)=0;
   };
+
+  bool IsAvailable(const OutputBase& OB) {
+    return static_cast<const InputOutputBase&>(OB);
+  }
+  void release(OutputBase& OB) { release(static_cast<InputOutputBase&>(OB)); }
+  void copy(OutputBase& O, const OutputBase& cO) {
+    assert(IsAvailable(O));
+    assert(IsAvailable(cO));
+    copy(static_cast<InputOutputBase&>(O),
+         static_cast<const InputOutputBase&>(cO));
+  }
+  void refer(OutputBase& O, const OutputBase& rO) {
+    assert(IsAvailable(rO));
+    release(O);
+    refer(static_cast<InputOutputBase&>(O),
+          static_cast<const InputOutputBase&>(rO));
+  }
 
   OutputBase& operator<<(OutputBase& O, const bool& b) { return O.write(b); }
   OutputBase& operator<<(OutputBase& O, const char& c) { return O.write(c); }

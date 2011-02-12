@@ -3,10 +3,6 @@
 #define _File_Output_H_
 
 #include "operation/basic/output-base.h"
-#include "operation/basic/util.h"
-#include <cstdio>
-#include <cstdlib>
-#include <cassert>
 
 namespace std {
   
@@ -16,8 +12,9 @@ namespace std {
   struct FileOutput : public OutputBase {
     FILE *fpoint;
     bool rflag;
-    FileOutput() : fpoint(NULL), rflag(false) {}
-    FileOutput(const FILE* fp) : fpoint(const_cast<FILE*>(fp)), rflag(true) {}
+    FileOutput() : OutputBase(), fpoint(NULL), rflag(false) {}
+    FileOutput(const FILE* fp)
+      : OutputBase(), fpoint(const_cast<FILE*>(fp)), rflag(true) {} ///
     FileOutput(const FileOutput& FO) {
       fprintf(stderr,"%s\n","Cannot create FileOutput");
       exit(0);
