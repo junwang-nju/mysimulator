@@ -11,14 +11,19 @@
 namespace std {
   
   struct StringOutput;
+  bool IsAvailable(const StringOutput&);
   void release(StringOutput&);
   void copy(StringOutput&, const Vector<char>&);
   void copy(StringOutput&, const char*, const unsigned int);
+  void allocate(StringOutput&,const unsigned int);
   
   struct StringOutput : public OutputBase {
     Vector<char> buffer;
     Vector<unsigned int> property;
     StringOutput() : buffer(), property() {}
+    StringOutput(const unsigned int n) : buffer(), property() {
+      allocate(*this,n);
+    }
     StringOutput(const Vector<char>& bf) : buffer(), property() {
       copy(*this,bf);
     }
@@ -26,11 +31,11 @@ namespace std {
       copy(*this,ptr,n);
     }
     StringOutput(const StringOutput&) {
-      fprintf(stderr,"Cannot create String Output");
+      fprintf(stderr,"Cannot create String Output\n");
       exit(0);
     }
-    StringOutput& operation=(const StringOutput&) {
-      fprintf(stderr,"Cannot copy string output");
+    StringOutput& operator=(const StringOutput&) {
+      fprintf(stderr,"Cannot copy string output\n");
       exit(0);
       return *this;
     }
@@ -44,6 +49,8 @@ namespace std {
         fprintf(stderr,"String Buffer Overflow\n");
         exit(0);
       }
+      property[StrOutLocation]+=n;
+      property[StrOutCapacity]-=n;
       return *this;
     }
     StringOutput& write(const bool& b) { return __write("%d",b?1:0); }
@@ -81,10 +88,10 @@ namespace std {
     refer(O.property,cO.property);
   }
   void initStringOutput(StringOutput& O) {
-    buffer[O.buffer.size-1]='\0';
+    O.buffer[O.buffer.size-1]='\0';
     allocate(O.property,StringOutputNumberProperty);
     O.property[StrOutLocation]=0;
-    O.property[StrOutCapacity]=O.buffer.size-1;
+    O.property[StrOutCapacity]=O.buffer.size;
   }
   void copy(StringOutput& O, const Vector<char>& bf) {
     release(O);
