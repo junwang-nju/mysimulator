@@ -4,7 +4,7 @@
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "data/basic/property-list.h"
 #include "operation/parameter/build-param-harmonic.h"
-#include <iostream>
+#include "operation/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -27,11 +27,10 @@ int main() {
 
   Vector<unsigned int> idx;
   allocate(idx,9);
-  idx[0]=0+4;
+  idx[0]=3;
   idx[1]=2;
-  idx[2]=2+4;
-  idx[3]=3;
-  for(unsigned int i=0;i<5;++i) idx[i+4]=i;
+  idx[2]=3;
+  for(unsigned int i=0;i<5;++i) idx[i+3]=i;
 
   Vector<UniqueParameter> prm;
   allocate(prm,HarmonicNumberParameter);
@@ -44,28 +43,28 @@ int main() {
   copy(sz,2);
   allocate(tmv,sz);
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
   EFuncCentroidCentroidHarmonic(v.structure,idx.data,prm.data,DED,FS,
                                 E,tmv.structure);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
   GFuncCentroidCentroidHarmonic(v.structure,idx.data,prm.data,DED,FS,
                                 g.structure,tmv.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncCentroidCentroidHarmonic(v.structure,idx.data,prm.data,DED,FS,
                                 E,g.structure,tmv.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }

@@ -30,7 +30,7 @@ namespace std {
       Vector<T>* tmvec,
       void (*gfunc)(const T&,const UniqueParameter*,T&)) {
     unsigned int nb1=idx[0],ne1=nb1+idx[1];
-    unsigned int nb2=ne1,ne2=nb2=idx[2];
+    unsigned int nb2=ne1,ne2=nb2+idx[2];
     MassCenter(X,idx+nb1,idx[1],tmvec[0]);
     MassCenter(X,idx+nb2,idx[2],tmvec[1]);
     Displacement(tmvec[0],tmvec[1],B.DisplaceVec,Geo);
@@ -52,7 +52,7 @@ namespace std {
       Vector<T>* tmvec,
       void (*bfunc)(const T&,const UniqueParameter*,T&,T&)) {
     unsigned int nb1=idx[0],ne1=nb1+idx[1];
-    unsigned int nb2=ne1,ne2=nb2=idx[2];
+    unsigned int nb2=ne1,ne2=nb2+idx[2];
     MassCenter(X,idx+nb1,idx[1],tmvec[0]);
     MassCenter(X,idx+nb2,idx[2],tmvec[1]);
     Displacement(tmvec[0],tmvec[1],B.DisplaceVec,Geo);
