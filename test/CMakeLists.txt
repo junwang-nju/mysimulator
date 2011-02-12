@@ -174,6 +174,9 @@ target_link_libraries (test-interaction-sphere-wall-corelj612.run blas)
 add_executable (test-interaction-anchor-harmonic.run test-interaction-anchor-harmonic.cxx)
 target_link_libraries (test-interaction-anchor-harmonic.run blas)
 
+add_executable (test-interaction-centroid-anchor-harmonic.run test-interaction-centroid-anchor-harmonic.cxx)
+target_link_libraries (test-interaction-centroid-anchor-harmonic.run blas)
+
 #add_executable (test-pdb-data.run test-pdb-data.cxx)
 #target_link_libraries (test-pdb-data.run blas)
 

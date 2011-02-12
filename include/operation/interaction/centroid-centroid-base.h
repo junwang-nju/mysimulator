@@ -35,7 +35,7 @@ namespace std {
     MassCenter(X,idx+nb2,idx[2],tmvec[1]);
     Displacement(tmvec[0],tmvec[1],B.DisplaceVec,Geo);
     T dsq=displacement2distanceSQ(B.DisplaceVec);
-    double ef,ef0,ef1;
+    T ef,ef0,ef1;
     gfunc(dsq,P,ef);
     ef0=ef/idx[1];
     ef1=ef/idx[2];
@@ -57,7 +57,7 @@ namespace std {
     MassCenter(X,idx+nb2,idx[2],tmvec[1]);
     Displacement(tmvec[0],tmvec[1],B.DisplaceVec,Geo);
     T dsq=displacement2distanceSQ(B.DisplaceVec);
-    double ee,ef,ef0,ef1;
+    T ee,ef,ef0,ef1;
     bfunc(dsq,P,ee,ef);
     Energy+=ee;
     ef0=ef/idx[1];
