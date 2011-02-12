@@ -1,50 +1,54 @@
 
 #include "operation/random/random-generator-boxmuller-op.h"
 #include "operation/random/random-generator-op.h"
-#include <iostream>
-#include <sstream>
+#include "operation/basic/console-output.h"
+#include "operation/basic/string-buffer-output.h"
+#include "operation/basic/string-buffer-input.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   BoxMuller<dSFMT<19937> > bm;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   allocate(bm);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- init with a seed"<<endl;
+  COut<<"Test -- init with a seed"<<Endl;
   init(bm,1227389);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- other interfaces to generate random numbers"<<endl;
-  cout<<rand<double>(bm)<<endl;
-  cout<<endl;
+  COut<<"Test -- other interfaces to generate random numbers"<<Endl;
+  COut<<rand<double>(bm)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- generate a vector of random data"<<endl;
+  COut<<"Test -- generate a vector of random data"<<Endl;
   double *v=new double[1000];
   fillarray(bm,v,900,20,1);
   Vector<double> rv;
   refer(rv,v,1000);
   fillarray(bm,rv);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- save and load status of generator"<<endl;
-  stringstream ss;
+  COut<<"Test -- save and load status of generator"<<Endl;
+  const unsigned int nbuff=409600;
+  char buffer[nbuff];
+  StringOutput SO(buffer,nbuff);
+  StringInput SI(buffer,nbuff);
   Vector<UniqueParameter128b> vbefore, vafter;
   unsigned int ncmp=10;
   allocate(vbefore,ncmp);
   allocate(vafter,ncmp);
-  ss<<bm;
+  SO<<bm;
   fillarray(bm,vbefore()->d,ncmp*2);
-  ss>>bm;
+  SI>>bm;
   fillarray(bm,vafter()->d,ncmp*2);
   for(unsigned int i=0;i<ncmp+ncmp;++i)
-    if(vbefore()->ull[i]!=vafter()->ull[i]) cout<<i<<"\tNot Equal"<<endl;
-  cout<<endl;
+    if(vbefore()->ull[i]!=vafter()->ull[i]) COut<<i<<"\tNot Equal"<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- distribution"<<endl;
+  COut<<"Test -- distribution"<<Endl;
   unsigned int nhist=10000,nrnd=nhist*1000,hnhist=nhist/2,whist=1000;
   Vector<unsigned int> iv(nhist);
   copy(iv,0U);
@@ -52,9 +56,9 @@ int main() {
     m=static_cast<unsigned int>(rand<double>(bm)*whist+hnhist);
     if((m>=0)&&(m<nhist)) iv[m]++;
   }
-  for(unsigned int i=0;i<nhist;++i) cout<<i<<"\t"<<iv[i]<<endl;
-  cout<<"(data has been checked, but is not output here)"<<endl;
-  cout<<endl;
+  for(unsigned int i=0;i<nhist;++i) COut<<i<<"\t"<<iv[i]<<Endl;
+  COut<<"(data has been checked, but is not output here)"<<Endl;
+  COut<<Endl;
 
   return 1;
 }

@@ -371,7 +371,7 @@ namespace std {
   }
 
   template <unsigned int LoopFac>
-  istream& operator>>(istream& is, SFMT<LoopFac>& G) {
+  InputBase& operator>>(InputBase& is, SFMT<LoopFac>& G) {
     assert(IsAvailable(G));
     unsigned int expLoopFac;
     is>>expLoopFac;

@@ -137,7 +137,7 @@ namespace std {
     dcopy(P.data,&cP,P.size,iZero,iOne,iZero,iZero);
   }
 
-  istream& operator>>(istream& is, UniqueParameter128b& P) {
+  InputBase& operator>>(InputBase& is, UniqueParameter128b& P) {
     static char flag;
     static char buff[1024];
     is>>buff;
@@ -153,7 +153,7 @@ namespace std {
     else if((flag=='L')||(flag=='l')) is>>buff>>P.ull[0]>>P.ull[1]>>buff;
     else if((flag=='P')||(flag=='p'))
       is>>buff>>P.ptr[0]>>P.ptr[1]>>P.ptr[2]>>P.ptr[3]>>buff;
-    else is.setstate(ios_base::failbit);
+    else myError("FAIL"); //is.setstate(ios_base::failbit);
     return is;
   }
 

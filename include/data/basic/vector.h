@@ -7,7 +7,7 @@
 #include "operation/basic/memory.h"
 #include "operation/basic/util.h"
 #include "operation/basic/output-base.h"
-#include <iostream>
+#include "operation/basic/input-base.h"
 
 namespace std {
 
@@ -235,7 +235,7 @@ namespace std {
   }
 
   template <typename T>
-  istream& operator>>(istream& is, Vector<T>& v) {
+  InputBase& operator>>(InputBase& is, Vector<T>& v) {
     assert(IsAvailable(v));
     for(unsigned int i=0;i<v.size;++i)  is>>v[i];
     return is;

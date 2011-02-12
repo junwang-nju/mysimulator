@@ -1,24 +1,25 @@
 
 #include "operation/random/random-generator-mt-dsfmt-op.h"
 #include "operation/random/random-generator-op.h"
-#include <iostream>
-#include <sstream>
+#include "operation/basic/console-output.h"
+#include "operation/basic/string-buffer-output.h"
+#include "operation/basic/string-buffer-input.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   dSFMT<216091> dg;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   allocate(dg);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- init with a seed"<<endl;
+  COut<<"Test -- init with a seed"<<Endl;
   init(dg,122378);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- init with an array"<<endl;
+  COut<<"Test -- init with an array"<<Endl;
   unsigned int *v=new unsigned int[100];
   for(unsigned int i=0;i<100;++i) v[i]=(i+1)*(i+2);
   init(dg,v,40,1,2);
@@ -26,16 +27,16 @@ int main() {
   refer(rv,v,80);
   init(dg,rv);
   delete[] v;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- other interfaces to generate random numbers"<<endl;
-  cout<<rand<unsigned int>(dg)<<endl;
-  cout<<doubleClose1Open2(dg)<<endl;
-  cout<<doubleOpen0Close1(dg)<<endl;
-  cout<<doubleOpen0Open1(dg)<<endl;
-  cout<<endl;
+  COut<<"Test -- other interfaces to generate random numbers"<<Endl;
+  COut<<rand<unsigned int>(dg)<<Endl;
+  COut<<doubleClose1Open2(dg)<<Endl;
+  COut<<doubleOpen0Close1(dg)<<Endl;
+  COut<<doubleOpen0Open1(dg)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- generate a vector of random data"<<endl;
+  COut<<"Test -- generate a vector of random data"<<Endl;
   v=new unsigned int[1000];
   fillarray(dg,v,900);
   refer(rv,v,1000);
@@ -46,33 +47,36 @@ int main() {
   unsigned int ndvsize;
   ndv=dv; ndvsize=100000;
   fillarray(dg,ndv,ndvsize);
-  cout<<ndv[0]<<"\t"<<ndv[9999]<<endl;
+  COut<<ndv[0]<<"\t"<<ndv[9999]<<Endl;
   Vector<double> rdv;
   refer(rdv,ndv,ndvsize);
   fillarray(dg,rdv); 
-  cout<<ndv[0]<<"\t"<<ndv[9999]<<endl;
-  fillarrayFast(dg,ndv,1000);
+  COut<<ndv[0]<<"\t"<<ndv[9999]<<Endl;
+  fillarrayFast(dg,ndv,10000);
   fillarrayClose1Open2Fast(dg,ndv,ndvsize);
   fillarrayOpen0Close1Fast(dg,ndv,ndvsize);
   fillarrayOpen0Open1Fast(dg,ndv,ndvsize);
   fillarray(dg,ndv,1000,1,3);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- save and load status of generator"<<endl;
-  stringstream ss;
+  COut<<"Test -- save and load status of generator"<<Endl;
+  const unsigned int nbuff=409600;
+  char buffer[nbuff];
+  StringOutput SO(buffer,nbuff);
+  StringInput SI(buffer,nbuff);
   Vector<unsigned int> vbefore, vafter;
   unsigned int ncmp=10;
   allocate(vbefore,ncmp);
   allocate(vafter,ncmp);
-  ss<<dg;
+  SO<<dg;
   fillarray(dg,vbefore);
-  ss>>dg;
+  SI>>dg;
   fillarray(dg,vafter);
   for(unsigned int i=0;i<ncmp;++i)
-    if(vbefore[i]!=vafter[i]) cout<<i<<"\tNot Equal"<<endl;
-  cout<<endl;
+    if(vbefore[i]!=vafter[i]) COut<<i<<"\tNot Equal"<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- degree of uniformness"<<endl;
+  COut<<"Test -- degree of uniformness"<<Endl;
   unsigned int nhist=100000, nrnd=nhist*1000;
   allocate(rv,nhist);
   copy(rv,0U);
@@ -82,11 +86,11 @@ int main() {
   Vector<unsigned int> hv(nhhist);
   copy(hv,0U);
   for(unsigned int i=0;i<nhist;++i) hv[rv[i]-600]++;
-  for(unsigned int i=0;i<nhhist;++i)  cout<<i<<"\t"<<hv[i]<<endl;
-  cout<<"(The data has been checked, but is not output here)"<<endl;
+  for(unsigned int i=0;i<nhhist;++i)  COut<<i<<"\t"<<hv[i]<<Endl;
+  COut<<"(The data has been checked, but is not output here)"<<Endl;
   release(hv);
   release(rv);
-  cout<<endl;
+  COut<<Endl;
 
   return 1;
 }

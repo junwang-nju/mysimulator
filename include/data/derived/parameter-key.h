@@ -66,7 +66,7 @@ namespace std {
     refer(K.hash,rK.hash);
   }
 
-  istream& operator>>(istream& is, ParameterKey& K) {
+  InputBase& operator>>(InputBase& is, ParameterKey& K) {
     is>>static_cast<Vector<unsigned int>&>(K); K.update(); return is;
   }
 

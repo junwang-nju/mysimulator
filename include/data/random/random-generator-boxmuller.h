@@ -80,7 +80,7 @@ namespace std {
     return os;
   }
   template <typename UniformRNG>
-  istream& operator>>(istream& is, BoxMuller<UniformRNG>& G) {
+  InputBase& operator>>(InputBase& is, BoxMuller<UniformRNG>& G) {
     is>>*(G.urng);
     unsigned long long int *p;
     p=reinterpret_cast<unsigned long long int*>(G.data);

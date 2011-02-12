@@ -1,24 +1,25 @@
 
 #include "operation/random/random-generator-mt-sfmt-op.h"
 #include "operation/random/random-generator-op.h"
-#include <iostream>
-#include <sstream>
+#include "operation/basic/console-output.h"
+#include "operation/basic/string-buffer-input.h"
+#include "operation/basic/string-buffer-output.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   SFMT<216091> sg;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   allocate(sg);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- init with a seed"<<endl;
+  COut<<"Test -- init with a seed"<<Endl;
   init(sg,122378);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- init with an array"<<endl;
+  COut<<"Test -- init with an array"<<Endl;
   unsigned int *v=new unsigned int[100];
   for(unsigned int i=0;i<100;++i) v[i]=(i+1)*(i+2);
   init(sg,v,40,1,2);
@@ -26,24 +27,24 @@ int main() {
   refer(rv,v,80);
   init(sg,rv);
   safe_delete_array(v);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- generate random numbers"<<endl;
-  cout.precision(20);
-  cout<<rand<unsigned int>(sg)<<endl;
+  COut<<"Test -- generate random numbers"<<Endl;
+  //COut.precision(20);
+  COut<<rand<unsigned int>(sg)<<Endl;
   irand(sg);
-  cout<<rand<unsigned long long int>(sg)<<endl;
-  cout<<doubleClose0Close1(sg)<<endl;
-  cout<<doubleClose0Open1(sg)<<endl;
-  cout<<doubleOpen0Open1(sg)<<endl;
-  cout<<double53bitSlow(sg)<<endl;
-  cout<<rand<double>(sg)<<endl;
+  COut<<rand<unsigned long long int>(sg)<<Endl;
+  COut<<doubleClose0Close1(sg)<<Endl;
+  COut<<doubleClose0Open1(sg)<<Endl;
+  COut<<doubleOpen0Open1(sg)<<Endl;
+  COut<<double53bitSlow(sg)<<Endl;
+  COut<<rand<double>(sg)<<Endl;
   irand(sg);
-  cout<<rand<long double>(sg)<<endl;
-  cout<<longdouble63bitSlow(sg)<<endl;
-  cout<<endl;
+  COut<<rand<long double>(sg)<<Endl;
+  COut<<longdouble63bitSlow(sg)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- generate a vector of random data"<<endl;
+  COut<<"Test -- generate a vector of random data"<<Endl;
   v=new unsigned int[10000];
   init(sg,328748327);
   fillarray(sg,v,9000);
@@ -65,23 +66,26 @@ int main() {
   refer(rlv,lv,8000);
   fillarray(sg,rlv);
   safe_delete_array(lv);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- save and load status of generator"<<endl;
-  stringstream ss;
+  COut<<"Test -- save and load status of generator"<<Endl;
+  const unsigned int nbuff=409600;
+  char buffer[nbuff];
+  StringOutput SO(buffer,nbuff);
+  StringInput SI(buffer,nbuff);
   Vector<unsigned int> vbefore,vafter;
   unsigned int ncmp=10;
   allocate(vbefore,ncmp);
   allocate(vafter,ncmp);
-  ss<<sg;
+  SO<<sg;
   fillarray(sg,vbefore.data,ncmp,0,1);
-  ss>>sg;
+  SI>>sg;
   fillarray(sg,vafter.data,ncmp,0,1);
   for(unsigned int i=0;i<ncmp;++i)
-    if(vbefore[i]!=vafter[i]) cout<<i<<"\tNot Equal"<<endl;
-  cout<<endl;
+    if(vbefore[i]!=vafter[i]) COut<<i<<"\tNot Equal"<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- degree of uniformness"<<endl;
+  COut<<"Test -- degree of uniformness"<<Endl;
   unsigned int nhist=100000, nrnd=nhist*1000;
   allocate(rv,nhist);
   copy(rv,0U);
@@ -91,11 +95,11 @@ int main() {
   Vector<unsigned int> hv(nhhist);
   copy(hv,0U);
   for(unsigned int i=0;i<nhist;++i) hv[rv[i]-600]++;
-  for(unsigned int i=0;i<nhhist;++i) cout<<i<<"\t"<<hv[i]<<endl;
-  cout<<"(The data has been checked, but is not output here)"<<endl;
+  for(unsigned int i=0;i<nhhist;++i) COut<<i<<"\t"<<hv[i]<<Endl;
+  COut<<"(The data has been checked, but is not output here)"<<Endl;
   release(hv);
   release(rv);
-  cout<<endl;
+  COut<<Endl;
 
   return 1;
 }

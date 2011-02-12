@@ -81,7 +81,8 @@ namespace std {
     os<<static_cast<const Vector<unsigned int>&>(G)<<"\t"<<*(G.mti);
     return os;
   }
-  istream& operator>>(istream& is, MT_Standard& G) {
+
+  InputBase& operator>>(InputBase& is, MT_Standard& G) {
     assert(IsAvailable(G));
     is>>static_cast<Vector<unsigned int>&>(G)>>*(G.mti);
     return is;

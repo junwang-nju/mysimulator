@@ -45,7 +45,7 @@ namespace std {
       assert(IsAvailable(*this));
       int n=snprintf(buffer.data+property[StrOutLocation],
                      property[StrOutCapacity],pat,value);
-      if(n>property[StrOutCapacity]) {
+      if((n>=0)&&(static_cast<unsigned int>(n)>property[StrOutCapacity])) {
         fprintf(stderr,"String Buffer Overflow\n");
         exit(0);
       }

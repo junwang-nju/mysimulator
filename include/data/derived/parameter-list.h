@@ -183,7 +183,7 @@ namespace std {
     return get(L,idx.data,idx.size);
   }
 
-  istream& operator>>(istream& is, ParameterList& L) {
+  InputBase& operator>>(InputBase& is, ParameterList& L) {
     assert(IsAvailable(L));
     for(unsigned int i=0;i<L.size;++i)  is>>L.key[i]>>L.value[i];
     L.update();

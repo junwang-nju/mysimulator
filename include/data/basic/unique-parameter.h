@@ -111,7 +111,7 @@ namespace std {
   template <>
   void* const& UniqueParameter::value<void*>() const { return ptr; }
 
-  istream& operator>>(istream& is, UniqueParameter& P) {
+  InputBase& operator>>(InputBase& is, UniqueParameter& P) {
     static char flag;
     is>>flag;
     if((flag=='D')||(flag=='d'))  is>>P.d;
@@ -120,7 +120,7 @@ namespace std {
     else if((flag='I')||(flag=='i'))  is>>P.i;
     else if((flag='P')||(flag=='P'))  is>>P.ptr;
     else if(isdigit(flag)||(flag=='+')) { is.unget(); is>>P.ull; }
-    else is.setstate(ios_base::failbit);
+    else myError("FAIL"); //is.setstate(ios_base::failbit);
     return is;
   }
 
