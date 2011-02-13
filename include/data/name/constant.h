@@ -98,6 +98,8 @@ namespace std {
 
   static const char CharEOF=static_cast<char>(26);
 
+  static const char* Endl="\n";
+
 }
 
 #include "operation/basic/error-op.h"

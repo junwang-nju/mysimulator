@@ -14,9 +14,9 @@ namespace std {
     unsigned int nunit;
     
     PropertyList() : ParentType(), structure(), nunit(0) {}
-    PropertyList(const Type& L) { myError("Cannot create from PropertyList"); }
+    PropertyList(const Type& L) { Error("Cannot create from PropertyList"); }
     Type& operator=(const Type& L) {
-      myError("Cannot copy PropertyList");
+      Error("Cannot copy PropertyList");
       return *this;
     }
     ~PropertyList() { release(*this); }
@@ -106,14 +106,6 @@ namespace std {
     swap(LA.structure,LB.structure);
     swap(LA.nunit,LB.nunit);
     swap(static_cast<Vector<T>&>(LA),static_cast<Vector<T>&>(LB));
-  }
-
-  template <typename T>
-  OutputBase& operator<<(OutputBase& os, const PropertyList<T>& L) {
-    assert(IsAvailable(L));
-    os<<L[0];
-    for(unsigned int k=1;k<L.nunit;++k) os<<Endl<<L[k];
-    return os;
   }
 
 }
