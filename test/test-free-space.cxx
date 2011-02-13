@@ -1,32 +1,33 @@
 
 #include "data/geometry/free-space.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initiate"<<endl;
+  COut<<"Test -- initiate"<<Endl;
   FreeSpace FS;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign from another Free Space"<<endl;
+  COut<<"Test -- assign from another Free Space"<<Endl;
   FreeSpace FS2;
   copy(FS2,FS);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer another Free Space"<<endl;
+  COut<<"Test -- refer another Free Space"<<Endl;
   refer(FS2,FS);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- type id"<<endl;
-  cout<<FS.Name<<endl;
-  cout<<endl;
+  COut<<"Test -- type id"<<Endl;
+  COut<<FS.Name<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(FS2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- Displacement Calculation"<<endl;
+  COut<<"Test -- Displacement Calculation"<<Endl;
   Vector<double> va,vb,v;
   allocate(va,5);
   allocate(vb,5);
@@ -34,13 +35,13 @@ int main() {
   copy(va,3);
   copy(vb,5); vb[2]=9;
   Displacement(va,vb,v,FS);
-  cout<<v<<endl;
-  cout<<endl;
+  COut<<v<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- check whether it is a geometry"<<endl;
-  cout<<IsGeometry(FS)<<endl;
-  cout<<IsGeometry(va)<<endl;
-  cout<<endl;
+  COut<<"Test -- check whether it is a geometry"<<Endl;
+  COut<<IsGeometry(FS)<<Endl;
+  COut<<IsGeometry(va)<<Endl;
+  COut<<Endl;
 
   return 1;
 }

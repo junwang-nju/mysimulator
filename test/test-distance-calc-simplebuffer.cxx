@@ -1,60 +1,61 @@
 
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   DistanceBufferSimple<double> DED;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   allocate(DED,5,8);
-  cout<<DED.DisplaceVec.size<<endl;
-  cout<<DED.state<<endl;
-  cout<<endl;
+  COut<<DED.DisplaceVec.size<<Endl;
+  COut<<DED.state<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- evaluate"<<endl;
+  COut<<"Test -- evaluate"<<Endl;
   Vector<double> va,vb;
   allocate(va,7);
   allocate(vb,19);
   copy(va,1.);    va[2]=-15.;   va[3]=87.9;
   copy(vb,57.63); vb[3]=123.45;
   FreeSpace FS;
-  cout<<Distance(va,vb,0,1,FS,DED)<<endl;
-  cout<<DED.DisplaceVec<<endl;
-  cout<<DED.DistanceSquare()<<endl;
-  cout<<endl;
+  COut<<Distance(va,vb,0,1,FS,DED)<<Endl;
+  COut<<DED.DisplaceVec<<Endl;
+  COut<<DED.DistanceSquare()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign from another DistanceEvalDirect"<<endl;
+  COut<<"Test -- assign from another DistanceEvalDirect"<<Endl;
   DistanceBufferSimple<double> DED2;
   allocate(DED2,4,7);
   copy(DED2,DED);
-  cout<<DED2.DisplaceVec<<endl;
-  cout<<endl;
+  COut<<DED2.DisplaceVec<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(DED2);
-  cout<<DED2.state<<endl;
-  cout<<endl;
+  COut<<DED2.state<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer operation"<<endl;
+  COut<<"Test -- refer operation"<<Endl;
   refer(DED2,DED);
-  cout<<DED2.DisplaceVec<<endl;
-  cout<<DED2.DistanceSquare()<<endl;
-  cout<<endl;
+  COut<<DED2.DisplaceVec<<Endl;
+  COut<<DED2.DistanceSquare()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- update"<<endl;
+  COut<<"Test -- update"<<Endl;
   DED.renew();
-  cout<<DED.DisplaceVec<<endl;
-  cout<<DED.DistanceSquare()<<endl;
-  cout<<endl;
+  COut<<DED.DisplaceVec<<Endl;
+  COut<<DED.DistanceSquare()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- whether it is Distance Evaluate Method"<<endl;
-  cout<<IsDistanceBuffer(DED2)<<endl;
-  cout<<IsDistanceBuffer(DED.DistanceSquare())<<endl;
-  cout<<endl;
+  COut<<"Test -- whether it is Distance Evaluate Method"<<Endl;
+  COut<<IsDistanceBuffer(DED2)<<Endl;
+  COut<<IsDistanceBuffer(DED.DistanceSquare())<<Endl;
+  COut<<Endl;
 
   return 1;
 }

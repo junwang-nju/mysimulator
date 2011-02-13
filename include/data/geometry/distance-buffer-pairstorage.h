@@ -16,10 +16,10 @@ namespace std {
 
     DistanceBufferPairStorage() : ParentType(), DsqMat() {}
     DistanceBufferPairStorage(const Type& B) {
-      myError("Cannot create Distance Buffer with Pair Storage");
+      Error("Cannot create Distance Buffer with Pair Storage");
     }
     Type& operator=(const Type& B) {
-      myError("Cannot copy Distance Buffer with Pair Storage");
+      Error("Cannot copy Distance Buffer with Pair Storage");
       return *this;
     }
     ~DistanceBufferPairStorage() { release(*this); }

@@ -18,9 +18,9 @@ namespace std {
     Vector<bool> edgeFlag;
     
     PeriodicBox() : ParentType(), halfBox(), edgeFlag() {}
-    PeriodicBox(const Type& G) { myError("Cannot create Periodic Box"); }
+    PeriodicBox(const Type& G) { Error("Cannot create Periodic Box"); }
     Type& operator=(const Type& G) {
-      myError("Cannot copy Periodic Box");
+      Error("Cannot copy Periodic Box");
       return *this;
     }
     ~PeriodicBox() { release(*this); }

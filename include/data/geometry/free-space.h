@@ -3,7 +3,7 @@
 #define _Free_Space_H_
 
 #include "data/name/geometry.h"
-#include "operation/basic/error-proc.h"
+#include "operation/basic/error-op.h"
 
 namespace std {
 
@@ -12,9 +12,9 @@ namespace std {
     static const unsigned int Name;
     
     FreeSpace() {}
-    FreeSpace(const Type& G) { myError("Cannot create Free Space"); }
+    FreeSpace(const Type& G) { Error("Cannot create Free Space"); }
     Type& operator=(const Type& G) {
-      myError("Cannot copy Free Space");
+      Error("Cannot copy Free Space");
       return *this;
     }
   };

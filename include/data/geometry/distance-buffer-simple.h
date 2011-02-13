@@ -16,10 +16,10 @@ namespace std {
 
     DistanceBufferSimple() : ParentType(), DisplaceVec() {}
     DistanceBufferSimple(const Type& B) {
-      myError("Cannot create Simple Distance Buffer");
+      Error("Cannot create Simple Distance Buffer");
     }
     Type& operator=(const Type& B) {
-      myError("Cannot copy Simple Distance Buffer");
+      Error("Cannot copy Simple Distance Buffer");
       return *this;
     }
     ~DistanceBufferSimple() { release(*this); }

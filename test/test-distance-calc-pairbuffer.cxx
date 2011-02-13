@@ -1,62 +1,63 @@
 
 #include "operation/geometry/distance-calc-pairbuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   DistanceBufferPairStorage<double> DEW;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   allocate(DEW,5,3);
-  cout<<DEW.DisplaceVec.size<<endl;
-  cout<<DEW.DsqMat.property[MatrixDimension]<<endl;
-  cout<<DEW.state<<endl;
-  cout<<endl;
+  COut<<DEW.DisplaceVec.size<<Endl;
+  COut<<DEW.DsqMat.property[MatrixDimension]<<Endl;
+  COut<<DEW.state<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- evaluate"<<endl;
+  COut<<"Test -- evaluate"<<Endl;
   Vector<double> va,vb;
   allocate(va,7);
   allocate(vb,19);
   copy(va,1.);    va[2]=-15.; va[3]=87.9;
   copy(vb,57.63); vb[3]=123.45;
   FreeSpace FS;
-  cout<<Distance(va,vb,0,1,FS,DEW);
-  cout<<DEW.DisplaceVec<<endl;
-  cout<<DEW.DistanceSquare()<<endl;
-  cout<<endl;
+  COut<<Distance(va,vb,0,1,FS,DEW)<<Endl;
+  COut<<DEW.DisplaceVec<<Endl;
+  COut<<DEW.DistanceSquare()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign from another DistanceEavl With Storage"<<endl;
+  COut<<"Test -- assign from another DistanceEavl With Storage"<<Endl;
   DistanceBufferPairStorage<double> DEW2;
   allocate(DEW2,4,5);
   copy(DEW2,DEW);
-  cout<<DEW2.DisplaceVec<<endl;
-  cout<<endl;
+  COut<<DEW2.DisplaceVec<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(DEW2);
-  cout<<DEW2.state<<endl;
-  cout<<endl;
-  cout<<endl;
+  COut<<DEW2.state<<Endl;
+  COut<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer operation"<<endl;
+  COut<<"Test -- refer operation"<<Endl;
   refer(DEW2,DEW);
-  cout<<DEW2.DisplaceVec<<endl;
-  cout<<DEW2.DistanceSquare()<<endl;
-  cout<<endl;
+  COut<<DEW2.DisplaceVec<<Endl;
+  COut<<DEW2.DistanceSquare()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- update"<<endl;
+  COut<<"Test -- update"<<Endl;
   DEW.renew();
-  cout<<DEW.DisplaceVec<<endl;
-  cout<<DEW.DistanceSquare()<<endl;
-  cout<<endl;
+  COut<<DEW.DisplaceVec<<Endl;
+  COut<<DEW.DistanceSquare()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- whether it is Distance Evaluate Method"<<endl;
-  cout<<IsDistanceBuffer(DEW2)<<endl;
-  cout<<IsDistanceBuffer(DEW.DistanceSquare())<<endl;
-  cout<<endl;
+  COut<<"Test -- whether it is Distance Evaluate Method"<<Endl;
+  COut<<IsDistanceBuffer(DEW2)<<Endl;
+  COut<<IsDistanceBuffer(DEW.DistanceSquare())<<Endl;
+  COut<<Endl;
 
   return 1;
 }
