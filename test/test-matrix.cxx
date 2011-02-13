@@ -1,7 +1,7 @@
 
-#include "data/basic/matrix.h"
-#include "operation/basic/console-output.h"
-#include <iostream>
+#include "operation/basic/matrix-io.h"
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 int main() {

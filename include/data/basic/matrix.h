@@ -19,9 +19,9 @@ namespace std {
     GetFuncType GetFunc;
     
     Matrix() : ParentType(), property(), ptrOther(NULL), GetFunc(NULL) {}
-    Matrix(const Type& M) { myError("cannot create from Matrix"); }
+    Matrix(const Type& M) { Error("cannot create from Matrix"); }
     Type& operator=(const Type& M) {
-      myError("cannot copy Matrix");
+      Error("cannot copy Matrix");
       return* this;
     }
     ~Matrix() { release(*this); }
@@ -43,8 +43,8 @@ namespace std {
           property[MatrixActualOrder]=COrder;
         else if(property[MatrixDataOrder]==DiagonalOrder)
           property[MatrixActualOrder]=DiagonalOrder;
-        else myError("Unknown Data Order");
-      } else myError("Unknown Transpose Format");
+        else Error("Unknown Data Order");
+      } else Error("Unknown Transpose Format");
     }
 
   };
@@ -89,17 +89,6 @@ namespace std {
     swap(MA.ptrOther,MB.ptrOther);
     swap(MA.GetFunc,MB.GetFunc);
     swap(static_cast<PropertyList<T>&>(MA),static_cast<PropertyList<T>&>(MB));
-  }
-
-  template <typename T>
-  OutputBase& operator<<(OutputBase& os, const Matrix<T>& M) {
-    os<<M(0,0);
-    for(int j=1;j<M.property[MatrixNumberColumn];++j) os<<"\t"<<M(0,j);
-    for(int i=1;i<M.property[MatrixNumberRow];++i) {
-      os<<Endl<<M(i,0);
-      for(int j=1;j<M.property[MatrixNumberColumn];++j) os<<"\t"<<M(i,j);
-    }
-    return os;
   }
 
   template <typename T>
@@ -171,7 +160,7 @@ namespace std {
       bool SFlag=static_cast<bool>(va_arg(vl,int));
       bool DFlag=static_cast<bool>(va_arg(vl,int));
       allocateTriangleMatrix(M,Dim,DataOrder,TransForm,TPart,SFlag,DFlag);
-    } else myError("Unknown Matrix Type");
+    } else Error("Unknown Matrix Type");
     va_end(vl);
   }
 
