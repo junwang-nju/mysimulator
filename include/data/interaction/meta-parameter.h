@@ -26,10 +26,10 @@ namespace std {
     InteractionMetaParameter()
       : inprm(),prm(),tag(),tmvec(),EFunc(NULL),GFunc(NULL),BFunc(NULL) {}
     InteractionMetaParameter(const Type&) {
-      myError("Cannot create Interaction Meta Parameter");
+      Error("Cannot create Interaction Meta Parameter");
     }
     Type& operator=(const Type& P) {
-      myError("Cannot copy Interaction Meta Parameter");
+      Error("Cannot copy Interaction Meta Parameter");
       return *this;
     }
     ~InteractionMetaParameter() { release(*this); }
@@ -103,7 +103,7 @@ namespace std {
         P.BFunc=BFuncGaoES<IPType,IType>;
         break;
       default:
-        myError("Unknown Meta Interaction Type");
+        Error("Unknown Meta Interaction Type");
     }
   }
 

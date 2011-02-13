@@ -19,7 +19,7 @@ namespace std {
         SP[SubsysMoveMode].u=VelocityVerlet;
         break;
       default:
-        myError("unknown subsystem propagator type");
+        Error("unknown subsystem propagator type");
     }
   }
 
@@ -36,7 +36,7 @@ namespace std {
         SP[SubsysEnsembleMode].u=Langevin;
         break;
       default:
-        myError("unknown subsystem propagator type");
+        Error("unknown subsystem propagator type");
     }
   }
 
@@ -60,7 +60,7 @@ namespace std {
               static_cast<BuildFunc>(BuildParameterSubsysPropagatorLV));
         break;
       default:
-        myError("unknown subsystem propagator type");
+        Error("unknown subsystem propagator type");
     }
   }
 
@@ -87,7 +87,7 @@ namespace std {
           reinterpret_cast<void*>(static_cast<MoveFunc>(LVMove_AfterG));
         break;
       default:
-        myError("unknown subsystem propagator type");
+        Error("unknown subsystem propagator type");
     }
   }
 
@@ -101,9 +101,9 @@ namespace std {
       else if(spgtype==Langevin_VelocityVerlet)
         return ParticleLangevinVVerlet;
       else
-        myError("unknown subsystem propagator type");
+        Error("unknown subsystem propagator type");
     } else
-      myError("unknown monomer type");
+      Error("unknown monomer type");
     return 0;
   }
 

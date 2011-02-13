@@ -19,10 +19,10 @@ namespace std {
 
     ListInteraction() : ParentType() {}
     ListInteraction(const Type& F) {
-      myError("Cannot create list interaciton");
+      Error("Cannot create list interaciton");
     }
     Type& operator=(const Type& F) {
-      myError("Cannot copy list interaction");
+      Error("Cannot copy list interaction");
       return *this;
     }
   };

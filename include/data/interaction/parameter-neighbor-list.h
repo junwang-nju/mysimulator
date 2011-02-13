@@ -21,10 +21,10 @@ namespace std {
     ParameterWNeighborList()
       : ParentType(), property(), possibleParameter(), XBackup() {}
     ParameterWNeighborList(const Type& P) {
-      myError("Cannot create Parameter with Neighbor-List");
+      Error("Cannot create Parameter with Neighbor-List");
     }
     Type& operator=(const Type& P) {
-      myError("Cannot copy Parameter with Neighbor-List");
+      Error("Cannot copy Parameter with Neighbor-List");
       return *this;
     }
     ~ParameterWNeighborList() { release(*this); }

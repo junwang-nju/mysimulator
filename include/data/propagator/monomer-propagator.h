@@ -14,10 +14,10 @@ namespace std {
     
     monomerPropagator() : ParentType() {}
     monomerPropagator(const Type& P) {
-      myError("Cannot create monomer propagator");
+      Error("Cannot create monomer propagator");
     }
     Type& operator=(const Type& P) {
-      myError("Cannot copy monomer propagator");
+      Error("Cannot copy monomer propagator");
       return *this;
     }
     ~monomerPropagator() { release(*this); }

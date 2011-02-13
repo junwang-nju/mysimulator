@@ -19,10 +19,10 @@ namespace std {
 
     InteractionBase() : ParentType(), property(), B(), Geo() {}
     InteractionBase(const Type& F) {
-      myError("Cannot create Interaction");
+      Error("Cannot create Interaction");
     }
     Type& operator=(const Type& F) {
-      myError("Cannot copy Interaction");
+      Error("Cannot copy Interaction");
       return *this;
     }
     ~InteractionBase() { release(*this); }

@@ -37,7 +37,7 @@ namespace std {
       allocate(sz,nCol);
       copy(sz,nRow);
       M.GetFunc=GetData4F<T>;
-    } else myError("Unknown Data Order");
+    } else Error("Unknown Data Order");
     allocate(static_cast<PropertyList<T>&>(M),sz);
     M.ptrOther=NULL;
   }

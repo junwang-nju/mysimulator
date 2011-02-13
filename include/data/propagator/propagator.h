@@ -19,9 +19,9 @@ namespace std {
     PropertyList<T> Msk;
 
     Propagator() : ParentType(), sysPg(), X(), V(), G(), Msk() {}
-    Propagator(const Type& P) { myError("Cannot create propagator"); }
+    Propagator(const Type& P) { Error("Cannot create propagator"); }
     Type& operator=(const Type& P) {
-      myError("Cannot copy propagator");
+      Error("Cannot copy propagator");
       return *this;
     }
     ~Propagator() { release(*this); }

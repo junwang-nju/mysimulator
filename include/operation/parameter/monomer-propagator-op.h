@@ -20,7 +20,7 @@ namespace std {
         P[MonomerMoveMode].u=VelocityVerlet;
         break;
       default:
-        myError("unknown monomer propagator type");
+        Error("unknown monomer propagator type");
     }
   }
 
@@ -33,7 +33,7 @@ namespace std {
         P[MonomerMode].u=ParticleType;
         break;
       default:
-        myError("unknown monomer propagator type");
+        Error("unknown monomer propagator type");
     }
   }
 
@@ -50,7 +50,7 @@ namespace std {
         P[MonomerEnsembleMode].u=Berendsen;
         break;
       default:
-        myError("unknown monomer propagator type");
+        Error("unknown monomer propagator type");
     }
   }
 
@@ -75,7 +75,7 @@ namespace std {
             static_cast<BuildFunc>(BuildParameterMonomerPropagatorPLV));
         break;
       default:
-        myError("unknown monomer propagator type");
+        Error("unknown monomer propagator type");
     }
   }
 
@@ -107,7 +107,7 @@ namespace std {
           reinterpret_cast<void*>(static_cast<MoveFunc>(PBVMove_PostProcess));
         break;
       default:
-        myError("unknown monomer propagator type");
+        Error("unknown monomer propagator type");
     }
   }
 

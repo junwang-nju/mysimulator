@@ -15,9 +15,9 @@ namespace std {
     Vector<unsigned int> property;
 
     LatticeChain() : ParentType(), property() {}
-    LatticeChain(const Type& LC) { myError("Cannot create lattice chain"); }
+    LatticeChain(const Type& LC) { Error("Cannot create lattice chain"); }
     Type& operator=(const Type& LC) {
-      myError("Cannot copy lattice chain");
+      Error("Cannot copy lattice chain");
       return *this;
     }
     ~LatticeChain() { release(*this); }

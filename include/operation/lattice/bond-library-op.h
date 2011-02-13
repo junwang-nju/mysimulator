@@ -8,15 +8,15 @@ namespace std {
 
   template <unsigned int LT, unsigned int LD>
   void LoadBondLibrary() {
-    myError("This library is not available");
+    Error("This library is not available");
   }
   template <unsigned int LT, unsigned int LD>
   void LoadBondLibrary(const char*) {
-    myError("This library is not available");
+    Error("This library is not available");
   }
   template <unsigned int LT, unsigned int LD>
   void UnloadBondLibrary() {
-    myError("This library is not available");
+    Error("This library is not available");
   }
 
 

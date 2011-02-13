@@ -15,10 +15,10 @@ namespace std {
 
     subsysPropagator() : ParentType(), merPg() {}
     subsysPropagator(const Type& SP) {
-      myError("Cannot create subsystem propagator");
+      Error("Cannot create subsystem propagator");
     }
     Type& operator=(const Type& SP) {
-      myError("Cannot copy subsystem propagator");
+      Error("Cannot copy subsystem propagator");
       return *this;
     }
     ~subsysPropagator() { release(*this); }

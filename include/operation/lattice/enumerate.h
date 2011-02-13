@@ -8,7 +8,7 @@ namespace std {
 
   template <unsigned int LatType, unsigned int LatDim, typename OType>
   int enumerate(const unsigned int N, OType& OObj) {
-    myError("The enumeration for this lattice is not available");
+    Error("The enumeration for this lattice is not available");
     return 0;
   }
 

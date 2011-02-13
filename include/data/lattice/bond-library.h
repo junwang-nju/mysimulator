@@ -18,7 +18,7 @@ namespace std {
     static Vector<PropertyList<unsigned int> > mapper;
     static Vector<PropertyList<int> > xmapper;
     void loadlib(const char* ROOT) {
-      myError("The library is not available");
+      Error("The library is not available");
     }
     void readlib(const char* ftemplate) {
       Vector<unsigned int> sz;
@@ -49,9 +49,9 @@ namespace std {
     
     BondLib() { loadlib("."); }
     BondLib(const char* ROOT) { loadlib(ROOT); }
-    BondLib(const Type& BL) { myError("This library is not available"); }
+    BondLib(const Type& BL) { Error("This library is not available"); }
     Type& operator=(const Type& BL) {
-      myError("This Library is not available");
+      Error("This Library is not available");
       return *this;
     }
     ~BondLib() { release(*this); }
@@ -92,7 +92,7 @@ namespace std {
   
   template <unsigned int LT, unsigned int LD>
   const BondLib<LT,LD>& RunBondLibrary() {
-    myError("This Library is not available");
+    Error("This Library is not available");
     return BondLib<LT,LD>();
   }
   

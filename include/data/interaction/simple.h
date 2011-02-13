@@ -18,10 +18,10 @@ namespace std {
 
     SimpleInteraction() : ParentType() {}
     SimpleInteraction(const Type& F) {
-      myError("Cannot create simple interaction");
+      Error("Cannot create simple interaction");
     }
     Type& operator=(const Type& F) {
-      myError("Cannot copy simple interaction");
+      Error("Cannot copy simple interaction");
       return *this;
     }
   };

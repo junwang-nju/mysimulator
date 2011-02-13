@@ -79,8 +79,8 @@ namespace std {
         M.property[MatrixActualTrianglePart]=LowerTriangle;
       else if(M.property[MatrixTrianglePart]==LowerTriangle)
         M.property[MatrixActualTrianglePart]=UpperTriangle;
-      else myError("Unknown Triangle Part");
-    } else myError("Unknown Transpose Format");
+      else Error("Unknown Triangle Part");
+    } else Error("Unknown Transpose Format");
     if(M.property[MatrixActualOrder]==COrder) {
       if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
         M.property[MatrixActualDataPattern]=COrderUpperType;
@@ -106,7 +106,7 @@ namespace std {
           (GetData4CL<T,ASymmetryMatrix,HaveDiagonal>):
         static_cast<typename Matrix<T>::GetFuncType>
           (GetData4CL<T,ASymmetryMatrix,NullDiagonal>)));
-      } else myError("Unknown Triangle Part");
+      } else Error("Unknown Triangle Part");
     } else if(M.property[MatrixActualOrder]==FortranOrder) {
       if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
         M.property[MatrixActualDataPattern]=FortranOrderUpperType;
@@ -132,7 +132,7 @@ namespace std {
             (GetData4FL<T,ASymmetryMatrix,HaveDiagonal>):
           static_cast<typename Matrix<T>::GetFuncType>
             (GetData4FL<T,ASymmetryMatrix,NullDiagonal>)));
-      } else myError("Unknown Triangle Part");
+      } else Error("Unknown Triangle Part");
     } else if(M.property[MatrixActualOrder]==DiagonalOrder) {
       M.property[MatrixActualDataPattern]=DiagonalType;
       if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
@@ -157,8 +157,8 @@ namespace std {
             (GetData4DL<T,ASymmetryMatrix,HaveDiagonal>):
           static_cast<typename Matrix<T>::GetFuncType>
             (GetData4DL<T,ASymmetryMatrix,NullDiagonal>)));
-      } else myError("Unknown Triangle Part");
-    } else myError("Unknown Data Order");
+      } else Error("Unknown Triangle Part");
+    } else Error("Unknown Data Order");
     int rDim=Dim-(DFlag?0:1);
     M.property[MatrixActualDimension]=rDim;
     if((M.property[MatrixActualDataPattern]==COrderUpperType)||
@@ -168,7 +168,7 @@ namespace std {
     } else if(M.property[MatrixActualDataPattern]==FortranOrderUpperType) {
       M.property[MatrixLineSizeFirst]=1;
       M.property[MatrixLineSizeShift]=1;
-    } else myError("Unknown Data Pattern");
+    } else Error("Unknown Data Pattern");
     M.property[MatrixNumberElement]=(rDim*(rDim+1))/2;
     Vector<unsigned int> sz;
     allocate(sz,rDim);

@@ -15,10 +15,10 @@ namespace std {
     Vector<unsigned int> property;
     LatticeChainSet() : ParentType(), property() {}
     LatticeChainSet(const Type& CS) {
-      myError("Cannot create lattice chain set");
+      Error("Cannot create lattice chain set");
     }
     Type& operator=(const Type& CS) {
-      myError("Cannot copy lattice chain set");
+      Error("Cannot copy lattice chain set");
       return *this;
     }
     ~LatticeChainSet() { release(*this); }

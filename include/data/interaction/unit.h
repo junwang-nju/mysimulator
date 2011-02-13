@@ -26,10 +26,10 @@ namespace std {
     InteractionUnit()
       : pTag(NULL), tmvec(), EFunc(NULL), GFunc(NULL), BFunc(NULL) {}
     InteractionUnit(const Type& U) {
-      myError("Cannot create Interaction Unit");
+      Error("Cannot create Interaction Unit");
     }
     Type& operator=(const Type& U) {
-      myError("Cannot copy Interaction Unit");
+      Error("Cannot copy Interaction Unit");
       return *this;
     }
     ~InteractionUnit() { release(*this); }
@@ -202,7 +202,7 @@ namespace std {
         F.BFunc=BFuncAnchorPointHarmonic<T,DBuff,GType>;
         break;
       default:
-        myError("Unknown interaction type");
+        Error("Unknown interaction type");
     }
   }
 

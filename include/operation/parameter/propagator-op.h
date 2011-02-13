@@ -21,7 +21,7 @@ namespace std {
           reinterpret_cast<void*>(static_cast<MoveFunc>(VVerletStep));
         break;
       default:
-        myError("unknown propagator type");
+        Error("unknown propagator type");
     }
   }
 
@@ -31,8 +31,8 @@ namespace std {
       if(ensembletype==ConstantE)       return ConstantE_VelocityVerlet;
       else if(ensembletype==Berendsen)  return Berendsen_VelocityVerlet;
       else if(ensembletype==Langevin)   return Langevin_VelocityVerlet;
-      else myError("unknown ensemble type");
-    } else myError("unknown propagator type");
+      else Error("unknown ensemble type");
+    } else Error("unknown propagator type");
     return 0;
   }
 

@@ -17,10 +17,10 @@ namespace std {
 
     InteractionParameterUnit() : prm(), idx(), tag() {}
     InteractionParameterUnit(const Type&) {
-      myError("Cannot create Interaction Parameter Unit");
+      Error("Cannot create Interaction Parameter Unit");
     }
     Type& operator=(const Type& P) {
-      myError("Cannot copy Interaction Parameter Unit");
+      Error("Cannot copy Interaction Parameter Unit");
       return *this;
     }
     ~InteractionParameterUnit() { release(*this); }
@@ -80,14 +80,14 @@ namespace std {
       allocate(P.idx,2+nunit);
     } else if(itag<NumberInteractions)
       allocate(P.idx,InteractionIdxSize[itag]);
-    else  myError("Unknown Type of Interaction Parameter Unit");
+    else  Error("Unknown Type of Interaction Parameter Unit");
     if(!IsAvailable(InteractionPrmSize))  InitInteractionParameterSize();
     if(itag==DihedralPeriodic) {
       unsigned int nperiod=va_arg(vl,unsigned int);
       allocateDihPeriodicParameter(P.prm,nperiod);
     } else if(itag<NumberInteractions)
       allocate(P.prm,InteractionPrmSize[itag]);
-    else  myError("Unknown Type of Interaction Parameter Unit");
+    else  Error("Unknown Type of Interaction Parameter Unit");
     va_end(vl);
   }
 
