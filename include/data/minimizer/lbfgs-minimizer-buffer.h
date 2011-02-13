@@ -32,10 +32,10 @@ namespace std {
     LBFGSMinimizerBuffer()
         : ParentType(),Dirc(),dX(),dG(),alpha(),rho(),lastX(),lastG() {}
     LBFGSMinimizerBuffer(const Type& B) {
-      myError("Cannot create LBFGS Minimizer Buffer");
+      Error("Cannot create LBFGS Minimizer Buffer");
     }
     Type& operator=(const Type& B) {
-      myError("Cannot copy LBFGS Minimizer Buffer");
+      Error("Cannot copy LBFGS Minimizer Buffer");
       return *this;
     }
     ~LBFGSMinimizerBuffer() { release(*this); }

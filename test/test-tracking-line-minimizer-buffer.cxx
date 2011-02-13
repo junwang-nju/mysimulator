@@ -3,7 +3,8 @@
 #include "operation/minimize/minimal-step.h"
 #include "operation/minimize/line-minimizer-buffer-base-op.h"
 #include "operation/minimize/minimize.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 void efunc(const Vector<double>& x, double& e, const double& prm) {
@@ -76,16 +77,17 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 
 int main() {
 
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   TrackingLineMinimizerBuffer<TestInteraction,Vector,TestParameter,double> TLM;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   TLM.F.EFunc=efunc;
   TLM.F.GFunc=gfunc;
   TLM.F.BFunc=bfunc;
   TestParameter Pmx;
   Pmx.prm=10.;
+  allocate(Pmx.idx,1);
   Vector<double> Coor(1);
   Coor[0]=25;
   Vector<unsigned int> msk(1);
@@ -94,10 +96,11 @@ int main() {
   dmsk[0]=1.;
   allocateMinimizerProperty(TLM);
   initMinimizerMask(TLM,msk,dmsk);
+  COut<<Coor<<Endl;
   initMinimizerLocation(TLM,Coor,Pmx);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign"<<endl;
+  COut<<"Test -- assign"<<Endl;
   TrackingLineMinimizerBuffer<TestInteraction,Vector,TestParameter,double> TLM2;
   TLM2.F.EFunc=efunc;
   TLM2.F.GFunc=gfunc;
@@ -109,30 +112,30 @@ int main() {
   initMinimizerMask(TLM2,msk,dmsk);
   initMinimizerLocation(TLM2,Coor,Pmx);
   copy(TLM2,TLM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(TLM2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test - check availability"<<endl;
-  cout<<IsAvailable(TLM)<<endl;
-  cout<<IsAvailable(TLM2)<<endl;
-  cout<<endl;
+  COut<<"Test - check availability"<<Endl;
+  COut<<IsAvailable(TLM)<<Endl;
+  COut<<IsAvailable(TLM2)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer"<<endl;
+  COut<<"Test -- refer"<<Endl;
   refer(TLM2,TLM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- minimize"<<endl;
+  COut<<"Test -- minimize"<<Endl;
   Vector<double> dirc(1);
   dirc[0]=-1.;
   ProduceNewLocation(TLM2,TLM2.MinX,dirc,0,TLM2.MinX,TLM2.MinEnergy(),
                      TLM2.MinG,TLM2.MinProject());
-  cout<<Minimize<StrongWolfe>(TLM2,dirc)<<endl;
-  cout<<TLM2.MinEnergy()<<endl;
-  cout<<TLM2.MinX<<endl;
-  cout<<endl;
+  COut<<Minimize<StrongWolfe>(TLM2,dirc)<<Endl;
+  COut<<TLM2.MinEnergy()<<Endl;
+  COut<<TLM2.MinX<<Endl;
+  COut<<Endl;
   
   return 0;
 }

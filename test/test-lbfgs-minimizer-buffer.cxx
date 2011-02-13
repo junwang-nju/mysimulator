@@ -9,7 +9,8 @@
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
 #include "data/derived/parameter-list.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 void efunc(const Vector<double>& x, double& e, const double& prm) {
@@ -83,12 +84,12 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 }
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   LBFGSMinimizerBuffer<TestInteraction,Vector,TestParameter,
                        double,TrackingLineMinimizerBuffer>   LM;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   LM.F.EFunc=efunc;
   LM.F.GFunc=gfunc;
   LM.F.BFunc=bfunc;
@@ -104,9 +105,9 @@ int main() {
   allocateMinimizerProperty(LM);
   initMinimizerMask(LM,msk,dmsk);
   initMinimizerLocation(LM,Coor,Pmx);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- copy"<<endl;
+  COut<<"Test -- copy"<<Endl;
   LBFGSMinimizerBuffer<TestInteraction,Vector,TestParameter,double,
                        TrackingLineMinimizerBuffer>   LM2;
   LM2.F.EFunc=efunc;
@@ -119,30 +120,30 @@ int main() {
   initMinimizerMask(LM2,msk,dmsk);
   initMinimizerLocation(LM2,Coor,Pmx);
   copy(LM2,LM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(LM2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- check availability"<<endl;
-  cout<<IsAvailable(LM)<<endl;
-  cout<<IsAvailable(LM2)<<endl;
-  cout<<endl;
+  COut<<"Test -- check availability"<<Endl;
+  COut<<IsAvailable(LM)<<Endl;
+  COut<<IsAvailable(LM2)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer"<<endl;
+  COut<<"Test -- refer"<<Endl;
   refer(LM2,LM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- Minimize"<<endl;
-  cout<<Minimize<StrongWolfe>(LM)<<endl;
-  cout<<LM.MinX<<endl;
-  cout<<LM.MinEnergy()<<endl;
-  cout<<LM.LSearchCount()<<endl;
-  cout<<LM.GCalcCount()<<endl;
-  cout<<endl;
+  COut<<"Test -- Minimize"<<Endl;
+  COut<<Minimize<StrongWolfe>(LM)<<Endl;
+  COut<<LM.MinX<<Endl;
+  COut<<LM.MinEnergy()<<Endl;
+  COut<<LM.LSearchCount()<<Endl;
+  COut<<LM.GCalcCount()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- minimize over complex data"<<endl;
+  COut<<"Test -- minimize over complex data"<<Endl;
   LBFGSMinimizerBuffer<
       ListInteraction<double,DistanceBufferSimple,FreeSpace>,
       PropertyList,Vector<InteractionParameterUnit>,double,
@@ -248,14 +249,14 @@ int main() {
   copy<double,unsigned int>(cdmsk,cimsk);
   initMinimizerMask(CSM,cimsk,cdmsk);
   initMinimizerLocation(CSM,cv,RP);
-  cout<<CSM.MinX<<endl;
-  cout<<CSM.MinEnergy()<<endl;
-  cout<<Minimize<StrongWolfe>(CSM)<<endl;
-  cout<<CSM.MinX<<endl;
-  cout<<CSM.MinEnergy()<<endl;
-  cout<<CSM.LSearchCount()<<endl;
-  cout<<CSM.GCalcCount()<<endl;
-  cout<<endl;
+  COut<<CSM.MinX<<Endl;
+  COut<<CSM.MinEnergy()<<Endl;
+  COut<<Minimize<StrongWolfe>(CSM)<<Endl;
+  COut<<CSM.MinX<<Endl;
+  COut<<CSM.MinEnergy()<<Endl;
+  COut<<CSM.LSearchCount()<<Endl;
+  COut<<CSM.GCalcCount()<<Endl;
+  COut<<Endl;
 
   return 0;
 }

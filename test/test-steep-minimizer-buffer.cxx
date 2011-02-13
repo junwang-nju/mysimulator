@@ -9,7 +9,8 @@
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
 #include "data/derived/parameter-list.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 void efunc(const Vector<double>& x, double& e, const double& prm) {
@@ -82,13 +83,13 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 
 int main() {
 
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   SteepestDescentMinimizerBuffer<TestInteraction,Vector,TestParameter,
                                  double,TrackingLineMinimizerBuffer> SM;
   TestParameter P;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   SM.F.EFunc=efunc;
   SM.F.GFunc=gfunc;
   SM.F.BFunc=bfunc;
@@ -104,9 +105,9 @@ int main() {
   allocateMinimizerProperty(SM);
   initMinimizerMask(SM,msk,dmsk);
   initMinimizerLocation(SM,Coor,Pmx);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- copy"<<endl;
+  COut<<"Test -- copy"<<Endl;
   SteepestDescentMinimizerBuffer<TestInteraction,Vector,TestParameter,
                                  double,TrackingLineMinimizerBuffer> SM2;
   SM2.F.EFunc=efunc;
@@ -119,30 +120,30 @@ int main() {
   initMinimizerMask(SM2,msk,dmsk);
   initMinimizerLocation(SM2,Coor,Pmx);
   copy(SM2,SM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(SM2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- check availability"<<endl;
-  cout<<IsAvailable(SM)<<endl;
-  cout<<IsAvailable(SM2)<<endl;
-  cout<<endl;
+  COut<<"Test -- check availability"<<Endl;
+  COut<<IsAvailable(SM)<<Endl;
+  COut<<IsAvailable(SM2)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer"<<endl;
+  COut<<"Test -- refer"<<Endl;
   refer(SM2,SM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- minimize"<<endl;
-  cout<<Minimize<StrongWolfe>(SM)<<endl;
-  cout<<SM.MinX<<endl;
-  cout<<SM.MinEnergy()<<endl;
-  cout<<SM.LSearchCount()<<endl;
-  cout<<SM.GCalcCount()<<endl;
-  cout<<endl;
+  COut<<"Test -- minimize"<<Endl;
+  COut<<Minimize<StrongWolfe>(SM)<<Endl;
+  COut<<SM.MinX<<Endl;
+  COut<<SM.MinEnergy()<<Endl;
+  COut<<SM.LSearchCount()<<Endl;
+  COut<<SM.GCalcCount()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- minimize over complex data"<<endl;
+  COut<<"Test -- minimize over complex data"<<Endl;
   SteepestDescentMinimizerBuffer<
       ListInteraction<double,DistanceBufferSimple,FreeSpace>,
       PropertyList,Vector<InteractionParameterUnit>,double,
@@ -248,14 +249,14 @@ int main() {
   copy<double,unsigned int>(cdmsk,cimsk);
   initMinimizerMask(CSM,cimsk,cdmsk);
   initMinimizerLocation(CSM,cv,RP);
-  cout<<CSM.MinX<<endl;
-  cout<<CSM.MinEnergy()<<endl;
-  cout<<Minimize<StrongWolfe>(CSM)<<endl;
-  cout<<CSM.MinX<<endl;
-  cout<<CSM.MinEnergy()<<endl;
-  cout<<CSM.LSearchCount()<<endl;
-  cout<<CSM.GCalcCount()<<endl;
-  cout<<endl;
+  COut<<CSM.MinX<<Endl;
+  COut<<CSM.MinEnergy()<<Endl;
+  COut<<Minimize<StrongWolfe>(CSM)<<Endl;
+  COut<<CSM.MinX<<Endl;
+  COut<<CSM.MinEnergy()<<Endl;
+  COut<<CSM.LSearchCount()<<Endl;
+  COut<<CSM.GCalcCount()<<Endl;
+  COut<<Endl;
 
   return 0;
 }

@@ -1,6 +1,7 @@
 
 #include "operation/minimize/minimizer-buffer-base-op.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 void efunc(const Vector<double>& x, double& e, const double& prm) {
@@ -76,11 +77,11 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 }
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   MinimizerBufferBase<TestInteraction,Vector,TestParameter,double> MB;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   MB.F.EFunc=efunc;
   MB.F.GFunc=gfunc;
   MB.F.BFunc=bfunc;
@@ -96,9 +97,9 @@ int main() {
   allocateMinimizerProperty(MB);
   initMinimizerMask(MB,msk,dmsk);
   initMinimizerLocation(MB,Coor,Pmx);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign"<<endl;
+  COut<<"Test -- assign"<<Endl;
   MinimizerBufferBase<TestInteraction,Vector,TestParameter,double> MB2;
   MB2.F.EFunc=efunc;
   MB2.F.GFunc=gfunc;
@@ -108,30 +109,30 @@ int main() {
   initMinimizerMask(MB2,msk,dmsk);
   initMinimizerLocation(MB2,Coor,Pmx);
   copy(MB2,MB);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(MB2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- check avaialability"<<endl;
-  cout<<IsAvailable(MB)<<endl;
-  cout<<IsAvailable(MB2)<<endl;
-  cout<<endl;
+  COut<<"Test -- check avaialability"<<Endl;
+  COut<<IsAvailable(MB)<<Endl;
+  COut<<IsAvailable(MB2)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer"<<endl;
+  COut<<"Test -- refer"<<Endl;
   refer(MB2,MB);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- Generate new Location"<<endl;
+  COut<<"Test -- Generate new Location"<<Endl;
   double desty,destp;
   Vector<double> dest(1),destg(1);
   Vector<double> dirc(1);
   dirc[0]=1.;
   double step=0.5;
   ProduceNewLocation(MB2,MB.MinX,dirc,step,dest,desty,destg,destp);
-  cout<<dest<<"\t"<<desty<<"\t"<<destg<<"\t"<<destp<<endl;
-  cout<<endl;
+  COut<<dest<<"\t"<<desty<<"\t"<<destg<<"\t"<<destp<<Endl;
+  COut<<Endl;
 
   return 1;
 }

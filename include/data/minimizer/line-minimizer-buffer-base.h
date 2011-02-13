@@ -21,10 +21,10 @@ namespace std {
     
     LineMinimizerBufferBase() : ParentType(), RunX(), RunG() {}
     LineMinimizerBufferBase(const Type& B) {
-      myError("Cannot create Line Minimizer Buffer Base");
+      Error("Cannot create Line Minimizer Buffer Base");
     }
     Type& operator=(const Type& B) {
-      myError("Cannot copy Line Minimizer Buffer Base");
+      Error("Cannot copy Line Minimizer Buffer Base");
       return *this;
     }
     ~LineMinimizerBufferBase() { release(*this); }

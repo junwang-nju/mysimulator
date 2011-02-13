@@ -20,10 +20,10 @@ namespace std {
     
     TrackingLineMinimizerBuffer() : ParentType() {}
     TrackingLineMinimizerBuffer(const Type& B) {
-      myError("Cannot create Tracking Line Minimizer Buffer");
+      Error("Cannot create Tracking Line Minimizer Buffer");
     }
     Type& operator=(const Type& B) {
-      myError("Cannot copy Tracking Line Minimizer Buffer");
+      Error("Cannot copy Tracking Line Minimizer Buffer");
       return *this;
     }
     ~TrackingLineMinimizerBuffer() { release(*this); }

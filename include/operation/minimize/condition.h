@@ -2,7 +2,7 @@
 #ifndef _Minimize_Condition_H_
 #define _Minimize_Condition_H_
 
-#include "operation/basic/error-proc.h"
+#include "operation/basic/error-op.h"
 #include "data/name/minimize-condition.h"
 #include <cassert>
 
@@ -30,7 +30,7 @@ namespace std {
   template <unsigned int ConditionType>
   bool Condition(const double& ry, const double& rp, const double& my,
                  const double& dp, const double& cp, const double& step) {
-    myError("Unknown Condition Type");
+    Error("Unknown Condition Type");
     return false;
   }
 
@@ -56,7 +56,7 @@ namespace std {
   template <unsigned int ConditionType>
   bool Condition(const float& ry, const float& rp, const float& my,
                  const float& dp, const float& cp, const float& step) {
-    myError("Unknown Condition Type");
+    Error("Unknown Condition Type");
     return false;
   }
 

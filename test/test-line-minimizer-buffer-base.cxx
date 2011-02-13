@@ -1,7 +1,8 @@
 
 #include "operation/minimize/line-minimizer-buffer-base-op.h"
 #include "operation/minimize/minimal-step.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 void efunc(const Vector<double>& x, double& e, const double& prm) {
@@ -73,11 +74,11 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 }
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   LineMinimizerBufferBase<TestInteraction,Vector,TestParameter,double> LM;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   LM.F.EFunc=efunc;
   LM.F.GFunc=gfunc;
   LM.F.BFunc=bfunc;
@@ -93,9 +94,9 @@ int main() {
   allocateMinimizerProperty(LM);
   initMinimizerMask(LM,msk,dmsk);
   initMinimizerLocation(LM,Coor,Pmx);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign"<<endl;
+  COut<<"Test -- assign"<<Endl;
   LineMinimizerBufferBase<TestInteraction,Vector,TestParameter,double> LM2;
   LM2.F.EFunc=efunc;
   LM2.F.GFunc=gfunc;
@@ -105,35 +106,35 @@ int main() {
   initMinimizerMask(LM2,msk,dmsk);
   initMinimizerLocation(LM2,Coor,Pmx);
   copy(LM2,LM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(LM2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- check availability"<<endl;
-  cout<<IsAvailable(LM)<<endl;
-  cout<<IsAvailable(LM2)<<endl;
-  cout<<endl;
+  COut<<"Test -- check availability"<<Endl;
+  COut<<IsAvailable(LM)<<Endl;
+  COut<<IsAvailable(LM2)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer"<<endl;
+  COut<<"Test -- refer"<<Endl;
   refer(LM2,LM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- generate new location"<<endl;
+  COut<<"Test -- generate new location"<<Endl;
   Vector<double> dirc(1);
   dirc[0]=1.;
   double step=0.5;
   ProduceNewLocation(LM2,LM.MinX,dirc,step,LM.RunX,LM.RunE(),LM.RunG,
                      LM.RunPrj());
-  cout<<LM.RunX<<"\t"<<LM2.RunE()<<"\t"<<LM.RunG<<"\t"<<LM.RunPrj()<<endl;
-  cout<<endl;
+  COut<<LM.RunX<<"\t"<<LM2.RunE()<<"\t"<<LM.RunG<<"\t"<<LM.RunPrj()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- minimal step"<<endl;
+  COut<<"Test -- minimal step"<<Endl;
   Vector<double> origin(1);
   origin[0]=-2;
-  cout<<MinimalStep(LM,origin,dirc)<<endl;
-  cout<<endl;
+  COut<<MinimalStep(LM,origin,dirc)<<Endl;
+  COut<<Endl;
   return 1;
 }
 

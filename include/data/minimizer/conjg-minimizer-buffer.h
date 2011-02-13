@@ -26,10 +26,10 @@ namespace std {
     
     ConjugateGradientMinimizerBuffer() : ParentType(), Dirc(), OldMinG() {}
     ConjugateGradientMinimizerBuffer(const Type& B) {
-      myError("Cannot create Conjugate-Gradient Minimizer Buffer");
+      Error("Cannot create Conjugate-Gradient Minimizer Buffer");
     }
     Type& operator=(const Type& B) {
-      myError("Cannot copy Conjugate-Gradient Minimizer Buffer");
+      Error("Cannot copy Conjugate-Gradient Minimizer Buffer");
       return *this;
     }
     ~ConjugateGradientMinimizerBuffer() { release(*this); }

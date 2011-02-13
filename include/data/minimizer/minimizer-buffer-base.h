@@ -24,10 +24,10 @@ namespace std {
     MinimizerBufferBase()
       : F(),MinX(),MinParam(),MinDMask(),MinIMask(),MinProperty(),MinG() {}
     MinimizerBufferBase(const Type& B) {
-      myError("Cannot create Minimizer Buffer Base");
+      Error("Cannot create Minimizer Buffer Base");
     }
     Type& operator=(const Type& B) {
-      myError("Cannot copy Minimizer Buffer Base");
+      Error("Cannot copy Minimizer Buffer Base");
       return *this;
     }
     ~MinimizerBufferBase() { release(*this); }

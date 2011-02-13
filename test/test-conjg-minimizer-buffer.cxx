@@ -9,7 +9,8 @@
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
 #include "data/derived/parameter-list.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 void efunc(const Vector<double>& x, double& e, const double& prm) {
@@ -82,13 +83,13 @@ void refer(TestInteraction& TI, const TestInteraction& cTI) {
 
 int main() {
 
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   ConjugateGradientMinimizerBuffer<TestInteraction,Vector,TestParameter,
                                    double,TrackingLineMinimizerBuffer> CM;
   TestParameter P;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   CM.F.EFunc=efunc;
   CM.F.GFunc=gfunc;
   CM.F.BFunc=bfunc;
@@ -104,9 +105,9 @@ int main() {
   allocateMinimizerProperty(CM);
   initMinimizerMask(CM,msk,dmsk);
   initMinimizerLocation(CM,Coor,Pmx);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- copy"<<endl;
+  COut<<"Test -- copy"<<Endl;
   ConjugateGradientMinimizerBuffer<TestInteraction,Vector,TestParameter,
                                    double,TrackingLineMinimizerBuffer> CM2;
   CM2.F.EFunc=efunc;
@@ -119,30 +120,30 @@ int main() {
   initMinimizerMask(CM2,msk,dmsk);
   initMinimizerLocation(CM2,Coor,Pmx);
   copy(CM2,CM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(CM2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- check availability"<<endl;
-  cout<<IsAvailable(CM)<<endl;
-  cout<<IsAvailable(CM2)<<endl;
-  cout<<endl;
+  COut<<"Test -- check availability"<<Endl;
+  COut<<IsAvailable(CM)<<Endl;
+  COut<<IsAvailable(CM2)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer"<<endl;
+  COut<<"Test -- refer"<<Endl;
   refer(CM2,CM);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- minimize"<<endl;
-  cout<<Minimize<StrongWolfe>(CM)<<endl;
-  cout<<CM.MinX<<endl;
-  cout<<CM.MinEnergy()<<endl;
-  cout<<CM.LSearchCount()<<endl;
-  cout<<CM.GCalcCount()<<endl;
-  cout<<endl;
+  COut<<"Test -- minimize"<<Endl;
+  COut<<Minimize<StrongWolfe>(CM)<<Endl;
+  COut<<CM.MinX<<Endl;
+  COut<<CM.MinEnergy()<<Endl;
+  COut<<CM.LSearchCount()<<Endl;
+  COut<<CM.GCalcCount()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- minimize over complex data"<<endl;
+  COut<<"Test -- minimize over complex data"<<Endl;
   ConjugateGradientMinimizerBuffer<
       ListInteraction<double,DistanceBufferSimple,FreeSpace>,
       PropertyList,Vector<InteractionParameterUnit>,double,
@@ -248,14 +249,14 @@ int main() {
   copy<double,unsigned int>(cdmsk,cimsk);
   initMinimizerMask(CSM,cimsk,cdmsk);
   initMinimizerLocation(CSM,cv,RP);
-  cout<<CSM.MinX<<endl;
-  cout<<CSM.MinEnergy()<<endl;
-  cout<<Minimize<StrongWolfe>(CSM)<<endl;
-  cout<<CSM.MinX<<endl;
-  cout<<CSM.MinEnergy()<<endl;
-  cout<<CSM.LSearchCount()<<endl;
-  cout<<CSM.GCalcCount()<<endl;
-  cout<<endl;
+  COut<<CSM.MinX<<Endl;
+  COut<<CSM.MinEnergy()<<Endl;
+  COut<<Minimize<StrongWolfe>(CSM)<<Endl;
+  COut<<CSM.MinX<<Endl;
+  COut<<CSM.MinEnergy()<<Endl;
+  COut<<CSM.LSearchCount()<<Endl;
+  COut<<CSM.GCalcCount()<<Endl;
+  COut<<Endl;
 
   return 0;
 }

@@ -2,7 +2,7 @@
 #ifndef _Minimizer_Steepest_Descent_Buffer_H_
 #define _Minimizer_Steepest_Descent_Buffer_H_
 
-#include "operation/basic/error-proc.h"
+#include "operation/basic/error-op.h"
 #include <cassert>
 
 namespace std {
@@ -24,10 +24,10 @@ namespace std {
 
     SteepestDescentMinimizerBuffer() : ParentType(), Dirc() {}
     SteepestDescentMinimizerBuffer(const Type& M) {
-      myError("Cannot create Steepest Descent Minimizer");
+      Error("Cannot create Steepest Descent Minimizer");
     }
     Type& operator=(const Type& M) {
-      myError("Cannot copy Steepest Descent Minimizer");
+      Error("Cannot copy Steepest Descent Minimizer");
       return *this;
     }
     ~SteepestDescentMinimizerBuffer() { release(*this); }
