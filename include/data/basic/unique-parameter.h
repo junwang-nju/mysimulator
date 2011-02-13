@@ -3,7 +3,6 @@
 #define _Unique_Parameter_H_
 
 #include "data/basic/vector.h"
-#include <cstdlib>
 #include <cctype>
 
 namespace std {
@@ -19,17 +18,17 @@ namespace std {
     typedef UniqueParameter Type;
     UniqueParameter() : ull(0) {}
     UniqueParameter(const Type& P) {
-      myError("Cannot create Unique Parameter");
+      Error("Cannot create Unique Parameter");
     }
     Type& operator=(const Type& P) {
-      myError("Cannot copy Unique Parameter");
+      Error("Cannot copy Unique Parameter");
       return *this;
     }
 
     template <typename T>
-    T& value() { myError("Unknown Type"); return static_cast<T>(0); }
+    T& value() { Error("Unknown Type"); return static_cast<T>(0); }
     template <typename T>
-    const T& value() const{ myError("Unknown Type"); return static_cast<T>(0); }
+    const T& value() const{ Error("Unknown Type"); return static_cast<T>(0); }
 
   };
 

@@ -69,6 +69,10 @@ namespace std {
       s[i]='\0';
       return *this;
     }
+    FileInput& unget(const char& c) {
+      ungetc(c,fpoint);
+      return *this;
+    }
 
   };
 

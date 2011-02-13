@@ -1,6 +1,7 @@
 
-#include "data/basic/unique-parameter.h"
-#include "operation/basic/console-output.h"
+#include "operation/basic/unique-parameter-io.h"
+#include "data/basic/console-output.h"
+#include "data/basic/console-input.h"
 #include <iostream>
 using namespace std;
 
@@ -29,31 +30,31 @@ int main() {
   COut<<Endl;
 
   COut<<"Test -- read from istream"<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d<<Endl;
   COut<<"\t"<<up.u<<Endl;
   COut<<"\t"<<up.i<<Endl;
   COut<<"\t"<<up.ptr<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d<<Endl;
   COut<<"\t"<<up.u<<Endl;
   COut<<"\t"<<up.i<<Endl;
   COut<<"\t"<<up.ptr<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d<<Endl;
   COut<<"\t"<<up.u<<Endl;
   COut<<"\t"<<up.i<<Endl;
   COut<<"\t"<<up.ptr<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d<<Endl;
   COut<<"\t"<<up.u<<Endl;
   COut<<"\t"<<up.i<<Endl;
   COut<<"\t"<<up.ptr<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d<<Endl;
   COut<<"\t"<<up.u<<Endl;

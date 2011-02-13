@@ -3,6 +3,8 @@
 #define _Unique_Parameter_Input_Output_H_
 
 #include "data/basic/unique-parameter.h"
+#include "data/basic/input-base.h"
+#include "data/basic/output-base.h"
 
 namespace std {
 
@@ -14,8 +16,8 @@ namespace std {
     else if((flag='U')||(flag=='u'))  is>>P.u;
     else if((flag='I')||(flag=='i'))  is>>P.i;
     else if((flag='P')||(flag=='P'))  is>>P.ptr;
-    else if(isdigit(flag)||(flag=='+')) { is.unget(); is>>P.ull; }
-    else myError("FAIL"); //is.setstate(ios_base::failbit);
+    else if(isdigit(flag)||(flag=='+')) { is.unget(flag); is>>P.ull; }
+    else is.SetState(FailBit);
     return is;
   }
 
