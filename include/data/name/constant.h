@@ -100,13 +100,13 @@ namespace std {
 
 }
 
-#include "operation/basic/error-proc.h"
+#include "operation/basic/error-op.h"
 
 namespace std {
 
   template <typename T>
   const T& RelDelta() {
-    myError("Unknown T-type Relative Delta");
+    Error("Unknown T-type Relative Delta");
     return static_cast<T>(0);
   }
 
@@ -115,7 +115,7 @@ namespace std {
 
   template <typename T>
   T GoldValue() {
-    myError("Unknown T-type Golden Value");
+    Error("Unknown T-type Golden Value");
     return static_cast<T>(0);
   }
 

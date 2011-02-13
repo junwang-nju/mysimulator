@@ -1,6 +1,6 @@
 
 /**
- * @file error-proc.h
+ * @file error-op.h
  * @brief Procedures for error processing
  *
  * Several procedures to processes the errors or warning for my pacakge
@@ -9,8 +9,8 @@
  * @author Jun Wang (junwang.nju@gmail.com)
  */
 
-#ifndef _Error_Process_H_
-#define _Error_Process_H_
+#ifndef _Error_Operation_H_
+#define _Error_Operation_H_
 
 #include <cstdio>
 #include <cstdlib>

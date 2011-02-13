@@ -10,30 +10,27 @@ namespace std {
   struct StringInput;
   bool IsAvailable(const StringInput&);
   void release(StringInput&);
-  void copy(StringInput&, const Vector<char>&);
-  void copy(StringInput&, const char*, const unsigned int);
+  void refer(StringInput&, const Vector<char>&);
+  void refer(StringInput&, const char*, const unsigned int);
   void allocate(StringInput&,const unsigned int);
   
   struct StringInput : public InputBase {
     Vector<char> buffer;
     Vector<unsigned int> property;
     StringInput() : InputBase(), buffer(), property() {}
-    StringInput(const unsigned int n) : buffer(), property() {
+    StringInput(const unsigned int n) : InputBase(), buffer(), property() {
       allocate(*this,n);
     }
-    StringInput(const Vector<char>& bf) : buffer(), property() {
-      copy(*this,bf);
+    StringInput(const Vector<char>& bf) : InputBase(), buffer(), property() {
+      refer(*this,bf);
     }
-    StringInput(const char* ptr, const unsigned int n) : buffer(), property() {
-      copy(*this,ptr,n);
+    StringInput(const char* ptr, const unsigned int n)
+        : InputBase(), buffer(), property() {
+      refer(*this,ptr,n);
     }
-    StringInput(const StringInput&) {
-      fprintf(stderr,"Cannot create String Input\n");
-      exit(0);
-    }
+    StringInput(const StringInput&) { Error("Cannot create String Input"); }
     StringInput& operator=(const StringInput&) {
-      fprintf(stderr,"Cannot copy String Input\n");
-      exit(0);
+      Error("Cannot copy String Input");
       return *this;
     }
     ~StringInput() { release(*this); }
@@ -50,7 +47,8 @@ namespace std {
       unsigned int n,sc;
       char* inf=buffer.data+property[StrInLocation];
       n=0;
-      while(isspace(inf[n]))  n++;
+      sc=property[StrInCapacity];
+      while((isspace(inf[n]))&&(n<=sc))  n++;
       property[StrInLocation]+=n;
       property[StrInCapacity]-=n;
       inf=buffer.data+property[StrInLocation];
@@ -70,8 +68,8 @@ namespace std {
         property[StrInLocation]+=n;
         property[StrInCapacity]-=n;
       } else {
-        fprintf(stderr,"String Input Buffer Exhausted\n");
-        exit(0);
+        Warn("String Input Buffer Exhausted\n");
+        SetState(FailBit);
       }
       return *this;
     }
@@ -99,16 +97,18 @@ namespace std {
     StringInput& read(void*& ptr) { return __read("%p",ptr); }
     StringInput& read(char* str) {
       assert(IsAvailable(*this));
-      unsigned int n;
+      unsigned int n,sc;
       char* inf=buffer.data+property[StrInLocation];
       n=0;
-      while(isspace(inf[n]))  n++;
+      sc=property[StrInCapacity];
+      while((isspace(inf[n]))&&(n<=sc))  n++;
       property[StrInLocation]+=n;
       property[StrInCapacity]-=n;
       inf=buffer.data+property[StrInLocation];
-      if(property[StrInCapacity]>0) {
+      sc=property[StrInCapacity];
+      if(sc>0) {
         n=0;
-        while((!isspace(inf[n]))&&(str[n]!=CharEOF)) {
+        while((!isspace(inf[n]))&&(n<=sc)&&(str[n]!=CharEOF)) {
           str[n]=inf[n];
           ++n;
         }
@@ -116,25 +116,29 @@ namespace std {
         property[StrInLocation]+=n;
         property[StrInCapacity]-=n;
       } else {
-        fprintf(stderr,"String Input Buffer Exhausted\n");
-        exit(0);
+        Warn("String Input Buffer Exhausted");
+        SetState(FailBit);
       }
       return *this;
     }
+
   };
 
   bool IsAvailable(const StringInput& I) {
-    return IsAvailable(I.buffer)&&IsAvailable(I.property);
+    return IsAvailable(static_cast<const InputBase&>(I))&&
+           IsAvailable(I.buffer)&&IsAvailable(I.property);
   }
   void release(StringInput& I) {
     release(I.buffer);
     release(I.property);
+    release(static_cast<InputBase&>(I));
   }
-  void copy(StringInput& I, const StringInput& cI) {
-    assert(IsAvailable(cI));
+  void refer(StringInput& I, const StringInput& rI) {
+    assert(IsAvailable(rI));
     release(I);
-    refer(I.buffer,cI.buffer);
-    refer(I.property,cI.property);
+    refer(I.buffer,rI.buffer);
+    refer(I.property,rI.property);
+    refer(I.state,rI.state);
   }
   void initStringInput(StringInput& I) {
     I.buffer[I.buffer.size-1]='\0';
@@ -142,19 +146,43 @@ namespace std {
     I.property[StrInLocation]=0;
     I.property[StrInCapacity]=I.buffer.size-1;
   }
-  void copy(StringInput& I, const Vector<char>& bf) {
+  void refer(StringInput& I, const Vector<char>& bf) {
     release(I);
     refer(I.buffer,bf);
     initStringInput(I);
+    allocate(static_cast<InputOutputBase&>(I));
   }
-  void copy(StringInput& I, const char* ptr, const unsigned int n) {
+  void refer(StringInput& I, const char* ptr, const unsigned int n) {
     release(I);
     refer(I.buffer,ptr,n);
     initStringInput(I);
+    allocate(static_cast<InputOutputBase&>(I));
   }
   void allocate(StringInput& I, const unsigned int n) {
+    release(I);
     allocate(I.buffer,n);
     initStringInput(I);
+    allocate(static_cast<InputOutputBase&>(I));
+  }
+  void imprint(StringInput& I, const StringInput& cI) {
+    assert(IsAvailable(cI));
+    allocate(I,cI.buffer.size);
+  }
+  void copy(StringInput& I, const Vector<char>& bf) {
+    assert(IsAvailable(bf));
+    allocate(I,bf.size);
+    copy(I.buffer,bf);
+  }
+  
+}
+
+#include <cstring>
+
+namespace std {
+
+  void copy(StringInput& I, const char* ptr, const unsigned int n) {
+    allocate(I,n);
+    strncpy(I.buffer.data,ptr,n-1);
   }
 
 }

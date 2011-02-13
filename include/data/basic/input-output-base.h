@@ -3,6 +3,7 @@
 #define _Input_Output_Base_H_
 
 #include "data/basic/vector.h"
+#include "data/name/input-output-state.h"
 
 namespace std {
 
@@ -20,6 +21,9 @@ namespace std {
       return *this;
     }
     ~InputOutputBase() { release(*this); }
+    void SetState(const InputOutputStateName Bit, const bool Flag=true) {
+      state[Bit]=Flag;
+    }
   };
 
   bool IsAvailable(const InputOutputBase& B) { return IsAvailable(B.state); }
@@ -34,13 +38,11 @@ namespace std {
     release(B);
     refer(B.state,rB.state);
   }
+
   bool isFail(InputOutputBase& B) { return B.state[FailBit]; }
-  void SetState(const InputOutputStateName Bit, const bool Flag=true) {
-    B.state[Bit]=Flag;
-  }
   void allocate(InputOutputBase& B) {
     allocate(B.state,InputOutputNumberState);
-    SetState(FailBit,false);
+    B.SetState(FailBit,false);
   }
 
 }

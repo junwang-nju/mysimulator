@@ -2,7 +2,7 @@
 #ifndef _Console_Input_H_
 #define _Console_Input_H_
 
-#include "operation/basic/file-input.h"
+#include "data/basic/file-input.h"
 
 namespace std {
   

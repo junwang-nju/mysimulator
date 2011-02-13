@@ -2,30 +2,29 @@
 #ifndef _File_Input_H_
 #define _File_Input_H_
 
-#include "operation/basic/input-base.h"
-#include "operation/basic/memory.h"
-#include "operation/basic/util.h"
-#include "data/name/constant.h"
-#include <cstdio>
-#include <cassert>
+#include "data/basic/input-base.h"
 
 namespace std {
 
   struct FileInput;
   void release(FileInput&);
+  void allocate(FileInput&,const char*,const char*);
 
   struct FileInput : public InputBase {
     FILE *fpoint;
     bool rflag;
-    FileInput() : fpoint(NULL), rflag(false) {}
-    FileInput(const FILE* fp) : fpoint(const_cast<FILE*>(fp)), rflag(true) {}
-    FileInput(const FileInput& FI) {
-      fprintf(stderr,"%s\n","Cannot create FileInput");
-      exit(0);
+    FileInput() : InputBase(), fpoint(NULL), rflag(false) {}
+    FileInput(const FILE* fp)
+        : InputBase(), fpoint(const_cast<FILE*>(fp)), rflag(true) {
+      allocate(static_cast<InputOutputBase&>(*this));
     }
+    FileInput(const char* fname, const char* fmode="r") 
+        : InputBase(), fpoint(NULL), rflag(false) {
+      allocate(*this,fname,fmode);
+    }
+    FileInput(const FileInput& FI) { Error("Cannot create FileInput"); }
     FileInput& operator=(const FileInput& FI) {
-      fprintf(stderr,"%s\n","Cannot copy FileInput");
-      exit(0);
+      Error("Cannot copy FileInput");
       return *this;
     }
     ~FileInput() { release(*this); }
@@ -85,16 +84,19 @@ namespace std {
       fclose(I.fpoint);
       I.rflag=false;
     }
+    release(static_cast<InputOutputBase&>(I));
   }
-  void copy(FileInput& I, const FILE* fp) {
+  void refer(FileInput& I, const FILE* fp) {
     assert(IsAvailable(fp));
     release(I);
     I.fpoint=const_cast<FILE*>(fp);
     I.rflag=true;
+    allocate(static_cast<InputOutputBase&>(I));
   }
-  void copy(FileInput& I, const FileInput& cI) { copy(I,cI.fpoint); }
+  void refer(FileInput& I, const FileInput& cI) { refer(I,cI.fpoint); }
   void allocate(FileInput& I, const char* fname, const char* fmode="r") {
     release(I);
+    allocate(static_cast<InputOutputBase&>(I));
     I.fpoint=fopen(fname,fmode);
     I.rflag=false;
   }

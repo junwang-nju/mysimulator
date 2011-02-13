@@ -10,44 +10,50 @@ namespace std {
   struct StringOutput;
   bool IsAvailable(const StringOutput&);
   void release(StringOutput&);
-  void copy(StringOutput&, const Vector<char>&);
-  void copy(StringOutput&, const char*, const unsigned int);
+  void refer(StringOutput&, const Vector<char>&);
+  void refer(StringOutput&, const char*, const unsigned int);
   void allocate(StringOutput&,const unsigned int);
   
   struct StringOutput : public OutputBase {
     Vector<char> buffer;
     Vector<unsigned int> property;
     StringOutput() : OutputBase(), buffer(), property() {}
-    StringOutput(const unsigned int n) : OutputBase(), buffer(), property() {///
+    StringOutput(const unsigned int n) : OutputBase(), buffer(), property() {
       allocate(*this,n);
     }
-    StringOutput(const Vector<char>& bf) : buffer(), property() {
-      copy(*this,bf);
+    StringOutput(Vector<char>& bf) : OutputBase(), buffer(), property() {
+      refer(*this,bf);
     }
-    StringOutput(const char* ptr, const unsigned int n) : buffer(), property(){
-      copy(*this,ptr,n);
+    StringOutput(const char* ptr, const unsigned int n)
+        : OutputBase(), buffer(), property() {
+      refer(*this,ptr,n);
     }
     StringOutput(const StringOutput&) {
-      fprintf(stderr,"Cannot create String Output\n");
-      exit(0);
+      Error("Cannot create String Output\n");
     }
     StringOutput& operator=(const StringOutput&) {
-      fprintf(stderr,"Cannot copy string output\n");
-      exit(0);
+      Error("Cannot copy String Output\n");
       return *this;
     }
     ~StringOutput() { release(*this); }
     template <typename T>
     StringOutput& __write(const char* pat, const T& value) {
       assert(IsAvailable(*this));
-      int n=snprintf(buffer.data+property[StrOutLocation],
-                     property[StrOutCapacity],pat,value);
-      if((n>=0)&&(static_cast<unsigned int>(n)>property[StrOutCapacity])) {
-        fprintf(stderr,"String Buffer Overflow\n");
-        exit(0);
+      if(property[StrOutCapacity]==0) {
+        SetState(FailBit);
+        Warn("No Output Buffer Now");
+      } else {
+        int n=snprintf(buffer.data+property[StrOutLocation],
+                       property[StrOutCapacity],pat,value);
+        if(n<0) SetState(FailBit);
+        else if(static_cast<unsigned int>(n)>property[StrOutCapacity]) {
+          SetState(FailBit);
+          Warn(stderr,"String Buffer Overflow\n");
+          n=property[StrOutCapacity];
+        }
+        property[StrOutLocation]+=n;
+        property[StrOutCapacity]-=n;
       }
-      property[StrOutLocation]+=n;
-      property[StrOutCapacity]-=n;
       return *this;
     }
     StringOutput& write(const bool& b) { return __write("%d",b?1:0); }
@@ -72,37 +78,53 @@ namespace std {
   };
 
   bool IsAvailable(const StringOutput& O) {
-    return IsAvailable(O.buffer)&& IsAvailable(O.property);
+    return IsAvailable(static_cast<const OutputBase&>(O))&&
+           IsAvailable(O.buffer)&& IsAvailable(O.property);
   }
   void release(StringOutput& O) {
     release(O.buffer);
     release(O.property);
-  }
-  void copy(StringOutput& O, const StringOutput& cO) {
-    assert(IsAvailable(cO));
-    release(O);
-    refer(O.buffer,cO.buffer);
-    refer(O.property,cO.property);
+    release(static_cast<OutputBase&>(O));
   }
   void initStringOutput(StringOutput& O) {
     O.buffer[O.buffer.size-1]='\0';
     allocate(O.property,StringOutputNumberProperty);
     O.property[StrOutLocation]=0;
     O.property[StrOutCapacity]=O.buffer.size;
+    allocate(static_cast<InputOutputBase&>(O));
   }
-  void copy(StringOutput& O, const Vector<char>& bf) {
+  void refer(StringOutput& O, const Vector<char>& bf) {
     release(O);
     refer(O.buffer,bf);
     initStringOutput(O);
   }
-  void copy(StringOutput& O, const char* ptr, const unsigned int n) {
+  void refer(StringOutput& O, const char* ptr, const unsigned int n) {
     release(O);
     refer(O.buffer,ptr,n);
     initStringOutput(O);
   }
+  void refer(StringOutput& O, const StringOutput& rO) {
+    assert(IsAvailable(rO));
+    release(O);
+    refer(O.buffer,rO.buffer);
+    refer(O.property,rO.property);
+    refer(O.state,rO.state);
+  }
   void allocate(StringOutput& O, const unsigned int n) {
     allocate(O.buffer,n);
     initStringOutput(O);
+  }
+  void imprint(StringOutput& O, const StringOutput& cO) {
+    assert(IsAvailable(cO));
+    release(O);
+    imprint(O.buffer,cO.buffer);
+    imprint(O.property,cO.property);
+    allocate(static_cast<InputOutputBase&>(O));
+  }
+  void copy(StringOutput& O, const StringOutput& cO) {
+    imprint(O,cO);
+    copy(O.buffer,cO.buffer);
+    copy(O.property,cO.property);
   }
 
 }

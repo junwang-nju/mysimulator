@@ -3,8 +3,8 @@
 #define _Vector_Input_Output_H_
 
 #include "data/basic/vector.h"
-#include "operation/basic/output-base.h"
-#include "operation/basic/input-base.h"
+#include "data/basic/output-base.h"
+#include "data/basic/input-base.h"
 
 namespace std {
 

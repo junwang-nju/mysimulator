@@ -2,9 +2,22 @@
 #ifndef _Input_Base_H_
 #define _Input_Base_H_
 
+#include "data/basic/input-output-base.h"
+#include <cassert>
+
 namespace std {
+
+  struct InputBase;
+  void release(InputBase&);
   
-  struct InputBase {
+  struct InputBase : public InputOutputBase {
+    InputBase() : InputOutputBase() {}
+    InputBase(const InputBase&) { Error("Cannot create Input Base"); }
+    InputBase& operator=(const InputBase&) {
+      Error("Cannot copy Input Base");
+      return *this;
+    }
+    ~InputBase() { release(*this); }
     virtual InputBase& read(bool&)=0;
     virtual InputBase& read(char&)=0;
     virtual InputBase& read(unsigned char&)=0;
@@ -22,6 +35,23 @@ namespace std {
     virtual InputBase& read(void*&)=0;
     virtual InputBase& read(char*)=0;
   };
+
+  bool IsAvailable(const InputBase& IB) {
+    return IsAvailable(static_cast<const InputOutputBase&>(IB));
+  }
+  void release(InputBase& IB) { release(static_cast<InputOutputBase&>(IB)); }
+  void copy(InputBase& I, const InputBase& cI) {
+    assert(IsAvailable(I));
+    assert(IsAvailable(cI));
+    copy(static_cast<InputOutputBase&>(I),
+         static_cast<const InputOutputBase&>(cI));
+  }
+  void refer(InputBase& I, const InputBase& rI) {
+    assert(IsAvailable(rI));
+    release(I);
+    refer(static_cast<InputOutputBase&>(I),
+          static_cast<const InputOutputBase&>(rI));
+  }
 
   InputBase& operator>>(InputBase& O, bool& b) { return O.read(b); }
   InputBase& operator>>(InputBase& O, char& c) { return O.read(c); }

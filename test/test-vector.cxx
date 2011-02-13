@@ -1,7 +1,8 @@
 
 #include "operation/basic/vector-op.h"
-#include "operation/basic/console-output.h"
-#include <iostream>
+#include "operation/basic/vector-io.h"
+#include "data/basic/console-output.h"
+#include "data/basic/console-input.h"
 using namespace std;
 
 int main() {
@@ -229,7 +230,7 @@ int main() {
   COut<<Endl;
 
   COut<<"Test -- read from istream"<<Endl;
-  cin>>vDBL;
+  CIn>>vDBL;
   COut<<vDBL<<Endl;
   COut<<Endl;
 

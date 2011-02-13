@@ -8,6 +8,7 @@ namespace std {
   
   struct FileOutput;
   void release(FileOutput&);
+  void allocate(FileOutput&, const char*, const char*);
 
   struct FileOutput : public OutputBase {
     FILE *fpoint;
@@ -17,13 +18,13 @@ namespace std {
         : OutputBase(), fpoint(const_cast<FILE*>(fp)), rflag(true) {
       allocate(static_cast<InputOutputBase&>(*this));
     }
-    FileOutput(const FileOutput& FO) {
-      fprintf(stderr,"%s\n","Cannot create FileOutput");
-      exit(0);
+    FileOutput(const char* fname, const char* fmode="w")
+        : OutputBase(), fpoint(NULL), rflag(false) {
+      allocate(*this,fname,fmode);
     }
+    FileOutput(const FileOutput& FO) { Error("Cannot create FileOutput"); }
     FileOutput& operator=(const FileOutput& FO) {
-      fprintf(stderr,"%s\n","Cannot copy FileOutput");
-      exit(0);
+      Error("Cannot copy FileOutput");
       return *this;
     }
     ~FileOutput() { release(*this); }
@@ -69,7 +70,7 @@ namespace std {
     O.fpoint=const_cast<FILE*>(fp);
     O.rflag=true;
   }
-  void refer(FileOutput& O, const FileOutput& cO) { copy(O,cO.fpoint); }
+  void refer(FileOutput& O, const FileOutput& cO) { refer(O,cO.fpoint); }
   void allocate(FileOutput& O, const char* fname, const char* fmode="w") {
     release(O);
     allocate(static_cast<InputOutputBase&>(O));

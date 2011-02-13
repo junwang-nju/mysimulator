@@ -6,6 +6,7 @@
 #include "operation/basic/blas.h"
 #include "operation/basic/memory.h"
 #include "operation/basic/util.h"
+#include <cassert>
 
 namespace std {
 
@@ -22,7 +23,7 @@ namespace std {
     Vector(const unsigned int n) : ParentType(), data(NULL) {
       allocate(*this,n);
     }
-    Type& operator=(const Type& V) { myError("Copy Prohibited"); return *this; }
+    Type& operator=(const Type& V) { Error("Copy Prohibited"); return *this; }
     ~Vector() { safe_release(data,state); }
     T*& operator()() { return data; }
     const T* operator()() const { return data; }

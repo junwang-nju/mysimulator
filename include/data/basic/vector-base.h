@@ -4,7 +4,7 @@
 
 #include "data/name/constant.h"
 #include "data/name/storage-state.h"
-#include "operation/basic/error-proc.h"
+#include "operation/basic/error-op.h"
 
 namespace std {
 
@@ -17,10 +17,10 @@ namespace std {
     
     VectorBase() : size(uZero), state(Unused) {}
     VectorBase(const Type& VB) {
-      myError("Cannot create base class of vector");
+      Error("Cannot create base class of vector");
     }
     Type& operator=(const Type& VB) {
-      myError("Cannot copy base class of vector");
+      Error("Cannot copy base class of vector");
       return *this;
     }
     ~VectorBase() { size=uZero; state=Unused; }

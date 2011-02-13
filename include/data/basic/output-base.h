@@ -3,6 +3,7 @@
 #define _Output_Base_H_
 
 #include "data/basic/input-output-base.h"
+#include <cassert>
 
 namespace std {
   
@@ -36,7 +37,7 @@ namespace std {
   };
 
   bool IsAvailable(const OutputBase& OB) {
-    return static_cast<const InputOutputBase&>(OB);
+    return IsAvailable(static_cast<const InputOutputBase&>(OB));
   }
   void release(OutputBase& OB) { release(static_cast<InputOutputBase&>(OB)); }
   void copy(OutputBase& O, const OutputBase& cO) {
