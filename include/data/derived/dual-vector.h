@@ -12,9 +12,9 @@ namespace std {
     typedef Vector<Vector<T> >  ParentType;
     
     DualVector() : ParentType() {}
-    DualVector(const Type& V) { myError("Cannot create dual-vector"); }
+    DualVector(const Type& V) { Error("Cannot create dual-vector"); }
     Type& operator=(const Type& V) {
-      myError("Cannot copy dual-vector");
+      Error("Cannot copy dual-vector");
       return *this;
     }
     ~DualVector() { release(*this); }

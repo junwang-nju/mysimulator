@@ -1,56 +1,57 @@
 
-#include "data/derived/parameter-key.h"
-#include <iostream>
+#include "operation/derived/parameter-key-io.h"
+#include "data/basic/console-output.h"
+#include "data/basic/console-input.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- create a key"<<endl;
+  COut<<"Test -- create a key"<<Endl;
   ParameterKey K;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate a key"<<endl;
+  COut<<"Test -- allocate a key"<<Endl;
   allocate(K,3);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- build hash"<<endl;
+  COut<<"Test -- build hash"<<Endl;
   K[0]=1;
   K[1]=100;
   K[2]=0;
   K.update();
-  cout<<K.hash[0]<<"\t"<<K.hash[1]<<"\t"<<K.hash[2]<<endl;
-  cout<<endl;
+  COut<<K.hash[0]<<"\t"<<K.hash[1]<<"\t"<<K.hash[2]<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign"<<endl;
+  COut<<"Test -- assign"<<Endl;
   ParameterKey K2;
   allocate(K2,4);
   copy(K2,K);
-  cout<<K2<<endl;
-  //for(unsigned int i=0;i<K2.size;++i) cout<<K2[i]<<"  "; cout<<endl;
-  cout<<K2.hash[0]<<"\t"<<K2.hash[1]<<"\t"<<K2.hash[2]<<endl;
-  cout<<endl;
+  COut<<K2<<Endl;
+  //for(unsigned int i=0;i<K2.size;++i) COut<<K2[i]<<"  "; COut<<Endl;
+  COut<<K2.hash[0]<<"\t"<<K2.hash[1]<<"\t"<<K2.hash[2]<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- input from stream"<<endl;
-  cout<<K.hsize<<endl;
-  cin>>K;
-  cout<<K<<endl;
-  //for(unsigned int i=0;i<K.size;++i) cout<<K.index[i]<<"  "; cout<<endl;
-  cout<<K.hash[0]<<"\t"<<K.hash[1]<<"\t"<<K.hash[2]<<endl;
-  cout<<endl;
+  COut<<"Test -- input from stream"<<Endl;
+  COut<<K.hsize<<Endl;
+  CIn>>K;
+  COut<<K<<Endl;
+  //for(unsigned int i=0;i<K.size;++i) COut<<K.index[i]<<"  "; COut<<Endl;
+  COut<<K.hash[0]<<"\t"<<K.hash[1]<<"\t"<<K.hash[2]<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- compare"<<endl;
-  cout<<compare(K,K2)<<endl;
-  cout<<compare(K2,K)<<endl;
-  cout<<endl;
+  COut<<"Test -- compare"<<Endl;
+  COut<<compare(K,K2)<<Endl;
+  COut<<compare(K2,K)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(K2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test - availability check"<<endl;
-  cout<<IsAvailable(K)<<endl;
+  COut<<"Test - availability check"<<Endl;
+  COut<<IsAvailable(K)<<Endl;
   release(K);
-  cout<<IsAvailable(K)<<endl;
-  cout<<endl;
+  COut<<IsAvailable(K)<<Endl;
+  COut<<Endl;
 
   return 1;
 }

@@ -15,9 +15,9 @@ namespace std {
     typedef Vector<unsigned int> ParentType;
     
     ParameterKey() : ParentType(), hsize(0), hash(3) { copy(hash,0); }
-    ParameterKey(const Type& K) { myError("Cannot create Parameter Key"); }
+    ParameterKey(const Type& K) { Error("Cannot create Parameter Key"); }
     Type& operator=(const Type& K) {
-      myError("Cannot copy Parameter Key");
+      Error("Cannot copy Parameter Key");
       return *this;
     }
     ~ParameterKey() { release(*this); }
@@ -64,10 +64,6 @@ namespace std {
           static_cast<const Vector<unsigned int>&>(rK));
     K.hsize=rK.hsize;
     refer(K.hash,rK.hash);
-  }
-
-  InputBase& operator>>(InputBase& is, ParameterKey& K) {
-    is>>static_cast<Vector<unsigned int>&>(K); K.update(); return is;
   }
 
   int compare(const ParameterKey& KA, const ParameterKey& KB) {

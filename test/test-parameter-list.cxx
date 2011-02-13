@@ -1,14 +1,15 @@
 
-#include "data/derived/parameter-list.h"
-#include <iostream>
+#include "operation/derived/parameter-list-io.h"
+#include "data/basic/console-output.h"
+#include "data/basic/console-input.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initiate"<<endl;
+  COut<<"Test -- initiate"<<Endl;
   ParameterList PL;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   allocate(PL,3,2,7);
   Vector<unsigned int> ksize, vsize;
   allocate(ksize,9);
@@ -20,9 +21,9 @@ int main() {
   allocate(PL,4,vsize.data,5);
   release(ksize);
   release(vsize);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- input data by direct access"<<endl;
+  COut<<"Test -- input data by direct access"<<Endl;
   for(unsigned int i=0;i<5;++i) {
     PL.key[i][0]=0;
     PL.key[i][1]=i;
@@ -33,13 +34,13 @@ int main() {
     PL.value[i][1].u=12345+i*87;
   }
   PL.update();
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- access tree through []"<<endl;
-  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL[i])) cout<<i<<endl;
-  cout<<endl;
+  COut<<"Test -- access tree through []"<<Endl;
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL[i])) COut<<i<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- get value"<<endl;
+  COut<<"Test -- get value"<<Endl;
   Vector<unsigned int> idx;
   allocate(idx,4);
   idx[0]=0;
@@ -47,37 +48,37 @@ int main() {
   idx[2]=2;
   idx[3]=2;
   const Vector<UniqueParameter> *pVU=get(PL,idx.data,4);
-  cout<<(*pVU)[0].d<<endl;
-  cout<<(*pVU)[1].u<<endl;
+  COut<<(*pVU)[0].d<<Endl;
+  COut<<(*pVU)[1].u<<Endl;
   release(idx);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- input from istream"<<endl;
-  cin>>PL;
-  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL[i])) cout<<i<<endl;
-  cout<<endl;
+  COut<<"Test -- input from istream"<<Endl;
+  CIn>>PL;
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL[i])) COut<<i<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign from another parameter list"<<endl;
+  COut<<"Test -- assign from another parameter list"<<Endl;
   ParameterList PL2;
   allocate(PL2,5,3,4);
   copy(PL2,PL);
-  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL2[i])) cout<<i<<endl;
-  cout<<endl;
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL2[i])) COut<<i<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer operation"<<endl;
+  COut<<"Test -- refer operation"<<Endl;
   refer(PL2,PL);
-  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL2[i])) cout<<i<<endl;
-  cout<<endl;
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL2[i])) COut<<i<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(PL2);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- availability check"<<endl;
-  cout<<IsAvailable(PL)<<endl;
+  COut<<"Test -- availability check"<<Endl;
+  COut<<IsAvailable(PL)<<Endl;
   release(PL);
-  cout<<IsAvailable(PL)<<endl;
-  cout<<endl;
+  COut<<IsAvailable(PL)<<Endl;
+  COut<<Endl;
 
   return 1;
 }

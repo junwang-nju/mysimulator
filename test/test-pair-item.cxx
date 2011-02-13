@@ -1,7 +1,6 @@
 
-#include "data/derived/pair-information-item.h"
-#include "operation/basic/console-output.h"
-#include <iostream>
+#include "operation/derived/pair-information-item-io.h"
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {

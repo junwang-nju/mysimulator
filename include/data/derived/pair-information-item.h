@@ -4,7 +4,7 @@
 
 #include "operation/basic/util.h"
 #include "operation/basic/memory.h"
-#include "operation/basic/error-proc.h"
+#include "operation/basic/error-op.h"
 #include "data/name/storage-state.h"
 #include <cassert>
 
@@ -18,9 +18,9 @@ namespace std {
     unsigned int status;
     
     PairItem() : content(), status(0) {}
-    PairItem(const Type& P) { myError("Cannot create Pair Item"); }
+    PairItem(const Type& P) { Error("Cannot create Pair Item"); }
     Type& operator=(const Type& P) {
-      myError("Cannot copy Pair Item");
+      Error("Cannot copy Pair Item");
       return *this;
     }
 
@@ -33,12 +33,6 @@ namespace std {
   void copy(PairItem<T>& P, const PairItem<T>& cP) {
     P.content=cP.content;
     P.status=cP.status;
-  }
-
-  template <typename T>
-  OutputBase& operator<<(OutputBase& os, const PairItem<T>& P) {
-    os<<"[ "<<P()<<"\t("<<P.status<<" )]";
-    return os;
   }
 
 }

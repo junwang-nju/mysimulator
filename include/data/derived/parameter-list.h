@@ -20,9 +20,9 @@ namespace std {
     ParameterValue* value;
 
     ParameterList() : ParentType(), size(0), key(NULL), value(NULL) {}
-    ParameterList(const Type& L) { myError("Cannot create Parameter List"); }
+    ParameterList(const Type& L) { Error("Cannot create Parameter List"); }
     Type& operator=(const Type& L) {
-      myError("Cannot copy Parameter List");
+      Error("Cannot copy Parameter List");
       return *this;
     }
     ~ParameterList() { release(*this); }
@@ -181,13 +181,6 @@ namespace std {
   const ParameterValue* get(const ParameterList& L,
                             const Vector<unsigned int>& idx) {
     return get(L,idx.data,idx.size);
-  }
-
-  InputBase& operator>>(InputBase& is, ParameterList& L) {
-    assert(IsAvailable(L));
-    for(unsigned int i=0;i<L.size;++i)  is>>L.key[i]>>L.value[i];
-    L.update();
-    return is;
   }
 
 }

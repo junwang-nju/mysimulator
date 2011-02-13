@@ -15,9 +15,9 @@ namespace std {
     unsigned int *gstatus;
 
     PairStorage() : ParentType(), gstatus(NULL) {}
-    PairStorage(const Type& P) { myError("Cannot create Pair Storage"); }
+    PairStorage(const Type& P) { Error("Cannot create Pair Storage"); }
     Type& operator=(const Type& P) {
-      myError("Cannot copy Pair Storage");
+      Error("Cannot copy Pair Storage");
       return *this;
     }
     ~PairStorage() { release(*this); }
