@@ -2,11 +2,8 @@
 #ifndef _String_Buffer_Output_H_
 #define _String_Buffer_Output_H_
 
-#include "data/basic/vector.h"
 #include "data/name/string-output-property.h"
-#include "operation/basic/output-base.h"
-#include <cstdio>
-#include <cassert>
+#include "data/basic/output-base.h"
 
 namespace std {
   
@@ -20,8 +17,8 @@ namespace std {
   struct StringOutput : public OutputBase {
     Vector<char> buffer;
     Vector<unsigned int> property;
-    StringOutput() : buffer(), property() {}
-    StringOutput(const unsigned int n) : buffer(), property() {
+    StringOutput() : OutputBase(), buffer(), property() {}
+    StringOutput(const unsigned int n) : OutputBase(), buffer(), property() {///
       allocate(*this,n);
     }
     StringOutput(const Vector<char>& bf) : buffer(), property() {

@@ -3,10 +3,7 @@
 #define _String_Buffer_Input_H_
 
 #include "data/name/string-input-property.h"
-#include "operation/basic/input-base.h"
-#include "data/basic/vector.h"
-#include <cstdio>
-#include <cassert>
+#include "data/basic/input-base.h"
 
 namespace std {
 
@@ -20,7 +17,7 @@ namespace std {
   struct StringInput : public InputBase {
     Vector<char> buffer;
     Vector<unsigned int> property;
-    StringInput() : buffer(), property() {}
+    StringInput() : InputBase(), buffer(), property() {}
     StringInput(const unsigned int n) : buffer(), property() {
       allocate(*this,n);
     }

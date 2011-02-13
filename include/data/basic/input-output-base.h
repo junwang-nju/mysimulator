@@ -34,12 +34,13 @@ namespace std {
     release(B);
     refer(B.state,rB.state);
   }
-  void allocate(InputOutputBase& B) {
-    allocate(B.state,InputOutputNumberState);
-  }
   bool isFail(InputOutputBase& B) { return B.state[FailBit]; }
   void SetState(const InputOutputStateName Bit, const bool Flag=true) {
     B.state[Bit]=Flag;
+  }
+  void allocate(InputOutputBase& B) {
+    allocate(B.state,InputOutputNumberState);
+    SetState(FailBit,false);
   }
 
 }

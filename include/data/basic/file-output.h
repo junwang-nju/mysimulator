@@ -2,7 +2,7 @@
 #ifndef _File_Output_H_
 #define _File_Output_H_
 
-#include "operation/basic/output-base.h"
+#include "data/basic/output-base.h"
 
 namespace std {
   
@@ -14,7 +14,9 @@ namespace std {
     bool rflag;
     FileOutput() : OutputBase(), fpoint(NULL), rflag(false) {}
     FileOutput(const FILE* fp)
-      : OutputBase(), fpoint(const_cast<FILE*>(fp)), rflag(true) {} ///
+        : OutputBase(), fpoint(const_cast<FILE*>(fp)), rflag(true) {
+      allocate(static_cast<InputOutputBase&>(*this));
+    }
     FileOutput(const FileOutput& FO) {
       fprintf(stderr,"%s\n","Cannot create FileOutput");
       exit(0);
@@ -58,16 +60,19 @@ namespace std {
       fclose(O.fpoint);
       O.rflag=false;
     }
+    release(static_cast<InputOutputBase&>(O));
   }
-  void copy(FileOutput& O, const FILE* fp) {
+  void refer(FileOutput& O, const FILE* fp) {
     assert(IsAvailable(fp));
     release(O);
+    allocate(static_cast<InputOutputBase&>(O));
     O.fpoint=const_cast<FILE*>(fp);
     O.rflag=true;
   }
-  void copy(FileOutput& O, const FileOutput& cO) { copy(O,cO.fpoint); }
+  void refer(FileOutput& O, const FileOutput& cO) { copy(O,cO.fpoint); }
   void allocate(FileOutput& O, const char* fname, const char* fmode="w") {
     release(O);
+    allocate(static_cast<InputOutputBase&>(O));
     O.fpoint=fopen(fname,fmode);
     O.rflag=false;
   }
