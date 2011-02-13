@@ -28,10 +28,10 @@ namespace std {
     
     UniqueParameter128b() { ull[0]=0; ull[1]=0; }
     UniqueParameter128b(const Type& P) {
-      myError("Cannot create Unique Parameter 128bit");
+      Error("Cannot create Unique Parameter 128bit");
     }
     Type& operator=(const Type& P) {
-      myError("Cannot copy Unique Parameter 128bit");
+      Error("Cannot copy Unique Parameter 128bit");
       return *this;
     }
 
@@ -135,31 +135,6 @@ namespace std {
   }
   void copy(Vector<UniqueParameter128b>& P, const UniqueParameter128b& cP) {
     dcopy(P.data,&cP,P.size,iZero,iOne,iZero,iZero);
-  }
-
-  InputBase& operator>>(InputBase& is, UniqueParameter128b& P) {
-    static char flag;
-    static char buff[1024];
-    is>>buff;
-    flag=buff[0];
-    if((flag=='G')||(flag=='g'))  is>>P.ld;
-    else if((flag=='D')||(flag=='d')) is>>buff>>P.d[0]>>P.d[1]>>buff;
-    else if((flag=='F')||(flag=='f'))
-      is>>buff>>P.f[0]>>P.f[1]>>P.f[2]>>P.f[3]>>buff;
-    else if((flag=='U')||(flag=='u'))
-      is>>buff>>P.u[0]>>P.u[1]>>P.u[2]>>P.u[3]>>buff;
-    else if((flag=='I')||(flag=='i'))
-      is>>buff>>P.i[0]>>P.i[1]>>P.i[2]>>P.i[3]>>buff;
-    else if((flag=='L')||(flag=='l')) is>>buff>>P.ull[0]>>P.ull[1]>>buff;
-    else if((flag=='P')||(flag=='p'))
-      is>>buff>>P.ptr[0]>>P.ptr[1]>>P.ptr[2]>>P.ptr[3]>>buff;
-    else myError("FAIL"); //is.setstate(ios_base::failbit);
-    return is;
-  }
-
-  OutputBase& operator<<(OutputBase& os, const UniqueParameter128b& P) {
-    os<<"L ["<<P.ull[0]<<"\t"<<P.ull[1]<<" ] ";
-    return os;
   }
 
 }

@@ -1,7 +1,7 @@
 
-#include "data/basic/unique-parameter-128bit.h"
-#include "operation/basic/console-output.h"
-#include <iostream>
+#include "operation/basic/unique-parameter-128bit-io.h"
+#include "data/basic/console-output.h"
+#include "data/basic/console-input.h"
 using namespace std;
 
 int main() {
@@ -67,42 +67,42 @@ int main() {
   COut<<Endl;
 
   COut<<"Test -- read from istream"<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d[0]<<"\t"<<up.d[1]<<Endl;
   COut<<"\t"<<up.u[0]<<"\t"<<up.u[1]<<"\t"<<up.u[2]<<"\t"<<up.u[3]<<Endl;
   COut<<"\t"<<up.i[0]<<"\t"<<up.i[1]<<"\t"<<up.i[2]<<"\t"<<up.i[3]<<Endl;
   COut<<"\t"<<up.ull[0]<<"\t"<<up.ull[1]<<Endl;
   COut<<"\t"<<up.ptr[0]<<"\t"<<up.ptr[1]<<"\t"<<up.ptr[2]<<"\t"<<up.ptr[3]<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d[0]<<"\t"<<up.d[1]<<Endl;
   COut<<"\t"<<up.u[0]<<"\t"<<up.u[1]<<"\t"<<up.u[2]<<"\t"<<up.u[3]<<Endl;
   COut<<"\t"<<up.i[0]<<"\t"<<up.i[1]<<"\t"<<up.i[2]<<"\t"<<up.i[3]<<Endl;
   COut<<"\t"<<up.ull[0]<<"\t"<<up.ull[1]<<Endl;
   COut<<"\t"<<up.ptr[0]<<"\t"<<up.ptr[1]<<"\t"<<up.ptr[2]<<"\t"<<up.ptr[3]<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d[0]<<"\t"<<up.d[1]<<Endl;
   COut<<"\t"<<up.u[0]<<"\t"<<up.u[1]<<"\t"<<up.u[2]<<"\t"<<up.u[3]<<Endl;
   COut<<"\t"<<up.i[0]<<"\t"<<up.i[1]<<"\t"<<up.i[2]<<"\t"<<up.i[3]<<Endl;
   COut<<"\t"<<up.ull[0]<<"\t"<<up.ull[1]<<Endl;
   COut<<"\t"<<up.ptr[0]<<"\t"<<up.ptr[1]<<"\t"<<up.ptr[2]<<"\t"<<up.ptr[3]<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d[0]<<"\t"<<up.d[1]<<Endl;
   COut<<"\t"<<up.u[0]<<"\t"<<up.u[1]<<"\t"<<up.u[2]<<"\t"<<up.u[3]<<Endl;
   COut<<"\t"<<up.i[0]<<"\t"<<up.i[1]<<"\t"<<up.i[2]<<"\t"<<up.i[3]<<Endl;
   COut<<"\t"<<up.ull[0]<<"\t"<<up.ull[1]<<Endl;
   COut<<"\t"<<up.ptr[0]<<"\t"<<up.ptr[1]<<"\t"<<up.ptr[2]<<"\t"<<up.ptr[3]<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d[0]<<"\t"<<up.d[1]<<Endl;
   COut<<"\t"<<up.u[0]<<"\t"<<up.u[1]<<"\t"<<up.u[2]<<"\t"<<up.u[3]<<Endl;
   COut<<"\t"<<up.i[0]<<"\t"<<up.i[1]<<"\t"<<up.i[2]<<"\t"<<up.i[3]<<Endl;
   COut<<"\t"<<up.ull[0]<<"\t"<<up.ull[1]<<Endl;
   COut<<"\t"<<up.ptr[0]<<"\t"<<up.ptr[1]<<"\t"<<up.ptr[2]<<"\t"<<up.ptr[3]<<Endl;
-  cin>>up;
+  CIn>>up;
   COut<<up<<Endl;
   COut<<"\t"<<up.d[0]<<"\t"<<up.d[1]<<Endl;
   COut<<"\t"<<up.u[0]<<"\t"<<up.u[1]<<"\t"<<up.u[2]<<"\t"<<up.u[3]<<Endl;
