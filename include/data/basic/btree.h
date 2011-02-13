@@ -65,7 +65,7 @@ namespace std {
      *
      * @param BT [in] the input BTree object
      */
-    BTree(const Type& BT) { myError("Cannot create from BinaryTree"); }
+    BTree(const Type& BT) { Error("Cannot create from BinaryTree"); }
 
     /**
      * @brief copy from another BTree object
@@ -129,7 +129,7 @@ namespace std {
         if(tofree->branch==LeftBranch) present->left=NULL;
         else if(tofree->branch==RightBranch)  present->right=NULL;
         else if(tofree->branch==Unassigned) {}
-        else myError("Unknown Branch Flag");
+        else Error("Unknown Branch Flag");
         safe_delete(tofree);
       }
     }
@@ -236,10 +236,10 @@ namespace std {
       if(cmp==0) {
         if(vflag==Reference) present->value=const_cast<ValueType*>(&value);
         else if(vflag==Allocated) {
-          myWarn("Same Key met!");
+          Warn("Same Key met!");
           present->value=new ValueType;
           *(present->value)=value;
-        } else myError("Imporoper Value Flag");
+        } else Error("Imporoper Value Flag");
         present->valuestate=vflag;
         return;
       } else if(cmp<0) {
@@ -250,14 +250,14 @@ namespace std {
           else if(kflag==Allocated) {
             present->left->key=new KeyType;
             *(present->left->key)=key;
-          } else myError("Imporoper Key Flag");
+          } else Error("Imporoper Key Flag");
           present->left->keystate=kflag;
           if(vflag==Reference)
             present->left->value=const_cast<ValueType*>(&value);
           else if(vflag==Allocated) {
             present->left->value=new ValueType;
             *(present->left->value)=value;
-          } else myError("Imporoper Value Flag");
+          } else Error("Imporoper Value Flag");
           present->left->valuestate=vflag;
           present->left->parent=present;
           present->left->branch=LeftBranch;
@@ -271,14 +271,14 @@ namespace std {
           else if(kflag==Allocated) {
             present->right->key=new KeyType;
             *(present->right->key)=key;
-          } else myError("Imporoper Key Flag");
+          } else Error("Imporoper Key Flag");
           present->right->keystate=kflag;
           if(vflag==Reference)
             present->right->value=const_cast<ValueType*>(&value);
           else if(vflag==Allocated) {
             present->right->value=new ValueType;
             *(present->right->value)=value;
-          } else myError("Imporoper Value Flag");
+          } else Error("Imporoper Value Flag");
           present->right->valuestate=vflag;
           present->right->parent=present;
           present->right->branch=RightBranch;
@@ -355,14 +355,14 @@ namespace std {
         if(IsAvailable(BN->parent)) {
           if(BN->branch==LeftBranch)  BN->parent->left=BN->right;
           else if(BN->branch==RightBranch)  BN->parent->right=BN->right;
-          else myError("Improper Branch Flag");
+          else Error("Improper Branch Flag");
         } else BT.root=BN->right;
         BN->right=NULL;
       } else if(!IsAvailable(BN->right)) {
         if(IsAvailable(BN->parent)) {
           if(BN->branch==LeftBranch)  BN->parent->left=BN->left;
           else if(BN->branch==RightBranch)  BN->parent->right=BN->left;
-          else myError("Improper Branch Flag");
+          else Error("Improper Branch Flag");
         } else BT.root=BN->left;
         BN->left=NULL;
       } else {
@@ -384,7 +384,7 @@ namespace std {
             movenode->parent->left=movenode;
           else if(movenode->branch==RightBranch)
             movenode->parent->right=movenode;
-          else myError("Improper Branch Flag");
+          else Error("Improper Branch Flag");
         } else BT.root=movenode;
         movenode->left=BN->left;  BN->left=NULL;
         movenode->right=BN->right;  BN->right=NULL;

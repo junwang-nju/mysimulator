@@ -1,27 +1,27 @@
 
 #include "data/basic/btree-node.h"
-#include <iostream>
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- create a node of binary tree"<<endl;
+  COut<<"Test -- create a node of binary tree"<<Endl;
   BTreeNode<int,double> bn;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign the pointers of key and value"<<endl;
+  COut<<"Test -- assign the pointers of key and value"<<Endl;
   int key=2;
   double value=2.5;
   bn.key=&key;
   bn.value=&value;
   bn.keystate=Reference;
   bn.valuestate=Reference;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- read key and value"<<endl;
-  cout<<*(bn.key)<<"\t\t"<<*(bn.value)<<endl;
-  cout<<endl;
+  COut<<"Test -- read key and value"<<Endl;
+  COut<<*(bn.key)<<"\t\t"<<*(bn.value)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign the parent, left, and right children"<<endl;
+  COut<<"Test -- assign the parent, left, and right children"<<Endl;
   int keyp=5;
   double valuep=1.5;
   bn.branch=Unassigned;
@@ -30,25 +30,25 @@ int main() {
   bn.right->value=&valuep;  bn.right->valuestate=Reference;
   bn.right->branch=RightBranch;
   bn.right->parent=&bn;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- read parent and child information"<<endl;
-  cout<<*(bn.right->parent->key)<<"\t\t"<<*(bn.right->parent->value)<<endl;
-  cout<<*(bn.right->key)<<"\t\t"<<*(bn.right->value)<<endl;
-  cout<<endl;
+  COut<<"Test -- read parent and child information"<<Endl;
+  COut<<*(bn.right->parent->key)<<"\t\t"<<*(bn.right->parent->value)<<Endl;
+  COut<<*(bn.right->key)<<"\t\t"<<*(bn.right->value)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign from another node"<<endl;
+  COut<<"Test -- assign from another node"<<Endl;
   BTreeNode<int,double> bnn;
   bnn=bn;
-  cout<<*(bnn.key)<<"\t\t"<<*(bnn.value)<<endl;
-  cout<<endl;
+  COut<<*(bnn.key)<<"\t\t"<<*(bnn.value)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- clear node"<<endl;
+  COut<<"Test -- clear node"<<Endl;
   release(bnn);
   release(*(bn.right));
   bn.right->parent=&bn;
   bn.right->branch=RightBranch;
-  cout<<endl;
+  COut<<Endl;
 
   return 1;
 }

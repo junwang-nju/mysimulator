@@ -1,19 +1,19 @@
 
 #include "data/basic/chain-node.h"
-#include <iostream>
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   ChainNode<int> CN;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   allocate(CN);
   CN()=5;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- assign external parent and child"<<endl;
+  COut<<"Test -- assign external parent and child"<<Endl;
   ChainNode<int> CNp,CNc;
   allocate(CNp);
   allocate(CNc);
@@ -27,43 +27,43 @@ int main() {
   CNp.childstate=Reference;
   CNc.parent=&CN;
   CNc.parentstate=Reference;
-  cout<<*(CN.parent->child->child->content)<<endl;
-  cout<<endl;
+  COut<<*(CN.parent->child->child->content)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- content access"<<endl;
-  cout<<CNp()<<endl;
-  cout<<endl;
+  COut<<"Test -- content access"<<Endl;
+  COut<<CNp()<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- insert a parent node"<<endl;
+  COut<<"Test -- insert a parent node"<<Endl;
   ChainNode<int> CNa;
   allocate(CNa);
   CNa()=34;
   add_parent(CNc,CNa);
-  cout<<*(CN.child->content)<<"\t"<<*(CN.child->parent->content)<<endl;
-  cout<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<endl;
-  cout<<endl;
+  COut<<*(CN.child->content)<<"\t"<<*(CN.child->parent->content)<<Endl;
+  COut<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- insert a content"<<endl;
+  COut<<"Test -- insert a content"<<Endl;
   add_parent(CNc,45);
-  cout<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<endl;
-  cout<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<endl;
+  COut<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<Endl;
+  COut<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<Endl;
   add_parent(*(CNc.parent),85,Allocated);
-  cout<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<endl;
-  cout<<*(CNc.parent->parent->content)<<"\t"<<*(CNc.parent->parent->child->content)<<endl;
-  cout<<endl;
+  COut<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<Endl;
+  COut<<*(CNc.parent->parent->content)<<"\t"<<*(CNc.parent->parent->child->content)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- release node"<<endl;
+  COut<<"Test -- release node"<<Endl;
   release(*(CNc.parent));
-  cout<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<endl;
-  cout<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<endl;
-  cout<<*(CNc.parent->parent->content)<<"\t"<<*(CNc.parent->parent->child->content)<<endl;
-  cout<<endl;
+  COut<<*(CN.child->child->content)<<"\t"<<*(CN.child->child->parent->content)<<Endl;
+  COut<<*(CNc.parent->content)<<"\t"<<*(CNc.parent->child->content)<<Endl;
+  COut<<*(CNc.parent->parent->content)<<"\t"<<*(CNc.parent->parent->child->content)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- availability"<<endl;
-  cout<<IsAvailable(CN)<<endl;
+  COut<<"Test -- availability"<<Endl;
+  COut<<IsAvailable(CN)<<Endl;
   release(CNp);
-  cout<<IsAvailable(CNp)<<endl;
-  cout<<endl;
+  COut<<IsAvailable(CNp)<<Endl;
+  COut<<Endl;
 
   return 1;
 }

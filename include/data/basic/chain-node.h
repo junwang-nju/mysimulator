@@ -13,7 +13,7 @@
 #ifndef _Chain_Node_H_
 #define _Chain_Node_H_
 
-#include "operation/basic/error-proc.h"
+#include "operation/basic/error-op.h"
 #include "data/name/storage-state.h"
 #include "operation/basic/memory.h"
 #include "operation/basic/util.h"
@@ -84,7 +84,7 @@ namespace std {
      *
      * @param N [in] the input node in chain
      */
-    ChainNode(const Type& N) { myError("Cannot create from Chain Node"); }
+    ChainNode(const Type& N) { Error("Cannot create from Chain Node"); }
     /**
      * @brief copy from another node in chain
      *
@@ -294,7 +294,7 @@ namespace std {
       *(dest.parent->child->content)=content;
     } else if(cflag==Reference)
       dest.parent->child->content=const_cast<T*>(&content);
-    else myError("Improper Storage flag");
+    else Error("Improper Storage flag");
     dest.parent->childstate=Allocated;
     dest.parent=dest.parent->child;
     dest.parentstate=Reference;

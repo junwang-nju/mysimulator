@@ -66,7 +66,7 @@ namespace std {
      *
      * @param C [in] the input Chain object
      */
-    Chain(const Type& C) { myError("Cannot create from Chain"); }
+    Chain(const Type& C) { Error("Cannot create from Chain"); }
     /**
      * @brief copy from another Chain object
      *

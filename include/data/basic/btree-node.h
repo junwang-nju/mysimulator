@@ -14,7 +14,7 @@
 
 #include "operation/basic/util.h"
 #include "data/name/storage-state.h"
-#include "operation/basic/error-proc.h"
+#include "operation/basic/error-op.h"
 #include "operation/basic/memory.h"
 #include <cstdlib>
 #include <cassert>
@@ -109,7 +109,7 @@ namespace std {
      *
      * @param N [in] the input BTreeNode object.
      */ 
-    BTreeNode(const Type& N) { myError("Cannot create from BinaryTree Node"); }
+    BTreeNode(const Type& N) { Error("Cannot create from BinaryTree Node"); }
     /**
      * @brief copy from another node in binary tree
      *

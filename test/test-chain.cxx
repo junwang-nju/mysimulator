@@ -1,60 +1,60 @@
 
 #include "data/basic/chain.h"
-#include <iostream>
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
-  cout<<"Test -- initialize"<<endl;
+  COut<<"Test -- initialize"<<Endl;
   Chain<int> C;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate"<<endl;
+  COut<<"Test -- allocate"<<Endl;
   allocate(C);
-  cout<<C.root->child->parent<<endl;
-  cout<<endl;
+  COut<<C.root->child->parent<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- add items (node and constant)"<<endl;
+  COut<<"Test -- add items (node and constant)"<<Endl;
   ChainNode<int> nd;
   allocate(nd);
   nd()=18;
   append(C,nd);
   append(C,58);
   append(C,79,Allocated);
-  cout<<*(C.root->child->content)<<endl;
-  cout<<*(C.root->child->child->content)<<endl;
-  cout<<*(C.root->child->child->child->content)<<endl;
-  cout<<endl;
+  COut<<*(C.root->child->content)<<Endl;
+  COut<<*(C.root->child->child->content)<<Endl;
+  COut<<*(C.root->child->child->child->content)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- copy from another Chain"<<endl;
+  COut<<"Test -- copy from another Chain"<<Endl;
   Chain<int> C2;
   copy(C2,C);
-  cout<<*(C2.root->child->content)<<endl;
-  cout<<*(C2.root->child->child->content)<<endl;
-  cout<<*(C2.root->child->child->child->content)<<endl;
-  cout<<endl;
+  COut<<*(C2.root->child->content)<<Endl;
+  COut<<*(C2.root->child->child->content)<<Endl;
+  COut<<*(C2.root->child->child->child->content)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- check whether inside Chain"<<endl;
-  cout<<In(C2,nd)<<endl;
-  cout<<In(C,nd)<<endl;
-  cout<<endl;
+  COut<<"Test -- check whether inside Chain"<<Endl;
+  COut<<In(C2,nd)<<Endl;
+  COut<<In(C,nd)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- remove a node"<<endl;
+  COut<<"Test -- remove a node"<<Endl;
   remove(C2,C2.root->child->child);
-  cout<<*(C2.root->child->content)<<endl;
-  cout<<*(C2.root->child->child->content)<<endl;
-  cout<<endl;
+  COut<<*(C2.root->child->content)<<Endl;
+  COut<<*(C2.root->child->child->content)<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- release"<<endl;
+  COut<<"Test -- release"<<Endl;
   release(C2);
-  cout<<C2.root<<"\t"<<C2.head<<endl;
-  cout<<endl;
+  COut<<C2.root<<"\t"<<C2.head<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer operation"<<endl;
+  COut<<"Test -- refer operation"<<Endl;
   refer(C2,C);
-  cout<<*(C2.root->child->content)<<endl;
-  cout<<*(C2.root->child->child->content)<<endl;
-  cout<<*(C2.root->child->child->child->content)<<endl;
-  cout<<endl;
+  COut<<*(C2.root->child->content)<<Endl;
+  COut<<*(C2.root->child->child->content)<<Endl;
+  COut<<*(C2.root->child->child->child->content)<<Endl;
+  COut<<Endl;
 
   return 1;
 }
