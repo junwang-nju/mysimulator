@@ -16,9 +16,9 @@ namespace std {
     typedef Vector<double>  ParentType;
 
     BoxMuller() : ParentType(), urng(NULL), isSecond(NULL), output(0) {}
-    BoxMuller(const Type& G) { myError("Cannot create BoxMuller Generator"); }
+    BoxMuller(const Type& G) { Error("Cannot create BoxMuller Generator"); }
     Type& operator=(const Type& G) {
-      myError("Cannot copy BoxMuller Generator");
+      Error("Cannot copy BoxMuller Generator");
       return *this;
     }
     ~BoxMuller() { release(*this); }
@@ -68,25 +68,6 @@ namespace std {
     G.isSecond=rG.isSecond;
     refer(static_cast<Vector<double>&>(G),
           static_cast<const Vector<double>&>(rG));
-  }
-
-  template <typename UniformRNG>
-  OutputBase& operator<<(OutputBase& os, const BoxMuller<UniformRNG>& G) {
-    os<<*(G.urng)<<"\t";
-    unsigned long long int *p;
-    p=reinterpret_cast<unsigned long long int*>(const_cast<double*>(G.data));
-    for(unsigned int i=0;i<3;++i) os<<p[i]<<"\t";
-    os<<*(G.isSecond);
-    return os;
-  }
-  template <typename UniformRNG>
-  InputBase& operator>>(InputBase& is, BoxMuller<UniformRNG>& G) {
-    is>>*(G.urng);
-    unsigned long long int *p;
-    p=reinterpret_cast<unsigned long long int*>(G.data);
-    for(unsigned int i=0;i<3;++i) is>>p[i];
-    is>>*(G.isSecond);
-    return is;
   }
 
 }

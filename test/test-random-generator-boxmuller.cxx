@@ -1,12 +1,15 @@
 
+#include "operation/random/random-generator-boxmuller-io.h"
 #include "operation/random/random-generator-boxmuller-op.h"
 #include "operation/random/random-generator-op.h"
-#include "operation/basic/console-output.h"
-#include "operation/basic/string-buffer-output.h"
-#include "operation/basic/string-buffer-input.h"
+#include "data/basic/console-output.h"
+#include "data/basic/string-buffer-output.h"
+#include "data/basic/string-buffer-input.h"
+#include "operation/random/random-generator-mt-dsfmt-io.h"
 using namespace std;
 
 int main() {
+  COut.precision(20);
   COut<<"Test -- initialize"<<Endl;
   BoxMuller<dSFMT<19937> > bm;
   COut<<Endl;

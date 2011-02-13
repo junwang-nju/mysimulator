@@ -25,9 +25,9 @@ namespace std {
     UniqueParameter128b output;
 
     MT_Standard() : ParentType(), mti(NULL), output() {}
-    MT_Standard(const Type& G) { myError("Cannot create MT-Standard Generator"); }
+    MT_Standard(const Type& G) { Error("Cannot create MT-Standard Generator"); }
     Type& operator=(const Type& G) {
-      myError("Cannot copy MT-Standard Generator");
+      Error("Cannot copy MT-Standard Generator");
       return *this;
     }
     ~MT_Standard() { release(*this); }
@@ -74,18 +74,6 @@ namespace std {
     refer(static_cast<Vector<unsigned int>&>(G),
           static_cast<const Vector<unsigned int>&>(rG));
     G.mti=rG.mti;
-  }
-
-  OutputBase& operator<<(OutputBase& os, const MT_Standard& G) {
-    assert(IsAvailable(G));
-    os<<static_cast<const Vector<unsigned int>&>(G)<<"\t"<<*(G.mti);
-    return os;
-  }
-
-  InputBase& operator>>(InputBase& is, MT_Standard& G) {
-    assert(IsAvailable(G));
-    is>>static_cast<Vector<unsigned int>&>(G)>>*(G.mti);
-    return is;
   }
 
 }

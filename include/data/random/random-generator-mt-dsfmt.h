@@ -53,9 +53,9 @@ namespace std {
     typedef Vector<UniqueParameter128b> ParentType;
 
     dSFMT() : ParentType(), idx(NULL), output() {}
-    dSFMT(const Type& G) { myError("Cannot create dSFMT"); }
+    dSFMT(const Type& G) { Error("Cannot create dSFMT"); }
     Type& operator=(const Type& G) {
-      myError("Cannot copy dSFMT");
+      Error("Cannot copy dSFMT");
       return *this;
     }
     ~dSFMT() { release(*this); }
@@ -381,30 +381,6 @@ namespace std {
     refer(static_cast<Vector<UniqueParameter128b>&>(G),
           static_cast<const Vector<UniqueParameter128b>&>(rG));
     G.idx=rG.idx;
-  }
-
-  template <unsigned int LoopFac>
-  OutputBase& operator<<(OutputBase& os, const dSFMT<LoopFac>& G) {
-    assert(IsAvailable(G));
-    os<<LoopFac<<"\t";
-    for(unsigned int i=0;i<G.size;++i)
-    for(unsigned int k=0;k<4;++k)
-      os<<G[i].u[k]<<"\t";
-    os<<*(G.idx);
-    return os;
-  }
-
-  template <unsigned int LoopFac>
-  InputBase& operator>>(InputBase& is, dSFMT<LoopFac>& G) {
-    assert(IsAvailable(G));
-    unsigned int expLoopFac;
-    is>>expLoopFac;
-    if(expLoopFac!=LoopFac) myError("Imcompatiable LoopFac for dSFMT");
-    for(unsigned int i=0;i<G.size;++i)
-    for(unsigned int k=0;k<4;++k)
-      is>>G[i].u[k];
-    is>>*(G.idx);
-    return is;
   }
 
 }

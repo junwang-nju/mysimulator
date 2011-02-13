@@ -52,7 +52,7 @@ namespace std {
 
   template <typename T>
   const T& rand(MT_Standard& G) {
-    myError("Prohibited for unknown type");
+    Error("Prohibited for unknown type");
     return static_cast<T>(0);
   }
 

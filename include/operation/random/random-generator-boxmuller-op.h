@@ -18,107 +18,107 @@ namespace std {
 
   template <typename T>
   const T& rand(BoxMuller<MT_Standard>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<607> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<1279> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<11213> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<19937> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<132049> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<216091> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<2281> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<4253> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<44497> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<SFMT<86243> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<521> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<1279> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<2203> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<4253> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<11213> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<19937> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<44497> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<86243> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<132049> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(BoxMuller<dSFMT<216091> >& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
 

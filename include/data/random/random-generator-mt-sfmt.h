@@ -44,9 +44,9 @@ namespace std {
     UniqueParameter128b output;
     
     SFMT() : ParentType(), idx(NULL), output() {}
-    SFMT(const Type& G) { myError("Cannot create SFMT Generator"); }
+    SFMT(const Type& G) { Error("Cannot create SFMT Generator"); }
     Type& operator=(const Type& G) {
-      myError("Cannot copy SFMT Generator");
+      Error("Cannot copy SFMT Generator");
       return *this;
     }
     ~SFMT() { release(*this); }
@@ -356,32 +356,6 @@ namespace std {
     refer(static_cast<Vector<UniqueParameter128b>&>(G),
           static_cast<const Vector<UniqueParameter128b>&>(rG));
     G.idx=rG.idx;
-  }
-
-  template <unsigned int LoopFac>
-  OutputBase& operator<<(OutputBase& os, const SFMT<LoopFac>& G) {
-    assert(IsAvailable(G));
-    os<<LoopFac<<"\t";
-    for(unsigned int i=0;i<SFMT<LoopFac>::NStatus;++i)
-    for(unsigned int k=0;k<4;++k)
-      os<<G[i].u[k]<<"\t";
-    os<<*(G.idx);
-    //os<<static_cast<const Vector<UniqueParameter128b>&>(G)<<"\t"<<*(G.idx);
-    return os;
-  }
-
-  template <unsigned int LoopFac>
-  InputBase& operator>>(InputBase& is, SFMT<LoopFac>& G) {
-    assert(IsAvailable(G));
-    unsigned int expLoopFac;
-    is>>expLoopFac;
-    if(expLoopFac!=LoopFac) myError("Imcompatible SFMT data");
-    for(unsigned int i=0;i<SFMT<LoopFac>::NStatus;++i)
-    for(unsigned int k=0;k<4;++k)
-      is>>G[i].u[k];
-    is>>*(G.idx);
-    //is>>static_cast<Vector<UniqueParameter128b>&>(G)>>*(G.idx);
-    return is;
   }
 
 }

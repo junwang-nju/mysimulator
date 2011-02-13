@@ -1,12 +1,14 @@
 
+#include "operation/random/random-generator-mt-dsfmt-io.h"
 #include "operation/random/random-generator-mt-dsfmt-op.h"
 #include "operation/random/random-generator-op.h"
-#include "operation/basic/console-output.h"
-#include "operation/basic/string-buffer-output.h"
-#include "operation/basic/string-buffer-input.h"
+#include "data/basic/console-output.h"
+#include "data/basic/string-buffer-output.h"
+#include "data/basic/string-buffer-input.h"
 using namespace std;
 
 int main() {
+  COut.precision(20);
   COut<<"Test -- initialize"<<Endl;
   dSFMT<216091> dg;
   COut<<Endl;

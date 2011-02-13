@@ -97,52 +97,52 @@ namespace std {
 
   template <typename T>
   const T& rand(dSFMT<521>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<1279>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<2203>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<4253>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<11213>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<19937>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<44497>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<86243>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<132049>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
   template <typename T>
   const T& rand(dSFMT<216091>& G) {
-    myError("Prohibit unknown type");
+    Error("Prohibit unknown type");
     return static_cast<T>(0);
   }
 
