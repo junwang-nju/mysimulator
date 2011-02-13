@@ -16,7 +16,7 @@ namespace std {
     FileOutput() : OutputBase(), fpoint(NULL), rflag(false) {}
     FileOutput(const FILE* fp)
         : OutputBase(), fpoint(const_cast<FILE*>(fp)), rflag(true) {
-      allocate(static_cast<InputOutputBase&>(*this));
+      allocate(static_cast<OutputBase&>(*this));
     }
     FileOutput(const char* fname, const char* fmode="w")
         : OutputBase(), fpoint(NULL), rflag(false) {
@@ -47,9 +47,15 @@ namespace std {
     FileOutput& write(const unsigned long long int& ull) {
       return __write("%llu",ull);
     }
-    FileOutput& write(const float& f) { return __write("%g",f); }
-    FileOutput& write(const double& d) { return __write("%g",d); }
-    FileOutput& write(const long double& ld) { return __write("%Lg",ld); }
+    FileOutput& write(const float& f) {
+      return __write(patString[FloatOutput].data,f);
+    }
+    FileOutput& write(const double& d) {
+      return __write(patString[DoubleOutput].data,d);
+    }
+    FileOutput& write(const long double& ld) {
+      return __write(patString[LongDoubleOutput].data,ld);
+    }
     FileOutput& write(const void* ptr) { return __write("%p",ptr); }
     FileOutput& write(const char* s) { return __write("%s",s); }
 
@@ -66,14 +72,14 @@ namespace std {
   void refer(FileOutput& O, const FILE* fp) {
     assert(IsAvailable(fp));
     release(O);
-    allocate(static_cast<InputOutputBase&>(O));
+    allocate(static_cast<OutputBase&>(O));
     O.fpoint=const_cast<FILE*>(fp);
     O.rflag=true;
   }
   void refer(FileOutput& O, const FileOutput& cO) { refer(O,cO.fpoint); }
   void allocate(FileOutput& O, const char* fname, const char* fmode="w") {
     release(O);
-    allocate(static_cast<InputOutputBase&>(O));
+    allocate(static_cast<OutputBase&>(O));
     O.fpoint=fopen(fname,fmode);
     O.rflag=false;
   }

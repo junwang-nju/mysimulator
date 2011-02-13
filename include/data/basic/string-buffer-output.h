@@ -48,7 +48,7 @@ namespace std {
         if(n<0) SetState(FailBit);
         else if(static_cast<unsigned int>(n)>property[StrOutCapacity]) {
           SetState(FailBit);
-          Warn(stderr,"String Buffer Overflow\n");
+          Warn("String Buffer Overflow");
           n=property[StrOutCapacity];
         }
         property[StrOutLocation]+=n;
@@ -69,9 +69,15 @@ namespace std {
     StringOutput& write(const unsigned long long int& ull) {
       return __write("%llu",ull);
     }
-    StringOutput& write(const float& f) { return __write("%g",f); }
-    StringOutput& write(const double& d) { return __write("%g",d); }
-    StringOutput& write(const long double& ld) { return __write("%Lg",ld); }
+    StringOutput& write(const float& f) {
+      return __write(patString[FloatOutput].data,f);
+    }
+    StringOutput& write(const double& d) {
+      return __write(patString[DoubleOutput].data,d);
+    }
+    StringOutput& write(const long double& ld) {
+      return __write(patString[LongDoubleOutput].data,ld);
+    }
     StringOutput& write(const void* ptr) { return __write("%p",ptr); }
     StringOutput& write(const char* s) { return __write("%s",s); }
     
@@ -91,7 +97,7 @@ namespace std {
     allocate(O.property,StringOutputNumberProperty);
     O.property[StrOutLocation]=0;
     O.property[StrOutCapacity]=O.buffer.size;
-    allocate(static_cast<InputOutputBase&>(O));
+    allocate(static_cast<OutputBase&>(O));
   }
   void refer(StringOutput& O, const Vector<char>& bf) {
     release(O);
@@ -119,7 +125,7 @@ namespace std {
     release(O);
     imprint(O.buffer,cO.buffer);
     imprint(O.property,cO.property);
-    allocate(static_cast<InputOutputBase&>(O));
+    allocate(static_cast<OutputBase&>(O));
   }
   void copy(StringOutput& O, const StringOutput& cO) {
     imprint(O,cO);

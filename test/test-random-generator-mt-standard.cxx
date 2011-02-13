@@ -1,11 +1,10 @@
 
 #include "operation/random/random-generator-mt-standard-op.h"
+#include "operation/random/random-generator-mt-standard-io.h"
 #include "operation/random/random-generator-op.h"
-#include "operation/basic/console-output.h"
-#include "operation/basic/string-buffer-output.h"
-#include "operation/basic/string-buffer-input.h"
-#include <iostream>
-#include <sstream>
+#include "data/basic/console-output.h"
+#include "data/basic/string-buffer-output.h"
+#include "data/basic/string-buffer-input.h"
 using namespace std;
 
 int main() {
@@ -32,7 +31,7 @@ int main() {
   COut<<Endl;
 
   COut<<"Test -- generate random number"<<Endl;
-  //COut.precision(20);
+  COut.precision(20);
   COut<<rand<unsigned int>(MS)<<Endl;
   COut<<rand<int>(MS)<<Endl;
   COut<<doubleClose0Close1(MS)<<Endl;
