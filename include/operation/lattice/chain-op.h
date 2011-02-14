@@ -64,11 +64,6 @@ namespace std {
     }
   }
 
-  void WriteSequence(const LatticeChain<SquareLattice,2>& LC, ostream& os,
-                     const unsigned int Z) {
-    os<<LC<<endl;
-  }
-
 }
 
 #include "data/lattice/chain-set.h"
@@ -81,16 +76,6 @@ namespace std {
     assert(LC.Length()==CS.Length());
     copy(CS[Z],static_cast<const Vector<unsigned short int>&>(LC));
   } 
-
-}
-
-#include "data/basic/null-output-object.h"
-
-namespace std {
-
-  void WriteSequence(const LatticeChain<SquareLattice,2>& LC,
-                     NullOutputObject& NO, const unsigned int Z) {
-  }
 
 }
 

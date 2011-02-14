@@ -61,13 +61,16 @@ namespace std {
 
   };
 
-  bool IsAvailable(const FileOutput& O) { return IsAvailable(O.fpoint); }
+  bool IsAvailable(const FileOutput& O) {
+    return IsAvailable(O.fpoint)&&
+           IsAvailable(static_cast<const OutputBase&>(O));
+  }
   void release(FileOutput& O) {
     if((!O.rflag)&&(O.fpoint!=NULL)) {
       fclose(O.fpoint);
       O.rflag=false;
     }
-    release(static_cast<InputOutputBase&>(O));
+    release(static_cast<OutputBase&>(O));
   }
   void refer(FileOutput& O, const FILE* fp) {
     assert(IsAvailable(fp));
@@ -76,7 +79,13 @@ namespace std {
     O.fpoint=const_cast<FILE*>(fp);
     O.rflag=true;
   }
-  void refer(FileOutput& O, const FileOutput& cO) { refer(O,cO.fpoint); }
+  void refer(FileOutput& O, const FileOutput& cO) {
+    assert(IsAvailable(cO));
+    release(O);
+    O.fpoint=const_cast<FILE*>(cO.fpoint);
+    O.rflag=true;
+    refer(static_cast<OutputBase&>(O),static_cast<const OutputBase&>(cO));
+  }
   void allocate(FileOutput& O, const char* fname, const char* fmode="w") {
     release(O);
     allocate(static_cast<OutputBase&>(O));

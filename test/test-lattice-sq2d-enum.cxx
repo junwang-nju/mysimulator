@@ -1,14 +1,16 @@
 
 #include "operation/lattice/bond-library-op.h"
 #include "operation/lattice/enumerate.h"
+#include "data/basic/console-output.h"
+#include "data/basic/null-output.h"
 using namespace std;
 
 int main(int argc, char** argv) {
   if(argc<2)  LoadBondLibrary<SquareLattice,2>();
   else        LoadBondLibrary<SquareLattice,2>(argv[1]);
-  cout<<IsAvailable(RunBondLibrary<SquareLattice,2>())<<endl;
+  COut<<IsAvailable(RunBondLibrary<SquareLattice,2>())<<Endl;
   unsigned int g=RunBondLibrary<SquareLattice,2>().MaxBonds;
-  cout<<RunBondLibrary<SquareLattice,2>().mapper[g-1][6]<<endl;
+  COut<<RunBondLibrary<SquareLattice,2>().mapper[g-1][6]<<Endl;
   LatticeChain<SquareLattice,2> LC;
   Vector<unsigned int> BV;
   allocate(BV,11);
@@ -24,10 +26,10 @@ int main(int argc, char** argv) {
   BV[9]=1;
   BV[10]=3;
   SetChain(LC,BV);
-  cout<<LC[0]<<"\t"<<LC[1]<<endl;
+  COut<<LC[0]<<"\t"<<LC[1]<<Endl;
   unsigned int Z;
-  Z=enumerateSquare2D(8,cout);
-  cout<<Z<<endl;
+  Z=enumerateSquare2D(8,COut);
+  COut<<Z<<Endl;
 
   PropertyList<unsigned int> FB;
   Vector<unsigned int> sz;
@@ -39,9 +41,9 @@ int main(int argc, char** argv) {
   FB[2][0]=7;   FB[2][1]=1;
   FB[3][0]=9;   FB[3][1]=1;
   FB[4][0]=10;  FB[4][1]=1;
-  cout<<FB<<endl;
-  Z=enumerateSquare2DFixBond(12,FB,cout);
-  cout<<Z<<endl;
+  COut<<FB<<Endl;
+  Z=enumerateSquare2DFixBond(12,FB,COut);
+  COut<<Z<<Endl;
 
   PropertyList<int> FN;
   allocate(sz,6);
@@ -59,7 +61,8 @@ int main(int argc, char** argv) {
   FN[4][1]=2;   FN[4][2]=4;
   FN[5][0]=24;
   FN[5][1]=-1;  FN[5][2]=3;
-  cout<<enumerateSquare2DFixedNode(27,FN,NullOutput)<<endl;
+  NullOutput NO;
+  COut<<enumerateSquare2DFixedNode(27,FN,NO)<<Endl;
 
   UnloadBondLibrary<SquareLattice,2>();
   return 0;

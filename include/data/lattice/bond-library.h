@@ -4,8 +4,8 @@
 
 #include "data/name/lattice-type.h"
 #include "data/basic/property-list.h"
-#include <fstream>
-#include <cstdio>
+#include "data/basic/file-input.h"
+#include "operation/basic/vector-io.h"
 
 namespace std {
 
@@ -28,11 +28,11 @@ namespace std {
       allocate(sz,MaxBonds);
       copy(sz,MaxShiftConditions);
       allocate(mshift,sz);
-      fstream ifs;
+      FileInput ifs;
       unsigned int nmotif;
       for(unsigned int i=0;i<MaxBonds;++i) {
         sprintf(nmbuff,"%s.%d-bond",ftemplate,i+1);
-        ifs.open(nmbuff);
+        allocate(ifs,nmbuff);
         ifs>>mshift[i];
         nmotif=mshift[i][MaxShiftConditions-1];
         allocate(sz,nmotif);
@@ -41,7 +41,7 @@ namespace std {
         scale(sz,LatticeDim);
         allocate(xmapper[i],sz);
         for(unsigned int k=0;k<nmotif;++k)  ifs>>mapper[i][k];
-        ifs.close();
+        release(ifs);
       }
     }
     

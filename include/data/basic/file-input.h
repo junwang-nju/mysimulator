@@ -16,7 +16,7 @@ namespace std {
     FileInput() : InputBase(), fpoint(NULL), rflag(false) {}
     FileInput(const FILE* fp)
         : InputBase(), fpoint(const_cast<FILE*>(fp)), rflag(true) {
-      allocate(static_cast<InputOutputBase&>(*this));
+      allocate(static_cast<InputBase&>(*this));
     }
     FileInput(const char* fname, const char* fmode="r") 
         : InputBase(), fpoint(NULL), rflag(false) {
@@ -86,21 +86,22 @@ namespace std {
   void release(FileInput& I) {
     if((!I.rflag)&&(I.fpoint!=NULL)) {
       fclose(I.fpoint);
+      I.fpoint=NULL;
       I.rflag=false;
     }
-    release(static_cast<InputOutputBase&>(I));
+    release(static_cast<InputBase&>(I));
   }
   void refer(FileInput& I, const FILE* fp) {
     assert(IsAvailable(fp));
     release(I);
     I.fpoint=const_cast<FILE*>(fp);
     I.rflag=true;
-    allocate(static_cast<InputOutputBase&>(I));
+    allocate(static_cast<InputBase&>(I));
   }
   void refer(FileInput& I, const FileInput& cI) { refer(I,cI.fpoint); }
   void allocate(FileInput& I, const char* fname, const char* fmode="r") {
     release(I);
-    allocate(static_cast<InputOutputBase&>(I));
+    allocate(static_cast<InputBase&>(I));
     I.fpoint=fopen(fname,fmode);
     I.rflag=false;
   }

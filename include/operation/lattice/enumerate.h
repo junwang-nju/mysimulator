@@ -3,6 +3,7 @@
 #define _Lattice_Enumerate_H_
 
 #include "operation/lattice/chain-op.h"
+#include "operation/lattice/chain-io.h"
 
 namespace std {
 
@@ -98,8 +99,7 @@ namespace std {
     }
   }
 
-  template <typename OutputType>
-  int enumerateSquare2D(const unsigned int N, OutputType& OB) {
+  int enumerateSquare2D(const unsigned int N, OutputBase& OB) {
     PropertyList<int> Mesh,R;
     LatticeChain<SquareLattice,2> LC;
     Vector<unsigned int> Len;
@@ -120,7 +120,7 @@ namespace std {
           enumerateSquare2D_NewBond(B,BC,BS,BSL,BSH,R,Mesh,LC,Len,BoundHigh);
           bflag=false;
         } else {
-          WriteSequence(LC,OB,Z);
+          OB<<LC<<Endl;
           ++Z;
         }
       }
@@ -150,10 +150,9 @@ namespace std {
     }
   }
 
-  template <typename OutputType>
   int enumerateSquare2DFixBond(
       const unsigned int N, const PropertyList<unsigned int>& FixedBonds,
-      OutputType& OB) {
+      OutputBase& OB) {
     PropertyList<int> Mesh,R;
     LatticeChain<SquareLattice,2> LC;
     Vector<unsigned int> Len;
@@ -179,7 +178,7 @@ namespace std {
           enumerateSquare2D_NewBond(B,BC,BS,BSL,BSH,R,Mesh,LC,Len,BoundHigh);
           bflag=false;
         } else {
-          WriteSequence(LC,OB,Z);
+          OB<<LC<<Endl;
           ++Z;
         }
       }
@@ -248,10 +247,9 @@ namespace std {
     return false;
   }
 
-  template <typename OutputType>
   int enumerateSquare2DFixedNode(
       const unsigned int N, const PropertyList<int>& FixedNodes,
-      OutputType& OB) {
+      OutputBase& OB) {
     PropertyList<int> Mesh,R;
     LatticeChain<SquareLattice,2> LC;
     Vector<unsigned int> Len;
@@ -279,7 +277,7 @@ namespace std {
           enumerateSquare2D_NewBond(B,BC,BS,BSL,BSH,R,Mesh,LC,Len,BoundHigh);
           bflag=false;
         } else {
-          WriteSequence(LC,OB,Z);
+          OB<<LC<<Endl;
           ++Z;
         }
       }

@@ -53,6 +53,9 @@ namespace std {
     refer(static_cast<InputOutputBase&>(I),
           static_cast<const InputOutputBase&>(rI));
   }
+  void allocate(InputBase& I) {
+    allocate(static_cast<InputOutputBase&>(I));
+  }
 
   InputBase& operator>>(InputBase& O, bool& b) { return O.read(b); }
   InputBase& operator>>(InputBase& O, char& c) { return O.read(c); }
