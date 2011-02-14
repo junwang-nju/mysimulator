@@ -156,19 +156,19 @@ namespace std {
     release(I);
     refer(I.buffer,bf);
     initStringInput(I);
-    allocate(static_cast<InputOutputBase&>(I));
+    allocate(static_cast<InputBase&>(I));
   }
   void refer(StringInput& I, const char* ptr, const unsigned int n) {
     release(I);
     refer(I.buffer,ptr,n);
     initStringInput(I);
-    allocate(static_cast<InputOutputBase&>(I));
+    allocate(static_cast<InputBase&>(I));
   }
   void allocate(StringInput& I, const unsigned int n) {
     release(I);
     allocate(I.buffer,n);
     initStringInput(I);
-    allocate(static_cast<InputOutputBase&>(I));
+    allocate(static_cast<InputBase&>(I));
   }
   void imprint(StringInput& I, const StringInput& cI) {
     assert(IsAvailable(cI));

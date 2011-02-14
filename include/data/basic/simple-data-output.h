@@ -9,6 +9,7 @@ namespace std {
   
   template <typename T>
   struct SimpleDataOutput : public OutputBase {
+    typedef SimpleDataOutput<T>   Type;
     Vector<T> buffer;
     Vector<unsigned int> property;
     SimpleDataOutput() : OutputBase(), buffer(), property() {}
@@ -19,20 +20,16 @@ namespace std {
     SimpleDataOutput(const Vector<T>& vT) : OutputBase(), buffer(), property() {
       refer(*this,vT);
     }
-    SimpleDataOutput(const SimpleDataOutput&) {
-      Error("Cannot create Simple-Data Output");
-    }
-    SimpleDataOutput& operator=(const SimpleDataOutput&) {
+    SimpleDataOutput(const Type&){ Error("Cannot create Simple-Data Output"); }
+    Type& operator=(const Type&) {
       Error("Cannot copy Simple-Data Output");
       return *this;
     }
     ~SimpleDataOutput() { release(*this); }
     
     template <typename OT>
-    SimpleDataOutput& __write(const OT& value) {
-      return *this;
-    }
-    SimpleDataOutput& __write(const T& value) {
+    Type& __write(const OT& value) { return *this; }
+    Type& __write(const T& value) {
       if(property[DataOutLocation]==buffer.size) {
         Warn("Output Buffer is used out!");
         SetState(FailBit);
@@ -42,24 +39,22 @@ namespace std {
       }
       return *this;
     }
-    SimpleDataOutput& write(const bool& b) { return __write(b); }
-    SimpleDataOutput& write(const char& c) { return __write(c); }
-    SimpleDataOutput& write(const unsigned char& uc) { return __write(uc); }
-    SimpleDataOutput& write(const short& s) { return __write(s); }
-    SimpleDataOutput& write(const unsigned short& us) { return __write(us); }
-    SimpleDataOutput& write(const int& i) { return __write(i); }
-    SimpleDataOutput& write(const unsigned int& u) { return __write(u); }
-    SimpleDataOutput& write(const long& l) { return __write(l); }
-    SimpleDataOutput& write(const unsigned long& ul) { return __write(ul); }
-    SimpleDataOutput& write(const long long int& ll) { return __write(ll); }
-    SimpleDataOutput& write(const unsigned long long int& ull) {
-      return __write(ull);
-    }
-    SimpleDataOutput& write(const float& f) { return __write(f); }
-    SimpleDataOutput& write(const double& d) { return __write(d); }
-    SimpleDataOutput& write(const long double& ld) { return __write(ld); }
-    SimpleDataOutput& write(const void* ptr) { return __write(ptr); }
-    SimpleDataOutput& write(const char* str) { return __write(str); }
+    Type& write(const bool& b) { return __write(b); }
+    Type& write(const char& c) { return __write(c); }
+    Type& write(const unsigned char& uc) { return __write(uc); }
+    Type& write(const short& s) { return __write(s); }
+    Type& write(const unsigned short& us) { return __write(us); }
+    Type& write(const int& i) { return __write(i); }
+    Type& write(const unsigned int& u) { return __write(u); }
+    Type& write(const long& l) { return __write(l); }
+    Type& write(const unsigned long& ul) { return __write(ul); }
+    Type& write(const long long int& ll) { return __write(ll); }
+    Type& write(const unsigned long long int& ull) { return __write(ull); }
+    Type& write(const float& f) { return __write(f); }
+    Type& write(const double& d) { return __write(d); }
+    Type& write(const long double& ld) { return __write(ld); }
+    Type& write(const void* ptr) { return __write(ptr); }
+    Type& write(const char* str) { return __write(str); }
 
   };
 
