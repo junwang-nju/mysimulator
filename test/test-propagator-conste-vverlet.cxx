@@ -8,13 +8,14 @@
 #include "operation/parameter/build-param-lj612.h"
 #include "operation/propagate/run.h"
 #include "operation/parameter/interaction-parameter-regular-op.h"
+#include "operation/basic/property-list-io.h"
 using namespace std;
 
 template <typename T, typename ParameterType,
           template<typename,template<typename>class,typename> class IType,
           template <typename> class DBuffer, typename GeomType>
 void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
-             const ParameterType& Pm, ostream& os) {
+             const ParameterType& Pm, OutputBase& os) {
   T E,kE;
   E=kE=0.;
   CalcInteraction(F,P.X,Pm,E);
@@ -24,7 +25,7 @@ void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
       static_cast<UniqueParameter&>(P.sysPg[0].merPg[i][MassData]).value<T>()*
       normSQ(P.V[i]);
   os<<static_cast<UniqueParameter&>(P[NowTime]).value<T>();
-  os<<"\t"<<E<<"\t"<<kE<<endl;
+  os<<"\t"<<E<<"\t"<<kE<<Endl;
 }
 
 int main() {
@@ -106,25 +107,25 @@ int main() {
 
   copy(P.G,0.);
   CalcInteraction(F,P.X,RP,P.G);
-  cout<<P.G<<endl;
+  COut<<P.G<<Endl;
 
   typedef void (*MoveFunc)(
             Propagator<double>&,
             ListInteraction<double,DistanceBufferSimple,FreeSpace>&,
             const Vector<InteractionParameterUnit>&);
-  cout<<"========== X:"<<endl;
-  cout<<P.X<<endl;
-  cout<<"========== V:"<<endl;
-  cout<<P.V<<endl;
-  cout<<"========== G:"<<endl;
-  cout<<P.G<<endl;
+  COut<<"========== X:"<<Endl;
+  COut<<P.X<<Endl;
+  COut<<"========== V:"<<Endl;
+  COut<<P.V<<Endl;
+  COut<<"========== G:"<<Endl;
+  COut<<P.G<<Endl;
   reinterpret_cast<MoveFunc>(P[PgStep].ptr)(P,F,RP);
-  cout<<"========== X:"<<endl;
-  cout<<P.X<<endl;
-  cout<<"========== V:"<<endl;
-  cout<<P.V<<endl;
-  cout<<"========== G:"<<endl;
-  cout<<P.G<<endl;
+  COut<<"========== X:"<<Endl;
+  COut<<P.X<<Endl;
+  COut<<"========== V:"<<Endl;
+  COut<<P.V<<Endl;
+  COut<<"========== G:"<<Endl;
+  COut<<P.G<<Endl;
 
   P[TotalTime].d=100;
   P[OutputInterval].d=0.002;
@@ -132,7 +133,7 @@ int main() {
   assignOutput(P,OutFunc<double,Vector<InteractionParameterUnit>,
                          ListInteraction,DistanceBufferSimple,FreeSpace>);
 
-  cout<<endl;
+  COut<<Endl;
   Run(P,F,RP);
 
   return 1;

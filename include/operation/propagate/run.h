@@ -3,6 +3,7 @@
 #define _Propagator_Run_H_
 
 #include "data/propagator/propagator.h"
+#include "data/basic/console-output.h"
 
 namespace std {
 
@@ -11,11 +12,11 @@ namespace std {
             template <typename> class DBuffer, typename GeomType>
   void Run(Propagator<T>& P,
            IType<T,DBuffer,GeomType>& F, ParameterType& Pm,
-           ostream& os=cout) {
+           OutputBase& os=COut) {
     typedef void (*MoveFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
                              ParameterType&);
     typedef void (*OutputFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
-                               ParameterType&,ostream&);
+                               ParameterType&,OutputBase&);
     reinterpret_cast<OutputFunc>(P[PgOutput].ptr)(P,F,Pm,os);
     for(unsigned int i=0;i<P[NumberOutput].u;++i) {
       for(unsigned int k=0;k<P[NumberStepInOneOutput].u;++k)

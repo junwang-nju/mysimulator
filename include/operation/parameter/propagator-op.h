@@ -6,6 +6,7 @@
 #include "operation/parameter/subsys-propagator-op.h"
 #include "operation/propagate/vverlet-move.h"
 #include "data/derived/dual-vector.h"
+#include "data/basic/output-base.h"
 
 namespace std {
 
@@ -85,7 +86,7 @@ namespace std {
             template <typename> class DBuffer, typename GeomType, typename T>
   void assignOutput(Propagator<T>& P,
                     void (*OFunc)(Propagator<T>&,IType<T,DBuffer,GeomType>&,
-                                  ParameterType&,ostream&)) {
+                                  ParameterType&,OutputBase&)) {
     P[PgOutput].ptr=reinterpret_cast<void*>(OFunc);
   }
 
