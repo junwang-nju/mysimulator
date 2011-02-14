@@ -114,23 +114,22 @@ namespace std {
     release(O);
     refer(O.buffer,rO.buffer);
     refer(O.property,rO.property);
-    refer(O.state,rO.state);
+    refer(static_cast<OutputBase&>(O),static_cast<const OutputBase&>(rO));
   }
   void allocate(StringOutput& O, const unsigned int n) {
+    release(O);
     allocate(O.buffer,n);
     initStringOutput(O);
   }
   void imprint(StringOutput& O, const StringOutput& cO) {
     assert(IsAvailable(cO));
-    release(O);
-    imprint(O.buffer,cO.buffer);
-    imprint(O.property,cO.property);
-    allocate(static_cast<OutputBase&>(O));
+    allocate(O,cO.buffer.size);
   }
   void copy(StringOutput& O, const StringOutput& cO) {
     imprint(O,cO);
     copy(O.buffer,cO.buffer);
     copy(O.property,cO.property);
+    copy(static_cast<OutputBase&>(O),static_cast<const OutputBase&>(cO));
   }
 
 }
