@@ -33,8 +33,13 @@ namespace std {
       return *this;
     }
     SimpleDataOutput& __write(const T& value) {
-      buffer[property[DataOutLocation]]=value;
-      ++property[DataOutLocation];
+      if(property[DataOutLocation]==buffer.size) {
+        Warn("Output Buffer is used out!");
+        SetState(FailBit);
+      } else {
+        buffer[property[DataOutLocation]]=value;
+        ++property[DataOutLocation];
+      }
       return *this;
     }
     SimpleDataOutput& write(const bool& b) { return __write(b); }
