@@ -3,6 +3,7 @@
 #define _Simple_Data_Output_H_
 
 #include "data/basic/output-base.h"
+#include "data/name/simple-data-output-property.h"
 
 namespace std {
   
@@ -40,7 +41,7 @@ namespace std {
     SimpleDataOutput& write(const char& c) { return __write(c); }
     SimpleDataOutput& write(const unsigned char& uc) { return __write(uc); }
     SimpleDataOutput& write(const short& s) { return __write(s); }
-    SimpleDataOutput& write(const unsigned short& us) { return __write(s); }
+    SimpleDataOutput& write(const unsigned short& us) { return __write(us); }
     SimpleDataOutput& write(const int& i) { return __write(i); }
     SimpleDataOutput& write(const unsigned int& u) { return __write(u); }
     SimpleDataOutput& write(const long& l) { return __write(l); }
