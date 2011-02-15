@@ -71,6 +71,59 @@ namespace std {
     return IsAvailable(static_cast<const InputBase&>(I))&&
            IsAvailable(I.buffer)&&IsAvailable(I.property);
   }
+  template <typename T>
+  void release(SimpleDataInput<T>& I) {
+    release(I.buffer);
+    release(I.property);
+    release(static_cast<InputBase&>(I));
+  }
+  template <typename T>
+  void refer(SimpleDataInput<T>& I, const SimpleDataInput<T>& rI) {
+    assert(IsAvailable(rI));
+    release(I);
+    refer(I.buffer,rI.buffer);
+    refer(I.property,rI.property);
+    refer(static_cast<InputBase&>(I),static_cast<const InputBase&>(rI));
+  }
+  template <typename T>
+  void initSimpleDataInput(SimpleDataInput<T>& I) {
+    allocate(I.property,DataInputNumberProperty);
+    I.property[DataInLocation]=0;
+    allocate(static_cast<InputBase&>(I));
+  }
+  template <typename T>
+  void refer(SimpleDataOutput<T>& I, const Vector<T>& vT) {
+    assert(IsAvailable(vT));
+    release(I);
+    refer(I.buffer,vT);
+    initSimpleDataInput(I);
+  }
+  template <typename T>
+  void allocate(SimpleDataOutput<T>& I, const unsigned int n) {
+    release(I);
+    allocate(I.buffer,n);
+    initSimpleDataInput(I);
+  }
+  template <typename T>
+  void imprint(SimpleDataOutput<T>& I, const SimpleDataOutput<T>& cI) {
+    assert(IsAvailable(cI));
+    allocate(I,cI.buffer.size);
+  }
+  template <typename T>
+  void copy(SimpleDataOutput<T>& I, const SimpleDataOutput<T>& cI) {
+    assert(IsAvailable(cI));
+    imprint(I,cI);
+    copy(I.buffer,cI.buffer);
+    copy(I.property,cI.property);
+    copy(static_cast<InputBase&>(I),static_cast<const InputBase&>(cI));
+  }
+  template <typename T>
+  void copy(SimpleDataInput<T>& I, const Vector<T>& vT) {
+    assert(IsAvailable(vT));
+    allocate(I,vT.size);
+    copy(I.buffer,vT);
+    initSimpleDataInput(I);
+  }
 
 }
 

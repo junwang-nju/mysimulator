@@ -144,31 +144,29 @@ namespace std {
     release(I);
     refer(I.buffer,rI.buffer);
     refer(I.property,rI.property);
-    refer(I.state,rI.state);
+    refer(static_cast<InputBase&>(I),static_cast<const InputBase&>(rI));
   }
   void initStringInput(StringInput& I) {
     I.buffer[I.buffer.size-1]='\0';
     allocate(I.property,StringInputNumberProperty);
     I.property[StrInLocation]=0;
     I.property[StrInCapacity]=I.buffer.size-1;
+    allocate(static_cast<InputBase&>(I));
   }
   void refer(StringInput& I, const Vector<char>& bf) {
     release(I);
     refer(I.buffer,bf);
     initStringInput(I);
-    allocate(static_cast<InputBase&>(I));
   }
   void refer(StringInput& I, const char* ptr, const unsigned int n) {
     release(I);
     refer(I.buffer,ptr,n);
     initStringInput(I);
-    allocate(static_cast<InputBase&>(I));
   }
   void allocate(StringInput& I, const unsigned int n) {
     release(I);
     allocate(I.buffer,n);
     initStringInput(I);
-    allocate(static_cast<InputBase&>(I));
   }
   void imprint(StringInput& I, const StringInput& cI) {
     assert(IsAvailable(cI));
@@ -178,6 +176,13 @@ namespace std {
     assert(IsAvailable(bf));
     allocate(I,bf.size);
     copy(I.buffer,bf);
+  }
+  void copy(StringInput& I, const StringInput& cI) {
+    assert(IsAvailable(cI));
+    imprint(I,cI);
+    copy(I.buffer,cI.buffer);
+    copy(I.property,cI.property);
+    copy(static_cast<InputBase&>(I),static_cast<const InputBase&>(cI));
   }
   
 }
