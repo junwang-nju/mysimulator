@@ -13,14 +13,14 @@
 #include "data/random/regular.h"
 #include "operation/random/random-generator-boxmuller-op.h"
 #include "operation/random/random-generator-op.h"
-#include <cstdio>
+#include "data/basic/console-output.h"
 using namespace std;
 
 template <typename T, typename ParameterType,
           template<typename,template<typename>class,typename> class IType,
           template <typename> class DBuffer, typename GeomType>
 void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
-             const ParameterType& Pm, ostream& os) {
+             const ParameterType& Pm, OutputBase& os) {
   T E,kE;
   E=kE=0.;
   CalcInteraction(F,P.X,Pm,E);
@@ -29,13 +29,13 @@ void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
     0.5*static_cast<UniqueParameter&>(P.sysPg[0].merPg[i][MassData]).value<T>()
        *normSQ(P.V[i]);
   os<<static_cast<UniqueParameter&>(P[NowTime]).value<T>();
-  os<<"\t"<<E<<"\t"<<kE<<endl;
+  os<<"\t"<<E<<"\t"<<kE<<Endl;
 }
 
 
 int main() {
 
-  cout.precision(16);
+  COut.precision(16);
   const unsigned int nunit=100;
 
   Propagator<double> P;
@@ -87,7 +87,7 @@ int main() {
   P[TotalTime].d=1000;
   P[OutputInterval].d=0.01;
   P.sysPg[0][TimeStep].d=0.001;
-  P.sysPg[0][LV_Temperature].d=0.1;
+  P.sysPg[0][LV_Temperature].d=0.5;
   P.sysPg[0][LV_Viscosity].d=0.5;
   P.sysPg[0][LV_GaussianRNG].ptr=reinterpret_cast<void*>(&grng);
   for(unsigned int i=0;i<nunit;++i) {

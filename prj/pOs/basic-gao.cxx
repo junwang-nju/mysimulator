@@ -15,30 +15,36 @@
 #include "data/random/regular.h"
 #include "operation/random/random-generator-boxmuller-op.h"
 #include "operation/random/random-generator-op.h"
-#include <cstdio>
+#include "data/basic/console-output.h"
+#include "data/basic/simple-data-output.h"
 using namespace std;
 
 template <typename T, typename ParameterType,
           template<typename,template<typename>class,typename> class IType,
           template <typename> class DBuffer, typename GeomType>
 void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
-             ParameterType& Pm, ostream& os) {
-  T E,kE,U;
-  E=kE=U=0.;
-  CalcInteraction(F,P.X,Pm,E);
+             ParameterType& Pm, OutputBase& os) {
+  //T E,kE;
+  T U;
+  //E=kE=0.;
+  U=0.;
+  //CalcInteraction(F,P.X,Pm,E);
   CalcInteraction(F,P.X,Pm.inprm,U);
+  /*
   for(unsigned int i=0;i<P.V.nunit;++i)
     kE+=
     0.5*static_cast<UniqueParameter&>(P.sysPg[0].merPg[i][MassData]).value<T>()
        *normSQ(P.V[i]);
   os<<static_cast<UniqueParameter&>(P[NowTime]).value<T>();
-  os<<"\t"<<E<<"\t"<<kE<<"\t"<<U<<endl;
+  os<<"\t"<<E<<"\t"<<kE<<"\t"<<U<<Endl;
+  */
+  os<<U<<Endl;
 }
 
 
 int main() {
 
-  cout.precision(16);
+  COut.precision(16);
   const unsigned int nunit=100;
 
   typedef InteractionMetaParameter<Vector<InteractionParameterUnit>,
@@ -193,7 +199,11 @@ int main() {
 
   assignOutput(P,OutFunc<double,ParamType,
                          ListInteraction,DistanceBufferSimple,FreeSpace>);
-  Run(P,F,MP);
+  SimpleDataOutput<double> SO;
+  allocate(SO,P[NumberOutput].u+1);
+  Run(P,F,MP,SO);
+  for(unsigned int i=0;i<SO.buffer.size;++i)
+    COut<<i<<"\t"<<SO.buffer[i]<<Endl;
 
   return 0;
 }

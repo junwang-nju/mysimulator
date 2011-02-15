@@ -13,14 +13,14 @@
 #include "data/random/regular.h"
 #include "operation/random/random-generator-boxmuller-op.h"
 #include "operation/random/random-generator-op.h"
-#include <cstdio>
+#include "data/basic/console-output.h"
 using namespace std;
 
 template <typename T, typename ParameterType,
           template<typename,template<typename>class,typename> class IType,
           template <typename> class DBuffer, typename GeomType>
 void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
-             const ParameterType& Pm, ostream& os) {
+             const ParameterType& Pm, OutputBase& os) {
   static Vector<T> V(3);
   copy(V,P.X[0]);
   shift(V,-1.,P.X[1]);
@@ -32,13 +32,13 @@ void OutFunc(Propagator<T>& P, IType<T,DBuffer,GeomType>& F,
     0.5*static_cast<UniqueParameter&>(P.sysPg[0].merPg[i][MassData]).value<T>()
        *normSQ(P.V[i]);
   os<<static_cast<UniqueParameter&>(P[NowTime]).value<T>();
-  os<<"\t"<<E<<"\t"<<kE<<"\t"<<norm(V)<<endl;
+  os<<"\t"<<E<<"\t"<<kE<<"\t"<<norm(V)<<Endl;
 }
 
 
 int main() {
 
-  cout.precision(16);
+  COut.precision(16);
   const unsigned int nunit=100;
 
   Propagator<double> P;
