@@ -73,6 +73,7 @@ namespace std {
       ungetc(c,fpoint);
       return *this;
     }
+    FileInput& unget() { return *this; }
 
   };
 

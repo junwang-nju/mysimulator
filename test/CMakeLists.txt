@@ -203,6 +203,9 @@ target_link_libraries (test-meta-calc.run blas)
 add_executable (test-simple-data-output.run test-simple-data-output.cxx)
 target_link_libraries (test-simple-data-output.run blas)
 
+add_executable (test-simple-data-input.run test-simple-data-input.cxx)
+target_link_libraries (test-simple-data-input.run blas)
+
 ########################
 #add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 #target_link_libraries (test-pdb-data-structure-op.run Base blas)

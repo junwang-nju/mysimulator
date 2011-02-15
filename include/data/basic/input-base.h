@@ -35,6 +35,7 @@ namespace std {
     virtual InputBase& read(void*&)=0;
     virtual InputBase& read(char*)=0;
     virtual InputBase& unget(const char&)=0;
+    virtual InputBase& unget()=0;
   };
 
   bool IsAvailable(const InputBase& IB) {

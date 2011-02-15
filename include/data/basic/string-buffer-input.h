@@ -121,11 +121,14 @@ namespace std {
       }
       return *this;
     }
-    StringInput& unget(const char& c) {
-      assert(c==buffer[property[StrInLocation]-1]);
+    StringInput& unget() {
       property[StrInLocation]--;
       property[StrInCapacity]++;
       return *this;
+    }
+    StringInput& unget(const char& c) {
+      assert(c==buffer[property[StrInLocation]-1]);
+      return unget();
     }
 
   };

@@ -58,11 +58,11 @@ namespace std {
     Type& read(long double& ld) { return __read(ld); }
     Type& read(void*& ptr) { return __read(ptr); }
     Type& read(char* str) { return __read(str); }
-    Type& unget(const T& value) {
-      assert(value==buffer[property[DataInLocation]-1]);
+    Type& unget() {
       --property[DataInLocation];
       return *this;
     }
+    Type& unget(const char& c) { return *this; }
 
   };
 
@@ -92,25 +92,25 @@ namespace std {
     allocate(static_cast<InputBase&>(I));
   }
   template <typename T>
-  void refer(SimpleDataOutput<T>& I, const Vector<T>& vT) {
+  void refer(SimpleDataInput<T>& I, const Vector<T>& vT) {
     assert(IsAvailable(vT));
     release(I);
     refer(I.buffer,vT);
     initSimpleDataInput(I);
   }
   template <typename T>
-  void allocate(SimpleDataOutput<T>& I, const unsigned int n) {
+  void allocate(SimpleDataInput<T>& I, const unsigned int n) {
     release(I);
     allocate(I.buffer,n);
     initSimpleDataInput(I);
   }
   template <typename T>
-  void imprint(SimpleDataOutput<T>& I, const SimpleDataOutput<T>& cI) {
+  void imprint(SimpleDataInput<T>& I, const SimpleDataInput<T>& cI) {
     assert(IsAvailable(cI));
     allocate(I,cI.buffer.size);
   }
   template <typename T>
-  void copy(SimpleDataOutput<T>& I, const SimpleDataOutput<T>& cI) {
+  void copy(SimpleDataInput<T>& I, const SimpleDataInput<T>& cI) {
     assert(IsAvailable(cI));
     imprint(I,cI);
     copy(I.buffer,cI.buffer);
