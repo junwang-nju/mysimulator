@@ -99,7 +99,7 @@ int main() {
   mapData(P,id);
 
   P[StartTime].d=0.;
-  P[TotalTime].d=1000;
+  P[TotalTime].d=100;
   P[OutputInterval].d=0.01;
   P.sysPg[0][TimeStep].d=0.001;
   P.sysPg[0][LV_Temperature].d=1;
@@ -185,6 +185,12 @@ int main() {
   ts[2]=2.;
   ts[1]=3.;
   ts[0]=5.;
+  ds[0]=exp(-112.);
+  ds[1]=exp(-93.);
+  ds[2]=exp(-60.);
+  ds[3]=exp(-52.);
+  ds[4]=exp(-23.);
+  ds[5]=1;
   MP.prm[DensitySet].ptr=reinterpret_cast<void*>(&ds);
   MP.prm[TemperatureSet].ptr=reinterpret_cast<void*>(&ts);
   MP.prm[LnDensitySet].ptr=reinterpret_cast<void*>(&lnds);
@@ -194,6 +200,9 @@ int main() {
   MP.prm[GaoNumberAllUnits].u=nunit;
   BuildParameterGaoEnhancedSampling<double>(MP.prm);
 
+  Vector<double> pb;
+  allocate(pb,ts.size);
+
   copy(P.G,0.);
   CalcInteraction(F,P.X,MP,P.G);
 
@@ -202,8 +211,20 @@ int main() {
   SimpleDataOutput<double> SO;
   allocate(SO,P[NumberOutput].u+1);
   Run(P,F,MP,SO);
-  for(unsigned int i=0;i<SO.buffer.size;++i)
-    COut<<i<<"\t"<<SO.buffer[i]<<Endl;
+
+  Vector<double> vU;
+  refer(vU,SO.buffer);
+
+  for(unsigned int i=0;i<vU.size;++i)
+    COut<<i<<"\t"<<vU[i]<<Endl;
+  copy(pb,0.);
+  unsigned int bU=static_cast<unsigned int>(0.1*vU.size);
+  for(unsigned int k=0;k<pb.size;++k) {
+    pb[k]=lnds[k]-bt[k]*vU[bU];
+    for(unsigned int i=bU+1;i<vU.size;++i)
+      pb[k]+=log1p(exp(lnds[k]-bt[k]*vU[i]-pb[k]));
+    COut<<k<<"\t"<<ts[k]<<"\t"<<pb[k]<<Endl;
+  }
 
   return 0;
 }
