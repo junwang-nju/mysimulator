@@ -2,10 +2,10 @@
 #include "operation/interaction/plane-wall-corelj612.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "data/geometry/distance-buffer-simple.h"
-#include "data/basic/property-list.h"
+#include "operation/basic/property-list-io.h"
 #include "operation/parameter/build-param-plane-wall-property.h"
 #include "operation/parameter/build-param-ext-object-corelj612.h"
-#include <iostream>
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -45,25 +45,25 @@ int main() {
   BuildParameterExtObjCoreLJ612<double>(prm);
   BuildParameterPlaneWallProperty<double>(pprop);
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
   EFuncPlaneWallCoreLJ612(v.structure,idx.data,prm.data,DED,FS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
   GFuncPlaneWallCoreLJ612(v.structure,idx.data,prm.data,DED,FS,g.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncPlaneWallCoreLJ612(v.structure,idx.data,prm.data,DED,FS,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }

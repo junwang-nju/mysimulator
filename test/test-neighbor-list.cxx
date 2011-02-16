@@ -3,6 +3,7 @@
 #include "operation/interaction/calc.h"
 #include "operation/parameter/build-param-lj612cut.h"
 #include "operation/geometry/displacement-calc-freespace.h"
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -38,16 +39,16 @@ int main() {
   FreeSpace FS;
 
   init(P,X,2.,1.,FS);
-  cout<<P.size<<endl;
+  COut<<P.size<<Endl;
   for(unsigned int i=0;i<P.size;++i)
-    cout<<P[i].idx[0]<<"\t"<<P[i].idx[1]<<endl;
+    COut<<P[i].idx[0]<<"\t"<<P[i].idx[1]<<Endl;
 
-  cout<<endl;
+  COut<<Endl;
   X[1][0]=3.;
   update(P,X.structure,FS);
-  cout<<P.size<<endl;
+  COut<<P.size<<Endl;
   for(unsigned int i=0;i<P.size;++i)
-    cout<<P[i].idx[0]<<"\t"<<P[i].idx[1]<<endl;
+    COut<<P[i].idx[0]<<"\t"<<P[i].idx[1]<<Endl;
 
   return 1;
 }

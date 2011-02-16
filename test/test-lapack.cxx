@@ -1,7 +1,7 @@
 
 #include "operation/basic/lapack.h"
-#include "data/basic/vector.h"
-#include <iostream>
+#include "operation/basic/vector-io.h"
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -16,19 +16,19 @@ int main() {
   int LWork=100;
   int info=0;
   dgeqrf_(&M,&N,A,&LDA,tau,work,&LWork,&info);
-  cout<<info<<endl;
-  cout<<vA<<endl;
-  cout<<tau<<endl;
+  COut<<info<<Endl;
+  COut<<vA<<Endl;
+  COut<<tau<<Endl;
   double B[9]={1,2,3,2,4,2,3,2,9};
   char J='V',P='U';
   int iwork[100];
   refer(vA,B,9);
-  cout<<vA<<endl;
+  COut<<vA<<Endl;
   dsyevd_(&J,&P,&N,B,&LDA,tau,work,&LWork,iwork,&LWork,&info);
-  cout<<info<<endl;
-  cout<<vA<<endl;
+  COut<<info<<Endl;
+  COut<<vA<<Endl;
   refer(vA,tau,3);
-  cout<<vA<<endl;
+  COut<<vA<<Endl;
   return 0;
 }
 

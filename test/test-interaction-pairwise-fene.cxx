@@ -1,10 +1,10 @@
 
-#include "operation/interaction/fene.h"
+#include "operation/interaction/shifted-fene.h"
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include "operation/parameter/build-param-fene.h"
-#include "data/basic/property-list.h"
-#include <iostream>
+#include "operation/parameter/build-param-shifted-fene.h"
+#include "operation/basic/property-list-io.h"
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -28,31 +28,31 @@ int main() {
   idx[1]=1;
 
   Vector<UniqueParameter> prm;
-  allocate(prm,FENENumberParameter);
-  prm[FENEStrength].d=1.;
-  prm[FENEEqLength].d=1.;
-  prm[FENEDeltaRadiusMax].d=0.5;
-  BuildParameterFENE<double>(prm);
+  allocate(prm,SfFENENumberParameter);
+  prm[SfFENEStrength].d=1.;
+  prm[SfFENEEqLength].d=1.;
+  prm[SfFENEDeltaRadiusMax].d=0.5;
+  BuildParameterShiftedFENE<double>(prm);
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
-  EFuncFENE(v.structure,idx(),prm(),DED,FS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  EFuncShiftedFENE(v.structure,idx(),prm(),DED,FS,E);
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
-  GFuncFENE(v.structure,idx(),prm(),DED,FS,g.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  GFuncShiftedFENE(v.structure,idx(),prm(),DED,FS,g.structure);
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
-  BFuncFENE(v.structure,idx(),prm(),DED,FS,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  BFuncShiftedFENE(v.structure,idx(),prm(),DED,FS,E,g.structure);
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 1;
 }

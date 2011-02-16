@@ -2,9 +2,9 @@
 #include "operation/interaction/lj1012.h"
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include "data/basic/property-list.h"
+#include "operation/basic/property-list-io.h"
 #include "operation/parameter/build-param-lj1012.h"
-#include <iostream>
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -33,25 +33,25 @@ int main() {
   prm[LJ1012EqEnergyDepth].d=2.;
   BuildParameterLJ1012<double>(prm);
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
   EFuncLJ1012(v.structure,idx.data,prm.data,DED,FS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
   GFuncLJ1012(v.structure,idx.data,prm.data,DED,FS,g.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncLJ1012(v.structure,idx.data,prm.data,DED,FS,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }

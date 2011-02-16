@@ -10,38 +10,38 @@
 using namespace std;
 
 int main() {
-  cout<<"Test -- initialize interaction"<<endl;
+  COut<<"Test -- initialize interaction"<<Endl;
   SimpleInteraction<double,DistanceBufferSimple,FreeSpace> F;
   InteractionParameterUnit P;
-  cout<<endl;
+  COut<<Endl;
   
-  cout<<"Test -- allocate Interaction"<<endl;
+  COut<<"Test -- allocate Interaction"<<Endl;
   allocate(F,Harmonic,3,2);
   allocate(P,Harmonic);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- copy Interaction"<<endl;
+  COut<<"Test -- copy Interaction"<<Endl;
   SimpleInteraction<double,DistanceBufferSimple,FreeSpace> F2;
   InteractionParameterUnit P2;
   allocate(F2,Harmonic,3,2);
   allocate(P2,Harmonic);
   copy(F2,F);
   copy(P2,P);
-  cout<<endl;
+  COut<<Endl;
   
-  cout<<"Test -- refer Interaction"<<endl;
+  COut<<"Test -- refer Interaction"<<Endl;
   SimpleInteraction<double,DistanceBufferSimple,FreeSpace> F3;
   InteractionParameterUnit P3;
   refer(F3,F);
   refer(P3,P);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- release Interaction"<<endl;
+  COut<<"Test -- release Interaction"<<Endl;
   release(F2);
   release(P2);
-  cout<<endl;
+  COut<<Endl;
   
-  cout<<"Test - Interaction Calc"<<endl;
+  COut<<"Test - Interaction Calc"<<Endl;
   P.prm[HarmonicEqLength].d=1.;
   P.prm[HarmonicEqStrength].d=100.;
   BuildParameterHarmonic<double>(P.prm);
@@ -56,18 +56,18 @@ int main() {
   double E;
   E=0;
   CalcInteraction(F,v.structure,P,E);
-  cout<<E<<endl;
+  COut<<E<<Endl;
   copy(g,0.);
   CalcInteraction(F,v.structure,P,g.structure);
-  cout<<g<<endl;
+  COut<<g<<Endl;
   E=0.;
   copy(g,0.);
   CalcInteraction(F,v.structure,P,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- simple interaction & vector parameter"<<endl;
+  COut<<"Test -- simple interaction & vector parameter"<<Endl;
   allocate(sz,4);
   copy(sz,3);
   allocate(v,sz);
@@ -124,59 +124,59 @@ int main() {
   }
   E=0.;
   CalcInteraction(F,v.structure,PV,E);
-  cout<<E<<endl;
+  COut<<E<<Endl;
   copy(g,0);
   CalcInteraction(F,v.structure,PV,g.structure);
-  cout<<g<<endl;
+  COut<<g<<Endl;
   copy(g,0);
   E=0.;
   CalcInteraction(F,v.structure,PV,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- initialize List Interaction"<<endl;
+  COut<<"Test -- initialize List Interaction"<<Endl;
   ListInteraction<double,DistanceBufferSimple,FreeSpace> LF;
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- allocate List Interaction"<<endl;
+  COut<<"Test -- allocate List Interaction"<<Endl;
   allocate(sz,6);
   for(unsigned int i=0;i<6;++i) sz[i]=Harmonic;
   allocate(LF,sz,3,4);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- copy List Interaction"<<endl;
+  COut<<"Test -- copy List Interaction"<<Endl;
   ListInteraction<double,DistanceBufferSimple,FreeSpace> LF2;
   allocate(sz,6);
   for(unsigned int i=0;i<6;++i) sz[i]=Harmonic;
   allocate(LF2,sz,3,4);
   copy(LF2,LF);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- refer List Interaction"<<endl;
+  COut<<"Test -- refer List Interaction"<<Endl;
   ListInteraction<double,DistanceBufferSimple,FreeSpace> LF3;
   refer(LF3,LF);
-  cout<<endl;
+  COut<<Endl;
 
-  cout<<"Test -- release List Interaction"<<endl;
+  COut<<"Test -- release List Interaction"<<Endl;
   release(LF2);
-  cout<<endl;
+  COut<<Endl;
   
-  cout<<"Test -- List Interaction Calculation"<<endl;
+  COut<<"Test -- List Interaction Calculation"<<Endl;
   E=0.;
   CalcInteraction(LF,v.structure,PV,E);
-  cout<<E<<endl;
+  COut<<E<<Endl;
   copy(g,0);
   CalcInteraction(LF,v.structure,PV,g.structure);
-  cout<<g<<endl;
+  COut<<g<<Endl;
   copy(g,0);
   E=0.;
   CalcInteraction(LF,v.structure,PV,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- list interaction & property parameter"<<endl;
+  COut<<"Test -- list interaction & property parameter"<<Endl;
   allocate(sz,2);
   sz[0]=Harmonic;
   sz[1]=LJ612;
@@ -260,18 +260,18 @@ int main() {
   }
   E=0.;
   CalcInteraction(LF,v.structure,PP,E);
-  cout<<E<<endl;
+  COut<<E<<Endl;
   copy(g,0.);
   CalcInteraction(LF,v.structure,PP,g.structure);
-  cout<<g<<endl;
+  COut<<g<<Endl;
   E=0.;
   copy(g,0.);
   CalcInteraction(LF,v.structure,PP,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- list interaction & vector-vector parameter"<<endl;
+  COut<<"Test -- list interaction & vector-vector parameter"<<Endl;
   Vector<Vector<InteractionParameterUnit> > PVV;
   allocate(PVV,2);
   allocate(PVV[0],3);
@@ -299,16 +299,16 @@ int main() {
   }
   E=0.;
   CalcInteraction(LF,v.structure,PVV,E);
-  cout<<E<<endl;
+  COut<<E<<Endl;
   copy(g,0.);
   CalcInteraction(LF,v.structure,PVV,g.structure);
-  cout<<g<<endl;
+  COut<<g<<Endl;
   E=0.;
   copy(g,0.);
   CalcInteraction(LF,v.structure,PVV,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }

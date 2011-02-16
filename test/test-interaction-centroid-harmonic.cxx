@@ -2,9 +2,9 @@
 #include "operation/interaction/centroid-centroid-harmonic.h"
 #include "data/geometry/distance-buffer-simple.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include "data/basic/property-list.h"
 #include "operation/parameter/build-param-harmonic.h"
-#include "operation/basic/console-output.h"
+#include "data/basic/console-output.h"
+#include "operation/basic/property-list-io.h"
 using namespace std;
 
 int main() {

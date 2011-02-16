@@ -2,9 +2,9 @@
 #include "operation/interaction/particle-centroid-harmonic.h"
 #include "data/geometry/distance-buffer-simple.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include "data/basic/property-list.h"
+#include "operation/basic/property-list-io.h"
 #include "operation/parameter/build-param-harmonic.h"
-#include <iostream>
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -43,28 +43,28 @@ int main() {
   copy(sz,2);
   allocate(tmv,sz);
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
   EFuncParticleCentroidHarmonic(v.structure,idx.data,prm.data,DED,FS,
                                 E,tmv.structure);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
   GFuncParticleCentroidHarmonic(v.structure,idx.data,prm.data,DED,FS,
                                 g.structure,tmv.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncParticleCentroidHarmonic(v.structure,idx.data,prm.data,DED,FS,
                                 E,g.structure,tmv.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }

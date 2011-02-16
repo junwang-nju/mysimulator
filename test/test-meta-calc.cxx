@@ -4,6 +4,8 @@
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-gao-enhanced-sampling.h"
+#include "data/basic/console-output.h"
+#include "operation/basic/property-list-io.h"
 
 using namespace std;
 
@@ -53,20 +55,20 @@ int main() {
   double E;
   E=0.;
   CalcInteraction(F,x.structure,MP,E);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
   copy(g,0.);
   CalcInteraction(F,x.structure,MP,g.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   E=0.;
   copy(g,0.);
   CalcInteraction(F,x.structure,MP,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   double EE;
   for(int i=-100;i<=100;++i) {
@@ -75,7 +77,7 @@ int main() {
     CalcInteraction(F,x.structure,MP,E);
     EE=0.;
     CalcInteraction(F,x.structure,MP.inprm,EE);
-    cout<<1+i*0.02<<"\t"<<EE<<"\t"<<E<<endl;
+    COut<<1+i*0.02<<"\t"<<EE<<"\t"<<E<<Endl;
   }
 
   return 0;

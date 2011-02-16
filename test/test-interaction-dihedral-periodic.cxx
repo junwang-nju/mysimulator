@@ -3,8 +3,8 @@
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/build-param-dihedral-periodic.h"
-#include "data/basic/property-list.h"
-#include <iostream>
+#include "operation/basic/property-list-io.h"
+#include "data/basic/console-output.h"
 using namespace std;
   
 int main() {
@@ -43,25 +43,25 @@ int main() {
   BuildParameterDihPeriodic<double>(prm);
   double E;
   
-  cout<<"Test -- calculate energy"<<endl;
+  COut<<"Test -- calculate energy"<<Endl;
   E=0.;
   EFuncDihPeriodic(v.structure,Idx(),prm(),DED,FS,E,tmv.structure);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- calculate gradient"<<endl;
+  COut<<"Test -- calculate gradient"<<Endl;
   copy(g,0.);
   GFuncDihPeriodic(v.structure,Idx(),prm(),DED,FS,g.structure,tmv.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- calculate energy and gradient"<<endl;
+  COut<<"Test -- calculate energy and gradient"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncDihPeriodic(v.structure,Idx(),prm(),DED,FS,E,g.structure,tmv.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }

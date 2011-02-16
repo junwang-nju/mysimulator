@@ -2,10 +2,10 @@
 #include "operation/interaction/plane-wall-lj612cut.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "data/geometry/distance-buffer-simple.h"
-#include "data/basic/property-list.h"
+#include "operation/basic/property-list-io.h"
 #include "operation/parameter/build-param-plane-wall-property.h"
 #include "operation/parameter/build-param-ext-object-lj612cut.h"
-#include <iostream>
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -46,31 +46,31 @@ int main() {
   BuildParameterExtObjLJ612Cut<double>(prm);
   BuildParameterPlaneWallProperty<double>(pprop);
 
-  cout.precision(12);
-  cout<<"\t"<<prm[ExtObjLJ612CutRealSigma6].d<<endl;
-  cout<<"\t"<<prm[ExtObjLJ612CutRealStrength].d<<endl;
-  cout<<"\t"<<prm[ExtObjLJ612CutVc].d<<endl;
-  cout<<"\t"<<prm[ExtObjLJ612CutKc].d<<endl;
+  COut.precision(12);
+  COut<<"\t"<<prm[ExtObjLJ612CutRealSigma6].d<<Endl;
+  COut<<"\t"<<prm[ExtObjLJ612CutRealStrength].d<<Endl;
+  COut<<"\t"<<prm[ExtObjLJ612CutVc].d<<Endl;
+  COut<<"\t"<<prm[ExtObjLJ612CutKc].d<<Endl;
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
   EFuncPlaneWallLJ612Cut(v.structure,idx.data,prm.data,DED,FS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
   GFuncPlaneWallLJ612Cut(v.structure,idx.data,prm.data,DED,FS,g.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncPlaneWallLJ612Cut(v.structure,idx.data,prm.data,DED,FS,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }
