@@ -1,5 +1,7 @@
 
 #include "operation/geometry/displacement-calc-direct.h"
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 int main() {
@@ -10,20 +12,20 @@ int main() {
   copy(Va,3);
   for(int i=0;i<10;++i) Vb[i]=i;
   Displacement(Va,Vb,Vc);
-  cout<<Va<<endl;
-  cout<<Vb<<endl;
-  cout<<Vc<<endl;
+  COut<<Va<<Endl;
+  COut<<Vb<<Endl;
+  COut<<Vc<<Endl;
 
   Vector<int> Vi;
   allocate(Vi,10);
   copy(Vi,3);
   Displacement(Vi,Vb,Vc);
-  cout<<Vc<<endl;
+  COut<<Vc<<Endl;
 
   Displacement(Vi.data,Vb.data,Vc.data,4,1,1,1,2,2,2);
-  cout<<Vi<<endl;
-  cout<<Vb<<endl;
-  cout<<Vc<<endl;
+  COut<<Vi<<Endl;
+  COut<<Vb<<Endl;
+  COut<<Vc<<Endl;
 
   return 0;
 }

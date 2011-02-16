@@ -3,8 +3,8 @@
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/build-param-core-expanded-lj612.h"
-#include "data/basic/property-list.h"
-#include <iostream>
+#include "operation/basic/property-list-io.h"
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -34,25 +34,25 @@ int main() {
   prm[CoreExpandedLJ612EqEnergyDepth].d=1.5;
   BuildParameterCoreExpandedLJ612<double>(prm);
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
   EFuncCELJ612(v.structure,idx(),prm(),DED,FS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
   GFuncCELJ612(v.structure,idx(),prm(),DED,FS,g.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncCELJ612(v.structure,idx(),prm(),DED,FS,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }

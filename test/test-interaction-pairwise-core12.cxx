@@ -2,9 +2,9 @@
 #include "operation/interaction/core12.h"
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include "data/basic/property-list.h"
+#include "operation/basic/property-list-io.h"
 #include "operation/parameter/build-param-core12.h"
-#include <iostream>
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -32,25 +32,25 @@ int main() {
   prm[Core12EqStrength].d=1.;
   BuildParameterCore12<double>(prm);
 
-  cout<<"Test -- EFunc"<<endl;
+  COut<<"Test -- EFunc"<<Endl;
   double E=0.;
   EFuncCore12(v.structure,idx.data,prm.data,DED,FS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- GFunc"<<endl;
+  COut<<"Test -- GFunc"<<Endl;
   copy(g,0.);
   GFuncCore12(v.structure,idx.data,prm.data,DED,FS,g.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- BFunc"<<endl;
+  COut<<"Test -- BFunc"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncCore12(v.structure,idx.data,prm.data,DED,FS,E,g.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 1;
 }

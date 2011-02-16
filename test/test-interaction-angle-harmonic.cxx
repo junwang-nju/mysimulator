@@ -3,8 +3,8 @@
 #include "operation/geometry/distance-calc-simplebuffer.h"
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/build-param-angle-harmonic.h"
-#include "data/basic/property-list.h"
-#include <iostream>
+#include "operation/basic/property-list-io.h"
+#include "data/basic/console-output.h"
 using namespace std;
 
 int main() {
@@ -39,26 +39,26 @@ int main() {
   BuildParameterAngleHarmonic<double>(prm);
   
   double E;
-  cout<<"Test -- calculate Energy of angle"<<endl;
+  COut<<"Test -- calculate Energy of angle"<<Endl;
   E=0.;
   EFuncAngleHarmonic(v.structure,idx.data,prm.data,DED,FS,E);
-  cout<<E<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- calculate Gradient of angle"<<endl;
+  COut<<"Test -- calculate Gradient of angle"<<Endl;
   copy(g,0.);
   GFuncAngleHarmonic(v.structure,idx(),prm(),DED,FS,g.structure,tmv.structure);
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- calculate Energy and Gradient of angle"<<endl;
+  COut<<"Test -- calculate Energy and Gradient of angle"<<Endl;
   E=0.;
   copy(g,0.);
   BFuncAngleHarmonic(v.structure,idx(),prm(),DED,FS,E,g.structure,
                      tmv.structure);
-  cout<<E<<endl;
-  cout<<g<<endl;
-  cout<<endl;
+  COut<<E<<Endl;
+  COut<<g<<Endl;
+  COut<<Endl;
 
   return 0;
 }

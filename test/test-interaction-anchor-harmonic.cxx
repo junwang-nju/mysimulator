@@ -4,7 +4,8 @@
 #include "data/geometry/distance-buffer-simple.h"
 #include "data/basic/property-list.h"
 #include "operation/parameter/build-param-ext-object-harmonic.h"
-#include "operation/basic/console-output.h"
+#include "data/basic/console-output.h"
+#include "operation/basic/property-list-io.h"
 using namespace std;
 
 int main() {
