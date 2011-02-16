@@ -9,6 +9,7 @@
 #include "operation/parameter/build-param-ext-object-lj612cut.h"
 #include "operation/parameter/build-param-shifted-fene.h"
 #include "operation/parameter/build-param-lj612cut.h"
+#include "operation/parameter/build-param-ext-object-harmonic.h"
 #include "operation/parameter/build-param-spheric-shell-property.h"
 #include "operation/parameter/build-param-gao-enhanced-sampling.h"
 #include "operation/propagate/run.h"
@@ -114,19 +115,23 @@ int main() {
   BuildParameterPropagatorVVerlet(P);
 
   ListInteraction<double,DistanceBufferSimple,FreeSpace> F;
-  allocate(sz,(nunit*(nunit+1))/2);
+  allocate(sz,(nunit*(nunit+1))/2+nunit);
   for(unsigned int i=0;i<nunit;++i) sz[i]=SphericShellLJ612Cut;
   for(unsigned int i=0,n=nunit;i<nunit-1;++i) sz[n++]=ShiftedFENE;
   for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j)   sz[n++]=LJ612Cut;
+  for(unsigned int i=0,n=(nunit*(nunit+1))/2;i<nunit;++i)
+    sz[n++]=AnchorPointHarmonic;
   allocate(F,sz,3,nunit);
   
   Vector<InteractionParameterUnit> Prm;
-  allocate(Prm,(nunit*(nunit+1))/2);
+  allocate(Prm,(nunit*(nunit+1))/2+nunit);
   for(unsigned int i=0;i<nunit;++i) allocate(Prm[i],SphericShellLJ612Cut);
   for(unsigned int i=0,n=nunit;i<nunit-1;++i) allocate(Prm[n++],ShiftedFENE);
   for(unsigned int i=0,n=nunit+nunit-1;i<nunit;++i)
   for(unsigned int j=i+2;j<nunit;++j) allocate(Prm[n++],LJ612Cut);
+  for(unsigned int i=0,n=(nunit*(nunit+1))/2;i<nunit;++i)
+    allocate(Prm[n++],AnchorPointHarmonic);
   
   Vector<double> wv;
   Vector<UniqueParameter> pprop;
@@ -167,6 +172,12 @@ int main() {
     Prm[n].idx[0]=i;
     Prm[n].idx[1]=j;
   }
+  for(unsigned int i=0,n=(nunit*(nunit+1))/2;i<nunit;++i,++n) {
+    Prm[n].prm[ExtObjectLocationPointer].ptr=reinterpret_cast<void*>(&wv);
+    Prm[n].prm[ExtObjHarmonicEqLength].d=6.;
+    Prm[n].prm[ExtObjHarmonicEqStrength].d=0.1;
+    BuildParameterExtObjHarmonic<double>(Prm[n].prm);
+  }
 
   ParamType MP;
   allocate(MP,GaoEnhancedSampling);
@@ -185,11 +196,11 @@ int main() {
   ts[2]=2.;
   ts[1]=3.;
   ts[0]=5.;
-  ds[0]=exp(-112.);
-  ds[1]=exp(-93.);
-  ds[2]=exp(-60.);
-  ds[3]=exp(-52.);
-  ds[4]=exp(-23.);
+  ds[0]=exp(-204.);
+  ds[1]=exp(-165.);
+  ds[2]=exp(-108.);
+  ds[3]=exp(-95.);
+  ds[4]=exp(-38.);
   ds[5]=1;
   MP.prm[DensitySet].ptr=reinterpret_cast<void*>(&ds);
   MP.prm[TemperatureSet].ptr=reinterpret_cast<void*>(&ts);
