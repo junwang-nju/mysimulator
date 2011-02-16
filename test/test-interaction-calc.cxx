@@ -5,6 +5,8 @@
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
 #include "data/derived/parameter-list.h"
+#include "data/basic/console-output.h"
+#include "operation/basic/property-list-io.h"
 using namespace std;
 
 int main() {

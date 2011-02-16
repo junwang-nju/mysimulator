@@ -1,7 +1,8 @@
 
 #include "operation/geometry/distance-calc.h"
 #include "operation/geometry/displacement-calc-freespace.h"
-#include <iostream>
+#include "data/basic/console-output.h"
+#include "operation/basic/vector-io.h"
 using namespace std;
 
 int main() {
@@ -13,15 +14,15 @@ int main() {
   copy(vb,5); vb[2]=9;
   FreeSpace  FS;
 
-  cout<<"Test -- distance and displacement for array"<<endl;
-  cout<<Distance(va(),vb(),v(),3,FS,0,1,0,2,1,1)<<endl;
-  cout<<v<<endl;
-  cout<<endl;
+  COut<<"Test -- distance and displacement for array"<<Endl;
+  COut<<Distance(va(),vb(),v(),3,FS,0,1,0,2,1,1)<<Endl;
+  COut<<v<<Endl;
+  COut<<Endl;
 
-  cout<<"Test -- distance and displacement for vector"<<endl;
-  cout<<Distance(va,vb,v,FS)<<endl;
-  cout<<v<<endl;
-  cout<<endl;
+  COut<<"Test -- distance and displacement for vector"<<Endl;
+  COut<<Distance(va,vb,v,FS)<<Endl;
+  COut<<v<<Endl;
+  COut<<Endl;
 
   return 1;
 }
