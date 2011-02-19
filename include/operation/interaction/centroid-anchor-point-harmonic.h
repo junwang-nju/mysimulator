@@ -11,7 +11,7 @@ namespace std {
   void EFuncCentroidAnchorPointHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec, const unsigned int idxsize=0) {
+      Vector<T>* tmvec) {
     EFuncCentroidAnchorPointBase(X,idx,P,B,Geo,Energy,tmvec,FuncHarmonic);
   }
 
@@ -19,7 +19,7 @@ namespace std {
   void GFuncCentroidAnchorPointHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec, const unsigned int idxsize=0) {
+      Vector<T>* tmvec) {
     GFuncCentroidAnchorPointBase(X,idx,P,B,Geo,Gradient,tmvec,DiffHarmonic);
   }
 
@@ -27,7 +27,7 @@ namespace std {
   void BFuncCentroidAnchorPointHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec, const unsigned int idxsize=0) {
+      Vector<T>* tmvec) {
     BFuncCentroidAnchorPointBase(X,idx,P,B,Geo,Energy,Gradient,tmvec,BothHarmonic);
   }
 

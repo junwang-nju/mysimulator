@@ -11,7 +11,7 @@ namespace std {
   void EFuncCELJ612(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     EFuncCEPairwiseBase(X,idx,P,B,Geo,Energy,FuncLJ612);
   }
 
@@ -19,7 +19,7 @@ namespace std {
   void GFuncCELJ612(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     GFuncCEPairwiseBase(X,idx,P,B,Geo,Gradient,DiffLJ612);
   }
 
@@ -27,7 +27,7 @@ namespace std {
   void BFuncCELJ612(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     BFuncCEPairwiseBase(X,idx,P,B,Geo,Energy,Gradient,BothLJ612);
   }
 

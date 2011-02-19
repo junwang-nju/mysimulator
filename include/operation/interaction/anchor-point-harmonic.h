@@ -12,7 +12,7 @@ namespace std {
   void EFuncAnchorPointHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     EFuncAnchorPointBase(X,idx,P,B,Geo,Energy,FuncHarmonic);
   }
 
@@ -20,7 +20,7 @@ namespace std {
   void GFuncAnchorPointHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     GFuncAnchorPointBase(X,idx,P,B,Geo,Gradient,DiffHarmonic);
   }
 
@@ -28,7 +28,7 @@ namespace std {
   void BFuncAnchorPointHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     BFuncAnchorPointBase(X,idx,P,B,Geo,Energy,Gradient,BothHarmonic);
   }
 

@@ -12,7 +12,7 @@ namespace std {
       SimpleInteraction<T,DistBuffer,GeomType>& F,
       const Vector<T>* X, const InteractionParameterUnit& P, T& Energy){
     F.EFunc(X,P.idx.data,P.prm.data,F.B,F.Geo,Energy,
-            F.tmvec.structure,F.NumMerUnit());
+            F.tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -21,7 +21,7 @@ namespace std {
       const Vector<T>* X, const InteractionParameterUnit& P, 
       Vector<T>* Gradient) {
     F.GFunc(X,P.idx.data,P.prm.data,F.B,F.Geo,Gradient,
-            F.tmvec.structure,F.NumMerUnit());
+            F.tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -30,7 +30,7 @@ namespace std {
       const Vector<T>* X, const InteractionParameterUnit& P, 
       T& Energy, Vector<T>* Gradient){
     F.BFunc(X,P.idx.data,P.prm.data,F.B,F.Geo,Energy,Gradient,
-            F.tmvec.structure,F.NumMerUnit());
+            F.tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -40,7 +40,7 @@ namespace std {
       T& Energy) {
     for(unsigned int i=0;i<P.size;++i)
       F.EFunc(X,P[i].idx.data,P[i].prm.data,F.B,F.Geo,Energy,
-              F.tmvec.structure,F.NumMerUnit());
+              F.tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -50,7 +50,7 @@ namespace std {
       Vector<T>* Gradient) {
     for(unsigned int i=0;i<P.size;++i)
       F.GFunc(X,P[i].idx.data,P[i].prm.data,F.B,F.Geo,Gradient,
-              F.tmvec.structure,F.NumMerUnit());
+              F.tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -60,7 +60,7 @@ namespace std {
       T& Energy, Vector<T>* Gradient) {
     for(unsigned int i=0;i<P.size;++i)
       F.BFunc(X,P[i].idx.data,P[i].prm.data,F.B,F.Geo,Energy,Gradient,
-              F.tmvec.structure,F.NumMerUnit());
+              F.tmvec.structure);
   }
 
 }
@@ -77,7 +77,7 @@ namespace std {
     assert(F.size==P.size);
     for(unsigned int i=0;i<F.size;++i)
       F[i].EFunc(X,P[i].idx.data,P[i].prm.data,F.B,F.Geo,Energy,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -88,7 +88,7 @@ namespace std {
     assert(F.size==P.size);
     for(unsigned int i=0;i<F.size;++i) {
       F[i].GFunc(X,P[i].idx.data,P[i].prm.data,F.B,F.Geo,Gradient,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
     }
   }
 
@@ -100,7 +100,7 @@ namespace std {
     assert(F.size==P.size);
     for(unsigned int i=0;i<F.size;++i)
       F[i].BFunc(X,P[i].idx.data,P[i].prm.data,F.B,F.Geo,Energy,Gradient,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -112,7 +112,7 @@ namespace std {
     for(unsigned int i=0;i<P.nunit;++i)
     for(unsigned int k=0;k<P[i].size;++k)
       F[i].EFunc(X,P[i][k].idx.data,P[i][k].prm.data,F.B,F.Geo,Energy,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -124,7 +124,7 @@ namespace std {
     for(unsigned int i=0;i<P.nunit;++i)
     for(unsigned int k=0;k<P[i].size;++k)
       F[i].GFunc(X,P[i][k].idx.data,P[i][k].prm.data,F.B,F.Geo,Gradient,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -136,7 +136,7 @@ namespace std {
     for(unsigned int i=0;i<P.nunit;++i)
     for(unsigned int k=0;k<P[i].size;++k)
       F[i].BFunc(X,P[i][k].idx.data,P[i][k].prm.data,F.B,F.Geo,Energy,Grad,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
   }
 
 }
@@ -154,7 +154,7 @@ namespace std {
     for(unsigned int i=0;i<P.size;++i)
     for(unsigned int k=0;k<P[i].size;++k)
       F[i].EFunc(X,P[i][k].idx.data,P[i][k].prm.data,F.B,F.Geo,Energy,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -166,7 +166,7 @@ namespace std {
     for(unsigned int i=0;i<P.size;++i)
     for(unsigned int k=0;k<P[i].size;++k)
       F[i].GFunc(X,P[i][k].idx.data,P[i][k].prm.data,F.B,F.Geo,Gradient,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -178,7 +178,7 @@ namespace std {
     for(unsigned int i=0;i<P.size;++i)
     for(unsigned int k=0;k<P[i].size;++k)
       F[i].BFunc(X,P[i][k].idx.data,P[i][k].prm.data,F.B,F.Geo,Energy,Grad,
-                 F[i].tmvec.structure,F.NumMerUnit());
+                 F[i].tmvec.structure);
   }
 
 }
@@ -198,7 +198,7 @@ namespace std {
       SimpleInteraction<T,DistBuffer,GeomType>& F,
       const PropertyList<T>& X, const InteractionParameterUnit& P,
       PropertyList<T>& Gradient) {
-    CalcInteraction(F,X.structure,P,Gradient.srtucture);
+    CalcInteraction(F,X.structure,P,Gradient.structure);
   }
 
   template <typename T,template <typename> class DistBuffer,typename GeomType>
@@ -206,7 +206,7 @@ namespace std {
       SimpleInteraction<T,DistBuffer,GeomType>& F,
       const PropertyList<T>& X, const InteractionParameterUnit& P,
       T& Energy, PropertyList<T>& Gradient) {
-    CalcInteraction(F,X.structure,P,Energy,Gradient.srtucture);
+    CalcInteraction(F,X.structure,P,Energy,Gradient.structure);
   }
 
   template <typename T, typename InteractionType>

@@ -1,36 +1,38 @@
 
-#ifndef _Interaction_Dihedral_Periodic_H_
-#define _Interaction_Dihedral_Periodic_H_
+#ifndef _Interaction_Driving_Constant_Force_H_
+#define _Interaction_Driving_Constant_Force_H_
 
-#include "operation/interaction/dihedral-base.h"
-#include "operation/functional/dihedral-periodic.h"
+#include "data/name/driving-constant.h"
+#include "data/basic/unique-parameter.h"
 
 namespace std {
 
   template <typename T,template<typename> class DistBuffer,typename GeomType>
-  void EFuncDihPeriodic(
+  void EFuncDrivingConstant(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec) {
-    EFuncDihedralBase(X,idx,P,B,Geo,Energy,tmvec,FuncDihPeriodic);
+      Vector<T>* tmvec=NULL) {
   }
 
   template <typename T,template<typename> class DistBuffer,typename GeomType>
-  void GFuncDihPeriodic(
+  void GFuncDrivingConstant(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec) {
-    GFuncDihedralBase(X,idx,P,B,Geo,Gradient,tmvec,DiffDihPeriodic);
+      Vector<T>* tmvec=NULL) {
+    unsigned int I=idx[0];
+    Vector<T>& fV=*reinterpret_cast<Vector<T>*>(P[ConstantDrivingForce].ptr);
+    shift(Gradient[I],+1.,fV);
   }
 
   template <typename T,template<typename> class DistBuffer,typename GeomType>
-  void BFuncDihPeriodic(
+  void BFuncDrivingConstant(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec) {
-    BFuncDihedralBase(X,idx,P,B,Geo,Energy,Gradient,tmvec,BothDihPeriodic);
+      Vector<T>* tmvec=NULL) {
+    GFuncDrivingConstant(X,idx,P,B,Geo,Gradient);
   }
 
 }
 
 #endif
+

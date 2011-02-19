@@ -11,7 +11,7 @@ namespace std {
   void EFuncAngleHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     EFuncAngleBase(X,idx,P,B,Geo,Energy,FuncAngleHarmonic);
   }
 
@@ -19,7 +19,7 @@ namespace std {
   void GFuncAngleHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec, const unsigned int idxsize=0) {
+      Vector<T>* tmvec) {
     GFuncAngleBase(X,idx,P,B,Geo,Gradient,tmvec,DiffAngleHarmonic);
   }
 
@@ -27,7 +27,7 @@ namespace std {
   void BFuncAngleHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec, const unsigned int idxsize=0) {
+      Vector<T>* tmvec) {
     BFuncAngleBase(X,idx,P,B,Geo,Energy,Gradient,tmvec,BothAngleHarmonic);
   }
 

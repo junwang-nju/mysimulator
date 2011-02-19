@@ -11,7 +11,7 @@ namespace std {
   void EFuncCoulomb(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     EFuncPairwiseBase(X,idx,P,B,Geo,Energy,FuncCoulomb);
   }
 
@@ -19,7 +19,7 @@ namespace std {
   void GFuncCoulomb(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     GFuncPairwiseBase(X,idx,P,B,Geo,Gradient,DiffCoulomb);
   }
 
@@ -27,7 +27,7 @@ namespace std {
   void BFuncCoulomb(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     BFuncPairwiseBase(X,idx,P,B,Geo,Energy,Gradient,BothCoulomb);
   }
 

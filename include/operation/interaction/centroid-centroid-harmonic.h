@@ -11,7 +11,7 @@ namespace std {
   void EFuncCentroidCentroidHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec, const unsigned int idxsize=0) {
+      Vector<T>* tmvec) {
     EFuncCentroidCentroidBase(X,idx,P,B,Geo,Energy,tmvec,FuncHarmonic);
   }
 
@@ -19,7 +19,7 @@ namespace std {
   void GFuncCentroidCentroidHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec, const unsigned int idxsize=0) {
+      Vector<T>* tmvec) {
     GFuncCentroidCentroidBase(X,idx,P,B,Geo,Gradient,tmvec,DiffHarmonic);
   }
 
@@ -27,7 +27,7 @@ namespace std {
   void BFuncCentroidCentroidHarmonic(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec, const unsigned int idxsize=0) {
+      Vector<T>* tmvec) {
     BFuncCentroidCentroidBase(X,idx,P,B,Geo,Energy,Gradient,tmvec,BothHarmonic);
   }
 

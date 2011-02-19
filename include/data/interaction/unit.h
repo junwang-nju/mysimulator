@@ -12,14 +12,11 @@ namespace std {
     unsigned int *pTag;
     PropertyList<T> tmvec;
     void (*EFunc)(const Vector<T>*,const unsigned int*,const UniqueParameter*,
-                  DistBuffer<T>&,const GeomType&,T&,
-                  Vector<T>*,const unsigned int);
+                  DistBuffer<T>&,const GeomType&,T&,Vector<T>*);
     void (*GFunc)(const Vector<T>*,const unsigned int*,const UniqueParameter*,
-                  DistBuffer<T>&,const GeomType&,Vector<T>*,
-                  Vector<T>*,const unsigned int);
+                  DistBuffer<T>&,const GeomType&,Vector<T>*,Vector<T>*);
     void (*BFunc)(const Vector<T>*,const unsigned int*,const UniqueParameter*,
-                  DistBuffer<T>&,const GeomType&,T&,Vector<T>*,
-                  Vector<T>*,const unsigned int);
+                  DistBuffer<T>&,const GeomType&,T&,Vector<T>*,Vector<T>*);
 
     typedef InteractionUnit<T,DistBuffer,GeomType>  Type;
 
@@ -201,6 +198,10 @@ namespace std {
         F.GFunc=GFuncAnchorPointHarmonic<T,DBuff,GType>;
         F.BFunc=BFuncAnchorPointHarmonic<T,DBuff,GType>;
         break;
+      case DrivingConstantForce:
+        F.EFunc=EFuncDrivingConstant<T,DBuff,GType>;
+        F.GFunc=GFuncDrivingConstant<T,DBuff,GType>;
+        F.BFunc=BFuncDrivingConstant<T,DBuff,GType>;
       default:
         Error("Unknown interaction type");
     }

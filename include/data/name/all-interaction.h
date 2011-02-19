@@ -12,6 +12,7 @@
 #include "data/name/harmonic.h"
 #include "data/name/shifted-fene.h"
 #include "data/name/quad-plus-harmonic.h"
+#include "data/name/driving-constant.h"
 
 #include "data/name/angle-harmonic.h"
 #include "data/name/dihedral-periodic.h"
@@ -47,6 +48,7 @@ namespace std {
     SphericShellCoreLJ612,
     SphericShellLJ612Cut,
     AnchorPointHarmonic,
+    DrivingConstantForce,
     NumberInteractions
   };
 
@@ -74,6 +76,7 @@ namespace std {
     InteractionIdxSize[SphericShellCoreLJ612]=1;
     InteractionIdxSize[SphericShellLJ612Cut]=1;
     InteractionIdxSize[AnchorPointHarmonic]=1;
+    InteractionIdxSize[DrivingConstantForce]=1;
   }
 
   static Vector<unsigned int> InteractionPrmSize;
@@ -100,6 +103,7 @@ namespace std {
     InteractionPrmSize[SphericShellCoreLJ612]=ExtObjCoreLJ612NumberParameter;
     InteractionPrmSize[SphericShellLJ612Cut]=ExtObjLJ612CutNumberParameter;
     InteractionPrmSize[AnchorPointHarmonic]=ExtObjHarmonicNumberParameter;
+    InteractionPrmSize[DrivingConstantForce]=DrivingConstantNumberParameter;
   }
 
 }

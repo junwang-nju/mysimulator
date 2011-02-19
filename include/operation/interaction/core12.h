@@ -11,7 +11,7 @@ namespace std {
   void EFuncCore12(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     EFuncPairwiseBase(X,idx,P,B,Geo,Energy,FuncCore12);
   }
 
@@ -19,7 +19,7 @@ namespace std {
   void GFuncCore12(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     GFuncPairwiseBase(X,idx,P,B,Geo,Gradient,DiffCore12);
   }
 
@@ -27,7 +27,7 @@ namespace std {
   void BFuncCore12(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DistBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     BFuncPairwiseBase(X,idx,P,B,Geo,Energy,Gradient,BothCore12);
   }
 

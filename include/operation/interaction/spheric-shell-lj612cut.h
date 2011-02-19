@@ -12,7 +12,7 @@ namespace std {
   void EFuncSphericShellLJ612Cut(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     EFuncSphericShellBase(X,idx,P,B,Geo,Energy,FuncLJ612Cut);
   }
 
@@ -20,7 +20,7 @@ namespace std {
   void GFuncSphericShellLJ612Cut(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     GFuncSphericShellBase(X,idx,P,B,Geo,Gradient,DiffLJ612Cut);
   }
 
@@ -28,7 +28,7 @@ namespace std {
   void BFuncSphericShellLJ612Cut(
       const Vector<T>* X, const unsigned int* idx, const UniqueParameter* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
-      Vector<T>* tmvec=NULL, const unsigned int idxsize=0) {
+      Vector<T>* tmvec=NULL) {
     BFuncSphericShellBase(X,idx,P,B,Geo,Energy,Gradient,BothLJ612Cut);
   }
 

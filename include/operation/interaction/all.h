@@ -30,6 +30,8 @@
 
 #include "operation/interaction/anchor-point-harmonic.h"
 
+#include "operation/interaction/driving-constant.h"
+
 #include "operation/interaction/gao-enhanced-sampling.h"
 
 #endif
