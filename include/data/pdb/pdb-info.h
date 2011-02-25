@@ -14,7 +14,7 @@ namespace std {
     Vector<PropertyList<double> > Coordinate;
     Vector<unsigned int> AtomName;
     Vector<unsigned int> AminoAcidName;
-    PropertyList<unsigned int> AminoAcidAtomID;
+    PropertyList<int> AminoAcidAtomID;
     PropertyList<unsigned int> BondID;
 
     PDBInfo()
@@ -71,7 +71,8 @@ namespace std {
   }
   void allocate(PDBInfo& PI,
                 const unsigned int& nmodel, const unsigned int& natom,
-                const unsigned int& naminoacid, const unsigned int& nbond) {
+                const Vector<unsigned int>& AminoAcidSeq,
+                const unsigned int& nbond) {
     allocate(PI.Coordinate,nmodel);
     Vector<unsigned int> sz;
     allocate(sz,natom);
