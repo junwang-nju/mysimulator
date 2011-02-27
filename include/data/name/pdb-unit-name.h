@@ -448,6 +448,178 @@ namespace std {
       IsHeavyAtom[i][H1NAmino]=false;
       IsHeavyAtom[i][H2NAmino]=false;
     }
+
+    IsHeavyAtom[AminoAcidAla][AlaH1Beta]=false;
+    IsHeavyAtom[AminoAcidAla][AlaH2Beta]=false;
+    IsHeavyAtom[AminoAcidAla][AlaH3Beta]=false;
+    IsHeavyAtom[AminoAcidAla][AlaH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidArg][ArgH1Beta]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH2Beta]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH1Gamma]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH2Gamma]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH1Delta]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH2Delta]=false;
+    IsHeavyAtom[AminoAcidArg][ArgHEpsilon]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH1N1Eta]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH2N1Eta]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH1N2Eta]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH2N2Eta]=false;
+    IsHeavyAtom[AminoAcidArg][ArgH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidAsn][AsnH1Beta]=false;
+    IsHeavyAtom[AminoAcidAsn][AsnH2Beta]=false;
+    IsHeavyAtom[AminoAcidAsn][AsnH1NDelta]=false;
+    IsHeavyAtom[AminoAcidAsn][AsnH2NDelta]=false;
+    IsHeavyAtom[AminoAcidAsn][AsnH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidAsp][AspH1Beta]=false;
+    IsHeavyAtom[AminoAcidAsp][AspH2Beta]=false;
+    IsHeavyAtom[AminoAcidAsp][AspHO1Delta]=false;
+    IsHeavyAtom[AminoAcidAsp][AspHO2Delta]=false;
+    IsHeavyAtom[AminoAcidAsp][AspH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidCys][CysH1Beta]=false;
+    IsHeavyAtom[AminoAcidCys][CysH2Beta]=false;
+    IsHeavyAtom[AminoAcidCys][CysHGamma]=false;
+    IsHeavyAtom[AminoAcidCys][CysH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidGln][GlnH1Beta]=false;
+    IsHeavyAtom[AminoAcidGln][GlnH2Beta]=false;
+    IsHeavyAtom[AminoAcidGln][GlnH1Gamma]=false;
+    IsHeavyAtom[AminoAcidGln][GlnH2Gamma]=false;
+    IsHeavyAtom[AminoAcidGln][GlnH1NEpsilon]=false;
+    IsHeavyAtom[AminoAcidGln][GlnH2NEpsilon]=false;
+    IsHeavyAtom[AminoAcidGln][GlnH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidGlu][GluH1Beta]=false;
+    IsHeavyAtom[AminoAcidGlu][GluH2Beta]=false;
+    IsHeavyAtom[AminoAcidGlu][GluH1Gamma]=false;
+    IsHeavyAtom[AminoAcidGlu][GluH2Gamma]=false;
+    IsHeavyAtom[AminoAcidGlu][GluHO1Epsilon]=false;
+    IsHeavyAtom[AminoAcidGlu][GluHO2Epsilon]=false;
+    IsHeavyAtom[AminoAcidGlu][GluH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidGly][GlyH2Alpha]=false;
+    IsHeavyAtom[AminoAcidGly][GlyH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidHis][HisH1Beta]=false;
+    IsHeavyAtom[AminoAcidHis][HisH2Beta]=false;
+    IsHeavyAtom[AminoAcidHis][HisHCDelta]=false;
+    IsHeavyAtom[AminoAcidHis][HisHNDelta]=false;
+    IsHeavyAtom[AminoAcidHis][HisHNEpsilon]=false;
+    IsHeavyAtom[AminoAcidHis][HisHCEpsilon]=false;
+    IsHeavyAtom[AminoAcidHis][HisH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidIle][IleH1C1Gamma]=false;
+    IsHeavyAtom[AminoAcidIle][IleH2C1Gamma]=false;
+    IsHeavyAtom[AminoAcidIle][IleH1C2Gamma]=false;
+    IsHeavyAtom[AminoAcidIle][IleH2C2Gamma]=false;
+    IsHeavyAtom[AminoAcidIle][IleH3C2Gamma]=false;
+    IsHeavyAtom[AminoAcidIle][IleH1CDelta]=false;
+    IsHeavyAtom[AminoAcidIle][IleH2CDelta]=false;
+    IsHeavyAtom[AminoAcidIle][IleH3CDelta]=false;
+    IsHeavyAtom[AminoAcidIle][IleH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidLeu][LeuH1Beta]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuH2Beta]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuHGamma]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuH1C1Delta]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuH2C1Delta]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuH3C1Delta]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuH1C2Delta]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuH2C2Delta]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuH3C2Delta]=false;
+    IsHeavyAtom[AminoAcidLeu][LeuH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidLys][LysH1Beta]=false;
+    IsHeavyAtom[AminoAcidLys][LysH2Beta]=false;
+    IsHeavyAtom[AminoAcidLys][LysH1Gamma]=false;
+    IsHeavyAtom[AminoAcidLys][LysH2Gamma]=false;
+    IsHeavyAtom[AminoAcidLys][LysH1Delta]=false;
+    IsHeavyAtom[AminoAcidLys][LysH2Delta]=false;
+    IsHeavyAtom[AminoAcidLys][LysH1Epsilon]=false;
+    IsHeavyAtom[AminoAcidLys][LysH2Epsilon]=false;
+    IsHeavyAtom[AminoAcidLys][LysH1Zeta]=false;
+    IsHeavyAtom[AminoAcidLys][LysH2Zeta]=false;
+    IsHeavyAtom[AminoAcidLys][LysH3Zeta]=false;
+    IsHeavyAtom[AminoAcidLys][LysH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidMet][MetH1Beta]=false;
+    IsHeavyAtom[AminoAcidMet][MetH2Beta]=false;
+    IsHeavyAtom[AminoAcidMet][MetH1Gamma]=false;
+    IsHeavyAtom[AminoAcidMet][MetH2Gamma]=false;
+    IsHeavyAtom[AminoAcidMet][MetH1Epsilon]=false;
+    IsHeavyAtom[AminoAcidMet][MetH2Epsilon]=false;
+    IsHeavyAtom[AminoAcidMet][MetH3Epsilon]=false;
+    IsHeavyAtom[AminoAcidMet][MetH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidPhe][PheH1Beta]=false;
+    IsHeavyAtom[AminoAcidPhe][PheH2Beta]=false;
+    IsHeavyAtom[AminoAcidPhe][PheHC1Delta]=false;
+    IsHeavyAtom[AminoAcidPhe][PheHC2Delta]=false;
+    IsHeavyAtom[AminoAcidPhe][PheHCEpsilonC1Delta]=false;
+    IsHeavyAtom[AminoAcidPhe][PheHCEpsilonC2Delta]=false;
+    IsHeavyAtom[AminoAcidPhe][PheHCZeta]=false;
+    IsHeavyAtom[AminoAcidPhe][PheH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidPro][ProH1CBeta]=false;
+    IsHeavyAtom[AminoAcidPro][ProH2CBeta]=false;
+    IsHeavyAtom[AminoAcidPro][ProH1CGammaCBeta]=false;
+    IsHeavyAtom[AminoAcidPro][ProH2CGammaCBeta]=false;
+    IsHeavyAtom[AminoAcidPro][ProH1CGammaNAmino]=false;
+    IsHeavyAtom[AminoAcidPro][ProH2CGammaNAmino]=false;
+
+    IsHeavyAtom[AminoAcidSec][SecH1Beta]=false;
+    IsHeavyAtom[AminoAcidSec][SecH2Beta]=false;
+    IsHeavyAtom[AminoAcidSec][SecHGamma]=false;
+    IsHeavyAtom[AminoAcidSec][SecH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidSer][SerH1Beta]=false;
+    IsHeavyAtom[AminoAcidSer][SerH2Beta]=false;
+    IsHeavyAtom[AminoAcidSer][SerHGamma]=false;
+    IsHeavyAtom[AminoAcidSer][SerH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidThr][ThrHBeta]=false;
+    IsHeavyAtom[AminoAcidThr][ThrHOGamma]=false;
+    IsHeavyAtom[AminoAcidThr][ThrH1CGamma]=false;
+    IsHeavyAtom[AminoAcidThr][ThrH2CGamma]=false;
+    IsHeavyAtom[AminoAcidThr][ThrH3CGamma]=false;
+    IsHeavyAtom[AminoAcidThr][ThrH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidTrp][TrpH1Beta]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpH2Beta]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpHC1Gamma]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpHNEpsilon]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpHC2Epsilon]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpHCZetaC1Epsilon]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpHCZetaC2Epsilon]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpHCEta]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidTyr][TyrH1Beta]=false;
+    IsHeavyAtom[AminoAcidTyr][TyrH2Beta]=false;
+    IsHeavyAtom[AminoAcidTyr][TyrHC1Delta]=false;
+    IsHeavyAtom[AminoAcidTyr][TyrHC2Delta]=false;
+    IsHeavyAtom[AminoAcidTyr][TyrHCEpsilonC1Delta]=false;
+    IsHeavyAtom[AminoAcidTyr][TyrHCEpsilonC2Delta]=false;
+    IsHeavyAtom[AminoAcidTyr][TyrHOEta]=false;
+    IsHeavyAtom[AminoAcidTyr][TyrH3NAmino]=false;
+
+    IsHeavyAtom[AminoAcidVal][ValHBeta]=false;
+    IsHeavyAtom[AminoAcidVal][ValH1C1Gamma]=false;
+    IsHeavyAtom[AminoAcidVal][ValH2C1Gamma]=false;
+    IsHeavyAtom[AminoAcidVal][ValH3C1Gamma]=false;
+    IsHeavyAtom[AminoAcidVal][ValH1C2Gamma]=false;
+    IsHeavyAtom[AminoAcidVal][ValH2C2Gamma]=false;
+    IsHeavyAtom[AminoAcidVal][ValH3C2Gamma]=false;
+    IsHeavyAtom[AminoAcidVal][ValH3NAmino]=false;
+  }
+
+  Vector<ParameterList> AminoAcidBonds;
+
+  void InitAminoAcidBonds() {
+    allocate(AminoAcidBonds,NumberAminoAcids);
   }
 
 }
