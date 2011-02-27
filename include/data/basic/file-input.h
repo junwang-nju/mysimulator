@@ -31,7 +31,8 @@ namespace std {
     template <typename T>
     FileInput& __read(const char* pat, T& value) {
       assert(IsAvailable(fpoint));
-      fscanf(fpoint,pat,&value);
+      int n=fscanf(fpoint,pat,&value);
+      if(n!=1)  SetState(FailBit);
       return *this;
     }
     FileInput& read(bool& b) {

@@ -2,7 +2,7 @@
 #ifndef _PDB_Information_H_
 #define _PDB_Information_H_
 
-#include "data/basic/property-list.h"
+#include "data/name/pdb-unit-name.h"
 
 namespace std {
 
@@ -17,7 +17,8 @@ namespace std {
     PropertyList<int> UnitAtomID;
     ParameterList UnitBond;
 
-    PDBInfo() : Coordinate(), AtomName(), Unit(), UnitAtomID(), UnitBond() {}
+    PDBInfo()
+      : Coordinate(), AtomName(), UnitName(), UnitAtomID(), UnitBond() {}
     PDBInfo(const PDBInfo&) { Error("Cannot create PDB Information"); }
     PDBInfo& operator=(const PDBInfo&) {
       Error("Cannot copy PDB Information");
@@ -54,33 +55,34 @@ namespace std {
     imprint(PI,cPI);
     copy(PI.Coordinate,cPI.Coordinate);
     copy(PI.AtomName,cPI.AtomName);
-    copy(PI.AminoAcidName,cPI.AminoAcidName);
-    copy(PI.AminoAcidAtomID,cPI.AminoAcidAtomID);
-    copy(PI.BondID,cPI.BondID);
+    copy(PI.UnitName,cPI.UnitName);
+    copy(PI.UnitAtomID,cPI.UnitAtomID);
+    copy(PI.UnitBond,cPI.UnitBond);
   }
   void refer(PDBInfo& PI,const PDBInfo& cPI) {
     assert(IsAvailable(cPI));
     release(PI);
     refer(PI.Coordinate,cPI.Coordinate);
     refer(PI.AtomName,cPI.AtomName);
-    refer(PI.AminoAcidName,cPI.AminoAcidName);
-    refer(PI.AminoAcidAtomID,cPI.AminoAcidAtomID);
-    refer(PI.BondID,cPI.BondID);
+    refer(PI.UnitName,cPI.UnitName);
+    refer(PI.UnitAtomID,cPI.UnitAtomID);
+    refer(PI.UnitBond,cPI.UnitBond);
   }
   void allocate(PDBInfo& PI,
-                const unsigned int& nmodel, const unsigned int& natom,
-                const Vector<unsigned int>& AminoAcidSeq,
-                const unsigned int& nbond) {
+                const unsigned int& nmodel, const unsigned int natom,
+                const Vector<unsigned int>& UnitSeq,const unsigned int& nbond){
     allocate(PI.Coordinate,nmodel);
-    Vector<unsigned int> sz;
+    Vector<unsigned int> usize,sz;
+    allocate(usize,UnitSeq.size);
+    for(unsigned int i=0;i<usize.size;++i)
+      usize[i]=AminoAcidNumberAtoms[UnitSeq[i]];
     allocate(sz,natom);
     copy(sz,3);
     for(unsigned int i=0;i<nmodel;++i)  allocate(PI.Coordinate[i],sz);
     allocate(PI.AtomName,natom);
-    allocate(PI.AminoAcidName,naminoacid);
-    allocate(sz,nbond);
-    copy(sz,2);
-    allocate(PI.BondID,sz);
+    allocate(PI.UnitName,UnitSeq.size);
+    allocate(PI.UnitAtomID,usize);
+    allocate(PI.UnitBond,2,1,nbond*2);
   }
 
 }

@@ -77,6 +77,19 @@ namespace std {
   InputBase& operator>>(InputBase& O, void*& ptr) { return O.read(ptr); }
   InputBase& operator>>(InputBase& O, char* s) { return O.read(s); }
 
+  unsigned int getline(char* buff, const unsigned int nbuff, InputBase& I) {
+    unsigned int n=0;
+    for(unsigned int i=0;i<nbuff-1;++i) {
+      I>>buff[i];
+      if(buff[i]=='\n') {
+        n=i+1;
+        buff[n]='\0';
+        break;
+      }
+    }
+    return n;
+  }
+
 }
 
 #endif

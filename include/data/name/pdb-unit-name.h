@@ -49,7 +49,7 @@ namespace std {
     AminoAcidTYR=AminoAcidTyr,
     AminoAcidVAL=AminoAcidVal,
     AminoAcidA=AminoAcidAla,
-    AminoAcidR=AminoAcidArg
+    AminoAcidR=AminoAcidArg,
     AminoAcidN=AminoAcidAsn,
     AminoAcidD=AminoAcidAsp,
     AminoAcidC=AminoAcidCys,
@@ -70,6 +70,10 @@ namespace std {
     AminoAcidY=AminoAcidTyr,
     AminoAcidV=AminoAcidVal
   };
+
+  static const char AminoAcidStringName[][4]={
+      "ALA","ARG","ASN","ASP","CYS","GLN","GLU","GLY","HIS","ILE","LEU","LYS",
+      "MET","PHE","PRO","SEC","SER","THR","TRP","TYR","VAL"};
 
   enum AminoAcidCommonAtomName {
     CAlpha=0,
@@ -409,6 +413,12 @@ namespace std {
     AminoAcidValNumberAtoms
   };
 
+}
+
+#include "data/basic/property-list.h"
+
+namespace std {
+
   static Vector<unsigned int> AminoAcidNumberAtoms;
   
   void InitAminoAcidNumberAtoms() {
@@ -442,7 +452,7 @@ namespace std {
     if(!IsAvailable(AminoAcidNumberAtoms))  InitAminoAcidNumberAtoms();
     allocate(IsHeavyAtom,AminoAcidNumberAtoms);
     copy(IsHeavyAtom,true);
-    for(unsigned int i=0;i<NumberAminoAcids,++i) {
+    for(unsigned int i=0;i<NumberAminoAcids;++i) {
       IsHeavyAtom[i][HAlpha]=false;
       IsHeavyAtom[i][HOCarboxyl]=false;
       IsHeavyAtom[i][H1NAmino]=false;
@@ -616,6 +626,12 @@ namespace std {
     IsHeavyAtom[AminoAcidVal][ValH3NAmino]=false;
   }
 
+}
+
+#include "data/derived/parameter-list.h"
+
+namespace std {
+
   enum AminoAcidBondNumbers {
     AminoAcidAlaNumberBonds=13,
     AminoAcidArgNumberBonds=27,
@@ -626,7 +642,7 @@ namespace std {
     AminoAcidGluNumberBonds=20,
     AminoAcidGlyNumberBonds=11,
     AminoAcidHisNumberBonds=22,
-    AminoAcidIleNumberAtoms=21,
+    AminoAcidIleNumberBonds=21,
     AminoAcidLeuNumberBonds=22,
     AminoAcidLysNumberBonds=25,
     AminoAcidMetNumberBonds=20,
@@ -821,7 +837,7 @@ namespace std {
     key[15][0]=GluCGamma;   key[15][1]=GluH2Gamma;
     key[16][0]=GluCCarbonylDelta;   key[16][1]=GluO1Epsilon;
     key[17][0]=GluCCarbonylDelta;   key[17][1]=GluO2Epsilon;
-    key[18][0]=GluO1Epsilon;key[18][1]=GluHO1Epsilon
+    key[18][0]=GluO1Epsilon;key[18][1]=GluHO1Epsilon;
     key[19][0]=GluO2Epsilon;key[19][1]=GluHO2Epsilon;
     for(unsigned int i=0;i<AminoAcidGluNumberBonds;++i) {
       key[i+AminoAcidGluNumberBonds][0]=key[i][1];
@@ -834,7 +850,6 @@ namespace std {
     key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
     key[1][0]=CAlpha;       key[1][1]=NAmino;
     key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=GlyCBeta;
     key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
     key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
     key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;

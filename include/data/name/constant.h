@@ -98,7 +98,7 @@ namespace std {
 
   static const char CharEOF=static_cast<char>(26);
 
-  static const char* Endl="\n";
+  static const char Endl='\n';
 
 }
 
