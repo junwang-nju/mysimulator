@@ -364,7 +364,7 @@ namespace std {
     TrpCEta,
     TrpH1Beta,
     TrpH2Beta,
-    TrpHC1Gamma,
+    TrpHC1Delta,
     TrpHNEpsilon,
     TrpHC2Epsilon,
     TrpHCZetaC1Epsilon,
@@ -589,7 +589,7 @@ namespace std {
 
     IsHeavyAtom[AminoAcidTrp][TrpH1Beta]=false;
     IsHeavyAtom[AminoAcidTrp][TrpH2Beta]=false;
-    IsHeavyAtom[AminoAcidTrp][TrpHC1Gamma]=false;
+    IsHeavyAtom[AminoAcidTrp][TrpHC1Delta]=false;
     IsHeavyAtom[AminoAcidTrp][TrpHNEpsilon]=false;
     IsHeavyAtom[AminoAcidTrp][TrpHC2Epsilon]=false;
     IsHeavyAtom[AminoAcidTrp][TrpHCZetaC1Epsilon]=false;
@@ -616,10 +616,610 @@ namespace std {
     IsHeavyAtom[AminoAcidVal][ValH3NAmino]=false;
   }
 
+  enum AminoAcidBondNumbers {
+    AminoAcidAlaNumberBonds=13,
+    AminoAcidArgNumberBonds=27,
+    AminoAcidAsnNumberBonds=17,
+    AminoAcidAspNumberBonds=17,
+    AminoAcidCysNumberBonds=14,
+    AminoAcidGlnNumberBonds=20,
+    AminoAcidGluNumberBonds=20,
+    AminoAcidGlyNumberBonds=11,
+    AminoAcidHisNumberBonds=22,
+    AminoAcidIleNumberAtoms=21,
+    AminoAcidLeuNumberBonds=22,
+    AminoAcidLysNumberBonds=25,
+    AminoAcidMetNumberBonds=20,
+    AminoAcidPheNumberBonds=24,
+    AminoAcidProNumberBonds=18,
+    AminoAcidSecNumberBonds=14,
+    AminoAcidSerNumberBonds=14,
+    AminoAcidThrNumberBonds=17,
+    AminoAcidTrpNumberBonds=29,
+    AminoAcidTyrNumberBonds=25,
+    AminoAcidValNumberBonds=19
+  };
+
   Vector<ParameterList> AminoAcidBonds;
 
   void InitAminoAcidBonds() {
     allocate(AminoAcidBonds,NumberAminoAcids);
+    Vector<ParameterKey> key;
+    allocate(AminoAcidBonds[AminoAcidAla],2,1,AminoAcidAlaNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidAla].key,AminoAcidBonds[AminoAcidAla].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=AlaCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=AlaH3NAmino;
+    key[10][0]=AlaCBeta;    key[10][1]=AlaH1Beta;
+    key[11][0]=AlaCBeta;    key[11][1]=AlaH2Beta;
+    key[12][0]=AlaCBeta;    key[12][1]=AlaH3Beta;
+    for(unsigned int i=0;i<AminoAcidAlaNumberBonds;++i) {
+      key[i+AminoAcidAlaNumberBonds][0]=key[i][1];
+      key[i+AminoAcidAlaNumberBonds][1]=key[i][0];
+    }
+    allocate(AminoAcidBonds[AminoAcidArg],2,1,AminoAcidArgNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidArg].key,AminoAcidBonds[AminoAcidArg].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=ArgCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=ArgH3NAmino;
+    key[10][0]=ArgCBeta;    key[10][1]=ArgCGamma;
+    key[11][0]=ArgCBeta;    key[11][1]=ArgH1Beta;
+    key[12][0]=ArgCBeta;    key[12][1]=ArgH2Beta;
+    key[13][0]=ArgCGamma;   key[13][1]=ArgCDelta;
+    key[14][0]=ArgCGamma;   key[14][1]=ArgH1Gamma;
+    key[15][0]=ArgCGamma;   key[15][1]=ArgH2Gamma;
+    key[16][0]=ArgCDelta;   key[16][1]=ArgNEpsilon;
+    key[17][0]=ArgCDelta;   key[17][1]=ArgH1Delta;
+    key[18][0]=ArgCDelta;   key[18][0]=ArgH2Delta;
+    key[19][0]=ArgNEpsilon; key[19][1]=ArgCZeta;
+    key[20][0]=ArgNEpsilon; key[20][1]=ArgHEpsilon;
+    key[21][0]=ArgCZeta;    key[21][1]=ArgN1Eta;
+    key[22][0]=ArgCZeta;    key[22][1]=ArgN2Eta;
+    key[23][0]=ArgN1Eta;    key[23][1]=ArgH1N1Eta;
+    key[24][0]=ArgN1Eta;    key[24][1]=ArgH2N1Eta;
+    key[25][0]=ArgN2Eta;    key[25][1]=ArgH1N2Eta;
+    key[26][0]=ArgN2Eta;    key[26][1]=ArgH2N2Eta;
+    for(unsigned int i=0;i<AminoAcidArgNumberBonds;++i) {
+      key[i+AminoAcidArgNumberBonds][0]=key[i][1];
+      key[i+AminoAcidArgNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidAsn],2,1,AminoAcidAsnNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidAsn].key,AminoAcidBonds[AminoAcidAsn].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=AsnCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=AsnH3NAmino;
+    key[10][0]=AsnCBeta;    key[10][1]=AsnCCarbonylGamma;
+    key[11][0]=AsnCBeta;    key[11][1]=AsnH1Beta;
+    key[12][0]=AsnCBeta;    key[12][1]=AsnH2Beta;
+    key[13][0]=AsnCCarbonylGamma;   key[13][1]=AsnOCarbonylDelta;
+    key[14][0]=AsnCCarbonylGamma;   key[14][1]=AsnNDelta;
+    key[15][0]=AsnNDelta;   key[15][1]=AsnH1NDelta;
+    key[16][0]=AsnNDelta;   key[16][1]=AsnH2NDelta;
+    for(unsigned int i=0;i<AminoAcidAsnNumberBonds;++i) {
+      key[i+AminoAcidAsnNumberBonds][0]=key[i][1];
+      key[i+AminoAcidAsnNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidAsp],2,1,AminoAcidAspNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidAsp].key,AminoAcidBonds[AminoAcidAsp].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=AspCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=AspH3NAmino;
+    key[10][0]=AspCBeta;    key[10][1]=AspCCarbonylGamma;
+    key[11][0]=AspCBeta;    key[11][1]=AspH1Beta;
+    key[12][0]=AspCBeta;    key[12][1]=AspH2Beta;
+    key[13][0]=AspCCarbonylGamma;   key[13][1]=AspO1Delta;
+    key[14][0]=AspCCarbonylGamma;   key[14][1]=AspO2Delta;
+    key[15][0]=AspO1Delta;  key[15][1]=AspHO1Delta;
+    key[16][0]=AspO2Delta;  key[16][1]=AspHO2Delta;
+    for(unsigned int i=0;i<AminoAcidAspNumberBonds;++i) {
+      key[i+AminoAcidAspNumberBonds][0]=key[i][1];
+      key[i+AminoAcidAspNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidCys],2,1,AminoAcidCysNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidCys].key,AminoAcidBonds[AminoAcidCys].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=CysCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=CysH3NAmino;
+    key[10][0]=CysCBeta;    key[10][1]=CysSGamma;
+    key[11][0]=CysCBeta;    key[11][1]=CysH1Beta;
+    key[12][0]=CysCBeta;    key[12][1]=CysH2Beta;
+    key[13][0]=CysSGamma;   key[13][1]=CysHGamma;
+    for(unsigned int i=0;i<AminoAcidCysNumberBonds;++i) {
+      key[i+AminoAcidCysNumberBonds][0]=key[i][1];
+      key[i+AminoAcidCysNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidGln],2,1,AminoAcidGlnNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidGln].key,AminoAcidBonds[AminoAcidGln].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=GlnCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=GlnH3NAmino;
+    key[10][0]=GlnCBeta;    key[10][1]=GlnCGamma;
+    key[11][0]=GlnCBeta;    key[11][1]=GlnH1Beta;
+    key[12][0]=GlnCBeta;    key[12][1]=GlnH2Beta;
+    key[13][0]=GlnCGamma;   key[13][1]=GlnCCarbonylDelta;
+    key[14][0]=GlnCGamma;   key[14][1]=GlnH1Gamma;
+    key[15][0]=GlnCGamma;   key[15][1]=GlnH2Gamma;
+    key[16][0]=GlnCCarbonylDelta;   key[16][1]=GlnOCarbonylEpsilon;
+    key[17][0]=GlnCCarbonylDelta;   key[17][1]=GlnNEpsilon;
+    key[18][0]=GlnNEpsilon; key[18][1]=GlnH1NEpsilon;
+    key[19][0]=GlnNEpsilon; key[19][1]=GlnH2NEpsilon;
+    for(unsigned int i=0;i<AminoAcidGlnNumberBonds;++i) {
+      key[i+AminoAcidGlnNumberBonds][0]=key[i][1];
+      key[i+AminoAcidGlnNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidGlu],2,1,AminoAcidGluNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidGlu].key,AminoAcidBonds[AminoAcidGlu].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=GluCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=GluH3NAmino;
+    key[10][0]=GluCBeta;    key[10][1]=GluCGamma;
+    key[11][0]=GluCBeta;    key[11][1]=GluH1Beta;
+    key[12][0]=GluCBeta;    key[12][1]=GluH2Beta;
+    key[13][0]=GluCGamma;   key[13][1]=GluCCarbonylDelta;
+    key[14][0]=GluCGamma;   key[14][1]=GluH1Gamma;
+    key[15][0]=GluCGamma;   key[15][1]=GluH2Gamma;
+    key[16][0]=GluCCarbonylDelta;   key[16][1]=GluO1Epsilon;
+    key[17][0]=GluCCarbonylDelta;   key[17][1]=GluO2Epsilon;
+    key[18][0]=GluO1Epsilon;key[18][1]=GluHO1Epsilon
+    key[19][0]=GluO2Epsilon;key[19][1]=GluHO2Epsilon;
+    for(unsigned int i=0;i<AminoAcidGluNumberBonds;++i) {
+      key[i+AminoAcidGluNumberBonds][0]=key[i][1];
+      key[i+AminoAcidGluNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidGly],2,1,AminoAcidGlyNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidGly].key,AminoAcidBonds[AminoAcidGly].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=GlyCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=GlyH3NAmino;
+    key[10][0]=CAlpha;      key[10][1]=GlyH2Alpha;
+    for(unsigned int i=0;i<AminoAcidGlyNumberBonds;++i) {
+      key[i+AminoAcidGlyNumberBonds][0]=key[i][1];
+      key[i+AminoAcidGlyNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidHis],2,1,AminoAcidHisNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidHis].key,AminoAcidBonds[AminoAcidHis].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=HisCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=HisH3NAmino;
+    key[10][0]=HisCBeta;      key[10][1]=HisCRingGamma;
+    key[11][0]=HisCBeta;      key[11][1]=HisH1Beta;
+    key[12][0]=HisCBeta;      key[12][1]=HisH2Beta;
+    key[13][0]=HisCRingGamma; key[13][1]=HisCRingDelta;
+    key[14][0]=HisCRingGamma; key[14][1]=HisNRingDelta;
+    key[15][0]=HisCRingDelta; key[15][1]=HisHCDelta;
+    key[16][0]=HisCRingDelta; key[16][1]=HisNRingEpsilonCDelta;
+    key[17][0]=HisNRingDelta; key[17][1]=HisHNDelta;
+    key[18][0]=HisNRingDelta; key[18][1]=HisCRingEpsilonNDelta;
+    key[19][0]=HisCRingEpsilonNDelta;   key[19][1]=HisNRingEpsilonCDelta;
+    key[20][0]=HisCRingEpsilonNDelta;   key[20][1]=HisHCEpsilon;
+    key[21][0]=HisNRingEpsilonCDelta;   key[21][1]=HisHNEpsilon;
+    for(unsigned int i=0;i<AminoAcidHisNumberBonds;++i) {
+      key[i+AminoAcidHisNumberBonds][0]=key[i][1];
+      key[i+AminoAcidHisNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidIle],2,1,AminoAcidIleNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidIle].key,AminoAcidBonds[AminoAcidIle].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=IleCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=IleH3NAmino;
+    key[10][0]=IleCBeta;      key[10][1]=IleC1Gamma;
+    key[11][0]=IleCBeta;      key[11][1]=IleHBeta;
+    key[12][0]=IleC1Gamma;    key[12][1]=IleCDeltaC1Gamma;
+    key[13][0]=IleC1Gamma;    key[13][1]=IleH1C1Gamma;
+    key[14][0]=IleC1Gamma;    key[14][1]=IleH2C1Gamma;
+    key[15][0]=IleC2Gamma;    key[15][1]=IleH1C2Gamma;
+    key[16][0]=IleC2Gamma;    key[16][1]=IleH2C2Gamma;
+    key[17][0]=IleC2Gamma;    key[17][1]=IleH3C2Gamma;
+    key[18][0]=IleCDeltaC1Gamma;    key[18][1]=IleH1CDelta;
+    key[19][0]=IleCDeltaC1Gamma;    key[19][1]=IleH2CDelta;
+    key[20][0]=IleCDeltaC1Gamma;    key[20][1]=IleH3CDelta;
+    for(unsigned int i=0;i<AminoAcidIleNumberBonds;++i) {
+      key[i+AminoAcidIleNumberBonds][0]=key[i][1];
+      key[i+AminoAcidIleNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidLeu],2,1,AminoAcidLeuNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidLeu].key,AminoAcidBonds[AminoAcidLeu].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=LeuCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=LeuH3NAmino;
+    key[10][0]=LeuCBeta;      key[10][1]=LeuCGamma;
+    key[11][0]=LeuCBeta;      key[11][1]=LeuH1Beta;
+    key[12][0]=LeuCBeta;      key[12][1]=LeuH2Beta;
+    key[13][0]=LeuCGamma;     key[13][1]=LeuC1Delta;
+    key[14][0]=LeuCGamma;     key[14][1]=LeuC2Delta;
+    key[15][0]=LeuCGamma;     key[15][1]=LeuHGamma;
+    key[16][0]=LeuC1Delta;    key[16][1]=LeuH1C1Delta;
+    key[17][0]=LeuC1Delta;    key[17][1]=LeuH2C1Delta;
+    key[18][0]=LeuC1Delta;    key[18][1]=LeuH3C1Delta;
+    key[19][0]=LeuC2Delta;    key[19][1]=LeuH1C2Delta;
+    key[20][0]=LeuC2Delta;    key[20][1]=LeuH2C2Delta;
+    key[21][0]=LeuC2Delta;    key[21][1]=LeuH3C2Delta;
+    for(unsigned int i=0;i<AminoAcidLeuNumberBonds;++i) {
+      key[i+AminoAcidLeuNumberBonds][0]=key[i][1];
+      key[i+AminoAcidLeuNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidLys],2,1,AminoAcidLysNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidLys].key,AminoAcidBonds[AminoAcidLys].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=LysCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=LysH3NAmino;
+    key[10][0]=LysCBeta;      key[10][1]=LysCGamma;
+    key[11][0]=LysCBeta;      key[11][1]=LysH1Beta;
+    key[12][0]=LysCBeta;      key[12][1]=LysH2Beta;
+    key[13][0]=LysCGamma;     key[13][1]=LysCDelta;
+    key[14][0]=LysCGamma;     key[14][1]=LysH1Gamma;
+    key[15][0]=LysCGamma;     key[15][1]=LysH2Gamma;
+    key[16][0]=LysCDelta;     key[16][1]=LysCEpsilon;
+    key[17][0]=LysCDelta;     key[17][1]=LysH1Delta;
+    key[18][0]=LysCDelta;     key[18][1]=LysH2Delta;
+    key[19][0]=LysCEpsilon;   key[19][1]=LysNZeta;
+    key[20][0]=LysCEpsilon;   key[20][1]=LysH1Epsilon;
+    key[21][0]=LysCEpsilon;   key[21][1]=LysH2Epsilon;
+    key[22][0]=LysNZeta;      key[22][1]=LysH1Zeta;
+    key[23][0]=LysNZeta;      key[23][1]=LysH2Zeta;
+    key[24][0]=LysNZeta;      key[24][1]=LysH3Zeta;
+    for(unsigned int i=0;i<AminoAcidLysNumberBonds;++i) {
+      key[i+AminoAcidLysNumberBonds][0]=key[i][1];
+      key[i+AminoAcidLysNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidMet],2,1,AminoAcidMetNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidMet].key,AminoAcidBonds[AminoAcidMet].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=MetCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=MetH3NAmino;
+    key[10][0]=MetCBeta;      key[10][1]=MetCGamma;
+    key[11][0]=MetCBeta;      key[11][1]=MetH1Beta;
+    key[12][0]=MetCBeta;      key[12][1]=MetH2Beta;
+    key[13][0]=MetCGamma;     key[13][1]=MetSDelta;
+    key[14][0]=MetCGamma;     key[14][1]=MetH1Gamma;
+    key[15][0]=MetCGamma;     key[15][1]=MetH2Gamma;
+    key[16][0]=MetSDelta;     key[16][1]=MetCEpsilon;
+    key[17][0]=MetCEpsilon;   key[17][1]=MetH1Epsilon;
+    key[18][0]=MetCEpsilon;   key[18][1]=MetH2Epsilon;
+    key[19][0]=MetCEpsilon;   key[19][1]=MetH3Epsilon;
+    for(unsigned int i=0;i<AminoAcidMetNumberBonds;++i) {
+      key[i+AminoAcidMetNumberBonds][0]=key[i][1];
+      key[i+AminoAcidMetNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidPhe],2,1,AminoAcidPheNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidPhe].key,AminoAcidBonds[AminoAcidPhe].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=PheCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=PheH3NAmino;
+    key[10][0]=PheCBeta;      key[10][1]=PheCRingGamma;
+    key[11][0]=PheCBeta;      key[11][1]=PheH1Beta;
+    key[12][0]=PheCBeta;      key[12][1]=PheH2Beta;
+    key[13][0]=PheCRingGamma; key[13][1]=PheC1RingDelta;
+    key[14][0]=PheCRingGamma; key[14][1]=PheC2RingDelta;
+    key[15][0]=PheC1RingDelta;key[15][1]=PheCRingEpsilonC1Delta;
+    key[16][0]=PheC1RingDelta;key[16][1]=PheHC1Delta;
+    key[17][0]=PheC2RingDelta;key[17][1]=PheCRingEpsilonC2Delta;
+    key[18][0]=PheC2RingDelta;key[18][1]=PheHC2Delta;
+    key[19][0]=PheCRingEpsilonC1Delta;    key[19][1]=PheCRingZeta;
+    key[20][0]=PheCRingEpsilonC1Delta;    key[20][1]=PheHC1Delta;
+    key[21][0]=PheCRingEpsilonC2Delta;    key[21][1]=PheCRingZeta;
+    key[22][0]=PheCRingEpsilonC2Delta;    key[22][1]=PheHC2Delta;
+    key[23][0]=PheCRingZeta;  key[23][1]=PheHCZeta;
+    for(unsigned int i=0;i<AminoAcidPheNumberBonds;++i) {
+      key[i+AminoAcidPheNumberBonds][0]=key[i][1];
+      key[i+AminoAcidPheNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidPro],2,1,AminoAcidProNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidPro].key,AminoAcidBonds[AminoAcidPro].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=ProCRingBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[10][0]=ProCRingBeta;  key[10][1]=ProCRingGammaCBeta;
+    key[11][0]=ProCRingBeta;  key[11][1]=ProH1CBeta;
+    key[12][0]=ProCRingBeta;  key[12][1]=ProH2CBeta;
+    key[13][0]=ProCRingGammaNAmino;   key[13][0]=ProCRingGammaCBeta;
+    key[14][0]=ProCRingGammaNAmino;   key[14][1]=ProH1CGammaNAmino;
+    key[15][0]=ProCRingGammaNAmino;   key[15][1]=ProH2CGammaNAmino;
+    key[16][0]=ProCRingGammaCBeta;    key[16][1]=ProH1CGammaCBeta;
+    key[17][0]=ProCRingGammaCBeta;    key[17][1]=ProH2CGammaCBeta;
+    for(unsigned int i=0;i<AminoAcidProNumberBonds;++i) {
+      key[i+AminoAcidProNumberBonds][0]=key[i][1];
+      key[i+AminoAcidProNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidSec],2,1,AminoAcidSecNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidSec].key,AminoAcidBonds[AminoAcidSec].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=SecCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=SecH3NAmino;
+    key[10][0]=SecCBeta;    key[10][1]=SecSeGamma;
+    key[11][0]=SecCBeta;    key[11][1]=SecH1Beta;
+    key[12][0]=SecCBeta;    key[12][1]=SecH2Beta;
+    key[13][0]=SecSeGamma;  key[13][1]=SecHGamma;
+    for(unsigned int i=0;i<AminoAcidSecNumberBonds;++i) {
+      key[i+AminoAcidSecNumberBonds][0]=key[i][1];
+      key[i+AminoAcidSecNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidSer],2,1,AminoAcidSerNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidSer].key,AminoAcidBonds[AminoAcidSer].size);
+    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;       key[1][1]=NAmino;
+    key[2][0]=CAlpha;       key[2][1]=HAlpha;
+    key[3][0]=CAlpha;       key[3][1]=SerCBeta;
+    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;       key[7][1]=H1NAmino;
+    key[8][0]=NAmino;       key[8][1]=H2NAmino;
+    key[9][0]=NAmino;       key[9][1]=SerH3NAmino;
+    key[10][0]=SerCBeta;    key[10][1]=SerOGamma;
+    key[11][0]=SerCBeta;    key[11][1]=SerH1Beta;
+    key[12][0]=SerCBeta;    key[12][1]=SerH2Beta;
+    key[13][0]=SerOGamma;   key[13][1]=SerHGamma;
+    for(unsigned int i=0;i<AminoAcidSerNumberBonds;++i) {
+      key[i+AminoAcidSerNumberBonds][0]=key[i][1];
+      key[i+AminoAcidSerNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidThr],2,1,AminoAcidThrNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidThr].key,AminoAcidBonds[AminoAcidThr].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=ThrCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=ThrH3NAmino;
+    key[10][0]=ThrCBeta;      key[10][1]=ThrOGamma;
+    key[11][0]=ThrCBeta;      key[11][1]=ThrCGamma;
+    key[12][0]=ThrCBeta;      key[12][1]=ThrHBeta;
+    key[13][0]=ThrOGamma;     key[13][1]=ThrHOGamma;
+    key[14][0]=ThrCGamma;     key[14][1]=ThrH1CGamma;
+    key[15][0]=ThrCGamma;     key[15][1]=ThrH2CGamma;
+    key[16][0]=ThrCGamma;     key[16][1]=ThrH3CGamma;
+    for(unsigned int i=0;i<AminoAcidThrNumberBonds;++i) {
+      key[i+AminoAcidThrNumberBonds][0]=key[i][1];
+      key[i+AminoAcidThrNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidTrp],2,1,AminoAcidTrpNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidTrp].key,AminoAcidBonds[AminoAcidTrp].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=TrpCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=TrpH3NAmino;
+    key[10][0]=TrpCBeta;      key[10][1]=TrpCGamma;
+    key[11][0]=TrpCBeta;      key[11][1]=TrpH1Beta;
+    key[12][0]=TrpCBeta;      key[12][1]=TrpH2Beta;
+    key[13][0]=TrpCGamma;     key[13][1]=TrpC1Delta;
+    key[14][0]=TrpCGamma;     key[14][1]=TrpC2Delta;
+    key[15][0]=TrpC1Delta;    key[15][1]=TrpNEpsilonC1Delta;
+    key[16][0]=TrpC1Delta;    key[16][1]=TrpHC1Delta;
+    key[17][0]=TrpC2Delta;    key[17][1]=TrpC1EpsilonC2Delta;
+    key[18][0]=TrpC2Delta;    key[18][1]=TrpC2EpsilonC2Delta;
+    key[19][0]=TrpNEpsilonC1Delta;    key[19][1]=TrpC1EpsilonC2Delta;
+    key[20][0]=TrpNEpsilonC1Delta;    key[20][1]=TrpHNEpsilon;
+    key[21][0]=TrpC1EpsilonC2Delta;   key[21][1]=TrpCZetaC1Epsilon;
+    key[22][0]=TrpC2EpsilonC2Delta;   key[22][1]=TrpCZetaC2Epsilon;
+    key[23][0]=TrpC2EpsilonC2Delta;   key[23][1]=TrpHC2Epsilon;
+    key[24][0]=TrpCZetaC1Epsilon;     key[24][1]=TrpCEta;
+    key[25][0]=TrpCZetaC1Epsilon;     key[25][1]=TrpHCZetaC1Epsilon;
+    key[26][0]=TrpCZetaC2Epsilon;     key[26][1]=TrpCEta;
+    key[27][0]=TrpCZetaC2Epsilon;     key[27][1]=TrpHCZetaC2Epsilon;
+    key[28][0]=TrpCEta;       key[28][1]=TrpHCEta;
+    for(unsigned int i=0;i<AminoAcidTrpNumberBonds;++i) {
+      key[i+AminoAcidTrpNumberBonds][0]=key[i][1];
+      key[i+AminoAcidTrpNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidTyr],2,1,AminoAcidTyrNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidTyr].key,AminoAcidBonds[AminoAcidTyr].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=TyrCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=TyrH3NAmino;
+    key[10][0]=TyrCBeta;      key[10][1]=TyrCRingGamma;
+    key[11][0]=TyrCBeta;      key[11][1]=TyrH1Beta;
+    key[12][0]=TyrCBeta;      key[12][1]=TyrH2Beta;
+    key[13][0]=TyrCRingGamma; key[13][1]=TyrC1RingDelta;
+    key[14][0]=TyrCRingGamma; key[14][1]=TyrC2RingDelta;
+    key[15][0]=TyrC1RingDelta;key[15][1]=TyrCRingEpsilonC1Delta;
+    key[16][0]=TyrC1RingDelta;key[16][1]=TyrHC1Delta;
+    key[17][0]=TyrC2RingDelta;key[17][1]=TyrCRingEpsilonC2Delta;
+    key[18][0]=TyrC2RingDelta;key[18][1]=TyrHC2Delta;
+    key[19][0]=TyrCRingEpsilonC1Delta;    key[19][1]=TyrCRingZeta;
+    key[20][0]=TyrCRingEpsilonC1Delta;    key[19][1]=TyrHCEpsilonC1Delta;
+    key[21][0]=TyrCRingEpsilonC2Delta;    key[19][1]=TyrCRingZeta;
+    key[22][0]=TyrCRingEpsilonC2Delta;    key[19][1]=TyrHCEpsilonC2Delta;
+    key[23][0]=TyrCRingZeta;  key[23][1]=TyrOEta;
+    key[24][0]=TyrOEta;       key[24][1]=TyrHOEta;
+    for(unsigned int i=0;i<AminoAcidTyrNumberBonds;++i) {
+      key[i+AminoAcidTyrNumberBonds][0]=key[i][1];
+      key[i+AminoAcidTyrNumberBonds][1]=key[i][0];
+    }
+
+    allocate(AminoAcidBonds[AminoAcidVal],2,1,AminoAcidValNumberBonds*2);
+    refer(key,
+          AminoAcidBonds[AminoAcidVal].key,AminoAcidBonds[AminoAcidVal].size);
+    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
+    key[1][0]=CAlpha;         key[1][1]=NAmino;
+    key[2][0]=CAlpha;         key[2][1]=HAlpha;
+    key[3][0]=CAlpha;         key[3][1]=ValCBeta;
+    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
+    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
+    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
+    key[7][0]=NAmino;         key[7][1]=H1NAmino;
+    key[8][0]=NAmino;         key[8][1]=H2NAmino;
+    key[9][0]=NAmino;         key[9][1]=ValH3NAmino;
+    key[10][0]=ValCBeta;      key[10][1]=ValC1Gamma;
+    key[11][0]=ValCBeta;      key[11][1]=ValC2Gamma;
+    key[12][0]=ValCBeta;      key[12][1]=ValHBeta;
+    key[13][0]=ValC1Gamma;    key[13][1]=ValH1C1Gamma;
+    key[14][0]=ValC1Gamma;    key[14][1]=ValH2C1Gamma;
+    key[15][0]=ValC1Gamma;    key[15][1]=ValH3C1Gamma;
+    key[16][0]=ValC2Gamma;    key[16][1]=ValH1C2Gamma;
+    key[17][0]=ValC2Gamma;    key[17][1]=ValH2C2Gamma;
+    key[18][0]=ValC2Gamma;    key[18][1]=ValH3C2Gamma;
+    for(unsigned int i=0;i<AminoAcidValNumberBonds;++i) {
+      key[i+AminoAcidValNumberBonds][0]=key[i][1];
+      key[i+AminoAcidValNumberBonds][1]=key[i][0];
+    }
+
   }
 
 }

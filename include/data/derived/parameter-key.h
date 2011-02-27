@@ -66,6 +66,10 @@ namespace std {
     refer(K.hash,rK.hash);
   }
 
+  void imprint(ParameterKey& K, const ParameterKey& cK) {
+    allocate(K,cK.size);
+  }
+
   int compare(const ParameterKey& KA, const ParameterKey& KB) {
     for(int i=0;i<3;++i)
       if(KA.hash[i]!=KB.hash[i]) return (KA.hash[i]>KB.hash[i]?1:-1);

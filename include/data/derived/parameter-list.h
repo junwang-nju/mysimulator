@@ -165,6 +165,18 @@ namespace std {
     allocate(L,ksize.data,vsize.data,ksize.size);
   }
 
+  void imprint(ParameterList& L, const ParameterList& cL) {
+    assert(IsAvailable(cL));
+    Vector<unsigned int> ksz,vsz;
+    allocate(ksz,cL.size);
+    allocate(vsz,cL.size);
+    for(unsigned int i=0;i<cL.size;++i) {
+      ksz[i]=cL.key[i].size;
+      vsz[i]=cL.value[i].size;
+    }
+    allocate(L,ksz,vsz);
+  }
+
   const ParameterValue* get(const ParameterList& L,
                             const unsigned int* idx, const unsigned int nidx,
                             const int off=iZero, const long step=iOne) {

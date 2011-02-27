@@ -13,13 +13,11 @@ namespace std {
 
     Vector<PropertyList<double> > Coordinate;
     Vector<unsigned int> AtomName;
-    Vector<unsigned int> AminoAcidName;
-    PropertyList<int> AminoAcidAtomID;
-    PropertyList<unsigned int> BondID;
+    Vector<unsigned int> UnitName;
+    PropertyList<int> UnitAtomID;
+    ParameterList UnitBond;
 
-    PDBInfo()
-      : Coordinate(), AtomName(), AminoAcidName(), AminoAcidAtomID(), BondID(){
-    }
+    PDBInfo() : Coordinate(), AtomName(), Unit(), UnitAtomID(), UnitBond() {}
     PDBInfo(const PDBInfo&) { Error("Cannot create PDB Information"); }
     PDBInfo& operator=(const PDBInfo&) {
       Error("Cannot copy PDB Information");
@@ -31,15 +29,15 @@ namespace std {
 
   bool IsAvailable(const PDBInfo& PI) {
     return IsAvailable(PI.Coordinate)&&IsAvailable(PI.AtomName)&&
-           IsAvailable(PI.AminoAcidName)&&IsAvailable(PI.AminoAcidAtomID)&&
-           IsAvailable(PI.BondID);
+           IsAvailable(PI.UnitName)&&IsAvailable(PI.UnitAtomID)&&
+           IsAvailable(PI.UnitBond);
   }
   void release(PDBInfo& PI) {
     release(PI.Coordinate);
     release(PI.AtomName);
-    release(PI.AminoAcidName);
-    release(PI.AminoAcidAtomID);
-    release(PI.BondID);
+    release(PI.UnitName);
+    release(PI.UnitAtomID);
+    release(PI.UnitBond);
   }
   void imprint(PDBInfo& PI, const PDBInfo& cPI) {
     assert(IsAvailable(cPI));
@@ -48,9 +46,9 @@ namespace std {
     for(unsigned int i=0;i<PI.Coordinate.size;++i)
       imprint(PI.Coordinate[i],cPI.Coordinate[i]);
     imprint(PI.AtomName,cPI.AtomName);
-    imprint(PI.AminoAcidName,cPI.AminoAcidName);
-    imprint(PI.AminoAcidAtomID,cPI.AminoAcidAtomID);
-    imprint(PI.BondID,cPI.BondID);
+    imprint(PI.UnitName,cPI.UnitName);
+    imprint(PI.UnitAtomID,cPI.UnitAtomID);
+    imprint(PI.UnitBond,cPI.UnitBond);
   }
   void copy(PDBInfo& PI, const PDBInfo& cPI) {
     imprint(PI,cPI);
