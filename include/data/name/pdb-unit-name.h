@@ -423,7 +423,167 @@ namespace std {
   static PDBUnitNameMapper  UnitAtomNameLibrary;
   
   void InitNameLibrary() {
-    allocate(UnitNameLibrary,60);
+    allocate(UnitNameLibrary,63);
+    Set(UnitNameLibrary, 0,"ALA    ",AminoAcidAla);
+    Set(UnitNameLibrary, 1,"Ala    ",AminoAcidAla);
+    Set(UnitNameLibrary, 2,"A      ",AminoAcidAla);
+    Set(UnitNameLibrary, 3,"ARG    ",AminoAcidArg);
+    Set(UnitNameLibrary, 4,"Arg    ",AminoAcidArg);
+    Set(UnitNameLibrary, 5,"R      ",AminoAcidArg);
+    Set(UnitNameLibrary, 6,"ASN    ",AminoAcidAsn);
+    Set(UnitNameLibrary, 7,"Asn    ",AminoAcidAsn);
+    Set(UnitNameLibrary, 8,"N      ",AminoAcidAsn);
+    Set(UnitNameLibrary, 9,"ASP    ",AminoAcidAsp);
+    Set(UnitNameLibrary,10,"Asp    ",AminoAcidAsp);
+    Set(UnitNameLibrary,11,"D      ",AminoAcidAsp);
+    Set(UnitNameLibrary,12,"CYS    ",AminoAcidCys);
+    Set(UnitNameLibrary,13,"Cys    ",AminoAcidCys);
+    Set(UnitNameLibrary,14,"C      ",AminoAcidCys);
+    Set(UnitNameLibrary,15,"GLN    ",AminoAcidGln);
+    Set(UnitNameLibrary,16,"Gln    ",AminoAcidGln);
+    Set(UnitNameLibrary,17,"Q      ",AminoAcidGln);
+    Set(UnitNameLibrary,18,"GLU    ",AminoAcidGlu);
+    Set(UnitNameLibrary,19,"Glu    ",AminoAcidGlu);
+    Set(UnitNameLibrary,20,"E      ",AminoAcidGlu);
+    Set(UnitNameLibrary,21,"GLY    ",AminoAcidGly);
+    Set(UnitNameLibrary,22,"Gly    ",AminoAcidGly);
+    Set(UnitNameLibrary,23,"G      ",AminoAcidGly);
+    Set(UnitNameLibrary,24,"HIS    ",AminoAcidHis);
+    Set(UnitNameLibrary,25,"His    ",AminoAcidHis);
+    Set(UnitNameLibrary,26,"H      ",AminoAcidHis);
+    Set(UnitNameLibrary,27,"ILE    ",AminoAcidIle);
+    Set(UnitNameLibrary,28,"Ile    ",AminoAcidIle);
+    Set(UnitNameLibrary,29,"I      ",AminoAcidIle);
+    Set(UnitNameLibrary,30,"LEU    ",AminoAcidLeu);
+    Set(UnitNameLibrary,31,"Leu    ",AminoAcidLeu);
+    Set(UnitNameLibrary,32,"L      ",AminoAcidLeu);
+    Set(UnitNameLibrary,33,"LYS    ",AminoAcidLys);
+    Set(UnitNameLibrary,34,"Lys    ",AminoAcidLys);
+    Set(UnitNameLibrary,35,"K      ",AminoAcidLys);
+    Set(UnitNameLibrary,36,"MET    ",AminoAcidMet);
+    Set(UnitNameLibrary,37,"Met    ",AminoAcidMet);
+    Set(UnitNameLibrary,38,"M      ",AminoAcidMet);
+    Set(UnitNameLibrary,39,"PHE    ",AminoAcidPhe);
+    Set(UnitNameLibrary,40,"Phe    ",AminoAcidPhe);
+    Set(UnitNameLibrary,41,"F      ",AminoAcidPhe);
+    Set(UnitNameLibrary,42,"PRO    ",AminoAcidPro);
+    Set(UnitNameLibrary,43,"Pro    ",AminoAcidPro);
+    Set(UnitNameLibrary,44,"P      ",AminoAcidPro);
+    Set(UnitNameLibrary,45,"SEC    ",AminoAcidSec);
+    Set(UnitNameLibrary,46,"Sec    ",AminoAcidSec);
+    Set(UnitNameLibrary,47,"U      ",AminoAcidSec);
+    Set(UnitNameLibrary,48,"SER    ",AminoAcidSer);
+    Set(UnitNameLibrary,49,"Ser    ",AminoAcidSer);
+    Set(UnitNameLibrary,50,"S      ",AminoAcidSer);
+    Set(UnitNameLibrary,51,"THR    ",AminoAcidThr);
+    Set(UnitNameLibrary,52,"Thr    ",AminoAcidThr);
+    Set(UnitNameLibrary,53,"T      ",AminoAcidThr);
+    Set(UnitNameLibrary,54,"TRP    ",AminoAcidTrp);
+    Set(UnitNameLibrary,55,"Trp    ",AminoAcidTrp);
+    Set(UnitNameLibrary,56,"W      ",AminoAcidTrp);
+    Set(UnitNameLibrary,57,"TYR    ",AminoAcidTyr);
+    Set(UnitNameLibrary,58,"Tyr    ",AminoAcidTyr);
+    Set(UnitNameLibrary,59,"Y      ",AminoAcidTyr);
+    Set(UnitNameLibrary,60,"VAL    ",AminoAcidVal);
+    Set(UnitNameLibrary,61,"Val    ",AminoAcidVal);
+    Set(UnitNameLibrary,62,"V      ",AminoAcidVal);
+    UnitNameLibrary.update();
+    allocate(UnitAtomNameLibrary,);
+    Set(UnitAtomNameLibrary,  0,"    CA ",CAlpha);
+    Set(UnitAtomNameLibrary,  1,"    C  ",CCarbonyl);
+    Set(UnitAtomNameLibrary,  2,"    O  ",OCarbonyl);
+    Set(UnitAtomNameLibrary,  3,"    OXT",OCarboxyl);
+    Set(UnitAtomNameLibrary,  5,"    N  ",NAmino);
+    Set(UnitAtomNameLibrary,  4,"    HA ",HAlpha);
+    Set(UnitAtomNameLibrary,  6,"    HXT",HOCarboxyl);
+    Set(UnitAtomNameLibrary,  7,"    H  ",H1NAmino);
+    Set(UnitAtomNameLibrary,  8,"    H1 ",H1NAmino);
+    Set(UnitAtomNameLibrary,  9,"    H2 ",H2NAmino);
+    Set(UnitAtomNameLibrary, 10,"ALA CB ",AlaCBeta);
+    Set(UnitAtomNameLibrary, 11,"ALA HB1",AlaH1Beta);
+    Set(UnitAtomNameLibrary, 12,"ALA HB2",AlaH2Beta);
+    Set(UnitAtomNameLibrary, 13,"ALA HB3",AlaH3Beta);
+    Set(UnitAtomNameLibrary, 14,"ALA H3 ",AlaH3NAmino);
+    Set(UnitAtomNameLibrary, 15,"ARG CB ",ArgCBeta);
+    Set(UnitAtomNameLibrary, 16,"ARG CG ",ArgCGamma);
+    Set(UnitAtomNameLibrary, 17,"ARG CD ",ArgCDelta);
+    Set(UnitAtomNameLibrary, 18,"ARG NE ",ArgNEpsilon);
+    Set(UnitAtomNameLibrary, 19,"ARG CZ ",ArgCZeta);
+    Set(UnitAtomNameLibrary, 20,"ARG NH1",ArgN1Eta);
+    Set(UnitAtomNameLibrary, 21,"ARG NH2",ArgN2Eta);
+    Set(UnitAtomNameLibrary, 22,"ARG HB2",ArgH1Beta);
+    Set(UnitAtomNameLibrary, 23,"ARG HB3",ArgH2Beta);
+    Set(UnitAtomNameLibrary, 24,"ARG HG2",ArgH1Gamma);
+    Set(UnitAtomNameLibrary, 25,"ARG HG3",ArgH2Gamma);
+    Set(UnitAtomNameLibrary, 26,"ARG HD2",ArgH1Delta);
+    Set(UnitAtomNameLibrary, 27,"ARG HD3",ArgH2Delta);
+    Set(UnitAtomNameLibrary, 28,"ARG HE ",ArgHEpsilon);
+    Set(UnitAtomNameLibrary, 29,"ARGHH11",ArgH1N1Eta);
+    Set(UnitAtomNameLibrary, 30,"ARGHH12",ArgH2N1Eta);
+    Set(UnitAtomNameLibrary, 31,"ARGHH21",ArgH1N2Eta);
+    Set(UnitAtomNameLibrary, 32,"ARGHH22",ArgH2N2Eta);
+    Set(UnitAtomNameLibrary, 33,"ARG H3 ",ArgH3NAmino);
+    Set(UnitAtomNameLibrary, 34,"ASN CB ",AsnCBeta);
+    Set(UnitAtomNameLibrary, 35,"ASN CG ",AsnCCarbonylGamma);
+    Set(UnitAtomNameLibrary, 36,"ASN OD1",AsnOCarbonylDelta);
+    Set(UnitAtomNameLibrary, 37,"ASN ND2",AsnNDelta);
+    Set(UnitAtomNameLibrary, 38,"ASN HB2",AsnH1Beta);
+    Set(UnitAtomNameLibrary, 39,"ASN HB3",AsnH2Beta);
+    Set(UnitAtomNameLibrary, 40,"ASNHD21",AsnH1NDelta);
+    Set(UnitAtomNameLibrary, 41,"ASNHD22",AsnH2NDelta);
+    Set(UnitAtomNameLibrary, 42,"ASP CB ",AspCBeta);
+    Set(UnitAtomNameLibrary, 43,"ASP CG ",AspCCarbonylGamma);
+    Set(UnitAtomNameLibrary, 44,"ASP OD1",AspO1Delta);
+    Set(UnitAtomNameLibrary, 45,"ASP OD2",AspO2Delta);
+    Set(UnitAtomNameLibrary, 46,"ASP HB2",AspH1Beta);
+    Set(UnitAtomNameLibrary, 47,"ASP HB3",AspH2Beta);
+    Set(UnitAtomNameLibrary, 48,"ASP H3 ",AspH3NAmino);
+    Set(UnitAtomNameLibrary, 49,"CYS CB ",CysCBeta);
+    Set(UnitAtomNameLibrary, 50,"CYS SG ",CysSGamma);
+    Set(UnitAtomNameLibrary, 51,"CYS HB2",CysH1Beta);
+    Set(UnitAtomNameLibrary, 52,"CYS HB3",CysH2Beta);
+    Set(UnitAtomNameLibrary, 53,"CYS HG ",CysHGamma);
+    Set(UnitAtomNameLibrary, 54,"CYS H3 ",CysH3NAmino);
+    Set(UnitAtomNameLibrary, 55,"GLN CB ",GlnCBeta);
+    Set(UnitAtomNameLibrary, 56,"GLN CG ",GlnCGamma);
+    Set(UnitAtomNameLibrary, 57,"GLN CD ",GlnCCarbonylDelta);
+    Set(UnitAtomNameLibrary, 58,"GLN OE1",GlnOCarbonylEpsilon);
+    Set(UnitAtomNameLibrary, 59,"GLN NE2",GlnNEpsilon);
+    Set(UnitAtomNameLibrary, 60,"GLN HB2",GlnH1Beta);
+    Set(UnitAtomNameLibrary, 61,"GLN HB3",GlnH2Beta);
+    Set(UnitAtomNameLibrary, 62,"GLN HG2",GlnH1Gamma);
+    Set(UnitAtomNameLibrary, 63,"GLN HG3",GlnH2Gamma);
+    Set(UnitAtomNameLibrary, 64,"GLNHE21",GlnH1NEpsilon);
+    Set(UnitAtomNameLibrary, 65,"GLNHE22",GlnH2NEpsilon);
+    Set(UnitAtomNameLibrary, 66,"GLN H3 ",GlnH3NAmino);
+    Set(UnitAtomNameLibrary, 67,"GLY HA2",HAlpha);
+    Set(UnitAtomNameLibrary, 68,"GLY HA3",GlyH2Alpha);
+    Set(UnitAtomNameLibrary, 69,"GLY H3 ",GlnH3NAmino);
+    Set(UnitAtomNameLibrary, 70,"HIS CB ",HisCBeta);
+    Set(UnitAtomNameLibrary, 71,"HIS CG ",HisCRingGamma);
+
+    HisCRingDelta,
+    HisNRingDelta,
+    HisNRingEpsilonCDelta,
+    HisCRingEpsilonNDelta,
+    HisH1Beta,
+    HisH2Beta,
+    HisHCDelta,
+    HisHNDelta,
+    HisHNEpsilon,
+    HisHCEpsilon,
+    HisH3NAmino,
+    Set(UnitAtomNameLibrary, 10,"LEU CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 11,"LYS CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 12,"MET CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 13,"PHE CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 14,"PRO CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 15,"SEC CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 16,"SER CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 17,"THR CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 18,"TRP CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 19,"TYR CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 20,"VAL CA ",CAlpha);
   }
 
 }

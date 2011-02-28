@@ -61,13 +61,9 @@ namespace std {
     return 0;
   }
 
-  void Set(PDBUnitKey& K, const char* resname) {
-    strncpy(K.data,resname,3);
-  }
-
-  void Set(PDBUnitKey& K, const char *resname, const char *atomname) {
-    strncpy(K.data,resname,3);
-    strncpy(K.data+3,atomname,4);
+  void Set(PDBUnitKey& K, const char* uname) {
+    strncpy(K.data,uname,7);
+    K.update();
   }
 
   typedef unsigned int  PDBUnitNameValueType;
@@ -79,6 +75,24 @@ namespace std {
     M.key=new PDBUnitKey[nitem];
     for(unsigned int i=0;i<nitem;++i) allocate(M.key[i]);
     M.value=new PDBUnitNameValueType[nitem];
+  }
+
+  void Set(PDBUnitNameMapper& M,const unsigned int n,
+           const char* uname, const unsigned int resid) {
+    Set(M.key[n],uname);
+    M.value[n]=resid;
+  }
+
+  const PDBUnitNameValueType* get(PDBUnitNameMapper& M, const char* keyname) {
+    static PDBUnitKey K;
+    allocate(K);
+    strncpy(K.data,keyname,7);
+    K.update();
+    return get(M,K);
+  }
+
+  const PDBUnitNameValueType* get(PDBUnitNameMapper& M, const Vector<char>& k){
+    return get(M,k.data);
   }
 
 }
