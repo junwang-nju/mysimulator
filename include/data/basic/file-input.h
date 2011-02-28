@@ -37,9 +37,10 @@ namespace std {
     }
     FileInput& read(bool& b) {
       assert(IsAvailable(fpoint));
-      int i=1;
-      fscanf(fpoint,"%d",&i);
-      b=(i==0?false:true);
+      int n,i=1;
+      n=fscanf(fpoint,"%d",&i);
+      if(n==1)  b=(i==0?false:true);
+      else SetState(FailBit);
       return *this;
     }
     FileInput& read(char& c) { return __read("%c",c); }
@@ -106,6 +107,7 @@ namespace std {
     allocate(static_cast<InputBase&>(I));
     I.fpoint=fopen(fname,fmode);
     I.rflag=false;
+    if(I.fpoint==NULL)  I.SetState(FailBit);
   }
 
 }

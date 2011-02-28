@@ -4,72 +4,12 @@
 
 #include "data/derived/parameter-key.h"
 #include "data/basic/unique-parameter.h"
-#include "data/basic/btree.h"
+#include "data/basic/mapper.h"
 
 namespace std {
 
   typedef Vector<UniqueParameter> ParameterValue;
-  typedef BTree<ParameterKey,ParameterValue>  ParameterTreeType;
-
-  struct ParameterList : public Vector<ParameterTreeType> {
-    typedef ParameterList   Type;
-    typedef Vector<ParameterTreeType> ParentType;
-
-    unsigned int size;
-    ParameterKey* key;
-    ParameterValue* value;
-
-    ParameterList() : ParentType(), size(0), key(NULL), value(NULL) {}
-    ParameterList(const Type& L) { Error("Cannot create Parameter List"); }
-    Type& operator=(const Type& L) {
-      Error("Cannot copy Parameter List");
-      return *this;
-    }
-    ~ParameterList() { release(*this); }
-
-    void update() {
-      IsAvailable(static_cast<ParentType&>(*this));
-      for(unsigned int i=0;i<0xFFFFU;++i) release(this->operator[](i));
-      for(unsigned int i=0;i<size;++i)
-        insert(this->operator[]((key[i].hash[0]&0xFFFF0000U)>>16),
-               key[i],value[i]);
-    }    
-
-  };
-
-  bool IsAvailable(const ParameterList& L) {
-    return IsAvailable(static_cast<const Vector<ParameterTreeType>&>(L));
-  }
-
-  void release(ParameterList& L) {
-    L.size=0;
-    if(L.state==Allocated) {
-      safe_delete_array(L.key);
-      safe_delete_array(L.value);
-    } else { L.key=NULL; L.value=NULL; }
-    release(static_cast<Vector<ParameterTreeType>&>(L));
-  }
-
-  void copy(ParameterList& L, const ParameterList& cL) {
-    assert(IsAvailable(L));
-    assert(IsAvailable(cL));
-    int n=(L.size<cL.size?L.size:cL.size);
-    for(int i=0;i<n;++i) {
-      copy(L.key[i],cL.key[i]);
-      copy(L.value[i],cL.value[i]);
-    }
-    L.update();
-  }
-
-  void refer(ParameterList& L, const ParameterList& rL) {
-    assert(IsAvailable(rL));
-    release(L);
-    L.size=rL.size;
-    L.key=rL.key;
-    L.value=rL.value;
-    refer(static_cast<Vector<ParameterTreeType>&>(L),
-          static_cast<const Vector<ParameterTreeType>&>(rL));
-  }
+  typedef Mapper<ParameterKey,ParameterValue> ParameterList;
 
   template <typename T>
   void allocateKeyValue(T*& item,
@@ -91,6 +31,8 @@ namespace std {
   void allocateKeyValue(T*& item, const Vector<unsigned int>& size) {
     allocateKeyValue(item,size.data,size.size);
   }
+
+  typedef BTree<ParameterKey,ParameterValue>  ParameterTreeType;
 
   void allocate(ParameterList& L,
                 const unsigned int ksize, const unsigned int vsize,
@@ -187,7 +129,7 @@ namespace std {
            const_cast<long*>(&step),reinterpret_cast<float*>(K.data),
            const_cast<long*>(&lOne));
     K.update();
-    return get(L[(K.hash[0]&0xFFFF0000U)>>16],K);
+    return get(L,K);
   }
 
   const ParameterValue* get(const ParameterList& L,

@@ -85,7 +85,7 @@ namespace std {
     HOCarboxyl,
     H1NAmino,
     H2NAmino,
-    AminoAcidNumberCommonAtoms
+    AminoAcidNumberCommonAtoms,
   };
   
   enum AminoAcidAlaAtomName {
@@ -412,6 +412,19 @@ namespace std {
     ValH3NAmino,
     AminoAcidValNumberAtoms
   };
+
+}
+
+#include "data/pdb/unit-name-mapper.h"
+
+namespace std {
+  
+  static PDBUnitNameMapper  UnitNameLibrary;
+  static PDBUnitNameMapper  UnitAtomNameLibrary;
+  
+  void InitNameLibrary() {
+    allocate(UnitNameLibrary,60);
+  }
 
 }
 
@@ -1234,6 +1247,8 @@ namespace std {
       key[i+AminoAcidValNumberBonds][0]=key[i][1];
       key[i+AminoAcidValNumberBonds][1]=key[i][0];
     }
+
+    for(unsigned int i=0;i<NumberAminoAcids;++i)  AminoAcidBonds[i].update();
 
   }
 

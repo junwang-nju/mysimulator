@@ -29,7 +29,7 @@ int main() {
     PL.key[i][1]=i;
     PL.key[i][2]=i+1;
     PL.key[i][3]=i+1;
-    PL.key[i].update();
+    //PL.key[i].update();
     PL.value[i][0].d=123.45*i+34.789;
     PL.value[i][1].u=12345+i*87;
   }
