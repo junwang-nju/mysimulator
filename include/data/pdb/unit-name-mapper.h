@@ -4,6 +4,7 @@
 
 #include "data/basic/mapper.h"
 #include "operation/basic/hash-func.h"
+#include <cstring>
 
 namespace std {
 

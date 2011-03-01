@@ -68,7 +68,9 @@ namespace std {
     AminoAcidT=AminoAcidThr,
     AminoAcidW=AminoAcidTrp,
     AminoAcidY=AminoAcidTyr,
-    AminoAcidV=AminoAcidVal
+    AminoAcidV=AminoAcidVal,
+    AminoAcidCSE=AminoAcidSec,
+    AminoAcidCse=AminoAcidSec,
   };
 
   static const char AminoAcidStringName[][4]={
@@ -416,13 +418,42 @@ namespace std {
 }
 
 #include "data/pdb/unit-name-mapper.h"
+#include "operation/basic/vector-op.h"
 
 namespace std {
   
+  static Vector<unsigned int> AminoAcidNumberAtoms;
+  
+  void InitAminoAcidNumberAtoms() {
+    allocate(AminoAcidNumberAtoms,NumberAminoAcids);
+    AminoAcidNumberAtoms[AminoAcidAla]=AminoAcidAlaNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidArg]=AminoAcidArgNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidAsn]=AminoAcidAsnNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidAsp]=AminoAcidAspNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidCys]=AminoAcidCysNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidGln]=AminoAcidGlnNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidGlu]=AminoAcidGluNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidGly]=AminoAcidGlyNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidHis]=AminoAcidHisNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidIle]=AminoAcidIleNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidLeu]=AminoAcidLeuNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidLys]=AminoAcidLysNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidMet]=AminoAcidMetNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidPhe]=AminoAcidPheNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidPro]=AminoAcidProNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidSec]=AminoAcidSecNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidSer]=AminoAcidSerNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidThr]=AminoAcidThrNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidTrp]=AminoAcidTrpNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidTyr]=AminoAcidTyrNumberAtoms;
+    AminoAcidNumberAtoms[AminoAcidVal]=AminoAcidValNumberAtoms;
+  }
+
   static PDBUnitNameMapper  UnitNameLibrary;
   static PDBUnitNameMapper  UnitAtomNameLibrary;
   
   void InitNameLibrary() {
+    if(!IsAvailable(AminoAcidNumberAtoms))  InitAminoAcidNumberAtoms();
     allocate(UnitNameLibrary,63);
     Set(UnitNameLibrary, 0,"ALA    ",AminoAcidAla);
     Set(UnitNameLibrary, 1,"Ala    ",AminoAcidAla);
@@ -488,7 +519,7 @@ namespace std {
     Set(UnitNameLibrary,61,"Val    ",AminoAcidVal);
     Set(UnitNameLibrary,62,"V      ",AminoAcidVal);
     UnitNameLibrary.update();
-    allocate(UnitAtomNameLibrary,);
+    allocate(UnitAtomNameLibrary,asum(AminoAcidNumberAtoms));
     Set(UnitAtomNameLibrary,  0,"    CA ",CAlpha);
     Set(UnitAtomNameLibrary,  1,"    C  ",CCarbonyl);
     Set(UnitAtomNameLibrary,  2,"    O  ",OCarbonyl);
@@ -561,29 +592,167 @@ namespace std {
     Set(UnitAtomNameLibrary, 69,"GLY H3 ",GlnH3NAmino);
     Set(UnitAtomNameLibrary, 70,"HIS CB ",HisCBeta);
     Set(UnitAtomNameLibrary, 71,"HIS CG ",HisCRingGamma);
-
-    HisCRingDelta,
-    HisNRingDelta,
-    HisNRingEpsilonCDelta,
-    HisCRingEpsilonNDelta,
-    HisH1Beta,
-    HisH2Beta,
-    HisHCDelta,
-    HisHNDelta,
-    HisHNEpsilon,
-    HisHCEpsilon,
-    HisH3NAmino,
-    Set(UnitAtomNameLibrary, 10,"LEU CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 11,"LYS CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 12,"MET CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 13,"PHE CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 14,"PRO CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 15,"SEC CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 16,"SER CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 17,"THR CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 18,"TRP CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 19,"TYR CA ",CAlpha);
-    Set(UnitAtomNameLibrary, 20,"VAL CA ",CAlpha);
+    Set(UnitAtomNameLibrary, 72,"HIS ND1",HisNRingDelta);
+    Set(UnitAtomNameLibrary, 73,"HIS CD2",HisCRingDelta);
+    Set(UnitAtomNameLibrary, 74,"HIS CE1",HisCRingEpsilonNDelta);
+    Set(UnitAtomNameLibrary, 75,"HIS NE2",HisNRingEpsilonCDelta);
+    Set(UnitAtomNameLibrary, 76,"HIS HB2",HisH1Beta);
+    Set(UnitAtomNameLibrary, 77,"HIS HB3",HisH2Beta);
+    Set(UnitAtomNameLibrary, 78,"HIS HD1",HisHNDelta);
+    Set(UnitAtomNameLibrary, 79,"HIS HD2",HisHCDelta);
+    Set(UnitAtomNameLibrary, 80,"HIS HE1",HisHCEpsilon);
+    Set(UnitAtomNameLibrary, 81,"HIS HE2",HisHNEpsilon);
+    Set(UnitAtomNameLibrary, 82,"HIS H3 ",HisH3NAmino);
+    Set(UnitAtomNameLibrary, 83,"ILE CB ",IleCBeta);
+    Set(UnitAtomNameLibrary, 84,"ILE CG1",IleC1Gamma);
+    Set(UnitAtomNameLibrary, 85,"ILE CG2",IleC2Gamma);
+    Set(UnitAtomNameLibrary, 86,"ILE CD1",IleCDeltaC1Gamma);
+    Set(UnitAtomNameLibrary, 87,"ILE HB ",IleHBeta);
+    Set(UnitAtomNameLibrary, 88,"ILEHG12",IleH1C1Gamma);
+    Set(UnitAtomNameLibrary, 89,"ILEHG13",IleH2C1Gamma);
+    Set(UnitAtomNameLibrary, 90,"ILEHG21",IleH1C2Gamma);
+    Set(UnitAtomNameLibrary, 91,"ILEHG22",IleH2C2Gamma);
+    Set(UnitAtomNameLibrary, 92,"ILEHG23",IleH3C2Gamma);
+    Set(UnitAtomNameLibrary, 93,"ILEHD11",IleH1CDelta);
+    Set(UnitAtomNameLibrary, 94,"ILEHD12",IleH2CDelta);
+    Set(UnitAtomNameLibrary, 95,"ILEHD13",IleH3CDelta);
+    Set(UnitAtomNameLibrary, 96,"ILE H3 ",IleH3NAmino);
+    Set(UnitAtomNameLibrary, 97,"LEU CB ",LeuCBeta);
+    Set(UnitAtomNameLibrary, 98,"LEU CG ",LeuCGamma);
+    Set(UnitAtomNameLibrary, 99,"LEU CD1",LeuC1Delta);
+    Set(UnitAtomNameLibrary,100,"LEU CD2",LeuC2Delta);
+    Set(UnitAtomNameLibrary,101,"LEU HB2",LeuH1Beta);
+    Set(UnitAtomNameLibrary,102,"LEU HB3",LeuH2Beta);
+    Set(UnitAtomNameLibrary,103,"LEU HG ",LeuHGamma);
+    Set(UnitAtomNameLibrary,104,"LEUHD11",LeuH1C1Delta);
+    Set(UnitAtomNameLibrary,105,"LEUHD12",LeuH2C1Delta);
+    Set(UnitAtomNameLibrary,106,"LEUHD13",LeuH3C1Delta);
+    Set(UnitAtomNameLibrary,107,"LEUHD21",LeuH1C2Delta);
+    Set(UnitAtomNameLibrary,108,"LEUHD22",LeuH2C2Delta);
+    Set(UnitAtomNameLibrary,109,"LEUHD23",LeuH3C2Delta);
+    Set(UnitAtomNameLibrary,110,"LEU H3 ",LeuH3NAmino);
+    Set(UnitAtomNameLibrary,111,"LYS CB ",LysCBeta);
+    Set(UnitAtomNameLibrary,112,"LYS CB ",LysCBeta);
+    Set(UnitAtomNameLibrary,113,"LYS CG ",LysCGamma);
+    Set(UnitAtomNameLibrary,114,"LYS CD ",LysCDelta);
+    Set(UnitAtomNameLibrary,115,"LYS CE ",LysCEpsilon);
+    Set(UnitAtomNameLibrary,116,"LYS NZ ",LysNZeta);
+    Set(UnitAtomNameLibrary,117,"LYS HB2",LysH1Beta);
+    Set(UnitAtomNameLibrary,118,"LYS HB3",LysH2Beta);
+    Set(UnitAtomNameLibrary,119,"LYS HG2",LysH1Gamma);
+    Set(UnitAtomNameLibrary,120,"LYS HG3",LysH2Gamma);
+    Set(UnitAtomNameLibrary,121,"LYS HD2",LysH1Delta);
+    Set(UnitAtomNameLibrary,122,"LYS HD3",LysH2Delta);
+    Set(UnitAtomNameLibrary,123,"LYS HE2",LysH1Epsilon);
+    Set(UnitAtomNameLibrary,124,"LYS HE3",LysH2Epsilon);
+    Set(UnitAtomNameLibrary,125,"LYS HZ1",LysH1Zeta);
+    Set(UnitAtomNameLibrary,126,"LYS HZ2",LysH2Zeta);
+    Set(UnitAtomNameLibrary,127,"LYS HZ3",LysH3Zeta);
+    Set(UnitAtomNameLibrary,128,"LYS H3 ",LysH3NAmino);
+    Set(UnitAtomNameLibrary,129,"MET CB ",MetCBeta);
+    Set(UnitAtomNameLibrary,130,"MET CG ",MetCGamma);
+    Set(UnitAtomNameLibrary,131,"MET SD ",MetSDelta);
+    Set(UnitAtomNameLibrary,132,"MET CE ",MetCEpsilon);
+    Set(UnitAtomNameLibrary,133,"MET HB2",MetH1Beta);
+    Set(UnitAtomNameLibrary,134,"MET HB3",MetH2Beta);
+    Set(UnitAtomNameLibrary,135,"MET HG2",MetH1Gamma);
+    Set(UnitAtomNameLibrary,136,"MET HG3",MetH2Gamma);
+    Set(UnitAtomNameLibrary,137,"MET HE1",MetH1Epsilon);
+    Set(UnitAtomNameLibrary,138,"MET HE2",MetH2Epsilon);
+    Set(UnitAtomNameLibrary,139,"MET HE3",MetH3Epsilon);
+    Set(UnitAtomNameLibrary,140,"MET H3 ",MetH3NAmino);
+    Set(UnitAtomNameLibrary,141,"PHE CB ",PheCBeta);
+    Set(UnitAtomNameLibrary,142,"PHE CG ",PheCRingGamma);
+    Set(UnitAtomNameLibrary,143,"PHE CD1",PheC1RingDelta);
+    Set(UnitAtomNameLibrary,144,"PHE CD2",PheC2RingDelta);
+    Set(UnitAtomNameLibrary,145,"PHE CE1",PheCRingEpsilonC1Delta);
+    Set(UnitAtomNameLibrary,146,"PHE CE2",PheCRingEpsilonC2Delta);
+    Set(UnitAtomNameLibrary,147,"PHE CZ ",PheCRingZeta);
+    Set(UnitAtomNameLibrary,148,"PHE HB2",PheH1Beta);
+    Set(UnitAtomNameLibrary,149,"PHE HB3",PheH2Beta);
+    Set(UnitAtomNameLibrary,140,"PHE HD1",PheHC1Delta);
+    Set(UnitAtomNameLibrary,151,"PHE HD2",PheHC2Delta);
+    Set(UnitAtomNameLibrary,152,"PHE HE1",PheHCEpsilonC1Delta);
+    Set(UnitAtomNameLibrary,153,"PHE HE2",PheHCEpsilonC2Delta);
+    Set(UnitAtomNameLibrary,154,"PHE HZ ",PheHCZeta);
+    Set(UnitAtomNameLibrary,155,"PHE H3 ",PheH3NAmino);
+    Set(UnitAtomNameLibrary,156,"PRO CB ",ProCRingBeta);
+    Set(UnitAtomNameLibrary,157,"PRO CG ",ProCRingGammaCBeta);
+    Set(UnitAtomNameLibrary,158,"PRO CD ",ProCRingGammaNAmino);
+    Set(UnitAtomNameLibrary,159,"PRO HB2",ProH1CBeta);
+    Set(UnitAtomNameLibrary,160,"PRO HB3",ProH2CBeta);
+    Set(UnitAtomNameLibrary,161,"PRO HG2",ProH1CGammaCBeta);
+    Set(UnitAtomNameLibrary,162,"PRO HG3",ProH2CGammaCBeta);
+    Set(UnitAtomNameLibrary,163,"PRO HD2",ProH1CGammaNAmino);
+    Set(UnitAtomNameLibrary,164,"PRO HD3",ProH2CGammaNAmino);
+    Set(UnitAtomNameLibrary,165,"SEC CB ",SecCBeta);
+    Set(UnitAtomNameLibrary,166,"SECSE  ",SecSeGamma);
+    Set(UnitAtomNameLibrary,167,"SEC HB2",SecH1Beta);
+    Set(UnitAtomNameLibrary,168,"SEC HB3",SecH2Beta);
+    Set(UnitAtomNameLibrary,169,"SEC HG ",SecHGamma);
+    Set(UnitAtomNameLibrary,170,"SEC H3 ",SecH3NAmino);
+    Set(UnitAtomNameLibrary,171,"SER CB ",SerCBeta);
+    Set(UnitAtomNameLibrary,172,"SER OG ",SerOGamma);
+    Set(UnitAtomNameLibrary,173,"SER HB2",SerH1Beta);
+    Set(UnitAtomNameLibrary,174,"SER HB3",SerH2Beta);
+    Set(UnitAtomNameLibrary,175,"SER HG ",SerHGamma);
+    Set(UnitAtomNameLibrary,176,"SER H3 ",SerH3NAmino);
+    Set(UnitAtomNameLibrary,177,"THR CB ",ThrCBeta);
+    Set(UnitAtomNameLibrary,178,"THR OG1",ThrOGamma);
+    Set(UnitAtomNameLibrary,179,"THR CG2",ThrCGamma);
+    Set(UnitAtomNameLibrary,180,"THR HB ",ThrHBeta);
+    Set(UnitAtomNameLibrary,181,"THR HG1",ThrHOGamma);
+    Set(UnitAtomNameLibrary,182,"THRHG21",ThrH1CGamma);
+    Set(UnitAtomNameLibrary,183,"THRHG22",ThrH2CGamma);
+    Set(UnitAtomNameLibrary,184,"THRHG23",ThrH3CGamma);
+    Set(UnitAtomNameLibrary,185,"THR H3 ",ThrH3NAmino);
+    Set(UnitAtomNameLibrary,186,"TRP CB ",TrpCBeta);
+    Set(UnitAtomNameLibrary,187,"TRP CG ",TrpCGamma);
+    Set(UnitAtomNameLibrary,188,"TRP CD1",TrpC1Delta);
+    Set(UnitAtomNameLibrary,189,"TRP CD2",TrpC2Delta);
+    Set(UnitAtomNameLibrary,190,"TRP NE1",TrpNEpsilonC1Delta);
+    Set(UnitAtomNameLibrary,191,"TRP CE2",TrpC1EpsilonC2Delta);
+    Set(UnitAtomNameLibrary,192,"TRP CE3",TrpC2EpsilonC2Delta);
+    Set(UnitAtomNameLibrary,193,"TRP CZ2",TrpCZetaC1Epsilon);
+    Set(UnitAtomNameLibrary,194,"TRP CZ3",TrpCZetaC2Epsilon);
+    Set(UnitAtomNameLibrary,195,"TRP CH2",TrpCEta);
+    Set(UnitAtomNameLibrary,196,"TRP HB2",TrpH1Beta);
+    Set(UnitAtomNameLibrary,197,"TRP HB3",TrpH2Beta);
+    Set(UnitAtomNameLibrary,198,"TRP HD1",TrpHC1Delta);
+    Set(UnitAtomNameLibrary,199,"TRP HE1",TrpHNEpsilon);
+    Set(UnitAtomNameLibrary,200,"TRP HE3",TrpHC2Epsilon);
+    Set(UnitAtomNameLibrary,201,"TRP HZ2",TrpHCZetaC1Epsilon);
+    Set(UnitAtomNameLibrary,202,"TRP HZ3",TrpHCZetaC2Epsilon);
+    Set(UnitAtomNameLibrary,203,"TRP HH2",TrpHCEta);
+    Set(UnitAtomNameLibrary,204,"TRP H3 ",TrpH3NAmino);
+    Set(UnitAtomNameLibrary,205,"TYR CB ",TyrCBeta);
+    Set(UnitAtomNameLibrary,206,"TYR CG ",TyrCRingGamma);
+    Set(UnitAtomNameLibrary,207,"TYR CD1",TyrC1RingDelta);
+    Set(UnitAtomNameLibrary,208,"TYR CD2",TyrC2RingDelta);
+    Set(UnitAtomNameLibrary,209,"TYR CE1",TyrCRingEpsilonC1Delta);
+    Set(UnitAtomNameLibrary,210,"TYR CE2",TyrCRingEpsilonC2Delta);
+    Set(UnitAtomNameLibrary,211,"TYR CZ ",TyrCRingZeta);
+    Set(UnitAtomNameLibrary,212,"TYR OH ",TyrOEta);
+    Set(UnitAtomNameLibrary,213,"TYR HB2",TyrH1Beta);
+    Set(UnitAtomNameLibrary,214,"TYR HB3",TyrH2Beta);
+    Set(UnitAtomNameLibrary,215,"TYR HD1",TyrHC1Delta);
+    Set(UnitAtomNameLibrary,216,"TYR HD2",TyrHC2Delta);
+    Set(UnitAtomNameLibrary,217,"TYR HE1",TyrHCEpsilonC1Delta);
+    Set(UnitAtomNameLibrary,218,"TYR HE2",TyrHCEpsilonC2Delta);
+    Set(UnitAtomNameLibrary,219,"TYR HH ",TyrHOEta);
+    Set(UnitAtomNameLibrary,220,"TYR H3 ",TyrH3NAmino);
+    Set(UnitAtomNameLibrary,221,"VAL CB ",ValCBeta);
+    Set(UnitAtomNameLibrary,222,"VAL CG1",ValC1Gamma);
+    Set(UnitAtomNameLibrary,223,"VAL CG2",ValC2Gamma);
+    Set(UnitAtomNameLibrary,224,"VAL HB ",ValHBeta);
+    Set(UnitAtomNameLibrary,225,"VALHG11",ValH1C1Gamma);
+    Set(UnitAtomNameLibrary,226,"VALHG12",ValH2C1Gamma);
+    Set(UnitAtomNameLibrary,227,"VALHG13",ValH3C1Gamma);
+    Set(UnitAtomNameLibrary,228,"VALHG21",ValH1C2Gamma);
+    Set(UnitAtomNameLibrary,229,"VALHG22",ValH2C2Gamma);
+    Set(UnitAtomNameLibrary,230,"VALHG23",ValH3C2Gamma);
+    Set(UnitAtomNameLibrary,231,"VAL H3 ",ValH3NAmino);
+    UnitAtomNameLibrary.update();
   }
 
 }
@@ -591,33 +760,6 @@ namespace std {
 #include "data/basic/property-list.h"
 
 namespace std {
-
-  static Vector<unsigned int> AminoAcidNumberAtoms;
-  
-  void InitAminoAcidNumberAtoms() {
-    allocate(AminoAcidNumberAtoms,NumberAminoAcids);
-    AminoAcidNumberAtoms[AminoAcidAla]=AminoAcidAlaNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidArg]=AminoAcidArgNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidAsn]=AminoAcidAsnNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidAsp]=AminoAcidAspNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidCys]=AminoAcidCysNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidGln]=AminoAcidGlnNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidGlu]=AminoAcidGluNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidGly]=AminoAcidGlyNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidHis]=AminoAcidHisNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidIle]=AminoAcidIleNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidLeu]=AminoAcidLeuNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidLys]=AminoAcidLysNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidMet]=AminoAcidMetNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidPhe]=AminoAcidPheNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidPro]=AminoAcidProNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidSec]=AminoAcidSecNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidSer]=AminoAcidSerNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidThr]=AminoAcidThrNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidTrp]=AminoAcidTrpNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidTyr]=AminoAcidTyrNumberAtoms;
-    AminoAcidNumberAtoms[AminoAcidVal]=AminoAcidValNumberAtoms;
-  }
 
   static PropertyList<bool> IsHeavyAtom;
 
