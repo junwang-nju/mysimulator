@@ -13,7 +13,7 @@ namespace std {
 
     typedef Vector<char>  ParentType;
 
-    PDBUnitKey() : ParentType(NULL), hash(3) {}
+    PDBUnitKey() : ParentType(), hash(3) {}
     PDBUnitKey(const PDBUnitKey&) { Error("Cannot create PDB Unit Key"); }
     PDBUnitKey& operator=(const PDBUnitKey&) {
       Error("Cannot copy PDB Unit Key");
@@ -72,6 +72,8 @@ namespace std {
   typedef Mapper<PDBUnitKey,PDBUnitNameValueType>  PDBUnitNameMapper;
 
   void allocate(PDBUnitNameMapper& M, const unsigned int nitem) {
+    typedef BTree<PDBUnitKey,PDBUnitNameValueType> TreeType;
+    allocate(static_cast<Vector<TreeType>&>(M),0xFFFFU);
     M.size=nitem;
     M.key=new PDBUnitKey[nitem];
     for(unsigned int i=0;i<nitem;++i) allocate(M.key[i]);

@@ -3,6 +3,7 @@
 #define _PDB_Information_H_
 
 #include "data/name/pdb-unit-name.h"
+#include "data/derived/dual-vector.h"
 
 namespace std {
 
@@ -14,7 +15,7 @@ namespace std {
     Vector<PropertyList<double> > Coordinate;
     Vector<unsigned int> AtomName;
     Vector<unsigned int> UnitName;
-    PropertyList<int> UnitAtomID;
+    DualVector<int> UnitAtomID;
     ParameterList UnitBond;
 
     PDBInfo()
