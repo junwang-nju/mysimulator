@@ -955,7 +955,7 @@ namespace std {
 
 }
 
-#include "data/derived/parameter-list.h"
+#include "data/pdb/contact-map.h"
 
 namespace std {
 
@@ -967,14 +967,14 @@ namespace std {
     AminoAcidCysNumberBonds=14,
     AminoAcidGlnNumberBonds=20,
     AminoAcidGluNumberBonds=20,
-    AminoAcidGlyNumberBonds=11,
+    AminoAcidGlyNumberBonds=10,
     AminoAcidHisNumberBonds=22,
-    AminoAcidIleNumberBonds=21,
+    AminoAcidIleNumberBonds=22,
     AminoAcidLeuNumberBonds=22,
     AminoAcidLysNumberBonds=25,
     AminoAcidMetNumberBonds=20,
     AminoAcidPheNumberBonds=24,
-    AminoAcidProNumberBonds=18,
+    AminoAcidProNumberBonds=17,
     AminoAcidSecNumberBonds=14,
     AminoAcidSerNumberBonds=14,
     AminoAcidThrNumberBonds=17,
@@ -983,584 +983,460 @@ namespace std {
     AminoAcidValNumberBonds=19
   };
 
-  Vector<ParameterList> AminoAcidBonds;
+  Vector<ContactMap> AminoAcidBonds;
 
   void InitAminoAcidBonds() {
     allocate(AminoAcidBonds,NumberAminoAcids);
-    Vector<ParameterKey> key;
-    allocate(AminoAcidBonds[AminoAcidAla],2,1,AminoAcidAlaNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidAla].key,AminoAcidBonds[AminoAcidAla].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=AlaCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=AlaH3NAmino;
-    key[10][0]=AlaCBeta;    key[10][1]=AlaH1Beta;
-    key[11][0]=AlaCBeta;    key[11][1]=AlaH2Beta;
-    key[12][0]=AlaCBeta;    key[12][1]=AlaH3Beta;
-    for(unsigned int i=0;i<AminoAcidAlaNumberBonds;++i) {
-      key[i+AminoAcidAlaNumberBonds][0]=key[i][1];
-      key[i+AminoAcidAlaNumberBonds][1]=key[i][0];
-    }
-    allocate(AminoAcidBonds[AminoAcidArg],2,1,AminoAcidArgNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidArg].key,AminoAcidBonds[AminoAcidArg].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=ArgCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=ArgH3NAmino;
-    key[10][0]=ArgCBeta;    key[10][1]=ArgCGamma;
-    key[11][0]=ArgCBeta;    key[11][1]=ArgH1Beta;
-    key[12][0]=ArgCBeta;    key[12][1]=ArgH2Beta;
-    key[13][0]=ArgCGamma;   key[13][1]=ArgCDelta;
-    key[14][0]=ArgCGamma;   key[14][1]=ArgH1Gamma;
-    key[15][0]=ArgCGamma;   key[15][1]=ArgH2Gamma;
-    key[16][0]=ArgCDelta;   key[16][1]=ArgNEpsilon;
-    key[17][0]=ArgCDelta;   key[17][1]=ArgH1Delta;
-    key[18][0]=ArgCDelta;   key[18][0]=ArgH2Delta;
-    key[19][0]=ArgNEpsilon; key[19][1]=ArgCZeta;
-    key[20][0]=ArgNEpsilon; key[20][1]=ArgHEpsilon;
-    key[21][0]=ArgCZeta;    key[21][1]=ArgN1Eta;
-    key[22][0]=ArgCZeta;    key[22][1]=ArgN2Eta;
-    key[23][0]=ArgN1Eta;    key[23][1]=ArgH1N1Eta;
-    key[24][0]=ArgN1Eta;    key[24][1]=ArgH2N1Eta;
-    key[25][0]=ArgN2Eta;    key[25][1]=ArgH1N2Eta;
-    key[26][0]=ArgN2Eta;    key[26][1]=ArgH2N2Eta;
-    for(unsigned int i=0;i<AminoAcidArgNumberBonds;++i) {
-      key[i+AminoAcidArgNumberBonds][0]=key[i][1];
-      key[i+AminoAcidArgNumberBonds][1]=key[i][0];
-    }
 
-    allocate(AminoAcidBonds[AminoAcidAsn],2,1,AminoAcidAsnNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidAsn].key,AminoAcidBonds[AminoAcidAsn].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=AsnCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=AsnH3NAmino;
-    key[10][0]=AsnCBeta;    key[10][1]=AsnCCarbonylGamma;
-    key[11][0]=AsnCBeta;    key[11][1]=AsnH1Beta;
-    key[12][0]=AsnCBeta;    key[12][1]=AsnH2Beta;
-    key[13][0]=AsnCCarbonylGamma;   key[13][1]=AsnOCarbonylDelta;
-    key[14][0]=AsnCCarbonylGamma;   key[14][1]=AsnNDelta;
-    key[15][0]=AsnNDelta;   key[15][1]=AsnH1NDelta;
-    key[16][0]=AsnNDelta;   key[16][1]=AsnH2NDelta;
-    for(unsigned int i=0;i<AminoAcidAsnNumberBonds;++i) {
-      key[i+AminoAcidAsnNumberBonds][0]=key[i][1];
-      key[i+AminoAcidAsnNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidAla],AminoAcidAlaNumberBonds);
+    Set(AminoAcidBonds[AminoAcidAla],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidAla],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidAla],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidAla],3,CAlpha,AlaCBeta);
+    Set(AminoAcidBonds[AminoAcidAla],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidAla],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidAla],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidAla],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidAla],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidAla],9,NAmino,AlaH3NAmino);
+    Set(AminoAcidBonds[AminoAcidAla],10,AlaCBeta,AlaH1Beta);
+    Set(AminoAcidBonds[AminoAcidAla],11,AlaCBeta,AlaH2Beta);
+    Set(AminoAcidBonds[AminoAcidAla],12,AlaCBeta,AlaH3Beta);
 
-    allocate(AminoAcidBonds[AminoAcidAsp],2,1,AminoAcidAspNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidAsp].key,AminoAcidBonds[AminoAcidAsp].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=AspCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=AspH3NAmino;
-    key[10][0]=AspCBeta;    key[10][1]=AspCCarbonylGamma;
-    key[11][0]=AspCBeta;    key[11][1]=AspH1Beta;
-    key[12][0]=AspCBeta;    key[12][1]=AspH2Beta;
-    key[13][0]=AspCCarbonylGamma;   key[13][1]=AspO1Delta;
-    key[14][0]=AspCCarbonylGamma;   key[14][1]=AspO2Delta;
-    key[15][0]=AspO1Delta;  key[15][1]=AspHO1Delta;
-    key[16][0]=AspO2Delta;  key[16][1]=AspHO2Delta;
-    for(unsigned int i=0;i<AminoAcidAspNumberBonds;++i) {
-      key[i+AminoAcidAspNumberBonds][0]=key[i][1];
-      key[i+AminoAcidAspNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidArg],AminoAcidArgNumberBonds);
+    Set(AminoAcidBond[AminoAcidArg],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBond[AminoAcidArg],1,CAlpha,NAmino);
+    Set(AminoAcidBond[AminoAcidArg],2,CAlpha,HAlpha);
+    Set(AminoAcidBond[AminoAcidArg],3,CAlpha,ArgCBeta);
+    Set(AminoAcidBond[AminoAcidArg],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBond[AminoAcidArg],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBond[AminoAcidArg],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBond[AminoAcidArg],7,NAmino,H1NAmino);
+    Set(AminoAcidBond[AminoAcidArg],8,NAmino,H2NAmino);
+    Set(AminoAcidBond[AminoAcidArg],9,NAmino,ArgH3NAmino);
+    Set(AminoAcidBond[AminoAcidArg],10,ArgCBeta,ArgCGamma);
+    Set(AminoAcidBond[AminoAcidArg],11,ArgCBeta,ArgH1Beta);
+    Set(AminoAcidBond[AminoAcidArg],12,ArgCBeta,ArgH2Beta);
+    Set(AminoAcidBond[AminoAcidArg],13,ArgCGamma,ArgCDelta);
+    Set(AminoAcidBond[AminoAcidArg],14,ArgCGamma,ArgH1Gamma);
+    Set(AminoAcidBond[AminoAcidArg],15,ArgCGamma,ArgH2Gamma);
+    Set(AminoAcidBond[AminoAcidArg],16,ArgCDelta,ArgNEpsilon);
+    Set(AminoAcidBond[AminoAcidArg],17,ArgCDelta,ArgH1Delta);
+    Set(AminoAcidBond[AminoAcidArg],18,ArgCDelta,ArgH2Delta);
+    Set(AminoAcidBond[AminoAcidArg],19,ArgNEpsilon,ArgCZeta);
+    Set(AminoAcidBond[AminoAcidArg],20,ArgNEpsilon,ArgHEpsilon);
+    Set(AminoAcidBond[AminoAcidArg],21,ArgCZeta,ArgN1Eta);
+    Set(AminoAcidBond[AminoAcidArg],22,ArgCZeta,ArgN2Eta);
+    Set(AminoAcidBond[AminoAcidArg],23,ArgN1Eta,ArgH1N1Eta);
+    Set(AminoAcidBond[AminoAcidArg],24,ArgN1Eta,ArgH2N1Eta);
+    Set(AminoAcidBond[AminoAcidArg],25,ArgN2Eta,ArgH1N2Eta);
+    Set(AminoAcidBond[AminoAcidArg],26,ArgN2Eta,ArgH2N2Eta);
 
-    allocate(AminoAcidBonds[AminoAcidCys],2,1,AminoAcidCysNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidCys].key,AminoAcidBonds[AminoAcidCys].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=CysCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=CysH3NAmino;
-    key[10][0]=CysCBeta;    key[10][1]=CysSGamma;
-    key[11][0]=CysCBeta;    key[11][1]=CysH1Beta;
-    key[12][0]=CysCBeta;    key[12][1]=CysH2Beta;
-    key[13][0]=CysSGamma;   key[13][1]=CysHGamma;
-    for(unsigned int i=0;i<AminoAcidCysNumberBonds;++i) {
-      key[i+AminoAcidCysNumberBonds][0]=key[i][1];
-      key[i+AminoAcidCysNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidAsn],AminoAcidAsnNumberBonds);
+    Set(AminoAcidBonds[AminoAcidAsn],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidAsn],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidAsn],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidAsn],3,CAlpha,AsnCBeta);
+    Set(AminoAcidBonds[AminoAcidAsn],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidAsn],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidAsn],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidAsn],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidAsn],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidAsn],9,NAmino,AsnH3NAmino);
+    Set(AminoAcidBonds[AminoAcidAsn],10,AsnCBeta,AsnCCarbonylGamma);
+    Set(AminoAcidBonds[AminoAcidAsn],11,AsnCBeta,AsnH1Beta);
+    Set(AminoAcidBonds[AminoAcidAsn],12,AsnCBeta,AsnH2Beta);
+    Set(AminoAcidBonds[AminoAcidAsn],13,AsnCCarbonylGamma,AsnOCarbonylDelta);
+    Set(AminoAcidBonds[AminoAcidAsn],14,AsnCCarbonylGamma,AsnNDelta);
+    Set(AminoAcidBonds[AminoAcidAsn],15,AsnNDelta,AsnH1NDelta);
+    Set(AminoAcidBonds[AminoAcidAsn],16,AsnNDelta,AsnH2NDelta);
 
-    allocate(AminoAcidBonds[AminoAcidGln],2,1,AminoAcidGlnNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidGln].key,AminoAcidBonds[AminoAcidGln].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=GlnCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=GlnH3NAmino;
-    key[10][0]=GlnCBeta;    key[10][1]=GlnCGamma;
-    key[11][0]=GlnCBeta;    key[11][1]=GlnH1Beta;
-    key[12][0]=GlnCBeta;    key[12][1]=GlnH2Beta;
-    key[13][0]=GlnCGamma;   key[13][1]=GlnCCarbonylDelta;
-    key[14][0]=GlnCGamma;   key[14][1]=GlnH1Gamma;
-    key[15][0]=GlnCGamma;   key[15][1]=GlnH2Gamma;
-    key[16][0]=GlnCCarbonylDelta;   key[16][1]=GlnOCarbonylEpsilon;
-    key[17][0]=GlnCCarbonylDelta;   key[17][1]=GlnNEpsilon;
-    key[18][0]=GlnNEpsilon; key[18][1]=GlnH1NEpsilon;
-    key[19][0]=GlnNEpsilon; key[19][1]=GlnH2NEpsilon;
-    for(unsigned int i=0;i<AminoAcidGlnNumberBonds;++i) {
-      key[i+AminoAcidGlnNumberBonds][0]=key[i][1];
-      key[i+AminoAcidGlnNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidAsp],AminoAcidAspNumberBonds);
+    Set(AminoAcidBonds[AminoAcidAsp],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidAsp],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidAsp],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidAsp],3,CAlpha,AspCBeta);
+    Set(AminoAcidBonds[AminoAcidAsp],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidAsp],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidAsp],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidAsp],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidAsp],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidAsp],9,NAmino,AspH3NAmino);
+    Set(AminoAcidBonds[AminoAcidAsp],10,AspCBeta,AspCCarbonylGamma);
+    Set(AminoAcidBonds[AminoAcidAsp],11,AspCBeta,AspH1Beta);
+    Set(AminoAcidBonds[AminoAcidAsp],12,AspCBeta,AspH2Beta);
+    Set(AminoAcidBonds[AminoAcidAsp],13,AspCCarbonylGamma,AspO1Delta);
+    Set(AminoAcidBonds[AminoAcidAsp],14,AspCCarbonylGamma,AspO2Delta);
+    Set(AminoAcidBonds[AminoAcidAsp],15,AspO1Delta,AspHO1Delta);
+    Set(AminoAcidBonds[AminoAcidAsp],16,AspO2Delta,AspHO2Delta);
 
-    allocate(AminoAcidBonds[AminoAcidGlu],2,1,AminoAcidGluNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidGlu].key,AminoAcidBonds[AminoAcidGlu].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=GluCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=GluH3NAmino;
-    key[10][0]=GluCBeta;    key[10][1]=GluCGamma;
-    key[11][0]=GluCBeta;    key[11][1]=GluH1Beta;
-    key[12][0]=GluCBeta;    key[12][1]=GluH2Beta;
-    key[13][0]=GluCGamma;   key[13][1]=GluCCarbonylDelta;
-    key[14][0]=GluCGamma;   key[14][1]=GluH1Gamma;
-    key[15][0]=GluCGamma;   key[15][1]=GluH2Gamma;
-    key[16][0]=GluCCarbonylDelta;   key[16][1]=GluO1Epsilon;
-    key[17][0]=GluCCarbonylDelta;   key[17][1]=GluO2Epsilon;
-    key[18][0]=GluO1Epsilon;key[18][1]=GluHO1Epsilon;
-    key[19][0]=GluO2Epsilon;key[19][1]=GluHO2Epsilon;
-    for(unsigned int i=0;i<AminoAcidGluNumberBonds;++i) {
-      key[i+AminoAcidGluNumberBonds][0]=key[i][1];
-      key[i+AminoAcidGluNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidCys],AminoAcidCysNumberBonds);
+    Set(AminoAcidBonds[AminoAcidCys],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidCys],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidCys],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidCys],3,CAlpha,CysCBeta);
+    Set(AminoAcidBonds[AminoAcidCys],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidCys],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidCys],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidCys],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidCys],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidCys],9,NAmino,CysH3NAmino);
+    Set(AminoAcidBonds[AminoAcidCys],10,CysCBeta,CysSGamma);
+    Set(AminoAcidBonds[AminoAcidCys],11,CysCBeta,CysH1Beta);
+    Set(AminoAcidBonds[AminoAcidCys],12,CysCBeta,CysH2Beta);
+    Set(AminoAcidBonds[AminoAcidCys],13,CysSGamma,CysHGamma);
 
-    allocate(AminoAcidBonds[AminoAcidGly],2,1,AminoAcidGlyNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidGly].key,AminoAcidBonds[AminoAcidGly].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=GlyH3NAmino;
-    key[10][0]=CAlpha;      key[10][1]=GlyH2Alpha;
-    for(unsigned int i=0;i<AminoAcidGlyNumberBonds;++i) {
-      key[i+AminoAcidGlyNumberBonds][0]=key[i][1];
-      key[i+AminoAcidGlyNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidGln],AminoAcidGlnNumberBonds);
+    Set(AminoAcidBonds[AminoAcidGln],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidGln],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidGln],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidGln],3,CAlpha,GlnCBeta);
+    Set(AminoAcidBonds[AminoAcidGln],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidGln],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidGln],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidGln],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidGln],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidGln],9,NAmino,GlnH3NAmino);
+    Set(AminoAcidBonds[AminoAcidGln],10,GlnCBeta,GlnCGamma);
+    Set(AminoAcidBonds[AminoAcidGln],11,GlnCBeta,GlnH1Beta);
+    Set(AminoAcidBonds[AminoAcidGln],12,GlnCBeta,GlnH2Beta);
+    Set(AminoAcidBonds[AminoAcidGln],13,GlnCGamma,GlnCCarbonylDelta);
+    Set(AminoAcidBonds[AminoAcidGln],14,GlnCGamma,GlnH1Gamma);
+    Set(AminoAcidBonds[AminoAcidGln],15,GlnCGamma,GlnH2Gamma);
+    Set(AminoAcidBonds[AminoAcidGln],16,GlnCCarbonylDelta,GlnOCarbonylEpsilon);
+    Set(AminoAcidBonds[AminoAcidGln],17,GlnCCarbonylDelta,GlnNEpsilon);
+    Set(AminoAcidBonds[AminoAcidGln],18,GlnNEpsilon,GlnH1NEpsilon);
+    Set(AminoAcidBonds[AminoAcidGln],19,GlnNEpsilon,GlnH2NEpsilon);
 
-    allocate(AminoAcidBonds[AminoAcidHis],2,1,AminoAcidHisNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidHis].key,AminoAcidBonds[AminoAcidHis].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=HisCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=HisH3NAmino;
-    key[10][0]=HisCBeta;      key[10][1]=HisCRingGamma;
-    key[11][0]=HisCBeta;      key[11][1]=HisH1Beta;
-    key[12][0]=HisCBeta;      key[12][1]=HisH2Beta;
-    key[13][0]=HisCRingGamma; key[13][1]=HisCRingDelta;
-    key[14][0]=HisCRingGamma; key[14][1]=HisNRingDelta;
-    key[15][0]=HisCRingDelta; key[15][1]=HisHCDelta;
-    key[16][0]=HisCRingDelta; key[16][1]=HisNRingEpsilonCDelta;
-    key[17][0]=HisNRingDelta; key[17][1]=HisHNDelta;
-    key[18][0]=HisNRingDelta; key[18][1]=HisCRingEpsilonNDelta;
-    key[19][0]=HisCRingEpsilonNDelta;   key[19][1]=HisNRingEpsilonCDelta;
-    key[20][0]=HisCRingEpsilonNDelta;   key[20][1]=HisHCEpsilon;
-    key[21][0]=HisNRingEpsilonCDelta;   key[21][1]=HisHNEpsilon;
-    for(unsigned int i=0;i<AminoAcidHisNumberBonds;++i) {
-      key[i+AminoAcidHisNumberBonds][0]=key[i][1];
-      key[i+AminoAcidHisNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidGlu],AminoAcidGluNumberBonds);
+    Set(AminoAcidBonds[AminoAcidGlu],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidGlu],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidGlu],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidGlu],3,CAlpha,GluCBeta);
+    Set(AminoAcidBonds[AminoAcidGlu],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidGlu],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidGlu],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidGlu],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidGlu],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidGlu],9,NAmino,GluH3NAmino);
+    Set(AminoAcidBonds[AminoAcidGlu],10,GluCBeta,GluCGamma);
+    Set(AminoAcidBonds[AminoAcidGlu],11,GluCBeta,GluH1Beta);
+    Set(AminoAcidBonds[AminoAcidGlu],12,GluCBeta,GluH2Beta);
+    Set(AminoAcidBonds[AminoAcidGlu],13,GluCGamma,GluCCarbonylDelta);
+    Set(AminoAcidBonds[AminoAcidGlu],14,GluCGamma,GluH1Gamma);
+    Set(AminoAcidBonds[AminoAcidGlu],15,GluCGamma,GluH2Gamma);
+    Set(AminoAcidBonds[AminoAcidGlu],16,GluCCarbonylDelta,GluO1Epsilon);
+    Set(AminoAcidBonds[AminoAcidGlu],17,GluCCarbonylDelta,GluO2Epsilon);
+    Set(AminoAcidBonds[AminoAcidGlu],18,GluO1Epsilon,GluHO1Epsilon);
+    Set(AminoAcidBonds[AminoAcidGlu],19,GluO2Epsilon,GluHO2Epsilon);
 
-    allocate(AminoAcidBonds[AminoAcidIle],2,1,AminoAcidIleNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidIle].key,AminoAcidBonds[AminoAcidIle].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=IleCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=IleH3NAmino;
-    key[10][0]=IleCBeta;      key[10][1]=IleC1Gamma;
-    key[11][0]=IleCBeta;      key[11][1]=IleHBeta;
-    key[12][0]=IleC1Gamma;    key[12][1]=IleCDeltaC1Gamma;
-    key[13][0]=IleC1Gamma;    key[13][1]=IleH1C1Gamma;
-    key[14][0]=IleC1Gamma;    key[14][1]=IleH2C1Gamma;
-    key[15][0]=IleC2Gamma;    key[15][1]=IleH1C2Gamma;
-    key[16][0]=IleC2Gamma;    key[16][1]=IleH2C2Gamma;
-    key[17][0]=IleC2Gamma;    key[17][1]=IleH3C2Gamma;
-    key[18][0]=IleCDeltaC1Gamma;    key[18][1]=IleH1CDelta;
-    key[19][0]=IleCDeltaC1Gamma;    key[19][1]=IleH2CDelta;
-    key[20][0]=IleCDeltaC1Gamma;    key[20][1]=IleH3CDelta;
-    for(unsigned int i=0;i<AminoAcidIleNumberBonds;++i) {
-      key[i+AminoAcidIleNumberBonds][0]=key[i][1];
-      key[i+AminoAcidIleNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidGly],AminoAcidGlyNumberBonds);
+    Set(AminoAcidBonds[AminoAcidGly],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidGly],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidGly],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidGly],3,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidGly],4,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidGly],5,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidGly],6,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidGly],7,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidGly],8,NAmino,GlyH3NAmino);
+    Set(AminoAcidBonds[AminoAcidGly],9,CAlpha,GlyH2Alpha);
 
-    allocate(AminoAcidBonds[AminoAcidLeu],2,1,AminoAcidLeuNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidLeu].key,AminoAcidBonds[AminoAcidLeu].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=LeuCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=LeuH3NAmino;
-    key[10][0]=LeuCBeta;      key[10][1]=LeuCGamma;
-    key[11][0]=LeuCBeta;      key[11][1]=LeuH1Beta;
-    key[12][0]=LeuCBeta;      key[12][1]=LeuH2Beta;
-    key[13][0]=LeuCGamma;     key[13][1]=LeuC1Delta;
-    key[14][0]=LeuCGamma;     key[14][1]=LeuC2Delta;
-    key[15][0]=LeuCGamma;     key[15][1]=LeuHGamma;
-    key[16][0]=LeuC1Delta;    key[16][1]=LeuH1C1Delta;
-    key[17][0]=LeuC1Delta;    key[17][1]=LeuH2C1Delta;
-    key[18][0]=LeuC1Delta;    key[18][1]=LeuH3C1Delta;
-    key[19][0]=LeuC2Delta;    key[19][1]=LeuH1C2Delta;
-    key[20][0]=LeuC2Delta;    key[20][1]=LeuH2C2Delta;
-    key[21][0]=LeuC2Delta;    key[21][1]=LeuH3C2Delta;
-    for(unsigned int i=0;i<AminoAcidLeuNumberBonds;++i) {
-      key[i+AminoAcidLeuNumberBonds][0]=key[i][1];
-      key[i+AminoAcidLeuNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidHis],AminoAcidHisNumberBonds);
+    Set(AminoAcidBonds[AminoAcidHis],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidHis],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidHis],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidHis],3,CAlpha,HisCBeta);
+    Set(AminoAcidBonds[AminoAcidHis],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidHis],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidHis],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidHis],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidHis],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidHis],9,NAmino,HisH3NAmino);
+    Set(AminoAcidBonds[AminoAcidHis],10,HisCBeta,HisCRingGamma);
+    Set(AminoAcidBonds[AminoAcidHis],11,HisCBeta,HisH1Beta);
+    Set(AminoAcidBonds[AminoAcidHis],12,HisCBeta,HisH2Beta);
+    Set(AminoAcidBonds[AminoAcidHis],13,HisCRingGamma,HisCRingDelta);
+    Set(AminoAcidBonds[AminoAcidHis],14,HisCRingGamma,HisNRingDelta);
+    Set(AminoAcidBonds[AminoAcidHis],15,HisCRingDelta,HisHCDelta);
+    Set(AminoAcidBonds[AminoAcidHis],16,HisCRingDelta,HisNRingEpsilonCDelta);
+    Set(AminoAcidBonds[AminoAcidHis],17,HisNRingDelta,HisHNDelta);
+    Set(AminoAcidBonds[AminoAcidHis],18,HisNRingDelta,HisCRingEpsilonNDelta);
+    Set(AminoAcidBonds[AminoAcidHis],19,HisCRingEpsilonNDelta,HisNRingEpsilonCDelta);
+    Set(AminoAcidBonds[AminoAcidHis],20,HisCRingEpsilonNDelta,HisHCEpsilon);
+    Set(AminoAcidBonds[AminoAcidHis],21,HisNRingEpsilonCDelta,HisHNEpsilon);
 
-    allocate(AminoAcidBonds[AminoAcidLys],2,1,AminoAcidLysNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidLys].key,AminoAcidBonds[AminoAcidLys].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=LysCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=LysH3NAmino;
-    key[10][0]=LysCBeta;      key[10][1]=LysCGamma;
-    key[11][0]=LysCBeta;      key[11][1]=LysH1Beta;
-    key[12][0]=LysCBeta;      key[12][1]=LysH2Beta;
-    key[13][0]=LysCGamma;     key[13][1]=LysCDelta;
-    key[14][0]=LysCGamma;     key[14][1]=LysH1Gamma;
-    key[15][0]=LysCGamma;     key[15][1]=LysH2Gamma;
-    key[16][0]=LysCDelta;     key[16][1]=LysCEpsilon;
-    key[17][0]=LysCDelta;     key[17][1]=LysH1Delta;
-    key[18][0]=LysCDelta;     key[18][1]=LysH2Delta;
-    key[19][0]=LysCEpsilon;   key[19][1]=LysNZeta;
-    key[20][0]=LysCEpsilon;   key[20][1]=LysH1Epsilon;
-    key[21][0]=LysCEpsilon;   key[21][1]=LysH2Epsilon;
-    key[22][0]=LysNZeta;      key[22][1]=LysH1Zeta;
-    key[23][0]=LysNZeta;      key[23][1]=LysH2Zeta;
-    key[24][0]=LysNZeta;      key[24][1]=LysH3Zeta;
-    for(unsigned int i=0;i<AminoAcidLysNumberBonds;++i) {
-      key[i+AminoAcidLysNumberBonds][0]=key[i][1];
-      key[i+AminoAcidLysNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidIle],AminoAcidIleNumberBonds);
+    Set(AminoAcidBonds[AminoAcidIle],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidIle],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidIle],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidIle],3,CAlpha,IleCBeta);
+    Set(AminoAcidBonds[AminoAcidIle],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidIle],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidIle],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidIle],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidIle],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidIle],9,NAmino,IleH3NAmino);
+    Set(AminoAcidBonds[AminoAcidIle],10,IleCBeta,IleC1Gamma);
+    Set(AminoAcidBonds[AminoAcidIle],11,ILeCBeta,IleC2Gamma);
+    Set(AminoAcidBonds[AminoAcidIle],12,IleCBeta,IleHBeta);
+    Set(AminoAcidBonds[AminoAcidIle],13,IleC1Gamma,IleCDeltaC1Gamma);
+    Set(AminoAcidBonds[AminoAcidIle],14,IleC1Gamma,IleH1C1Gamma);
+    Set(AminoAcidBonds[AminoAcidIle],15,IleC1Gamma,IleH2C1Gamma);
+    Set(AminoAcidBonds[AminoAcidIle],16,IleC2Gamma,IleH1C2Gamma);
+    Set(AminoAcidBonds[AminoAcidIle],17,IleC2Gamma,IleH2C2Gamma);
+    Set(AminoAcidBonds[AminoAcidIle],18,IleC2Gamma,IleH3C2Gamma);
+    Set(AminoAcidBonds[AminoAcidIle],19,IleCDeltaC1Gamma,IleH1CDelta);
+    Set(AminoAcidBonds[AminoAcidIle],20,IleCDeltaC1Gamma,IleH2CDelta);
+    Set(AminoAcidBonds[AminoAcidIle],21,IleCDeltaC1Gamma,IleH3CDelta);
 
-    allocate(AminoAcidBonds[AminoAcidMet],2,1,AminoAcidMetNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidMet].key,AminoAcidBonds[AminoAcidMet].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=MetCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=MetH3NAmino;
-    key[10][0]=MetCBeta;      key[10][1]=MetCGamma;
-    key[11][0]=MetCBeta;      key[11][1]=MetH1Beta;
-    key[12][0]=MetCBeta;      key[12][1]=MetH2Beta;
-    key[13][0]=MetCGamma;     key[13][1]=MetSDelta;
-    key[14][0]=MetCGamma;     key[14][1]=MetH1Gamma;
-    key[15][0]=MetCGamma;     key[15][1]=MetH2Gamma;
-    key[16][0]=MetSDelta;     key[16][1]=MetCEpsilon;
-    key[17][0]=MetCEpsilon;   key[17][1]=MetH1Epsilon;
-    key[18][0]=MetCEpsilon;   key[18][1]=MetH2Epsilon;
-    key[19][0]=MetCEpsilon;   key[19][1]=MetH3Epsilon;
-    for(unsigned int i=0;i<AminoAcidMetNumberBonds;++i) {
-      key[i+AminoAcidMetNumberBonds][0]=key[i][1];
-      key[i+AminoAcidMetNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidLeu],AminoAcidLeuNumberBonds);
+    Set(AminoAcidBonds[AminoAcidLeu],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidLeu],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidLeu],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidLeu],3,CAlpha,LeuCBeta);
+    Set(AminoAcidBonds[AminoAcidLeu],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidLeu],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidLeu],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidLeu],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidLeu],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidLeu],9,NAmino,LeuH3NAmino);
+    Set(AminoAcidBonds[AminoAcidLeu],10,LeuCBeta,LeuCGamma);
+    Set(AminoAcidBonds[AminoAcidLeu],11,LeuCBeta,LeuH1Beta);
+    Set(AminoAcidBonds[AminoAcidLeu],12,LeuCBeta,LeuH2Beta);
+    Set(AminoAcidBonds[AminoAcidLeu],13,LeuCGamma,LeuC1Delta);
+    Set(AminoAcidBonds[AminoAcidLeu],14,LeuCGamma,LeuC2Delta);
+    Set(AminoAcidBonds[AminoAcidLeu],15,LeuCGamma,LeuHGamma);
+    Set(AminoAcidBonds[AminoAcidLeu],16,LeuC1Delta,LeuH1C1Delta);
+    Set(AminoAcidBonds[AminoAcidLeu],17,LeuC1Delta,LeuH2C1Delta);
+    Set(AminoAcidBonds[AminoAcidLeu],18,LeuC1Delta,LeuH3C1Delta);
+    Set(AminoAcidBonds[AminoAcidLeu],19,LeuC2Delta,LeuH1C2Delta);
+    Set(AminoAcidBonds[AminoAcidLeu],20,LeuC2Delta,LeuH2C2Delta);
+    Set(AminoAcidBonds[AminoAcidLeu],21,LeuC2Delta,LeuH3C2Delta);
 
-    allocate(AminoAcidBonds[AminoAcidPhe],2,1,AminoAcidPheNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidPhe].key,AminoAcidBonds[AminoAcidPhe].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=PheCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=PheH3NAmino;
-    key[10][0]=PheCBeta;      key[10][1]=PheCRingGamma;
-    key[11][0]=PheCBeta;      key[11][1]=PheH1Beta;
-    key[12][0]=PheCBeta;      key[12][1]=PheH2Beta;
-    key[13][0]=PheCRingGamma; key[13][1]=PheC1RingDelta;
-    key[14][0]=PheCRingGamma; key[14][1]=PheC2RingDelta;
-    key[15][0]=PheC1RingDelta;key[15][1]=PheCRingEpsilonC1Delta;
-    key[16][0]=PheC1RingDelta;key[16][1]=PheHC1Delta;
-    key[17][0]=PheC2RingDelta;key[17][1]=PheCRingEpsilonC2Delta;
-    key[18][0]=PheC2RingDelta;key[18][1]=PheHC2Delta;
-    key[19][0]=PheCRingEpsilonC1Delta;    key[19][1]=PheCRingZeta;
-    key[20][0]=PheCRingEpsilonC1Delta;    key[20][1]=PheHC1Delta;
-    key[21][0]=PheCRingEpsilonC2Delta;    key[21][1]=PheCRingZeta;
-    key[22][0]=PheCRingEpsilonC2Delta;    key[22][1]=PheHC2Delta;
-    key[23][0]=PheCRingZeta;  key[23][1]=PheHCZeta;
-    for(unsigned int i=0;i<AminoAcidPheNumberBonds;++i) {
-      key[i+AminoAcidPheNumberBonds][0]=key[i][1];
-      key[i+AminoAcidPheNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidLys],AminoAcidLysNumberBonds);
+    Set(AminoAcidBonds[AminoAcidLys],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidLys],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidLys],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidLys],3,CAlpha,LysCBeta);
+    Set(AminoAcidBonds[AminoAcidLys],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidLys],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidLys],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidLys],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidLys],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidLys],9,NAmino,LysH3NAmino);
+    Set(AminoAcidBonds[AminoAcidLys],10,LysCBeta,LysCGamma);
+    Set(AminoAcidBonds[AminoAcidLys],11,LysCBeta,LysH1Beta);
+    Set(AminoAcidBonds[AminoAcidLys],12,LysCBeta,LysH2Beta);
+    Set(AminoAcidBonds[AminoAcidLys],13,LysCGamma,LysCDelta);
+    Set(AminoAcidBonds[AminoAcidLys],14,LysCGamma,LysH1Gamma);
+    Set(AminoAcidBonds[AminoAcidLys],15,LysCGamma,LysH2Gamma);
+    Set(AminoAcidBonds[AminoAcidLys],16,LysCDelta,LysCEpsilon);
+    Set(AminoAcidBonds[AminoAcidLys],17,LysCDelta,LysH1Delta);
+    Set(AminoAcidBonds[AminoAcidLys],18,LysCDelta,LysH2Delta);
+    Set(AminoAcidBonds[AminoAcidLys],19,LysCEpsilon,LysNZeta);
+    Set(AminoAcidBonds[AminoAcidLys],20,LysCEpsilon,LysH1Epsilon);
+    Set(AminoAcidBonds[AminoAcidLys],21,LysCEpsilon,LysH2Epsilon);
+    Set(AminoAcidBonds[AminoAcidLys],22,LysNZeta,LysH1Zeta);
+    Set(AminoAcidBonds[AminoAcidLys],23,LysNZeta,LysH2Zeta);
+    Set(AminoAcidBonds[AminoAcidLys],24,LysNZeta,LysH3Zeta);
 
-    allocate(AminoAcidBonds[AminoAcidPro],2,1,AminoAcidProNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidPro].key,AminoAcidBonds[AminoAcidPro].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=ProCRingBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[10][0]=ProCRingBeta;  key[10][1]=ProCRingGammaCBeta;
-    key[11][0]=ProCRingBeta;  key[11][1]=ProH1CBeta;
-    key[12][0]=ProCRingBeta;  key[12][1]=ProH2CBeta;
-    key[13][0]=ProCRingGammaNAmino;   key[13][0]=ProCRingGammaCBeta;
-    key[14][0]=ProCRingGammaNAmino;   key[14][1]=ProH1CGammaNAmino;
-    key[15][0]=ProCRingGammaNAmino;   key[15][1]=ProH2CGammaNAmino;
-    key[16][0]=ProCRingGammaCBeta;    key[16][1]=ProH1CGammaCBeta;
-    key[17][0]=ProCRingGammaCBeta;    key[17][1]=ProH2CGammaCBeta;
-    for(unsigned int i=0;i<AminoAcidProNumberBonds;++i) {
-      key[i+AminoAcidProNumberBonds][0]=key[i][1];
-      key[i+AminoAcidProNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidMet],AminoAcidMetNumberBonds);
+    Set(AminoAcidBonds[AminoAcidMet],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidMet],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidMet],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidMet],3,CAlpha,MetCBeta);
+    Set(AminoAcidBonds[AminoAcidMet],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidMet],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidMet],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidMet],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidMet],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidMet],9,NAmino,MetH3NAmino);
+    Set(AminoAcidBonds[AminoAcidMet],10,MetCBeta,MetCGamma);
+    Set(AminoAcidBonds[AminoAcidMet],11,MetCBeta,MetH1Beta);
+    Set(AminoAcidBonds[AminoAcidMet],12,MetCBeta,MetH2Beta);
+    Set(AminoAcidBonds[AminoAcidMet],13,MetCGamma,MetSDelta);
+    Set(AminoAcidBonds[AminoAcidMet],14,MetCGamma,MetH1Gamma);
+    Set(AminoAcidBonds[AminoAcidMet],15,MetCGamma,MetH2Gamma);
+    Set(AminoAcidBonds[AminoAcidMet],16,MetSDelta,MetCEpsilon);
+    Set(AminoAcidBonds[AminoAcidMet],17,MetCEpsilon,MetH1Epsilon);
+    Set(AminoAcidBonds[AminoAcidMet],18,MetCEpsilon,MetH2Epsilon);
+    Set(AminoAcidBonds[AminoAcidMet],19,MetCEpsilon,MetH3Epsilon);
 
-    allocate(AminoAcidBonds[AminoAcidSec],2,1,AminoAcidSecNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidSec].key,AminoAcidBonds[AminoAcidSec].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=SecCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=SecH3NAmino;
-    key[10][0]=SecCBeta;    key[10][1]=SecSeGamma;
-    key[11][0]=SecCBeta;    key[11][1]=SecH1Beta;
-    key[12][0]=SecCBeta;    key[12][1]=SecH2Beta;
-    key[13][0]=SecSeGamma;  key[13][1]=SecHGamma;
-    for(unsigned int i=0;i<AminoAcidSecNumberBonds;++i) {
-      key[i+AminoAcidSecNumberBonds][0]=key[i][1];
-      key[i+AminoAcidSecNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidPhe],2,1,AminoAcidPheNumberBonds);
+    Set(AminoAcidBonds[AminoAcidPhe],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidPhe],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidPhe],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidPhe],3,CAlpha,PheCBeta);
+    Set(AminoAcidBonds[AminoAcidPhe],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidPhe],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidPhe],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidPhe],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidPhe],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidPhe],9,NAmino,PheH3NAmino);
+    Set(AminoAcidBonds[AminoAcidPhe],10,PheCBeta,PheCRingGamma);
+    Set(AminoAcidBonds[AminoAcidPhe],11,PheCBeta,PheH1Beta);
+    Set(AminoAcidBonds[AminoAcidPhe],12,PheCBeta,PheH2Beta);
+    Set(AminoAcidBonds[AminoAcidPhe],13,PheCRingGamma,PheC1RingDelta);
+    Set(AminoAcidBonds[AminoAcidPhe],14,PheCRingGamma,PheC2RingDelta);
+    Set(AminoAcidBonds[AminoAcidPhe],15,PheC1RingDelta,PheCRingEpsilonC1Delta);
+    Set(AminoAcidBonds[AminoAcidPhe],16,PheC1RingDelta,PheHC1Delta);
+    Set(AminoAcidBonds[AminoAcidPhe],17,PheC2RingDelta,PheCRingEpsilonC2Delta);
+    Set(AminoAcidBonds[AminoAcidPhe],18,PheC2RingDelta,PheHC2Delta);
+    Set(AminoAcidBonds[AminoAcidPhe],19,PheCRingEpsilonC1Delta,PheCRingZeta);
+    Set(AminoAcidBonds[AminoAcidPhe],20,PheCRingEpsilonC1Delta,PheHC1Delta);
+    Set(AminoAcidBonds[AminoAcidPhe],21,PheCRingEpsilonC2Delta,PheCRingZeta);
+    Set(AminoAcidBonds[AminoAcidPhe],22,PheCRingEpsilonC2Delta,PheHC2Delta);
+    Set(AminoAcidBonds[AminoAcidPhe],23,PheCRingZeta,PheHCZeta);
 
-    allocate(AminoAcidBonds[AminoAcidSer],2,1,AminoAcidSerNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidSer].key,AminoAcidBonds[AminoAcidSer].size);
-    key[0][0]=CAlpha;       key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;       key[1][1]=NAmino;
-    key[2][0]=CAlpha;       key[2][1]=HAlpha;
-    key[3][0]=CAlpha;       key[3][1]=SerCBeta;
-    key[4][0]=CCarbonyl;    key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;    key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;    key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;       key[7][1]=H1NAmino;
-    key[8][0]=NAmino;       key[8][1]=H2NAmino;
-    key[9][0]=NAmino;       key[9][1]=SerH3NAmino;
-    key[10][0]=SerCBeta;    key[10][1]=SerOGamma;
-    key[11][0]=SerCBeta;    key[11][1]=SerH1Beta;
-    key[12][0]=SerCBeta;    key[12][1]=SerH2Beta;
-    key[13][0]=SerOGamma;   key[13][1]=SerHGamma;
-    for(unsigned int i=0;i<AminoAcidSerNumberBonds;++i) {
-      key[i+AminoAcidSerNumberBonds][0]=key[i][1];
-      key[i+AminoAcidSerNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidPro],AminoAcidProNumberBonds);
+    Set(AminoAcidBonds[AminoAcidPro],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidPro],1,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidPro],2,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidPro],3,CAlpha,ProCRingBeta);
+    Set(AminoAcidBonds[AminoAcidPro],4,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidPro],5,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidPro],6,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidPro],7,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidPro],8,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidPro],9,ProCRingBeta,ProCRingGammaCBeta);
+    Set(AminoAcidBonds[AminoAcidPro],10,ProCRingBeta,ProH1CBeta);
+    Set(AminoAcidBonds[AminoAcidPro],11,ProCRingBeta,ProH2CBeta);
+    Set(AminoAcidBonds[AminoAcidPro],12,ProCRingGammaNAmino,ProCRingGammaCBeta);
+    Set(AminoAcidBonds[AminoAcidPro],13,ProCRingGammaNAmino,ProH1CGammaNAmino);
+    Set(AminoAcidBonds[AminoAcidPro],14,ProCRingGammaNAmino,ProH2CGammaNAmino);
+    Set(AminoAcidBonds[AminoAcidPro],15,ProCRingGammaCBeta,ProH1CGammaCBeta);
+    Set(AminoAcidBonds[AminoAcidPro],16,ProCRingGammaCBeta,ProH2CGammaCBeta);
 
-    allocate(AminoAcidBonds[AminoAcidThr],2,1,AminoAcidThrNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidThr].key,AminoAcidBonds[AminoAcidThr].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=ThrCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=ThrH3NAmino;
-    key[10][0]=ThrCBeta;      key[10][1]=ThrOGamma;
-    key[11][0]=ThrCBeta;      key[11][1]=ThrCGamma;
-    key[12][0]=ThrCBeta;      key[12][1]=ThrHBeta;
-    key[13][0]=ThrOGamma;     key[13][1]=ThrHOGamma;
-    key[14][0]=ThrCGamma;     key[14][1]=ThrH1CGamma;
-    key[15][0]=ThrCGamma;     key[15][1]=ThrH2CGamma;
-    key[16][0]=ThrCGamma;     key[16][1]=ThrH3CGamma;
-    for(unsigned int i=0;i<AminoAcidThrNumberBonds;++i) {
-      key[i+AminoAcidThrNumberBonds][0]=key[i][1];
-      key[i+AminoAcidThrNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidSec],2,1,AminoAcidSecNumberBonds);
+    Set(AminoAcidBonds[AminoAcidSec],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidSec],0,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidSec],0,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidSec],0,CAlpha,SecCBeta);
+    Set(AminoAcidBonds[AminoAcidSec],0,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidSec],0,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidSec],0,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidSec],0,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidSec],0,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidSec],0,NAmino,SecH3NAmino);
+    Set(AminoAcidBonds[AminoAcidSec],0,SecCBeta,SecSeGamma);
+    Set(AminoAcidBonds[AminoAcidSec],0,SecCBeta,SecH1Beta);
+    Set(AminoAcidBonds[AminoAcidSec],0,SecCBeta,SecH2Beta);
+    Set(AminoAcidBonds[AminoAcidSec],0,SecSeGamma,SecHGamma);
 
-    allocate(AminoAcidBonds[AminoAcidTrp],2,1,AminoAcidTrpNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidTrp].key,AminoAcidBonds[AminoAcidTrp].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=TrpCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=TrpH3NAmino;
-    key[10][0]=TrpCBeta;      key[10][1]=TrpCGamma;
-    key[11][0]=TrpCBeta;      key[11][1]=TrpH1Beta;
-    key[12][0]=TrpCBeta;      key[12][1]=TrpH2Beta;
-    key[13][0]=TrpCGamma;     key[13][1]=TrpC1Delta;
-    key[14][0]=TrpCGamma;     key[14][1]=TrpC2Delta;
-    key[15][0]=TrpC1Delta;    key[15][1]=TrpNEpsilonC1Delta;
-    key[16][0]=TrpC1Delta;    key[16][1]=TrpHC1Delta;
-    key[17][0]=TrpC2Delta;    key[17][1]=TrpC1EpsilonC2Delta;
-    key[18][0]=TrpC2Delta;    key[18][1]=TrpC2EpsilonC2Delta;
-    key[19][0]=TrpNEpsilonC1Delta;    key[19][1]=TrpC1EpsilonC2Delta;
-    key[20][0]=TrpNEpsilonC1Delta;    key[20][1]=TrpHNEpsilon;
-    key[21][0]=TrpC1EpsilonC2Delta;   key[21][1]=TrpCZetaC1Epsilon;
-    key[22][0]=TrpC2EpsilonC2Delta;   key[22][1]=TrpCZetaC2Epsilon;
-    key[23][0]=TrpC2EpsilonC2Delta;   key[23][1]=TrpHC2Epsilon;
-    key[24][0]=TrpCZetaC1Epsilon;     key[24][1]=TrpCEta;
-    key[25][0]=TrpCZetaC1Epsilon;     key[25][1]=TrpHCZetaC1Epsilon;
-    key[26][0]=TrpCZetaC2Epsilon;     key[26][1]=TrpCEta;
-    key[27][0]=TrpCZetaC2Epsilon;     key[27][1]=TrpHCZetaC2Epsilon;
-    key[28][0]=TrpCEta;       key[28][1]=TrpHCEta;
-    for(unsigned int i=0;i<AminoAcidTrpNumberBonds;++i) {
-      key[i+AminoAcidTrpNumberBonds][0]=key[i][1];
-      key[i+AminoAcidTrpNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidSer],2,1,AminoAcidSerNumberBonds);
+    Set(AminoAcidBonds[AminoAcidSer],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidSer],0,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidSer],0,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidSer],0,CAlpha,SerCBeta);
+    Set(AminoAcidBonds[AminoAcidSer],0,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidSer],0,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidSer],0,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidSer],0,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidSer],0,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidSer],0,NAmino,SerH3NAmino);
+    Set(AminoAcidBonds[AminoAcidSer],0,SerCBeta,SerOGamma);
+    Set(AminoAcidBonds[AminoAcidSer],0,SerCBeta,SerH1Beta);
+    Set(AminoAcidBonds[AminoAcidSer],0,SerCBeta,SerH2Beta);
+    Set(AminoAcidBonds[AminoAcidSer],0,SerOGamma,SerHGamma);
 
-    allocate(AminoAcidBonds[AminoAcidTyr],2,1,AminoAcidTyrNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidTyr].key,AminoAcidBonds[AminoAcidTyr].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=TyrCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=TyrH3NAmino;
-    key[10][0]=TyrCBeta;      key[10][1]=TyrCRingGamma;
-    key[11][0]=TyrCBeta;      key[11][1]=TyrH1Beta;
-    key[12][0]=TyrCBeta;      key[12][1]=TyrH2Beta;
-    key[13][0]=TyrCRingGamma; key[13][1]=TyrC1RingDelta;
-    key[14][0]=TyrCRingGamma; key[14][1]=TyrC2RingDelta;
-    key[15][0]=TyrC1RingDelta;key[15][1]=TyrCRingEpsilonC1Delta;
-    key[16][0]=TyrC1RingDelta;key[16][1]=TyrHC1Delta;
-    key[17][0]=TyrC2RingDelta;key[17][1]=TyrCRingEpsilonC2Delta;
-    key[18][0]=TyrC2RingDelta;key[18][1]=TyrHC2Delta;
-    key[19][0]=TyrCRingEpsilonC1Delta;    key[19][1]=TyrCRingZeta;
-    key[20][0]=TyrCRingEpsilonC1Delta;    key[19][1]=TyrHCEpsilonC1Delta;
-    key[21][0]=TyrCRingEpsilonC2Delta;    key[19][1]=TyrCRingZeta;
-    key[22][0]=TyrCRingEpsilonC2Delta;    key[19][1]=TyrHCEpsilonC2Delta;
-    key[23][0]=TyrCRingZeta;  key[23][1]=TyrOEta;
-    key[24][0]=TyrOEta;       key[24][1]=TyrHOEta;
-    for(unsigned int i=0;i<AminoAcidTyrNumberBonds;++i) {
-      key[i+AminoAcidTyrNumberBonds][0]=key[i][1];
-      key[i+AminoAcidTyrNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidThr],2,1,AminoAcidThrNumberBonds);
+    Set(AminoAcidBonds[AminoAcidThr],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidThr],0,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidThr],0,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidThr],0,CAlpha,ThrCBeta);
+    Set(AminoAcidBonds[AminoAcidThr],0,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidThr],0,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidThr],0,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidThr],0,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidThr],0,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidThr],0,NAmino,ThrH3NAmino);
+    Set(AminoAcidBonds[AminoAcidThr],0,ThrCBeta,ThrOGamma);
+    Set(AminoAcidBonds[AminoAcidThr],0,ThrCBeta,ThrCGamma);
+    Set(AminoAcidBonds[AminoAcidThr],0,ThrCBeta,ThrHBeta);
+    Set(AminoAcidBonds[AminoAcidThr],0,ThrOGamma,ThrHOGamma);
+    Set(AminoAcidBonds[AminoAcidThr],0,ThrCGamma,ThrH1CGamma);
+    Set(AminoAcidBonds[AminoAcidThr],0,ThrCGamma,ThrH2CGamma);
+    Set(AminoAcidBonds[AminoAcidThr],0,ThrCGamma,ThrH3CGamma);
 
-    allocate(AminoAcidBonds[AminoAcidVal],2,1,AminoAcidValNumberBonds*2);
-    refer(key,
-          AminoAcidBonds[AminoAcidVal].key,AminoAcidBonds[AminoAcidVal].size);
-    key[0][0]=CAlpha;         key[0][1]=CCarbonyl;
-    key[1][0]=CAlpha;         key[1][1]=NAmino;
-    key[2][0]=CAlpha;         key[2][1]=HAlpha;
-    key[3][0]=CAlpha;         key[3][1]=ValCBeta;
-    key[4][0]=CCarbonyl;      key[4][1]=OCarbonyl;
-    key[5][0]=CCarbonyl;      key[5][1]=OCarboxyl;
-    key[6][0]=OCarboxyl;      key[6][1]=HOCarboxyl;
-    key[7][0]=NAmino;         key[7][1]=H1NAmino;
-    key[8][0]=NAmino;         key[8][1]=H2NAmino;
-    key[9][0]=NAmino;         key[9][1]=ValH3NAmino;
-    key[10][0]=ValCBeta;      key[10][1]=ValC1Gamma;
-    key[11][0]=ValCBeta;      key[11][1]=ValC2Gamma;
-    key[12][0]=ValCBeta;      key[12][1]=ValHBeta;
-    key[13][0]=ValC1Gamma;    key[13][1]=ValH1C1Gamma;
-    key[14][0]=ValC1Gamma;    key[14][1]=ValH2C1Gamma;
-    key[15][0]=ValC1Gamma;    key[15][1]=ValH3C1Gamma;
-    key[16][0]=ValC2Gamma;    key[16][1]=ValH1C2Gamma;
-    key[17][0]=ValC2Gamma;    key[17][1]=ValH2C2Gamma;
-    key[18][0]=ValC2Gamma;    key[18][1]=ValH3C2Gamma;
-    for(unsigned int i=0;i<AminoAcidValNumberBonds;++i) {
-      key[i+AminoAcidValNumberBonds][0]=key[i][1];
-      key[i+AminoAcidValNumberBonds][1]=key[i][0];
-    }
+    allocate(AminoAcidBonds[AminoAcidTrp],2,1,AminoAcidTrpNumberBonds);
+    Set(AminoAcidBonds[AminoAcidTrp],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidTrp],0,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidTrp],0,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidTrp],0,CAlpha,TrpCBeta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidTrp],0,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidTrp],0,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidTrp],0,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidTrp],0,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidTrp],0,NAmino,TrpH3NAmino);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCBeta,TrpCGamma);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCBeta,TrpH1Beta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCBeta,TrpH2Beta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCGamma,TrpC1Delta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCGamma,TrpC2Delta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpC1Delta,TrpNEpsilonC1Delta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpC1Delta,TrpHC1Delta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpC2Delta,TrpC1EpsilonC2Delta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpC2Delta,TrpC2EpsilonC2Delta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpNEpsilonC1Delta,TrpC1EpsilonC2Delta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpNEpsilonC1Delta,TrpHNEpsilon);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpC1EpsilonC2Delta,TrpCZetaC1Epsilon);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpC2EpsilonC2Delta,TrpCZetaC2Epsilon);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpC2EpsilonC2Delta,TrpHC2Epsilon);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCZetaC1Epsilon,TrpCEta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCZetaC1Epsilon,TrpHCZetaC1Epsilon);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCZetaC2Epsilon,TrpCEta);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCZetaC2Epsilon,TrpHCZetaC2Epsilon);
+    Set(AminoAcidBonds[AminoAcidTrp],0,TrpCEta,TrpHCEta);
+
+    allocate(AminoAcidBonds[AminoAcidTyr],2,1,AminoAcidTyrNumberBonds);
+    Set(AminoAcidBonds[AminoAcidTyr],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidTyr],0,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidTyr],0,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidTyr],0,CAlpha,TyrCBeta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidTyr],0,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidTyr],0,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidTyr],0,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidTyr],0,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidTyr],0,NAmino,TyrH3NAmino);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCBeta,TyrCRingGamma);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCBeta,TyrH1Beta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCBeta,TyrH2Beta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCRingGamma,TyrC1RingDelta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCRingGamma,TyrC2RingDelta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrC1RingDelta,TyrCRingEpsilonC1Delta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrC1RingDelta,TyrHC1Delta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrC2RingDelta,TyrCRingEpsilonC2Delta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrC2RingDelta,TyrHC2Delta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCRingEpsilonC1Delta,TyrCRingZeta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCRingEpsilonC1Delta,TyrHCEpsilonC1Delta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCRingEpsilonC2Delta,TyrCRingZeta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCRingEpsilonC2Delta,TyrHCEpsilonC2Delta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrCRingZeta,TyrOEta);
+    Set(AminoAcidBonds[AminoAcidTyr],0,TyrOEta,TyrHOEta);
+
+    allocate(AminoAcidBonds[AminoAcidVal],AminoAcidValNumberBonds);
+    Set(AminoAcidBonds[AminoAcidVal],0,CAlpha,CCarbonyl);
+    Set(AminoAcidBonds[AminoAcidVal],0,CAlpha,NAmino);
+    Set(AminoAcidBonds[AminoAcidVal],0,CAlpha,HAlpha);
+    Set(AminoAcidBonds[AminoAcidVal],0,CAlpha,ValCBeta);
+    Set(AminoAcidBonds[AminoAcidVal],0,CCarbonyl,OCarbonyl);
+    Set(AminoAcidBonds[AminoAcidVal],0,CCarbonyl,OCarboxyl);
+    Set(AminoAcidBonds[AminoAcidVal],0,OCarboxyl,HOCarboxyl);
+    Set(AminoAcidBonds[AminoAcidVal],0,NAmino,H1NAmino);
+    Set(AminoAcidBonds[AminoAcidVal],0,NAmino,H2NAmino);
+    Set(AminoAcidBonds[AminoAcidVal],0,NAmino,ValH3NAmino);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValCBeta,ValC1Gamma);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValCBeta,ValC2Gamma);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValCBeta,ValHBeta);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValC1Gamma,ValH1C1Gamma);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValC1Gamma,ValH2C1Gamma);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValC1Gamma,ValH3C1Gamma);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValC2Gamma,ValH1C2Gamma);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValC2Gamma,ValH2C2Gamma);
+    Set(AminoAcidBonds[AminoAcidVal],0,ValC2Gamma,ValH3C2Gamma);
 
     for(unsigned int i=0;i<NumberAminoAcids;++i)  AminoAcidBonds[i].update();
 
