@@ -11,9 +11,11 @@ namespace std {
 
   void allocate(ContactMap& CM, const unsigned int nc) {
     release(CM);
+    typedef BTree<ParameterKey,char> TreeType;
+    allocate(static_cast<Vector<TreeType>&>(CM),0xFFFFU);
     CM.size=nc;
     CM.key=new ParameterKey[nc];
-    for(unsigned int i=0;i<nc;++i)  allocate(CMkey[i],2);
+    for(unsigned int i=0;i<nc;++i)  allocate(CM.key[i],2);
     CM.value=new char[nc];
   }
 
@@ -21,7 +23,7 @@ namespace std {
     allocate(CM,cCM.size);
   }
 
-  const char* get(ContactMap& CM,
+  const char* get(const ContactMap& CM,
                   const unsigned int id1, const unsigned int id2) {
     char* name;
     static ParameterKey K;
@@ -39,7 +41,7 @@ namespace std {
     return name;
   }
 
-  const char* get(ContactMap& CM, const unsigne int* idx,
+  const char* get(const ContactMap& CM, const unsigned int* idx,
                   const unsigned int offset=0, const unsigned int step=1) {
     return get(CM,idx[offset],idx[offset+step]);
   }
@@ -48,7 +50,7 @@ namespace std {
     return get(CM,idx.data);
   }
 
-  void Set(ContactMap& CM, const unsigned int n,
+  void Set(const ContactMap& CM, const unsigned int n,
            const unsigned int id1, const unsigned int id2) {
     CM.key[n][0]=id1;
     CM.key[n][1]=id2;

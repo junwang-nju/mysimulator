@@ -19,8 +19,9 @@ namespace std {
   void SetResidueID(char* res, const char* rid) { strncpy(res,rid,5); }
 
   void ImportPDBInfo(PDBInfo& PI, const char* pdbfname) {
-    if(IsAvailable(UnitNameLibrary)||IsAvailable(UnitAtomNameLibrary))
+    if((!IsAvailable(UnitNameLibrary))||(!IsAvailable(UnitAtomNameLibrary)))
       InitNameLibrary();
+    if(!IsAvailable(AminoAcidNumberAtoms))  InitAminoAcidNumberAtoms();
     FileInput FI;
     unsigned int nmodel,nmodelend,natom,naminoacid,nbond;
     char buff[1024], oldpat[6]="XXXXX";
@@ -56,7 +57,7 @@ namespace std {
     for(unsigned int i=0;i<nmodel;++i)  allocate(PI.Coordinate[i],usize);
     allocate(PI.AtomName,natom);
     allocate(PI.UnitName,naminoacid);
-    allocate(PI.UnitBond,2,1,nbond*2);
+    allocate(PI.UnitBond,nbond);
     allocate(PI.UnitAtomID,naminoacid);
 
     strncpy(oldpat,"XXXXX",5);
@@ -85,11 +86,8 @@ namespace std {
                      AminoAcidNumberAtoms[PI.UnitName[naminoacid]]);
             copy(PI.UnitAtomID[naminoacid],-1);
             if(paa!=-1) {
-              PI.UnitBond.key[nbond][0]=paa;
-              PI.UnitBond.key[nbond][1]=naminoacid;
-              PI.UnitBond.key[nbond+1][0]=naminoacid;
-              PI.UnitBond.key[nbond+1][1]=paa;
-              nbond+=2;
+              Set(PI.UnitBond,nbond,paa,naminoacid);
+              ++nbond;
             }
             paa=naminoacid;
             ++naminoacid;

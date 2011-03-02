@@ -72,6 +72,7 @@ namespace std {
   typedef Mapper<PDBUnitKey,PDBUnitNameValueType>  PDBUnitNameMapper;
 
   void allocate(PDBUnitNameMapper& M, const unsigned int nitem) {
+    release(M);
     typedef BTree<PDBUnitKey,PDBUnitNameValueType> TreeType;
     allocate(static_cast<Vector<TreeType>&>(M),0xFFFFU);
     M.size=nitem;

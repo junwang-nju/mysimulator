@@ -209,6 +209,9 @@ target_link_libraries (test-simple-data-input.run blas)
 add_executable (test-pdb-info.run test-pdb-info.cxx)
 target_link_libraries (test-pdb-info.run blas)
 
+add_executable (test-pdb2contact.run test-pdb2contact.cxx)
+target_link_libraries (test-pdb2contact.run blas)
+
 ########################
 #add_executable (test-pdb-data-structure-op.run test-pdb-data-structure-op.cxx)
 #target_link_libraries (test-pdb-data-structure-op.run Base blas)

@@ -15,7 +15,7 @@ namespace std {
     Vector<unsigned int> AtomName;
     Vector<unsigned int> UnitName;
     Vector<Vector<int> > UnitAtomID;
-    ParameterList UnitBond;
+    ContactMap UnitBond;
 
     PDBInfo()
       : Coordinate(), AtomName(), UnitName(), UnitAtomID(), UnitBond() {}
@@ -83,7 +83,7 @@ namespace std {
     allocate(PI.UnitAtomID,UnitSeq.size);
     for(unsigned int i=0;i<UnitSeq.size;++i)
       allocate(PI.UnitAtomID[i],AminoAcidNumberAtoms[UnitSeq[i]]);
-    allocate(PI.UnitBond,2,1,nbond*2);
+    allocate(PI.UnitBond,nbond);
   }
 
 }
