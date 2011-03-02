@@ -3,7 +3,6 @@
 #define _PDB_Information_H_
 
 #include "data/name/pdb-unit-name.h"
-#include "data/derived/dual-vector.h"
 
 namespace std {
 
@@ -15,7 +14,7 @@ namespace std {
     Vector<PropertyList<double> > Coordinate;
     Vector<unsigned int> AtomName;
     Vector<unsigned int> UnitName;
-    DualVector<int> UnitAtomID;
+    Vector<Vector<int> > UnitAtomID;
     ParameterList UnitBond;
 
     PDBInfo()
@@ -50,6 +49,8 @@ namespace std {
     imprint(PI.AtomName,cPI.AtomName);
     imprint(PI.UnitName,cPI.UnitName);
     imprint(PI.UnitAtomID,cPI.UnitAtomID);
+    for(unsigned int i=0;i<cPI.UnitAtomID.size;++i)
+      imprint(PI.UnitAtomID[i],cPI.UnitAtomID[i]);
     imprint(PI.UnitBond,cPI.UnitBond);
   }
   void copy(PDBInfo& PI, const PDBInfo& cPI) {
@@ -73,16 +74,15 @@ namespace std {
                 const unsigned int& nmodel, const unsigned int natom,
                 const Vector<unsigned int>& UnitSeq,const unsigned int& nbond){
     allocate(PI.Coordinate,nmodel);
-    Vector<unsigned int> usize,sz;
-    allocate(usize,UnitSeq.size);
-    for(unsigned int i=0;i<usize.size;++i)
-      usize[i]=AminoAcidNumberAtoms[UnitSeq[i]];
+    Vector<unsigned int> sz;
     allocate(sz,natom);
     copy(sz,3);
     for(unsigned int i=0;i<nmodel;++i)  allocate(PI.Coordinate[i],sz);
     allocate(PI.AtomName,natom);
     allocate(PI.UnitName,UnitSeq.size);
-    allocate(PI.UnitAtomID,usize);
+    allocate(PI.UnitAtomID,UnitSeq.size);
+    for(unsigned int i=0;i<UnitSeq.size;++i)
+      allocate(PI.UnitAtomID[i],AminoAcidNumberAtoms[UnitSeq[i]]);
     allocate(PI.UnitBond,2,1,nbond*2);
   }
 
