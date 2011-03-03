@@ -1,6 +1,6 @@
 
-#ifndef _PDB_Contact_Map_H_
-#define _PDB_Contact_Map_H_
+#ifndef _Contact_Map_H_
+#define _Contact_Map_H_
 
 #include "data/derived/parameter-key.h"
 #include "data/basic/mapper.h"

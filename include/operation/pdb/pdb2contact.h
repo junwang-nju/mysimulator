@@ -3,7 +3,7 @@
 #define _PDB_to_Contact_H_
 
 #include "data/pdb/pdb-info.h"
-#include "data/pdb/contact-calc-mode.h"
+#include "data/structure/contact-calc-mode.h"
 #include "data/basic/string-buffer-input.h"
 #include "data/basic/string-buffer-output.h"
 

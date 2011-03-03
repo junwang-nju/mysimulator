@@ -955,7 +955,7 @@ namespace std {
 
 }
 
-#include "data/pdb/contact-map.h"
+#include "data/structure/contact-map.h"
 
 namespace std {
 
