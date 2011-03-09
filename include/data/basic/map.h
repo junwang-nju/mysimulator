@@ -9,10 +9,13 @@
 namespace std {
 
   template <typename KeyType, typename ValueType>
-  struct Map : public Vector<BTree<KeyType,ValueType> > {
+  struct Map : public Vector<
+                        BTree<KeyType,
+                              ChainNode<MapElement<KeyType,ValueType> > > > {
 
     typedef Map<KeyType,ValueType>  Type;
-    typedef BTree<KeyType,ValueType>  MapTreeType;
+    typendef ChainNode<MapElement<KeyType,ValueType> >  TreeValueType;
+    typedef BTree<KeyType,TreeValueType>  MapTreeType;
     typedef Vector<MapTreeType> ParentType;
 
     Chain<MapElement<KeyType,ValueType> > MapData;
@@ -26,12 +29,14 @@ namespace std {
     ~Map() { release(*this); }
     void update() {
       unsigned int n;
-      MapElement<KeyType,ValueType> *pME=MapData.root->child;
-      while(pME!=MapData.head) {
+      TreeValueType *pTV=MapData.root->child;
+      MapElement<KeyType,ValueType> *pME;
+      while(pTV!=MapData.head) {
+        pME=pTV->content;
         pME->update();
         n=(pME->hash[0]&0xFFFF0000U)>>16;
-        insert(this->operator[](n),pME->key,pME->value);
-        pME=pME->child;
+        insert(this->operator[](n),pME->key,*pTV);
+        pTV=pTV->child;
       }
     }
 
@@ -39,13 +44,13 @@ namespace std {
 
   template <typename KeyType, typename ValueType>
   bool IsAvailable(const Map<KeyType,ValueType>& M) {
-    typedef Vector<BTree<KeyType,ValueType> >  Type;
+    typedef typename Map<KeyType,ValueType>::ParentType Type;
     return IsAvailable(static_cast<const Type&>(M))&&IsAvailable(M.MapData);
   }
 
   template <typename KeyType, typename ValueType>
   void release(Map<KeyType,ValueType>& M) {
-    typedef Vector<BTree<KeyType,ValueType> >  Type;
+    typedef typename Map<KeyType,ValueType>::ParentType Type;
     release(static_cast<Type&>(M));
     release(M.MapData);
   }
@@ -62,8 +67,8 @@ namespace std {
   void refer(Map<KeyType,ValueType>& M, Map<KeyType,ValueType>& rM) {
     assert(IsAvailable(rM));
     release(M);
-    release(M.MapData,rM.MapData);
-    typedef Vector<BTree<KeyType,ValueType> >  Type;
+    refer(M.MapData,rM.MapData);
+    typedef typename Map<KeyType,ValueType>::ParentType Type;
     refer(static_cast<Type&>(M),static_cast<const Type&>(rM));
   }
 

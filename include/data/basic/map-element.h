@@ -64,7 +64,14 @@ namespace std {
   }
 
   template <typename KeyType, typename ValueType>
-  void imprintHash(MapElement<KeyType,ValueType>& ME) { allocateHash(ME); }
+  void imprint(MapElement<KeyType,ValueType>& ME,
+               const MapElement<KeyType,ValueType>& cME) {
+    assert(IsAvailable(cME));
+    release(ME);
+    imprint(ME.key,cME.key);
+    imprint(ME.value,cME.value);
+    allocateHash(ME);
+  }
 
   template <typename KeyType, typename ValueType>
   int compare(const MapElement<KeyType,ValueType>& MEa,

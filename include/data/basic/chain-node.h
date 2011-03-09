@@ -291,7 +291,8 @@ namespace std {
     dest.parent->child->parentstate=dest.parentstate;
     if(cflag==Allocated) {
       dest.parent->child->content=new T;
-      *(dest.parent->child->content)=content;
+      imprint(*(dest.parent->child->content),content);
+      copy(*(dest.parent->child->content),content);
     } else if(cflag==Reference)
       dest.parent->child->content=const_cast<T*>(&content);
     else Error("Improper Storage flag");
