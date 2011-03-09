@@ -1,14 +1,19 @@
 
-#include "operation/derived/parameter-list-io.h"
+//#include "operation/derived/parameter-list-io.h"
+#include "operation/basic/map-op.h"
+#include "operation/basic/build-hash.h"
+#include "data/basic/unique-parameter.h"
 #include "data/basic/console-output.h"
 #include "data/basic/console-input.h"
 using namespace std;
 
 int main() {
   COut<<"Test -- initiate"<<Endl;
-  ParameterList PL;
+  //ParameterList PL;
+  Map<Vector<unsigned int>,Vector<UniqueParameter> > M;
   COut<<Endl;
 
+  /*
   COut<<"Test -- allocate"<<Endl;
   allocate(PL,3,2,7);
   Vector<unsigned int> ksize, vsize;
@@ -22,20 +27,23 @@ int main() {
   release(ksize);
   release(vsize);
   COut<<Endl;
+  */
 
   COut<<"Test -- input data by direct access"<<Endl;
+  Vector<unsigned int> key(4);
+  Vector<UniqueParameter> value(2);
   for(unsigned int i=0;i<5;++i) {
-    PL.key[i][0]=0;
-    PL.key[i][1]=i;
-    PL.key[i][2]=i+1;
-    PL.key[i][3]=i+1;
-    //PL.key[i].update();
-    PL.value[i][0].d=123.45*i+34.789;
-    PL.value[i][1].u=12345+i*87;
+    key[0]=0;
+    key[1]=i;
+    key[2]=i+1;
+    key[3]=i+1;
+    value[0].d=123.45*i+34.789;
+    value[1].u=12345+i*87;
+    add(M,key,value,Allocated,Allocated);
   }
-  PL.update();
   COut<<Endl;
 
+  /*
   COut<<"Test -- access tree through []"<<Endl;
   for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL[i])) COut<<i<<Endl;
   COut<<Endl;
@@ -79,6 +87,7 @@ int main() {
   release(PL);
   COut<<IsAvailable(PL)<<Endl;
   COut<<Endl;
+  */
 
   return 1;
 }

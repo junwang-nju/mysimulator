@@ -13,7 +13,7 @@ namespace std {
     hash[2]=hash_bp(reinterpret_cast<const char*>(key.data),hsize);
   }
 
-  void buildHash(const Vector<unsigned int>& key, Vector<unsigned int& hash) {
+  void buildHash(const Vector<unsigned int>& key, Vector<unsigned int>& hash) {
     assert(hash.size==3);
     buildHash(key,hash.data);
   }

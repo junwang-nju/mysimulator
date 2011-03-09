@@ -19,7 +19,7 @@ namespace std {
     unsigned int hash[3];
     buildHash(K,hash);
     unsigned int n=(hash[0]&0xFFFF0000U)>>16;
-    ChainNode<MapElement<KeyType,ValueType> > pTV=get(M[n],K);
+    const ChainNode<MapElement<KeyType,ValueType> > *pTV=get(M[n],K);
     return (pTV==NULL?NULL:&(pTV->content->value));
   }
 
@@ -31,12 +31,12 @@ namespace std {
   template <typename KeyType, typename ValueType>
   void add(Map<KeyType,ValueType>& M, const MapElement<KeyType,ValueType>& ME,
            const unsigned int cflag=Reference) {
-    assert(!IsHaveKey(ME,ME.key));
+    assert(!IsHaveKey(M,ME.key));
     append(M.MapData,ME,cflag);
-    ChainNode<MapElement<KeyType,ValueType> > *now=ME.MapData.head->parent;
+    ChainNode<MapElement<KeyType,ValueType> > *now=M.MapData.head->parent;
     now->content->update();
     unsigned int n=(now->content->hash[0]&0xFFFF0000U)>>16;
-    insert(MP[n],now->content->key,now);
+    insert(M[n],now->content->key,*now);
   }
 
   template <typename KeyType, typename ValueType>

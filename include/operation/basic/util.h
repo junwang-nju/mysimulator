@@ -557,11 +557,36 @@ namespace std {
   float arccos(const float& d) { return acosf(d); }
   long double arccos(const long double& d) { return acosl(d); }
 
-  template <typename T>
-  void imprint(T&, const T&) {}
+  void imprint(int&, const int&) {}
+  void imprint(unsigned int&, const unsigned int&) {}
+  void imprint(char&, const char&) {}
+  void imprint(unsigned char&, const unsigned char&) {}
+  void imprint(double&, const double&) {}
+  void imprint(float&, const float&) {}
 
-  template <typename T>
-  void refer(T&,const T&) { Warn("refer is not supported for this type!"); }
+  void release(int&) {}
+  void release(char&) {}
+  void release(unsigned int&) {}
+  void release(unsigned char&) {}
+  void release(float&) {}
+  void release(double&) {}
+
+  void refer(int&,const int&) { Warn("refer is not supported for this type!"); }
+  void refer(unsigned int&,const unsigned int&) {
+    Warn("refer is not supported for this type!");
+  }
+  void refer(char&,const char&) {
+    Warn("refer is not supported for this type!");
+  }
+  void refer(unsigned char&, const unsigned char&) {
+    Warn("refer is not supported for this type!");
+  }
+  void refer(float&,const float&) { 
+    Warn("refer is not supported for this type!");
+  }
+  void refer(double&,const double&) { 
+    Warn("refer is not supported for this type!");
+  }
 
 }
 

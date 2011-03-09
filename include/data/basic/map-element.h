@@ -2,6 +2,8 @@
 #ifndef _Map_Element_H_
 #define _Map_Element_H_
 
+#include "data/basic/vector.h"
+
 namespace std {
 
   template <typename KeyType, typename ValueType>
@@ -21,20 +23,20 @@ namespace std {
     }
     ~MapElement() { release(*this); }
 
-    void update() { buildHash(key,hash) }
+    void update() { buildHash(key,hash); }
 
   };
 
   template <typename KeyType, typename ValueType>
   bool IsAvailable(const MapElement<KeyType,ValueType>& ME) {
-    return IsAvailable(key)&&IsAvailable(value);
+    return IsAvailable(ME.key)&&IsAvailable(ME.value);
   }
 
   template <typename KeyType, typename ValueType>
   void release(MapElement<KeyType,ValueType>& ME) {
-    release(key);
-    release(value);
-    release(hash);
+    release(ME.key);
+    release(ME.value);
+    release(ME.hash);
   }
 
   template <typename KeyType, typename ValueType>
@@ -53,7 +55,7 @@ namespace std {
     assert(IsAvailable(rME));
     release(ME);
     refer(ME.key,rME.key);
-    refer(ME.value,rME,value);
+    refer(ME.value,rME.value);
     refer(ME.hash,rME.hash);
   }
 

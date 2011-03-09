@@ -14,7 +14,7 @@ namespace std {
                               ChainNode<MapElement<KeyType,ValueType> > > > {
 
     typedef Map<KeyType,ValueType>  Type;
-    typendef ChainNode<MapElement<KeyType,ValueType> >  TreeValueType;
+    typedef ChainNode<MapElement<KeyType,ValueType> >  TreeValueType;
     typedef BTree<KeyType,TreeValueType>  MapTreeType;
     typedef Vector<MapTreeType> ParentType;
 
@@ -22,7 +22,7 @@ namespace std {
 
     Map() : ParentType(), MapData() {}
     Map(Type&) { Error("Cannot create Map"); }
-    Map(const Type&) {
+    Type& operator=(const Type&) {
       Error("Cannot copy map");
       return *this;
     }
