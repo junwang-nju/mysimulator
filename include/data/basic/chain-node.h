@@ -13,7 +13,6 @@
 #ifndef _Chain_Node_H_
 #define _Chain_Node_H_
 
-#include "operation/basic/error-op.h"
 #include "data/name/storage-state.h"
 #include "operation/basic/memory.h"
 #include "operation/basic/util.h"
@@ -75,7 +74,7 @@ namespace std {
      * with no information.
      */
     ChainNode() 
-      : parent(), child(), content(), 
+      : parent(NULL), child(NULL), content(NULL), 
         parentstate(Unused), childstate(Unused), contentstate(Unused) {}
     /**
      * @brief initiator from another node in chain

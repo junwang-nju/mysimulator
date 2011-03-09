@@ -10,16 +10,17 @@ namespace std {
   const ValueType* get(const Map<KeyType,ValueType>& M,
                        const MapElement<KeyType,ValueType>& ME) {
     unsigned int n=(ME.hash[0]&0xFFFF0000U)>>16;
-    ChainNode<MapElement<KeyType,ValueType> > pTV=get(M[n],ME.key);
+    ChainNode<MapElement<KeyType,ValueType> > pTV=get(M[n],ME.hash);
     return (pTV==NULL?NULL:&(pTV->content->value));
   }
 
   template <typename KeyType, typename ValueType>
   const ValueType* get(const Map<KeyType,ValueType>& M, const KeyType& K) {
-    unsigned int hash[3];
+    Hash hash;
+    allocate(hash);
     buildHash(K,hash);
     unsigned int n=(hash[0]&0xFFFF0000U)>>16;
-    const ChainNode<MapElement<KeyType,ValueType> > *pTV=get(M[n],K);
+    const ChainNode<MapElement<KeyType,ValueType> > *pTV=get(M[n],hash);
     return (pTV==NULL?NULL:&(pTV->content->value));
   }
 
@@ -36,7 +37,7 @@ namespace std {
     ChainNode<MapElement<KeyType,ValueType> > *now=M.MapData.head->parent;
     now->content->update();
     unsigned int n=(now->content->hash[0]&0xFFFF0000U)>>16;
-    insert(M[n],now->content->key,*now);
+    insert(M[n],now->content->hash,*now);
   }
 
   template <typename KeyType, typename ValueType>
@@ -55,18 +56,19 @@ namespace std {
       copy(pME->value,V);
     } else if(vflag==Reference) refer(pME->value,V);
     else Error("Unknown element assign mode!");
+    allocate(pME->hash);
     add(M,*pME);
   }
 
   template <typename KeyType, typename ValueType>
   void remove(Map<KeyType,ValueType>& M, const KeyType& key) {
-    unsigned int hash[3];
+    Hash hash;
     buildHash(key,hash);
     unsigned int n=(hash[0]&0xFFFF0000U)>>16;
-    ChainNode<MapElement<KeyType,ValueType> > *pTV=get(M[n],key);
+    ChainNode<MapElement<KeyType,ValueType> > *pTV=get(M[n],hash);
     if(pTV==NULL) return;
     remove(M.MapData,pTV);
-    removeNode(M[n],key);
+    removeNode(M[n],hash);
   }
 
 }

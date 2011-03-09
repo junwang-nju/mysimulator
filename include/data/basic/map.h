@@ -10,12 +10,12 @@ namespace std {
 
   template <typename KeyType, typename ValueType>
   struct Map : public Vector<
-                        BTree<KeyType,
+                        BTree<Hash,
                               ChainNode<MapElement<KeyType,ValueType> > > > {
 
     typedef Map<KeyType,ValueType>  Type;
     typedef ChainNode<MapElement<KeyType,ValueType> >  TreeValueType;
-    typedef BTree<KeyType,TreeValueType>  MapTreeType;
+    typedef BTree<Hash,TreeValueType>  MapTreeType;
     typedef Vector<MapTreeType> ParentType;
 
     Chain<MapElement<KeyType,ValueType> > MapData;
@@ -35,7 +35,7 @@ namespace std {
         pME=pTV->content;
         pME->update();
         n=(pME->hash[0]&0xFFFF0000U)>>16;
-        insert(this->operator[](n),pME->key,*pTV);
+        insert(this->operator[](n),pME->hash,*pTV);
         pTV=pTV->child;
       }
     }
@@ -70,6 +70,13 @@ namespace std {
     refer(M.MapData,rM.MapData);
     typedef typename Map<KeyType,ValueType>::ParentType Type;
     refer(static_cast<Type&>(M),static_cast<const Type&>(rM));
+  }
+
+  template <typename KeyType, typename ValueType>
+  void allocate(Map<KeyType,ValueType>& M) {
+    typedef typename Map<KeyType,ValueType>::ParentType Type;
+    allocate(static_cast<Type&>(M),0xFFFFU);
+    allocate(M.MapData);
   }
 
 }

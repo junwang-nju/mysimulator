@@ -13,8 +13,9 @@ int main() {
   Map<Vector<unsigned int>,Vector<UniqueParameter> > M;
   COut<<Endl;
 
-  /*
   COut<<"Test -- allocate"<<Endl;
+  allocate(M);
+  /*
   allocate(PL,3,2,7);
   Vector<unsigned int> ksize, vsize;
   allocate(ksize,9);
@@ -26,8 +27,9 @@ int main() {
   allocate(PL,4,vsize.data,5);
   release(ksize);
   release(vsize);
-  COut<<Endl;
   */
+  COut<<Endl;
+
 
   COut<<"Test -- input data by direct access"<<Endl;
   Vector<unsigned int> key(4);
@@ -43,9 +45,8 @@ int main() {
   }
   COut<<Endl;
 
-  /*
   COut<<"Test -- access tree through []"<<Endl;
-  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL[i])) COut<<i<<Endl;
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(M[i])) COut<<i<<Endl;
   COut<<Endl;
 
   COut<<"Test -- get value"<<Endl;
@@ -55,12 +56,13 @@ int main() {
   idx[1]=1;
   idx[2]=2;
   idx[3]=2;
-  const Vector<UniqueParameter> *pVU=get(PL,idx.data,4);
+  const Vector<UniqueParameter> *pVU=get(M,idx);
   COut<<(*pVU)[0].d<<Endl;
   COut<<(*pVU)[1].u<<Endl;
   release(idx);
   COut<<Endl;
 
+  /*
   COut<<"Test -- input from istream"<<Endl;
   CIn>>PL;
   for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL[i])) COut<<i<<Endl;

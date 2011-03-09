@@ -2,7 +2,7 @@
 #ifndef _Map_Element_H_
 #define _Map_Element_H_
 
-#include "data/basic/vector.h"
+#include "data/basic/hash.h"
 
 namespace std {
 
@@ -13,7 +13,7 @@ namespace std {
 
     KeyType key;
     ValueType value;
-    Vector<unsigned int> hash;
+    Hash hash;
 
     MapElement() : key(), value(), hash() {}
     MapElement(const Type&) { Error("Cannot create Map Element"); }
@@ -29,7 +29,7 @@ namespace std {
 
   template <typename KeyType, typename ValueType>
   bool IsAvailable(const MapElement<KeyType,ValueType>& ME) {
-    return IsAvailable(ME.key)&&IsAvailable(ME.value);
+    return IsAvailable(ME.key)&&IsAvailable(ME.value)&&IsAvailable(ME.hash);
   }
 
   template <typename KeyType, typename ValueType>
@@ -60,29 +60,13 @@ namespace std {
   }
 
   template <typename KeyType, typename ValueType>
-  void allocateHash(MapElement<KeyType,ValueType>& ME) {
-    allocate(ME.hash,3);
-    copy(ME.hash,0);
-  }
-
-  template <typename KeyType, typename ValueType>
   void imprint(MapElement<KeyType,ValueType>& ME,
                const MapElement<KeyType,ValueType>& cME) {
     assert(IsAvailable(cME));
     release(ME);
     imprint(ME.key,cME.key);
     imprint(ME.value,cME.value);
-    allocateHash(ME);
-  }
-
-  template <typename KeyType, typename ValueType>
-  int compare(const MapElement<KeyType,ValueType>& MEa,
-              const MapElement<KeyType,ValueType>& MEb) {
-    assert(MEa.hash.size==3);
-    assert(MEb.hash.size==3);
-    for(unsigned int i=0;i<3;++i)
-      if(MEa.hash[i]!=MEb.hash[i])  return (MEa.hash[i]>MEb.hash[i]?1:-1);
-    return 0;
+    allocate(ME.hash);
   }
 
 }

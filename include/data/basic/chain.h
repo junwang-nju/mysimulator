@@ -14,7 +14,6 @@
 #define _Chain_H_
 
 #include "data/basic/chain-node.h"
-#include <cassert>
 
 namespace std {
 
