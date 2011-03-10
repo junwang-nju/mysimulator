@@ -9,13 +9,13 @@
 namespace std {
 
   InputBase& operator>>(InputBase& is, UniqueParameter& P) {
-    static char flag;
-    is>>flag;
+    char flag='\n';
+    do { is>>flag; } while(isspace(flag));
     if((flag=='D')||(flag=='d'))  is>>P.d;
-    else if((flag='F')||(flag=='f'))  is>>P.f;
-    else if((flag='U')||(flag=='u'))  is>>P.u;
-    else if((flag='I')||(flag=='i'))  is>>P.i;
-    else if((flag='P')||(flag=='P'))  is>>P.ptr;
+    else if((flag=='F')||(flag=='f'))  is>>P.f;
+    else if((flag=='U')||(flag=='u'))  is>>P.u;
+    else if((flag=='I')||(flag=='i'))  is>>P.i;
+    else if((flag=='P')||(flag=='P'))  is>>P.ptr;
     else if(isdigit(flag)||(flag=='+')) { is.unget(flag); is>>P.ull; }
     else is.SetState(FailBit);
     return is;

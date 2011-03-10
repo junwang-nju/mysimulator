@@ -5,6 +5,8 @@
 #include "data/basic/unique-parameter.h"
 #include "data/basic/console-output.h"
 #include "data/basic/console-input.h"
+#include "operation/basic/vector-io.h"
+#include "operation/basic/unique-parameter-io.h"
 using namespace std;
 
 int main() {
@@ -15,19 +17,6 @@ int main() {
 
   COut<<"Test -- allocate"<<Endl;
   allocate(M);
-  /*
-  allocate(PL,3,2,7);
-  Vector<unsigned int> ksize, vsize;
-  allocate(ksize,9);
-  allocate(vsize,8);
-  copy(ksize,3);
-  copy(vsize,2);
-  allocate(PL,ksize.data,vsize.data,8);
-  allocate(PL,ksize.data,5,6);
-  allocate(PL,4,vsize.data,5);
-  release(ksize);
-  release(vsize);
-  */
   COut<<Endl;
 
 
@@ -62,34 +51,41 @@ int main() {
   release(idx);
   COut<<Endl;
 
-  /*
   COut<<"Test -- input from istream"<<Endl;
-  CIn>>PL;
-  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL[i])) COut<<i<<Endl;
+  allocate(M);
+  unsigned int n;
+  CIn>>n;
+  for(unsigned int i=0;i<n;++i) {
+    CIn>>key>>value;
+    add(M,key,value,Allocated,Allocated);
+  }
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(M[i])) COut<<i<<Endl;
   COut<<Endl;
 
   COut<<"Test -- assign from another parameter list"<<Endl;
-  ParameterList PL2;
-  allocate(PL2,5,3,4);
-  copy(PL2,PL);
-  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL2[i])) COut<<i<<Endl;
+  Map<Vector<unsigned int>,Vector<UniqueParameter> > M2;
+  allocate(M2);
+  copy(M2,M);
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(M2[i])) COut<<i<<Endl;
   COut<<Endl;
 
   COut<<"Test -- refer operation"<<Endl;
-  refer(PL2,PL);
-  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(PL2[i])) COut<<i<<Endl;
+  Map<Vector<unsigned int>,Vector<UniqueParameter> > M3;
+  refer(M3,M);
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(M3[i])) COut<<i<<Endl;
   COut<<Endl;
 
   COut<<"Test -- release"<<Endl;
-  release(PL2);
+  release(M3);
+  release(M2);
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(M[i])) COut<<i<<Endl;
   COut<<Endl;
 
   COut<<"Test -- availability check"<<Endl;
-  COut<<IsAvailable(PL)<<Endl;
-  release(PL);
-  COut<<IsAvailable(PL)<<Endl;
+  COut<<IsAvailable(M)<<Endl;
+  release(M);
+  COut<<IsAvailable(M)<<Endl;
   COut<<Endl;
-  */
 
   return 1;
 }

@@ -74,6 +74,7 @@ namespace std {
 
   template <typename KeyType, typename ValueType>
   void allocate(Map<KeyType,ValueType>& M) {
+    release(M);
     typedef typename Map<KeyType,ValueType>::ParentType Type;
     allocate(static_cast<Type&>(M),0xFFFFU);
     allocate(M.MapData);
