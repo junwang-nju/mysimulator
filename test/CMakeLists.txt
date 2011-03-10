@@ -19,9 +19,6 @@ target_link_libraries (test-btree.run blas)
 
 add_executable (test-hash-func.run test-hash-func.cxx)
 
-add_executable (test-parameter-key.run test-parameter-key.cxx)
-target_link_libraries (test-parameter-key.run blas)
-
 add_executable (test-unique-parameter.run test-unique-parameter.cxx)
 target_link_libraries (test-unique-parameter.run blas)
 
