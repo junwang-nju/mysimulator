@@ -284,18 +284,21 @@ namespace std {
   void add_parent(ChainNode<T>& dest,
                   const T& content, const unsigned int cflag=Reference) {
     dest.parent->child=new ChainNode<T>;
+    dest.parent->childstate=Allocated;
     dest.parent->child->child=&dest;
     dest.parent->child->childstate=dest.parent->childstate;
     dest.parent->child->parent=dest.parent;
     dest.parent->child->parentstate=dest.parentstate;
     if(cflag==Allocated) {
       dest.parent->child->content=new T;
-      imprint(*(dest.parent->child->content),content);
-      copy(*(dest.parent->child->content),content);
+      if(IsAvailable(content)) {
+        imprint(*(dest.parent->child->content),content);
+        copy(*(dest.parent->child->content),content);
+      }
     } else if(cflag==Reference)
       dest.parent->child->content=const_cast<T*>(&content);
     else Error("Improper Storage flag");
-    dest.parent->childstate=Allocated;
+    dest.parent->child->contentstate=cflag;
     dest.parent=dest.parent->child;
     dest.parentstate=Reference;
   }

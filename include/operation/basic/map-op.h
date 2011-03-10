@@ -3,6 +3,7 @@
 #define _Map_Operation_H_
 
 #include "data/basic/map.h"
+#include "data/basic/console-output.h"
 
 namespace std {
 
@@ -45,7 +46,11 @@ namespace std {
            const unsigned int kflag=Reference,
            const unsigned int vflag=Reference) {
     assert(!IsHaveKey(M,K));
-    MapElement<KeyType,ValueType> *pME=new MapElement<KeyType,ValueType>;
+    static MapElement<KeyType,ValueType> ME;
+    append(M.MapData,ME,Allocated);
+    ChainNode<MapElement<KeyType,ValueType> > *now=M.MapData.head->parent;
+    MapElement<KeyType,ValueType> *pME=now->content;
+    allocate(pME->hash);
     if(kflag==Allocated) {
       imprint(pME->key,K);
       copy(pME->key,K);
@@ -56,8 +61,9 @@ namespace std {
       copy(pME->value,V);
     } else if(vflag==Reference) refer(pME->value,V);
     else Error("Unknown element assign mode!");
-    allocate(pME->hash);
-    add(M,*pME);
+    pME->update();
+    unsigned int n=(pME->hash[0]&0xFFFF0000U)>>16;
+    insert(M[n],pME->hash,*now);
   }
 
   template <typename KeyType, typename ValueType>
@@ -68,8 +74,8 @@ namespace std {
     unsigned int n=(hash[0]&0xFFFF0000U)>>16;
     const ChainNode<MapElement<KeyType,ValueType> > *pTV=get(M[n],hash);
     if(pTV==NULL) return;
-    remove(M.MapData,pTV);
     removeNode(M[n],hash);
+    remove(M.MapData,pTV);
   }
 
 }
