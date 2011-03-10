@@ -11,7 +11,6 @@ using namespace std;
 
 int main() {
   COut<<"Test -- initiate"<<Endl;
-  //ParameterList PL;
   Map<Vector<unsigned int>,Vector<UniqueParameter> > M;
   COut<<Endl;
 
@@ -73,6 +72,24 @@ int main() {
   Map<Vector<unsigned int>,Vector<UniqueParameter> > M3;
   refer(M3,M);
   for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(M3[i])) COut<<i<<Endl;
+  COut<<Endl;
+
+  COut<<"Test -- remove"<<Endl;
+  allocate(idx,4);
+  idx[0]=0;
+  idx[1]=1;
+  idx[2]=3;
+  idx[3]=5;
+  remove(M3,idx);
+  COut<<IsHaveKey(M,idx)<<Endl;
+  COut<<IsHaveKey(M3,idx)<<Endl;
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(M[i])) COut<<i<<Endl;
+  for(unsigned int i=0;i<0xFFFFU;++i) if(IsAvailable(M3[i])) COut<<i<<Endl;
+  idx[0]=0;
+  idx[1]=1;
+  idx[2]=22;
+  idx[3]=3;
+  remove(M3,idx);
   COut<<Endl;
 
   COut<<"Test -- release"<<Endl;

@@ -63,9 +63,10 @@ namespace std {
   template <typename KeyType, typename ValueType>
   void remove(Map<KeyType,ValueType>& M, const KeyType& key) {
     Hash hash;
+    allocate(hash);
     buildHash(key,hash);
     unsigned int n=(hash[0]&0xFFFF0000U)>>16;
-    ChainNode<MapElement<KeyType,ValueType> > *pTV=get(M[n],hash);
+    const ChainNode<MapElement<KeyType,ValueType> > *pTV=get(M[n],hash);
     if(pTV==NULL) return;
     remove(M.MapData,pTV);
     removeNode(M[n],hash);

@@ -8,7 +8,8 @@
 #include "operation/geometry/displacement-calc-freespace.h"
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
-#include "data/derived/parameter-list.h"
+#include "operation/basic/map-op.h"
+#include "operation/basic/build-hash.h"
 #include "data/basic/console-output.h"
 #include "operation/basic/vector-io.h"
 using namespace std;
@@ -156,58 +157,120 @@ int main() {
   Vector<InteractionParameterUnit> RP(6);
   for(unsigned int i=0;i<3;++i) allocate(RP[i],Harmonic);
   for(unsigned int i=3;i<6;++i) allocate(RP[i],LJ612);
-  ParameterList PL;
-  allocate(sz,18);
-  for(unsigned int i=0;i<9;++i)   sz[i]=HarmonicNumberParameter;
-  for(unsigned int i=9;i<18;++i)  sz[i]=LJ612NumberParameter;
-  allocate(PL,3,sz);
-  for(unsigned int i=0,n=0;i<3;++i)
-  for(unsigned int j=0;j<3;++j,++n) {
-    PL.key[n][0]=Harmonic;
-    PL.key[n][1]=i;
-    PL.key[n][2]=j;
-    PL.key[n].update();
-  }
-  PL.value[0][HarmonicEqLength].d=1.;
-  PL.value[0][HarmonicEqStrength].d=100.;
-  PL.value[1][HarmonicEqLength].d=2.;
-  PL.value[1][HarmonicEqStrength].d=100.;
-  PL.value[2][HarmonicEqLength].d=0.5;
-  PL.value[2][HarmonicEqStrength].d=100.;
-  copy(PL.value[3],PL.value[1]);
-  PL.value[4][HarmonicEqLength].d=1.;
-  PL.value[4][HarmonicEqStrength].d=200.;
-  PL.value[5][HarmonicEqLength].d=1.;
-  PL.value[5][HarmonicEqStrength].d=30.;
-  copy(PL.value[6],PL.value[2]);
-  copy(PL.value[7],PL.value[5]);
-  PL.value[8][HarmonicEqLength].d=1.5;
-  PL.value[8][HarmonicEqStrength].d=2000.;
-  for(unsigned int i=0;i<9;++i) BuildParameterHarmonic<double>(PL.value[i]);
-  for(unsigned int i=0,n=9;i<3;++i)
-  for(unsigned int j=0;j<3;++j,++n) {
-    PL.key[n][0]=LJ612;
-    PL.key[n][1]=i;
-    PL.key[n][2]=j;
-    PL.key[n].update();
-  }
-  PL.value[9][LJ612EqRadius].d=1.;
-  PL.value[9][LJ612EqEnergyDepth].d=1.;
-  PL.value[10][LJ612EqRadius].d=0.8;
-  PL.value[10][LJ612EqEnergyDepth].d=2.;
-  PL.value[11][LJ612EqRadius].d=0.5;
-  PL.value[11][LJ612EqEnergyDepth].d=1.;
-  copy(PL.value[12],PL.value[10]);
-  PL.value[13][LJ612EqRadius].d=1.2;
-  PL.value[13][LJ612EqEnergyDepth].d=2.;
-  PL.value[14][LJ612EqRadius].d=1.1;
-  PL.value[14][LJ612EqEnergyDepth].d=3.;
-  copy(PL.value[15],PL.value[11]);
-  copy(PL.value[16],PL.value[14]);
-  PL.value[17][LJ612EqRadius].d=1.5;
-  PL.value[17][LJ612EqEnergyDepth].d=2.;
-  for(unsigned int i=9;i<18;++i)  BuildParameterLJ612<double>(PL.value[i]);
-  PL.update();
+  Map<Vector<unsigned int>,Vector<UniqueParameter> > PL;
+  allocate(PL);
+  Vector<unsigned int> key;
+  Vector<UniqueParameter> value;
+  allocate(key,3);
+  allocate(value,HarmonicNumberParameter);
+
+  key[0]=Harmonic;
+
+  key[1]=0;
+  key[2]=0;
+  value[HarmonicEqLength].d=1.;
+  value[HarmonicEqStrength].d=100.;
+  BuildParameterHarmonic<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=0;
+  key[2]=1;
+  value[HarmonicEqLength].d=2.;
+  value[HarmonicEqStrength].d=100.;
+  BuildParameterHarmonic<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+  key[1]=1;
+  key[2]=0;
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=0;
+  key[2]=2;
+  value[HarmonicEqLength].d=0.5;
+  value[HarmonicEqStrength].d=100.;
+  BuildParameterHarmonic<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+  key[1]=2;
+  key[2]=0;
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=1;
+  key[2]=1;
+  value[HarmonicEqLength].d=1.;
+  value[HarmonicEqStrength].d=200.;
+  BuildParameterHarmonic<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=1;
+  key[2]=2;
+  value[HarmonicEqLength].d=1.;
+  value[HarmonicEqStrength].d=30.;
+  BuildParameterHarmonic<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+  key[1]=2;
+  key[2]=1;
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=2;
+  key[2]=2;
+  value[HarmonicEqLength].d=1.5;
+  value[HarmonicEqStrength].d=2000.;
+  BuildParameterHarmonic<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+
+  allocate(value,LJ612NumberParameter);
+  key[0]=LJ612;
+
+  key[1]=0;
+  key[2]=0;
+  value[LJ612EqRadius].d=1.;
+  value[LJ612EqEnergyDepth].d=1.;
+  BuildParameterLJ612<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=0;
+  key[2]=1;
+  value[LJ612EqRadius].d=0.8;
+  value[LJ612EqEnergyDepth].d=2.;
+  BuildParameterLJ612<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+  key[1]=1;
+  key[2]=0;
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=0;
+  key[2]=2;
+  value[LJ612EqRadius].d=0.5;
+  value[LJ612EqEnergyDepth].d=1.;
+  BuildParameterLJ612<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+  key[1]=2;
+  key[2]=0;
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=1;
+  key[2]=1;
+  value[LJ612EqRadius].d=1.2;
+  value[LJ612EqEnergyDepth].d=2.;
+  BuildParameterLJ612<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=1;
+  key[2]=2;
+  value[LJ612EqRadius].d=1.1;
+  value[LJ612EqEnergyDepth].d=3.;
+  BuildParameterLJ612<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+  key[1]=2;
+  key[2]=1;
+  add(PL,key,value,Allocated,Allocated);
+
+  key[1]=2;
+  key[2]=2;
+  value[LJ612EqRadius].d=1.5;
+  value[LJ612EqEnergyDepth].d=2.;
+  BuildParameterLJ612<double>(value);
+  add(PL,key,value,Allocated,Allocated);
+
   Vector<unsigned int> Kind(4);
   copy(Kind,0);
   Kind[1]=1;
