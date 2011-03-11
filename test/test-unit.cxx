@@ -11,6 +11,8 @@ int main() {
   COut<<*getUnitName(12)<<Endl;
   COut<<*getUnitSimpleName("ProLine")<<Endl;
   COut<<*getUnitSimpleName(14)<<Endl;
+  COut<<*getUnitCode(5)<<Endl;
+  COut<<*getUnitCode("Leucine")<<Endl;
   return 0;
 }
 

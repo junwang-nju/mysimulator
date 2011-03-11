@@ -21,6 +21,7 @@ namespace std {
     } else id=UnitNameResolver.MapData.head->parent->content->value+1;
     if(!IsAvailable(UnitIDResolver)) allocate(UnitIDResolver);
     if(!IsAvailable(UnitNameSimplifier))  allocate(UnitNameSimplifier);
+    if(!IsAvailable(UnitNameCoder)) allocate(UnitNameCoder);
     char *buff=new char[1024];
     strncpy(buff,ROOT,strlen(ROOT));
     strcpy(buff+strlen(ROOT),"/name.amino-acid");
@@ -40,7 +41,11 @@ namespace std {
         refer(name,buff,strlen(buff));
         add(UnitNameResolver,name,id,Allocated,Allocated);
         if(nc==0) add(UnitIDResolver,id,name,Allocated,Allocated);
-        if(nc==1)  add(UnitNameSimplifier,id,name,Allocated,Allocated);
+        if(nc==1) add(UnitNameSimplifier,id,name,Allocated,Allocated);
+        if(nc==2) {
+          assert(name.size==1);
+          add(UnitNameCoder,id,name[0],Allocated,Allocated);
+        }
         ++nc;
       }
     }

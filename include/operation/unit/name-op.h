@@ -40,13 +40,15 @@ namespace std {
 
   const Vector<char>* getUnitName(const char* vname) {
     const unsigned int* pID=getUnitID(vname);
-    return (pID==NULL?NULL:get(UnitIDResolver,*pID));
+    return (pID==NULL?NULL:getUnitName(*pID));
   }
 
   const Vector<char>* getUnitName(const Vector<char>& vname) {
     const unsigned int* pID=getUnitID(vname);
-    return (pID==NULL?NULL:get(UnitIDResolver,*pID));
+    return (pID==NULL?NULL:getUnitName(*pID));
   }
+
+  bool IsRegisteredUnit(const unsigned int id){ return getUnitName(id)==NULL; }
 
   const Vector<char>* getUnitSimpleName(const unsigned int id) {
     return get(UnitNameSimplifier,id);
@@ -54,12 +56,26 @@ namespace std {
 
   const Vector<char>* getUnitSimpleName(const Vector<char>& vname) {
     const unsigned int* pID=getUnitID(vname);
-    return (pID==NULL?NULL:get(UnitNameSimplifier,*pID));
+    return (pID==NULL?NULL:getUnitSimpleName(*pID));
   }
 
   const Vector<char>* getUnitSimpleName(const char* vname) {
     const unsigned int* pID=getUnitID(vname);
-    return (pID==NULL?NULL:get(UnitNameSimplifier,*pID));
+    return (pID==NULL?NULL:getUnitSimpleName(*pID));
+  }
+
+  const char* getUnitCode(const unsigned int id) {
+    return get(UnitNameCoder,id);
+  }
+
+  const char* getUnitCode(const char* vname) {
+    const unsigned int* pID=getUnitID(vname);
+    return (pID==NULL?NULL:getUnitCode(*pID));
+  }
+
+  const char* getUnitCode(const Vector<char>& vname) {
+    const unsigned int* pID=getUnitID(vname);
+    return (pID==NULL?NULL:getUnitCode(*pID));
   }
 
 }
