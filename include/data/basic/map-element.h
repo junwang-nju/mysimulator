@@ -2,7 +2,7 @@
 #ifndef _Map_Element_H_
 #define _Map_Element_H_
 
-#include "data/basic/hash.h"
+#include "operation/basic/build-hash.h"
 
 namespace std {
 

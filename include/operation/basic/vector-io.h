@@ -16,6 +16,12 @@ namespace std {
     return os;
   }
 
+  OutputBase& operator<<(OutputBase& os, const Vector<char>& v) {
+    assert(IsAvailable(v));
+    for(unsigned int i=0;i<v.size;++i)  os<<v[i];
+    return os;
+  }
+
   template <typename T>
   InputBase& operator>>(InputBase& is, Vector<T>& v) {
     assert(IsAvailable(v));

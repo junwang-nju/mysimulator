@@ -1,23 +1,23 @@
-Alanine           Ala     A
-Arginine          Arg     R
-Asparagine        Asn     N
-Aspartic-Acid     Asp     D
-Cysteine          Cys     C
-Glutamine         Gln     Q
-Glutamic-Acid     Glu     E
-Glycine           Gly     G
-Proline           Pro     P
-Selenocysteine    Sec     U
-Serine            Ser     S
-Tyrosine          Tyr     Y
-Histidine         His     H
-Ornithine
-Taurine
-Isoleucine
-Leucine
-Lysine
-Methionine
-Phenylanaline
-Threonine
-Valine
-Tryptophan
+Alanine           Ala     A   .
+Arginine          Arg     R   .
+Asparagine        Asn     N   .
+Aspartic-Acid     Asp     D   .
+Cysteine          Cys     C   .
+Glutamine         Gln     Q   .
+Glutamic-Acid     Glu     E   .
+Glycine           Gly     G   .
+Proline           Pro     P   .
+Histidine         His     H   .
+Isoleucine        Ile     I   .
+Leucine           Leu     L   .
+Lysine            Lys     K   .
+Methionine        Met     M   .
+Phenylanaline     Phe     F   .
+Selenocysteine    Sec     U   .
+Serine            Ser     S   .
+Threonine         Thr     T   .
+Tryptophan        Trp     W   .
+Tyrosine          Tyr     Y   .
+Valine            Val     V   .
+Ornithine         Orn         .
+Taurine           Tau         ..

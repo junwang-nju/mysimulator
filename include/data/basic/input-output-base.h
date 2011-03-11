@@ -39,7 +39,7 @@ namespace std {
     refer(B.state,rB.state);
   }
 
-  bool isFail(InputOutputBase& B) { return B.state[FailBit]; }
+  bool IsFail(InputOutputBase& B) { return B.state[FailBit]; }
   void allocate(InputOutputBase& B) {
     allocate(B.state,InputOutputNumberState);
     B.SetState(FailBit,false);

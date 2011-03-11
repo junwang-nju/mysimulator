@@ -9,7 +9,6 @@
 #include "operation/parameter/build-param-harmonic.h"
 #include "operation/parameter/build-param-lj612.h"
 #include "operation/basic/map-op.h"
-#include "operation/basic/build-hash.h"
 #include "data/basic/console-output.h"
 #include "operation/basic/vector-io.h"
 using namespace std;
