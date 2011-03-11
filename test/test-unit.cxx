@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-  loadAminoAcid("/home/jwang/Work/mysimulator/include/data/unit");
+  loadUnitName("/home/jwang/Work/mysimulator/include/data/unit");
   COut<<*getUnitID("AlaNine")<<Endl;
   COut<<*getUnitID("CyS")<<Endl;
   COut<<*getUnitName(12)<<Endl;

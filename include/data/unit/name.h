@@ -13,7 +13,7 @@ namespace std {
   static Map<unsigned int,Vector<char> >    UnitNameSimplifier;
   static Map<unsigned int,char>             UnitNameCoder;
 
-  void loadAminoAcid(const char* ROOT=".") {
+  void loadUnitName(const char* ROOT=".") {
     unsigned int id;
     if(!IsAvailable(UnitNameResolver))  {
       allocate(UnitNameResolver);
@@ -49,6 +49,7 @@ namespace std {
         ++nc;
       }
     }
+    release(FI);
     delete[] buff;
   }
 
