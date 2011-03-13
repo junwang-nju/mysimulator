@@ -1,212 +1,423 @@
-_CA_          C-Alpha             .
-_C__          C-Carbonyl          .
-_O__          O-Carbonyl          .
-_OXT          O-Carboxyl          .
-_N__          N-Amino             N-Beta        .
-_CB_          C-Beta              .
-_CG_          C-Gamma             .
-_CG1
-_CG2
-_SG_          S-Gamma             .
-_CD_          C-Delta             .
-_CD1
-_CD2
-_OD1          O1-Delta            .
-_OD2          O2-Delta            .
-_ND1
-_ND2          N2-Delta            .
-_CE1
-_OE1          O1-Epsilon          .
-_OE2          O2-Epsilon          .
-_NE_          N-Epsilon           .
-_NE2          N2-Epsilon          .
-_CZ_          C-Zeta              .
-_NH1          N1-Eta              .
-_NH2          N2-Eta              .
-_H__          H-Amino             .
-_HXT          H-O-Carboxyl        .
-_H1_          H1-Amino            H1-N-Beta     .
-_H2_          H2-Amino            H2-N-Beta     .
-_H3_          H3-Amino            H3-N-Beta     .
-_HB_          H-Beta              .
-_HA_
-_HA2
-_HA3
-_HB1          H1-Beta             .
-_HB2          H2-Beta             .
-_HB3          H3-Beta             .
-_HG_          H-Gamma             .
-_HG1          H1-Gamma            .
-_HG2          H2-Gamma            .
-_HG3          H3-Gamma            .
-HG11          H1-Gamma-Branch1    .
-HG12          H2-Gamma-Branch1    .
-HG13          H3-Gamma-Branch1    .
-HG21          H1-Gamma-Branch2    .
-HG22          H2-Gamma-Branch2    .
-HG23          H3-Gamma-Branch2    .
-_HD1          H1-Delta            H-Delta-Branch1   .
-_HD2          H2-Delta            H-Delta-Branch2   .
-_HD3          H3-Delta            .
-HD11          H1-Delta-Branch1    .
-HD12          H2-Delta-Branch1    .
-HD13          H3-Delta-Branch1    .
-HD21          H1-Delta-Branch2    .
-HD22          H2-Delta-Branch2    .
-HD23          H3-Delta-Branch2    .
-_HE_          H-Epsilon           .
-_HE1          H1-Epsilon          H-Epsilon-Branch1 .
-_HE2          H2-Epsilon          H-Epsilon-Branch2 .
-_HE3          H3-Epsilon          .
-HE21          H1-Epsilon-Branch2  .
-HE22          H2-Epsilon-Branch2  .
-_HH_          H-Eta               .
-_HH2          H-Eta-Branch2       .
-HH11          H1-Eta-Branch1      .
-HH12          H2-Eta-Branch1      .
-HH21          H1-Eta-Branch2      .
-HH22          H2-Eta-Branch2      .
-Ile-HBeta     .
-Ile-H1C1Gamma     .
-Ile-H2C1Gamma     .
-Ile-H1C2Gamma     .
-Ile-H2C2Gamma     .
-Ile-H3C2Gamma     .
-Ile-H1Delta       .
-Ile-H2Delta       .
-Ile-H3Delta       .
-Ile-H3NAmino      .
-Leu-CBeta     .
-Leu-CGamma    .
-Leu-C1Delta   .
-Leu-C2Delta   .
-Leu-H1Beta    .
-Leu-H2Beta    .
-Leu-HGamma    .
-Leu-H1C1Delta     .
-Leu-H2C1Delta     .
-Leu-H3C1Delta     .
-Leu-H1C2Delta     .
-Leu-H2C2Delta     .
-Leu-H3C2Delta     .
-Leu-H3NAmino      .
-Lys-CBeta     .
-Lys-CGamma    .
-Lys-CDelta    .
-Lys-CEpsilon  .
-Lys-NZeta     .
-Lys-H1Beta    .
-Lys-H2Beta    .
-Lys-H1Gamma   .
-Lys-H2Gamma   .
-Lys-H1Delta   .
-Lys-H2Delta   .
-Lys-H1Epsilon     .
-Lys-H2Epsilon     .
-Lys-H1Zeta    .
-Lys-H2Zeta    .
-Lys-H3Zeta    .
-Lys-H3NAmino  .
-Met-CBeta     .
-Met-CGamma    .
-Met-SDelta    .
-Met-CEpsilon      .
-Met-H1Beta    .
-Met-H2Beta    .
-Met-H1Gamma   .
-Met-H2Gamma   .
-Met-H1Epsilon     .
-Met-H2Epsilon     .
-Met-H3Epsilon     .
-Met-H3NAmino      .
-Phe-CBeta     .
-Phe-CGamma    .
-Phe-C1Delta   .
-Phe-C2Delta   .
-Phe-CEpsilonC1Delta     .
-Phe-CEpsilonC2Delta     .
-Phe-CZeta     .
-Phe-H1Beta    .
-Phe-H2Beta    .
-Phe-HC1Delta  .
-Phe-HC2Delta  .
-Phe-HCEpsilonC1Delta    .
-Phe-HCEpsilonC2Delta
-Phe-HZeta     .
-Phe-H3NAmino  .
-Pro-CBeta     .
-Pro-CGammaCBeta   .
-Pro-CGammaNAmino      Pro-CGammaNBeta       .
-Pro-H1CBeta       .
-Pro-H2CBeta       .
-Pro-H1CGammaCBeta       .
-Pro-H2CGammaCBeta       .
-Pro-H1CGammaNAmino      Pro-H1CGammaNBeta   .
-Pro-H2CGammaNAmino      Pro-H2CGammaNBeta   .
-Sec-CBeta     .
-Sec-SeGamma   .
-Sec-H1Beta    .
-Sec-H2Beta    .
-Sec-HGamma    .
-Sec-H3NAmino  .
-Ser-CBeta     .
-Ser-OGamma    .
-Ser-H1Beta    .
-Ser-H2Beta    .
-Ser-HGamma    .
-Ser-H3NAmino  .
-Thr-CBeta     .
-Thr-OGamma    .
-Thr-CGamma    .
-Thr-HBeta     .
-Thr-HOGamma   .
-Thr-H1CGamma  .
-Thr-H2CGamma  .
-Thr-H3CGamma  .
-Thr-H3NAmino  .
-Trp-CBeta     .
-Trp-CGamma    .
-Trp-C1Delta   .
-Trp-C2Delta   .
-Trp-NEpsilonC1Delta     .
-Trp-C1EpsilonC2Delta    .
-Trp-C2EpsilonC2Delta    .
-Trp-CZetaC1Epsilon      .
-Trp-CZetaC2Epsilon      .
-Trp-CEta      .
-Trp-H1Beta    .
-Trp-H2Beta    .
-Trp-HC1Delta  .
-Trp-HNEpsilon     .
-Trp-HC2Epsion     .
-Trp-HCZetaC1Epsilon     .
-Trp-HCZetaC2Epsilon     .
-Trp-HCEta     .
-Trp-H3NAmino  .
-Tyr-CBeta     .
-Tyr-CGamma    .
-Tyr-C1Delta   .
-Tyr-C2Delta   .
-Tyr-CEpsilonC1Delta     .
-Tyr-CEpsilonC2Delta     .
-Tyr-CZeta     .
-Tyr-OEta      .
-Tyr-H1Beta    .
-Tyr-H2Beta    .
-Tyr-HC1Delta  .
-Tyr-HC2Delta  .
-Tyr-HCEpsilonC1Delta    .
-Tyr-HCEpsilonC2Delta    .
-Tyr-HOEta     .
-Tyr-H3NAmino  .
-Val-CBeta     .
-Val-C1Gamma   .
-Val-C2Gamma   .
-Val-HBeta     .
-Val-H1C1Gamma     .
-Val-H2C1Gamma     .
-Val-H3C1Gamma     .
-Val-H1C2Gamma     .
-Val-H2C2Gamma     .
-Val-H3C2Gamma     .
-Val-H3NAmino      ..
+: Ala
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H1-Beta           _HB1                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+: Arg
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    H2-Gamma          _HG2                .
+    H3-Gamma          _HG3                .
+    C-Delta           _CD_                .
+    H2-Delta          _HD2                .
+    H3-Delta          _HD3                .
+    N-Epsilon         _NE_                .
+    H-Epsilon         _HE_                .
+    C-Zeta            _CZ_                .
+    N1-Eta            _NH1                .
+    H1-Eta1           HH11                .
+    H2-Eta1           HH12                .
+    N2-Eta            _NH2                .
+    H1-Eta2           HH21                .
+    H2-Eta2           HH22                .
+: Asn
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    O-Delta           _OD1                .
+    N-Delta           _ND2                .
+    H1-NDelta         HD21                .
+    H2-NDelta         HD22                .
+: Asp
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    O1-Delta          _OD1                .
+    H-Delta1          _HD1                .
+    O2-Delta          _OD2                .
+    H-Delta2          _HD2                .
+: Cys
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    S-Gamma           _SG_                .
+    H-Gamma           _HG_                .
+: Gln
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    H2-Gamma          _HG2                .
+    H3-Gamma          _HG3                .
+    C-Delta           _CD_                .
+    O1-Epsilon        _OE1                .
+    N2-Epsilon        _NE2                .
+    H1-NEpsilon       HE21                .
+    H2-NEpsilon       HE22                .
+: Glu
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    H2-Gamma          _HG2                .
+    H3-Gamma          _HG3                .
+    C-Delta           _CD_                .
+    O1-Epsilon        _OE1                .
+    O2-Epsilon        _OE2                .
+    H-O1Epsilon       _HE1                .
+    H-O2Epsilon       _HE2                .
+: Gly
+    C-Alpha           _CA_                .
+    H2-Alpha          _HA2                .
+    H3-Alpha          _HA3                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+: His
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    N-Delta           _ND1                .
+    H-NDelta          _HD1                .
+    C-Delta           _CD2                .
+    H-CDelta          _HD2                .
+    C-Epsilon         _CE1                .
+    H-CEpsilon        _HE1                .
+    N-Epsilon         _NE2                .
+    H-NEpsilon        _HE2                .
+: Ile
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H-Beta            _HB_                .
+    C1-Gamma          _CG1                .
+    H2-Gamma1         HG12                .
+    H3-Gamma1         HG13                .
+    C2-Gamma          _CG2                .
+    H1-Gamma2         HG21                .
+    H2-Gamma2         HG22                .
+    H3-Gamma2         HG23                .
+    C-Delta-Gamma1    _CD1                .
+    H1-Delta          HD11                .
+    H2-Delta          HD12                .
+    H3-Delta          HD13                .
+: Leu
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    H2-Gamma          _HG2                .
+    H3-Gamma          _HG3                .
+    C-Delta           _CD_                .
+    H2-Delta          _HD2                .
+    H3-Delta          _HD3                .
+    C-Epsilon         _CE_                .
+    H2-Epsilon        _HE2                .
+    H3-Epsilon        _HE3                .
+    N-Zeta            _NZ_                .
+    H1-Zeta           _HZ1                .
+    H2-Zeta           _HZ2                .
+    H3-Zeta           _HZ3                .
+: Met
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    H2-Gamma          _HG2                .
+    H3-Gamma          _HG3                .
+    S-Delta           _SD_                .
+    C-Epsilon         _CE_                .
+    H1-Epsilon        _HE1                .
+    H2-Epsilon        _HE2                .
+    H3-Epsilon        _HE3                .
+: Phe
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    C1-Delta          _CD1                .
+    H-Delta1          _HD1                .
+    C2-Delta          _CD2                .
+    H-Delta2          _HD2                .
+    C-Epsilon-Delta1  _CE1                .
+    H-Epsilon-Delta1  _HE1                .
+    C-Epsilon-Delta2  _CE2                .
+    H-Epsilon-Delta2  _HE2                .
+    C-Zeta            _CZ_                .
+    H-Zeta            _HZ_                .
+: Pro
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    H2-Gamma          _HG2                .
+    H3-Gamma          _HG3                .
+    C-Delta           _CD_                .
+    H2-Delta          _HD2                .
+    H3-Delta          _HD3                .
+: Sec
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    Se-Gamma          SE__                .
+    H-Gamma           _HG_                .
+: Ser
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    O-Gamma           _OG_                .
+    H-Gamma           _HG_                .
+: Thr
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H-Beta            _HB_                .
+    O-Gamma           _OG1                .
+    H-OGamma          _HG1                .
+    C-Gamma           _CG2                .
+    H1-CGamma         HG21                .
+    H2-CGamma         HG22                .
+    H3-CGamma         HG23                .
+: Trp
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    C1-Delta          _CD1                .
+    H-Delta1          _HD1                .
+    C2-Delta          _CD2                .
+    N-Epsilon-Delta1  _NE1                .
+    H-NEpsilon        _HE1                .
+    C2-Epsilon-Delta2 _CE2                .
+    C3-Epsilon-Delta2 _CE3                .
+    H-Epsilon3        _HE3                .
+    C-Zeta-Epsilon2   _CZ2                .
+    H-Zeta-Epsilon2   _HZ2                .
+    C-Zeta-Epsilon3   _CZ3                .
+    H-Zeta-Epsilon3   _HZ3                .
+    C-Eta             _CH2                .
+    H-Eta             _HH2                .
+: Tyr
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    C1-Delta          _CD1                .
+    H-Delta1          _HD1                .
+    C2-Delta          _CD2                .
+    H-Delta2          _HD2                .
+    C-Epsilon-Delta1  _CE1                .
+    H-Epsilon-Delta1  _HE1                .
+    C-Epsilon-Delta2  _CE2                .
+    H-Epsilon-Delta2  _HE2                .
+    C-Zeta            _CZ_                .
+    O-Eta             _OH_                .
+    H-Eta             _HH_                .
+: Val
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _          .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H-Beta            _HB_                .
+    C1-Gamma          _CG1                .
+    H1-Gamma1         HG11                .
+    H2-Gamma1         HG12                .
+    H3-Gamma1         HG13                .
+    C2-Gamma          _CG2                .
+    H1-Gamma2         HG21                .
+    H2-Gamma2         HG22                .
+    H3-Gamma2         HG23                .
+..
+

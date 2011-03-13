@@ -3,18 +3,9 @@
 #define _Unit_Name_Operation_H_
 
 #include "data/unit/name.h"
+#include "operation/basic/str-util.h"
 
 namespace std {
-
-  void normalize(char* name, const unsigned int size) {
-    if(islower(name[0]))  name[0]=toupper(name[0]);
-    for(unsigned int i=1;i<size;++i) {
-      if((name[i-1]=='-')&&islower(name[i]))  name[i]=toupper(name[i]);
-      else name[i]=tolower(name[i]);
-    }
-  }
-
-  void normalize(Vector<char>& name) { normalize(name.data,name.size); }
 
   const unsigned int* getUnitID(const char* uname) {
     Vector<char> name;
@@ -33,6 +24,10 @@ namespace std {
   }
 
   bool IsRegisteredUnit(const char* uname) { return getUnitID(uname)!=NULL; }
+
+  bool IsRegisteredUnit(const Vector<char>& uname) {
+    return getUnitID(uname)!=NULL;
+  }
 
   const Vector<char>* getUnitName(const unsigned int id) {
     return get(UnitIDResolver,id);

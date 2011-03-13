@@ -13,7 +13,7 @@ namespace std {
   static Map<unsigned int,Vector<char> >    UnitNameSimplifier;
   static Map<unsigned int,char>             UnitNameCoder;
 
-  void loadUnitName(const char* ROOT=".") {
+  void loadAminoAcidName(const char* ROOT=".") {
     unsigned int id;
     if(!IsAvailable(UnitNameResolver))  {
       allocate(UnitNameResolver);
@@ -36,8 +36,7 @@ namespace std {
       if(strcmp(buff,".")==0) {
         nc=0;
         ++id;
-      }
-      else {
+      } else {
         refer(name,buff,strlen(buff));
         add(UnitNameResolver,name,id,Allocated,Allocated);
         if(nc==0) add(UnitIDResolver,id,name,Allocated,Allocated);
