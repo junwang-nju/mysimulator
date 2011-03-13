@@ -14,6 +14,14 @@ int main() {
   COut<<*getUnitSimpleName(14)<<Endl;
   COut<<*getUnitCode(5)<<Endl;
   COut<<*getUnitCode("Leucine")<<Endl;
+
+  loadAminoAcidComposition("/home/jwang/Work/mysimulator/include/data/unit");
+  COut<<*getCompositionID("Ala-C-Beta")<<Endl;
+  COut<<*getCompositionID("phe"," cg ")<<Endl;
+  COut<<*getCompositionName(178)<<Endl;
+  COut<<*getCompositionName("arg"," cd ")<<Endl;
+  COut<<*getCompositionPDBName(212)<<Endl;
+  COut<<*getCompositionPDBName("met-s-delta")<<Endl;
   return 0;
 }
 

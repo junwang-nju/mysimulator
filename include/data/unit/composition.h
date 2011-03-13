@@ -13,12 +13,15 @@ namespace std {
   static Map<unsigned int,Vector<char> >  CompositionIDResolver;
   static Map<unsigned int,Vector<char> >  CompositionPDBNameResolver;
 
-  void loadCompositionName(const char* ROOT=".") {
+  void loadAminoAcidComposition(const char* ROOT=".") {
     unsigned int id;
     if(!IsAvailable(CompositionNameResolver)) {
       allocate(CompositionNameResolver);
       id=0;
     } else id=CompositionNameResolver.MapData.head->parent->content->value+1;
+    if(!IsAvailable(CompositionIDResolver)) allocate(CompositionIDResolver);
+    if(!IsAvailable(CompositionPDBNameResolver))
+      allocate(CompositionPDBNameResolver);
     char *buff=new char[1024];
     strncpy(buff,ROOT,strlen(ROOT));
     strcpy(buff+strlen(ROOT),"/name.amino-acid-atom");

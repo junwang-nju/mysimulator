@@ -9,8 +9,9 @@ namespace std {
   void normalize(char* name, const unsigned int size) {
     if(islower(name[0]))  name[0]=toupper(name[0]);
     for(unsigned int i=1;i<size;++i) {
-      if((name[i-1]=='-')&&islower(name[i]))  name[i]=toupper(name[i]);
-      else name[i]=tolower(name[i]);
+      if(name[i-1]=='-')  {
+        if(islower(name[i]))  name[i]=toupper(name[i]);
+      } else name[i]=tolower(name[i]);
     }
   }
 
