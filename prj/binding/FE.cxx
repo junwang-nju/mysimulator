@@ -13,7 +13,7 @@ double f(double d) {
 }
 
 double S(double n, double d) {
-  return pow(d/sqrt(n)-1,2.);
+  return 2*log(d)-d*d/n;
 }
 
 int main() {
@@ -24,10 +24,24 @@ int main() {
   const double e1=0;
   const double e2=0;
 
+  double theta;
   double d,d1,d2;
   double w,w1,w2;
   double r,r1,r2;
-  double R;
+  double R,R1,R2;
+  double F,T;
+
+  T=2;
+  d=0.1;
+
+  r=0;
+  r1=r2=0;
+  R1=pow(N1+r1,-1./3.);
+  R2=pow(N2+r2,-1./3.);
+  for(double d=0.01;d<10;d+=0.01) {
+    F=f(R1+R2+d)-T*S(Nm-r,d);
+    COut<<d<<"\t"<<F<<Endl;
+  }
 
   return 0;
 }
