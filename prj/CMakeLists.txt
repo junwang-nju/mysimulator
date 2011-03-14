@@ -4,4 +4,5 @@ add_subdirectory (pOs)
 add_subdirectory (dmv)
 add_subdirectory (zero)
 add_subdirectory (cg)
+add_subdirectory (binding)
 
