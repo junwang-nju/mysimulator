@@ -7,5 +7,9 @@ add_definitions (-Wall -O3 -DNDEBUG -fno-tree-vectorize)
 add_executable (binding-FE.run FE-Coulomb.cxx)
 target_link_libraries (binding-FE.run blas)
 
+add_executable (binding-FE-exp.run FE-Exponential.cxx)
+target_link_libraries (binding-FE-exp.run blas)
+
 add_executable (binding-intg.run Integral.cxx)
 target_link_libraries (binding-intg.run blas)
+
