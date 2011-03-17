@@ -44,8 +44,9 @@ double f(double d) {
 
 double S(double n, double d) {
   double tm=2*log(d)-d*d/n;
-  if(d<n) return tm;
-  else return tm-100*(d-n)*(d-n);
+  return tm;
+  //if(d<n) return tm;
+  //else return tm-100*(d-n)*(d-n);
 }
 
 int main() {
@@ -75,7 +76,7 @@ int main() {
   double C,CG;
 
   R=10;
-  d=0.12;
+  d=6;
 
   for(d=0.001;d<Nm;d+=0.0002) {
     rMax=Nm-1;
@@ -102,6 +103,7 @@ int main() {
       FL=exp(-C/T)/(RA+d1)*CG;
     
       SL+=FL;
+      COut<<"===== "<<cthNear<<"\t"<<cthFar<<Endl;
     }
     COut<<d<<"\t"<<-T*log(SL)<<Endl;
   }
