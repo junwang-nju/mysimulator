@@ -114,8 +114,8 @@
     H2-Gamma          _HG2                .
     H3-Gamma          _HG3                .
     C-Delta           _CD_                .
-    O1-Epsilon        _OE1                .
-    N2-Epsilon        _NE2                .
+    O-Epsilon         _OE1                .
+    N-Epsilon         _NE2                .
     H1-NEpsilon       HE21                .
     H2-NEpsilon       HE22                .
 : Glu
@@ -138,8 +138,8 @@
     C-Delta           _CD_                .
     O1-Epsilon        _OE1                .
     O2-Epsilon        _OE2                .
-    H-O1Epsilon       _HE1                .
-    H-O2Epsilon       _HE2                .
+    H-Epsilon1        _HE1                .
+    H-Epsilon2        _HE2                .
 : Gly
     C-Alpha           _CA_                .
     H2-Alpha          _HA2                .
@@ -195,11 +195,33 @@
     H1-Gamma2         HG21                .
     H2-Gamma2         HG22                .
     H3-Gamma2         HG23                .
-    C-Delta-Gamma1    _CD1                .
+    C-Delta           _CD1                .
     H1-Delta          HD11                .
     H2-Delta          HD12                .
     H3-Delta          HD13                .
 : Leu
+    C-Alpha           _CA_                .
+    H-Alpha           _HA_                .
+    C-Carbonyl        _C__                .
+    O-Carbonyl        _O__                .
+    O-Carboxyl        _OXT                .
+    H-Carboxyl        _HXT                .
+    N-Amino           _N__                .
+    H-Amino           _H__     _H1_       .
+    H2-Amino          _H2_                .
+    H3-Amino          _H3_                .
+    C-Beta            _CB_                .
+    H2-Beta           _HB2                .
+    H3-Beta           _HB3                .
+    C-Gamma           _CG_                .
+    H-Gamma           _HG_                .
+    C1-Delta          _CD1                .
+    C2-Delta          _CD2                .
+    H1-Delta1         HD11                .
+    H2-Delta1         HD12                .
+    H1-Delta2         HD21                .
+    H2-Delta2         HD22                .
+: Lys
     C-Alpha           _CA_                .
     H-Alpha           _HA_                .
     C-Carbonyl        _C__                .
