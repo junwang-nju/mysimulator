@@ -68,7 +68,7 @@ int main() {
   unsigned int NA,NB,Nd;
   double C;
   
-  R=10.;
+  R=8.;
   d=0.1;
   
   r=0;
