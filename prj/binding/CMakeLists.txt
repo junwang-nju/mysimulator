@@ -13,3 +13,6 @@ target_link_libraries (binding-FE-exp.run blas)
 add_executable (binding-intg.run Integral.cxx)
 target_link_libraries (binding-intg.run blas)
 
+add_executable (binding-line.run Line-FE.cxx)
+target_link_libraries (binding-line.run blas)
+
