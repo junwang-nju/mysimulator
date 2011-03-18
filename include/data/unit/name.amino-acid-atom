@@ -6,7 +6,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -21,7 +21,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -50,7 +50,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -69,7 +69,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -88,7 +88,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -104,7 +104,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -126,7 +126,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -149,7 +149,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
 : His
@@ -160,7 +160,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -183,7 +183,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -207,7 +207,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -234,7 +234,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -256,7 +256,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -281,7 +281,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     C-Beta            _CB_                .
     H2-Beta           _HB2                .
@@ -300,7 +300,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -316,7 +316,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -332,7 +332,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -351,7 +351,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -380,7 +380,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
@@ -406,7 +406,7 @@
     O-Carboxyl        _OXT                .
     H-Carboxyl        _HXT                .
     N-Amino           _N__                .
-    H-Amino           _H__     _          .
+    H-Amino           _H__     _H1_       .
     H2-Amino          _H2_                .
     H3-Amino          _H3_                .
     C-Beta            _CB_                .
