@@ -1,427 +1,427 @@
 : Ala
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H1-Beta
-C-Beta          H2-Beta
-C-Beta          H3-Beta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H1-Beta           .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
 : Arg
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         H2-Gamma
-C-Gamma         H3-Gamma
-C-Gamma         C-Delta
-C-Delta         H2-Delta
-C-Delta         H3-Delta
-C-Delta         N-Epsilon
-N-Epsilon       H-Epsilon
-N-Epsilon       C-Zeta
-C-Zeta          N1-Eta
-C-Zeta          N2-Eta
-N1-Eta          H1-Eta1
-N1-Eta          H2-Eta1
-N2-Eta          H1-Eta2
-N2-Eta          H2-Eta2
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             H2-Gamma          .
+    C-Gamma             H3-Gamma          .
+    C-Gamma             C-Delta           .
+    C-Delta             H2-Delta          .
+    C-Delta             H3-Delta          .
+    C-Delta             N-Epsilon         .
+    N-Epsilon           H-Epsilon         .
+    N-Epsilon           C-Zeta            .
+    C-Zeta              N1-Eta            .
+    C-Zeta              N2-Eta            .
+    N1-Eta              H1-Eta1           .
+    N1-Eta              H2-Eta1           .
+    N2-Eta              H1-Eta2           .
+    N2-Eta              H2-Eta2           .
 : Asn
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         O-Delta
-C-Gamma         N-Delta
-N-Delta         H1-NDelta
-N-Delta         H2-NDelta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             O-Delta           .
+    C-Gamma             N-Delta           .
+    N-Delta             H1-NDelta         .
+    N-Delta             H2-NDelta         .
 : Asp
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         O1-Delta
-C-Gamma         O2-Delta
-H-Delta1        O1-Delta
-H-Delta2        O2-Delta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             O1-Delta          .
+    C-Gamma             O2-Delta          .
+    H-Delta1            O1-Delta          .
+    H-Delta2            O2-Delta          .
 : Cys
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          S-Gamma
-S-Gamma         H-Gamma
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              S-Gamma           .
+    S-Gamma             H-Gamma           .
 : Gln
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         H2-Gamma
-C-Gamma         H3-Gamma
-C-Gamma         C-Delta
-C-Delta         O-Epsilon
-C-Delta         N-Epsilon
-N-Epsilon       H1-NEpsilon
-N-Epsilon       H2-NEpsilon
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             H2-Gamma          .
+    C-Gamma             H3-Gamma          .
+    C-Gamma             C-Delta           .
+    C-Delta             O-Epsilon         .
+    C-Delta             N-Epsilon         .
+    N-Epsilon           H1-NEpsilon       .
+    N-Epsilon           H2-NEpsilon       .
 : Glu
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         C-Delta
-C-Gamma         H2-Gamma
-C-Gamma         H3-Gamma
-C-Delta         O1-Epsilon
-C-Delta         O2-Epsilon
-O1-Epsilon      H-Epsilon1
-O2-Epsilon      H-Epsilon2
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             C-Delta           .
+    C-Gamma             H2-Gamma          .
+    C-Gamma             H3-Gamma          .
+    C-Delta             O1-Epsilon        .
+    C-Delta             O2-Epsilon        .
+    O1-Epsilon          H-Epsilon1        .
+    O2-Epsilon          H-Epsilon2        .
 : Gly
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H2-Alpha
-C-Alpha         H3-Alpha
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H2-Alpha          .
+    C-Alpha             H3-Alpha          .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
 : His
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         N-Delta
-C_Gamma         C-Delta
-N-Delta         H-NDelta
-N-Delta         C-Epsilon
-C-Delta         H-CDelta
-C-Delta         N-Epsilon
-C-Epsilon       H-CEpsilon
-N-Epsilon       H-NEpsilon
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             N-Delta           .
+    C-Gamma             C-Delta           .
+    N-Delta             H-NDelta          .
+    N-Delta             C-Epsilon         .
+    C-Delta             H-CDelta          .
+    C-Delta             N-Epsilon         .
+    C-Epsilon           H-CEpsilon        .
+    N-Epsilon           H-NEpsilon        .
 : Ile
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H-Beta
-C-Beta          C1-Gamma
-C-Beta          C2-Gamma
-C1-Gamma        H2-Gamma1
-C1-Gamma        H3-Gamma1
-C1-Gamma        C-Delta
-C2-Gamma        H1-Gamma2
-C2-Gamma        H2-Gamma2
-C2-Gamma        H3-Gamma2
-C-Delta         H1-Delta
-C-Delta         H2-Delta
-C-Delta         H3-Delta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H-Beta            .
+    C-Beta              C1-Gamma          .
+    C-Beta              C2-Gamma          .
+    C1-Gamma            H2-Gamma1         .
+    C1-Gamma            H3-Gamma1         .
+    C1-Gamma            C-Delta           .
+    C2-Gamma            H1-Gamma2         .
+    C2-Gamma            H2-Gamma2         .
+    C2-Gamma            H3-Gamma2         .
+    C-Delta             H1-Delta          .
+    C-Delta             H2-Delta          .
+    C-Delta             H3-Delta          .
 : Leu
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         H-Gamma
-C-Gamma         C1-Delta
-C-Gamma         C2-Delta
-C1-Delta        H1-Delta1
-C1-Delta        H2-Delta1
-C2-Delta        H1-Delta2
-C2-Delta        H2-Delta2
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             H-Gamma           .
+    C-Gamma             C1-Delta          .
+    C-Gamma             C2-Delta          .
+    C1-Delta            H1-Delta1         .
+    C1-Delta            H2-Delta1         .
+    C2-Delta            H1-Delta2         .
+    C2-Delta            H2-Delta2         .
 : Lys
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         H2-Gamma
-C-Gamma         H3-Gamma
-C-Gamma         C-Delta
-C-Delta         H2-Delta
-C-Delta         H3-Delta
-C-Delta         C-Epsilon
-C-Epsilon       H2-Epsilon
-C-Epsilon       H3-Epsilon
-C-Epsilon       N-Zeta
-N-Zeta          H1-Zeta
-N-Zeta          H2-Zeta
-N-Zeta          H3-Zeta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             H2-Gamma          .
+    C-Gamma             H3-Gamma          .
+    C-Gamma             C-Delta           .
+    C-Delta             H2-Delta          .
+    C-Delta             H3-Delta          .
+    C-Delta             C-Epsilon         .
+    C-Epsilon           H2-Epsilon        .
+    C-Epsilon           H3-Epsilon        .
+    C-Epsilon           N-Zeta            .
+    N-Zeta              H1-Zeta           .
+    N-Zeta              H2-Zeta           .
+    N-Zeta              H3-Zeta           .
 : Met
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         H2-Gamma
-C-Gamma         H3-Gamma
-C-Gamma         S-Delta
-S-Delta         C-Epsilon
-C-Epsilon       H1-Epsilon
-C-Epsilon       H2-Epsilon
-C-Epsilon       H3-Epsilon
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             H2-Gamma          .
+    C-Gamma             H3-Gamma          .
+    C-Gamma             S-Delta           .
+    S-Delta             C-Epsilon         .
+    C-Epsilon           H1-Epsilon        .
+    C-Epsilon           H2-Epsilon        .
+    C-Epsilon           H3-Epsilon        .
 : Phe
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         C1-Delta
-C-Gamma         C2-Delta
-C1-Delta        H-Delta1
-C1-Delta        C-Epsilon-Delta1
-C2-Delta        H-Dleta2
-C2-Delta        C-Epsilon-Delta2
-C-Epsilon-Delta1    H-Epsilon-Delta1
-C-Epsilon-Delta1    C-Zeta
-C-Epsilon-Delta2    H-Epsilon-Delta2
-C-Epsilon-Delta2    C-Zeta
-C-Zeta          H-Zeta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             C1-Delta          .
+    C-Gamma             C2-Delta          .
+    C1-Delta            H-Delta1          .
+    C1-Delta            C-Epsilon-Delta1  .
+    C2-Delta            H-Dleta2          .
+    C2-Delta            C-Epsilon-Delta2  .
+    C-Epsilon-Delta1    H-Epsilon-Delta1  .
+    C-Epsilon-Delta1    C-Zeta            .
+    C-Epsilon-Delta2    H-Epsilon-Delta2  .
+    C-Epsilon-Delta2    C-Zeta            .
+    C-Zeta              H-Zeta            .
 : Pro
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         C-Delta
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         H2-Gamma
-C-Gamma         H3-Gamma
-C-Gamma         C-Delta
-C-Delta         H2-Delta
-C-Delta         H3-Delta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             C-Delta           .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             H2-Gamma          .
+    C-Gamma             H3-Gamma          .
+    C-Gamma             C-Delta           .
+    C-Delta             H2-Delta          .
+    C-Delta             H3-Delta          .
 : Sec
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          Se-Gamma
-Se-Gamma        H-Gamma
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              Se-Gamma          .
+    Se-Gamma            H-Gamma           .
 : Ser
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          O-Gamma
-O-Gamma         H-Gamma
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              O-Gamma           .
+    O-Gamma             H-Gamma           .
 : Thr
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H-Beta
-C-Beta          O-Gamma
-C-Beta          C-Gamma
-O-Gamma         H-OGamma
-C-Gamma         H1-CGamma
-C-Gamma         H2-CGamma
-C-Gamma         H3-CGamma
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H-Beta            .
+    C-Beta              O-Gamma           .
+    C-Beta              C-Gamma           .
+    O-Gamma             H-OGamma          .
+    C-Gamma             H1-CGamma         .
+    C-Gamma             H2-CGamma         .
+    C-Gamma             H3-CGamma         .
 : Trp
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         C1-Delta
-C-Gamma         C2-Delta
-C1-Delta        H-Delta1
-C1-Delta        N-Epsilon-Delta1
-C2-Delta        C2-Epsilon-Delta2
-C2-Delta        C3-Epsilon-Delta2
-N-Epsilon-Delta1    H-NEpsilon
-N-Epsilon-Delta1    C2-Epsilon-Delta2
-C2-Epsilon-Delta2   C-Zeta-Epsilon2
-C3-Epsilon-Delta2   H-Epsilon3
-C3-Epsilon-Delta2   C-Zeta-Epsilon3
-C-Zeta-Epsilon2     H-Zeta-Epsilon2
-C-Zeta-Epsilon2     C-Eta
-C-Zeta-Epsilon3     H-Zeta-Epsilon3
-C-Zeta-Epsilon3     C-Eta
-C-Eta               H-Eta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             C1-Delta          .
+    C-Gamma             C2-Delta          .
+    C1-Delta            H-Delta1          .
+    C1-Delta            N-Epsilon-Delta1  .
+    C2-Delta            C2-Epsilon-Delta2 .
+    C2-Delta            C3-Epsilon-Delta2 .
+    N-Epsilon-Delta1    H-NEpsilon        .
+    N-Epsilon-Delta1    C2-Epsilon-Delta2 .
+    C2-Epsilon-Delta2   C-Zeta-Epsilon2   .
+    C3-Epsilon-Delta2   H-Epsilon3        .
+    C3-Epsilon-Delta2   C-Zeta-Epsilon3   .
+    C-Zeta-Epsilon2     H-Zeta-Epsilon2   .
+    C-Zeta-Epsilon2     C-Eta             .
+    C-Zeta-Epsilon3     H-Zeta-Epsilon3   .
+    C-Zeta-Epsilon3     C-Eta             .
+    C-Eta               H-Eta             .
 : Tyr
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H2-Beta
-C-Beta          H3-Beta
-C-Beta          C-Gamma
-C-Gamma         C1-Delta
-C-Gamma         C2-Delta
-C1-Delta        H-Delta1
-C1-Delta        C-Epsilon-Delta1
-C2-Delta        H-Delta2
-C2-Delta        C-Epsilon-Delta2
-C-Epsilon-Delta1    H-Epsilon-Delta1
-C-Epsilon-Delta1    C-Zeta
-C-Epsilon-Delta2    H-Epsilon-Delta2
-C-Epsilon-Delta2    C-Zeta
-C-Zeta              O-Eta
-O-Eta               H-Eta
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H2-Beta           .
+    C-Beta              H3-Beta           .
+    C-Beta              C-Gamma           .
+    C-Gamma             C1-Delta          .
+    C-Gamma             C2-Delta          .
+    C1-Delta            H-Delta1          .
+    C1-Delta            C-Epsilon-Delta1  .
+    C2-Delta            H-Delta2          .
+    C2-Delta            C-Epsilon-Delta2  .
+    C-Epsilon-Delta1    H-Epsilon-Delta1  .
+    C-Epsilon-Delta1    C-Zeta            .
+    C-Epsilon-Delta2    H-Epsilon-Delta2  .
+    C-Epsilon-Delta2    C-Zeta            .
+    C-Zeta              O-Eta             .
+    O-Eta               H-Eta             .
 : Val
-C-Alpha         C-Carbonyl
-C-Alpha         N-Amino
-C-Alpha         H-Alpha
-C-Alpha         C-Beta
-C-Carbonyl      O-Carbonyl
-C-Carbonyl      O-Carboxyl
-O-Carboxyl      H-Carboxyl
-N-Amino         H-Amino
-N-Amino         H2-Amino
-N-Amino         H3-Amino
-C-Beta          H-Beta
-C-Beta          C1-Gamma
-C-Beta          C2-Gamma
-C1-Gamma        H1-Gamma1
-C1-Gamma        H2-Gamma1
-C1-Gamma        H3-Gamma1
-C2-Gamma        H1-Gamma2
-C2-Gamma        H2-Gamma2
-C2-Gamma        H3-Gamma2
+    C-Alpha             C-Carbonyl        .
+    C-Alpha             N-Amino           .
+    C-Alpha             H-Alpha           .
+    C-Alpha             C-Beta            .
+    C-Carbonyl          O-Carbonyl        .
+    C-Carbonyl          O-Carboxyl        .
+    O-Carboxyl          H-Carboxyl        .
+    N-Amino             H-Amino           .
+    N-Amino             H2-Amino          .
+    N-Amino             H3-Amino          .
+    C-Beta              H-Beta            .
+    C-Beta              C1-Gamma          .
+    C-Beta              C2-Gamma          .
+    C1-Gamma            H1-Gamma1         .
+    C1-Gamma            H2-Gamma1         .
+    C1-Gamma            H3-Gamma1         .
+    C2-Gamma            H1-Gamma2         .
+    C2-Gamma            H2-Gamma2         .
+    C2-Gamma            H3-Gamma2         ..
