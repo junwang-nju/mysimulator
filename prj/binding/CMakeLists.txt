@@ -16,3 +16,7 @@ target_link_libraries (binding-intg.run blas)
 add_executable (binding-line.run Line-FE.cxx)
 target_link_libraries (binding-line.run blas)
 
+add_executable (binding-sphere.run Sphere-FE.cxx)
+target_link_libraries (binding-sphere.run blas)
+
+

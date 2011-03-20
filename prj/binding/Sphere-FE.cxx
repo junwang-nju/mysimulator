@@ -12,29 +12,15 @@ double ExpF1T(double d,double d0,double epsilon,double T) {
 double Intg(double R, double d0, double epsilon,double T,
             double RA,double RB, double d1,double d2, double RC) {
   static const double Dcth=0.001;
-  static const double Dphi=0.001*2*M_PI;
-  double xA,xB,tmd,sum,sump,sfac,Func;
+  double xA,xB,sum,sfac,Func;
   sum=0;
-  for(double cth=1,sth;cth>=-1;cth-=Dcth) {
-    if(fabs(cth)>1-0.5*Dcth) { sth=0; sfac=0.5; }
-    else { sth=sqrt(1-cth*cth); sfac=1; }
-    sump=0;
-    for(double phi=0;phi<2*M_PI;phi+=Dphi) {
-      tmd=R-(RA+d1)*cth;
-      xA=tmd*tmd;
-      tmd=(RA+d1)*sth*sin(phi);
-      xA+=tmd*tmd;
-      xA=sqrt(xA);
-      tmd=R+(RB+d2)*cth;
-      xB=tmd*tmd;
-      tmd=(RB+d2)*sth*sin(phi);
-      xB+=tmd*tmd;
-      xB=sqrt(xB);
-      if((xA<RC+RA)||(xB<RC+RB)||(R*sth<RC)) Func=0;
-      else Func=ExpF1T(xA,d0,epsilon,T);
-      sump+=Func*Dphi;
-    }
-    sum+=sump*Dcth*sfac;
+  for(double cth=1;cth>-1-0.5*Dcth;cth-=Dcth) {
+    sfac=(fabs(cth)>1-0.5*Dcth?0.5:1);
+    xA=sqrt(R*R-2*R*(RA+d1)*cth+(RA+d1)*(RA+d1));
+    xB=sqrt(R*R-2*R*(RB+d2)*cth+(RB+d2)*(RB+d2));
+    if((xA<RC+RA)||(xB<RC+RB)||(R*R*(1-cth*cth)<RC*RC))   Func=0;
+    else Func=ExpF1T(xA,d0,epsilon,T);
+    sum+=Func*Dcth*sfac;
   }
   return sum;
 }
@@ -45,7 +31,7 @@ double f(double d) {
 
 double S(double n, double d) { return 2*log(d)-d*d/n; }
 
-double SG(double r) { return log(r); }
+double SG(double r) { return 2*log(r); }
 
 int main() {
   const unsigned int N1=50;
@@ -68,7 +54,7 @@ int main() {
   unsigned int NA,NB,Nd;
   double C;
   
-  R=4.;
+  R=2.1;
   d=0.1;
   
   r=0;
