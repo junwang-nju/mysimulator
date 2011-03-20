@@ -33,7 +33,7 @@ namespace std {
         refer(name,buff,strlen(buff));
         normalize(name);
         const unsigned int* pid=getCompositionID(name);
-        if(pid==NULL) Error(buff);
+        if(pid==NULL) Error("Unknown Amino Acid Composition");
         id[nc]=*pid;
         if(nc==1) {
           add(ConnectedID,id,' ',Allocated,Allocated);

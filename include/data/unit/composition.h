@@ -30,7 +30,7 @@ namespace std {
     FileInput FI;
     allocate(FI,buff);
     Vector<char> name;
-    unsigned int nc;
+    unsigned int nc=0;
     strncpy(buff,"   -",4);
     while(!IsFail(FI)) {
       FI>>(buff+4);
