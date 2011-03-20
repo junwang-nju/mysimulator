@@ -12,8 +12,10 @@ namespace std {
   static Map<unsigned int,Vector<char> >    UnitIDResolver;
   static Map<unsigned int,Vector<char> >    UnitNameSimplifier;
   static Map<unsigned int,char>             UnitNameCoder;
+  static bool IsAminoAcidNameLoaded=false;
 
   void loadAminoAcidName(const char* ROOT=".") {
+    if(IsAminoAcidNameLoaded) return;
     unsigned int id;
     if(!IsAvailable(UnitNameResolver))  {
       allocate(UnitNameResolver);
@@ -50,6 +52,7 @@ namespace std {
     }
     release(FI);
     delete[] buff;
+    IsAminoAcidNameLoaded=true;
   }
 
 }

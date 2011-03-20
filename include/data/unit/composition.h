@@ -12,8 +12,10 @@ namespace std {
   static Map<Vector<char>,unsigned int>   CompositionNameResolver;
   static Map<unsigned int,Vector<char> >  CompositionIDResolver;
   static Map<unsigned int,Vector<char> >  CompositionPDBNameResolver;
+  static bool IsAminoAcidCompositionLoaded=false;
 
   void loadAminoAcidComposition(const char* ROOT=".") {
+    if(IsAminoAcidCompositionLoaded)  return;
     unsigned int id;
     if(!IsAvailable(CompositionNameResolver)) {
       allocate(CompositionNameResolver);
@@ -38,6 +40,7 @@ namespace std {
         ++id;
       } else if(strcmp(buff+4,":")==0) {
         FI>>buff;
+        buff[3]=' ';
       } else {
         refer(name,buff,strlen(buff));
         if(nc==0) {
@@ -55,6 +58,7 @@ namespace std {
     }
     release(FI);
     delete[] buff;
+    IsAminoAcidCompositionLoaded=true;
   }
 
 }
