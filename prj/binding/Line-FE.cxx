@@ -27,7 +27,7 @@ double Intg(double R, double d0, double epsilon,double T,
       xA=sqrt(xA);
       tmd=R+(RB+d2)*cth;
       xB=tmd*tmd;
-      tmd=(RB+d2)*sth*sin(phi);
+      tmd=-(RB+d2)*sth*sin(phi);
       xB+=tmd*tmd;
       xB=sqrt(xB);
       if((xA<RC+RA)||(xB<RC+RB)||(R*sth<RC)) Func=0;
