@@ -19,4 +19,7 @@ target_link_libraries (binding-line.run blas)
 add_executable (binding-sphere.run Sphere-FE.cxx)
 target_link_libraries (binding-sphere.run blas)
 
+add_executable (binding-psphere.run PlaneSphere-FE.cxx)
+target_link_libraries (binding-psphere.run blas)
+
 
