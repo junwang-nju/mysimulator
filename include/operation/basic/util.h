@@ -557,6 +557,7 @@ namespace std {
   float arccos(const float& d) { return acosf(d); }
   long double arccos(const long double& d) { return acosl(d); }
 
+  void imprint(bool&, const bool&) {}
   void imprint(int&, const int&) {}
   void imprint(unsigned int&, const unsigned int&) {}
   void imprint(char&, const char&) {}
@@ -564,6 +565,7 @@ namespace std {
   void imprint(double&, const double&) {}
   void imprint(float&, const float&) {}
 
+  void release(bool&) {}
   void release(int&) {}
   void release(char&) {}
   void release(unsigned int&) {}
@@ -571,6 +573,9 @@ namespace std {
   void release(float&) {}
   void release(double&) {}
 
+  void refer(bool&,const bool&) {
+    Warn("refer is not supported for this type!");
+  }
   void refer(int&,const int&) { Warn("refer is not supported for this type!"); }
   void refer(unsigned int&,const unsigned int&) {
     Warn("refer is not supported for this type!");
