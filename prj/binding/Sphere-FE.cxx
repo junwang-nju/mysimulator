@@ -1,5 +1,6 @@
 
 #include "data/basic/console-output.h"
+#include "overlap.h"
 #include <cmath>
 using namespace std;
 
@@ -12,15 +13,36 @@ double ExpF1T(double d,double d0,double epsilon,double T) {
 double Intg(double R, double d0, double epsilon,double T,
             double RA,double RB, double d1,double d2, double RC) {
   static const double Dcth=0.001;
-  double xA,xB,sum,sfac,Func;
+  static Vector<double> vS(3);
+  static Vector<double> vA(3),vB(3);
+  copy(vS,0.);
+  copy(vA,0.);
+  copy(vB,0.);
+  double cth,sth,tmdA,tmdB,thdA,thdB,sum,sfac,dA,dB,Func;
+  tmdA=RA+d1;
+  tmdB=RB+d2;
+  thdA=RC+RA;
+  thdB=RC+RB;
   sum=0;
-  for(double cth=1;cth>-1-0.5*Dcth;cth-=Dcth) {
-    sfac=(fabs(cth)>1-0.5*Dcth?0.5:1);
-    xA=sqrt(R*R-2*R*(RA+d1)*cth+(RA+d1)*(RA+d1));
-    xB=sqrt(R*R-2*R*(RB+d2)*cth+(RB+d2)*(RB+d2));
-    if((xA<RC+RA)||(xB<RC+RB)||((R*R*(1-cth*cth)<RC*RC)&&((RA+d1>R*cth)&&(RB+d2>-R*cth))))   Func=0;
-    else Func=ExpF1T(xA,d0,epsilon,T);
+  cth=1;
+  sth=0;
+  for(int i=1000;i>=-1000;--i) {
+    sfac=((i==1000)||(i==-1000)?0.5:1);
+    vA[0]=R-tmdA*cth;
+    vB[0]=R+tmdB*cth;
+    vA[1]=tmdA*sth;
+    vB[1]=-tmdB*sth;
+    vA[2]=0;
+    vB[2]=0;
+    dA=norm(vA);
+    dB=norm(vB);
+    if((dA<thdA)||(dB<thdB))  Func=0;
+    else if(LineSphereOverlap(vA,vB,vS,RC)) Func=0;
+    else Func=ExpF1T(dA,d0,epsilon,T);
     sum+=Func*Dcth*sfac;
+    cth-=Dcth;
+    sth=1-cth*cth;
+    sth=sqrt(sth>0?sth:0);
   }
   return sum;
 }
@@ -54,7 +76,7 @@ int main() {
   unsigned int NA,NB,Nd;
   double C;
   
-  R=2.1;
+  R=2.4;
   d=0.1;
   
   r=0;
