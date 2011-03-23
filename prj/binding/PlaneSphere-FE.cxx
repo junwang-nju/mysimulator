@@ -1,5 +1,6 @@
 
 #include "data/basic/console-output.h"
+#include "overlap.h"
 #include <cmath>
 using namespace std;
 
@@ -11,19 +12,72 @@ double ExpF1T(double d,double d0,double epsilon,double T) {
 
 double Intg(double R, double d0, double epsilon,double T,
             double RA,double RB, double d1,double d2, double RC) {
-  static const double Dcth=0.01;
-  static const double Dphi=0.01*2*M_PI;
-  static const double DZcth=0.01;
+  static const unsigned int ncth=1000;
+  static const double Dcth=1./ncth;
+  static const unsigned int nphi=1000;
+  static const double Dphi=2.*M_PI/nphi;
+  static const unsigned int nzcth=1000;
+  static const double DZcth=1./nzcth;
+  static Vector<double> vS(3);
+  static Vector<double> vA(3),vB(3);
+  copy(vS,0.);
+  copy(vA,0.);
+  copy(vB,0.);
+  double zcth,zsth,cth,sth,phi,cphi,sphi;
+  double szfac,sfac;
+  double sum,sum1,sum2;
   double rA,rB,zA,zB,sum,sumtp,sump,szfac,sfac,Func;
   double tmdA,tmdB,tmdAA,tmdBB,tmcphi;
   sum=0;
-  for(double zcth=1,zsth;zcth>0-0.5*DZcth;zcth-=DZcth) {
-    szfac=((zcth>1-DZcth*0.5)||(zcth<0.5*DZcth)?0.5:1);
-    zsth=(zcth>1-DZcth*0.5?0:sqrt(1-zcth*zcth));
-    sumtp=0.;
-    for(double cth=1,sth;cth>-1-0.5*Dcth;cth-=Dcth) {
-      sfac=(fabs(cth)>1-0.5*Dcth?0.5:1);
-      sth=(fabs(cth)>1-0.5*Dcth?0:sqrt(1-cth*cth));
+  zcth=1;
+  zsth=0;
+  for(unsigned int zi=nzcth;zi>=-nzcth;--zi) {
+    szfac=((zi==ncth)||(zi==-ncth)?0.5:1);
+    vA[0]=R*zcth;
+    vA[1]=R*zsth;
+    vA[2]=0.;
+    copy(vB,vA);
+    sum1=0.;
+    cth=1.;
+    sth=0;
+    for(unsigned int i=ncth;i>=-ncth;--i) {
+      sfac=((i==ncth)||(i==-ncth)?0.5:1);
+      vA[0]-=(RA+d1)*cth*zcth;
+      vA[1]-=(RA+d1)*cth*zsth;
+      vB[0]+=(RB+d2)*cth*zcth;
+      vB[1]+=(RB+d2)*cth*zsth;
+      sum2=0;
+      phi=0;
+      for(unsigned int pi=0;pi<nphi;++pi) {
+        cphi=cos(phi);
+        sphi=sin(phi);
+        vA[0]-=(RA+d1)*sth*cphi*zsth;
+        vA[1]+=(RA+d1)*sth*cphi*zcth;
+        vA[2]+=(RA+d1)*sth*sphi;
+        vB[0]+=(RB+d2)*sth*cphi*zsth;
+        vB[1]-=(RB+d2)*sth*cphi*zcth;
+        vB[1]-=(RB+d2)*sth*sphi;
+        dA=norm(vA);
+        dB=norm(vB);
+        if((vA[0]<=0)||(vB[0]<=0))        Func=0;
+        else if((dA<RC+RA)||(dB<RC+RB))   Func=0;
+        else if(LineSphereOverlap(vA,vB,vS,RC))   Func=0;
+        else Func=ExpF1T(dA,d0,epsilon,T);
+        sum2+=Func*Dphi;
+        phi+=Dphi;
+      }
+      sum1+=sum2*sfac*Dcth;
+      cth-=Dcth;
+      sth=1-cth*cth;
+      sth=sqrt(sth>0?sth:0);
+    }
+    sum+=sum1*szfac*DZcth;
+    zcth-=DZcth;
+    zsth=1-zcth*zcth;
+    zsth=sqrt(zsth>0?zsth:0);
+  }
+  return sum;
+
       tmdAA=RA+d1;
       tmdBB=RB+d2;
       tmdA=tmdAA*cth;
