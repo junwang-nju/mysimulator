@@ -18,7 +18,7 @@ double Intg(double R, double d0, double epsilon,double T,
     sfac=(fabs(cth)>1-0.5*Dcth?0.5:1);
     xA=sqrt(R*R-2*R*(RA+d1)*cth+(RA+d1)*(RA+d1));
     xB=sqrt(R*R-2*R*(RB+d2)*cth+(RB+d2)*(RB+d2));
-    if((xA<RC+RA)||(xB<RC+RB)||(R*R*(1-cth*cth)<RC*RC))   Func=0;
+    if((xA<RC+RA)||(xB<RC+RB)||((R*R*(1-cth*cth)<RC*RC)&&((RA+d1>R*cth)&&(RB+d2>-R*cth))))   Func=0;
     else Func=ExpF1T(xA,d0,epsilon,T);
     sum+=Func*Dcth*sfac;
   }

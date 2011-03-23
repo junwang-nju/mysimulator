@@ -40,7 +40,7 @@ double Intg(double R, double d0, double epsilon,double T,
         tmcphi=cos(phi);
         zA=tmdA+tmdAA*tmcphi;
         zB=tmdB+tmdBB*tmcphi;
-        if((zA<=0)||(zB<=0)||(rA<RC+RA)||(rB<RC+RB)||(R*R*(1-cth*cth)<RC*RC))
+        if((zA<=0)||(zB<=0)||(rA<RC+RA)||(rB<RC+RB)||((R*R*(1-cth*cth)<RC*RC)&&((RA+d1>R*cth)&&(RB+d2>-R*cth))))
           Func=0;
         else Func=ExpF1T(rA,d0,epsilon,T);
         sump+=Func*Dphi;

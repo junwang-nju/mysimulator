@@ -30,7 +30,8 @@ double Intg(double R, double d0, double epsilon,double T,
       tmd=-(RB+d2)*sth*sin(phi);
       xB+=tmd*tmd;
       xB=sqrt(xB);
-      if((xA<RC+RA)||(xB<RC+RB)||(R*sth<RC)) Func=0;
+      if((xA<RC+RA)||(xB<RC+RB)||((R*sth<RC)&&(((RA+d1)*sqrt(cth*cth+sth*sth*sin(phi)*sin(phi))>R*cth)&&((RB+d2)*sqrt(cth*cth+sth*sth*sin(phi)*sin(phi))>-R*cth))))
+        Func=0;
       else Func=ExpF1T(xA,d0,epsilon,T);
       sump+=Func*Dphi;
     }
@@ -68,7 +69,7 @@ int main() {
   unsigned int NA,NB,Nd;
   double C;
   
-  R=4.;
+  R=2.5;
   d=0.1;
   
   r=0;
