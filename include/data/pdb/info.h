@@ -72,7 +72,18 @@ namespace std {
 
   void allocate(
       PDBInfo& PI, const unsigned int nmodel, const unsigned int natom,
-      const Vector<unsigned int>& UnitSeq, const unsigned int nbond) {
+      const Vector<unsigned int>& nuatom, const unsigned int nbond) {
+    allocate(PI.AtomID,natom);
+    allocate(PI.UnitID,nuatom.size);
+    allocate(PI.UnitAtom,nuatom.size);
+    for(unsigned int i=0;i<nuatom.size;++i) allocate(PI.UnitAtom[i],nuatom[i]);
+    Vector<unsigned int> sz(natom);
+    copy(sz,3);
+    allocate(PI.AtomCoordinate,nmodel);
+    for(unsigned int i=0;i<nmodel;++i)  allocate(PI.AtomCoordinate[i],sz);
+    allocate(sz,nbond);
+    copy(sz,2);
+    allocate(PI.UnitConnect,sz);
   }
 
 }
