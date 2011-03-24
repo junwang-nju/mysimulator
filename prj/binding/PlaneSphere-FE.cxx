@@ -12,11 +12,11 @@ double ExpF1T(double d,double d0,double epsilon,double T) {
 
 double Intg(double R, double d0, double epsilon,double T,
             double RA,double RB, double d1,double d2, double RC) {
-  static const unsigned int ncth=1000;
+  static const int ncth=100;
   static const double Dcth=1./ncth;
-  static const unsigned int nphi=1000;
+  static const unsigned int nphi=100;
   static const double Dphi=2.*M_PI/nphi;
-  static const unsigned int nzcth=1000;
+  static const int nzcth=100;
   static const double DZcth=1./nzcth;
   static Vector<double> vS(3);
   static Vector<double> vA(3),vB(3);
@@ -26,40 +26,48 @@ double Intg(double R, double d0, double epsilon,double T,
   double zcth,zsth,cth,sth,phi,cphi,sphi;
   double szfac,sfac;
   double sum,sum1,sum2;
-  double rA,rB,zA,zB,sum,sumtp,sump,szfac,sfac,Func;
-  double tmdA,tmdB,tmdAA,tmdBB,tmcphi;
+  double dA,dB,Func;
+  double tmdA,tmdB,tmd1,tmd2,tmd3;
+  double tmxL1,tmyL1;
+  double tmxAL2,tmyAL2,tmxBL2,tmyBL2;
+  tmdA=RA+d1;
+  tmdB=RB+d2;
   sum=0;
   zcth=1;
   zsth=0;
-  for(unsigned int zi=nzcth;zi>=-nzcth;--zi) {
+  for(int zi=nzcth;zi>=-nzcth;--zi) {
     szfac=((zi==ncth)||(zi==-ncth)?0.5:1);
-    vA[0]=R*zcth;
-    vA[1]=R*zsth;
-    vA[2]=0.;
-    copy(vB,vA);
+    tmxL1=R*zcth;
+    tmyL1=R*zsth;
     sum1=0.;
     cth=1.;
     sth=0;
-    for(unsigned int i=ncth;i>=-ncth;--i) {
+    for(int i=ncth;i>=-ncth;--i) {
       sfac=((i==ncth)||(i==-ncth)?0.5:1);
-      vA[0]-=(RA+d1)*cth*zcth;
-      vA[1]-=(RA+d1)*cth*zsth;
-      vB[0]+=(RB+d2)*cth*zcth;
-      vB[1]+=(RB+d2)*cth*zsth;
+      tmd1=cth*zcth;
+      tmd2=cth*zsth;
+      tmxAL2=tmxL1-tmdA*tmd1;
+      tmyAL2=tmyL1-tmdA*tmd2;
+      tmxBL2=tmxL1+tmdB*tmd1;
+      tmyBL2=tmyL1+tmdB*tmd2;
       sum2=0;
       phi=0;
       for(unsigned int pi=0;pi<nphi;++pi) {
         cphi=cos(phi);
         sphi=sin(phi);
-        vA[0]-=(RA+d1)*sth*cphi*zsth;
-        vA[1]+=(RA+d1)*sth*cphi*zcth;
-        vA[2]+=(RA+d1)*sth*sphi;
-        vB[0]+=(RB+d2)*sth*cphi*zsth;
-        vB[1]-=(RB+d2)*sth*cphi*zcth;
-        vB[1]-=(RB+d2)*sth*sphi;
+        tmd1=sth*cphi;
+        tmd2=tmd1*zcth;
+        tmd1*=zsth;
+        tmd3=sth*sphi;
+        vA[0]=tmxAL2-tmdA*tmd1;
+        vA[1]=tmyAL2+tmdA*tmd2;
+        vA[2]=tmdA*tmd3;
+        vB[0]=tmxBL2+tmdB*tmd1;
+        vB[1]=tmyBL2-tmdB*tmd2;
+        vB[2]=-tmdB*tmd3;
         dA=norm(vA);
         dB=norm(vB);
-        if((vA[0]<=0)||(vB[0]<=0))        Func=0;
+        if((vA[0]<=RA)||(vB[0]<=RB))      Func=0;
         else if((dA<RC+RA)||(dB<RC+RB))   Func=0;
         else if(LineSphereOverlap(vA,vB,vS,RC))   Func=0;
         else Func=ExpF1T(dA,d0,epsilon,T);
@@ -75,33 +83,6 @@ double Intg(double R, double d0, double epsilon,double T,
     zcth-=DZcth;
     zsth=1-zcth*zcth;
     zsth=sqrt(zsth>0?zsth:0);
-  }
-  return sum;
-
-      tmdAA=RA+d1;
-      tmdBB=RB+d2;
-      tmdA=tmdAA*cth;
-      tmdB=tmdBB*cth;
-      rA=sqrt(R*R-2*R*tmdA+tmdAA*tmdAA);
-      rB=sqrt(R*R-2*R*tmdB+tmdBB*tmdBB);
-      tmcphi=sth*zsth;
-      tmdAA*=tmcphi;
-      tmdBB*=tmcphi;
-      tmdA=(R-tmdA)*zcth;
-      tmdB=(R-tmdB)*zcth;
-      sump=0.;
-      for(double phi=0;phi<2*M_PI;phi+=Dphi) {
-        tmcphi=cos(phi);
-        zA=tmdA+tmdAA*tmcphi;
-        zB=tmdB+tmdBB*tmcphi;
-        if((zA<=0)||(zB<=0)||(rA<RC+RA)||(rB<RC+RB)||((R*R*(1-cth*cth)<RC*RC)&&((RA+d1>R*cth)&&(RB+d2>-R*cth))))
-          Func=0;
-        else Func=ExpF1T(rA,d0,epsilon,T);
-        sump+=Func*Dphi;
-      }
-      sumtp+=sump*sfac*Dcth;
-    }
-    sum+=sumtp*szfac*DZcth;
   }
   return sum;
 }
@@ -135,7 +116,7 @@ int main() {
   unsigned int NA,NB,Nd;
   double C;
   
-  R=20;
+  R=8;
   d=0.1;
   
   r=0;
