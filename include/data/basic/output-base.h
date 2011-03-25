@@ -24,8 +24,8 @@ namespace std {
       return *this;
     }
     ~OutputBase() { release(*this); }
-    const unsigned int precision() const { return feature[OutputPrecision]; }
-    unsigned int precision(const unsigned int& pcs) {
+    const unsigned int& precision() const { return feature[OutputPrecision]; }
+    const unsigned int& precision(const unsigned int& pcs) {
       feature[OutputPrecision]=pcs;
       sprintf(patString[FloatOutput].data,"%%.%ug",pcs);
       sprintf(patString[DoubleOutput].data,"%%.%ug",pcs);
