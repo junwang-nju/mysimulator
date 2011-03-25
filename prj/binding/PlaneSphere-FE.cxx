@@ -12,11 +12,11 @@ double ExpF1T(double d,double d0,double epsilon,double T) {
 
 double Intg(double R, double d0, double epsilon,double T,
             double RA,double RB, double d1,double d2, double RC) {
-  static const int ncth=100;
+  static const int ncth=1000;
   static const double Dcth=1./ncth;
-  static const unsigned int nphi=100;
+  static const unsigned int nphi=1000;
   static const double Dphi=2.*M_PI/nphi;
-  static const int nzcth=100;
+  static const int nzcth=1000;
   static const double DZcth=1./nzcth;
   static Vector<double> vS(3);
   static Vector<double> vA(3),vB(3);
@@ -116,12 +116,13 @@ int main() {
   unsigned int NA,NB,Nd;
   double C;
   
-  R=8;
+  R=6;
   d=0.1;
   
   r=0;
   r1=r2=0;
-  for(d=0.001;d<Nm;d+=0.001) {
+  //for(d=0.001;d<Nm;d+=0.001) {
+  d=8.769; {
     NA=N1+r1;
     NB=N2+r2;
     Nd=Nm-r;
