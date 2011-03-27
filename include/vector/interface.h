@@ -139,6 +139,37 @@ namespace mysimulator {
     copy(v,ff);
   }
 
+  void copy(Vector<long long>& v, const Vector<long long>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    dcopy_(&n,reinterpret_cast<double*>(const_cast<long long*>(cv())),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+  }
+  void copy(Vector<long long>& v, const long long& ll) {
+    assert(IsValid(v));
+    dcopy_(reinterpret_cast<long*>(&(v.size)),
+           reinterpret_cast<double*>(const_cast<long long*>(&ll)),
+           const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+  }
+
+  void copy(Vector<unsigned long long>& v,
+            const Vector<unsigned long long>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    dcopy_(&n,reinterpret_cast<double*>(const_cast<unsigned long long*>(cv())),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+  }
+  void copy(Vector<unsigned long long>& v, const unsigned long long& ll) {
+    assert(IsValid(v));
+    dcopy_(reinterpret_cast<long*>(&(v.size)),
+           reinterpret_cast<double*>(const_cast<unsigned long long*>(&ll)),
+           const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+  }
+
   void copy(Vector<int>& v, const Vector<int>& cv) {
     assert(IsValid(v)&&IsValid(cv));
     long n=(v.size<cv.size?v.size:cv.size);
@@ -175,6 +206,40 @@ namespace mysimulator {
 
 namespace mysimulator {
 
+  void copy(Vector<short>& v, const Vector<short>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    memcpy(v(),cv(),n+n);
+  }
+  void copy(Vector<short>& v, const short& s) {
+    assert(IsValid(v));
+    unsigned long long ll=s;
+    ll=(ll<<16)|ll;
+    ll=(ll<<32)|ll;
+    unsigned int nd=(v.size>>2),nr=(v.size&3),nb=v.size-nr;
+    dcopy_(reinterpret_cast<long*>(&nd),reinterpret_cast<double*>(&ll),
+           const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+    memcpy(v()+nb,&ll,nr+nr);
+  }
+
+  void copy(Vector<unsigned short>& v, const Vector<unsigned short>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    memcpy(v(),cv(),n+n);
+  }
+  void copy(Vector<unsigned short>& v, const unsigned short& s) {
+    assert(IsValid(v));
+    unsigned long long ll=s;
+    ll=(ll<<16)|ll;
+    ll=(ll<<32)|ll;
+    unsigned int nd=(v.size>>2),nr=(v.size&3),nb=v.size-nr;
+    dcopy_(reinterpret_cast<long*>(&nd),reinterpret_cast<double*>(&ll),
+           const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+    memcpy(v()+nb,&ll,nr+nr);
+  }
+
   void copy(Vector<char>& v, const Vector<char>& cv) {
     assert(IsValid(v)&&IsValid(cv));
     long n=(v.size<cv.size?v.size:cv.size);
@@ -185,16 +250,8 @@ namespace mysimulator {
     long n=(v.size<cv.size?v.size:cv.size);
     memcpy(v(),cv(),n);
   }
-  void copy(Vector<char>& v, const char& c) {
-    unsigned long long int i=c;
-    i=(i<<8)&i;
-    i=(i<<16)&i;
-    i=(i<<32)&i;
-    unsigned int nd=(v.size>>3),nc=(v.size&0xFFFFFF8);
-    dcopy_(&nd,reinterpret_cast<double*>(&i),const_cast<long*>(&lZero),
-           reinterpret_cast<double*>(v()),const_cast<long*>(&lOne));
-    memset(v()+nc,reinterpret_cast<char*>(&i),n-nc);
-  }
+  void copy(Vector<char>& v, const char& c) { memset(v(),c,v.size); }
+  void copy(Vector<char>& v, const unsigned char& uc) { memset(v(),uc,v.size); }
 
   void copy(Vector<unsigned char>& v, const Vector<unsigned char>& cv) {
     assert(IsValid(v)&&IsValid(cv));
@@ -206,6 +263,10 @@ namespace mysimulator {
     long n=(v.size<cv.size?v.size:cv.size);
     memcpy(v(),cv(),n);
   }
+  void copy(Vector<unsigned char>& v, const unsigned char& uc) {
+    memset(v(),uc,v.size);
+  }
+  void copy(Vector<unsigned int>& v, const char& c) { memset(v(),c,v.size); }
 
 }
 

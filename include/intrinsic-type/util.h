@@ -7,5 +7,8 @@
 #include "intrinsic-type/allocate.h"
 #include "intrinsic-type/validity-check.h"
 
+#include "intrinsic-type/scale.h"
+#include "intrinsic-type/shift.h"
+
 #endif
 

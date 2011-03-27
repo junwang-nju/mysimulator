@@ -2,6 +2,8 @@
 #ifndef _Intrinsic_Type_Release_H_
 #define _Intrinsic_Type_Release_H_
 
+#include <cstdlib>
+
 namespace mysimulator {
 
   void release(long double&) {}
