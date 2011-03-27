@@ -2,8 +2,8 @@
 #ifndef _InputOutput_File_Input_H_
 #define _InputOutput_File_Input_H_
 
-#include "IO/input.h"
-#include "IO/special-char.h"
+#include "io/input.h"
+#include "io/special-char.h"
 #include <cctype>
 #include <cassert>
 
@@ -29,7 +29,7 @@ namespace mysimulator {
       fprintf(stderr,"Operator= for FileInput Disabled!\n");
       return *this;
     }
-    ~FileInput() { release(); }
+    ~FileInput() { clearData(); }
 
     template <typename T>
     Type& _read(const char* pat, T& value) {
@@ -39,17 +39,17 @@ namespace mysimulator {
       return *this;
     }
 
-    void release() {
+    void clearData() {
       if(fptr!=NULL)  fclose(fptr);
       fptr=NULL;
-      static_cast<ParentType&>(*this).release();
+      release(static_cast<ParentType&>(*this));
     }
     void open(const char* fname, const char* fmode="r") {
       close();
       fptr=fopen(fname,fmode);
       if(fptr==NULL)  SetState(FailBit);
     }
-    void close() { release(); ClearState(); }
+    void close() { clearData(); ClearState(); }
     Type& read(bool& b) {
       int i;
       _read("%d",i);
@@ -95,9 +95,9 @@ namespace mysimulator {
   }
 
   bool IsValid(const FileInput& I) { return I.fptr!=NULL; }
-  void release(FileInput& I) { I.release(); }
+  void release(FileInput& I) { I.clearData(); }
   void copy(FileInput& I, const FileInput& cI) {
-    I.release();
+    release(I);
     copy(static_cast<InputBase&>(I),static_cast<const InputBase&>(cI));
     I.fptr=cI.fptr;
   }

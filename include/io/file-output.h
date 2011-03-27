@@ -2,7 +2,7 @@
 #ifndef _InputOutput_File_Output_H_
 #define _InputOutput_File_Output_H_
 
-#include "IO/output.h"
+#include "io/output.h"
 #include <cassert>
 
 namespace mysimulator {
@@ -27,7 +27,7 @@ namespace mysimulator {
       fprintf(stderr,"Operator= for FileOutput Disabled!\n");
       return *this;
     }
-    ~FileOutput() { release(); }
+    ~FileOutput() { clearData(); }
 
     template <typename T>
     FileOutput& _write(const char* pat, const T& value) {
@@ -36,17 +36,17 @@ namespace mysimulator {
       return *this;
     }
 
-    void release() {
+    void clearData() {
       if(fptr!=NULL)  fclose(fptr);
       fptr=NULL;
-      static_cast<ParentType&>(*this).release();
+      release(static_cast<ParentType&>(*this));
     }
     void open(const char* fname, const char* fmode="w") {
       close();
       fptr=fopen(fname,fmode);
       if(fptr==NULL)  SetState(FailBit);
     }
-    void close() { release(); ClearState(); }
+    void close() { clearData(); ClearState(); }
     Type& write(const bool& b) { return _write("%d",b?1:0); }
     Type& write(const char& c) { return _write("%c",c); }
     Type& write(const unsigned char& uc) { return _write("%c",uc); }
@@ -67,9 +67,9 @@ namespace mysimulator {
   };
 
   bool IsValid(const FileOutput& O) { return O.fptr!=NULL; }
-  void release(FileOutput& O) { O.release(); }
+  void release(FileOutput& O) { O.clearData(); }
   void copy(FileOutput& O, const FileOutput& cO) {
-    O.release();
+    release(O);
     copy(static_cast<OutputBase&>(O),static_cast<const OutputBase&>(cO));
     O.fptr=cO.fptr;
   }

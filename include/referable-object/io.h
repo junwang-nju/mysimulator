@@ -2,7 +2,7 @@
 #ifndef _Referable_Object_InputOutput_H_
 #define _Referable_Object_InputOutput_H_
 
-#include "referable-object/common.h"
+#include "referable-object/interface.h"
 
 namespace mysimulator {
 

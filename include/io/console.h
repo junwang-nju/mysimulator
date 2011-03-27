@@ -2,8 +2,8 @@
 #ifndef _InputOutput_Console_H_
 #define _InputOutput_Console_H_
 
-#include "IO/file-output.h"
-#include "IO/file-input.h"
+#include "io/file-output.h"
+#include "io/file-input.h"
 
 namespace mysimulator {
 

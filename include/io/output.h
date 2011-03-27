@@ -2,8 +2,8 @@
 #ifndef _InputOutput_Output_Base_H_
 #define _InputOutput_Output_Base_H_
 
-#include "IO/base.h"
-#include "IO/output-feature-name.h"
+#include "io/base.h"
+#include "io/output-feature-name.h"
 
 namespace mysimulator {
 
@@ -31,9 +31,9 @@ namespace mysimulator {
       fprintf(stderr,"Operator= for OutputBase Disabled!\n");
       return *this;
     }
-    ~OutputBase() { release(); }
+    ~OutputBase() { clearData(); }
 
-    void release() { static_cast<IOBase&>(*this).release(); }
+    void clearData() { release(static_cast<IOBase&>(*this)); }
     const unsigned int& precision() const { return feature[OutputPrecision]; }
     const unsigned int& precision(const unsigned int& prec) {
       feature[OutputPrecision]=prec;

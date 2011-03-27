@@ -1,8 +1,8 @@
 
-#ifndef _Referable_Object_Common_H_
-#define _Referable_Object_Common_H_
+#ifndef _Referable_Object_Interface_H_
+#define _Referable_Object_Interface_H_
 
-#include "IO/error.h"
+#include "io/error.h"
 #include "referable-object/state-name.h"
 
 namespace mysimulator {
@@ -21,12 +21,13 @@ namespace mysimulator {
       Error("Operator= for Object Disabled!");
       return *this;
     }
-    ~Object() { release(); }
+    ~Object() { clearData(); }
 
-    void release() {
+    void clearData() {
       if(flag==Unused)  return;
-      if(flag==Referred)  pdata=NULL;
-      else if(flag==Allocated)  delete pdata;
+      release(*pdata);
+      if(flag==Allocated)  delete pdata;
+      pdata=NULL;
       flag=Unused;
     }
     T& operator()() { assert(IsValid(*this)); return *pdata; }
@@ -37,6 +38,9 @@ namespace mysimulator {
   bool IsValid(const Object<T>& O) {
     return (O.pdata!=NULL)&&(O.flag!=Unused)&&IsValid(*(O.pdata));
   }
+
+  template <typename T>
+  void release(Object<T>& O) { O.clearData(); }
 
   template <typename T1, typename T2>
   void copy(Object<T1>& O, const Object<T2>& cO) {
@@ -59,23 +63,30 @@ namespace mysimulator {
   template <typename T>
   void refer(Object<T>& O, const Object<T>& cO) {
     assert(IsValid(cO));
-    O.release();
+    release(O);
     O.pdata=const_cast<T*>(cO.pdata);
     O.flag=Referred;
   }
 
   template <typename T>
   void refer(Object<T>& O, const T& ovalue) {
-    O.release();
+    release(O);
     O.pdata=const_cast<T*>(&ovalue);
     O.flag=Referred;
   }
 
   template <typename T>
   void allocate(Object<T>& O) {
-    O.release();
+    release(O);
     O.pdata=new T;
     O.flag=Allocated;
+  }
+
+  template <typename T>
+  void imprint(Object<T>& O, const Object<T>& cO) {
+    assert(IsValid(cO));
+    allocate(O);
+    imprint(O(),cO());
   }
 
 }

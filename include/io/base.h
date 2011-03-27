@@ -3,7 +3,7 @@
 #define _InputOutput_Base_H_
 
 #include <cstdio>
-#include "IO/state-name.h"
+#include "io/state-name.h"
 
 namespace mysimulator {
 
@@ -19,9 +19,9 @@ namespace mysimulator {
       fprintf(stderr,"Operator= for IOBase Disabled!\n");
       return *this;
     }
-    ~IOBase() { release(); }
+    ~IOBase() { clearData(); }
 
-    void release() {}
+    void clearData() {}
     void SetState(const IOStateName& Bit, const bool flag=true) {
       state[Bit]=flag;
     }
@@ -30,6 +30,7 @@ namespace mysimulator {
   };
 
   bool IsValid(const IOBase&) { return true; }
+  void release(IOBase& O) { O.clearData(); }
   void copy(IOBase& B, const IOBase& cB) {
     for(unsigned int i=0;i<NumberIOState;++i) B.state[i]=cB.state[i];
   }

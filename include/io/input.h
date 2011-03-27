@@ -2,7 +2,7 @@
 #ifndef _InputOutput_Input_Base_H_
 #define _InputOutput_Input_Base_H_
 
-#include "IO/base.h"
+#include "io/base.h"
 
 namespace mysimulator {
 
@@ -19,9 +19,9 @@ namespace mysimulator {
       fprintf(stderr,"Operator= for InputBase Disabled!\n");
       return *this;
     }
-    ~InputBase() { release(); }
+    ~InputBase() { clearData(); }
 
-    void release() { static_cast<ParentType&>(*this).release(); }
+    void clearData() { release(static_cast<ParentType&>(*this)); }
 
     virtual InputBase& read(bool&)=0;
     virtual InputBase& read(char&)=0;

@@ -2,7 +2,7 @@
 #ifndef _InputOutput_Error_H_
 #define _InputOutput_Error_H_
 
-#include "IO/console.h"
+#include "io/console.h"
 #include <cstdlib>
 
 namespace mysimulator {
