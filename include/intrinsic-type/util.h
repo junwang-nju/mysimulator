@@ -4,6 +4,7 @@
 
 #include "intrinsic-type/copy.h"
 #include "intrinsic-type/release.h"
+#include "intrinsic-type/allocate.h"
 #include "intrinsic-type/validity-check.h"
 
 #endif
