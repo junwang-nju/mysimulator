@@ -1372,227 +1372,227 @@ namespace mysimulator {
 
   void shift(long long& a,
              const int& b,
-             const long long& c) { a+=b*c; }
+             const long long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const int& b,
-             const int& c) { a+=b*c; }
+             const int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const int& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const int& b,
-             const long& c) { a+=b*c; }
+             const long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const int& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const int& b,
-             const short& c) { a+=b*c; }
+             const short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const int& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const int& b,
-             const char& c) { a+=b*c; }
+             const char& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const int& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c) { a+=static_cast<long long>(b)*c; }
 
   void shift(long long& a,
              const unsigned int& b,
              const long long& c) { a+=b*c; }
   void shift(long long& a,
              const unsigned int& b,
-             const int& c) { a+=b*c; }
+             const int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned int& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned int& b,
-             const long& c) { a+=b*c; }
+             const long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned int& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned int& b,
-             const short& c) { a+=b*c; }
+             const short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned int& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned int& b,
-             const char& c) { a+=b*c; }
+             const char& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned int& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c) { a+=static_cast<long long>(b)*c; }
 
   void shift(long long& a,
              const long& b,
              const long long& c) { a+=b*c; }
   void shift(long long& a,
              const long& b,
-             const int& c) { a+=b*c; }
+             const int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const long& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const long& b,
-             const long& c) { a+=b*c; }
+             const long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const long& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const long& b,
-             const short& c) { a+=b*c; }
+             const short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const long& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const long& b,
-             const char& c) { a+=b*c; }
+             const char& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const long& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c) { a+=static_cast<long long>(b)*c; }
 
   void shift(long long& a,
              const unsigned long& b,
              const long long& c) { a+=b*c; }
   void shift(long long& a,
              const unsigned long& b,
-             const int& c) { a+=b*c; }
+             const int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned long& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned long& b,
-             const long& c) { a+=b*c; }
+             const long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned long& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned long& b,
-             const short& c) { a+=b*c; }
+             const short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned long& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned long& b,
-             const char& c) { a+=b*c; }
+             const char& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned long& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c) { a+=static_cast<long long>(b)*c; }
 
   void shift(long long& a,
              const short& b,
              const long long& c) { a+=b*c; }
   void shift(long long& a,
              const short& b,
-             const int& c) { a+=b*c; }
+             const int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const short& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const short& b,
-             const long& c) { a+=b*c; }
+             const long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const short& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const short& b,
-             const short& c) { a+=b*c; }
+             const short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const short& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const short& b,
-             const char& c) { a+=b*c; }
+             const char& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const short& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c) { a+=static_cast<long long>(b)*c; }
 
   void shift(long long& a,
              const unsigned short& b,
-             const long long& c) { a+=b*c; }
+             const long long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned short& b,
-             const int& c) { a+=b*c; }
+             const int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned short& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned short& b,
-             const long& c) { a+=b*c; }
+             const long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned short& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned short& b,
-             const short& c) { a+=b*c; }
+             const short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned short& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned short& b,
-             const char& c) { a+=b*c; }
+             const char& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned short& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c) { a+=static_cast<long long>(b)*c; }
 
   void shift(long long& a,
              const char& b,
              const long long& c) { a+=b*c; }
   void shift(long long& a,
              const char& b,
-             const int& c) { a+=b*c; }
+             const int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const char& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const char& b,
-             const long& c) { a+=b*c; }
+             const long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const char& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const char& b,
-             const short& c) { a+=b*c; }
+             const short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const char& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const char& b,
-             const char& c) { a+=b*c; }
+             const char& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const char& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c) { a+=static_cast<long long>(b)*c; }
 
   void shift(long long& a,
              const unsigned char& b,
              const long long& c) { a+=b*c; }
   void shift(long long& a,
              const unsigned char& b,
-             const int& c) { a+=b*c; }
+             const int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned char& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned char& b,
-             const long& c) { a+=b*c; }
+             const long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned char& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned char& b,
-             const short& c) { a+=b*c; }
+             const short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned char& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned char& b,
-             const char& c) { a+=b*c; }
+             const char& c) { a+=static_cast<long long>(b)*c; }
   void shift(long long& a,
              const unsigned char& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c) { a+=static_cast<long long>(b)*c; }
 
   void shift(unsigned long long& a,
              const unsigned long long& b,
@@ -1615,62 +1615,446 @@ namespace mysimulator {
              const unsigned long long& c) { a+=b*c; }
   void shift(unsigned long long& a,
              const unsigned int& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<unsigned long long>(b)*c; }
   void shift(unsigned long long& a,
              const unsigned int& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c){ a+=static_cast<unsigned long long>(b)*c; }
   void shift(unsigned long long& a,
              const unsigned int& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c){a+=static_cast<unsigned long long>(b)*c;}
   void shift(unsigned long long& a,
              const unsigned int& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c){ a+=static_cast<unsigned long long>(b)*c; }
 
   void shift(unsigned long long& a,
              const unsigned long& b,
              const unsigned long long& c) { a+=b*c; }
   void shift(unsigned long long& a,
              const unsigned long& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<unsigned long long>(b)*c; }
   void shift(unsigned long long& a,
              const unsigned long& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c){ a+=static_cast<unsigned long long>(b)*c; }
   void shift(unsigned long long& a,
              const unsigned long& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c){a+=static_cast<unsigned long long>(b)*c;}
   void shift(unsigned long long& a,
              const unsigned long& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c){ a+=static_cast<unsigned long long>(b)*c; }
 
   void shift(unsigned long long& a,
              const unsigned short& b,
              const unsigned long long& c) { a+=b*c; }
   void shift(unsigned long long& a,
              const unsigned short& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<unsigned long long>(b)*c; }
   void shift(unsigned long long& a,
              const unsigned short& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c){ a+=static_cast<unsigned long long>(b)*c; }
   void shift(unsigned long long& a,
              const unsigned short& b,
-             const unsigned short& c) { a+=b*c; }
+             const unsigned short& c){a+=static_cast<unsigned long long>(b)*c;}
   void shift(unsigned long long& a,
              const unsigned short& b,
-             const unsigned char& c) { a+=b*c; }
+             const unsigned char& c){ a+=static_cast<unsigned long long>(b)*c; }
 
   void shift(unsigned long long& a,
              const unsigned char& b,
              const unsigned long long& c) { a+=b*c; }
   void shift(unsigned long long& a,
              const unsigned char& b,
-             const unsigned int& c) { a+=b*c; }
+             const unsigned int& c) { a+=static_cast<unsigned long long>(b)*c; }
   void shift(unsigned long long& a,
              const unsigned char& b,
-             const unsigned long& c) { a+=b*c; }
+             const unsigned long& c){ a+=static_cast<unsigned long long>(b)*c; }
   void shift(unsigned long long& a,
+             const unsigned char& b,
+             const unsigned short& c){a+=static_cast<unsigned long long>(b)*c;}
+  void shift(unsigned long long& a,
+             const unsigned char& b,
+             const unsigned char& c){ a+=static_cast<unsigned long long>(b)*c; }
+
+  void shift(int& a,
+             const int& b,
+             const int& c) { a+=b*c; }
+  void shift(int& a,
+             const int& b,
+             const long& c) { a+=b*c; }
+  void shift(int& a,
+             const int& b,
+             const short& c) { a+=b*c; }
+  void shift(int& a,
+             const int& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(int& a,
+             const int& b,
+             const char& c) { a+=b*c; }
+  void shift(int& a,
+             const int& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(int& a,
+             const long& b,
+             const int& c) { a+=b*c; }
+  void shift(int& a,
+             const long& b,
+             const long& c) { a+=b*c; }
+  void shift(int& a,
+             const long& b,
+             const short& c) { a+=b*c; }
+  void shift(int& a,
+             const long& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(int& a,
+             const long& b,
+             const char& c) { a+=b*c; }
+  void shift(int& a,
+             const long& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(int& a,
+             const short& b,
+             const int& c) { a+=b*c; }
+  void shift(int& a,
+             const short& b,
+             const long& c) { a+=b*c; }
+  void shift(int& a,
+             const short& b,
+             const short& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const short& b,
+             const unsigned short& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const short& b,
+             const char& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const short& b,
+             const unsigned char& c) { a+=static_cast<int>(b)*c; }
+
+  void shift(int& a,
+             const unsigned short& b,
+             const int& c) { a+=b*c; }
+  void shift(int& a,
+             const unsigned short& b,
+             const long& c) { a+=b*c; }
+  void shift(int& a,
+             const unsigned short& b,
+             const short& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const unsigned short& b,
+             const unsigned short& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const unsigned short& b,
+             const char& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const unsigned short& b,
+             const unsigned char& c) { a+=static_cast<int>(b)*c; }
+
+  void shift(int& a,
+             const char& b,
+             const int& c) { a+=b*c; }
+  void shift(int& a,
+             const char& b,
+             const long& c) { a+=b*c; }
+  void shift(int& a,
+             const char& b,
+             const short& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const char& b,
+             const unsigned short& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const char& b,
+             const char& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const char& b,
+             const unsigned char& c) { a+=static_cast<int>(b)*c; }
+
+  void shift(int& a,
+             const unsigned char& b,
+             const int& c) { a+=b*c; }
+  void shift(int& a,
+             const unsigned char& b,
+             const long& c) { a+=b*c; }
+  void shift(int& a,
+             const unsigned char& b,
+             const short& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const unsigned char& b,
+             const unsigned short& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const unsigned char& b,
+             const char& c) { a+=static_cast<int>(b)*c; }
+  void shift(int& a,
+             const unsigned char& b,
+             const unsigned char& c) { a+=static_cast<int>(b)*c; }
+
+  void shift(unsigned int& a,
+             const unsigned int& b,
+             const unsigned int& c) { a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned int& b,
+             const unsigned long& c) { a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned int& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned int& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(unsigned int& a,
+             const unsigned long& b,
+             const unsigned int& c) { a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned long& b,
+             const unsigned long& c) { a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned long& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned long& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(unsigned int& a,
+             const unsigned short& b,
+             const unsigned int& c) { a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned short& b,
+             const unsigned long& c) { a+=static_cast<unsigned int>(b)*c; }
+  void shift(unsigned int& a,
+             const unsigned short& b,
+             const unsigned short& c) { a+=static_cast<unsigned int>(b)*c; }
+  void shift(unsigned int& a,
+             const unsigned short& b,
+             const unsigned char& c) { a+=static_cast<unsigned int>(b)*c; }
+
+  void shift(unsigned int& a,
+             const unsigned char& b,
+             const unsigned int& c) { a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned char& b,
+             const unsigned long& c){ a+=b*c; }
+  void shift(unsigned int& a,
+             const unsigned char& b,
+             const unsigned short& c) { a+=static_cast<unsigned int>(b)*c; }
+  void shift(unsigned int& a,
+             const unsigned char& b,
+             const unsigned char& c) { a+=static_cast<unsigned int>(b)*c; }
+
+  void shift(long& a,
+             const int& b,
+             const int& c) { a+=b*c; }
+  void shift(long& a,
+             const int& b,
+             const long& c) { a+=b*c; }
+  void shift(long& a,
+             const int& b,
+             const short& c) { a+=b*c; }
+  void shift(long& a,
+             const int& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(long& a,
+             const int& b,
+             const char& c) { a+=b*c; }
+  void shift(long& a,
+             const int& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(long& a,
+             const long& b,
+             const int& c) { a+=b*c; }
+  void shift(long& a,
+             const long& b,
+             const long& c) { a+=b*c; }
+  void shift(long& a,
+             const long& b,
+             const short& c) { a+=b*c; }
+  void shift(long& a,
+             const long& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(long& a,
+             const long& b,
+             const char& c) { a+=b*c; }
+  void shift(long& a,
+             const long& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(long& a,
+             const short& b,
+             const int& c) { a+=b*c; }
+  void shift(long& a,
+             const short& b,
+             const long& c) { a+=b*c; }
+  void shift(long& a,
+             const short& b,
+             const short& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const short& b,
+             const unsigned short& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const short& b,
+             const char& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const short& b,
+             const unsigned char& c) { a+=static_cast<long>(b)*c; }
+
+  void shift(long& a,
+             const unsigned short& b,
+             const int& c) { a+=b*c; }
+  void shift(long& a,
+             const unsigned short& b,
+             const long& c) { a+=b*c; }
+  void shift(long& a,
+             const unsigned short& b,
+             const short& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const unsigned short& b,
+             const unsigned short& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const unsigned short& b,
+             const char& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const unsigned short& b,
+             const unsigned char& c) { a+=static_cast<long>(b)*c; }
+
+  void shift(long& a,
+             const char& b,
+             const int& c) { a+=b*c; }
+  void shift(long& a,
+             const char& b,
+             const long& c) { a+=b*c; }
+  void shift(long& a,
+             const char& b,
+             const short& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const char& b,
+             const unsigned short& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const char& b,
+             const char& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const char& b,
+             const unsigned char& c) { a+=static_cast<long>(b)*c; }
+
+  void shift(long& a,
+             const unsigned char& b,
+             const int& c) { a+=b*c; }
+  void shift(long& a,
+             const unsigned char& b,
+             const long& c) { a+=b*c; }
+  void shift(long& a,
+             const unsigned char& b,
+             const short& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const unsigned char& b,
+             const unsigned short& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const unsigned char& b,
+             const char& c) { a+=static_cast<long>(b)*c; }
+  void shift(long& a,
+             const unsigned char& b,
+             const unsigned char& c) { a+=static_cast<long>(b)*c; }
+
+  void shift(unsigned long& a,
+             const unsigned int& b,
+             const unsigned int& c) { a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned int& b,
+             const unsigned long& c) { a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned int& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned int& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(unsigned long& a,
+             const unsigned long& b,
+             const unsigned int& c) { a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned long& b,
+             const unsigned long& c) { a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned long& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned long& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(unsigned long& a,
+             const unsigned short& b,
+             const unsigned int& c) { a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned short& b,
+             const unsigned long& c) { a+=static_cast<unsigned long>(b)*c; }
+  void shift(unsigned long& a,
+             const unsigned short& b,
+             const unsigned short& c) { a+=static_cast<unsigned long>(b)*c; }
+  void shift(unsigned long& a,
+             const unsigned short& b,
+             const unsigned char& c) { a+=static_cast<unsigned long>(b)*c; }
+
+  void shift(unsigned long& a,
+             const unsigned char& b,
+             const unsigned int& c) { a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned char& b,
+             const unsigned long& c){ a+=b*c; }
+  void shift(unsigned long& a,
+             const unsigned char& b,
+             const unsigned short& c) { a+=static_cast<unsigned long>(b)*c; }
+  void shift(unsigned long& a,
+             const unsigned char& b,
+             const unsigned char& c) { a+=static_cast<unsigned long>(b)*c; }
+
+  void shift(short& a,
+             const short& b,
+             const short& c) { a+=b*c; }
+  void shift(short& a,
+             const short& b,
+             const char& c) { a+=b*c; }
+  void shift(short& a,
+             const short& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(short& a,
+             const char& b,
+             const short& c) { a+=b*c; }
+  void shift(short& a,
+             const char& b,
+             const char& c) { a+=static_cast<short>(b)*c; }
+  void shift(short& a,
+             const char& b,
+             const unsigned char& c) { a+=static_cast<short>(b)*c; }
+
+  void shift(short& a,
+             const unsigned char& b,
+             const short& c) { a+=b*c; }
+  void shift(short& a,
+             const unsigned char& b,
+             const char& c) { a+=static_cast<short>(b)*c; }
+  void shift(short& a,
+             const unsigned char& b,
+             const unsigned char& c) { a+=static_cast<short>(b)*c; }
+
+  void shift(unsigned short& a,
+             const unsigned short& b,
+             const unsigned short& c) { a+=b*c; }
+  void shift(unsigned short& a,
+             const unsigned short& b,
+             const unsigned char& c) { a+=b*c; }
+
+  void shift(unsigned short& a,
              const unsigned char& b,
              const unsigned short& c) { a+=b*c; }
-  void shift(unsigned long long& a,
+  void shift(unsigned short& a,
+             const unsigned char& b,
+             const unsigned char& c) { a+=static_cast<unsigned short>(b)*c; }
+
+  void shift(char& a,
+             const char& b,
+             const char& c) { a+=static_cast<short>(b)*c; }
+
+  void shift(unsigned char& a,
              const unsigned char& b,
              const unsigned char& c) { a+=b*c; }
 
