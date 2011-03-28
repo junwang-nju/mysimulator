@@ -8,6 +8,9 @@
 #include "vector/swap.h"
 
 #include "vector/dot.h"
+#include "vector/norm.h"
+#include "vector/sum.h"
+#include "vector/cross-product.h"
 
 #endif
 

@@ -15,8 +15,8 @@ namespace mysimulator {
     unsigned int n=(va.size<vb.size?va.size:vb.size);
     T sum;
     copy(sum,static_cast<T>(cZero));
-    Ta* ap=va();
-    Tb* bp=vb();
+    Ta* ap=const_cast<Ta*>(va());
+    Tb* bp=const_cast<Tb*>(vb());
     Ta* pend=ap+n;
     for(;ap!=pend;) shift(sum,*(ap++),*(bp++));
     return sum;

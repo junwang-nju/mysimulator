@@ -10,6 +10,7 @@
 #include "intrinsic-type/scale.h"
 #include "intrinsic-type/shift.h"
 #include "intrinsic-type/exchange.h"
+#include "intrinsic-type/abs-value.h"
 
 #endif
 
