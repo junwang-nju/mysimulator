@@ -4,6 +4,10 @@
 
 #include "vector/scale.h"
 #include "vector/shift.h"
+#include "vector/exchange.h"
+#include "vector/swap.h"
+
+#include "vector/dot.h"
 
 #endif
 

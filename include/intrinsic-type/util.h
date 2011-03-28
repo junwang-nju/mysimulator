@@ -9,6 +9,7 @@
 
 #include "intrinsic-type/scale.h"
 #include "intrinsic-type/shift.h"
+#include "intrinsic-type/exchange.h"
 
 #endif
 
