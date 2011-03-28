@@ -1,5 +1,6 @@
 
 #include "data/basic/console-output.h"
+#include "overlap.h"
 #include <cmath>
 using namespace std;
 
@@ -9,96 +10,100 @@ double ExpF1T(double d, double d0,double epsilon,double T) {
   return exp(-f1(d,d0,epsilon)/T);
 }
 
-bool CheckOverlap(double x1,double y1,double z1,
-                  double x2,double y2,double z2,
-                  double xc,double yc,double zc,double rc) {
-  double lx,ly,lz,l;
-  double rx,ry,rz,rcth,rsth;
-  lx=x2-x1;
-  ly=y2-y1;
-  lz=z2-z1;
-  l=sqrt(lx*lx+ly*ly+lz*lz);
-  lx/=l;
-  ly/=l;
-  lz/=l;
-  rx=xc-x1;
-  ry=yc-y1;
-  rz=zc-z1;
-  rcth=rx*lx+ry*ly+rz*lz;
-  rsth=sqrt(rx*rx+ry*ry+rz*rz-rcth*rcth);
-  return (rsth<rc)&&(l>rcth);
-}
-
 double Intg(double R,double d0,double epsilon,double T,
             double RA1,double RB1,double RA2,double RB2,
             double d11,double d21,double d12,double d22) {
-  static const double Dcth=0.01;
-  static const double Dphi=0.01*2*M_PI;
+  static const int ncth=100;
+  static const double Dcth=1./ncth;
+  static const unsigned int nphi=100;
+  static const double Dphi=2*M_PI/nphi;
+  static Vector<double> vA1(3),vB1(3),vA2(3),vB2(3),tmV(3);
   double Func,sum,sum1,sum2,sum3,sfac1,sfac2;
-  double xA1,yA1,zA1;
-  double xB1,yB1,zB1;
-  double xA2,yA2,zA2;
-  double xB2,yB2,zB2;
+  double cth1,sth1,cth2,sth2,phi1,phi2;
   double dAA,dAB,dBA,dBB;
-  double tmd;
+  double halfR,rA1,rB1,rA2,rB2,rAA,rBB,rAB,rBA;
+  halfR=0.5*R;
+  rA1=RA1+d11;
+  rA2=RA2+d12;
+  rB1=RB1+d21;
+  rB2=RB2+d22;
+  rAA=RA1+RA2;
+  rAB=RA1+RB2;
+  rBA=RB1+RA2;
+  rBB=rB1+RB2;
+  double xA1,xB1,xA2,xB2,cphi1,sphi1,cphi2,sphi2;
+  double SrA1,SrB1,SrA2,SrB2;
+  double yA1,yB1,zA1,zB1;
   sum=0;
-  for(double cth1=1,sth1;cth1>-1-0.5*Dcth;cth1-=Dcth) {
-    sth1=(fabs(cth1)>1-0.5*Dcth?0:sqrt(1-cth1*cth1));
-    sfac1=(fabs(cth1)>1-0.5*Dcth?0.5:1);
+  cth1=0;
+  sth1=0;
+  for(int i1=ncth;i1>=-ncth;--i1) {
+    sfac1=((i1==ncth)||(i1==-ncth)?0.5:1);
+    xA1=halfR-rA1*cth1;
+    xB1=halfR-rB1*cth1;
+    SrA1=rA1*sth1;
+    SrB1=rB1*sth1;
     sum1=0;
-    for(double cth2=1,sth2;cth2>-1-0.5*Dcth;cth2-=Dcth) {
-      sth2=(fabs(cth2)>1-0.5*Dcth?0:sqrt(1-cth2*cth2));
-      sfac2=(fabs(cth2)>1-0.5*Dcth?0.5:1);
+    cth2=1;
+    sth2=0;
+    for(int i2=ncth;i2>=-ncth;--i2) {
+      sfac2=((i2==ncth)||(i2==-ncth)?0.5:1);
+      xA2=-halfR+rA2*cth2;
+      xB2=-halfR-rB2*cth2;
+      SrA2=rA2*sth2;
+      SrB2=rB2*sth2;
       sum2=0;
-      for(double phi1=0;phi1<2*M_PI;phi1+=Dphi) {
+      phi1=0;
+      for(unsigned int pi1=0;pi1<nphi;++pi1) {
+        cphi1=cos(phi1);
+        sphi1=sin(phi1);
+        yA1=SrA1*cphi1;
+        yB1=-SrB1*cphi1;
+        zA1=SrA1*sphi1;
+        zB1=-SrB1*sphi1;
         sum3=0;
-        for(double phi2=0;phi2<2*M_PI;phi2+=Dphi) {
-          xA1=R*0.5-(RA1+d11)*cth1;
-          xB1=R*0.5+(RB1+d21)*cth1;
-          xA2=-R*0.5+(RA2+d12)*cth2;
-          xB2=-R*0.5-(RB2+d22)*cth2;
-          tmd=xA1-xA2;    dAA=tmd*tmd;
-          tmd=xB1-xB2;    dBB=tmd*tmd;
-          tmd=xA1-xB2;    dAB=tmd*tmd;
-          tmd=xB1-xA2;    dBA=tmd*tmd;
-          yA1=(RA1+d11)*sth1*cos(phi1);
-          yB1=-(RB1+d21)*sth1*cos(phi1);
-          yA2=-(RA2+d12)*sth2*cos(phi2);
-          yB2=(RB2+d22)*sth2*cos(phi2);
-          tmd=yA1-yA2;    dAA+=tmd*tmd;
-          tmd=yB1-yB2;    dBB+=tmd*tmd;
-          tmd=yA1-yB2;    dAB+=tmd*tmd;
-          tmd=yB1-yA2;    dBA+=tmd*tmd;
-          zA1=(RA1+d11)*sth1*sin(phi1);
-          zB1=-(RB1+d21)*sth1*sin(phi1);
-          zA2=-(RA2+d12)*sth2*sin(phi2);
-          zB2=(RB2+d22)*sth2*sin(phi2);
-          tmd=zA1-zA2;    dAA+=tmd*tmd;
-          tmd=zB1-zB2;    dBB+=tmd*tmd;
-          tmd=zA1-zB2;    dAB+=tmd*tmd;
-          tmd=zA2-zB1;    dBA+=tmd*tmd;
-          dAA=sqrt(dAA);
-          dBB=sqrt(dBB);
-          dAB=sqrt(dAB);
-          dBA=sqrt(dBA);
-          if((dAA<RA1+RA2)||(dBB<RB1+RB2)||(dAB<RA1+RB2)||(dBA<RB1+RA2))
+        phi2=0;
+        for(unsigned int pi2=0;pi2<nphi;++pi2) {
+          cphi2=cos(phi2);
+          sphi2=sin(phi2);
+          vA1[0]=xA1;
+          vB1[0]=xB1;
+          vA2[0]=xA2;
+          vB2[0]=xB2;
+          vA1[1]=yA1;
+          vB1[1]=yB1;
+          vA2[1]=-SrA2*cphi2;
+          vB2[1]=SrB2*cphi2;
+          vA1[2]=zA1;
+          vB1[2]=zB1;
+          vA2[2]=-SrA2*sphi2;
+          vB2[2]=SrB2*sphi2;
+          copy(tmV,vA1);  shift(tmV,-dOne,vA2);   dAA=norm(tmV);
+          copy(tmV,vA1);  shift(tmV,-dOne,vB2);   dAB=norm(tmV);
+          copy(tmV,vB1);  shift(tmV,-dOne,vA2);   dBA=norm(tmV);
+          copy(tmV,vB1);  shift(tmV,-dOne,vB2);   dBB=norm(tmV);
+          if((dAA<rAA)||(dBB<rBB)||(dAB<rAB)||(dBA<rBA))
             Func=0;
-          else if(CheckOverlap(xA1,yA1,zA1,xB1,yB1,zB1,xA2,yA2,zA2,RA2))
-            Func=0;
-          else if(CheckOverlap(xA1,yA1,zA1,xB1,yB1,zB1,xB2,yB2,zB2,RB2))
-            Func=0;
-          else if(CheckOverlap(xA2,yA2,zA2,xB2,yB2,zB2,xA1,yA1,zA1,RA1))
-            Func=0;
-          else if(CheckOverlap(xA2,yA2,zA2,xB2,yB2,zB2,xB1,yB1,zB1,RB1))
-            Func=0;
+          else if(LineSphereOverlap(vA1,vB1,vA2,RA2))   Func=0;
+          else if(LineSphereOverlap(vA1,vB1,vB2,RB2))   Func=0;
+          else if(LineSphereOverlap(vA2,vB2,vA1,RA1))   Func=0;
+          else if(LineSphereOverlap(vA2,vB2,vB1,RB1))   Func=0;
           else  Func=ExpF1T(dAA,d0,epsilon,T);
           sum3+=Dphi;
+          phi2+=Dphi;
         }
         sum2+=sum3*Dphi;
+        phi1+=Dphi;
       }
       sum1+=sum2*Dcth*sfac2;
+      cth2+=Dcth;
+      sth2=1-cth2*cth2;
+      sth2=(sth2>0?sqrt(sth2):0);
     }
     sum+=sum1*Dcth*sfac1;
+    cth1+=Dcth;
+    sth1=1-cth1*cth1;
+    sth1=(sth1>0?sqrt(sth1):0);
   }
   return sum;
 }
