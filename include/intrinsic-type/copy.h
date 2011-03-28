@@ -112,6 +112,18 @@ namespace mysimulator {
   void copy(bool& b, const char& i) { b=(i==0?false:true); }
   void copy(bool& b, const unsigned char& i) { b=(i==0?false:true); }
 
+  template <typename T>
+  void copy(void*& ptr, const T* tptr) {
+    ptr=reinterpret_cast<void*>(const_cast<T*>(tptr));
+  }
+  template <typename T>
+  void copy(T*& tptr, const void* ptr) {
+    tptr=reinterpret_cast<T*>(const_cast<void*>(ptr));
+  }
+  void copy(void*& ptr, const void* ptr1) { ptr=const_cast<void*>(ptr1); }
+  template <typename T>
+  void copy(T*& ptr, const T* tptr) { ptr=const_cast<T*>(tptr); }
+
 }
 
 #endif
