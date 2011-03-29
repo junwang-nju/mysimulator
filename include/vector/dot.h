@@ -3,14 +3,14 @@
 #define _Vector_Dot_H_
 
 #include "vector/interface.h"
-#include "intrinsic-type/product-type.h"
+#include "intrinsic-type/operation-type.h"
 
 namespace mysimulator {
 
   template <typename Ta, typename Tb>
-  typename _Product<Ta,Tb>::Type
+  typename _Operation<Ta,Tb>::Type
   dot(const Vector<Ta>& va, const Vector<Tb>& vb) {
-    typedef typename _Product<Ta,Tb>::Type T;
+    typedef typename _Operation<Ta,Tb>::Type T;
     assert(IsValid(va)&&IsValid(vb));
     unsigned int n=(va.size<vb.size?va.size:vb.size);
     T sum;
