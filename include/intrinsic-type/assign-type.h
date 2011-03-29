@@ -176,6 +176,29 @@ namespace mysimulator {
     typedef unsigned char Type;
   };
 
+  template <>
+  struct _Assign<bool,bool> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,long long> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,unsigned long long> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,int> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,unsigned int> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,long> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,unsigned long> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,short> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,unsigned short> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,char> { typedef bool Type; };
+  template <>
+  struct _Assign<bool,unsigned char> { typedef bool Type; };
+
 }
 
 #endif

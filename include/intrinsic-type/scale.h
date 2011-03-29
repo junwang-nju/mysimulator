@@ -14,5 +14,17 @@ namespace mysimulator {
 
 }
 
+#include "io/error.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  void scale(bool&, const T&) { Error("Scale for bool Not Existed!"); }
+
+  template <typename T>
+  void scale(T&, const bool&) { Error("Scale with bool Not Existed!"); }
+
+}
+
 #endif
 
