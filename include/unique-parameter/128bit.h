@@ -44,8 +44,48 @@ namespace mysimulator {
     ~UniqueParameter128Bit() { clearData(); }
 
     void clearData() {}
+    template <typename T>
+    T& value() {
+      Error("Not-Included Type in UniqueParameter128Bit!");
+      static T tvalue=static_cast<T>(0);
+      return tvalue;
+    }
+    template <typename T>
+    const T& value() const {
+      Error("Not-Included Type in UniqueParameter128Bit!");
+      static T tvalue=static_cast<T>(0);
+      return tvalue;
+    }
+    template <typename T>
+    T*& pointer() { return reinterpret_cast<T*&>(ptr); }
+    template <typename T>
+    T* const& pointer() const { return reinterpret_cast<T* const&>(ptr); }
 
   };
+
+  template <>
+  long double& UniqueParameter128Bit::value<long double>() { return ld; }
+  template <>
+  const long double& UniqueParameter128Bit::value<long double>() const {
+    return ld;
+  }
+
+  template <>
+  double& UniqueParameter128Bit::value<double>() { return dvalue; }
+  template <>
+  const double& UniqueParameter128Bit::value<double>() const { return dvalue; }
+
+  template <>
+  float& UniqueParameter128Bit::value<float>() { return fvalue; }
+  template <>
+  const float& UniqueParameter128Bit::value<float>() const { return fvalue; }
+
+  template <>
+  unsigned int& UniqueParameter128Bit::value<unsigned int>() { return uvalue; }
+  template <>
+  const unsigned int& UniqueParameter128Bit::value<unsigned int>() const {
+    return uvalue;
+  }
 
 }
 

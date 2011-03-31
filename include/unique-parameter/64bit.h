@@ -40,17 +40,19 @@ namespace mysimulator {
     template <typename T>
     T& value() {
       Error("Not-Included Type in UniqueParameter64Bit!");
-      return static_cast<T>(0);
+      static T tvalue=static_cast<T>(0);
+      return tvalue;
     }
     template <typename T>
     const T& value() const {
       Error("Not-Included Type in UniqueParameter64Bit!");
-      return static_cast<T>(0);
+      static T tvalue=static_cast<T>(0);
+      return tvalue;
     }
     template <typename T>
     T*& pointer() { return reinterpret_cast<T*&>(ptr); }
     template <typename T>
-    T* const& pointer() const { return reinterpret_cast<T*&>(ptr); }
+    T* const& pointer() const { return reinterpret_cast<T* const&>(ptr); }
 
   };
 
