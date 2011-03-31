@@ -47,6 +47,10 @@ namespace mysimulator {
       Error("Not-Included Type in UniqueParameter64Bit!");
       return static_cast<T>(0);
     }
+    template <typename T>
+    T*& pointer() { return reinterpret_cast<T*&>(ptr); }
+    template <typename T>
+    T* const& pointer() const { return reinterpret_cast<T*&>(ptr); }
 
   };
 
@@ -101,26 +105,16 @@ namespace mysimulator {
   void copy(UniqueParameter64Bit& P, const UniqueParameter64Bit& cP) {
     P.ull=cP.ull;
   }
-  void copy(UniqueParameter64Bit& P, const double& d) { copy(P.d,d); }
-  void copy(UniqueParameter64Bit& P, const float& f) { copy(P.f,f); }
-  void copy(UniqueParameter64Bit& P, const unsigned int& u) { copy(P.u,u); }
-  void copy(UniqueParameter64Bit& P, const int& i) { copy(P.i,i); }
-  void copy(UniqueParameter64Bit& P, const short& s) { copy(P.s,s); }
-  void copy(UniqueParameter64Bit& P, const char& c) { copy(P.c,c); }
-  void copy(UniqueParameter64Bit& P, const unsigned long long& ull) {
-    copy(P.ull,ull);
+  template <typename T>
+  void copy(UniqueParameter64Bit& P, const T& value) {
+    copy(P.value<T>(),value);
   }
   template <typename T>
   void copy(UniqueParameter64Bit& P, const T* ptr) { copy(P.ptr,ptr); }
 
-  void copy(double& d, const UniqueParameter64Bit& P) { copy(d,P.d); }
-  void copy(float& f, const UniqueParameter64Bit& P) { copy(f,P.f); }
-  void copy(int& i, const UniqueParameter64Bit& P) { copy(i,P.i); }
-  void copy(unsigned int& u, const UniqueParameter64Bit& P) { copy(u,P.u); }
-  void copy(short& s, const UniqueParameter64Bit& P) { copy(s,P.s); }
-  void copy(char& c, const UniqueParameter64Bit& P) { copy(c,P.c); }
-  void copy(unsigned long long& ull, const UniqueParameter64Bit& P) {
-    copy(ull,P.ull);
+  template <typename T>
+  void copy(T& value, const UniqueParameter64Bit& P) {
+    copy(value,P.value<T>());
   }
   template <typename T>
   void copy(T*& ptr, const UniqueParameter64Bit& P) { copy(ptr,P.ptr); }
@@ -145,6 +139,36 @@ namespace mysimulator {
     assert(IsValid(v));
     dcopy_(reinterpret_cast<long*>(&(v.size)),
            reinterpret_cast<double*>(const_cast<UniqueParameter64Bit*>(&d)),
+           const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+  }
+
+  void copy(Vector<UniqueParameter64Bit>& v, const Vector<double>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    dcopy_(&n,const_cast<double*>(cv()),const_cast<long*>(&lOne),
+           reinterpret_cast<double*>(v()),const_cast<long*>(&lOne));
+  }
+
+  void copy(Vector<UniqueParameter64Bit>& v,
+            const Vector<unsigned long long>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    dcopy_(&n,reinterpret_cast<double*>(const_cast<unsigned long long*>(cv())),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+  }
+
+  void copy(Vector<UniqueParameter64Bit>& v, const double& d) {
+    assert(IsValid(v));
+    dcopy_(reinterpret_cast<long*>(&(v.size)), const_cast<double*>(&d),
+           const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+  }
+  void copy(Vector<UniqueParameter64Bit>& v, const unsigned long long& d) {
+    assert(IsValid(v));
+    dcopy_(reinterpret_cast<long*>(&(v.size)),
+           reinterpret_cast<double*>(const_cast<unsigned long long*>(&d)),
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
   }

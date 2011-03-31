@@ -153,6 +153,13 @@ namespace mysimulator {
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
   }
+  template <typename T>
+  void copy(Vector<long long>& v, const T& value) {
+    assert(IsValid(v));
+    long long ll;
+    copy(ll,value);
+    copy(v,ll);
+  }
 
   void copy(Vector<unsigned long long>& v,
             const Vector<unsigned long long>& cv) {
@@ -169,6 +176,13 @@ namespace mysimulator {
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
   }
+  template <typename T>
+  void copy(Vector<unsigned long long>& v, const T& value) {
+    assert(IsValid(v));
+    unsigned long long ull;
+    copy(ull,value);
+    copy(v,ull);
+  }
 
   void copy(Vector<int>& v, const Vector<int>& cv) {
     assert(IsValid(v)&&IsValid(cv));
@@ -184,6 +198,13 @@ namespace mysimulator {
            const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
   }
+  template <typename T>
+  void copy(Vector<int>& v, const T& value) {
+    assert(IsValid(v));
+    int i;
+    copy(i,value);
+    copy(v,i);
+  }
 
   void copy(Vector<unsigned int>& v, const Vector<unsigned int>& cv) {
     assert(IsValid(v)&&IsValid(cv));
@@ -198,6 +219,13 @@ namespace mysimulator {
            reinterpret_cast<float*>(const_cast<unsigned int*>(&u)),
            const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
+  }
+  template <typename T>
+  void copy(Vector<unsigned int>& v, const T& value) {
+    assert(IsValid(v));
+    unsigned int u;
+    copy(u,value);
+    copy(v,u);
   }
 
 }
@@ -222,6 +250,13 @@ namespace mysimulator {
            const_cast<long*>(&lOne));
     memcpy(v()+nb,&ll,nr+nr);
   }
+  template <typename T>
+  void copy(Vector<short>& v, const T& value) {
+    assert(IsValid(v));
+    short s;
+    copy(s,value);
+    copy(v,s);
+  }
 
   void copy(Vector<unsigned short>& v, const Vector<unsigned short>& cv) {
     assert(IsValid(v)&&IsValid(cv));
@@ -238,6 +273,13 @@ namespace mysimulator {
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
     memcpy(v()+nb,&ll,nr+nr);
+  }
+  template <typename T>
+  void copy(Vector<unsigned short>& v, const T& value) {
+    assert(IsValid(v));
+    unsigned short us;
+    copy(us,value);
+    copy(v,us);
   }
 
   void copy(Vector<char>& v, const Vector<char>& cv) {
