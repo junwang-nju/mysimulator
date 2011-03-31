@@ -25,4 +25,7 @@ target_link_libraries (binding-psphere.run blas)
 add_executable (binding-dimer.run Dimer.cxx)
 target_link_libraries (binding-dimer.run blas)
 
+add_executable (binding-plane.run Plane-FE.cxx)
+target_link_libraries (binding-plane.run blas)
+
 

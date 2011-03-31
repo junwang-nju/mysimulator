@@ -1,44 +1,33 @@
 
 #include "data/basic/console-output.h"
-#include "overlap.h"
-#include <cmath>
+#include  <cmath>
 using namespace std;
 
-double f1(double d, double d0, double epsilon) { return -epsilon*exp(-d/d0); }
+double f1(double d,double d0,double epsilon) {
+  return -epsilon*exp(-d/d0);
+}
 
 double ExpF1T(double d,double d0,double epsilon,double T) {
   return exp(-f1(d,d0,epsilon)/T);
 }
 
 double Intg(double R, double d0, double epsilon,double T,
-            double RA,double RB, double d1,double d2, double RC) {
+            double RA, double RB, double d1, double d2) {
   static const int ncth=1000;
   static const double Dcth=1./(ncth+0.);
-  static Vector<double> vS(3);
-  static Vector<double> vA(3),vB(3);
-  copy(vS,0.);
-  copy(vA,0.);
-  copy(vB,0.);
-  double cth,sth,tmdA,tmdB,thdA,thdB,sum,sfac,dA,dB,Func;
+  double cth,sth,sfac,Func,sum;
+  double dA,dB;
+  double tmdA,tmdB;
   tmdA=RA+d1;
   tmdB=RB+d2;
-  thdA=RC+RA;
-  thdB=RC+RB;
   sum=0;
   cth=1;
   sth=0;
   for(int i=ncth;i>=-ncth;--i) {
     sfac=((i==ncth)||(i==-ncth)?0.5:1);
-    vA[0]=R-tmdA*cth;
-    vB[0]=R+tmdB*cth;
-    vA[1]=tmdA*sth;
-    vB[1]=-tmdB*sth;
-    vA[2]=0;
-    vB[2]=0;
-    dA=norm(vA);
-    dB=norm(vB);
-    if((dA<thdA)||(dB<thdB))  Func=0;
-    else if(LineSphereOverlap(vA,vB,vS,RC)) Func=0;
+    dA=R-tmdA*cth;
+    dB=R+tmdB*cth;
+    if((dA<RA)&&(dB<RB))  Func=0;
     else Func=ExpF1T(dA,d0,epsilon,T);
     sum+=Func*Dcth*sfac;
     cth-=Dcth;
@@ -47,43 +36,42 @@ double Intg(double R, double d0, double epsilon,double T,
   }
   return sum;
 }
-
+      
 double f(double d) {
   return -exp(-d/0.5)*10;
 }
 
-double S(double n, double d) { return 2*log(d)-d*d/n; }
+double S(double n, double d) {
+  return 2*log(d)-d*d/n;
+}
 
-double SG(double r) { return 2*log(r); }
-
-int main() {
+int main(int argc, char** argv) {
+  if(argc<2)  { CErr<<"binding-plane.run <R-Value>"<<Endl<<Endl; }
   const unsigned int N1=50;
   const unsigned int N2=50;
   const unsigned int Nm=10;
   const unsigned int N=N1+N2+Nm;
-  
+
   const double e1=0;
   const double e2=0;
   const double epsilon=100;
-  const double T=1.48;
-  
   const double d0=2;
-  const double rc=1;
-  
+
+  const double T=1.48;
+
   double d,d1,d2;
   unsigned int r,r1,r2;
   double R,RA,RB;
   double FL;
   unsigned int NA,NB,Nd;
   double C;
-  
-  R=10;
-  d=0.25;
-  
+
+  R=atof(argv[1]);
+  d=6;
+
   r=0;
   r1=r2=0;
-  //for(d=0.001;d<Nm;d+=0.001) {
-  for(R=3;R<20;R+=0.01) {
+  for(d=0.001;d<Nm;d+=0.0002) {
     NA=N1+r1;
     NB=N2+r2;
     Nd=Nm-r;
@@ -92,12 +80,12 @@ int main() {
     d1=(-RA*NA+(RB+d)*NB+d/2.*Nd)/(N+0.);
     d2=d-d1;
     
-    C=(f(d)-T*S(Nd,d))-e1*r1-e2*r2-T*SG(R);
-    FL=exp(-C/T)*Intg(R,d0,epsilon,T,RA,RB,d1,d2,rc);
-    COut<<R<<"\t"<<-T*log(FL)<<Endl;
-    //COut<<d<<"\t"<<-T*log(FL)<<Endl;
+    C=(f(d)-T*S(Nd,d))-e1*r1-e2*r2;
+    FL=exp(-C/T)*Intg(R,d0,epsilon,T,RA,RB,d1,d2);
+    COut<<d<<"\t"<<-T*log(FL)<<Endl;
   }
-   
+
+
   return 0;
 }
 
