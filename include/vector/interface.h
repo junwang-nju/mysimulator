@@ -89,12 +89,19 @@ namespace mysimulator {
     T* pend=p+n;
     for(;p!=pend;) copy(*(p++),*(cp++));
   }
-  template <typename T, typename cT>
-  void copy(Vector<T>& v, const cT& d) {
+  template <typename T>
+  void fill(Vector<T>& v, const T& d) {
     assert(IsValid(v));
     T* p=v.pdata;
     T* pend=p+v.size;
-    for(;p!=pend;)  copy(*(p++),d);
+    for(;p!=pend;)  fill(*(p++),d);
+  }
+  template <typename T, typename cT>
+  void fill(Vector<T>& v, const cT& value) {
+    assert(IsValid(v));
+    T u;
+    fill(u,value);
+    fill(v,u);
   }
 
 }
@@ -109,16 +116,10 @@ namespace mysimulator {
     dcopy_(&n,const_cast<double*>(cv()),const_cast<long*>(&lOne),
            v(),const_cast<long*>(&lOne));
   }
-  void copy(Vector<double>& v, const double& d) {
+  void fill(Vector<double>& v, const double& d) {
     assert(IsValid(v));
     dcopy_(reinterpret_cast<long*>(&(v.size)),const_cast<double*>(&d),
            const_cast<long*>(&lZero),v.pdata,const_cast<long*>(&lOne));
-  }
-  template <typename T>
-  void copy(Vector<double>& v, const T& d) {
-    double dd;
-    copy(dd,d);
-    copy(v,dd);
   }
 
   void copy(Vector<float>& v, const Vector<float>& cv) {
@@ -127,16 +128,10 @@ namespace mysimulator {
     scopy_(&n,const_cast<float*>(cv()),const_cast<long*>(&lOne),
            v(),const_cast<long*>(&lOne));
   }
-  void copy(Vector<float>& v, const float& f) {
+  void fill(Vector<float>& v, const float& f) {
     assert(IsValid(v));
     scopy_(reinterpret_cast<long*>(&(v.size)),const_cast<float*>(&f),
            const_cast<long*>(&lZero),v.pdata,const_cast<long*>(&lOne));
-  }
-  template <typename T>
-  void copy(Vector<float>& v, const T& f) {
-    float ff;
-    copy(ff,f);
-    copy(v,ff);
   }
 
   void copy(Vector<long long>& v, const Vector<long long>& cv) {
@@ -146,19 +141,12 @@ namespace mysimulator {
            const_cast<long*>(&lOne),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
   }
-  void copy(Vector<long long>& v, const long long& ll) {
+  void fill(Vector<long long>& v, const long long& ll) {
     assert(IsValid(v));
     dcopy_(reinterpret_cast<long*>(&(v.size)),
            reinterpret_cast<double*>(const_cast<long long*>(&ll)),
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
-  }
-  template <typename T>
-  void copy(Vector<long long>& v, const T& value) {
-    assert(IsValid(v));
-    long long ll;
-    copy(ll,value);
-    copy(v,ll);
   }
 
   void copy(Vector<unsigned long long>& v,
@@ -169,19 +157,12 @@ namespace mysimulator {
            const_cast<long*>(&lOne),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
   }
-  void copy(Vector<unsigned long long>& v, const unsigned long long& ll) {
+  void fill(Vector<unsigned long long>& v, const unsigned long long& ll) {
     assert(IsValid(v));
     dcopy_(reinterpret_cast<long*>(&(v.size)),
            reinterpret_cast<double*>(const_cast<unsigned long long*>(&ll)),
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
-  }
-  template <typename T>
-  void copy(Vector<unsigned long long>& v, const T& value) {
-    assert(IsValid(v));
-    unsigned long long ull;
-    copy(ull,value);
-    copy(v,ull);
   }
 
   void copy(Vector<int>& v, const Vector<int>& cv) {
@@ -191,19 +172,12 @@ namespace mysimulator {
            const_cast<long*>(&lOne),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
   }
-  void copy(Vector<int>& v, const int& i) {
+  void fill(Vector<int>& v, const int& i) {
     assert(IsValid(v));
     scopy_(reinterpret_cast<long*>(&(v.size)),
            reinterpret_cast<float*>(const_cast<int*>(&i)),
            const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
-  }
-  template <typename T>
-  void copy(Vector<int>& v, const T& value) {
-    assert(IsValid(v));
-    int i;
-    copy(i,value);
-    copy(v,i);
   }
 
   void copy(Vector<unsigned int>& v, const Vector<unsigned int>& cv) {
@@ -213,19 +187,12 @@ namespace mysimulator {
            const_cast<long*>(&lOne),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
   }
-  void copy(Vector<unsigned int>& v, const unsigned int& u) {
+  void fill(Vector<unsigned int>& v, const unsigned int& u) {
     assert(IsValid(v));
     scopy_(reinterpret_cast<long*>(&(v.size)),
            reinterpret_cast<float*>(const_cast<unsigned int*>(&u)),
            const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
-  }
-  template <typename T>
-  void copy(Vector<unsigned int>& v, const T& value) {
-    assert(IsValid(v));
-    unsigned int u;
-    copy(u,value);
-    copy(v,u);
   }
 
 }
@@ -250,13 +217,6 @@ namespace mysimulator {
            const_cast<long*>(&lOne));
     memcpy(v()+nb,&ll,nr+nr);
   }
-  template <typename T>
-  void copy(Vector<short>& v, const T& value) {
-    assert(IsValid(v));
-    short s;
-    copy(s,value);
-    copy(v,s);
-  }
 
   void copy(Vector<unsigned short>& v, const Vector<unsigned short>& cv) {
     assert(IsValid(v)&&IsValid(cv));
@@ -273,13 +233,6 @@ namespace mysimulator {
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
     memcpy(v()+nb,&ll,nr+nr);
-  }
-  template <typename T>
-  void copy(Vector<unsigned short>& v, const T& value) {
-    assert(IsValid(v));
-    unsigned short us;
-    copy(us,value);
-    copy(v,us);
   }
 
   void copy(Vector<char>& v, const Vector<char>& cv) {

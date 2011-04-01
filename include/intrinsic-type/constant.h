@@ -14,6 +14,8 @@ namespace mysimulator {
 
   static const long lZero=0;
   static const long lOne=1;
+  static const long lTwo=2;
+  static const long lFour=4;
 
   static const float fOne=1.;
 
