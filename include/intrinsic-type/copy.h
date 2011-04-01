@@ -29,7 +29,7 @@ namespace mysimulator {
   }
   void copy(void*& ptr, void* const& ptr1) { ptr=const_cast<void*>(ptr1); }
   template <typename T>
-  void copy(T*& ptr, const T* tptr) { ptr=const_cast<T*>(tptr); }
+  void copy(T*& ptr, T* const& tptr) { ptr=const_cast<T*>(tptr); }
 
 }
 

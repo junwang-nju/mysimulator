@@ -3,6 +3,7 @@
 #define _Vector_Scale_H_
 
 #include "vector/interface.h"
+#include "linear-algebra/blas.h"
 
 namespace mysimulator {
 

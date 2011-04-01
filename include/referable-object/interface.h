@@ -4,6 +4,8 @@
 
 #include "io/error.h"
 #include "referable-object/state-name.h"
+#include "intrinsic-type/release.h"
+#include "intrinsic-type/validity-check.h"
 
 namespace mysimulator {
 
@@ -41,39 +43,6 @@ namespace mysimulator {
 
   template <typename T>
   void release(Object<T>& O) { O.clearData(); }
-
-  template <typename T1, typename T2>
-  void copy(Object<T1>& O, const Object<T2>& cO) {
-    assert(IsValid(O)&&IsValid(cO));
-    copy(O(),cO());
-  }
-
-  template <typename T1, typename T2>
-  void copy(Object<T1>& O, const T2& ovalue) {
-    assert(IsValid(O));
-    copy(O(),ovalue);
-  }
-
-  template <typename T1, typename T2>
-  void copy(T1& ovalue, const Object<T2>& O) {
-    assert(IsValid(O));
-    copy(ovalue,O());
-  }
-
-  template <typename T>
-  void refer(Object<T>& O, const Object<T>& cO) {
-    assert(IsValid(cO));
-    release(O);
-    O.pdata=const_cast<T*>(cO.pdata);
-    O.flag=Referred;
-  }
-
-  template <typename T>
-  void refer(Object<T>& O, const T& ovalue) {
-    release(O);
-    O.pdata=const_cast<T*>(&ovalue);
-    O.flag=Referred;
-  }
 
   template <typename T>
   void allocate(Object<T>& O) {

@@ -3,7 +3,8 @@
 #define _Vector_Dot_H_
 
 #include "vector/interface.h"
-#include "intrinsic-type/operation-type.h"
+#include "intrinsic-type/copy.h"
+#include "intrinsic-type/shift.h"
 
 namespace mysimulator {
 

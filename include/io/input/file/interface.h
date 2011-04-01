@@ -1,8 +1,8 @@
 
-#ifndef _InputOutput_File_Input_H_
-#define _InputOutput_File_Input_H_
+#ifndef _InputOutput_Input_File_Interface_H_
+#define _InputOutput_Input_File_Interface_H_
 
-#include "io/input.h"
+#include "io/input/interface.h"
 #include "io/special-char.h"
 #include <cctype>
 #include <cassert>
@@ -96,11 +96,6 @@ namespace mysimulator {
 
   bool IsValid(const FileInput& I) { return I.fptr!=NULL; }
   void release(FileInput& I) { I.clearData(); }
-  void copy(FileInput& I, const FileInput& cI) {
-    release(I);
-    copy(static_cast<InputBase&>(I),static_cast<const InputBase&>(cI));
-    I.fptr=cI.fptr;
-  }
 
 }
 

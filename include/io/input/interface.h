@@ -1,8 +1,8 @@
 
-#ifndef _InputOutput_Input_Base_H_
-#define _InputOutput_Input_Base_H_
+#ifndef _InputOutput_Input_Base_Interface_H_
+#define _InputOutput_Input_Base_Interface_H_
 
-#include "io/base.h"
+#include "io/base/interface.h"
 
 namespace mysimulator {
 
@@ -46,9 +46,7 @@ namespace mysimulator {
   };
 
   bool IsValid(const InputBase&) { return true; }
-  void copy(InputBase& B, const InputBase& cB) {
-    copy(static_cast<IOBase&>(B),static_cast<const IOBase&>(cB));
-  }
+  void release(InputBase& I) { I.clearData(); }
 
   InputBase& operator>>(InputBase& O, bool& b) { return O.read(b); }
   InputBase& operator>>(InputBase& O, char& c) { return O.read(c); }

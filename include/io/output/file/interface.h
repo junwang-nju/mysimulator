@@ -1,8 +1,8 @@
 
-#ifndef _InputOutput_File_Output_H_
-#define _InputOutput_File_Output_H_
+#ifndef _InputOutput_Output_File_Interface_H_
+#define _InputOutput_Output_File_Interface_H_
 
-#include "io/output.h"
+#include "io/output/interface.h"
 #include <cassert>
 
 namespace mysimulator {
@@ -68,11 +68,6 @@ namespace mysimulator {
 
   bool IsValid(const FileOutput& O) { return O.fptr!=NULL; }
   void release(FileOutput& O) { O.clearData(); }
-  void copy(FileOutput& O, const FileOutput& cO) {
-    release(O);
-    copy(static_cast<OutputBase&>(O),static_cast<const OutputBase&>(cO));
-    O.fptr=cO.fptr;
-  }
 
 }
 

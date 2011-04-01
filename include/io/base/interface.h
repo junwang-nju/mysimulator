@@ -1,6 +1,6 @@
 
-#ifndef _InputOutput_Base_H_
-#define _InputOutput_Base_H_
+#ifndef _InputOutput_Base_Interface_H_
+#define _InputOutput_Base_Interface_H_
 
 #include <cstdio>
 #include "io/state-name.h"
@@ -31,9 +31,6 @@ namespace mysimulator {
 
   bool IsValid(const IOBase&) { return true; }
   void release(IOBase& O) { O.clearData(); }
-  void copy(IOBase& B, const IOBase& cB) {
-    for(unsigned int i=0;i<NumberIOState;++i) B.state[i]=cB.state[i];
-  }
 
   bool IsFailed(const IOBase& B) { return B.state[FailBit]; }
 

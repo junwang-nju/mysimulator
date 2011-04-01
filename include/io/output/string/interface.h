@@ -1,6 +1,6 @@
 
-#ifndef _InputOutput_String_Output_H_
-#define _InputOutput_String_Output_H_
+#ifndef _InputOutput_Output_String_Interface_H_
+#define _InputOutput_Output_String_Interface_H_
 
 #include "io/output.h"
 

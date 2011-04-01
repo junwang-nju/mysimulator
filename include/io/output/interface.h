@@ -1,9 +1,9 @@
 
-#ifndef _InputOutput_Output_Base_H_
-#define _InputOutput_Output_Base_H_
+#ifndef _InputOutput_Output_Base_Interface_H_
+#define _InputOutput_Output_Base_Interface_H_
 
-#include "io/base.h"
-#include "io/output-feature-name.h"
+#include "io/base/interface.h"
+#include "io/output/feature-name.h"
 
 namespace mysimulator {
 
@@ -63,13 +63,7 @@ namespace mysimulator {
   };
 
   bool IsValid(const OutputBase&) { return true; }
-  void copy(OutputBase& B, const OutputBase& cB) {
-    for(unsigned int i=0;i<NumberOutputFeature;++i) B.feature[i]=cB.feature[i];
-    sprintf(B.FloatPat,"%s",cB.FloatPat);
-    sprintf(B.DoublePat,"%s",cB.DoublePat);
-    sprintf(B.LongDoublePat,"%s",cB.LongDoublePat);
-    copy(static_cast<IOBase&>(B),static_cast<const IOBase&>(cB));
-  }
+  void release(OutputBase& O) { O.clearData(); }
 
   OutputBase& operator<<(OutputBase& O, const bool& b) { return O.write(b); }
   OutputBase& operator<<(OutputBase& O, const char& c) { return O.write(c); }
