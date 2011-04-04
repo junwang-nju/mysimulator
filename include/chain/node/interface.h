@@ -24,9 +24,9 @@ namespace mysimulator {
     ~ChainNode() { clearData(); }
 
     void clearData() {
-      releas(parent);
-      releas(child);
-      releas(content);
+      release(parent);
+      release(child);
+      release(content);
     }
     T& operator()() { return content(); }
 

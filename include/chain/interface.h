@@ -5,6 +5,10 @@
 #include "chain/node/interface.h"
 #include "referable-object/refer.h"
 #include "referable-object/compare.h"
+#include "referable-object/swap.h"
+#include "generic/exchange.h"
+#include "intrinsic-type/allocate.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 
@@ -23,24 +27,80 @@ namespace mysimulator {
     }
     ~Chain() { clearData(); }
 
-    void clearData() {};
+    void clearData() {
+      if(!IsValid(*this)) return;
+      while(IsValid(root.child)&&IsValid(root.child().child))
+        _remove(root.child.pdata);
+      release(root);
+      release(head);
+    };
     bool IsContained(const ChainNode<T>& N) {
       Object<ChainNode<T> > runNode;
       refer(runNode,N);
-      while(IsValid(runNode.parent))  refer(runNode,runNode.parent);
+      while(IsValid(runNode().parent))  refer(runNode,runNode().parent);
       return IsSameObject(runNode,root);
     }
-    void removeNode(ChainNode<T>& N) {
-      assert(IsContained(N));
-      bool flag;
+    bool IsContained(const T& C) {
       Object<ChainNode<T> > runNode;
-      refer(runNode,N);////////
+      refer(runNode,root);
+      while(IsValid(runNode().child)) {
+        refer(runNode,runNode().child);
+        if(compare(runNode().content,C)==0)   return true;
+      }
+      return false;
+    }
+    void _remove(const ChainNode<T>* N) {
+      assert(IsContained(*N));
+      ChainNode<T> *nfree;
+      nfree=const_cast<ChainNode<T>*>(N);
+      swap(nfree->parent().child,nfree->child);
+      swap(nfree->parent().child().parent,nfree->parent);
+      if((nfree->parent.flag==Allocated)||(nfree->child.flag==Allocated)) {
+        nfree->parent.flag=Referred;
+        nfree->child.flag=Referred;
+        delete nfree;
+      } else release(*nfree);
+    }
+    void remove(const T& C) {
+      Object<ChainNode<T> > runNode;
+      refer(runNode,root);
+      while(IsValid(runNode().child)) {
+        refer(runNode,runNode().child);
+        if(compare(runNode().content,C)==0) {
+          _remove(&(runNode()));
+          break;
+        }
+      }
+    }
+    void append(ChainNode<T>& N) {
+      release(N.child);
+      swap(N.child,head.parent().child);
+      release(N.parent);
+      swap(N.parent,head.parent);
+      refer(head.parent().child,N);
+      refer(head.parent,N);
+    }
+    void append(const T& C, const ObjectStateName& cFlag=Referred) {
+      assert(IsValid(C));
+      allocate(head.parent().child);
+      if(cFlag==Allocated) {
+        allocate(head.parent().child.pdata->content);
+        imprint(head.parent().child().content(),C);
+        copy(head.parent().child().content(),C);
+      } else if(cFlag==Referred)
+        refer(head.parent().child.pdata->content,C);
+      else Error("Unknown Referable-Object State Name in Append for Chain");
+      Object<ChainNode<T> > runNode;
+      refer(runNode,head.parent().child);
+      refer(head.parent().child().child,head);
+      swap(head.parent().child().parent,head.parent);
+      refer(head.parent,runNode);
     }
 
   };
 
   template <typename T>
-  void IsValid(const Chain<T>& C) { return IsValid(C.root)&&IsValid(C.head); }
+  bool IsValid(const Chain<T>& C) { return IsValid(C.root)&&IsValid(C.head); }
 
   template <typename T>
   void release(Chain<T>& C) { C.clearData(); }

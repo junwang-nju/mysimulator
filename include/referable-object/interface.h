@@ -27,8 +27,7 @@ namespace mysimulator {
 
     void clearData() {
       if(flag==Unused)  return;
-      release(*pdata);
-      if(flag==Allocated)  delete pdata;
+      if(flag==Allocated) { release(*pdata);  delete pdata; }
       pdata=NULL;
       flag=Unused;
     }
