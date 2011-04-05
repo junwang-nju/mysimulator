@@ -19,12 +19,6 @@ namespace mysimulator {
   void release(unsigned short&) {}
   void release(char&) {}
   void release(unsigned char&) {}
-  template <typename T>
-  void release(T*& ptr) {
-    if(ptr==NULL) return;
-    delete[] ptr;
-    ptr=NULL;
-  }
 
 }
 

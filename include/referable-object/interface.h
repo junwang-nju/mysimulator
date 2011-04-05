@@ -6,6 +6,7 @@
 #include "referable-object/state-name.h"
 #include "intrinsic-type/allocate.h"
 #include "intrinsic-type/release.h"
+#include "generic/release.h"
 #include "intrinsic-type/validity-check.h"
 
 namespace mysimulator {
@@ -28,7 +29,7 @@ namespace mysimulator {
 
     void clearData() {
       if(flag==Unused)  return;
-      if(flag==Allocated) { release(*pdata);  delete pdata; }
+      if(flag==Allocated) { release(*pdata);  release(pdata); }
       pdata=NULL;
       flag=Unused;
     }
@@ -56,6 +57,19 @@ namespace mysimulator {
     assert(IsValid(cO));
     allocate(O);
     imprint(O(),cO());
+  }
+
+  template <typename T>
+  void imprint(Object<T>& O, const T& value) {
+    assert(IsValid(value));
+    allocate(O);
+    imprint(O(),value);
+  }
+
+  template <typename T>
+  void imprint(const T& value, const Object<T>& cO) {
+    assert(IsValid(cO));
+    imprint(value,cO());
   }
 
 }

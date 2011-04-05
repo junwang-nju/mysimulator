@@ -5,7 +5,7 @@
 #include "vector/state-name.h"
 #include "io/error.h"
 #include "intrinsic-type/constant.h"
-#include "intrinsic-type/release.h"
+#include "generic/release.h"
 #include <cassert>
 
 namespace mysimulator {
@@ -33,7 +33,7 @@ namespace mysimulator {
 
     void clearData() {
       if(state==UnusedVector) return;
-      if(state==AllocatedVector)  release(pdata);
+      if(state==AllocatedVector)  releaseArray(pdata);
       else pdata=NULL;
       size=uZero;
       state=UnusedVector;

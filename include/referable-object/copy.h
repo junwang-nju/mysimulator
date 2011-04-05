@@ -25,6 +25,16 @@ namespace mysimulator {
     copy(ovalue,O());
   }
 
+  template <typename T>
+  void copy(Object<T>& O, const T& value, const ObjectStateName& flag) {
+    if(flag==Allocated) {
+      allocate(O);
+      imprint(O,value);
+      copy(O,value);
+    } else if(flag==Referred) refer(O,value);
+    else Error("Improper State Type in Object copy!");
+  }
+
 }
 
 #endif

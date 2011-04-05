@@ -42,7 +42,7 @@ namespace mysimulator {
   template <typename T>
   int compare(const T& value, const Object<T>& O) {
     assert(IsValid(O));
-    return compare(O(),value);
+    return compare(value,O());
   }
 
 }
