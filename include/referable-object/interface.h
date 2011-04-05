@@ -4,6 +4,7 @@
 
 #include "io/error.h"
 #include "referable-object/state-name.h"
+#include "intrinsic-type/allocate.h"
 #include "intrinsic-type/release.h"
 #include "intrinsic-type/validity-check.h"
 

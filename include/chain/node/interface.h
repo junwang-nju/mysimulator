@@ -43,6 +43,9 @@ namespace mysimulator {
     allocate(N.content);
   }
 
+  template <typename T>
+  void imprint(ChainNode<T>& N, const ChainNode<T>&) { allocate(N); }
+
 }
 
 #endif

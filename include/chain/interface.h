@@ -3,11 +3,11 @@
 #define _Chain_Interface_H_
 
 #include "chain/node/interface.h"
+#include "chain/node/extract.h"
 #include "referable-object/refer.h"
 #include "referable-object/compare.h"
 #include "referable-object/swap.h"
 #include "generic/exchange.h"
-#include "intrinsic-type/allocate.h"
 #include "intrinsic-type/copy.h"
 
 namespace mysimulator {
@@ -49,17 +49,12 @@ namespace mysimulator {
       }
       return false;
     }
-    void _remove(const ChainNode<T>* N) {
-      assert(IsContained(*N));
-      ChainNode<T> *nfree;
-      nfree=const_cast<ChainNode<T>*>(N);
-      swap(nfree->parent().child,nfree->child);
-      swap(nfree->parent().child().parent,nfree->parent);
-      if((nfree->parent.flag==Allocated)||(nfree->child.flag==Allocated)) {
-        nfree->parent.flag=Referred;
-        nfree->child.flag=Referred;
-        delete nfree;
-      } else release(*nfree);
+    void _remove(ChainNode<T>*& pN) {
+      assert(IsContained(*pN));
+      Object<ChainNode<T> > runNode;
+      runNode.pdata=pN;
+      runNode.flag=extract(*pN);
+      release(runNode);
     }
     void remove(const T& C) {
       Object<ChainNode<T> > runNode;
@@ -67,20 +62,22 @@ namespace mysimulator {
       while(IsValid(runNode().child)) {
         refer(runNode,runNode().child);
         if(compare(runNode().content,C)==0) {
-          _remove(&(runNode()));
+          _remove(runNode.pdata);
           break;
         }
       }
     }
     void append(ChainNode<T>& N) {
-      release(N.child);
+      Object<ChainNode<T> > runNode;
+      runNode.pdata=&N;
+      runNode.flag=extract(N);
       swap(N.child,head.parent().child);
-      release(N.parent);
       swap(N.parent,head.parent);
-      refer(head.parent().child,N);
+      swap(N.parent().child,runNode);
       refer(head.parent,N);
+      release(runNode);
     }
-    void append(const T& C, const ObjectStateName& cFlag=Referred) {
+    void append(const T& C, const ObjectStateName& cFlag=Allocated) {
       assert(IsValid(C));
       allocate(head.parent().child);
       if(cFlag==Allocated) {
@@ -90,11 +87,11 @@ namespace mysimulator {
       } else if(cFlag==Referred)
         refer(head.parent().child.pdata->content,C);
       else Error("Unknown Referable-Object State Name in Append for Chain");
-      Object<ChainNode<T> > runNode;
-      refer(runNode,head.parent().child);
+      ChainNode<T> *pNode;
+      pNode=head.parent().child.pdata;
       refer(head.parent().child().child,head);
       swap(head.parent().child().parent,head.parent);
-      refer(head.parent,runNode);
+      refer(head.parent,*pNode);
     }
 
   };
@@ -113,6 +110,9 @@ namespace mysimulator {
     refer(C.root.child,C.head);
     refer(C.head.parent,C.root);
   }
+
+  template <typename T>
+  void allocate(Chain<T>& C, const Chain<T>&) { allocate(C); }
 
 }
 
