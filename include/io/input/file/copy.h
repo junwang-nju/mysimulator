@@ -4,13 +4,14 @@
 
 #include "io/input/file/interface.h"
 #include "io/input/copy.h"
+#include "generic/copy.h"
 
 namespace mysimulator {
 
   void copy(FileInput& I, const FileInput& cI) {
     release(I);
     copy(static_cast<InputBase&>(I),static_cast<const InputBase&>(cI));
-    I.fptr=cI.fptr;
+    copy(I.fptr,cI.fptr);
   }
 
 }

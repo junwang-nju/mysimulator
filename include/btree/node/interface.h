@@ -15,12 +15,12 @@ namespace mysimulator {
     Object<KeyType> key;
     Object<ValueType> value;
     BranchName workBranch;
-    Object<Type> left;
-    Object<Type> right;
-    Object<Type> parent;
+    Type* left;
+    Type* right;
+    Type* parent;
 
-    BTreeNode() : key(), value(), workBranch(Unassigned), left(),
-                  right(), parent() {}
+    BTreeNode() : key(), value(), workBranch(Unassigned), left(NULL),
+                  right(NULL), parent(NULL) {}
     BTreeNode(const Type&) { Error("Copier of BTreeNode Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for BTreeNode Disabled!");
@@ -34,7 +34,7 @@ namespace mysimulator {
       workBranch=Unassigned;
       release(left);
       release(right);
-      release(parent);
+      parent=NULL;
     }
 
   };

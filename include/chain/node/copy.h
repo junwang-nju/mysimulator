@@ -3,6 +3,7 @@
 #define _Chain_Node_Copy_H_
 
 #include "chain/node/interface.h"
+#include "generic/copy.h"
 
 namespace mysimulator {
 

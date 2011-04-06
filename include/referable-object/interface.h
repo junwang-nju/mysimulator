@@ -39,7 +39,7 @@ namespace mysimulator {
 
   template <typename T>
   bool IsValid(const Object<T>& O) {
-    return (O.pdata!=NULL)&&(O.flag!=Unused)&&IsValid(*(O.pdata));
+    return (O.pdata!=NULL)&&(O.flag!=Unused);
   }
 
   template <typename T>

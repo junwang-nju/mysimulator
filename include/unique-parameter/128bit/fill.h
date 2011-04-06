@@ -3,6 +3,7 @@
 #define _Unique_Parameter_128bit_Fill_H_
 
 #include "unique-parameter/128bit/interface.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 

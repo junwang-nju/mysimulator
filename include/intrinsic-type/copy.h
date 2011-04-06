@@ -19,17 +19,17 @@ namespace mysimulator {
     b=(i==0?false:true);
   }
 
-  template <typename T>
-  void copy(void*& ptr, const T* tptr) {
-    ptr=reinterpret_cast<void*>(const_cast<T*>(tptr));
+}
+
+#include "intrinsic-type/validity-check.h"
+#include <cassert>
+
+namespace mysimulator {
+
+  void copy(void*& ptr, void* const& ptr1) {
+    assert(IsValid(ptr1));
+    ptr=const_cast<void*>(ptr1);
   }
-  template <typename T>
-  void copy(T*& tptr, const void* ptr) {
-    tptr=reinterpret_cast<T*>(const_cast<void*>(ptr));
-  }
-  void copy(void*& ptr, void* const& ptr1) { ptr=const_cast<void*>(ptr1); }
-  template <typename T>
-  void copy(T*& ptr, T* const& tptr) { ptr=const_cast<T*>(tptr); }
 
 }
 

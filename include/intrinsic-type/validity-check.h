@@ -20,6 +20,8 @@ namespace mysimulator {
   bool IsValid(const char&) { return true; }
   bool IsValid(const unsigned char&) { return true; }
   bool IsValid(const void* ptr) { return ptr!=NULL; }
+  bool IsValid(const bool& b) { return true; }
+
 }
 
 #endif

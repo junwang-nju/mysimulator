@@ -6,7 +6,6 @@
 #include "io/error.h"
 #include "intrinsic-type/constant.h"
 #include "generic/release.h"
-#include <cassert>
 
 namespace mysimulator {
 

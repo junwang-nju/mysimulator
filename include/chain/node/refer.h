@@ -10,8 +10,8 @@ namespace mysimulator {
   void refer(ChainNode<T>& N, const ChainNode<T>& rN) {
     assert(IsValid(rN));
     release(N);
-    refer(N.parent,rN.parent);
-    refer(N.child,rN.child);
+    if(IsValid(rN.parent))  refer(N.parent,rN.parent);
+    if(IsValid(rN.child))   refer(N.child,rN.child);
     refer(N.content,rN.content);
   }
 

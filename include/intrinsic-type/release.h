@@ -19,6 +19,7 @@ namespace mysimulator {
   void release(unsigned short&) {}
   void release(char&) {}
   void release(unsigned char&) {}
+  void release(bool&) {}
 
 }
 
