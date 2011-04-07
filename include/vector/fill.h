@@ -102,13 +102,23 @@ namespace mysimulator {
     memcpy(v()+nb,&ll,nr+nr);
   }
   
-  void fill(Vector<char>& v, const char& c) { memset(v(),c,v.size); }
-  void fill(Vector<char>& v, const unsigned char& uc) { memset(v(),uc,v.size); }
-
-  void fill(Vector<unsigned char>& v, const unsigned char& uc) {
+  void fill(Vector<char>& v, const char& c) {
+    assert(IsValid(v));
+    memset(v(),c,v.size);
+  }
+  void fill(Vector<char>& v, const unsigned char& uc) {
+    assert(IsValid(v));
     memset(v(),uc,v.size);
   }
-  void fill(Vector<unsigned int>& v, const char& c) { memset(v(),c,v.size); }
+
+  void fill(Vector<unsigned char>& v, const unsigned char& uc) {
+    assert(IsValid(v));
+    memset(v(),uc,v.size);
+  }
+  void fill(Vector<unsigned int>& v, const char& c) {
+    assert(IsValid(v));
+    memset(v(),c,v.size);
+  }
 
 }
 

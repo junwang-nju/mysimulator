@@ -9,6 +9,7 @@
 namespace mysimulator {
 
   void copy(FileInput& I, const FileInput& cI) {
+    assert(IsValid(cI));
     release(I);
     copy(static_cast<InputBase&>(I),static_cast<const InputBase&>(cI));
     copy(I.fptr,cI.fptr);

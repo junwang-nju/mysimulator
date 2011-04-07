@@ -8,10 +8,11 @@ namespace mysimulator {
 
   template <typename T>
   void refer(Object<T>& O, const Object<T>& cO) {
-    assert(IsValid(cO));
     release(O);
-    O.pdata=const_cast<T*>(cO.pdata);
-    O.flag=Referred;
+    if(IsValid(cO)) {
+      O.pdata=const_cast<T*>(cO.pdata);
+      O.flag=Referred;
+    }
   }
 
   template <typename T>

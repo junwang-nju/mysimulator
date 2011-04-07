@@ -54,14 +54,12 @@ namespace mysimulator {
 
   template <typename T>
   void imprint(Object<T>& O, const Object<T>& cO) {
-    assert(IsValid(cO));
     allocate(O);
     imprint(O(),cO());
   }
 
   template <typename T>
   void imprint(Object<T>& O, const T& value) {
-    assert(IsValid(value));
     allocate(O);
     imprint(O(),value);
   }

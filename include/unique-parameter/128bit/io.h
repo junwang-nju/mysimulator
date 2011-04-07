@@ -8,6 +8,7 @@
 namespace mysimulator {
 
   InputBase& operator>>(InputBase& is, UniqueParameter128Bit& P) {
+    assert(IsValid(is));
     char flag='\n';
     while(isspace(flag))  is>>flag;
     if(isdigit(flag)||(flag=='+')||(flag=='-')) {
@@ -62,6 +63,7 @@ namespace mysimulator {
   }
 
   OutputBase& operator<<(OutputBase& os, const UniqueParameter128Bit& P) {
+    assert(IsValid(ios));
     os<<"L [ "<<P.ull[0]<<"\t"<<P.ull[1]<<" ]";
     return os;
   }

@@ -7,7 +7,10 @@
 namespace mysimulator {
 
   template <typename T>
-  OutputBase& operator<<(OutputBase& B,const Object<T>& O) { return (B<<O()); }
+  OutputBase& operator<<(OutputBase& B,const Object<T>& O) {
+    assert(IsValid(B));
+    return (B<<O());
+  }
 
 }
 

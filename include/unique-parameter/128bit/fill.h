@@ -142,6 +142,7 @@ namespace mysimulator {
 namespace mysimulator {
 
   void fill(Vector<UniqueParameter128Bit>& v, const UniqueParameter128Bit& P) {
+    assert(IsValid(v));
     dcopy_(reinterpret_cast<long*>(const_cast<unsigned int*>(&(v.size))),
            reinterpret_cast<double*>(const_cast<UniqueParameter128Bit*>(&P)),
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),

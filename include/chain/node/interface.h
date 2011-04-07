@@ -28,7 +28,7 @@ namespace mysimulator {
       release(child);
       release(content);
     }
-    T& operator()() { return content(); }
+    T& operator()() { assert(IsValid(*this)); return content(); }
 
   };
 

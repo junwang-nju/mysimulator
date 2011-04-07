@@ -8,22 +8,19 @@
 namespace mysimulator {
 
   template <typename T1, typename T2>
-  void copy(Object<T1>& O, const Object<T2>& cO) {
-    assert(IsValid(O)&&IsValid(cO));
-    copy(O(),cO());
-  }
+  void copy(Object<T1>& O, const Object<T2>& cO) { copy(O(),cO()); }
 
   template <typename T1, typename T2>
-  void copy(Object<T1>& O, const T2& ovalue) {
-    assert(IsValid(O));
-    copy(O(),ovalue);
-  }
+  void copy(Object<T1>& O, const T2& ovalue) { copy(O(),ovalue); }
 
   template <typename T1, typename T2>
-  void copy(T1& ovalue, const Object<T2>& O) {
-    assert(IsValid(O));
-    copy(ovalue,O());
-  }
+  void copy(T1& ovalue, const Object<T2>& O) { copy(ovalue,O()); }
+
+}
+
+#include "referable-object/refer.h"
+
+namespace mysimulator {
 
   template <typename T>
   void copy(Object<T>& O, const T& value, const ObjectStateName& flag) {

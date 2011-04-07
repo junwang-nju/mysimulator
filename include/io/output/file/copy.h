@@ -8,6 +8,7 @@
 namespace mysimulator {
 
   void copy(FileOutput& O, const FileOutput& cO) {
+    assert(IsValid(cO));
     release(O);
     copy(static_cast<OutputBase&>(O),static_cast<const OutputBase&>(cO));
     O.fptr=cO.fptr;

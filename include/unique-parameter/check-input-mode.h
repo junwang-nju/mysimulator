@@ -5,10 +5,12 @@
 #include "io/input/interface.h"
 #include "unique-parameter/input-mode-name.h"
 #include <cctype>
+#include <cassert>
 
 namespace mysimulator {
 
   UniqueParameterInputModeName _CheckInputMode(InputBase& is) {
+    assert(IsValid(is));
     char flag='\n';
     while(isspace(flag))    is>>flag;
     UniqueParameterInputModeName im;

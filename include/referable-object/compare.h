@@ -29,21 +29,14 @@ namespace mysimulator {
 
   template <typename T1, typename T2>
   int compare(const Object<T1>& O1, const Object<T2>& O2) {
-    assert(IsValid(O1)&&IsValid(O2));
     return compare(O1(),O2());
   }
 
   template <typename T>
-  int compare(const Object<T>& O, const T& value) {
-    assert(IsValid(O));
-    return compare(O(),value);
-  }
+  int compare(const Object<T>& O, const T& value){ return compare(O(),value); }
 
   template <typename T>
-  int compare(const T& value, const Object<T>& O) {
-    assert(IsValid(O));
-    return compare(value,O());
-  }
+  int compare(const T& value, const Object<T>& O){ return compare(value,O()); }
 
 }
 

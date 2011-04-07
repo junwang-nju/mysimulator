@@ -8,6 +8,7 @@
 namespace mysimulator {
 
   InputBase& operator>>(InputBase& is, UniqueParameter64Bit& P) {
+    assert(IsValid(is));
     char flag='\n';
     while(isspace(flag))  is>>flag;
     if(isdigit(flag)||(flag=='+')) {
@@ -57,6 +58,7 @@ namespace mysimulator {
   }
 
   OutputBase& operator<<(OutputBase& os, const UniqueParameter64Bit& P) {
+    assert(IsValid(os));
     os<<P.ull;
     return os;
   }

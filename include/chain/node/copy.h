@@ -8,10 +8,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void copy(ChainNode<T>& N, const ChainNode<T>& cN) {
-    assert(IsValid(N)&&IsValid(cN));
-    copy(N(),cN());
-  }
+  void copy(ChainNode<T>& N, const ChainNode<T>& cN) { copy(N(),cN()); }
 
 }
 
