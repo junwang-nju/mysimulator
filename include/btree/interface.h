@@ -14,9 +14,9 @@ namespace mysimulator {
 
     typedef BTree<KeyType,ValueType>  Type;
 
-    BTreeNode<KeyType,ValueType>  *proot;
+    Object<BTreeNode<KeyType,ValueType> >  root;
 
-    BTree() : proot(NULL) {}
+    BTree() : root() {}
     BTree(const Type&) { Error("Copier of BTree Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for BTree Disabled!");
@@ -24,63 +24,64 @@ namespace mysimulator {
     }
     ~BTree() { clearData(); }
 
-    void clearData() { release(proot); }
+    void clearData() { release(root); }
     void insert(const KeyType& key, const ValueType& value,
                 const ObjectStateName& kflag=Allocated,
                 const ObjectStateName& vflag=Allocated) {
-      BTreeNode<KeyType,ValueType> *present=proot;
+      Object<BTreeNode<KeyType,ValueType> > present;
+      refer(present,root);
       int cmp;
       bool kadd,vadd;
       while(true) {
         cmp=0;
-        if(IsValid(present)) { cmp=compare(key,present->key); COut<<key<<"\t"<<present->key()<<"\t"<<cmp<<Endl; }
+        if(IsValid(present)) { cmp=compare(key,present->key); }
         kadd=vadd=false;
         if(cmp==0) {
           if(IsValid(present)) Warn("Same Key is met in inserting of BTree!");
           else {
-            proot=new BTreeNode<KeyType,ValueType>;
-            present=proot;
+            allocate(root);
+            refer(present,root);
             kadd=true;
-            present->parent=NULL;
-            present->workBranch=Unassigned;
+            present().workBranch=Unassigned;
           }
           vadd=true;
         } else if(cmp<0) {
-          COut<<"---- "<<key<<Endl;
-          if(!IsValid(present->left)) {
-            present->left=new BTreeNode<KeyType,ValueType>;
+          if(!IsValid(present().left)) {
+            allocate(present().left);
             kadd=vadd=true;
-            present->left->parent=present;
-            present->left->workBranch=LeftBranch;
+            refer(present().left().parent,present);
+            present().left().workBranch=LeftBranch;
           }
-          present=present->left;
+          refer(present,present().left);
         } else {
-          if(!IsValid(present->right)) {
-            present->right=new BTreeNode<KeyType,ValueType>;
+          if(!IsValid(present().right)) {
+            allocate(present().right);
             kadd=vadd=true;
-            present->right->parent=present;
-            present->right->workBranch=RightBranch;
+            refer(present().right().parent,present);
+            present().right().workBranch=RightBranch;
           }
-          present=present->right;
+          refer(present,present().right);
         }
-        if(kadd) copy(present->key,key,kflag);
+        if(kadd) copy(present().key,key,kflag);
         if(vadd) {
-          copy(present->value,value,vflag);
+          copy(present().value,value,vflag);
           break;
         }
       }
     }
 
     const BTreeNode<KeyType,ValueType>* _getNode(const KeyType& key) const {
-      BTreeNode<KeyType,ValueType> *present=proot;
+      assert(IsValid(key));
+      Object<BTreeNode<KeyType,ValueType> > present;
+      refer(present,root);
       int cmp;
       while(IsValid(present)) {
-        cmp=compare(key,present->key);
+        cmp=compare(key,present().key);
         if(cmp==0)      break;
-        else if(cmp<0)  present=present->left;
-        else            present=present->right;
+        else if(cmp<0)  refer(present,present().left);
+        else            refer(present,present().right);
       }
-      return present;
+      return present.pdata;
     }
     const ValueType* getValue(const KeyType& key) {
       const BTreeNode<KeyType,ValueType>* pN=_getNode(key);
@@ -88,50 +89,60 @@ namespace mysimulator {
     }
 
     void _remove(const BTreeNode<KeyType,ValueType>* pN) {
-      BTreeNode<KeyType,ValueType> *present;
-      present=const_cast<BTreeNode<KeyType,ValueType>*>(pN);
       if(!IsValid(pN))  return;
-      assert(IsValid(*pN)&&(pN==_getNode(pN->key())));
-      if(!IsValid(present->left)) {
-        if(IsValid(present->parent)) {
-          if(present->workBranch==LeftBranch)
-            present->parent->left=present->right;
-          else if(present->workBranch==RightBranch)
-            present->parent->right=present->right;
+      Object<BTreeNode<KeyType,ValueType> > present;
+      refer(present,*pN);
+      assert(IsValid(present())&&(pN==_getNode(present().key())));
+      if(!IsValid(present().left)) {
+        if(IsValid(present().parent)) {
+          if(present().workBranch==LeftBranch)
+            swap(present().parent().left,present().right);
+          else if(present().workBranch==RightBranch)
+            swap(present().parent().right,present().right);
           else Error("Improper Branch Flag in node!");
-        } else proot=present->right;
-        present->right=NULL;
-      } else if(!IsValid(present->right)) {
-        if(IsValid(present->parent)) {
-          if(present->workBranch==LeftBranch)
-            present->parent->left=present->left;
-          else if(present->workBranch==RightBranch)
-            present->parent->right=present->left;
+        } else swap(root,present().right);
+        present().right().flag=Referred;
+      } else if(!IsValid(present().right)) {
+        if(IsValid(present().parent)) {
+          if(present().workBranch==LeftBranch)
+            swap(present().parent().left,present().left);
+          else if(present().workBranch==RightBranch)
+            swap(present().parent().right,present().left);
           else Error("Improper Branch Flag in node!");
-        } else proot=present->left;
-        present->left=NULL;
+        } else swap(root,present().left);
+        present().left.flag=Referred;
       } else {
-        BTreeNode<KeyType,ValueType> *mvNode;
-        mvNode=present->right;
-        while(IsValid(mvNode->left))  mvNode=mvNode->left;
-        if(mvNode->workBranch==LeftBranch)
-          mvNode->parent->left=mvNode->right;
-        else if(mvNode->workBranch==RightBranch)
-          mvNode->parent->right=mvNode->right;
-        else Error("Improper Branch Flag in node!");
-        if(IsValid(mvNode->right)) {
-          mvNode->right->parent=mvNode->parent;
-          mvNode->right->workBranch=mvNode->workBranch;
+        Object<BTreeNode<KeyType,ValueType> > mvNode;
+        refer(mvNode,present().right);
+        while(IsValid(mvNode().left))  refer(mvNode,mvNode().left);
+        if(IsValid(mvNode().right)) {
+          swap(mvNode().right().parent,mvNode().parent);
+          mvNode().right().workBranch=mvNode().workBranch;
         }
-        mvNode->parent=present->parent;
-        mvNode->workBranch=present->workBranch;
-        if(IsValid(mvNode->parent)) {
-          if(mvNode->workBranch==LeftBranch)       mvNode->parent->left=mvNode;
-          else if(mvNode->workBranch==RightBranch) mvNode->parent->right=mvNode;
+        if(mvNode().right().workBranch==LeftBranch)
+          swap(mvNode().right().parent().left,mvNode().right);
+        else if(mvNode().right().workBranch==RightBranch)
+          swap(mvNode().right().parent().right,mvNode().right);
+        else Error("Improper Branch Flag in node!");
+        mvNode().parent.flag=Referred;
+        mvNode().right.flag=Referred;
+        release(mvNode().parent);
+        release(mvNode().left);
+        release(mvNode().right);
+        swap(mvNode().parent,present().parent);
+        swap(mvNode().workBranch,present().workBranch);
+        swap(mvNode().left,present().left);
+        swap(mvNode().right,present().right);
+        if(IsValid(mvNode().left))  refer(mvNode().left().parent,mvNode);
+        if(IsValid(mvNode().right)) refer(mvNode().right().parent,mvNode);
+        if(IsValid(mvNode().parent)) {
+          if(mvNode().workBranch==LeftBranch)
+            swap(mvNode().parent().left,mvNode);
+          else if(mvNode().workBranch==RightBranch)
+            swap(mvNode().parent().right,mvNode);
           else Error("Improper Branch Flag in node!");
-        } else proot=mvNode;
-        mvNode->left=present->left;     present->left=NULL;
-        mvNode->right=present->right;   present->right=NULL;
+        } else swap(root,mvNode);
+        release(mvNode);
       }
       release(present);
     }
