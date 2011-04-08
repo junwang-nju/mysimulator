@@ -44,6 +44,14 @@ namespace mysimulator {
       assert(IsValid(*this));
       return *(pdata+I);
     }
+    void getSubvec(const T* ptr, const unsigned int sz) {
+      assert((ptr!=NULL)&&(sz>0));
+      release(*this);
+      data=const_cast<T*>(ptr);
+      size=sz;
+      state=SubVector;
+    }
+    void getSubvec(const Vector<T>& cv) { getSubvec(cv.pdata,cv.size); }
 
   };
 
@@ -67,18 +75,6 @@ namespace mysimulator {
     release(v);
     allocate(v,cv.size);
     for(unsigned int i=0;i<v.size;++i) imprint(v[i],cv[i]);
-  }
-  template <typename T>
-  void getSubvec(Vector<T>& v, const T* ptr, const unsigned int sz) {
-    assert((ptr!=NULL)&&(sz>0));
-    release(v);
-    v.data=const_cast<T*>(ptr);
-    v.size=sz;
-    v.state=SubVector;
-  }
-  template <typename T>
-  void getSubvec(Vector<T>& v, const Vector<T>& cv) {
-    getSubvec(v,cv.pdata,cv.size);
   }
 
 }
