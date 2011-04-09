@@ -16,7 +16,7 @@ namespace mysimulator {
 
     List() : ParentType(), infra() {}
     List(const Type&) { Error("Copier of List Disabled!"); }
-    Type& operator(const Type&) {
+    Type& operator=(const Type&) {
       Error("Operator= for List Disabled!");
       return *this;
     }
@@ -29,7 +29,7 @@ namespace mysimulator {
     Vector<T>& operator[](const unsigned int I) { return infra[I]; }
     const Vector<T>& operator[](const unsigned int I) const { return infra[I]; }
     const unsigned int ListSize() const { return infra.size; }
-    const unsigned int NumElements() const { return size; }
+    const unsigned int NumElements() const { return this->size; }
 
   };
 

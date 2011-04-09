@@ -6,8 +6,8 @@
 
 namespace mysimulator {
 
-    bool IsPropertySame(const vector<unsigned int>& pa,
-                        const vector<unsigned int>& pb) {
+    bool IsPropertySame(const Vector<unsigned int>& pa,
+                        const Vector<unsigned int>& pb) {
       assert(IsValid(pa)&&IsValid(pb));
       if(pa.size!=pb.size)  return false;
       for(unsigned int i=0;i<pa.size;++i)

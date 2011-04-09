@@ -8,6 +8,8 @@
 #include "matrix/type-name.h"
 #include "matrix/property/op.h"
 #include "matrix/rectangle/get-func.h"
+#include "vector/allocate.h"
+#include "vector/fill.h"
 
 namespace mysimulator {
 

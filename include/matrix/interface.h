@@ -3,6 +3,7 @@
 #define _Matrix_Interface_H_
 
 #include "list/interface.h"
+#include "referable-object/interface.h"
 
 namespace mysimulator {
 
@@ -17,7 +18,7 @@ namespace mysimulator {
 
     Vector<unsigned int> property;
     Object<T> other;
-    GenFuncType GetFunc;
+    GetFuncType GetFunc;
 
     Matrix() : ParentType(), property(), other(), GetFunc(NULL) {}
     Matrix(const Type&) { Error("Copier of Matrix Disabled!"); }
@@ -30,14 +31,14 @@ namespace mysimulator {
     void clearData() {
       release(property);
       release(other);
-      M.GetFunc=NULL;
-      release(static_cast<ParentType&>(M));
+      GetFunc=NULL;
+      release(static_cast<ParentType&>(*this));
     }
     T& operator()(const unsigned int I, const unsigned int J) {
-      return GetFunc(infra,I,J,other());
+      return GetFunc(this->infra,I,J,other());
     }
     const T& operator()(const unsigned int I, const unsigned int J) const {
-      return GetFunc(infra,I,J,other());
+      return GetFunc(this->infra,I,J,other());
     }
 
   };

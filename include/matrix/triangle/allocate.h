@@ -11,6 +11,7 @@
 #include "matrix/triangle/triangle-part-name.h"
 #include "matrix/triangle/data-pattern-name.h"
 #include "matrix/triangle/get-func.h"
+#include "vector/allocate.h"
 
 namespace mysimulator {
 
@@ -70,7 +71,7 @@ namespace mysimulator {
                         (DFlag?MatrixTri_Get4DLAD<T>:MatrixTri_Get4DLAN<T>);
       } else Error("Improper Triangle Part to allocate Triangle Matrix!");
     } else Error("Improper Actual Data Order to allocate Triangle Matrix!");
-    unsigned int rdim=Dim=(DFlag?0:1);
+    unsigned int rdim=dim-(DFlag?0:1);
     M.property[MatrixActualDimension]=rdim;
     int szfirst,szshift;
     if((M.property[MatrixActualDataPattern]==PatternCUpper)||
@@ -83,9 +84,9 @@ namespace mysimulator {
     } else Error("Improper Data Pattern to allocate Triangle Matrix!");
     M.property[MatrixNumberElements]=(rdim*(rdim+1))/2;
     Vector<unsigned int> sz(rdim);
-    sz[0]=static_const<unsigned int>(szfirst);
+    sz[0]=static_cast<unsigned int>(szfirst);
     for(unsigned int i=1;i<rdim;++i)
-      sz[i]=static_const<unsigned int>(static_cast<int>(sz[i-1])+szshift);
+      sz[i]=static_cast<unsigned int>(static_cast<int>(sz[i-1])+szshift);
     allocate(static_cast<List<T>&>(M),sz);
     if(SFlag&&DFlag)  allocate(M.other);
   }
