@@ -37,15 +37,6 @@ namespace mysimulator {
   template <typename T>
   void release(ChainNode<T>& N) { N.clearData(); }
 
-  template <typename T>
-  void allocate(ChainNode<T>& N) {
-    release(N);
-    allocate(N.content);
-  }
-
-  template <typename T>
-  void imprint(ChainNode<T>& N, const ChainNode<T>&) { allocate(N); }
-
 }
 
 #endif

@@ -16,6 +16,7 @@ namespace mysimulator {
 }
 
 #include "list/compare.h"
+#include "vector/copy.h"
 
 namespace mysimulator {
 

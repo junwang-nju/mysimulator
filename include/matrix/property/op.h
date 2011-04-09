@@ -9,7 +9,7 @@
 
 namespace mysimulator {
 
-  void _ProduceActualDataOrder(Vector<int>& p) {
+  void _ProduceActualDataOrder(Vector<unsigned int>& p) {
     if(p[MatrixTranspose]==NoTranspose)
       p[MatrixTranspose]=p[MatrixDataOrder];
     else if(p[MatrixTranspose]==Transposed) {

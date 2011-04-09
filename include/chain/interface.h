@@ -102,18 +102,6 @@ namespace mysimulator {
   template <typename T>
   void release(Chain<T>& C) { C.clearData(); }
 
-  template <typename T>
-  void allocate(Chain<T>& C) {
-    release(C);
-    allocate(C.root);
-    allocate(C.head);
-    refer(C.root.child,C.head);
-    refer(C.head.parent,C.root);
-  }
-
-  template <typename T>
-  void allocate(Chain<T>& C, const Chain<T>&) { allocate(C); }
-
 }
 
 #endif

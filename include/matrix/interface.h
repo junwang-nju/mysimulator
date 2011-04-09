@@ -12,9 +12,10 @@ namespace mysimulator {
     typedef Matrix<T>   Type;
     typedef List<T>     ParentType;
 
-    typedef T& (*GetFuncType)(Vector<Vector<T> >&,const int,const int,T&);
+    typedef T& (*GetFuncType)(Vector<Vector<T> >&,
+                              const unsigned int,const unsigned int,T&);
 
-    Vector<int> property;
+    Vector<unsigned int> property;
     Object<T> other;
     GenFuncType GetFunc;
 
@@ -32,10 +33,10 @@ namespace mysimulator {
       M.GetFunc=NULL;
       release(static_cast<ParentType&>(M));
     }
-    T& operator()(const int I, const int J) {
+    T& operator()(const unsigned int I, const unsigned int J) {
       return GetFunc(infra,I,J,other());
     }
-    const T& operator()(const int I, const int J) const {
+    const T& operator()(const unsigned int I, const unsigned int J) const {
       return GetFunc(infra,I,J,other());
     }
 
@@ -43,7 +44,7 @@ namespace mysimulator {
 
   template <typename T>
   bool IsValid(const Matrix<T>& M) {
-    return IsValid(M.property)&&IsValid(M.other)&&IsValid(M.GetFunc)&&
+    return IsValid(M.property)&&IsValid(M.GetFunc)&&
            IsValid(static_cast<const List<T>&>(M));
   }
 

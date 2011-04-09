@@ -3,6 +3,7 @@
 #define _List_Swap_H_
 
 #include "list/interface.h"
+#include "vector/swap.h"
 
 namespace mysimulator {
 

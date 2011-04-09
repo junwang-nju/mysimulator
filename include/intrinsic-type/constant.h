@@ -8,6 +8,7 @@ namespace mysimulator {
   static const char cOne=1;
 
   static const int iOne=1;
+  static const int iNOne=-1;
 
   static const unsigned int uZero=0U;
   static const unsigned int uOne=1U;
