@@ -2,7 +2,7 @@
 #ifndef _Map_Element_Hash_Compare_H_
 #define _Map_Element_Hash_Compare_H_
 
-#include "map/element/hash/interface.h"
+#include "map/hash/interface.h"
 
 namespace mysimulator {
 
