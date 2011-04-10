@@ -13,7 +13,7 @@ namespace mysimulator {
 
     unsigned int value[NumHashValue];
 
-    MapHash() : value() {}
+    MapHash() : value() { clearData(); }
     MapHash(const Type&) { Error("Copier of MapHash Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for MapHash Disabled!");
@@ -26,6 +26,7 @@ namespace mysimulator {
       unsigned int *pend=p+NumHashValue;
       for(;p!=pend;)  copy(*(p++),uZero);
     }
+    const unsigned int operator()(const unsigned int I) const {return value[I];}
 
   };
 
