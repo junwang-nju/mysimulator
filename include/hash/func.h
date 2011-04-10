@@ -11,6 +11,7 @@ namespace mysimulator {
     char *pc=const_cast<char*>(s);
     char *pend=pc+nchar;
     for(;pc!=pend;) { hash*=run;  hash+=*(pc++);  run*=b; }
+    return hash;
   }
 
   unsigned int hash_js (const char* s, const unsigned int nchar) {
@@ -18,11 +19,11 @@ namespace mysimulator {
     unsigned int hash=a;
     char *pc=const_cast<char*>(s);
     char *pend=pc+nchar;
-    for(;pc!=pend;) hash^=((hash<,5)+(*(pc++))+(hash>>2));
+    for(;pc!=pend;) hash^=((hash<<5)+(*(pc++))+(hash>>2));
     return hash;
   }
 
-  unsigned int hash_pjw(const char* s, const unsignedint nchar) {
+  unsigned int hash_pjw(const char* s, const unsigned int nchar) {
     static const unsigned int BitsInUnsignedInt=
       static_cast<unsigned int>(sizeof(unsigned int)*8);
     static const unsigned int ThreeQuarters=
@@ -36,7 +37,7 @@ namespace mysimulator {
     char *pend=pc+nchar;
     for(;pc!=pend;) {
       hash=(hash<<OneEighth)+(*(pc++));
-      if((test==hash&HighBits)!=0)
+      if((test=hash&HighBits)!=0)
         hash=((hash^(test>>ThreeQuarters))&(~HighBits));
     }
     return hash;
@@ -44,7 +45,9 @@ namespace mysimulator {
 
   unsigned int hash_elf(const char* s, const unsigned int nchar) {
     unsigned int hash=0, x=0;
-    for(unsigned int i=0;i<nchar;++i) {
+    char *pc=const_cast<char*>(s);
+    char *pend=pc+nchar;
+    for(;pc!=pend;) {
       hash=(hash<<4)+(*(pc++));
       if((x=hash&0xF0000000L)!=0) hash^=(x>>24);
       hash&=~x;
@@ -73,7 +76,7 @@ namespace mysimulator {
     unsigned int hash=5381;
     char *pc=const_cast<char*>(s);
     char *pend=pc+nchar;
-    for(;pc!=pend;) hash=((hash<<5)+hash)+s[i];
+    for(;pc!=pend;) hash=((hash<<5)+hash)+(*(pc++));
     return hash;
   }
 
@@ -106,8 +109,9 @@ namespace mysimulator {
     unsigned int hash=0xAAAAAAAA;
     char *pc=const_cast<char*>(s);
     char *pend=pc+nchar;
-    for(;pc!=pend;++pc) hash^=(i&1)?(~((hash<<11)^(*pc)^(hash>>5))):
-                                    ((hash<<7)^(*pc)^(hash>>3)); 
+    for(unsigned int i=0;pc!=pend;++pc,++i)
+      hash^=(i&1)?(~((hash<<11)^(*pc)^(hash>>5))):
+                  ((hash<<7)^(*pc)^(hash>>3)); 
     return hash;
   }
 

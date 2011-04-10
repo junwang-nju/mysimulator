@@ -2,7 +2,7 @@
 #ifndef _Map_Element_Interface_H_
 #define _Map_Element_Interface_H_
 
-#include "map/hash/interface.h"
+#include "map/hash/build.h"
 
 namespace mysimulator {
 
@@ -28,9 +28,14 @@ namespace mysimulator {
       release(value);
       release(hash);
     }
+    void update() { key2hash(key,hash); }
 
   };
 
+  template <typename ktype, typename vtype>
+  void IsValid(const MapElement<ktype,vtype>& E) {
+    return IsValid(E.key)&&IsValid(E.value)&&IsValid(E.hash);
+  }
   template <typename ktype, typename vtype>
   void release(MapElement<ktype,vtype>& E) { E.clearData(); }
 

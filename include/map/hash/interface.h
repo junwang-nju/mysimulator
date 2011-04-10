@@ -3,6 +3,8 @@
 #define _Map_Element_Hash_Interface_H_
 
 #include "io/error.h"
+#include "intrinsic-type/constant.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 
@@ -26,7 +28,8 @@ namespace mysimulator {
       unsigned int *pend=p+NumHashValue;
       for(;p!=pend;)  copy(*(p++),uZero);
     }
-    const unsigned int operator()(const unsigned int I) const {return value[I];}
+    unsigned int& operator()(const unsigned int I) { return value[I]; }
+    const unsigned int& operator()(const unsigned int I)const{return value[I];}
 
   };
 
