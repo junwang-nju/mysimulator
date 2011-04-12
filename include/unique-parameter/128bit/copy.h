@@ -7,9 +7,18 @@
 
 namespace mysimulator {
 
+#ifdef _Have_SSE2
+  void copy(UniqueParameter128Bit& P, const __m128i& i) {
+    _mm_storeu_si128(&(P.si),i);
+  }
+  void copy(__m128i& i, const UniqueParameter128Bit& P) {
+    _mm_storeu_si128(&i,P.si);
+  }
+#endif
+
   void copy(UniqueParameter128Bit& P, const UniqueParameter128Bit& cP) {
 #ifdef _Have_SSE2
-    P.si=_mm_loadu_si128(&(cP.si));
+    _mm_storeu_si128(&(P.si),cP.si);
 #else
     P.ull[0]=cP.ull[0];   P.ull[1]=cP.ull[1];
 #endif

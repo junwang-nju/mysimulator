@@ -21,6 +21,8 @@ namespace mysimulator {
   static const float fOne=1.;
 
   static const double dOne=1.;
+  static const double dNOne=-1.;
+  static const double dTwo=2.;
 
 }
 

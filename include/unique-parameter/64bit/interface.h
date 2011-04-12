@@ -26,6 +26,7 @@ namespace mysimulator {
     void *pdata[2];
 
     UniqueParameter64Bit() : ull(0) {}
+    UniqueParameter64Bit(const unsigned long long int& l) : ull(l) {}
     UniqueParameter64Bit(const Type&) {
       Error("Copier of UniqueParameter64Bit Disabled!");
     }
