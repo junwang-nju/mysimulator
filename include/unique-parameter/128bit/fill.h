@@ -4,6 +4,7 @@
 
 #include "unique-parameter/128bit/interface.h"
 #include "intrinsic-type/copy.h"
+#include <cstring>
 
 namespace mysimulator {
 
@@ -68,17 +69,12 @@ namespace mysimulator {
     for(;sp!=pend;) copy(*(sp++),s);
   }
 
-  void fill(UniqueParameter128Bit& P, const char& c) {
-    char *cp=P.c;
-    char *pend=cp+16;
-    for(;cp!=pend;) copy(*(cp++),c);
-  }
+  void fill(UniqueParameter128Bit& P, const char& c) { memset(P.c,c,16); }
 
   template <typename T>
   void fill(UniqueParameter128Bit& P, const T* d) {
 #ifdef _Have_SSE2
-    const double *pd=reinterpret_cast<const double*>(d);
-    P.sd=_mm_set_pd(*pd,*(pd+1));
+    P.sd=_mm_loadu_pd(reinterpret_cast<const double*>(d));
 #else
     dcopy_(const_cast<long*>(&lTwo),
            reinterpret_cast<double*>(const_cast<T*>(d)),
