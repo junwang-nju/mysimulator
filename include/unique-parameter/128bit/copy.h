@@ -8,21 +8,31 @@
 namespace mysimulator {
 
 #ifdef _Have_SSE2
+
   void copy(UniqueParameter128Bit& P, const __m128i& i) {
     _mm_storeu_si128(&(P.si),i);
   }
   void copy(__m128i& i, const UniqueParameter128Bit& P) {
     _mm_storeu_si128(&i,P.si);
   }
-#endif
+  void copy(UniqueParameter128Bit& P, const __m128d& d) {
+    _mm_storeu_pd(P.d,d);
+  }
+  void copy(__m128d& d, const UniqueParameter128Bit& P) {
+    d=_mm_loadu_pd(P.d);
+  }
+  void copy(UniqueParameter128Bit& P, const UniqueParameter128Bit& cP) {
+    _mm_storeu_si128(&(P.si),cP.si);
+  }
+
+#else
 
   void copy(UniqueParameter128Bit& P, const UniqueParameter128Bit& cP) {
-#ifdef _Have_SSE2
-    _mm_storeu_si128(&(P.si),cP.si);
-#else
     P.ull[0]=cP.ull[0];   P.ull[1]=cP.ull[1];
-#endif
   }
+
+#endif
+
 
   template <typename T>
   void copy(UniqueParameter128Bit& P, const T& value) {
@@ -79,6 +89,14 @@ namespace mysimulator {
     assert(IsValid(v)&&IsValid(cv));
     long n=(v.size<cv.size?v.size:cv.size);
     dcopy_(&n,reinterpret_cast<double*>(const_cast<unsigned long long*>(cv())),
+           const_cast<long*>(&lOne),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lTwo));
+  }
+
+  void copy(Vector<UniqueParameter128Bit>& v, const Vector<long long>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    dcopy_(&n,reinterpret_cast<double*>(const_cast<long long*>(cv())),
            const_cast<long*>(&lOne),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lTwo));
   }
