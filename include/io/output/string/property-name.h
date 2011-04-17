@@ -5,8 +5,8 @@
 namespace mysimulator {
 
   enum StringOutputPropertyName {
-    StringLocation=0,
-    StringCapacity,
+    OutStringLocation=0,
+    OutStringCapacity,
     StringOutputNumberProperty
   };
 

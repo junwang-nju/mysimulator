@@ -3,6 +3,7 @@
 #define _InputOutput_Output_String_Copy_H_
 
 #include "io/output/string/interface.h"
+#include "io/output/copy.h"
 
 namespace mysimulator {
 

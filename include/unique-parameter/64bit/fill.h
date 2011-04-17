@@ -10,8 +10,8 @@ namespace mysimulator {
   void fill(UniqueParameter64Bit& P, const double& d) { copy(P.d,d); }
 
   void fill(UniqueParameter64Bit& P, const float& f) {
-    copy(P.fdata[0],f);
-    copy(P.fdata[1],f);
+    copy(P.f[0],f);
+    copy(P.f[1],f);
   }
 
   void fill(UniqueParameter64Bit& P, const unsigned long long& ull) {

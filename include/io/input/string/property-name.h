@@ -5,8 +5,8 @@
 namespace mysimulator {
   
   enum StringInputPropertyName {
-    StringLocation=0,
-    StringCapacity,
+    InStringLocation=0,
+    InStringCapacity,
     StringInputNumberProperty
   };
 
