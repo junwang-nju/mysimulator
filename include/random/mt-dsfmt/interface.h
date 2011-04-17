@@ -5,6 +5,8 @@
 #include "unique-parameter/128bit/copy.h"
 #include "unique-parameter/128bit/fill.h"
 #include "vector/interface.h"
+#include "random/base/interface.h"
+#include "random/mt-dsfmt/bound/convert.h"
 
 namespace mysimulator {
 
@@ -82,13 +84,10 @@ namespace mysimulator {
       UniqueParameter128Bit tmp;
 #ifdef _Have_SSE2
       tmp.si=_mm_xor_si128(s[N].si,Fix);
+      tmp=_mm_and_si128(tmp.si,Pcv.si);
 #else
       tmp.ull[0]=s[N].ull[0]^Fix.ull[0];
       tmp.ull[1]=s[N].ull[1]^Fix.ull[1];
-#endif
-#ifdef _Have_SSE2
-      tmp=_mm_and_si128(tmp.si,Pcv.si);
-#else
       tmp.ull[0]&=Pcv.ull[0];
       tmp.ull[1]&=Pcv.ull[1];
 #endif
@@ -99,7 +98,7 @@ namespace mysimulator {
       return;
     }
 
-    void init(const unsigned int seed) {
+    virtual void init(const unsigned int seed) {
       assert(IsValid(*this));
       unsigned int *p=s[0].u;
       unsigned int *pend=p+NStatusU32;
@@ -182,11 +181,12 @@ namespace mysimulator {
       if(idx>=N64) { _GenAll(); idx=0; }
       return p[idx++];
     }
+    const double doubleOpen0Close1() { return 2.0-doubleClose1Open2(); }
     const double doubleOpen0Open1() {
       UniqueParameter128Bit u;
-      u.dvalue=doubleClose1Open2();
+      u.d[0]=doubleClose1Open2();
       u.ull[0]|=1;
-      return u.dvalue-dOne;
+      return u.d[0]-dOne;
     }
 
     const unsigned int _irand() {
@@ -195,6 +195,66 @@ namespace mysimulator {
       return p[idx++]&0xFFFFFFFFUL;
     }
     const double _drand() { return doubleClose1Open2()-1.0; }
+
+    typedef void (*ConvertFunc)(UniqueParameter128Bit&);
+
+    void _GenArray(UniqueParameter128Bit* array, const unsigned int size,
+                   const ConvertFunc& cvfunc) {
+      unsigned int i,j;
+      UniqueParameter128Bit lung;
+      copy(lung,s[N]);
+      _Recursion(s[0],s[Pos1],array[0],lung);
+      for(i=0;i<N-Pos1;++i) _Recursion(s[i],s[i+Pos1],array[i],lung);
+      for(;i<N;++i) _Recursion(s[i],array[i+Pos1-N],array[i],lung);
+      for(;i+N<size;++i) {
+        _Recursion(array[i-N],array[i+Pos1-N],array[i],lung);
+        cvfunc(array[i-N]);
+      }
+      for(j=0;j+size<DN;++j)  copy(s[j],array[j+size-N]);
+      for(;i<size;++i,++j) {
+        _Recursion(array[i-N],array[i+Pos1-N],array[i],lung);
+        copy(s[j],array[i]);
+        cvfunc(array[i-N]);
+      }
+      for(i=size-N;i<size;++i)  cvfunc(array[i]);
+      copy(s[N],lung);
+    }
+    void _FillArray(double* array, const unsigned int size,
+                    const ConvertFunc& cvf) {
+      assert((size&1)==0);
+      assert(size>=N64);
+      _GenArray(reinterpret_cast<UniqueParameter128Bit*>(array),size>>1,cvf);
+    }
+
+    void fillFast(double* array, const unsigned int size) {
+        _FillArray(array,size,Convert2Close0Open1);
+    }
+
+    void fillFast(Vector<double>& v) { fillFast(v.pdata,v.size); }
+
+    void fillFastClose1Open2(double* array, const unsigned int s){
+      _FillArray(array,s,Convert2Close1Open2);
+    }
+
+    void fillFastClose1Open2(Vector<double>& v) {
+      fillFastClose1Open2(v.pdata,v.size);
+    }
+
+    void fillFastOpen0Close1(double* array, const unsigned int s){
+      _FillArray(array,s,Convert2Open0Close1);
+    }
+
+    void fillFastOpen0Close1(Vector<double>& v) {
+      fillFastOpen0Close1(v.pdata,v.size);
+    }
+
+    void fillFastOpen0Open1(double* array, const unsigned int s){
+      _FillArray(array,s,Convert2Open0Open1);
+    }
+
+    void fillFastOpen0Open1(Vector<double>& v) {
+      fillFastOpen0Open1(v.pdata,v.size);
+    }
 
   };
 

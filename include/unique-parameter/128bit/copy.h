@@ -40,7 +40,7 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void copy(UniqueParameter128Bit& P, T* const& ptr) { copy(P.pvalue,ptr); }
+  void copy(UniqueParameter128Bit& P, T* const& ptr) { copy(P.ptr[0],ptr); }
 
   template <typename T>
   void copy(T& value, const UniqueParameter128Bit& P) {
@@ -48,7 +48,7 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void copy(T*& ptr, const UniqueParameter128Bit& P) { copy(ptr,P.pvalue); }
+  void copy(T*& ptr, const UniqueParameter128Bit& P) { copy(ptr,P.ptr[0]); }
 
 }
 

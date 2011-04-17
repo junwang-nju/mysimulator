@@ -3,10 +3,11 @@
 #define _Random_MT_Standard_Interface_H_
 
 #include "vector/interface.h"
+#include "random/base/interface.h"
 
 namespace mysimulator {
 
-  struct MT_Standard {
+  struct MT_Standard : public RandomBase {
 
     typedef MT_Standard Type;
 
@@ -36,7 +37,7 @@ namespace mysimulator {
       for(unsigned int i=0;i<N;++i) s[i]=0;
       sl=0;
     }
-    void init(const unsigned int seed) {
+    virtual void init(const unsigned int seed) {
       clearData();
       s[0]=seed&Mask32b;
       unsigned int r=s[0];
@@ -90,6 +91,9 @@ namespace mysimulator {
     const double doubleOpen0Open1();
     const double double53bitSlow();
     const long double longdouble63bitSlow();
+
+    virtual const double randomDouble();
+    virtual const unsigned int randomUnsignedInt();
 
   };
 
@@ -181,6 +185,11 @@ namespace mysimulator {
     long double ld=(x|(static_cast<unsigned long long int>(y)<<32))*
                    (1./18446744073709551616.0L);
     return ld;
+  }
+
+  const double MT_Standard::randomDouble() { return rand<double>(); }
+  const unsigned int MT_Standard::randomUnsignedInt() {
+    return rand<unsigned int>();
   }
 
 }

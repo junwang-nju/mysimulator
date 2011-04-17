@@ -4,6 +4,7 @@
 
 #include "unique-parameter/128bit/interface.h"
 #include "unique-parameter/128bit/copy.h"
+#include "intrinsic-type/copy.h"
 #include <cstring>
 
 namespace mysimulator {
