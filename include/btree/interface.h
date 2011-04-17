@@ -5,6 +5,8 @@
 #include "btree/node/interface.h"
 #include "referable-object/compare.h"
 #include "referable-object/copy.h"
+#include "referable-object/swap.h"
+#include "referable-object/mirror.h"
 #include "generic/release.h"
 
 namespace mysimulator {
@@ -34,7 +36,7 @@ namespace mysimulator {
       bool kadd,vadd;
       while(true) {
         cmp=0;
-        if(IsValid(present)) { cmp=compare(key,present->key); }
+        if(IsValid(present)) { cmp=compare(key,present().key); }
         kadd=vadd=false;
         if(cmp==0) {
           if(IsValid(present)) Warn("Same Key is met in inserting of BTree!");
@@ -101,7 +103,7 @@ namespace mysimulator {
             swap(present().parent().right,present().right);
           else Error("Improper Branch Flag in node!");
         } else swap(root,present().right);
-        present().right().flag=Referred;
+        present().right.flag=Referred;
       } else if(!IsValid(present().right)) {
         if(IsValid(present().parent)) {
           if(present().workBranch==LeftBranch)
@@ -115,22 +117,23 @@ namespace mysimulator {
         Object<BTreeNode<KeyType,ValueType> > mvNode;
         refer(mvNode,present().right);
         while(IsValid(mvNode().left))  refer(mvNode,mvNode().left);
+        if(mvNode().workBranch==LeftBranch)
+          mirror(mvNode().parent().left,mvNode().right);
+        else if(mvNode().workBranch==RightBranch)
+          mirror(mvNode().parent().right,mvNode().right);
+        else Error("Improper Branch Flag in node!");
         if(IsValid(mvNode().right)) {
           swap(mvNode().right().parent,mvNode().parent);
           mvNode().right().workBranch=mvNode().workBranch;
         }
-        if(mvNode().right().workBranch==LeftBranch)
-          swap(mvNode().right().parent().left,mvNode().right);
-        else if(mvNode().right().workBranch==RightBranch)
-          swap(mvNode().right().parent().right,mvNode().right);
-        else Error("Improper Branch Flag in node!");
         mvNode().parent.flag=Referred;
         mvNode().right.flag=Referred;
         release(mvNode().parent);
         release(mvNode().left);
         release(mvNode().right);
         swap(mvNode().parent,present().parent);
-        swap(mvNode().workBranch,present().workBranch);
+        exchange(reinterpret_cast<int&>(mvNode().workBranch),
+                 reinterpret_cast<int&>(present().workBranch));
         swap(mvNode().left,present().left);
         swap(mvNode().right,present().right);
         if(IsValid(mvNode().left))  refer(mvNode().left().parent,mvNode);

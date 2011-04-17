@@ -23,28 +23,28 @@ namespace mysimulator {
       if((flag=='D')||(flag=='d'))        is>>P.d;
       else if((flag=='L')||(flag=='l'))   is>>P.ull;
       else if((flag=='F')||(flag=='f')) {
-        if(vflag) is>>P.fdata[0]>>P.fdata[1];
-        else      is>>P.f;
+        if(vflag) is>>P.f[0]>>P.f[1];
+        else      is>>P.f[0];
       } else if((flag=='U')||(flag=='u')) {
-        if(vflag) is>>P.udata[0]>>P.udata[1];
-        else      is>>P.u;
+        if(vflag) is>>P.u[0]>>P.u[1];
+        else      is>>P.u[0];
       } else if((flag=='I')||(flag=='i')) {
-        if(vflag) is>>P.idata[0]>>P.idata[1];
-        else      is>>P.i;
+        if(vflag) is>>P.i[0]>>P.i[1];
+        else      is>>P.i[0];
       } else if((flag=='S')||(flag=='s')) {
-        if(vflag) for(unsigned int i=0;i<4;++i) is>>P.sdata[i];
-        else      is>>P.s;
+        if(vflag) for(unsigned int i=0;i<4;++i) is>>P.s[i];
+        else      is>>P.s[0];
       } else if((flag=='C')||(flag=='c')) {
         if(vflag) {
           for(unsigned int i=0;i<8;++i) {
             flag='\n';
             while(isspace(flag)) is>>flag;
-            P.cdata[i]=flag;
+            P.c[i]=flag;
           }
-        } else    is>>P.c;
+        } else    is>>P.c[0];
       } else if((flag=='P')||(flag=='p')) {
-        if(vflag) is>>P.pdata[0]>>P.pdata[1];
-        else      is>>P.ptr;
+        if(vflag) is>>P.ptr[0]>>P.ptr[1];
+        else      is>>P.ptr[0];
       } else is.SetState(FailBit);
       if(!IsFailed(is)) {
         if(vflag) {

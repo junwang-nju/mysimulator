@@ -23,22 +23,22 @@ namespace mysimulator {
       if((flag=='G')||(flag=='g'))    is>>P.ld;
       else if((flag=='D')||(flag=='d')) {
         if(vflag)   is>>P.d[0]>>P.d[1];
-        else        is>>P.dvalue;
+        else        is>>P.d[0];
       } else if((flag=='L')||(flag=='l')) {
         if(vflag)   is>>P.ull[0]>>P.ull[1];
-        else        is>>P.ullvalue;
+        else        is>>P.ull[0];
       } else if((flag=='F')||(flag=='f')) {
         if(vflag) for(unsigned int i=0;i<4;++i) is>>P.f[i];
-        else      is>>P.fvalue;
+        else      is>>P.f[0];
       } else if((flag=='U')||(flag=='u')) {
         if(vflag) for(unsigned int i=0;i<4;++i) is>>P.u[i];
-        else      is>>P.uvalue;
+        else      is>>P.u[0];
       } else if((flag=='I')||(flag=='i')) {
         if(vflag) for(unsigned int i=0;i<4;++i) is>>P.i[i];
-        else      is>>P.ivalue;
+        else      is>>P.i[0];
       } else if((flag=='S')||(flag=='s')) {
         if(vflag) for(unsigned int i=0;i<8;++i) is>>P.s[i];
-        else      is>>P.svalue;
+        else      is>>P.s[0];
       } else if((flag=='C')||(flag=='c')) {
         if(vflag) {
           for(unsigned int i=0;i<16;++i) {
@@ -46,10 +46,10 @@ namespace mysimulator {
             while(isspace(flag))    is>>flag;
             P.c[i]=flag;
           }
-        } else    is>>P.cvalue;
+        } else    is>>P.c[0];
       } else if((flag=='P')||(flag=='p')) {
         if(vflag) for(unsigned int i=0;i<4;++i) is>>P.ptr[i];
-        else      is>>P.pvalue;
+        else      is>>P.ptr[0];
       } else is.SetState(FailBit);
       if(!IsFailed(is)) {
         if(vflag) {
@@ -63,7 +63,7 @@ namespace mysimulator {
   }
 
   OutputBase& operator<<(OutputBase& os, const UniqueParameter128Bit& P) {
-    assert(IsValid(ios));
+    assert(IsValid(os));
     os<<"L [ "<<P.ull[0]<<"\t"<<P.ull[1]<<" ]";
     return os;
   }

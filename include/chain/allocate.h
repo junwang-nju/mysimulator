@@ -4,6 +4,7 @@
 
 #include "chain/interface.h"
 #include "chain/node/allocate.h"
+#include "referable-object/allocate.h"
 
 namespace mysimulator {
 

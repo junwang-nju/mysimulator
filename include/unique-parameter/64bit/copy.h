@@ -60,6 +60,29 @@ namespace mysimulator {
            const_cast<long*>(&lOne));
   }
 
+  void copy(Vector<UniqueParameter64Bit>& v, const Vector<float>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    scopy_(&n,const_cast<float*>(cv()),const_cast<long*>(&lOne),
+           reinterpret_cast<float*>(v()),const_cast<long*>(&lTwo));
+  }
+
+  void copy(Vector<UniqueParameter64Bit>& v, const Vector<int>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    scopy_(&n,reinterpret_cast<float*>(const_cast<int*>(cv())),
+           const_cast<long*>(&lOne),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lTwo));
+  }
+
+  void copy(Vector<UniqueParameter64Bit>& v, const Vector<unsigned int>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    scopy_(&n,reinterpret_cast<float*>(const_cast<unsigned int*>(cv())),
+           const_cast<long*>(&lOne),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lTwo));
+  }
+
 }
 
 #endif

@@ -74,6 +74,31 @@ namespace mysimulator {
             const short& s6, const short& s7, const short& s8) {
     P.si=_mm_set_epi16(s8,s7,s6,s5,s4,s3,s2,s1);
   }
+  void fill(UniqueParameter128Bit& P, const unsigned short& s1,
+            const unsigned short& s2, const unsigned short& s3,
+            const unsigned short& s4, const unsigned short& s5,
+            const unsigned short& s6, const unsigned short& s7,
+            const unsigned short& s8) {
+    P.si=_mm_set_epi16(s8,s7,s6,s5,s4,s3,s2,s1);
+  }
+  void fill(UniqueParameter128Bit& P, const char& c1, const char& c2,
+            const char& c3, const char& c4, const char& c5, const char& c6,
+            const char& c7, const char& c8, const char& c9, const char& ca,
+            const char& cb, const char& cc, const char& cd, const char& ce,
+            const char& cf, const char& cg) {
+    P.si=_mm_set_epi8(cg,cf,ce,cd,cc,cb,ca,c9,c8,c7,c6,c5,c4,c3,c2,c1);
+  }
+  void fill(UniqueParameter128Bit& P, const unsigned char& c1,
+            const unsigned char& c2, const unsigned char& c3,
+            const unsigned char& c4, const unsigned char& c5,
+            const unsigned char& c6, const unsigned char& c7,
+            const unsigned char& c8, const unsigned char& c9,
+            const unsigned char& ca, const unsigned char& cb,
+            const unsigned char& cc, const unsigned char& cd,
+            const unsigned char& ce, const unsigned char& cf,
+            const unsigned char& cg) {
+    P.si=_mm_set_epi8(cg,cf,ce,cd,cc,cb,ca,c9,c8,c7,c6,c5,c4,c3,c2,c1);
+  }
 
   template <typename T>
   void fill(UniqueParameter128Bit& P, const T* d) {
@@ -151,6 +176,44 @@ namespace mysimulator {
             const unsigned int& u4) {
     P.u[0]=u1;  P.u[1]=u2;    P.u[2]=u3;    P.u[3]=u4;
   }
+  void fill(UniqueParameter128Bit& P, const short& s1, const short& s2,
+            const short& s3, const short& s4, const short& s5,
+            const short& s6, const short& s7, const short& s8) {
+    P.s[0]=s1;   P.s[1]=s2;   P.s[2]=s3;   P.s[3]=s4;   P.s[4]=s5;
+    P.s[5]=s6;   P.s[6]=s7;   P.s[7]=s8;
+  }
+  void fill(UniqueParameter128Bit& P, const unsigned short& s1,
+            const unsigned short& s2, const unsigned short& s3,
+            const unsigned short& s4, const unsigned short& s5,
+            const unsigned short& s6, const unsigned short& s7,
+            const unsigned short& s8) {
+    P.us[0]=s1;   P.us[1]=s2;   P.us[2]=s3;   P.us[3]=s4;   P.us[4]=s5;
+    P.us[5]=s6;   P.us[6]=s7;   P.us[7]=s8;
+  }
+  void fill(UniqueParameter128Bit& P, const char& c1, const char& c2,
+            const char& c3, const char& c4, const char& c5, const char& c6,
+            const char& c7, const char& c8, const char& c9, const char& ca,
+            const char& cb, const char& cc, const char& cd, const char& ce,
+            const char& cf, const char& cg) {
+    P.c[0]=c1;    P.c[1]=c2;    P.c[2]=c3;    P.c[3]=c4;    P.c[4]=c5;
+    P.c[5]=c6;    P.c[6]=c7;    P.c[7]=c8;    P.c[8]=c9;    P.c[9]=ca;
+    P.c[10]=cb;   P.c[11]=cc;   P.c[12]=cd;   P.c[13]=ce;   P.c[14]=cf;
+    P.c[15]=cg;
+  }
+  void fill(UniqueParameter128Bit& P, const unsigned char& c1,
+            const unsigned char& c2, const unsigned char& c3,
+            const unsigned char& c4, const unsigned char& c5,
+            const unsigned char& c6, const unsigned char& c7,
+            const unsigned char& c8, const unsigned char& c9,
+            const unsigned char& ca, const unsigned char& cb,
+            const unsigned char& cc, const unsigned char& cd,
+            const unsigned char& ce, const unsigned char& cf,
+            const unsigned char& cg) {
+    P.uc[0]=c1;    P.uc[1]=c2;    P.uc[2]=c3;    P.uc[3]=c4;    P.uc[4]=c5;
+    P.uc[5]=c6;    P.uc[6]=c7;    P.uc[7]=c8;    P.uc[8]=c9;    P.uc[9]=ca;
+    P.uc[10]=cb;   P.uc[11]=cc;   P.uc[12]=cd;   P.uc[13]=ce;   P.uc[14]=cf;
+    P.uc[15]=cg;
+  }
 
   template <typename T>
   void fill(UniqueParameter128Bit& P, const T* d) {
@@ -162,10 +225,6 @@ namespace mysimulator {
 #endif
 
   void fill(UniqueParameter128Bit& P, const long double& ld) { copy(P.ld,ld); }
-
-
-
-
 
 }
 
@@ -183,6 +242,46 @@ namespace mysimulator {
            reinterpret_cast<double*>(const_cast<UniqueParameter128Bit*>(&P))+1,
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v())+1,
            const_cast<long*>(&lTwo));
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const double& d) {
+    assert(IsValid(v));
+    long n=v.size+v.size;
+    dcopy_(&n,const_cast<double*>(&d),const_cast<long*>(&lZero),
+           reinterpret_cast<double*>(v()),const_cast<long*>(&lOne));
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const float& f) {
+    assert(IsValid(v));
+    long n=v.size*4;
+    scopy_(&n,const_cast<float*>(&f),const_cast<long*>(&lZero),
+           reinterpret_cast<float*>(v()),const_cast<long*>(&lOne));
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const int& i) {
+    assert(IsValid(v));
+    long n=v.size*4;
+    scopy_(&n,reinterpret_cast<float*>(const_cast<int*>(&i)),
+           const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lOne));
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const unsigned int& u) {
+    assert(IsValid(v));
+    long n=v.size*4;
+    scopy_(&n,reinterpret_cast<float*>(const_cast<unsigned int*>(&u)),
+           const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lOne));
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const char& c) {
+    assert(IsValid(v));
+    memset(v(),c,16*v.size);
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const unsigned char& c) {
+    assert(IsValid(v));
+    memset(v(),c,16*v.size);
   }
 
 }
