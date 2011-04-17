@@ -46,7 +46,7 @@ namespace mysimulator {
       fptr=fopen(fname,fmode);
       if(fptr==NULL)  SetState(FailBit);
     }
-    void close() { clearData(); ClearState(); }
+    void close() { clearData(); clearState(); }
     Type& write(const bool& b) { return _write("%d",b?1:0); }
     Type& write(const char& c) { return _write("%c",c); }
     Type& write(const unsigned char& uc) { return _write("%c",uc); }

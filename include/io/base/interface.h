@@ -13,7 +13,7 @@ namespace mysimulator {
 
     bool state[NumberIOState];
 
-    IOBase() : state() { ClearState(); }
+    IOBase() : state() { clearState(); }
     IOBase(const Type&) { fprintf(stderr,"Copier of IOBase Disabled!\n"); }
     Type& operator=(const Type&) {
       fprintf(stderr,"Operator= for IOBase Disabled!\n");
@@ -25,7 +25,7 @@ namespace mysimulator {
     void SetState(const IOStateName& Bit, const bool flag=true) {
       state[Bit]=flag;
     }
-    void ClearState() { SetState(FailBit,false); }
+    void clearState() { SetState(FailBit,false); }
 
   };
 

@@ -49,7 +49,7 @@ namespace mysimulator {
       fptr=fopen(fname,fmode);
       if(fptr==NULL)  SetState(FailBit);
     }
-    void close() { clearData(); ClearState(); }
+    void close() { clearData(); clearState(); }
     Type& read(bool& b) {
       int i;
       _read("%d",i);

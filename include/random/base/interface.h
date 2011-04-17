@@ -3,6 +3,7 @@
 #define _Random_Base_Interface_H_
 
 #include <ctime>
+#include "vector/interface.h"
 
 namespace mysimulator {
 
@@ -21,6 +22,8 @@ namespace mysimulator {
               const unsigned int off=uZero,const unsigned int step=uOne) {
       for(unsigned int i=0,k=off;i<sz;++i,k+=step) v[k]=randomUnsignedInt();
     }
+    template <typename T>
+    void fill(Vector<T>& v) { fill(v.pdata,v.size); }
 
   };
 

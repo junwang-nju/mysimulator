@@ -57,7 +57,8 @@ namespace mysimulator {
       j=0;
       g=off;
       r=s[0];
-      k=(N>nkey?N:nkey);
+      if(N>nkey)  k=N;
+      else        k=nkey;
       for(;k;--k) {
         r=(s[i]^((r^(r>>30))*1664525UL))+key[g]+j;
         r&=Mask32b;
