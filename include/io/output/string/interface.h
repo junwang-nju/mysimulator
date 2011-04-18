@@ -44,8 +44,8 @@ namespace mysimulator {
     void _init() {
       buffer[buffer.size-1]='\0';
       allocate(property,StringOutputNumberProperty);
-      property[InStringLocation]=0;
-      property[InStringCapacity]=buffer.size;
+      property[OutStringLocation]=0;
+      property[OutStringCapacity]=buffer.size;
     }
     void open(const unsigned int n) {
       clearData();
@@ -66,20 +66,20 @@ namespace mysimulator {
     template <typename T>
     StringOutput& _write(const char* pat, const T& value) {
       assert(IsValid(buffer)&&IsValid(property));
-      if(property[InStringCapacity]==0) {
+      if(property[OutStringCapacity]==0) {
         SetState(FailBit);
         Warn("No free space for output buffer in StringOutput!");
       } else {
-        int n=snprintf(buffer.pdata+property[InStringLocation],
-                       property[InStringCapacity],pat,value);
+        int n=snprintf(buffer.pdata+property[OutStringLocation],
+                       property[OutStringCapacity],pat,value);
         if(n<0) SetState(FailBit);
-        else if(static_cast<unsigned int>(n)>property[InStringCapacity]) {
+        else if(static_cast<unsigned int>(n)>property[OutStringCapacity]) {
           SetState(FailBit);
           Warn("Buffer Overflow in StringOutput!");
-          n=property[InStringCapacity];
+          n=property[OutStringCapacity];
         }
-        property[InStringLocation]+=n;
-        property[InStringCapacity]-=n;
+        property[OutStringLocation]+=n;
+        property[OutStringCapacity]-=n;
       }
       return *this;
     }

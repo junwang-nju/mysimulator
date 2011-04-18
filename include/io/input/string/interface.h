@@ -25,6 +25,15 @@ namespace mysimulator {
     StringInput(const unsigned int n) : InputBase(), buffer(n), property() {
       _init();
     }
+    StringInput(const Vector<char>& v) : InputBase(), buffer(), property() {
+      buffer.getSubvec(v);
+      _init();
+    }
+    StringInput(const char* p, const unsigned int n)
+      : InputBase(), buffer(), property() {
+      buffer.getSubvec(p,n);
+      _init();
+    }
     ~StringInput() { clearData(); }
 
     void clearData() {
