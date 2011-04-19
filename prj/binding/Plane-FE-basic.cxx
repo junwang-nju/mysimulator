@@ -14,35 +14,27 @@ double ExpF1T(double d,double d0,double epsilon,double T) {
 
 double Intg(double R, double d0, double epsilon,double T,
             double RA, double RB, double d1, double d2) {
-  //static const int ncth=50000;
-  //static const double Dcth=1./(ncth+0.);
-  double sum1,sum2,sum,sfac;
-  //double dA,dB;
+  static const int ncth=50000;
+  static const double Dcth=1./(ncth+0.);
+  double cth,sth,sfac,Func,sum;
+  double dA,dB;
   double tmdA,tmdB;
   tmdA=RA+d1;
   tmdB=RB+d2;
-  double thU,thL;
-  thU=(R-RA)/tmdA;
-  thU=(thU>1?1:thU)*tmdA/d0;
-  thL=(R-RB)/tmdB;
-  thL=(thL>1?1:thL)*tmdA/d0;
-  int nth=1000;
-  double dthL,dthU;
-  dthL=thL/nth;
-  dthU=thU/nth;
-  sum1=0;
-  for(int i=-nth;i<=0;++i) {
-    if((i==-nth)||(i==0)) sfac=0.5;
-    sum1+=sfac*exp(epsilon/T*exp(i*dthL-R/d0));
+  sum=0;
+  cth=1;
+  sth=0;
+  for(int i=ncth;i>=-ncth;--i) {
+    sfac=((i==ncth)||(i==-ncth)?0.5:1);
+    dA=R-tmdA*cth;
+    dB=R+tmdB*cth;
+    if((dA<RA)||(dB<RB))  Func=0;
+    else Func=ExpF1T(dA,d0,epsilon,T);
+    sum+=Func*Dcth*sfac;
+    cth-=Dcth;
+    sth=1-cth*cth;
+    sth=sqrt(sth>0?sth:0);
   }
-  sum1*=dthL;
-  sum2=0;
-  for(int i=0;i<=nth;++i) {
-    if((i==nth)||(i==0)) sfac=0.5;
-    sum2+=sfac*exp(epsilon/T*exp(i*dthU-R/d0));
-  }
-  sum2*=dthU;
-  sum=(sum1+sum2)*d0/tmdA;
   return sum;
 }
       
@@ -66,8 +58,7 @@ int main(int argc, char** argv) {
   const double epsilon=100;
   const double d0=2;
 
-  //const double T=1.48;    //Tf
-  const double T=2;
+  const double T=1.48;
 
   double d,d1,d2;
   unsigned int r,r1,r2;

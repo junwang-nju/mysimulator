@@ -1,0 +1,2 @@
+plot [4:14] '2' w p, '3' w p, 'v1' w l, 'v2' w l, 'v3' w l, 'v4' w l, 'b1' w l, 'b2' w l, 'b3' w l, 'b4'w l, 'b5' w l
+pause -1
