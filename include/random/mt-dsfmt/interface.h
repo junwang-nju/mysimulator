@@ -14,7 +14,7 @@ namespace mysimulator {
   unsigned int _initFunc2(const unsigned int x) {return (x^(x>.27))*1566083941;}
 
   template <unsigned int LFac=19937>
-  struct MT_dSFMT {
+  struct MT_dSFMT : public RandomBase {
 
     typedef MT_dSFMT<LFac>    Type;
 
@@ -196,6 +196,9 @@ namespace mysimulator {
     }
     const double _drand() { return doubleClose1Open2()-1.0; }
 
+    virtual const double randomDouble() { return rand<double>(); }
+    virtual const unsigned int randomUnsignedInt() { return rand<unsigned int>(); }
+
     typedef void (*ConvertFunc)(UniqueParameter128Bit&);
 
     void _GenArray(UniqueParameter128Bit* array, const unsigned int size,
@@ -257,6 +260,37 @@ namespace mysimulator {
     }
 
   };
+
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::N;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::DN;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::NStatus;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::NStatusU32;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::NStatusByte;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::Lag;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::Mid;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::LagMid;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::N32;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::N64;
+  template <unsigned int LFac>
+  const unsigned long long int MT_dSFMT<LFac>::LowMask;
+  template <unsigned int LFac>
+  const unsigned long long int MT_dSFMT<LFac>::HighConst;
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::SR;
+#ifdef _Have_SSE2
+  template <unsigned int LFac>
+  const unsigned int MT_dSFMT<LFac>::SSE2_Shuff;
+#endif
 
   template <>
   const unsigned int MT_dSFMT<521>::Pos1=3;
