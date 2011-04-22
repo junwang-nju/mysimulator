@@ -2,6 +2,7 @@
 #include "data/basic/console-output.h"
 #include "overlap.h"
 #include <cmath>
+#include "vector/interface.h"
 using namespace std;
 
 double f1(double d, double d0, double epsilon) { return -epsilon*exp(-d/d0); }
@@ -12,39 +13,49 @@ double ExpF1T(double d,double d0,double epsilon,double T) {
 
 double Intg(double R, double d0, double epsilon,double T,
             double RA,double RB, double d1,double d2, double RC) {
-  static const int ncth=1000;
-  static const double Dcth=1./(ncth+0.);
-  static Vector<double> vS(3);
-  static Vector<double> vA(3),vB(3);
-  copy(vS,0.);
-  copy(vA,0.);
-  copy(vB,0.);
-  double cth,sth,tmdA,tmdB,thdA,thdB,sum,sfac,dA,dB,Func;
+  //static const int ncth=1000;
+  //static const double Dcth=1./(ncth+0.);
+  //static Vector<double> vS(3);
+  //static Vector<double> vA(3),vB(3);
+  //copy(vS,0.);
+  //copy(vA,0.);
+  //copy(vB,0.);
+  //double cth,sth,tmdA,tmdB,thdA,thdB,sum,sfac,dA,dB,Func;
+  double tmdA,tmdB,thdA,thdB;
+  double sum1,sum2,sum,sfac;
   tmdA=RA+d1;
   tmdB=RB+d2;
   thdA=RC+RA;
   thdB=RC+RB;
-  sum=0;
-  cth=1;
-  sth=0;
-  for(int i=ncth;i>=-ncth;--i) {
-    sfac=((i==ncth)||(i==-ncth)?0.5:1);
-    vA[0]=R-tmdA*cth;
-    vB[0]=R+tmdB*cth;
-    vA[1]=tmdA*sth;
-    vB[1]=-tmdB*sth;
-    vA[2]=0;
-    vB[2]=0;
-    dA=norm(vA);
-    dB=norm(vB);
-    if((dA<thdA)||(dB<thdB))  Func=0;
-    else if(LineSphereOverlap(vA,vB,vS,RC)) Func=0;
-    else Func=ExpF1T(dA,d0,epsilon,T);
-    sum+=Func*Dcth*sfac;
-    cth-=Dcth;
-    sth=1-cth*cth;
-    sth=sqrt(sth>0?sth:0);
+  double thU,thL,thUc,thLc,tmd;
+  thU=(R*R+tmdA*tmdA-thdA*thdA)/(2*R*tmdA);
+  thL=(R*R+tmdB*tmdB-thdB*thdB)/(2*R*tmdB);
+  tmd=sqrt(R*R-RC*RC);
+  thUc=(tmd<d1?tmd/R:1.0001);
+  thLc=(tmd<d2?tmd/R:1.0001);
+  thU=(thU>1?1:thU);
+  thL=(thL>1?1:thL);
+  thU=(thUc>thU?thU:thUc);
+  thL=(thLc>thL?thL:thLc);
+  int nth=1000;
+  double dthL,dthU;
+  dthL=thL/nth;
+  dthU=thU/nth;
+  sum1=0;
+  for(int i=-nth;i<=0;++i) {
+    if((i==-nth)||(i==0)) sfac=0.5;
+    else sfac=1.;
+    sum1+=sfac*exp(epsilon/T*exp(-sqrt(-2*R*tmdA*i*dthL+R*R+tmdA*tmdA)/d0));
   }
+  sum1*=dthL;
+  sum2=0;
+  for(int i=0;i<=nth;++i) {
+    if((i==nth)||(i==0)) sfac=0.5;
+    else sfac=1.;
+    sum2+=sfac*exp(epsilon/T*exp(-sqrt(-2*R*tmdA*i*dthU+R*R+tmdA*tmdA)/d0));
+  }
+  sum2*=dthU;
+  sum=sum1+sum2;
   return sum;
 }
 
@@ -56,7 +67,8 @@ double S(double n, double d) { return 2*log(d)-d*d/n; }
 
 double SG(double r) { return 2*log(r); }
 
-int main() {
+int main(int argc, char** argv) {
+  if(argc<2)  { CErr<<"binding-sphere.run <R-Value>"<<Endl<<Endl; return 1; }
   const unsigned int N1=50;
   const unsigned int N2=50;
   const unsigned int Nm=10;
@@ -64,7 +76,7 @@ int main() {
   
   const double e1=0;
   const double e2=0;
-  const double epsilon=100;
+  const double epsilon=1000;
   const double T=1.48;
   
   const double d0=2;
@@ -77,26 +89,49 @@ int main() {
   unsigned int NA,NB,Nd;
   double C;
   
-  R=10;
+  R=atof(argv[1]);
   d=0.25;
   
   r=0;
   r1=r2=0;
-  //for(d=0.001;d<Nm;d+=0.001) {
-  for(R=3;R<20;R+=0.01) {
-    NA=N1+r1;
-    NB=N2+r2;
-    Nd=Nm-r;
-    RA=pow(NA,1./3.);
-    RB=pow(NB,1./3.);
+  NA=N1+r1;
+  NB=N2+r2;
+  Nd=Nm-r;
+  RA=pow(NA,1./3.);
+  RB=pow(NB,1./3.);
+  const double dstep=0.0002;
+  const unsigned int MaxND=50000;
+  unsigned int nd=5;
+  Vector<double> dv(MaxND);
+  d=nd*dstep;
+  for(unsigned int g=nd;g<MaxND;++g) {
     d1=(-RA*NA+(RB+d)*NB+d/2.*Nd)/(N+0.);
     d2=d-d1;
     
     C=(f(d)-T*S(Nd,d))-e1*r1-e2*r2-T*SG(R);
     FL=exp(-C/T)*Intg(R,d0,epsilon,T,RA,RB,d1,d2,rc);
-    COut<<R<<"\t"<<-T*log(FL)<<Endl;
+    FL=-T*log(FL);
+    //COut<<R<<"\t"<<-T*log(FL)<<Endl;
     //COut<<d<<"\t"<<-T*log(FL)<<Endl;
+    dv[g]=FL;
+    d+=dstep;
   }
+
+  COut.precision(8);
+  for(unsigned int g=nd+1;g<MaxND-1;++g) {
+    if((dv[g]-dv[g-1])*(dv[g]-dv[g+1])>0) {
+      COut<<R<<"\t"<<g*dstep<<"\t"<<dv[g]<<"\t";
+      if(dv[g]>dv[g-1]) COut<<"Max"<<Endl;
+      else              COut<<"Min"<<Endl;
+    }
+  }
+  COut<<R<<"\t"<<nd*dstep<<"\t"<<dv[nd]<<"\t";
+  if(dv[nd]<dv[nd+1]) COut<<"Min"<<Endl;
+  else                COut<<"Max"<<Endl;
+  COut<<R<<"\t"<<(MaxND-1)*dstep<<"\t"<<dv[MaxND-1]<<"\t";
+  if(dv[MaxND-1]<dv[MaxND-2]) COut<<"Min"<<Endl;
+  else                        COut<<"Max"<<Endl;
+
    
   return 0;
 }

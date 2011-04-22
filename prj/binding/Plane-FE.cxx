@@ -33,12 +33,14 @@ double Intg(double R, double d0, double epsilon,double T,
   sum1=0;
   for(int i=-nth;i<=0;++i) {
     if((i==-nth)||(i==0)) sfac=0.5;
+    else sfac=1.;
     sum1+=sfac*exp(epsilon/T*exp(i*dthL-R/d0));
   }
   sum1*=dthL;
   sum2=0;
   for(int i=0;i<=nth;++i) {
     if((i==nth)||(i==0)) sfac=0.5;
+    else sfac=1.;
     sum2+=sfac*exp(epsilon/T*exp(i*dthU-R/d0));
   }
   sum2*=dthU;
