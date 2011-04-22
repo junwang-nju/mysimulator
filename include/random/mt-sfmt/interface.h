@@ -31,8 +31,9 @@ namespace mysimulator {
 
     Vector<UniqueParameter128Bit> s;
     unsigned int idx;
+    UniqueParameter128Bit u;
 
-    MT_SFMT() : s(), idx(0) {}
+    MT_SFMT() : s(), idx(0), u() {}
     MT_SFMT(const Type&) { Error("Copier of MT_SFMT Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for MT_SFMT Disabled!");
@@ -53,6 +54,46 @@ namespace mysimulator {
         if((work&Parity.u[i])!=0) { p[i]^=work; return; }
         work<<=1;
       }
+    }
+    unsigned int _Op1(const unsigned int x) { return (x^(x>>27))*1664525UL; }
+    unsigned int _Op2(const unsigned int x) { return (x^(x>>27))*1566083941UL; }
+    void _rshift128(UniqueParameter128Bit& out,const UniqueParameter128Bit& in,
+                    const int shift) {
+      out.ull[1]=(in.ull[1])>>(shift*8);
+      out.ull[0]=(in.ull[0])>>(shift*8);
+      out.ull[0]|=(in.ull[1])<<(64-shift*8);
+    }
+    void _lshift128(UniqueParameter128Bit& out,const UniqueParameter128Bit& in,
+                    const int shift) {
+      out.ull[1]=(in.ull[1])<<(shift*8);
+      out.ull[0]=(in.ull[0])<<(shift*8);
+      out.ull[1]|=(in.ull[0])>>(64-shift*8);
+    }
+
+    const UniqueParameter128Bit&
+    _Recursion(const UniqueParameter128Bit& a, const UniqueParameter128Bit& b,
+               const UniqueParameter128Bit& c, const UniqueParameter128Bit& d) {
+      UniqueParameter128Bit x,y;
+#ifdef _Have_SSE2
+      UniqueParameter128Bit v;
+      y.si=_mm_srli_epi32(b.si,SR1);
+      u.si=_mm_srli_si128(c.si,SR2);
+      v.si=_mm_slli_epi32(d.si,SL1);
+      x.si=_mm_slli_si128(a.si,SL2);
+      u.si=_mm_xor_si128(u.si,a.si);
+      u.si=_mm_xor_si128(u.si,v.si);
+      y.si=_mm_and_si128(y.si,Msk.si);
+      u.si=_mm_xor_si128(u.si,x.si);
+      u.si=_mm_xor_si128(u.si,y.si);
+#else
+      _lshift128(x,a,SL2);
+      _rshift128(y,c,SR2);
+      u.u[0]=a.u[0]^x.u[0]^((b.u[0]>>SR1)&Msk.u[0])^y.u[0]^(d.u[0]<<SL1);
+      u.u[1]=a.u[1]^x.u[1]^((b.u[1]>>SR1)&Msk.u[1])^y.u[1]^(d.u[1]<<SL1);
+      u.u[2]=a.u[2]^x.u[2]^((b.u[2]>>SR1)&Msk.u[2])^y.u[2]^(d.u[2]<<SL1);
+      u.u[3]=a.u[3]^x.u[3]^((b.u[3]>>SR1)&Msk.u[3])^y.u[3]^(d.u[3]<<SL1);
+#endif
+      return u;
     }
 
   };
