@@ -96,6 +96,23 @@ namespace mysimulator {
       return u;
     }
 
+    void init(const unsigned int seed) {
+      assert(IsValid(s));
+      unsigned int *p=s[0].u;
+      unsigned int work;
+      p[0]=seed;
+      work=*p;
+      for(unsigned int i=1;i<N32;++i) {
+        work=1812433253UL*(work^(work>>30))+i;
+        p[i]=work;
+      }
+      idx=N32;
+      _PeriodCertification();
+    }
+    void init(const unsigned int* key, const unsigned int len,
+              const unsigned int off=uZero, const unsigned int step=uOne) {
+    }
+
   };
 
   template <unsigned int LFac>
