@@ -98,15 +98,6 @@ namespace mysimulator {
 
   };
 
-  const unsigned int MT_Standard::N=624;
-  const unsigned int MT_Standard::M=397;
-  const unsigned int MT_Standard::dNM=N-M;
-  const unsigned int MT_Standard::NmOne=N-1;
-  const unsigned int MT_Standard::MmOne=M-1;
-  const unsigned int MT_Standard::MatrixA=0x9908B0DFUL;
-  const unsigned int MT_Standard::UppMask=0x80000000UL;
-  const unsigned int MT_Standard::LowMask=0x7FFFFFFFUL;
-  const unsigned int MT_Standard::Mask32b=0xFFFFFFFFUL;
   const unsigned int MT_Standard::Mag01[2]={0x0UL,MT_Standard::MatrixA};
 
   bool IsValid(const MT_Standard& G) { return G.sl!=0; }
