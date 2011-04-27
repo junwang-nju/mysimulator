@@ -30,7 +30,7 @@ namespace mysimulator {
     static const UniqueParameter128Bit Msk;
     static const UniqueParameter128Bit Parity;
 
-    Vector<UniqueParameter128Bit> s;
+    UniqueParameter128Bit s[NStatus];
     unsigned int idx;
     UniqueParameter128Bit u;
 
@@ -42,7 +42,7 @@ namespace mysimulator {
     }
     ~MT_SFMT() { clearData(); }
 
-    void clearData() { release(s); idx=0; }
+    void clearData() { idx=0; }
     void _PeriodCertification() {
       unsigned int inner=0;
       unsigned int *p=s[0].u;
@@ -98,7 +98,6 @@ namespace mysimulator {
     }
 
     void init(const unsigned int seed) {
-      assert(IsValid(s)&&(idx!=0));
       unsigned int *p=s[0].u;
       unsigned int work;
       p[0]=seed;
@@ -112,7 +111,6 @@ namespace mysimulator {
     }
     void init(const unsigned int* key, const unsigned int len,
               const unsigned int off=uZero, const unsigned int step=uOne) {
-      assert(IsValid(s)&&(idx!=0));
       unsigned int i,j,g,count,r,tmid,*p=s[0].u;
       memset(s.pdata,0x8B,NStatusByte);
       count=(len+1>N32?len+1:N32);
@@ -405,7 +403,7 @@ namespace mysimulator {
                                                      0x00000000E9528D85ULL);
 
   template <unsigned int LFac>
-  bool IsValid(const MT_SFMT<LFac>& G) { return IsValid(G.s)&&(G.idx!=0); }
+  bool IsValid(const MT_SFMT<LFac>& G) { return G.idx!=0; }
 
   template <unsigned int LFac>
   void release(MT_SFMT<LFac>& G) { G.clearData(); }

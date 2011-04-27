@@ -4,7 +4,6 @@
 
 #include "unique-parameter/128bit/copy.h"
 #include "unique-parameter/128bit/fill.h"
-#include "vector/interface.h"
 #include "random/base/interface.h"
 #include "random/mt-dsfmt/bound/convert.h"
 
@@ -42,7 +41,7 @@ namespace mysimulator {
     static const unsigned int SSE2_Shuff=0x1BU;
 #endif
 
-    Vector<UniqueParameter128Bit> s;
+    UniqueParameter128Bit s[NStatus];
     unsigned int idx;
 
     MT_dSFMT() : s(),idx(0) {}
@@ -53,7 +52,7 @@ namespace mysimulator {
     }
     ~MT_dSFMT() { clearData(); }
 
-    void clearData() { release(s); idx=0; }
+    void clearData() { idx=0; }
     void _initMask() {
       unsigned long long int *p=s[0].ull;
       for(unsigned int i=0;i<DN;++i)  p[i]=(p[i]&LowMask)|HighConst;
@@ -99,7 +98,6 @@ namespace mysimulator {
     }
 
     virtual void init(const unsigned int seed) {
-      assert(IsValid(*this));
       unsigned int *p=s[0].u;
       unsigned int *pend=p+NStatusU32;
       unsigned int r=seed,i=1;
@@ -114,7 +112,7 @@ namespace mysimulator {
     }
     void init(const unsigned int *key, const unsigned int nkey,
               const unsigned int off=uZero, const int step=iOne) {
-      assert(IsValid(*this)&&IsValid(key));
+      assert(IsValid(key));
       unsigned int *p=s[0].u;
       UniqueParameter128Bit tmp;
       fill(tmp,0x8B);
@@ -433,7 +431,7 @@ namespace mysimulator {
                                                     0x0000000000000001ULL);
 
   template <unsigned int LFac>
-  bool IsValid(const MT_dSFMT<LFac>& G) { return IsValid(G.s)&&(G.idx!=0); }
+  bool IsValid(const MT_dSFMT<LFac>& G) { return G.idx!=0; }
 
   template <unsigned int LFac>
   void release(MT_dSFMT<LFac>& G) { G.clearData(); }
