@@ -10,8 +10,6 @@ namespace mysimulator {
   template <unsigned int LFac>
   void allocate(MT_dSFMT<LFac>& G) {
     release(G);
-    allocate(G.s,MT_dSFMT<LFac>::NStatus);
-    G.idx=1;
     G.init(5489UL);
   }
 

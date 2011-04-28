@@ -10,7 +10,8 @@ namespace mysimulator {
   template <unsigned int LFac>
   void copy(MT_SFMT<LFac>& G, const MT_SFMT<LFac>& cG) {
     assert(IsValid(G)&&IsValid(cG));
-    copy(G.s,cG.s);
+    for(unsigned int i=0;i<MT_SFMT<LFac>::NStatus;++i)
+      copy(G.s[i],cG.s[i]);
     copy(G.idx,cG.idx);
   }
 
