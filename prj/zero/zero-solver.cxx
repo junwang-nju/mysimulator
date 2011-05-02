@@ -1,7 +1,8 @@
 
 #define _DBL_RADIX    2
 
-#include "vector.h"
+#include "operation/basic/vector-io.h"
+#include "data/basic/console-output.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -122,7 +123,7 @@ int newton_real(const unsigned int m, const Vector<double>& coef,
   Vector<double> a,a1;
   allocate(a,n+1);
   allocate(a1,n);
-  a=coef;
+  copy(a,coef);
 
   int err=0;
   for(;a[n]==0.0;--n) res[n]=dcomplex(0.);
@@ -214,7 +215,8 @@ int main() {
   Vector<double> a;
   Vector<dcomplex> res;
 
-  ifstream ifs("26.e.f0");
+  //ifstream ifs("26.e.f0");
+  ifstream ifs("d3");
   unsigned int n,m;
   ifs>>n;
   allocate(a,n+1);
@@ -226,12 +228,17 @@ int main() {
   for(unsigned int i=1;i<=n;++i)  a[i]/=a[0];
   a[0]=1.;
 
-  cout.precision(12);
+  cout<<"================"<<endl;
+  COut.precision(12);
+  cout<<"================"<<endl;
   newton_real(n,a,res);
-  cout<<res<<endl;
+  cout<<"================"<<endl;
+  for(unsigned int i=0;i<res.size;++i)
+      COut<<res[i].real()<<"\t"<<res[i].imag()<<Endl;
 
+  cout<<"================"<<endl;
   for(unsigned int i=1;i<=n;++i)
-    cout<<feval(n,a,res[i],res[0])<<endl;
+    COut<<feval(n,a,res[i],res[0])<<Endl;
 
   return 0;
 }

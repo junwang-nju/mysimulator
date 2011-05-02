@@ -8,6 +8,9 @@ add_definitions (-Wall -O3 -DNDEBUG -fno-tree-vectorize)
 add_executable (2dconf.run 2d-conf-enum.cxx)
 target_link_libraries (2dconf.run blas)
 
+add_executable (2dw.run 2d-wall.cxx)
+target_link_libraries (2dw.run blas)
+
 add_executable (eqsolve.run eq-solve.cxx)
 target_link_libraries (eqsolve.run blas)
 

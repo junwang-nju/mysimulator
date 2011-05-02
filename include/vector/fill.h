@@ -3,6 +3,7 @@
 #define _Vector_Fill_H_
 
 #include "vector/interface.h"
+#include "intrinsic-type/fill.h"
 
 namespace mysimulator {
 
