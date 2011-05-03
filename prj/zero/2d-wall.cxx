@@ -17,13 +17,14 @@ void nextXY(const int X0, const int Y0, const int dirc, int& X, int& Y) {
 }
 
 int main() {
-  int L=16;
+  int L=23;
   int L1=L-1;
 
   Vector<int> dirc;
   Vector<int> X,Y;
-  int YTurnHead,runHead;
-  bool incflag;
+  Vector<long long int> EH;
+  int YTurnHead,runHead,tE;
+  bool incflag,ofg;
 
   allocate(dirc,L1);
   allocate(X,L);
@@ -33,6 +34,9 @@ int main() {
   dirc[0]=0;
   YTurnHead=0;
   runHead=0;
+
+  allocate(EH,L+1);
+  for(int i=0;i<L+1;++i)  EH[i]=0;
 
   unsigned int NS=0;
   int rX,rY;
@@ -53,8 +57,19 @@ int main() {
     if(incflag&&(runHead==L1)) {
       //if(YTurnHead==0)  YTurnHead=L1;
       ++NS;
-      for(int i=0;i<L;++i) COut<<X[i]<<"  "<<Y[i]<<"  ";
-      COut<<Endl;
+      //for(int i=0;i<L;++i) COut<<X[i]<<"  "<<Y[i]<<"  ";
+      //COut<<Endl;
+
+      for(int w=0;w<=30;++w) {
+        tE=0;
+        ofg=true;
+        for(int z=0;z<L;++z) {
+          rY=Y[z]+w;
+          if((rY<0)||(rY>30)) { ofg=false; break; }
+          if(rY==0) ++tE;
+        }
+        if(ofg) EH[tE]++;
+      }
     }
     if(runHead==L1) incflag=false;
     if(!incflag)    --runHead;
@@ -70,7 +85,9 @@ int main() {
       //if((dirc[runHead]>1)&&(YTurnHead==runHead)) dirc[runHead]=4;
     }
   } while(runHead>=0);
-  cout<<NS<<endl;
+  for(int i=0;i<L+1;++i)
+    cout<<i<<"\t"<<EH[i]<<endl;
+  //cout<<NS<<endl;
   
   return 0;
 }
