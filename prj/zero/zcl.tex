@@ -224,10 +224,11 @@ quantities with other methods (such as Monte Carlo simulations).
 
 %\section{Results and Discussions}
 
-The DOS, $N(K)$, for the polymers of various lengths ($L=12-31$)
+With the enumeration of the conformations, the DOS, $N(K)$, for the polymers
+of various lengths ($L=12-24$)
 are given in Fig.1. These DOS are normalized so that $N(K=L)=1$
-for the full adsorped state (which is fully extended aligned along the edge).
-It is found that the DOS decreases roughly in an expnential manner. This
+for the full adsorbed state (which is fully extended aligned along the edge).
+It is found that the DOS decreases roughly in an exponential manner. This
 reflects the constraints of the rigid wall to the conformations, which
 resembles an effective repulsion. The DOS $N(K=0)$ is generally the largest.
 This is related to the translational entropy of the polymer molecules.
@@ -235,24 +236,20 @@ Therefore, $N(K=0)$ would be larger with little spatial constraints
 (namely for the cases with larger $y_u$), while the other parts of $N(E)$
 would not be changed by those parameters. Another feature of the DOS
 is the shallow valley at $K=1$. This valley introduces a free-energy
-gap between free state and the bound state. Therefore, a two-state
-population for the polymer (free or bound) could be expected.
-
-The DOS generally takes a concave shape in the region with a large $K$. This
-feature ensures the existence of the collapse transition. It is worth noting
-that the difference of $K$ between the most conpact conformations (with the
-largest $K$) and the most probable conformations (often swollen with the $K$
-around the peak of $P(E)$) becomes larger accompanying with the increase of
-chain length $N$. The increase of the energetic difference between the
-collapsed and the swollen conformations suggests the enhancement of the
-cooperativity for longer chains. This indicates that there is a phase
-transition when the length of the chain approaches to infinite, and reflects
-the trend toward thermodynamic limit.
+gap between free state and the bound state. Therefore, a bimodal
+population for the polymer (free or bound) could be expected, which
+indicated the first-order-like character of adsorption transition.
+However, the ratio of the states in the valley to all the adsorbed states
+decreases gradually accompanying with the increase of chain length $L$ (as
+shown in the inset of Fig.1).
+It implies that the gap becomes shallower for longer chains. Thus,
+the first-order-like feature of the transition would become weaker.
+This is qualitatively consistent with the previous studies.
 
 The zeros of the partition functions of the polymers with various lengths are
-calculated with PLOY algorithm (using Scilab). Since the coefficients of the
-equation $Z(s)=0$ are all real, the roots generally form the conjugate pairs
-except the real roots. In these solutions of $\beta$, there are no positive
+calculated with PLOY algorithm (using the program Scilab). Since the coefficients
+of the equation $Z(s)=0$ are all real, the roots generally form the conjugate
+pairs except the real roots. In these solutions of $\beta$, there are no positive
 real roots for all partition functions. This kind of observation indicates
 there are no phase transitions for the polymers with finite sizes. This is
 consistent with the physics of the polymer system. The complex zeros $\beta$
@@ -262,13 +259,13 @@ component (namely the zero closest to the real axis) is generally approaching
 toward the real axis following the increase of the chain length. When the
 length increases to the infinite (namely $L\rightarrow\infty$), this kind of
 zeros would reach the real axis to produce a phase transition. Physically,
-this transition would be the collapse transition of the polymer system. The
+this transition would be the adsorption transition of the polymer system. The
 line of $\beta_S(L)$ contains a lot of information about the phase transition.
 Presently, the line $\beta_S(L)$ is estimated with the calculated $\beta_S$
 for some chains of finite size. The related complex zeros ($\beta_S$) for the
 polymers with various lengths are collected (as shown in Fig.3(a)). These
 points approach to the real axis gradually following the increase of the
-length. Based on the dicussion in Section ``Model and Method'', these zeros
+length. Based on the above discussions about partition zeros, these zeros
 would have a scaling behavior when they are close to their limit. For their
 real and image components $\beta_S^R$ and $\beta_S^I$, the trends would have
 the forms,
@@ -277,19 +274,20 @@ the forms,
 \beta_S^I  &\sim&  L^{-\phi} \, ,
 \end{eqnarray}
 Here,
-$\beta_{\theta}$ defines the limit of the zero $\beta(L)$ in real axis, which
-is related to the collapse transition temperature. Therefore, the critical
-exponent $\phi$ could be determined easily through the linear fitting for the
-log-log plot of the relation between the image part $\beta_S^I$ of zeros and
+$\beta_c$ defines the limit of the zero $\beta_S(L)$ in real axis, which
+is related to the critical temperature of adsorption transition. Therefore,
+the critical crossover exponent $\phi$ could be determined easily through
+the linear fitting for the log-log plot of the relation between the image
+part $\beta_S^I$ of zeros and
 the chain length $L$ (as shown in Fig.3(b)). It is worth noting that the
 scaling would be valid when the length is large enough. To avoid the deviation
 of the chains with small sizes, the fitting procedure is carried out for the
 chains with their lengths larger than $20$. The corresponding exponent
-$\phi=0.567 \pm 0.014$. With this exponent, the collapse transition temperature
-$T_{\theta}$ could be determined through the linear fitting for the relation
-between the real part $\beta_S^R$ of zeros and the scaled length $L^{-\phi}$
-(as shown in Fig.3(c)). The resultant $\beta_{\theta}=xx \pm xx$ and the
-corresponding collapse transition temperature is $T_{\theta}=xxx \pm xx$.
+$\phi=0.50658 \pm 0.00379$. With this exponent, the collapse transition
+temperature $T_c$ could be determined through the linear fitting for the
+relation between the real part $\beta_S^R$ of zeros and the scaled length
+$L^{-\phi}$ (as shown in Fig.3(c)). The resultant $\beta_c=0.47732 \pm 0.00322$
+and the corresponding adsorption transition temperature is $T_c=2.095 \pm 0.014$.
 
 The exponent $\alpha$ is another important quantity related to the transition.
 It could also be determined with the similar procedure to that for the
