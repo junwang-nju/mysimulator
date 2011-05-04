@@ -6,8 +6,8 @@ using namespace std;
 
 int main() {
   ifstream ifs;
-  ifs.open("z23");
-  const int N=22;
+  ifs.open("z9");
+  const int N=8;
   double a,b,r,t;
   ifs>>a>>b;
   ifs>>a>>b;

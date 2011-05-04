@@ -17,7 +17,7 @@ void nextXY(const int X0, const int Y0, const int dirc, int& X, int& Y) {
 }
 
 int main() {
-  int L=23;
+  int L=9;
   int L1=L-1;
 
   Vector<int> dirc;
