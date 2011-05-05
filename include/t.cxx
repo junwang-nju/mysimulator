@@ -1,4 +1,13 @@
 
+#include "buffer/distance/pair/copy.h"
+#include "buffer/distance/pair/allocate.h"
+
+#include "buffer/distance/simple/copy.h"
+#include "buffer/distance/simple/allocate.h"
+
+#include "geometry/distance/calc.h"
+#include "geometry/displacement/base/calc.h"
+
 #include "matrix/storage/copy.h"
 #include "matrix/storage/allocate.h"
 
@@ -116,6 +125,8 @@ int main() {
   for(unsigned int i=0;i<ncmp;++i)
     if(vb[i]!=ve[i]) COut<<i<<"\tNot Equal"<<Endl;
   COut<<Endl;
+
+  SimpleDistanceBuffer<double> SDB;
 
   return 0;
 }

@@ -7,6 +7,7 @@ namespace mysimulator {
   static const char cZero=0;
   static const char cOne=1;
 
+  static const int iZero=0;
   static const int iOne=1;
   static const int iNOne=-1;
 
@@ -19,6 +20,7 @@ namespace mysimulator {
   static const long lFour=4;
 
   static const float fOne=1.;
+  static const float fNOne=-1.;
 
   static const double dOne=1.;
   static const double dNOne=-1.;
