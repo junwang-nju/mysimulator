@@ -1,4 +1,7 @@
 
+#include "functional/harmonic/both.h"
+#include "functional/lj612/both.h"
+
 #include "geometry/displacement/periodic-box/calc.h"
 
 #include "boundary/periodic-box/copy.h"
