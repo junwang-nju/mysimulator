@@ -1,4 +1,9 @@
 
+#include "geometry/displacement/periodic-box/calc.h"
+
+#include "boundary/periodic-box/copy.h"
+#include "boundary/periodic-box/allocate.h"
+
 #include "geometry/distance/dbuffer-simple/calc.h"
 #include "geometry/distance/dbuffer-pair/calc.h"
 

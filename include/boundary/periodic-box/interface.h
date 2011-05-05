@@ -2,7 +2,8 @@
 #ifndef _Boundary_PeriodicBox_Interface_H_
 #define _Boundary_PeriodicBox_Interface_H_
 
-#include "vector/interface.h"
+#include "vector/copy.h"
+#include "vector/scale.h"
 
 namespace mysimulator {
 
@@ -13,9 +14,9 @@ namespace mysimulator {
 
     Vector<T> box;
     Vector<T> hbox;
-    Vector<bool>  edgeFlag;
+    Vector<bool>  flag;
 
-    PeriodicBox() : box(), hbox(), edgeFlag() {}
+    PeriodicBox() : box(), hbox(), flag() {}
     PeriodicBox(const Type&) { Error("Copier of PeriodicBox Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for PeriodicBox Disabled!");
@@ -23,7 +24,42 @@ namespace mysimulator {
     }
     ~PeriodicBox() { clearData(); }
 
+    void clearData() { box.clearData(); hbox.clearData(); flag.clearData(); }
+    const unsigned int dimension() const {
+      assert(IsValid(box));
+      return box.size;
+    }
+    void synchronize() {
+      assert(IsValid(*this));
+      copy(hbox,box);
+      scale(box,0.5);
+    }
+    template <typename vT>
+    void vectorNormalize(vT* v, const unsigned int dim,
+                         const int off=iZero, const long step=lOne) const {
+      assert(IsValid(v)&&IsValid(*this));
+      unsigned int n=(dimension()<dim?dimension():dim);
+      vT* pv=v+off;
+      vT* pend=pv+n*step;
+      T*  pb=const_cast<T*>(box.pdata);
+      T*  ph=const_cast<T*>(hbox.pdata);
+      for(;pv!=pend;pv+=step,++pb,++ph) {
+        while((*pv)<-(*ph))   shift(*pv,cOne,*pb);
+        while((*pv)>=(*ph))   shift(*pv,-cOne,*pb);
+      }
+    }
+    template <typename vT>
+    void vectorNormalize(Vector<vT>& v) { vectorNormalize(v.pdata,v.size); }
+
   };
+
+  template <typename T>
+  bool IsValid(const PeriodicBox<T>& B) {
+    return IsValid(B.box)&&IsValid(B.hbox)&&IsValid(B.flag);
+  }
+
+  template <typename T>
+  void release(PeriodicBox<T>& B) { B.clearData(); }
 
 }
 
