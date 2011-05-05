@@ -1,4 +1,7 @@
 
+#include "matrix/storage/copy.h"
+#include "matrix/storage/allocate.h"
+
 #include "io/output/string/interface.h"
 #include "io/input/string/interface.h"
 

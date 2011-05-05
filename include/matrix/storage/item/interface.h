@@ -3,6 +3,7 @@
 #define _Matrix_Storage_Item_Interface_H_
 
 #include "intrinsic-type/validity-check.h"
+#include "io/error.h"
 
 namespace mysimulator {
 

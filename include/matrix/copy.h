@@ -40,7 +40,7 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T, typename cT>
+  template <typename T>
   void ecopy(Matrix<T>& M, const Matrix<T>& cM) {
     assert(IsPropertySame(M,cM));
     copy(static_cast<Vector<T>&>(M),static_cast<const Vector<T>&>(cM));
