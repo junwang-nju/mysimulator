@@ -1,4 +1,7 @@
 
+#include "geometry/distance/dbuffer-simple/calc.h"
+#include "geometry/distance/dbuffer-pair/calc.h"
+
 #include "buffer/distance/pair/copy.h"
 #include "buffer/distance/pair/allocate.h"
 

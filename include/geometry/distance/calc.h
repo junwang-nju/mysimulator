@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <typename TA, typename TB, typename T, typename GeomType>
-  T DistancesqCalc(
+  T DistanceSqCalc(
       const TA* a, const TB* b, T* v, const unsigned int n, const GeomType& G,
       const int aoff=iZero, const long astep=lOne,
       const int boff=iZero, const long bstep=lOne,
@@ -17,7 +17,7 @@ namespace mysimulator {
   }
 
   template <typename TA, typename TB, typename T, typename GeomType>
-  T DistancesqCalc(
+  T DistanceSqCalc(
       const Vector<TA>& a, const Vector<TB>& b, Vector<T>& v,
       const GeomType& G) {
     DisplacementCalc(a,b,v,G);
