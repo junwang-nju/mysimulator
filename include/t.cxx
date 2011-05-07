@@ -1,4 +1,6 @@
 
+#include "functional/lj612cut/both.h"
+#include "functional/lj612cut/parameter/build.h"
 #include "functional/harmonic/both.h"
 #include "functional/lj612/both.h"
 
