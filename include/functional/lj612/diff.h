@@ -9,7 +9,7 @@ namespace mysimulator {
 
   template <typename T>
   void DiffLJ612(const T& dsq, const UniqueParameter64Bit* prm, T& diff) {
-    T=ivd2=1./dsq;
+    T ivd2=1./dsq;
     T tmd=prm[LJ612EqRadiusSq].value<T>()*ivd2;
     tmd*=tmd*tmd;
     diff=prm[LJ612TwlfEnergyDepth].value<T>()*tmd*(1.-tmd)*ivd2;

@@ -11,7 +11,7 @@ namespace mysimulator {
   template <typename T>
   void FuncHarmonic(const T& dsq, const UniqueParameter64Bit* prm, T& func) {
     T d=sqroot(dsq);
-    T Dd=d-prm[HarmoniceqLength].value<T>();
+    T Dd=d-prm[HarmonicEqLength].value<T>();
     func=prm[HarmonicEqStrength].value<T>()*Dd*Dd;
   }
 
