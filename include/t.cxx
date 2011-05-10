@@ -1,25 +1,26 @@
 
+#include "interaction/func/interface.h"
+#include "interaction/func/base/interface.h"
+#include "interaction/func/list.h"
+
 #include "functional/lj612cut/both.h"
 #include "functional/lj612cut/parameter/build.h"
 #include "functional/harmonic/both.h"
 #include "functional/lj612/both.h"
 
-#include "geometry/displacement/periodic-box/calc.h"
-
 #include "boundary/periodic-box/copy.h"
 #include "boundary/periodic-box/allocate.h"
 
-#include "geometry/distance/dbuffer-simple/calc.h"
 #include "geometry/distance/dbuffer-pair/calc.h"
+#include "geometry/distance/dbuffer-simple/calc.h"
+#include "geometry/displacement/free/calc.h"
+#include "geometry/displacement/periodic-box/calc.h"
 
 #include "buffer/distance/pair/copy.h"
 #include "buffer/distance/pair/allocate.h"
 
 #include "buffer/distance/simple/copy.h"
 #include "buffer/distance/simple/allocate.h"
-
-#include "geometry/distance/calc.h"
-#include "geometry/displacement/base/calc.h"
 
 #include "matrix/storage/copy.h"
 #include "matrix/storage/allocate.h"

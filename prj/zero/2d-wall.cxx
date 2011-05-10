@@ -17,7 +17,7 @@ void nextXY(const int X0, const int Y0, const int dirc, int& X, int& Y) {
 }
 
 int main() {
-  int L=9;
+  int L=18;
   int L1=L-1;
 
   Vector<int> dirc;
@@ -25,6 +25,10 @@ int main() {
   Vector<long long int> EH;
   int YTurnHead,runHead,tE;
   bool incflag,ofg;
+  int corr[4][4],ncorr;
+  for(int i=0;i<4;++i)
+  for(int j=0;j<4;++j)  corr[i][j]=0;
+  ncorr=0;
 
   allocate(dirc,L1);
   allocate(X,L);
@@ -37,6 +41,12 @@ int main() {
 
   allocate(EH,L+1);
   for(int i=0;i<L+1;++i)  EH[i]=0;
+
+  double p00[L],pall[L],tmprob;
+  for(int i=0;i<L;++i)
+    p00[i]=pall[i]=0.;
+  long long int b00[L+1],b0a[L+1];
+  for(int i=0;i<=L;++i) b00[i]=b0a[i]=0;
 
   unsigned int NS=0;
   int rX,rY;
@@ -60,15 +70,59 @@ int main() {
       //for(int i=0;i<L;++i) COut<<X[i]<<"  "<<Y[i]<<"  ";
       //COut<<Endl;
 
+      /*
+      for(int q=0;q<L1-1;++q) {
+        corr[dirc[q]][dirc[q+1]]++;
+        ncorr++;
+      }
+      */
+          for(int q=0;q<L1-17;++q) {
+            if(dirc[q]==0) {
+              b0a[0]++;
+              if(dirc[q+17]==0)  b00[0]++;
+            }
+          }
       for(int w=0;w<=30;++w) {
         tE=0;
         ofg=true;
+        /*
         for(int z=0;z<L;++z) {
           rY=Y[z]+w;
           if((rY<0)||(rY>30)) { ofg=false; break; }
           if(rY==0) ++tE;
         }
         if(ofg) EH[tE]++;
+        */
+        if(ofg) {
+          /*
+          for(int q=0;q<L1-17;++q) {
+            if(dirc[q]==0) {
+              b0a[tE]++;
+              if(dirc[q+17]==0)  b00[tE]++;
+            }
+          }
+          */
+          /*
+          if(tE>16) {
+            //cout<<tE;
+            //for(int q=0;q<L1;++q) cout<<'\t'<<dirc[q];
+            //cout<<endl;
+            //for(int q=0;q<L1-1;++q) {
+            //  corr[dirc[q]][dirc[q+1]]++;
+            //  ncorr++;
+            //}
+            tmprob=exp(-tE/1.5);
+            //tmprob=1.;
+            //for(int y=1;y<L1-2;++y) {
+            { int y=1;
+              for(int q=0;q<L1-y;++q) {
+                if((dirc[q]==0)&&(dirc[q+y]==0))  p00[y]+=tmprob;
+                if(dirc[q]==0) pall[y]+=tmprob;
+              }
+            }
+          }
+          */
+        }
       }
     }
     if(runHead==L1) incflag=false;
@@ -88,7 +142,14 @@ int main() {
   for(int i=0;i<L+1;++i)
     cout<<i<<"\t"<<EH[i]<<endl;
   //cout<<NS<<endl;
-  
+  //for(int i=0;i<4;++i) {
+  //  for(int j=0;j<4;++j) 
+  //    cout<<i<<"\t\t"<<j<<"\t\t"<<corr[i][j]/(ncorr+0.)<<endl;
+  //}
+  //for(int q=1;q<L;++q)
+  //  cout<<q<<"\t\t"<<p00[q]/pall[q]<<endl;
+  for(int i=0;i<=L;++i)
+    cout<<i<<"\t\t"<<b00[i]<<"\t\t"<<b0a[i]<<endl;
   return 0;
 }
 

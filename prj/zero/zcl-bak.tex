@@ -20,10 +20,10 @@ Physics Department, Nanjing University, Nanjing 210093, China
 \date{\today}
 
 \begin{abstract}
-The adsorption transitions of two-dimensional lattice polymers are
-analyzed with the method of partition function zeros. Through the
-enumeration of all the conformations, the density of states and the
-partition function zeros are evaluated precisely. Based on
+The adsorption transition of two-dimensional lattice polymers are
+analyzed with the methods of partition function zeros. Through the
+enumeration of all the conformations, the density of states are
+and the partition function zeros are evaluated precisely. Based on
 the finite-size effect, the critical temperature and crossover exponent
 of the transition are determined with extrapolation. The order and the
 strength of the transitions of polymers with various lengths are also
@@ -39,7 +39,7 @@ analysis for the adsorption transition of unbound polymer molecule.
 \section{Introduction}
 
 Polymer is a kind of soft condensed-matter system with many complex
-phase transitions \cite{LifshitzRMP78,PrivmanBook81,
+phase transitions \cite{LifshitzRMP78,PrivmanBook81,ChengBook08,
 deGennesBook79,PhysRep},such as the collapse transition\cite{FloryJCP49,
 FloryBOOK67,WilliamsARPC81,OYJCP08}, the glass transition\cite{GibbsJCP58,
 JackleRPP86}, and so on. These transitions generally are the results
@@ -47,12 +47,12 @@ of the interplay between the complex interaction and conformational
 entropy, and have attracted a lot of physical interests
 \cite{LifshitzRMP78,FloryJCP49,FloryBOOK67,WilliamsARPC81,GibbsJCP58,
 JackleRPP86,deGennesBook79,StephenPLA75,RigByJCP1987,BellRMP93,
-PrivmanBook81,ZivPCCP09,PCCP10,JCP09,JCP09b,JCP10,
+ChengARMR,PrivmanBook81,ZivPCCP09,ChengBook08,PCCP10,JCP09,JCP09b,JCP10,
 PRL95,PhysRep,OYJCP08,BinderBook95}.
 
 The adsorption transition of a homopolymer through the interaction with
 an interface is a typical and fundamental example of phase transitions
-in polymeric systems\cite{LifshitzRMP78,deGennesBook79,PhysRep,
+in polymeric systems\cite{LifshitzRMP78,deGennesBook79,ChengBook08,PhysRep,
 PCCP10, JCP09,JCP09b,JCP10,PRL95,BinderBook95}. It is related to the
 competition between translation entropy of the molecule and the adsoption
 affinity of the interface. The connectivity of the polymer would also 
@@ -163,7 +163,14 @@ HansmannPRL00,HansmannPA01,WangJCP03,ChenPA05}. In this work, this
 method is applied in the analysis for the adsorption transition of homopolymer
 systems.
 
-Among all these zeros, the zeros $\beta_0$ close to the real axis and
+Clearly, when $\beta_0=\beta_c=1/T_c$ is a root of the equation $Z(\beta_c)=0$,
+all the thermodynamic potentials would be divergent at the temperature $T_c$.
+A positive real $T_c$ indicates a phase
+transition with the discontinuity of thermodynamic potentials. For the systems
+with finite size, there are generally no real roots for the equation $Z=0$.
+If the locus of the zeros close to the real axis could intersect with the
+real axis when $L\rightarrow\infty$, the system would have a phase transition
+in the thermodynamic limit. Therefore, the zeros close to the real axis and
 the trends of the zeros to approach to the real axis would bring us a lot of
 information about the transitions. For example, based on the scaling analysis,
 the zero $\beta_0$ would have the scaling behavior when close to the
@@ -220,9 +227,18 @@ second-order-like. This is qualitatively consistent with the previous
 studies \cite{PCCP10,JCP09,JCP09b}.
 
 With these DOS, the partition function zeros of the polymers with various lengths are
-calculated with PLOY algorithm (using the program Scilab). The complex zeros $\beta$
+calculated with PLOY algorithm (using the program Scilab). In these solutions of
+$\beta$, there are no positive real roots for all partition functions.
+This observation indicates
+there are no phase transitions for the polymers with finite sizes. This is
+consistent with the physics of the polymer system. The complex zeros $\beta$
 for some chains with representative lengths are shown in Fig.2. They are
-almost aligned in lines. The complex zeros close to real axis ($\beta_0$) for the
+almost aligned in lines. The complex zero $\beta_0$ with the smallest image
+component is generally approaching
+toward the real axis following the increase of the chain length. When the
+length increases to the infinite (namely $L\rightarrow\infty$), this kind of
+zeros would reach the real axis to produce a phase transition, namely the
+adsorption transition. The related complex zeros ($\beta_0$) for the
 polymers of various lengths are collected (as shown in Fig.3(a)). These
 points approach to the real axis gradually following the increase of the
 length. Based on the above discussions about partition function zeros, the
@@ -240,9 +256,9 @@ of the chains with small sizes, the fitting procedure is carried out for the
 chains with their lengths larger than $20$. The corresponding exponent
 $\phi=0.50658 \pm 0.00379$. This is consistent with previous theoretical
 results\cite{PRL95}.
-With this exponent, the transition
+With this exponent, the collapse transition
 temperature $T_c$ could be determined through the linear fitting for the
-relation between the real part $\beta_0^R$ of zeros and the scaled length
+relation between the real part $\beta_S^R$ of zeros and the scaled length
 $L^{-\phi}$ (as shown in Fig.3(c)). The resultant $\beta_c=0.47732 \pm 0.00322$
 and the corresponding critical temperature of adsorption transition is
 $T_c=2.095 \pm 0.014$. From these asymptotic behaviors, there are no signals
@@ -265,9 +281,9 @@ smaller than the systematic trend toward the thermodynamic limit.
 Following the increase of the
 length $L$, the effect of free-energy gap becomes more remarkable. Thus,
 the value of $\alpha$ increase. This effect becomes important at $L=11$ to
-$13$ for present model polymers. For even long chains, the factor $\alpha$
-is reduced gradually. This kind of variations of transition feature may be
-related to the local rigidity
+$13$ for present model polymers. For even long chains, the effect of
+free-energy gap is reduced gradually.
+This kind of variations of transition feature may be related to the local rigidity
 of polymers. As shown in Fig.4(c), there is a local maximum for the bond
 correlation $C_{\parallel}(i)$ as the probability of two bonds which are
 seperated by $i$ nodes and are both parallel to the adhesive edge. This
@@ -279,15 +295,14 @@ for longer chain, the local interaction is not enough to produce the whole
 adsorption. The growth of more adsorbed sites from local binding processes
 would be gradual. The finally transition would be in second-order manner.
 To further illustrate this picture, we model the adsorption of 2-d polymer with
-two-state system (free or adsorbed). The effective strength $\Delta$ to balance the 
+two-level system (free or adsorbed). The effective strength $\Delta$ to balance the 
 entropy difference at the temperature $1/\beta_0$ is calculated. This strength
 marks the average interaction to produce adsorption. It is found
 that the $\Delta$ is smaller than $3$ for the chains with their lengths smaller than $10$.
 Therefore, the local cooperativity could offer sufficient interaction for these short chains
 to adsorb on the edge. The transition would be dominated by the binding of local
-motifs. For longer chains, the $\Delta$ would increase gradually, and is generally larger
-than $3$. The interaction between the interface and local correlated segment could
-not produce stable attachment of the whole polymer.
+motifs. For longer chains, the $\Delta$ is gradually larger. The interaction between
+the interface and polymer could not produce stable attachment of the whole polymer.
 The cooperativity of the transition would decrease when $\Delta$ becomes larger.
 These illustrate the basic source of first-order-like feature and the size-dependent
 conversion of transitions. Besides, A weak oscillation of $\alpha$
@@ -300,8 +315,7 @@ of the adsorption transition of polymers.
 
 %\section{Conclusion}
 
-As a conclusion, the method of partition function zeros provides a unique way to
-analyze various
+The method of partition function zeros provides a unique way to analyze various
 aspects of the phase transition. In this work, the adsorption transition of
 the homopolymer is systematically studied. Accompanied with the knowledge
 of the length scaling, the transition temperature, critical crossover
@@ -322,6 +336,10 @@ Jiangsu Province (No. BK2009008).
 {\it Finit Size Scaling and Numerical Simulation of Statistical Systems},
 Ed. V.Privman (World Scientific, Singapore, 1981).
 
+
+\bibitem{ChengBook08}
+S. Z. D. Cheng, {\it Phase Transitions in Polymers: the role of
+metastable states} (Elsevier Publications, Netherlands, 2008).
 
 \bibitem{LifshitzRMP78}
 I. M. Lifshitz, A. Yu. Grosberg, and A. R. Khokhlov, Rev. Mod. Phys.
@@ -368,16 +386,17 @@ K. DeBell, and T. Lookman, Rev. Mod. Phys. {\bf 65}, 87 (1993).
 G. Ziv, D. Thirumalai, and G. Haran, Phys. Chem. Chem. Phys. {\bf 11},
 83 (2009).
 
-\bibitem{PRL95}
-M.T. Batchelor and C.M. Yung, Phys. Rev. Lett. {\bf 74}, 2026 (1995).
+\bibitem{ChengARMR}
+S. Z. D. Cheng and A. Keller, Annu. Rev. Mat. Sci. {\bf 28}, 533 (1998).
 
-\bibitem{BinderBook95}
-K. Binder, {\it Monte Carlo and Molecular Dynamics Simulations in
-Polymer Science} (Oxford University Press, New York, 1995).
+
 
 \bibitem{PCCP10}
 M. Moddel, W. Janke, M. Bachmann, Phys. Chem. Chem. Phys. {\bf 12},
 11548 (2010).
+
+\bibitem{PRL95}
+M.T. Batchelor and C.M. Yung, Phys. Rev. Lett. {\bf 74}, 2026 (1995).
 
 \bibitem{JCP09}
 T. Chen, L. Wang, X.S. Lin, Y. Liu, H.J. Liang, J. Chem. Phys.
@@ -387,9 +406,25 @@ T. Chen, L. Wang, X.S. Lin, Y. Liu, H.J. Liang, J. Chem. Phys.
 L. Wang, T. Chen, X.S. Lin, Y. Liu, H.J. Liang, J. Chem. Phys.
 {\bf 131}, 244902 (2009).
 
+\bibitem{BinderBook95}
+K. Binder, {\it Monte Carlo and Molecular Dynamics Simulations in
+Polymer Science} (Oxford University Press, New York, 1995).
+
 \bibitem{JCP10}
 M.G. Deng, Y. Jiang, H.J. Liang, and J.Z.Y. Chen, J. Chem. Phys.
 {\bf 133}, 034902 (2010).
+
+\bibitem{CaparicaCPC09}
+A. G. Cunha-Netto, R. Dickman, and A. A. Caparica, Comput. Phys. Comm.
+{\bf 180}, 583 (2009).
+
+\bibitem{BinderBook10}
+K. Binder and D. W. Heermann, {\it Monte Carlo Simulation in
+Statistical Physics: An Introduction} (Springer-Verlag, Berlin, 2010).
+
+\bibitem{BiaoZi}
+Y.B. Sheng, W. Wang, and P. Chen, J. Phys. Chem. {\bf 114},
+454 (2010).
 
 \bibitem{JCP08}
 J. Luettmer-Strathmann, F. Rampf, W. Paul, K. Binder, J. Chem. Phys.
@@ -450,11 +485,11 @@ with the length $L$ of $12$, $14$, $16$, $18$, $20$, $22$, $24$.
 
 \vspace{0.5cm}
 \parindent 0pt {\large {\bf Fig.3}}
-(a) The zeros $\beta_0$ close to real axis for various chains in
-complex plane. (b) Length dependence of the image part of the zeros
-($\beta_0^I$). The solid line is the fitting of $L^{-\phi}$. The
+(a) The zeros $\beta_S$ with minimal image part for various chains in
+complex plane. (b) The length dependence of the image part of the zeros
+($\beta_S^I$). The solid line is the fitting of $L^{-\phi}$. The
 corresponding fit parameter $\phi$ is given. (c) The length dependence
-of the real part of the zeros ($\beta_0^R$). The solid line is
+of the real part of the zeros ($\beta_S^R$). The solid line is
 the fitting based on scaling relation. The corresponding fit parameter $\beta_c$ is
 given.
 
