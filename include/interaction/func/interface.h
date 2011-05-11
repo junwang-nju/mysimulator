@@ -2,71 +2,102 @@
 #ifndef _Interaction_Function_Interface_H_
 #define _Interaction_Function_Interface_H_
 
-#include "interaction/func/base/interface.h"
+#include "interaction/func/component-name.h"
 #include "interaction/func/list.h"
 
 namespace mysimulator {
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T=double>
-  struct InteractionFunc : public InteractionFuncBase<DBuffer,GeomType,T> {
+  struct InteractionFunc {
 
     typedef InteractionFunc<IF,DBuffer,GeomType,T>    Type;
-    typedef InteractionFuncBase<DBuffer,GeomType,T>   ParentType;
 
-    static const typename ParentType::EFunctionalType  efunctional;
-    static const typename ParentType::DFunctionalType  dfunctional;
-    static const typename ParentType::BFunctionalType  bfunctional;
-    static const typename ParentType::EFuncType        efunc;
-    static const typename ParentType::GFuncType        gfunc;
-    static const typename ParentType::BFuncType        bfunc;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::EFunctionalType
+             EFunctionalType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::DFunctionalType
+             DFunctionalType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::BFunctionalType
+             BFunctionalType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::EFuncMethodType
+             EFuncMethodType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::GFuncMethodType
+             GFuncMethodType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::BFuncMethodType
+             BFuncMethodType;
+
+    static const EFunctionalType  efunctional;
+    static const DFunctionalType  dfunctional;
+    static const BFunctionalType  bfunctional;
+    static const EFuncMethodType  efuncmethod;
+    static const GFuncMethodType  gfuncmethod;
+    static const BFuncMethodType  bfuncmethod;
+
+    void Energy(
+        const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
+        DBuffer<T>& B,const GeomType& G,T& E) {
+      assert(IsValid(efuncmethod));
+      efuncmethod(X,id,P,B,G,E,efunctional);
+    }
+    void Gradient(
+        const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
+        DBuffer<T>& B,const GeomType& G,Vector<T>* D) {
+      assert(IsValid(gfuncmethod));
+      gfuncmethod(X,id,P,B,G,D,dfunctional);
+    }
+    void Both(
+        const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
+        DBuffer<T>& B,const GeomType& G,T& E,Vector<T>* D) {
+      assert(IsValid(bfuncmethod));
+      bfuncmethod(X,id,P,B,G,E,D,bfunctional);
+    }
 
   };
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T>
-  const
-  typename InteractionFunc<IF,DBuffer,GeomType,T>::ParentType::EFunctionalType
+  const typename InteractionFunc<IF,DBuffer,GeomType,T>::EFunctionalType
   InteractionFunc<IF,DBuffer,GeomType,T>::efunctional=
     InteractionFuncList<DBuffer,GeomType,T>::EFunctional[IF];
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T>
-  const
-  typename InteractionFunc<IF,DBuffer,GeomType,T>::ParentType::DFunctionalType
+  const typename InteractionFunc<IF,DBuffer,GeomType,T>::DFunctionalType
   InteractionFunc<IF,DBuffer,GeomType,T>::dfunctional=
     InteractionFuncList<DBuffer,GeomType,T>::DFunctional[IF];
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T>
-  const
-  typename InteractionFunc<IF,DBuffer,GeomType,T>::ParentType::BFunctionalType
+  const typename InteractionFunc<IF,DBuffer,GeomType,T>::BFunctionalType
   InteractionFunc<IF,DBuffer,GeomType,T>::bfunctional=
     InteractionFuncList<DBuffer,GeomType,T>::BFunctional[IF];
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T>
-  const
-  typename InteractionFunc<IF,DBuffer,GeomType,T>::ParentType::EFuncType
-  InteractionFunc<IF,DBuffer,GeomType,T>::efunc=
-    InteractionFuncList<DBuffer,GeomType,T>::EFunc[
-      InteractionFuncList<DBuffer,GeomType,T>::ModeMap[IF]];
+  const typename InteractionFunc<IF,DBuffer,GeomType,T>::EFuncMethodType
+  InteractionFunc<IF,DBuffer,GeomType,T>::efuncmethod=
+    InteractionFuncList<DBuffer,GeomType,T>::EFuncMethod[
+      InteractionFuncList<DBuffer,GeomType,T>::MethodMap[IF]];
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T>
-  const
-  typename InteractionFunc<IF,DBuffer,GeomType,T>::ParentType::GFuncType
-  InteractionFunc<IF,DBuffer,GeomType,T>::gfunc=
-    InteractionFuncList<DBuffer,GeomType,T>::GFunc[
-      InteractionFuncList<DBuffer,GeomType,T>::ModeMap[IF]];
+  const typename InteractionFunc<IF,DBuffer,GeomType,T>::GFuncMethodType
+  InteractionFunc<IF,DBuffer,GeomType,T>::gfuncmethod=
+    InteractionFuncList<DBuffer,GeomType,T>::GFuncMethod[
+      InteractionFuncList<DBuffer,GeomType,T>::MethodMap[IF]];
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T>
-  const
-  typename InteractionFunc<IF,DBuffer,GeomType,T>::ParentType::BFuncType
-  InteractionFunc<IF,DBuffer,GeomType,T>::bfunc=
-    InteractionFuncList<DBuffer,GeomType,T>::BFunc[
-      InteractionFuncList<DBuffer,GeomType,T>::ModeMap[IF]];
+  const typename InteractionFunc<IF,DBuffer,GeomType,T>::BFuncMethodType
+  InteractionFunc<IF,DBuffer,GeomType,T>::bfuncmethod=
+    InteractionFuncList<DBuffer,GeomType,T>::BFuncMethod[
+      InteractionFuncList<DBuffer,GeomType,T>::MethodMap[IF]];
 
 }
 

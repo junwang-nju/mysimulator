@@ -1,6 +1,6 @@
 
-#ifndef _Interaction_Function_Style_Pairwise_Gradient_H_
-#define _Interaction_Function_Style_Pairwise_Gradient_H_
+#ifndef _Interaction_Function_Method_Pairwise_Gradient_H_
+#define _Interaction_Function_Method_Pairwise_Gradient_H_
 
 #include "unique-parameter/64bit/interface.h"
 #include "vector/interface.h"
@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
-  void GFuncPairwise(
+  void GFuncMethodPairwise(
       const Vector<T>* X,const unsigned int* idx,const UniqueParameter64Bit* P,
       DBuffer<T>& B, const GeomType& Geo, Vector<T>* Gradient,
       void (*dfunc)(const T&,const UniqueParameter64Bit*,T&)) {

@@ -2,9 +2,9 @@
 #ifndef _Interaction_Function_List_H_
 #define _Interaction_Function_List_H_
 
-#include "interaction/func/base/interface.h"
+#include "interaction/func/component-name.h"
 #include "interaction/func/name.h"
-#include "interaction/func/mode-name.h"
+#include "interaction/func/method-name.h"
 
 #include "functional/harmonic/func.h"
 #include "functional/lj612/func.h"
@@ -18,36 +18,42 @@
 #include "functional/lj612/both.h"
 #include "functional/lj612cut/both.h"
 
-#include "interaction/func/mode/pairwise/energy.h"
-#include "interaction/func/mode/pairwise/gradient.h"
-#include "interaction/func/mode/pairwise/both.h"
+#include "interaction/func/method/pairwise/energy.h"
+#include "interaction/func/method/pairwise/gradient.h"
+#include "interaction/func/method/pairwise/both.h"
 
 namespace mysimulator {
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
   struct InteractionFuncList {
 
-    typedef typename InteractionFuncBase<DBuffer,GeomType,T>::EFunctionalType
-            EFunctionalType;
-    typedef typename InteractionFuncBase<DBuffer,GeomType,T>::DFunctionalType
-            DFunctionalType;
-    typedef typename InteractionFuncBase<DBuffer,GeomType,T>::BFunctionalType
-            BFunctionalType;
-    typedef typename InteractionFuncBase<DBuffer,GeomType,T>::EFuncType
-            EFuncType;
-    typedef typename InteractionFuncBase<DBuffer,GeomType,T>::GFuncType
-            GFuncType;
-    typedef typename InteractionFuncBase<DBuffer,GeomType,T>::BFuncType
-            BFuncType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::EFunctionalType
+             EFunctionalType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::DFunctionalType
+             DFunctionalType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::BFunctionalType
+             BFunctionalType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::EFuncMethodType
+             EFuncMethodType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::GFuncMethodType
+             GFuncMethodType;
+    typedef
+    typename InteractionFuncComponentName<DBuffer,GeomType,T>::BFuncMethodType
+             BFuncMethodType;
 
     static const EFunctionalType EFunctional[InteractionNumberFunction];
     static const DFunctionalType DFunctional[InteractionNumberFunction];
     static const BFunctionalType BFunctional[InteractionNumberFunction];
-    static const EFuncType       EFunc[InteractionFuncNumberMode];
-    static const GFuncType       GFunc[InteractionFuncNumberMode];
-    static const BFuncType       BFunc[InteractionFuncNumberMode];
-    static const InteractionFunctionModeName
-                                 ModeMap[InteractionNumberFunction];
+    static const EFuncMethodType EFuncMethod[InteractionFuncNumberMode];
+    static const GFuncMethodType GFuncMethod[InteractionFuncNumberMode];
+    static const BFuncMethodType BFuncMethod[InteractionFuncNumberMode];
+    static const InteractionFunctionMethodName
+                                 MethodMap[InteractionNumberFunction];
 
   };
 
@@ -76,29 +82,29 @@ namespace mysimulator {
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
-  const typename InteractionFuncList<DBuffer,GeomType,T>::EFuncType
-  InteractionFuncList<DBuffer,GeomType,T>::EFunc[]={
-    EFuncPairwise
+  const typename InteractionFuncList<DBuffer,GeomType,T>::EFuncMethodType
+  InteractionFuncList<DBuffer,GeomType,T>::EFuncMethod[]={
+    EFuncMethodPairwise
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
-  const typename InteractionFuncList<DBuffer,GeomType,T>::GFuncType
-  InteractionFuncList<DBuffer,GeomType,T>::GFunc[]={
-    GFuncPairwise
+  const typename InteractionFuncList<DBuffer,GeomType,T>::GFuncMethodType
+  InteractionFuncList<DBuffer,GeomType,T>::GFuncMethod[]={
+    GFuncMethodPairwise
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
-  const typename InteractionFuncList<DBuffer,GeomType,T>::BFuncType
-  InteractionFuncList<DBuffer,GeomType,T>::BFunc[]={
-    BFuncPairwise
+  const typename InteractionFuncList<DBuffer,GeomType,T>::BFuncMethodType
+  InteractionFuncList<DBuffer,GeomType,T>::BFuncMethod[]={
+    BFuncMethodPairwise
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
-  const InteractionFunctionModeName
-  InteractionFuncList<DBuffer,GeomType,T>::ModeMap[]={
-    PairwiseFunc,
-    PairwiseFunc,
-    PairwiseFunc
+  const InteractionFunctionMethodName
+  InteractionFuncList<DBuffer,GeomType,T>::MethodMap[]={
+    PairwiseMethod,
+    PairwiseMethod,
+    PairwiseMethod
   };
 
 }

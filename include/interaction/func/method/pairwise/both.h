@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
-  void BFuncPairwise(
+  void BFuncMethodPairwise(
       const Vector<T>* X,const unsigned int* idx,const UniqueParameter64Bit* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
       void (*bfunc)(const T&,const UniqueParameter64Bit*,T&,T&)) {
