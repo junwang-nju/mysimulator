@@ -1,6 +1,6 @@
 
 #include "interaction/func/interface.h"
-#include "interaction/func/list.h"
+#include "interaction/func/component/list.h"
 
 #include "functional/lj612cut/both.h"
 #include "functional/lj612cut/parameter/build.h"

@@ -1,6 +1,6 @@
 
-#ifndef _Interaction_Function_Method_Pairwise_Energy_H_
-#define _Interaction_Function_Method_Pairwise_Energy_H_
+#ifndef _Interaction_Function_Component_Method_Pairwise_Energy_H_
+#define _Interaction_Function_Component_Method_Pairwise_Energy_H_
 
 #include "unique-parameter/64bit/interface.h"
 #include "vector/interface.h"

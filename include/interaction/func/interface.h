@@ -2,8 +2,8 @@
 #ifndef _Interaction_Function_Interface_H_
 #define _Interaction_Function_Interface_H_
 
-#include "interaction/func/component-name.h"
-#include "interaction/func/list.h"
+#include "interaction/func/component/name.h"
+#include "interaction/func/component/list.h"
 
 namespace mysimulator {
 
@@ -39,19 +39,19 @@ namespace mysimulator {
     static const GFuncMethodType  gfuncmethod;
     static const BFuncMethodType  bfuncmethod;
 
-    void Energy(
+    static void Energy(
         const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
         DBuffer<T>& B,const GeomType& G,T& E) {
       assert(IsValid(efuncmethod));
       efuncmethod(X,id,P,B,G,E,efunctional);
     }
-    void Gradient(
+    static void Gradient(
         const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
         DBuffer<T>& B,const GeomType& G,Vector<T>* D) {
       assert(IsValid(gfuncmethod));
       gfuncmethod(X,id,P,B,G,D,dfunctional);
     }
-    void Both(
+    static void Both(
         const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
         DBuffer<T>& B,const GeomType& G,T& E,Vector<T>* D) {
       assert(IsValid(bfuncmethod));

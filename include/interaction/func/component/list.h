@@ -1,10 +1,10 @@
 
-#ifndef _Interaction_Function_List_H_
-#define _Interaction_Function_List_H_
+#ifndef _Interaction_Function_Component_List_H_
+#define _Interaction_Function_Component_List_H_
 
-#include "interaction/func/component-name.h"
+#include "interaction/func/component/name.h"
 #include "interaction/func/name.h"
-#include "interaction/func/method-name.h"
+#include "interaction/func/component/method/name.h"
 
 #include "functional/harmonic/func.h"
 #include "functional/lj612/func.h"
@@ -18,9 +18,9 @@
 #include "functional/lj612/both.h"
 #include "functional/lj612cut/both.h"
 
-#include "interaction/func/method/pairwise/energy.h"
-#include "interaction/func/method/pairwise/gradient.h"
-#include "interaction/func/method/pairwise/both.h"
+#include "interaction/func/component/method/pairwise/energy.h"
+#include "interaction/func/component/method/pairwise/gradient.h"
+#include "interaction/func/component/method/pairwise/both.h"
 
 namespace mysimulator {
 
