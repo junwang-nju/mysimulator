@@ -16,12 +16,12 @@ namespace mysimulator {
     for(;p!=pend;)  ne+=(*(p++));
     allocate(static_cast<Vector<T>&>(L),ne);
     allocate(L.infra,nl);
-    p=L.data;
+    p=L.pdata;
     for(unsigned int i=0;i<nl;p+=lsize[i],++i) L.infra[i].getSubvec(p,lsize[i]);
   }
   template <typename T>
   void allocate(List<T>& L, const Vector<unsigned int>& size) {
-    allocate(L,size.data,size.size);
+    allocate(L,size.pdata,size.size);
   }
   template <typename T>
   void imprint(List<T>& L, const List<T>& cL) {
