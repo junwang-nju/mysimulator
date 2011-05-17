@@ -70,6 +70,11 @@ namespace mysimulator {
 
   };
 
+  template <unsigned int LatticeType, unsigned int Dimension>
+  bool IsAvailable(const ) {
+    return 
+  }
+
 }
 
 #endif
