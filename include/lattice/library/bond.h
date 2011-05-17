@@ -71,8 +71,10 @@ namespace mysimulator {
   };
 
   template <unsigned int LatticeType, unsigned int Dimension>
-  bool IsAvailable(const ) {
-    return 
+  bool IsValid(const LatticeBondLib<LatticeType,Dimension>& L) {
+    typedef LatticeBondLib<LatticeType,Dimension> Type;
+    return IsValid(Type::shiftLoc)&&IsValid(Type::map)&&
+           IsValid(Type::coordinateMap);
   }
 
 }
