@@ -17,15 +17,14 @@ namespace mysimulator {
 
     typedef LatticeBondLib<LatticeType,Dimension>   Type;
 
-    static const unsigned int MaxBonds;
+    static const unsigned int MaxMotifs;
     static const unsigned int NumNeighbors;
     static const unsigned int NumberShifts;
     static List<unsigned int> shiftLoc;
     static Vector<List<unsigned int> >  map;
     static Vector<List<int> > coordinateMap;
 
-    LatticeBondLib() { load("."); }
-    LatticeBondLib(const char* Root) { load(Root); }
+    LatticeBondLib() {} 
     LatticeBondLib(const Type&) {
       Error("Copier of LatticeBondLib Disabled!");
     }
@@ -35,9 +34,7 @@ namespace mysimulator {
     }
     ~LatticeBondLib() { clearData(); }
 
-    void load(const char* Root) {
-      Error("Lattice Library Loading Disabled!");
-    }
+    void load(const char* Root) { Error("Lattice Library Loading Disabled!"); }
 
     void clearData() {
       release(shiftLoc);
@@ -47,14 +44,14 @@ namespace mysimulator {
     void _read(const char* fTemplate) {
       Vector<unsigned int> sz;
       static char nmbuffer[1024];
-      allocate(sz,MaxBonds);
+      allocate(sz,MaxMotifs);
       copy(sz,NumberShifts);
       allocate(shiftLoc,sz);
-      allocate(map,MaxBonds);
-      allocate(coordinateMap,MaxBonds);
+      allocate(map,MaxMotifs);
+      allocate(coordinateMap,MaxMotifs);
       FileInput ifs;
       unsigned int nmotif;
-      for(unsigned int i=1;i<=MaxBonds;++i) {
+      for(unsigned int i=1;i<=MaxMotifs;++i) {
         sprintf(nmbuffer,"%s%d",fTemplate,i);
         ifs.open(nmbuffer);
         ifs>>shiftLoc[i];
@@ -72,7 +69,7 @@ namespace mysimulator {
   };
 
   template <LatticeTypeName LT, unsigned int Dim>
-  const unsigned int LatticeBondLib<LT,Dim>::MaxBonds=0;
+  const unsigned int LatticeBondLib<LT,Dim>::MaxMotifs=0;
 
   template <LatticeTypeName LT, unsigned int Dim>
   const unsigned int LatticeBondLib<LT,Dim>::NumNeighbors=0;
@@ -98,12 +95,6 @@ namespace mysimulator {
 
   template <LatticeTypeName LatticeType, unsigned int Dimension>
   void release(LatticeBondLib<LatticeType,Dimension>& L) { L.clearData(); }
-
-  template <LatticeTypeName LT, unsigned int Dim>
-  const LatticeBondLib<LT,Dim>& RunBondLibrary() {
-    Error();
-    return LatticeBondLib<LT,Dim>();
-  }
 
 }
 

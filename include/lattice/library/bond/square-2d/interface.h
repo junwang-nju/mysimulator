@@ -2,12 +2,12 @@
 #ifndef _Lattice_Library_Bond_2D_Interface_H_
 #define _Lattice_Library_Bond_2D_Interface_H_
 
-#include "lattice/library/bond/base/interface.h"
+#include "lattice/library/bond/interface.h"
 
 namespace mysimulator {
 
   template <>
-  const unsigned int LatticeBondLib<SquareLattice,2>::MaxBonds=10;
+  const unsigned int LatticeBondLib<SquareLattice,2>::MaxMotifs=10;
 
   template <>
   const unsigned int LatticeBondLib<SquareLattice,2>::NumNeighbors=4;
@@ -23,7 +23,7 @@ namespace mysimulator {
             Root);
     _read(tmbuffer);
     int x,y;
-    for(unsigned int i=0,nbond=0,nmap=0;i<MaxBonds;++i) {
+    for(unsigned int i=0,nbond=0,nmap=0;i<MaxMotifs;++i) {
       nbond=i+1;
       nmap=map[i].ListSize();
       for(unsigned int k=0;k<nmap;++k) {
@@ -41,8 +41,6 @@ namespace mysimulator {
       }
     }
   }
-
-  LatticeBondLib<SquareLattice,2> LatticeBondLibrarySquare2D;
 
 }
 
