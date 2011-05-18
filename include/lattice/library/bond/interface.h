@@ -96,6 +96,13 @@ namespace mysimulator {
   template <LatticeTypeName LatticeType, unsigned int Dimension>
   void release(LatticeBondLib<LatticeType,Dimension>& L) { L.clearData(); }
 
+  template <LatticeTypeName LT, unsigned int Dim>
+  const LatticeBondLib<LT,Dim>& RunBondLibrary() {
+    Error("This Library is not available");
+    static LatticeBondLib<LT,Dim> L;
+    return L;
+  }
+
 }
 
 #endif

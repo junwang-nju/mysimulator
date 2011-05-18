@@ -42,6 +42,13 @@ namespace mysimulator {
     }
   }
 
+  LatticeBondLib<SquareLattice,2> LatticeBondLibSquare2D;
+
+  template <>
+  const LatticeBondLib<SquareLattice,2>& RunBondLibrary<SquareLattice,2>() {
+    return LatticeBondLibSquare2D;
+  }
+
 }
 
 #endif
