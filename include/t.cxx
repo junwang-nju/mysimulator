@@ -1,4 +1,5 @@
 
+#include "lattice/motif-chain/allocate.h"
 #include "lattice/motif/allocate.h"
 #include "lattice/library/interface.h"
 
