@@ -3,6 +3,7 @@
 #define _List_Allocate_H_
 
 #include "list/interface.h"
+#include "vector/allocate.h"
 
 namespace mysimulator {
 
@@ -16,8 +17,9 @@ namespace mysimulator {
     for(;p!=pend;)  ne+=(*(p++));
     allocate(static_cast<Vector<T>&>(L),ne);
     allocate(L.infra,nl);
-    p=L.pdata;
-    for(unsigned int i=0;i<nl;p+=lsize[i],++i) L.infra[i].getSubvec(p,lsize[i]);
+    T *tp=L.pdata;
+    for(unsigned int i=0;i<nl;tp+=lsize[i],++i)
+      L.infra[i].getSubvec(tp,lsize[i]);
   }
   template <typename T>
   void allocate(List<T>& L, const Vector<unsigned int>& size) {

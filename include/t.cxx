@@ -1,5 +1,6 @@
 
-#include "lattice/library/bond.h"
+#include "lattice/motif/allocate.h"
+#include "lattice/library/interface.h"
 
 #include "interaction/func/interface.h"
 #include "interaction/func/component/list.h"
