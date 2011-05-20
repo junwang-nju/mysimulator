@@ -1,4 +1,7 @@
 
+#include "lattice/enumerate/square-2d/act.h"
+#include "lattice/motif-chain/io.h"
+
 #include "lattice/motif-chain/convert.h"
 #include "lattice/motif-chain/allocate.h"
 #include "lattice/motif/allocate.h"
@@ -48,6 +51,10 @@
 #include "unique-parameter/128bit/io.h"
 
 using namespace mysimulator;
+
+template <unsigned int L>
+bool CheckSeq(const LatticeMotifChain<SquareLattice,2,L>&,
+              const List<int>&,const List<int>&) { return true; }
 
 int main() {
   Chain<int> C;
@@ -145,6 +152,9 @@ int main() {
   COut<<Endl;
 
   SimpleDistanceBuffer<double> SDB;
+
+  LatticeLibrary<SquareLattice,2>::load("../");
+  enumerate<12>(CheckSeq<12>,COut);
 
   return 0;
 }

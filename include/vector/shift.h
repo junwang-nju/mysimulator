@@ -3,6 +3,7 @@
 #define _Vector_Shift_H_
 
 #include "vector/interface.h"
+#include "intrinsic-type/shift.h"
 
 namespace mysimulator {
 

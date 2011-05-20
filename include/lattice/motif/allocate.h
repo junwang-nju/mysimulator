@@ -4,15 +4,15 @@
 
 #include "lattice/motif/interface.h"
 #include "list/allocate.h"
-#include "vector/copy.h"
+#include "vector/fill.h"
 
 namespace mysimulator {
 
   void allocate(LatticeMotif& M, const unsigned int n, const unsigned int d) {
     allocate(M.bond,n);
-    copy(M.bond,d);
+    fill(M.bond,d);
     allocate(M.coordinate,M.bond);
-    copy(M.bond,0);
+    fill(M.bond,0U);
   }
 
 }

@@ -6,7 +6,7 @@
 #include "lattice/motif/allocate.h"
 #include "list/allocate.h"
 #include "vector/scale.h"
-#include "vector/copy.h"
+#include "vector/fill.h"
 #include "io/input/file/interface.h"
 #include "vector/io.h"
 #include "lattice/shape-name.h"
@@ -43,28 +43,37 @@ namespace mysimulator {
     }
 
     static void _read(const char* fnTemplate) {
-      static char nmbuffer[1024];
+      static char nmbuffer[1024],nmbuffer1[1024];
       Vector<unsigned int> sz;
       allocate(sz,MaxBondOfMotif);
-      copy(sz,NumShifts);
+      fill(sz,NumShifts);
       allocate(shiftLoc,sz);
       FileInput ifs;
       sprintf(nmbuffer,"%s-library",fnTemplate);
+      COut<<nmbuffer<<Endl;
+    COut<<"=================="<<Endl;
       ifs.open(nmbuffer);
       for(unsigned int i=0;i<MaxBondOfMotif;++i) {
         ifs>>shiftLoc[i]>>nmbuffer;
+        COut<<shiftLoc[i]<<Endl;
+        COut<<nmbuffer<<Endl;
         sz[i]=shiftLoc[i][NumShifts-1];
       }
       ifs.close();
+    COut<<"=================="<<Endl;
+    COut<<sz<<Endl;
       allocate(map,sz);
       for(unsigned int i=0;i<MaxBondOfMotif;++i)
       for(unsigned int k=0;k<map[i].size;++k)
         allocate(map[i][k],i+1,Dimension);
+      COut<<"+++++++++++++"<<Endl;
       FileInput ifs1;
       sprintf(nmbuffer,"%s-library",fnTemplate);
       ifs.open(nmbuffer);
       for(unsigned int i=0;i<MaxBondOfMotif;++i) {
-        ifs>>shiftLoc[i]>>nmbuffer;
+        COut<<i<<"\t"<<MaxBondOfMotif<<Endl;
+        ifs>>shiftLoc[i]>>nmbuffer1;
+        sprintf(nmbuffer,"%s%s",fnTemplate,nmbuffer1);
         ifs1.open(nmbuffer);
         for(unsigned int k=0;k<map[i].size;++k) {
           ifs1>>map[i][k].bond;
@@ -72,6 +81,7 @@ namespace mysimulator {
         }
         ifs1.close();
       }
+      COut<<"---------------"<<Endl;
       ifs.close();
     }
 

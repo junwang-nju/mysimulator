@@ -49,7 +49,7 @@ namespace mysimulator {
 
   template <LatticeShapeName LS, unsigned int Dim, unsigned int L>
   const unsigned int LatticeMotifChain<LS,Dim,L>::NumMotifs=
-      (L-2)/LatticeLibrary<L,Dim>::MaxBondOfMotif+1;
+      (L-2)/LatticeLibrary<LS,Dim>::MaxBondOfMotif+1;
 
   template <LatticeShapeName LS, unsigned int Dim, unsigned int L>
   const unsigned int LatticeMotifChain<LS,Dim,L>::NumBondsLastMotif=

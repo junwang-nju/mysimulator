@@ -14,7 +14,7 @@ namespace mysimulator {
   const unsigned int LatticeLibrary<SquareLattice,2>::NumShifts=3;
   template <>
   const char LatticeLibrary<SquareLattice,2>::relLocation[1024]=
-      "include/lattice/library/square-2d";
+      "include/lattice/library/square-2d/data";
 
 }
 
