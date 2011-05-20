@@ -23,7 +23,7 @@ namespace mysimulator {
     static const unsigned int NumShifts;
     static const char         relLocation[1024];
 
-    static List<unsigned int> shiftLoc;
+    static List<unsigned short> shiftLoc;
     static List<LatticeMotif> map;
 
     LatticeLibrary() {}
@@ -87,7 +87,7 @@ namespace mysimulator {
   const char LatticeLibrary<LS,Dim>::relLocation[1024]="";
 
   template <LatticeShapeName LS, unsigned int Dim>
-  List<unsigned int> LatticeLibrary<LS,Dim>::shiftLoc;
+  List<unsigned short> LatticeLibrary<LS,Dim>::shiftLoc;
   template <LatticeShapeName LS, unsigned int Dim>
   List<LatticeMotif> LatticeLibrary<LS,Dim>::map;
 

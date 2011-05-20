@@ -3,18 +3,15 @@
 #define _Lattice_Motif_Chain_Allocate_H_
 
 #include "lattice/motif-chain/interface.h"
+#include "vector/allocate.h"
 
 namespace mysimulator {
 
-  template <LatticeShapeName LS, unsigned int Dim>
-  void allocate(LatticeMotifChain<LS,Dim>& C, const unsigned int n) {
-    assert(n>1);
+  template <LatticeShapeName LS, unsigned int Dim, unsigned int L>
+  void allocate(LatticeMotifChain<LS,Dim,L>& C) {
+    assert(L>1);
     release(C);
-    unsigned int u=(n-2)/LatticeLibrary<LS,Dim>::MaxBondOfMotif+1;
-    allocate(C.motifID,u);
-    allocate(C.property,LatMotifChainNumberProperty);
-    C.Length()=n;
-    C.NumBondsInLastMotif()=(n-2)%LatticeLibrary<LS,Dim>::MaxBondOfMotif+1;
+    allocate(C.motifValue,LatticeMotifChain<LS,Dim,L>::NumMotifs);
   }
 
 }

@@ -7,11 +7,10 @@
 
 namespace mysimulator {
 
-  template <LatticeShapeName LS, unsigned int Dim>
-  void copy(LatticeMotifChain<LS,Dim>& C, const LatticeMotifChain<LS,Dim>& cC) {
+  template <LatticeShapeName LS, unsigned int D, unsigned int L>
+  void copy(LatticeMotifChain<LS,D,L>& C, const LatticeMotifChain<LS,D,L>& cC) {
     assert(IsValid(C)&&IsValid(cC));
-    assert(C.Length()==cC.Length());
-    copy(C.motifID,cC.motifID);
+    copy(C.motifValue,cC.motifValue);
   }
 
 }
