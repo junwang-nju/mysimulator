@@ -1,6 +1,6 @@
 
-#ifndef _Lattice_Enumerate_Square2D_Check_Basic_Act_Specification_H_
-#define _Lattice_Enumerate_Square2D_Check_Basic_Act_Specification_H_
+#ifndef _Lattice_Enumerate_Square2D_Check_Basic_Specification_H_
+#define _Lattice_Enumerate_Square2D_Check_Basic_Specification_H_
 
 #include "lattice/enumerate/square-2d/check/interface.h"
 #include "lattice/enumerate/square-2d/check/basic/interface.h"
@@ -18,11 +18,9 @@ namespace mysimulator {
     LatticeEnumSquare2DCheck() {
       Error("Default Initiator of LatticeEnumSquare2DCheck Disabled!");
     }
-    LatticeEnumSquare2DCheck(
-        const List<int>& mesh, const List<int>& loc,
-        const LatticeMotifChain<SquareLattice,2,L>& c,
-        const Vector<unsigned int>& len, const Vector<unsigned short>& bH,
-        const Vector<int>& state) : ParentType(mesh,loc,c,len,bH,state) {}
+    LatticeEnumSquare2DCheck(const LatticeEnumSquare2DRunData<L>& D)
+      : ParentType(D) {}
+
     LatticeEnumSquare2DCheck(const Type&) {
       Error("Copier of LatticeEnumSquare2DCheck Disabled!");
     }

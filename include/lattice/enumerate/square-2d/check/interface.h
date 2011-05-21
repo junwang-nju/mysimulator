@@ -3,8 +3,8 @@
 #define _Lattice_Enumerate_Square2D_Check_Interface_H_
 
 #include "lattice/enumerate/square-2d/check/method-name.h"
-#include "list/interface.h"
-#include "lattice/motif-chain/interface.h"
+#include "lattice/enumerate/square-2d/run-data/interface.h"
+#include "referable-object/interface.h"
 
 namespace mysimulator {
 
@@ -16,11 +16,7 @@ namespace mysimulator {
     LatticeEnumSquare2DCheck() {
       Error("This Method of LatticeEnumSquare2DCheck Disabled!");
     }
-    LatticeEnumSquare2DCheck(
-        const List<int>& mesh, const List<int>& loc,
-        const LatticeMotifChain<SquareLattice,2,L>& c,
-        const Vector<unsigned int>& len, const Vector<unsigned short>& bH,
-        const Vector<int>& state) {
+    LatticeEnumSquare2DCheck(const LatticeEnumSquare2DRunData<L>& D) {
       Error("This Method of LatticeEnumSquare2DCheck Disabled!");
     }
     LatticeEnumSquare2DCheck(const Type&) {

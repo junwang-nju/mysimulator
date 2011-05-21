@@ -16,11 +16,8 @@ namespace mysimulator {
     LatticeEnumSquare2DCheckBasic() {
       Error("Default Initiator of LatticeEnumSquare2DCheckBasic Disabled!");
     }
-    LatticeEnumSquare2DCheckBasic(
-        const List<int>& mesh, const List<int>& loc,
-        const LatticeMotifChain<SquareLattice,2,L>& c,
-        const Vector<unsigned int>& len, const Vector<unsigned short>& bH,
-        const Vector<int>& state) : ParentType(mesh,loc,c,len,bH,state) {}
+    LatticeEnumSquare2DCheckBasic(const LatticeEnumSquare2DRunData<L>& D)
+      : ParentType(D) {}
     LatticeEnumSquare2DCheckBasic(const Type&) {
       Error("Copier of LatticeEnumSquare2DCheckBasic Disabled!");
     }
