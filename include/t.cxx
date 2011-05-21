@@ -1,5 +1,6 @@
 
 #include "lattice/enumerate/square-2d/check/copy.h"
+#include "lattice/enumerate/square-2d/check/allocate.h"
 
 #include "lattice/enumerate/square-2d/act.h"
 #include "lattice/motif-chain/io.h"

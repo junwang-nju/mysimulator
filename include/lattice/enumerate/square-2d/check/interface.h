@@ -4,39 +4,36 @@
 
 #include "lattice/enumerate/square-2d/check/method-name.h"
 #include "lattice/enumerate/square-2d/run-data/interface.h"
-#include "referable-object/interface.h"
 
 namespace mysimulator {
 
-  template <unsigned int L, LatticeEnumSquare2DCheckMethodName Method>
+  template <LatticeEnumSquare2DCheckMethodName Method>
   struct LatticeEnumSquare2DCheck {
 
-    typedef LatticeEnumSquare2DCheck<L,Method>  Type;
+    typedef LatticeEnumSquare2DCheck<Method>  Type;
 
-    LatticeEnumSquare2DCheck() {
-      Error("This Method of LatticeEnumSquare2DCheck Disabled!");
-    }
-    LatticeEnumSquare2DCheck(const LatticeEnumSquare2DRunData<L>& D) {
-      Error("This Method of LatticeEnumSquare2DCheck Disabled!");
-    }
+    LatticeEnumSquare2DCheck() { Error("This Check Disabled!"); }
     LatticeEnumSquare2DCheck(const Type&) {
-      Error("This Method of LatticeEnumSquare2DCheck Disabled!");
+      Error("Copier of LatticeEnumSquare2DCheck Disabled!");
     }
     Type& operator=(const Type&) {
-      Error("This Method of LatticeEnumSquare2DCheck Disabled!");
+      Error("Operator= for LatticeEnumSquare2DCheck Disabled!");
       return *this;
     }
-    ~LatticeEnumSquare2DCheck() {}
+    ~LatticeEnumSquare2DCheck() { clearData(); }
 
     void clearData() {}
 
+    template <unsigned int L>
+    bool Act(LatticeEnumSquare2DRunData<L>& D) { return false; }
+
   };
 
-  template <unsigned int L, LatticeEnumSquare2DCheckMethodName M>
-  bool IsValid(const LatticeEnumSquare2DCheck<L,M>&) { return false; }
+  template <LatticeEnumSquare2DCheckMethodName Method>
+  bool IsValid(LatticeEnumSquare2DCheck<Method>& C) { return false; }
 
-  template <unsigned int L, LatticeEnumSquare2DCheckMethodName M>
-  void release(LatticeEnumSquare2DCheck<L,M>& Ck) { Ck.clearData(); }
+  template <LatticeEnumSquare2DCheckMethodName Method>
+  void release(LatticeEnumSquare2DCheck<Method>& C) { C.clearData(); }
 
 }
 

@@ -6,10 +6,10 @@
 
 namespace mysimulator {
 
-  template <unsigned int L, LatticeEnumSquare2DCheckMethodName Method>
-  void copy(LatticeEnumSquare2DCheck<L,Method>& Ck,
-            const LatticeEnumSquare2DCheck<L,Method>& cCk) {
-    assert(IsValid(Ck)&&IsValid(cCk));
+  template <LatticeEnumSquare2DCheckMethodName Method>
+  void copy(LatticeEnumSquare2DCheck<Method>& C,
+            const LatticeEnumSquare2DCheck<Method>& cC) {
+    Error("Copy for LatticeEnumSquare2DCheck of this Method Disabled!");
   }
 
 }

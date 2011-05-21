@@ -3,24 +3,16 @@
 #define _Lattice_Enumerate_Square2D_Check_Basic_Specification_H_
 
 #include "lattice/enumerate/square-2d/check/interface.h"
-#include "lattice/enumerate/square-2d/check/basic/interface.h"
 
 namespace mysimulator {
 
-  template <unsigned int L>
-  struct LatticeEnumSquare2DCheck<L,LatticeEnumSquare2DCheckMethodBasic>
-      : public LatticeEnumSquare2DCheckBasic<L> {
+  template <>
+  struct LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodBasic> {
 
-    typedef LatticeEnumSquare2DCheck<L,LatticeEnumSquare2DCheckMethodBasic>
+    typedef LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodBasic>
             Type;
-    typedef LatticeEnumSquare2DCheckBasic<L>  ParentType;
 
-    LatticeEnumSquare2DCheck() {
-      Error("Default Initiator of LatticeEnumSquare2DCheck Disabled!");
-    }
-    LatticeEnumSquare2DCheck(const LatticeEnumSquare2DRunData<L>& D)
-      : ParentType(D) {}
-
+    LatticeEnumSquare2DCheck() {}
     LatticeEnumSquare2DCheck(const Type&) {
       Error("Copier of LatticeEnumSquare2DCheck Disabled!");
     }
@@ -30,14 +22,21 @@ namespace mysimulator {
     }
     ~LatticeEnumSquare2DCheck() { clearData(); }
 
-    void clearData() { static_cast<ParentType*>(this)->clearData(); }
+    void clearData() {}
+
+    template <unsigned int L>
+    bool Act(LatticeEnumSquare2DRunData<L>&) { return true; }
 
   };
 
-  template <unsigned int L>
   bool IsValid(
-      const LatticeEnumSquare2DCheck<L,LatticeEnumSquare2DCheckMethodBasic>& C){
-    return IsValid(static_cast<const LatticeEnumSquare2DCheckBasic<L>&>(C));
+      const LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodBasic>&) {
+    return true;
+  }
+
+  void release(
+      LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodBasic>& C) {
+    C.clearData();
   }
 
 }
