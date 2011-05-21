@@ -18,24 +18,17 @@ namespace mysimulator {
       Vector<unsigned int>& Len, Vector<unsigned short>& bHigh) {
     Vector<unsigned int> sz;
 
-    COut<<"=================="<<Endl;
     allocate(sz,L+L-1);
-    COut<<"========1========="<<Endl;
     fill(sz,L+L-1);
-    COut<<"========2========="<<Endl;
     allocate(Mesh,sz);
-    COut<<"========3========="<<Endl;
     fill(Mesh,-1);
 
-    COut<<"========4========="<<Endl;
     allocate(sz,L);
     fill(sz,2U);
     allocate(Loc,sz);
-    COut<<"========5========="<<Endl;
     fill(Loc[0],static_cast<int>(L-1));
     Mesh[L-1][L-1]=0;
 
-    COut<<"========6========="<<Endl;
     allocate(C);
 
     allocate(Len,LatticeMotifChain<SquareLattice,2,L>::NumMotifs);
@@ -63,13 +56,14 @@ namespace mysimulator {
     bool oflag=false;
     Vector<int> rLoc(2),nLoc(2);
     copy(rLoc,Loc[Bs]);
-    for(int i=BsL,n=0;i<BsH;++i) {
+    for(int i=BsL,n=0;i<BsH;++i,++n) {
       copy(nLoc,rLoc);
       shift(nLoc,
-            LatticeLibrary<SquareLattice,2>::map[LenB-1][CB].coordinate[n++]);
+            LatticeLibrary<SquareLattice,2>::map[LenB-1][CB].coordinate[n]);
       if(Mesh[nLoc[0]][nLoc[1]]>=0) { oflag=true; break; }
       copy(Loc[i],nLoc);
     }
+    return oflag;
   }
 
   template <unsigned int L>
@@ -130,7 +124,8 @@ namespace mysimulator {
                                      Len[B],Loc,Mesh);
       bflag=true;
       if(!oflag) {
-        if(B+1<LatticeMotifChain<SquareLattice,2,L>::NumMotifs) {
+        if(static_cast<unsigned int>(B+1)<
+           LatticeMotifChain<SquareLattice,2,L>::NumMotifs) {
           _new_Enum_Square2D(B,Bc,Bs,BsL,BsH,Loc,Mesh,C,Len,boundHigh);
           bflag=false;
         } else {

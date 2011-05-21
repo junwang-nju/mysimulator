@@ -3,6 +3,7 @@
 #define _Boundary_PeriodicBox_Set_H_
 
 #include "boundary/periodic-box/interface.h"
+#include "vector/fill.h"
 
 namespace mysimulator {
 

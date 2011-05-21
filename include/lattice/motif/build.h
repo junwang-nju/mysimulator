@@ -24,7 +24,7 @@ namespace mysimulator {
         default: Error("Unknown Bond for Motif Build!");
       }
       M.coordinate[i][0]=x;
-      M.coordinate[i][1]=x;
+      M.coordinate[i][1]=y;
     }
   }
 

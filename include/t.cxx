@@ -154,7 +154,8 @@ int main() {
   SimpleDistanceBuffer<double> SDB;
 
   LatticeLibrary<SquareLattice,2>::load("../");
-  enumerate<12>(CheckSeq<12>,COut);
+  unsigned int nc=enumerate<12>(CheckSeq<12>,COut);
+  COut<<nc<<Endl;
 
   return 0;
 }
