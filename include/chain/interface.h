@@ -7,8 +7,7 @@
 #include "referable-object/refer.h"
 #include "referable-object/compare.h"
 #include "referable-object/swap.h"
-#include "generic/exchange.h"
-#include "generic/copy.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 

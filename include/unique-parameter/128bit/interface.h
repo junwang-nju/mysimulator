@@ -37,6 +37,10 @@ namespace mysimulator {
       ull[0]=l1;
       ull[1]=l2;
     }
+    UniqueParameter128Bit(const double& d1, const double& d2) {
+      ull[0]=*reinterpret_cast<const unsigned long long*>(&d1);
+      ull[1]=*reinterpret_cast<const unsigned long long*>(&d2);
+    }
     UniqueParameter128Bit(const Type&) {
       Error("Copier of UniqueParameter128Bit Disabled!");
     }

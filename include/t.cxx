@@ -157,7 +157,9 @@ int main() {
   SimpleDistanceBuffer<double> SDB;
 
   LatticeLibrary<SquareLattice,2>::load("../");
-  unsigned int nc=enumerate<12>(CheckSeq<12>,COut);
+  LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodBasic> Ck;
+  allocate(Ck);
+  unsigned int nc=enumerate<19>(Ck,COut);
   COut<<nc<<Endl;
 
   return 0;

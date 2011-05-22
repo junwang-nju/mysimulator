@@ -3,7 +3,7 @@
 #define _Vector_Exchange_H_
 
 #include "vector/interface.h"
-#include "intrinsic-type/exchange.h"
+#include "generic/exchange.h"
 
 namespace mysimulator {
 

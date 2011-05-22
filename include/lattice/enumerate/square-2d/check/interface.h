@@ -25,7 +25,7 @@ namespace mysimulator {
     void clearData() {}
 
     template <unsigned int L>
-    bool Act(LatticeEnumSquare2DRunData<L>& D) { return false; }
+    bool Act(LatticeEnumSquare2DRunData<L>& D) const { return false; }
 
   };
 

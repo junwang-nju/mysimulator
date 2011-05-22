@@ -6,13 +6,9 @@
 
 namespace mysimulator {
 
-  static const UniqueParameter128Bit SSE2_DoubleTwo(
-      *reinterpret_cast<const unsigned long long int*>(&dTwo),
-      *reinterpret_cast<const unsigned long long int*>(&dTwo));
-  static const UniqueParameter128Bit SSE2_DoubleNOne(
-      *reinterpret_cast<const unsigned long long int*>(&dNOne),
-      *reinterpret_cast<const unsigned long long int*>(&dNOne));
-  static const UniqueParameter128Bit SSE2_IntOne(1,1);
+  static const UniqueParameter128Bit SSE2_DoubleTwo(dTwo,dTwo);
+  static const UniqueParameter128Bit SSE2_DoubleNOne(dNOne,dNOne);
+  static const UniqueParameter128Bit SSE2_IntOne(1ULL,1ULL);
 
   void Convert2Close1Open2(UniqueParameter128Bit& w) {}
 

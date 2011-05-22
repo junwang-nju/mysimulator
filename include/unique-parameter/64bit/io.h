@@ -15,7 +15,7 @@ namespace mysimulator {
       is.unget(flag);
       is>>P.ull;
     } else {
-      bool vflag;
+      bool vflag=true;
       UniqueParameterInputModeName im=_CheckInputMode(is);
       if(im==VectorMode)  vflag=true;
       else if(im==ValueMode)  vflag=false;

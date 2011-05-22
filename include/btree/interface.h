@@ -8,6 +8,7 @@
 #include "referable-object/swap.h"
 #include "referable-object/mirror.h"
 #include "generic/release.h"
+#include "generic/exchange.h"
 
 namespace mysimulator {
 
@@ -132,8 +133,10 @@ namespace mysimulator {
         release(mvNode().left);
         release(mvNode().right);
         swap(mvNode().parent,present().parent);
-        exchange(reinterpret_cast<int&>(mvNode().workBranch),
-                 reinterpret_cast<int&>(present().workBranch));
+
+        exchange(mvNode().workBranch,present().workBranch);
+        //exchange(reinterpret_cast<int&>(mvNode().workBranch),
+        //         reinterpret_cast<int&>(present().workBranch));
         swap(mvNode().left,present().left);
         swap(mvNode().right,present().right);
         if(IsValid(mvNode().left))  refer(mvNode().left().parent,mvNode);

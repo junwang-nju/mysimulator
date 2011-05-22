@@ -12,5 +12,14 @@ namespace mysimulator {
 
 }
 
+#include "intrinsic-type/single-operation-type.h"
+
+namespace mysimulator {
+
+  template <>
+  struct _SingleOp<ObjectStateName> { typedef ObjectStateName Type; };
+
+}
+
 #endif
 

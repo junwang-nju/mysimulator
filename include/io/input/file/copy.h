@@ -4,7 +4,7 @@
 
 #include "io/input/file/interface.h"
 #include "io/input/copy.h"
-#include "generic/copy.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 

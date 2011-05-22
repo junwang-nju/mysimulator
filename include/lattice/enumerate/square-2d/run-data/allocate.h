@@ -10,6 +10,7 @@ namespace mysimulator {
 
   template <unsigned int L>
   void allocate(LatticeEnumSquare2DRunData<L>& D) {
+    release(D);
     Vector<unsigned int> sz;
     allocate(sz,L+L-1);
     fill(sz,L+L-1);
@@ -23,12 +24,14 @@ namespace mysimulator {
     allocate(D.C);
     allocate(D.Len,LatticeMotifChain<SquareLattice,2,L>::NumMotifs);
     fill(D.Len,LatticeLibrary<SquareLattice,2>::MaxBondOfMotif);
-    D.Len[Len.size-1]=LatticeMotifChain<SquareLattice,2,L>::NumBondsLastMotif;
+    D.Len[D.Len.size-1]=
+      LatticeMotifChain<SquareLattice,2,L>::NumBondsLastMotif;
+    allocate(D.bHigh,LatticeMotifChain<SquareLattice,2,L>::NumMotifs);
     D.B=0;
     D.Bs=0;
     D.BsL=1;
     D.BsH=D.BsL+D.Len[0];
-    Bc=-1;
+    D.Bc=-1;
     D.C.motifValue[0]=0;
     D.bHigh[0]=LatticeLibrary<SquareLattice,2>::shiftLoc[D.Len[0]-1][0];
   }
