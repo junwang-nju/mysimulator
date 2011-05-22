@@ -5,7 +5,8 @@
 namespace mysimulator {
 
   enum LatticeEnumSquare2DCheckMethodName {
-    LatticeEnumSquare2DCheckMethodBasic
+    LatticeEnumSquare2DCheckMethodBasic,
+    LatticeEnumSquare2DCheckMethodFixBonds
   };
 
 }

@@ -15,6 +15,7 @@ namespace mysimulator {
 }
 
 #include "lattice/enumerate/square-2d/check/basic/copy-specification.h"
+#include "lattice/enumerate/square-2d/check/fix-bonds/copy-specification.h"
 
 #endif
 

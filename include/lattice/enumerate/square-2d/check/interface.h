@@ -38,6 +38,7 @@ namespace mysimulator {
 }
 
 #include "lattice/enumerate/square-2d/check/basic/specification.h"
+#include "lattice/enumerate/square-2d/check/fix-bonds/specification.h"
 
 #endif
 

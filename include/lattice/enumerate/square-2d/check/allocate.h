@@ -14,6 +14,7 @@ namespace mysimulator {
 }
 
 #include "lattice/enumerate/square-2d/check/basic/allocate-specification.h"
+#include "lattice/enumerate/square-2d/check/fix-bonds/allocate-specification.h"
 
 #endif
 

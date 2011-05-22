@@ -65,7 +65,7 @@ namespace mysimulator {
     allocate(Data);
     do {
       oflag=_Propagate_LatticeEnumSquare2D(Data);
-      oflag=oflag&&Check.Act(Data);
+      oflag=oflag||(!Check.Act(Data));
       bflag=true;
       if(!oflag) {
         if(Data.B+1U<LatticeMotifChain<SquareLattice,2,L>::NumMotifs) {
