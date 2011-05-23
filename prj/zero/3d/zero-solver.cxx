@@ -216,7 +216,7 @@ int main() {
   Vector<dcomplex> res;
 
   //ifstream ifs("26.e.f0");
-  ifstream ifs("density-10");
+  ifstream ifs("density-16");
   unsigned int n,m;
   ifs>>n;
   allocate(a,n+1);

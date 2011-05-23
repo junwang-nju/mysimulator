@@ -21,7 +21,7 @@ void nextXYZ(const int X0, const int Y0, const int Z0,
 }
 
 int main() {
-  int L=18;
+  int L=19;
   int L1=L-1;
 
   Vector<int> dirc;

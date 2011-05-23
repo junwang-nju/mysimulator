@@ -6,11 +6,11 @@ using namespace std;
 
 int main() {
   ifstream ifs;
-  ifs.open("z9");
-  const int N=8;
+  ifs.open("zz");
+  const int N=16;
   double a,b,r,t;
   ifs>>a>>b;
-  ifs>>a>>b;
+  //ifs>>a>>b;
   cout.precision(20);
   for(int i=1;i<=N;++i) {
     ifs>>a>>b;
