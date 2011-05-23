@@ -412,6 +412,8 @@ namespace std {
   void copy(unsigned char& d, const char& c) { d=c; }
   void copy(unsigned char& d, const unsigned char& c) { d=c; }
 
+  void copy(unsigned long long& ll, const unsigned long long& cll) { ll=cll; }
+
   void scale(double& d, const double& sd) { d*=sd; }
   void scale(double& d, const float& sd) { d*=sd; }
   void scale(double& d, const int& sd) { d*=sd; }
