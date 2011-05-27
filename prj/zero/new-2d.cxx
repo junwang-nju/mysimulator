@@ -17,7 +17,7 @@ void nextXY(const int X0, const int Y0, const int dirc, int& X, int& Y) {
 }
 
 int main() {
-  int L=12;
+  int L=18;
   int L1=L-1;
 
   Vector<int> dirc;
@@ -25,6 +25,7 @@ int main() {
   Vector<long long int> EH;
   int YTurnHead,runHead,tE;
   bool incflag,ofg;
+  Vector<Vector<unsigned long long> > dStat;
 
   allocate(dirc,L1);
   allocate(X,L);
@@ -37,6 +38,10 @@ int main() {
 
   allocate(EH,L+1);
   for(int i=0;i<L+1;++i)  EH[i]=0;
+  allocate(dStat,L1);
+  for(int i=0;i<L1;++i)   allocate(dStat[i],4);
+  for(int i=0;i<L1;++i)   copy(dStat[i],0);
+
   int maxX,minX,maxY,minY;
   int nMaxX,nMinX,nMaxY,nMinY;
 
@@ -58,6 +63,8 @@ int main() {
       if((X[i]==rX)&&(Y[i]==rY)) { incflag=false; break; }
     if(incflag&&(runHead==L1)) {
       ++NS;
+      for(int w=0;w<L1;++w)
+        dStat[w][dirc[w]]++;
       maxX=-L-1;  minX=L+1;
       maxY=-L-1;  minY=L+1;
       nMaxX=0;    nMinX=0;
@@ -90,9 +97,14 @@ int main() {
       ++dirc[runHead];
     }
   } while(runHead>0);
-  cout<<NS<<endl;
-  for(int i=0;i<L+1;++i)
-    cout<<i<<"\t"<<EH[i]<<endl;
+  //cout<<NS<<endl;
+  //for(int i=0;i<L+1;++i)
+  //  cout<<i<<"\t"<<EH[i]<<endl;
+  for(int i=0;i<L1;++i) {
+    cout<<i;
+    for(int k=0;k<4;++k)  cout<<"\t"<<dStat[i][k];
+    cout<<endl;
+  }
   return 0;
 }
 
