@@ -46,7 +46,7 @@ double Intg(double R, double d0, double epsilon,double T,
 }
       
 double f(double d) {
-  return -exp(-d/0.5)*10;
+  return -exp(-d/2)*10;
 }
 
 double S(double n, double d) {
@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
   const double d0=2;
 
   //const double T=1.48;    //Tf
-  const double T=1;
+  const double T=1.2;
 
   double d,d1,d2;
   unsigned int r,r1,r2;
