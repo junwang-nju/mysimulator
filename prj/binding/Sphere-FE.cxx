@@ -76,10 +76,11 @@ int main(int argc, char** argv) {
   
   const double e1=0;
   const double e2=0;
-  const double epsilon=1000;
-  const double T=1.48;
+  //const double T=1.48;
+  const double T=1.2;
   
-  const double d0=2;
+  const double d0=1;
+  const double epsilon=100*exp(pow(N1,1./3.)*(1./d0-1./2.));
   const double rc=1;
   
   double d,d1,d2;
@@ -109,8 +110,8 @@ int main(int argc, char** argv) {
     d2=d-d1;
     
     C=(f(d)-T*S(Nd,d))-e1*r1-e2*r2-T*SG(R);
-    FL=exp(-C/T)*Intg(R,d0,epsilon,T,RA,RB,d1,d2,rc);
-    FL=-T*log(FL);
+    FL=Intg(R,d0,epsilon,T,RA,RB,d1,d2,rc);
+    FL=C-T*log(FL);
     //COut<<R<<"\t"<<-T*log(FL)<<Endl;
     //COut<<d<<"\t"<<-T*log(FL)<<Endl;
     dv[g]=FL;
