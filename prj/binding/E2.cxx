@@ -55,7 +55,7 @@ double Intg(double R, double d0, double epsilon,double T,
 }
 
 double f(double d) {
-  return -exp(-d/0.5)*10;
+  return -exp(-d/0.2)*10;
 }
 
 double S(double n, double d) { return 2*log(d)-d*d/n; }
@@ -72,9 +72,9 @@ int main(int argc, char** argv) {
   const double e1=0;
   const double e2=0;
   //const double T=1.48;
-  const double T=1.2;
+  const double T=1.28324;
   
-  const double d0=2;
+  const double d0=8;
   const double rc=1;
   //const double epsilon=100;
   const double epsilon=100*exp((pow(N1,1./3.)+rc)*(1./d0-1./2.));
@@ -109,8 +109,8 @@ int main(int argc, char** argv) {
     C=(f(d)-T*S(Nd,d))-e1*r1-e2*r2-T*SG(R);
     FL=Intg(R,d0,epsilon,T,RA,RB,d1,d2,rc);
     FL=C-T*log(FL);
-    //COut<<R<<"\t"<<-T*log(FL)<<Endl;
-    //COut<<d<<"\t"<<-T*log(FL)<<Endl;
+    //COut<<f1(pow(NA,1./3.)+rc,d0,epsilon)<<Endl;
+    //getchar();
     dv[g]=FL;
     d+=dstep;
   }
