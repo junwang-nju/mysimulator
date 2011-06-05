@@ -3,6 +3,7 @@
 #define _Vector_Allocate_H_
 
 #include "vector/interface.h"
+#include "intrinsic-type/allocate.h"
 
 namespace mysimulator {
 
