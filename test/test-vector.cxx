@@ -129,6 +129,30 @@ int main() {
 
   cout<<endl;
   fill(Vd,2.1);
+  cout<<"Fill double Vector:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++) cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  fill(Vf,-2.5f);
+  cout<<"Fill float Vector:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++) cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  fill(Vl,2345);
+  cout<<"Fill long long Vector:"<<endl;
+  for(unsigned int i=0;i<Vl.size;i++) cout<<"\t"<<i<<"\t"<<Vl[i]<<endl;
+  fill(Vi,-29);
+  cout<<"Fill int Vector:"<<endl;
+  for(unsigned int i=0;i<Vi.size;i++) cout<<"\t"<<i<<"\t"<<Vi[i]<<endl;
+  fill(Vs,static_cast<short>(107));
+  cout<<"Fill short Vector:"<<endl;
+  for(unsigned int i=0;i<Vs.size;i++) cout<<"\t"<<i<<"\t"<<Vs[i]<<endl;
+  fill(Vc,'P');
+  cout<<"Fill char Vector:"<<endl;
+  for(unsigned int i=0;i<Vc.size;i++) cout<<"\t"<<i<<"\t"<<Vc[i]<<endl;
+  fill(Vvi,15);
+  cout<<"Fill complex Vector:"<<endl;
+  for(unsigned int i=0;i<Vvi.size;i++)
+  for(unsigned int j=0;j<Vvi[i].size;j++)
+    cout<<"\t"<<i<<"\t"<<j<<"\t"<<Vvi[i][j]<<endl;
+  fill(Vd,34.2f);
+  cout<<"Fill double vector with float:"<<endl;
   for(unsigned int i=0;i<Vd.size;i++) cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
 
   cout<<endl;

@@ -7,14 +7,15 @@
 
 namespace mysimulator {
 
-  template <typename T>
-  void fill(Vector<T>& v, const T& d) {
+  template <typename T, typename cT>
+  void fill(Vector<T>& v, const cT& d) {
     assert(IsValid(v));
     T* p=v.pdata;
     T* pend=p+v.size;
     for(;p!=pend;)  fill(*(p++),d);
   }
 
+  /*
   template <typename T, typename cT>
   void fill(Vector<T>& v, const cT& value) {
     assert(IsValid(v));
@@ -22,6 +23,7 @@ namespace mysimulator {
     fill(u,value);
     fill(v,u);
   }
+  */
 
 }
 
@@ -35,10 +37,24 @@ namespace mysimulator {
            const_cast<long*>(&lZero),v.pdata,const_cast<long*>(&lOne));
   }
 
+  template <typename cT>
+  void fill(Vector<double>& v, const cT& value) {
+    double u;
+    fill(u,value);
+    fill(v,u);
+  }
+
   void fill(Vector<float>& v, const float& f) {
     assert(IsValid(v));
     scopy_(reinterpret_cast<long*>(&(v.size)),const_cast<float*>(&f),
            const_cast<long*>(&lZero),v.pdata,const_cast<long*>(&lOne));
+  }
+
+  template <typename cT>
+  void fill(Vector<float>& v, const cT& value) {
+    float u;
+    fill(u,value);
+    fill(v,u);
   }
 
   void fill(Vector<long long>& v, const long long& ll) {
@@ -49,12 +65,26 @@ namespace mysimulator {
            const_cast<long*>(&lOne));
   }
 
+  template <typename cT>
+  void fill(Vector<long long>& v, const cT& value) {
+    long long u;
+    fill(u,value);
+    fill(v,u);
+  }
+
   void fill(Vector<unsigned long long>& v, const unsigned long long& ll) {
     assert(IsValid(v));
     dcopy_(reinterpret_cast<long*>(&(v.size)),
            reinterpret_cast<double*>(const_cast<unsigned long long*>(&ll)),
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
            const_cast<long*>(&lOne));
+  }
+
+  template <typename cT>
+  void fill(Vector<unsigned long long>& v, const cT& value) {
+    unsigned long long u;
+    fill(u,value);
+    fill(v,u);
   }
 
   void fill(Vector<int>& v, const int& i) {
@@ -65,12 +95,26 @@ namespace mysimulator {
            const_cast<long*>(&lOne));
   }
 
+  template <typename cT>
+  void fill(Vector<int>& v, const cT& value) {
+    int u;
+    fill(u,value);
+    fill(v,u);
+  }
+
   void fill(Vector<unsigned int>& v, const unsigned int& u) {
     assert(IsValid(v));
     scopy_(reinterpret_cast<long*>(&(v.size)),
            reinterpret_cast<float*>(const_cast<unsigned int*>(&u)),
            const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
+  }
+
+  template <typename cT>
+  void fill(Vector<unsigned int>& v, const cT& value) {
+    unsigned int u;
+    fill(u,value);
+    fill(v,u);
   }
 
 }
@@ -91,6 +135,13 @@ namespace mysimulator {
     memcpy(v()+nb,&ll,nr+nr);
   }
 
+  template <typename cT>
+  void fill(Vector<short>& v, const cT& value) {
+    short u;
+    fill(u,value);
+    fill(v,u);
+  }
+
   void fill(Vector<unsigned short>& v, const unsigned short& s) {
     assert(IsValid(v));
     unsigned long long ll=s;
@@ -102,7 +153,14 @@ namespace mysimulator {
            const_cast<long*>(&lOne));
     memcpy(v()+nb,&ll,nr+nr);
   }
-  
+
+  template <typename cT>
+  void fill(Vector<unsigned short>& v, const cT& value) {
+    unsigned short u;
+    fill(u,value);
+    fill(v,u);
+  }
+
   void fill(Vector<char>& v, const char& c) {
     assert(IsValid(v));
     memset(v(),c,v.size);
