@@ -72,9 +72,9 @@ int main(int argc, char** argv) {
   const double e1=0;
   const double e2=0;
   //const double T=1.48;
-  const double T=1.28324;
+  const double T=0.8555;
   
-  const double d0=8;
+  const double d0=1;
   const double rc=1;
   //const double epsilon=100;
   const double epsilon=100*exp((pow(N1,1./3.)+rc)*(1./d0-1./2.));

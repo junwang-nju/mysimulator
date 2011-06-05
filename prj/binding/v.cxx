@@ -3,7 +3,7 @@
 #include <cmath>
 using namespace std;
 
-static const double x0=0.2;
+static const double x0=0.5;
 
 double F(double x, double T) {
   return -10*exp(-x/0.2)-T*(2*log(x)-x*x/10);
