@@ -41,21 +41,21 @@ namespace mysimulator {
 
     static void Energy(
         const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
-        DBuffer<T>& B,const GeomType& G,T& E) {
+        DBuffer<T>& B,const GeomType& G,T& E,Vector<T>* tvec) {
       assert(IsValid(efuncmethod));
-      efuncmethod(X,id,P,B,G,E,efunctional);
+      efuncmethod(X,id,P,B,G,E,tvec,efunctional);
     }
     static void Gradient(
         const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
-        DBuffer<T>& B,const GeomType& G,Vector<T>* D) {
+        DBuffer<T>& B,const GeomType& G,Vector<T>* D,Vector<T>* tvec) {
       assert(IsValid(gfuncmethod));
-      gfuncmethod(X,id,P,B,G,D,dfunctional);
+      gfuncmethod(X,id,P,B,G,D,tvec,dfunctional);
     }
     static void Both(
         const Vector<T>* X,const unsigned int* id,const UniqueParameter64Bit* P,
-        DBuffer<T>& B,const GeomType& G,T& E,Vector<T>* D) {
+        DBuffer<T>& B,const GeomType& G,T& E,Vector<T>* D,Vector<T>* tvec) {
       assert(IsValid(bfuncmethod));
-      bfuncmethod(X,id,P,B,G,E,D,bfunctional);
+      bfuncmethod(X,id,P,B,G,E,D,tvec,bfunctional);
     }
 
   };

@@ -15,13 +15,13 @@ namespace mysimulator {
     typedef void (*BFunctionalType)(const T&,const UniqueParameter64Bit*,T&,T&);
     typedef void (*EFuncMethodType)(
         const Vector<T>*,const unsigned int*,const UniqueParameter64Bit*,
-        DBuffer<T>&,const GeomType&,T&,EFunctionalType);
+        DBuffer<T>&,const GeomType&,T&,Vector<T>*,EFunctionalType);
     typedef void (*GFuncMethodType)(
         const Vector<T>*,const unsigned int*,const UniqueParameter64Bit*,
-        DBuffer<T>&,const GeomType&,Vector<T>*,DFunctionalType);
+        DBuffer<T>&,const GeomType&,Vector<T>*,Vector<T>*,DFunctionalType);
     typedef void (*BFuncMethodType)(
         const Vector<T>*,const unsigned int*,const UniqueParameter64Bit*,
-        DBuffer<T>&,const GeomType&,T&,Vector<T>*,BFunctionalType);
+        DBuffer<T>&,const GeomType&,T&,Vector<T>*,Vector<T>*,BFunctionalType);
 
   };
 
