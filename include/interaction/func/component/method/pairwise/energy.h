@@ -10,7 +10,7 @@ namespace mysimulator {
   template <template<typename> class DBuffer,typename GeomType,typename T>
   void EFuncMethodPairwise(
       const Vector<T>* X,const unsigned int* idx,const UniqueParameter64Bit* P,
-      DBuffer<T>& B, const GeomType& Geo, T& Energy,
+      DBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* tmvec,
       void (*efunc)(const T&,const UniqueParameter64Bit*,T&)) {
     unsigned int I=idx[0], J=idx[1];
     T dsq=DistanceSqCalc(X[I],X[J],I,J,Geo,B);

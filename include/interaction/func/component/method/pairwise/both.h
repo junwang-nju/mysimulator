@@ -11,6 +11,7 @@ namespace mysimulator {
   void BFuncMethodPairwise(
       const Vector<T>* X,const unsigned int* idx,const UniqueParameter64Bit* P,
       DBuffer<T>& B, const GeomType& Geo, T& Energy, Vector<T>* Gradient,
+      Vector<T>* tmvec,
       void (*bfunc)(const T&,const UniqueParameter64Bit*,T&,T&)) {
     unsigned int I=idx[0], J=idx[1];
     T dsq=DistanceSqCalc(X[I],X[J],I,J,Geo,B);
