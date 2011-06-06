@@ -3,6 +3,7 @@
 #define _Chain_Node_Allocate_H_
 
 #include "chain/node/interface.h"
+#include "referable-object/allocate.h"
 
 namespace mysimulator {
 

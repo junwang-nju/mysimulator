@@ -3,6 +3,7 @@
 #define _Chain_Node_Refer_H_
 
 #include "chain/node/interface.h"
+#include "referable-object/refer.h"
 
 namespace mysimulator {
 

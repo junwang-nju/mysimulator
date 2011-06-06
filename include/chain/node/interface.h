@@ -29,6 +29,7 @@ namespace mysimulator {
       release(content);
     }
     T& operator()() { assert(IsValid(*this)); return content(); }
+    const T& operator()() const { assert(IsValid(*this)); return content(); }
 
   };
 

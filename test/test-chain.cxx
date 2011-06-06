@@ -1,61 +1,44 @@
 
-#include "data/basic/chain.h"
-#include "data/basic/console-output.h"
+#include "chain/node/allocate.h"
+#include "chain/node/copy.h"
+#include "chain/node/refer.h"
+using namespace mysimulator;
+
+#include <iostream>
 using namespace std;
 
 int main() {
-  COut<<"Test -- initialize"<<Endl;
-  Chain<int> C;
-  COut<<Endl;
 
-  COut<<"Test -- allocate"<<Endl;
-  allocate(C);
-  COut<<C.root->child->parent<<Endl;
-  COut<<Endl;
+  ChainNode<int>  Nd,Nd2;
 
-  COut<<"Test -- add items (node and constant)"<<Endl;
-  ChainNode<int> nd;
-  allocate(nd);
-  nd()=18;
-  append(C,nd);
-  append(C,58);
-  append(C,79,Allocated);
-  COut<<*(C.root->child->content)<<Endl;
-  COut<<*(C.root->child->child->content)<<Endl;
-  COut<<*(C.root->child->child->child->content)<<Endl;
-  COut<<Endl;
+  cout<<endl;
+  allocate(Nd);
+  Nd.content()=5;
+  cout<<"Content of Chain Node is: "<<Nd.content()<<endl;
+  imprint(Nd2,Nd);
+  Nd2.content()=8;
+  cout<<"Content of Chain Node is: "<<Nd2.content()<<endl;
+  cout<<"Access Chain Node through () operator: "<<Nd()<<endl;
 
-  COut<<"Test -- copy from another Chain"<<Endl;
-  Chain<int> C2;
-  copy(C2,C);
-  COut<<*(C2.root->child->content)<<Endl;
-  COut<<*(C2.root->child->child->content)<<Endl;
-  COut<<*(C2.root->child->child->child->content)<<Endl;
-  COut<<Endl;
+  cout<<endl;
+  ChainNode<int> Nd3;
+  cout<<"Validity of Allocated Chain Node: "<<IsValid(Nd)<<endl;
+  cout<<"Validity of un-Allocated Chain Node: "<<IsValid(Nd3)<<endl;
+  release(Nd2);
+  cout<<"Validity after release: "<<IsValid(Nd2)<<endl;
 
-  COut<<"Test -- check whether inside Chain"<<Endl;
-  COut<<In(C2,nd)<<Endl;
-  COut<<In(C,nd)<<Endl;
-  COut<<Endl;
+  cout<<endl;
+  allocate(Nd2);
+  Nd2()=9;
+  copy(Nd,Nd2);
+  cout<<"The content of copied Node is: "<<Nd()<<endl;
 
-  COut<<"Test -- remove a node"<<Endl;
-  remove(C2,C2.root->child->child);
-  COut<<*(C2.root->child->content)<<Endl;
-  COut<<*(C2.root->child->child->content)<<Endl;
-  COut<<Endl;
+  cout<<endl;
+  refer(Nd3,Nd);
+  cout<<"content of referred Chain Node: "<<Nd3()<<endl;
 
-  COut<<"Test -- release"<<Endl;
-  release(C2);
-  COut<<C2.root<<"\t"<<C2.head<<Endl;
-  COut<<Endl;
+  cout<<Nd.parent.flag<<endl;
 
-  COut<<"Test -- refer operation"<<Endl;
-  refer(C2,C);
-  COut<<*(C2.root->child->content)<<Endl;
-  COut<<*(C2.root->child->child->content)<<Endl;
-  COut<<*(C2.root->child->child->child->content)<<Endl;
-  COut<<Endl;
-
-  return 1;
+  return 0;
 }
 
