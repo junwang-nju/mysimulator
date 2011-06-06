@@ -13,6 +13,7 @@ namespace mysimulator {
 
   static const unsigned int uZero=0U;
   static const unsigned int uOne=1U;
+  static const unsigned int uTwo=2U;
 
   static const long lZero=0;
   static const long lOne=1;

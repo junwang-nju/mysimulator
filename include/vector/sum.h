@@ -3,6 +3,8 @@
 #define _Vector_Sum_H_
 
 #include "vector/interface.h"
+#include "linear-algebra/blas.h"
+#include "intrinsic-type/abs-value.h"
 
 namespace mysimulator {
 
@@ -13,7 +15,7 @@ namespace mysimulator {
     copy(s,static_cast<T>(cZero));
     T* p=const_cast<T*>(v());
     T* pend=p+v.size;
-    for(;p!=pend;)  shift(p,cOne,*(p++));
+    for(;p!=pend;)  shift(s,cOne,*(p++));
     return s;
   }
 
@@ -38,7 +40,7 @@ namespace mysimulator {
     copy(s,static_cast<T>(cZero));
     T* p=const_cast<T*>(v());
     T* pend=p+v.size;
-    for(;p!=pend;)  shift(p,cOne,absval(*(p++)));
+    for(;p!=pend;)  shift(s,cOne,absval(*(p++)));
     return s;
   }
 

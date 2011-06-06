@@ -3,6 +3,15 @@
 #include "vector/copy.h"
 #include "vector/compare.h"
 #include "vector/fill.h"
+#include "vector/exchange.h"
+#include "vector/swap.h"
+#include "vector/norm.h"
+#include "vector/scale.h"
+#include "vector/shift.h"
+#include "vector/sum.h"
+#include "vector/cross-product.h"
+#include "vector/io.h"
+#include "io/console.h"
 using namespace mysimulator;
 
 #include <iostream>
@@ -50,7 +59,7 @@ int main() {
   cout<<"Vector pointing to Vector: State is "<<Vi.state<<endl;
 
   cout<<endl;
-  Vector<long double> Vld(4),Vld2(4);
+  Vector<long double> Vld(4),Vld2(6);
   for(unsigned int i=0;i<Vld.size;i++)    Vld[i]=0;
   for(unsigned int i=0;i<Vld2.size;i++)   Vld2[i]=34.4567;
   cout<<"Copy long double Vector: Content Before Copy as"<<endl;
@@ -164,6 +173,162 @@ int main() {
   for(unsigned int i=0;i<Vld.size;i++) cout<<"\t"<<i<<"\t"<<Vld[i]<<endl;
 
   cout<<endl;
+  exchange(Vld,Vld2);
+  cout<<"Exchange long double Vector:"<<endl;
+  for(unsigned int i=0;i<Vld.size;i++)    cout<<"\t"<<i<<"\t"<<Vld[i]<<endl;
+  cout<<"\t============================="<<endl;
+  for(unsigned int i=0;i<Vld2.size;i++)   cout<<"\t"<<i<<"\t"<<Vld2[i]<<endl;
+  exchange(Vd,Vd2);
+  cout<<"Exchange double Vector:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  cout<<"\t============================="<<endl;
+  for(unsigned int i=0;i<Vd2.size;i++)  cout<<"\t"<<i<<"\t"<<Vd2[i]<<endl;
+  exchange(Vf,Vf2);
+  cout<<"Exchange float Vector:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  cout<<"\t============================="<<endl;
+  for(unsigned int i=0;i<Vf2.size;i++)  cout<<"\t"<<i<<"\t"<<Vf2[i]<<endl;
+  exchange(Vi,Vi2);
+  cout<<"Exchange int Vector:"<<endl;
+  for(unsigned int i=0;i<Vi.size;i++)   cout<<"\t"<<i<<"\t"<<Vi[i]<<endl;
+  cout<<"\t============================="<<endl;
+  for(unsigned int i=0;i<Vi2.size;i++)  cout<<"\t"<<i<<"\t"<<Vi2[i]<<endl;
+  exchange(Vl,Vl2);
+  cout<<"Exchange long long Vector:"<<endl;
+  for(unsigned int i=0;i<Vl.size;i++)   cout<<"\t"<<i<<"\t"<<Vl[i]<<endl;
+  cout<<"\t============================="<<endl;
+  for(unsigned int i=0;i<Vl2.size;i++)  cout<<"\t"<<i<<"\t"<<Vl2[i]<<endl;
+  exchange(Vs,Vs2);
+  cout<<"Exchange short Vector:"<<endl;
+  for(unsigned int i=0;i<Vs.size;i++)   cout<<"\t"<<i<<"\t"<<Vs[i]<<endl;
+  cout<<"\t============================="<<endl;
+  for(unsigned int i=0;i<Vs2.size;i++)  cout<<"\t"<<i<<"\t"<<Vs2[i]<<endl;
+  exchange(Vc,Vc2);
+  cout<<"Exchange char Vector:"<<endl;
+  for(unsigned int i=0;i<Vc.size;i++)   cout<<"\t"<<i<<"\t"<<Vc[i]<<endl;
+  cout<<"\t============================="<<endl;
+  for(unsigned int i=0;i<Vc2.size;i++)  cout<<"\t"<<i<<"\t"<<Vc2[i]<<endl;
+
+  cout<<endl;
+  cout<<"Size Before Swap:"<<"\t"<<Vld.size<<"\t"<<Vld2.size<<endl;
+  swap(Vld,Vld2);
+  cout<<"Size After Swap:"<<"\t"<<Vld.size<<"\t"<<Vld2.size<<endl;
+
+  cout<<endl;
+  cout<<dot(Vd,Vd2)<<endl;
+  cout<<dot(Vf,Vf2)<<endl;
+  cout<<dot(Vld,Vc)<<endl;
+
+  cout<<endl;
+  cout<<normSQ(Vi)<<endl;
+  cout<<norm(Vld)<<endl;
+  cout<<norm(Vd)<<endl;
+  cout<<norm(Vf)<<endl;
+
+  cout<<endl;
+  scale(Vd,2.);
+  cout<<"double Vector After Scaling:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  scale(Vd,0.5f);
+  cout<<"double Vector After Scaling with float:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  scale(Vf,1.0f/3.0f);
+  cout<<"float Vector After Scaling:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  scale(Vf,3);
+  cout<<"float Vector After Scaling with int:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  scale(Vi,'P');
+  cout<<"int Vector After Scaling with char:"<<endl;
+  for(unsigned int i=0;i<Vi.size;i++)   cout<<"\t"<<i<<"\t"<<Vi[i]<<endl;
+  scale(Vd,Vd2);
+  cout<<"double Vector After Scaling with double Vector:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  scale(Vf,Vf2);
+  cout<<"float Vector After Scaling with float Vector:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  scale(Vld,Vc);
+  cout<<"long double Vector After Scaling with char Vector:"<<endl;
+  for(unsigned int i=0;i<Vld.size;i++)   cout<<"\t"<<i<<"\t"<<Vld[i]<<endl;
+  scale(Vd,Vd2,2.5);
+  cout<<"double Vector After Scaling with double Vector and double Value:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  scale(Vf,0.5f,Vf2);
+  cout<<"float Vector After Scaling with float Value and float Vector:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  scale(Vld,Vf,'p');
+  cout<<"long double Vector After Scaling with float Vector and char Value:"<<endl;
+  for(unsigned int i=0;i<Vld.size;i++)   cout<<"\t"<<i<<"\t"<<Vld[i]<<endl;
+
+  cout<<endl;
+  shift(Vd,-1.5,Vd2);
+  cout<<"Shift double Vector:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  shift(Vf,Vf2,2.5f);
+  cout<<"Shift float Vector:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  shift(Vd,5.0);
+  cout<<"Shift double Vector with a double Value:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  shift(Vf,-3.0f);
+  cout<<"Shift float Vector with a float Value:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  shift(Vi,'A');
+  cout<<"Shift int Vector with a char Value:"<<endl;
+  for(unsigned int i=0;i<Vi.size;++i)   cout<<"\t"<<i<<"\t"<<Vi[i]<<endl;
+  Vector<double> Vd3(9);
+  fill(Vd3,-1.);
+  scaleshift(Vd,-1.0,2.0,Vd2,Vd3);
+  cout<<"Scale-Shift Operation for double Vector and Value:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  Vector<float> Vf3(18);
+  fill(Vf3,-1.0f);
+  scaleshift(Vf,-1.0f,2.0f,Vf2,Vf3);
+  cout<<"Scale-Shift Operation for float Vector and Value:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  scaleshift(Vd,1,1.5f,Vd2,Vd3);
+  cout<<"Scale-Shift Operation for double Vector and various Values:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  scaleshift(Vf,1,' ',Vf2,Vf3);
+  cout<<"Scale-Shift Operation for float Vector and various Values:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  scaleshift(Vd,-3,Vd2,Vd3);
+  cout<<"Scale-Shift Operation for double Vector with simple Shift:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  scaleshift(Vf,-3,'9',Vi);
+  cout<<"Scale-Shift Operation for float Vector with simple Shift:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)   cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+  shift(Vd,'8',Vf,Vi);
+  cout<<"Shift with Value and two Vectors:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)   cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+
+  cout<<endl;
+  cout<<"Sum of double Vector: "<<sum(Vd2)<<endl;
+  cout<<"Sum of float Vector: "<<sum(Vf2)<<endl;
+  cout<<"Sum of int Vector: "<<sum(Vi2)<<endl;
+  cout<<"Sum of absolute value of double Vector: "<<asum(Vd2)<<endl;
+  cout<<"Sum of absolute value of float Vector: "<<asum(Vf2)<<endl;
+  cout<<"Sum of absolute value of int Vector: "<<asum(Vi2)<<endl;
+
+  cout<<endl;
+  Vector<long double> Vld3(8);
+  fill(Vld3,-5);
+  cross(Vld,Vld2,Vld3,uZero,uOne,uOne,uOne,uOne,uTwo);
+  cout<<"Cross-Product of long-double Vectors:"<<endl;
+  for(unsigned int i=0;i<Vld.size;i++)    cout<<"\t"<<i<<"\t"<<Vld[i]<<endl;
+  cross(Vd,Vd2,Vd3);
+  cout<<"Cross-Product of double Vectors:"<<endl;
+  for(unsigned int i=0;i<Vd.size;i++)     cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  cross(Vf,Vf2,Vf3,uOne);
+  cout<<"Cross-Product of float Vectors:"<<endl;
+  for(unsigned int i=0;i<Vf.size;i++)     cout<<"\t"<<i<<"\t"<<Vf[i]<<endl;
+
+  cout<<endl;
+  COut<<Vd<<Endl;
+  COut<<Vc<<Endl;
+  allocate(Vf,5);
+  CIn>>Vf;
+  COut<<Vf<<Endl;
 
   return 0;
 }

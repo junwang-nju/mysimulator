@@ -40,17 +40,15 @@ namespace mysimulator {
   void exchange(Vector<long long>& va, Vector<long long>& vb) {
     assert(IsValid(va)&&IsValid(vb));
     long n=(va.size<vb.size?va.size:vb.size);
-    long dn=n+n;
-    dswap_(&dn,reinterpret_cast<double*>(va()),const_cast<long*>(&lOne),
-               reinterpret_cast<double*>(vb()),const_cast<long*>(&lOne));
+    dswap_(&n,reinterpret_cast<double*>(va()),const_cast<long*>(&lOne),
+              reinterpret_cast<double*>(vb()),const_cast<long*>(&lOne));
   }
 
   void exchange(Vector<unsigned long long>& va,Vector<unsigned long long>& vb){
     assert(IsValid(va)&&IsValid(vb));
     long n=(va.size<vb.size?va.size:vb.size);
-    long dn=n+n;
-    dswap_(&dn,reinterpret_cast<double*>(va()),const_cast<long*>(&lOne),
-               reinterpret_cast<double*>(vb()),const_cast<long*>(&lOne));
+    dswap_(&n,reinterpret_cast<double*>(va()),const_cast<long*>(&lOne),
+              reinterpret_cast<double*>(vb()),const_cast<long*>(&lOne));
   }
 
   void exchange(Vector<int>& va, Vector<int>& vb) {
