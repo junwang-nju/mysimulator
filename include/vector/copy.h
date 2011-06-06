@@ -2,6 +2,7 @@
 #ifndef _Vector_Copy_H_
 #define _Vector_Copy_H_
 
+#include <iostream>
 #include "vector/interface.h"
 #include "intrinsic-type/copy.h"
 
@@ -22,6 +23,15 @@ namespace mysimulator {
 #include "linear-algebra/blas.h"
 
 namespace mysimulator {
+
+  void copy(Vector<long double>& v, const Vector<long double>& cv) {
+    assert(IsValid(v)&&IsValid(cv));
+    long n=(v.size<cv.size?v.size:cv.size);
+    n=n+n+n;
+    scopy_(&n,reinterpret_cast<float*>(const_cast<long double*>(cv())),
+           const_cast<long*>(&lOne),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lOne)); //?
+  }
 
   void copy(Vector<double>& v, const Vector<double>& cv) {
     assert(IsValid(v)&&IsValid(cv));

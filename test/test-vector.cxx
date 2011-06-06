@@ -50,6 +50,14 @@ int main() {
   cout<<"Vector pointing to Vector: State is "<<Vi.state<<endl;
 
   cout<<endl;
+  Vector<long double> Vld(4),Vld2(4);
+  for(unsigned int i=0;i<Vld.size;i++)    Vld[i]=0;
+  for(unsigned int i=0;i<Vld2.size;i++)   Vld2[i]=34.4567;
+  cout<<"Copy long double Vector: Content Before Copy as"<<endl;
+  for(unsigned int i=0;i<Vld.size;i++) cout<<"\t"<<i<<"\t"<<Vld[i]<<endl;
+  copy(Vld,Vld2);
+  cout<<"Copy long double Vector: Content After Copy as"<<endl;
+  for(unsigned int i=0;i<Vld.size;i++) cout<<"\t"<<i<<"\t"<<Vld[i]<<endl;
   Vector<double> Vd2(8);
   for(unsigned int i=0;i<Vd.size;i++)   Vd[i]=1.;
   for(unsigned int i=0;i<Vd2.size;i++)  Vd2[i]=i*1.5;
@@ -151,9 +159,9 @@ int main() {
   for(unsigned int i=0;i<Vvi.size;i++)
   for(unsigned int j=0;j<Vvi[i].size;j++)
     cout<<"\t"<<i<<"\t"<<j<<"\t"<<Vvi[i][j]<<endl;
-  fill(Vd,34.2f);
-  cout<<"Fill double vector with float:"<<endl;
-  for(unsigned int i=0;i<Vd.size;i++) cout<<"\t"<<i<<"\t"<<Vd[i]<<endl;
+  fill(Vld,34.2f);
+  cout<<"Fill long double vector with float:"<<endl;
+  for(unsigned int i=0;i<Vld.size;i++) cout<<"\t"<<i<<"\t"<<Vld[i]<<endl;
 
   cout<<endl;
 

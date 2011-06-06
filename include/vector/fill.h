@@ -15,21 +15,34 @@ namespace mysimulator {
     for(;p!=pend;)  fill(*(p++),d);
   }
 
-  /*
-  template <typename T, typename cT>
-  void fill(Vector<T>& v, const cT& value) {
-    assert(IsValid(v));
-    T u;
-    fill(u,value);
-    fill(v,u);
-  }
-  */
-
 }
 
 #include "linear-algebra/blas.h"
 
 namespace mysimulator {
+
+  void fill(Vector<long double>& v, const long double& ld) {
+    assert(IsValid(v));
+    scopy_(reinterpret_cast<long*>(&(v.size)),
+           reinterpret_cast<float*>(const_cast<long double*>(&ld)),
+           const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lThree));
+    scopy_(reinterpret_cast<long*>(&(v.size)),
+           reinterpret_cast<float*>(const_cast<long double*>(&ld))+1,
+           const_cast<long*>(&lZero),reinterpret_cast<float*>(v())+1,
+           const_cast<long*>(&lThree));
+    scopy_(reinterpret_cast<long*>(&(v.size)),
+           reinterpret_cast<float*>(const_cast<long double*>(&ld))+2,
+           const_cast<long*>(&lZero),reinterpret_cast<float*>(v())+2,
+           const_cast<long*>(&lThree));
+  }
+
+  template <typename cT>
+  void fill(Vector<long double>& v, const cT& value) {
+    long double u;
+    fill(u,value);
+    fill(v,u);
+  }
 
   void fill(Vector<double>& v, const double& d) {
     assert(IsValid(v));
