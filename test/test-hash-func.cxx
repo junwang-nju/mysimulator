@@ -1,5 +1,7 @@
 
-#include "operation/basic/hash-func.h"
+#include "hash/func.h"
+using namespace mysimulator;
+
 #include <iostream>
 using namespace std;
 
@@ -31,19 +33,7 @@ int main() {
   cout<<hash_bp(reinterpret_cast<const char*>(a),sizeof(int)*N)<<endl;
   cout<<hash_fnv(reinterpret_cast<const char*>(a),sizeof(int)*N)<<endl;
   cout<<hash_ap(reinterpret_cast<const char*>(a),sizeof(int)*N)<<endl;
-  /*
-  unsigned int hash_rs(const char* str, unsigned int nchar);
-  unsigned int hash_js(const char* str, unsigned int nchar);
-  unsigned int hash_pjw(const char* str, unsigned int nchar);
-  unsigned int hash_elf(const char* str, unsigned int nchar);
-  unsigned int hash_bkdr(const char* str, unsigned int nchar);
-  unsigned int hash_sdbm(const char* str, unsigned int nchar);
-  unsigned int hash_djb(const char* str, unsigned int nchar);
-  unsigned int hash_dek(const char* str, unsigned int nchar);
-  unsigned int hash_bp(const char* str, unsigned int nchar);
-  unsigned int hash_fnv(const char* str, unsigned int nchar);
-  unsigned int hash_ap(const char* str, unsigned int nchar);
-  */
-  return 1;
+
+  return 0;
 }
 
