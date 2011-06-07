@@ -135,8 +135,6 @@ namespace mysimulator {
         swap(mvNode().parent,present().parent);
 
         exchange(mvNode().workBranch,present().workBranch);
-        //exchange(reinterpret_cast<int&>(mvNode().workBranch),
-        //         reinterpret_cast<int&>(present().workBranch));
         swap(mvNode().left,present().left);
         swap(mvNode().right,present().right);
         if(IsValid(mvNode().left))  refer(mvNode().left().parent,mvNode);

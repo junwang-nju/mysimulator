@@ -27,7 +27,7 @@ namespace mysimulator {
   void copy(BTree<KeyType,ValueType>& B,
             const BTree<KeyType,ValueType>& cB) {
     release(B);
-    _copy(B.proot,cB.proot,
+    _copy(B.root.pdata,cB.root.pdata,
           static_cast<const BTreeNode<KeyType,ValueType>*>(NULL),Unassigned);
   }
 

@@ -11,9 +11,6 @@ target_link_libraries (test-matrix.run blas)
 add_executable (test-property-list.run test-property-list.cxx)
 target_link_libraries (test-property-list.run blas)
 
-add_executable (test-btree-node.run test-btree-node.cxx)
-target_link_libraries (test-btree-node.run blas)
-
 add_executable (test-btree.run test-btree.cxx)
 target_link_libraries (test-btree.run blas)
 

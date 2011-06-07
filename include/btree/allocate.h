@@ -12,5 +12,7 @@ namespace mysimulator {
   template <typename kT, typename vT>
   void imprint(BTree<kT,vT>& B, const BTree<kT,vT>& cB) { allocate(B); }
 
+}
+
 #endif
 

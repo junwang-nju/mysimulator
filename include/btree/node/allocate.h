@@ -3,6 +3,7 @@
 #define _Binary_Tree_Node_Allocate_H_
 
 #include "btree/node/interface.h"
+#include "referable-object/allocate.h"
 
 namespace mysimulator {
 

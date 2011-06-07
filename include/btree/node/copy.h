@@ -3,6 +3,7 @@
 #define _Binary_Tree_Node_Copy_H_
 
 #include "btree/node/interface.h"
+#include "referable-object/copy.h"
 
 namespace mysimulator {
 
