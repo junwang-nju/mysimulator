@@ -3,23 +3,26 @@
 #define _Binary_Tree_Copy_H_
 
 #include "btree/interface.h"
+#include "btree/node/allocate.h"
 
 namespace mysimulator {
 
   template <typename KeyType, typename ValueType>
-  void _copy(BTreeNode<KeyType,ValueType>*& C,
-             const BTreeNode<KeyType,ValueType>* present,
-             const BTreeNode<KeyType,ValueType>* parent,
+  void _copy(Object<BTreeNode<KeyType,ValueType> >& C,
+             const Object<BTreeNode<KeyType,ValueType> >& present,
+             const Object<BTreeNode<KeyType,ValueType> >& parent,
              const BranchName& pbranch) {
     release(C);
     if(IsValid(present)) {
-      C=new BTreeNode<KeyType,ValueType>;
-      allocate(*C);
-      copy(*C,*present);
-      C->parent=const_cast<BTreeNode<KeyType,ValueType>*>(parent);
-      C->workBranch=pbranch;
-      if(IsValid(present->left))  _copy(C->left,present->left,C,LeftBranch);
-      if(IsValid(present->right)) _copy(C->right,present->right,C,RightBranch);
+      allocate(C);
+      allocate(C());
+      copy(C,present);
+      refer(C().parent,parent);
+      C().workBranch=pbranch;
+      if(IsValid(present().left))
+        _copy(C().left,present().left,C,LeftBranch);
+      if(IsValid(present().right))
+        _copy(C().right,present().right,C,RightBranch);
     }
   }
 
@@ -27,8 +30,8 @@ namespace mysimulator {
   void copy(BTree<KeyType,ValueType>& B,
             const BTree<KeyType,ValueType>& cB) {
     release(B);
-    _copy(B.root.pdata,cB.root.pdata,
-          static_cast<const BTreeNode<KeyType,ValueType>*>(NULL),Unassigned);
+    _copy(B.root,cB.root,
+          Object<BTreeNode<KeyType,ValueType> >(),Unassigned);
   }
 
 }
