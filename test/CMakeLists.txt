@@ -31,9 +31,6 @@ target_link_libraries (test-free-space.run blas)
 add_executable(test-chain.run test-chain.cxx)
 target_link_libraries (test-chain.run blas)
 
-add_executable(test-chain-node.run test-chain-node.cxx)
-target_link_libraries (test-chain-node.run blas)
-
 add_executable(test-distance-calc.run test-distance-calc.cxx)
 target_link_libraries (test-distance-calc.run blas)
 
