@@ -11,7 +11,7 @@ namespace mysimulator {
   OutputBase& operator<<(OutputBase& os, const List<T>& L) {
     assert(IsValid(L));
     os<<L[0];
-    for(unsigned int k=0;k<L.ListSize();++k)  os<<Endl<<L[k];
+    for(unsigned int k=1;k<L.ListSize();++k)  os<<Endl<<L[k];
     return os;
   }
 

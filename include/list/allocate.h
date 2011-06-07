@@ -31,6 +31,8 @@ namespace mysimulator {
     Vector<unsigned int> sz(cL.ListSize());
     for(unsigned int i=0;i<sz.size;++i) sz[i]=cL.infra[i].size;
     allocate(L,sz);
+    for(unsigned int i=0;i<sz.size;++i)
+    for(unsigned int j=0;j<sz[i];j++) imprint(L[i][j],cL[i][j]);
   }
 
 }

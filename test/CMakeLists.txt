@@ -8,8 +8,8 @@ target_link_libraries (test-vector.run blas)
 add_executable (test-matrix.run test-matrix.cxx)
 target_link_libraries (test-matrix.run blas)
 
-add_executable (test-property-list.run test-property-list.cxx)
-target_link_libraries (test-property-list.run blas)
+add_executable (test-list.run test-list.cxx)
+target_link_libraries (test-list.run blas)
 
 add_executable (test-btree.run test-btree.cxx)
 target_link_libraries (test-btree.run blas)
