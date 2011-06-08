@@ -145,13 +145,35 @@ int main() {
   }
 
   cout<<endl;
+  cout<<"default output of UniqueParameter64Bit:\t";
   COut<<U<<Endl;
   CIn>>U;
+  cout<<"Input a double value:\t";
   COut<<U.value<double>()<<Endl;
   CIn>>U;
+  cout<<"Input int values to fill UniqueParameter64Bit:\t";
   cout<<U.i[0]<<"\t"<<U.i[1]<<endl;
 
+  cout<<endl;
   UniqueParameter128Bit UL,UL1;
+  UL.value<long double>()=-8.90232;
+  cout<<"Assign a long double Value to UniqueParameter128Bit:\t"<<UL.value<long double>()<<endl;
+  cout<<"Access through float form:\t"<<UL.value<float>()<<endl;
+  cout<<"Access through long long form:\t"<<UL.value<long long>()<<endl;
+  cout<<"Access through unsigned long long form:\t"<<UL.value<unsigned long long>()<<endl;
+  cout<<"Access through int form:\t"<<UL.value<int>()<<endl;
+  cout<<"Access through unsigned int form:\t"<<UL.value<unsigned int>()<<endl;
+  cout<<"Access through short form:\t"<<UL.value<short>()<<endl;
+  cout<<"Access through unsigned short form:\t"<<UL.value<unsigned short>()<<endl;
+  cout<<"Access through char form:\t"<<UL.value<char>()<<endl;
+  cout<<"Access through unsigned char form:\t"<<UL.value<unsigned char>()<<endl;
+  cout<<"Access through pointer form:\t"<<UL.pointer<double>()<<endl;
+  cout<<"Validity of UniqueParameter128Bit:\t"<<IsValid(UL)<<endl;
+  release(UL);
+  cout<<"Release does nothing!\t"<<UL.value<long double>()<<endl;
+  UniqueParameter128Bit UL3(122132ULL,2378008ULL);
+  UniqueParameter128Bit UL4(122.132,-23780.08);
+
   return 0;
 }
 
