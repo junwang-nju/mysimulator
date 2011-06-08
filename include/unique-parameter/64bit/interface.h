@@ -49,9 +49,9 @@ namespace mysimulator {
       return tvalue;
     }
     template <typename T>
-    T*& pointer() { return reinterpret_cast<T*&>(ptr); }
+    T*& pointer() { return reinterpret_cast<T*&>(ptr[0]); }
     template <typename T>
-    T* const& pointer() const { return reinterpret_cast<T* const&>(ptr); }
+    T* const& pointer() const { return reinterpret_cast<T* const&>(ptr[0]); }
 
   };
 

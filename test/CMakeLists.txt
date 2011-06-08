@@ -18,6 +18,7 @@ add_executable (test-hash-func.run test-hash-func.cxx)
 
 add_executable (test-unique-parameter.run test-unique-parameter.cxx)
 target_link_libraries (test-unique-parameter.run blas)
+set_source_files_properties (test-unique-parameter.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 
 add_executable (test-parameter-list.run test-parameter-list.cxx)
 target_link_libraries (test-parameter-list.run blas)
@@ -49,9 +50,9 @@ target_link_libraries (test-pair-storage.run blas)
 add_executable (test-distance-calc-pairbuffer.run test-distance-calc-pairbuffer.cxx)
 target_link_libraries (test-distance-calc-pairbuffer.run blas)
 
-add_executable (test-unique-parameter-128bit.run test-unique-parameter-128bit.cxx)
-target_link_libraries (test-unique-parameter-128bit.run blas)
-set_source_files_properties (test-unique-parameter-128bit.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
+#add_executable (test-unique-parameter-128bit.run test-unique-parameter-128bit.cxx)
+#target_link_libraries (test-unique-parameter-128bit.run blas)
+#set_source_files_properties (test-unique-parameter-128bit.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 
 add_executable (test-random-generator-mt-standard.run test-random-generator-mt-standard.cxx)
 target_link_libraries (test-random-generator-mt-standard.run blas)

@@ -32,12 +32,12 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void copy(void*& ptr, const T* tptr) {
+  void copy(void*& ptr, T* const& tptr) {
     assert(IsValid(tptr));
     ptr=reinterpret_cast<void*>(const_cast<T*>(tptr));
   }
   template <typename T>
-  void copy(T*& tptr, const void* ptr) {
+  void copy(T*& tptr, void* const& ptr) {
     assert(IsValid(ptr));
     tptr=reinterpret_cast<T*>(const_cast<void*>(ptr));
   }

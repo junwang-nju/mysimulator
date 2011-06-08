@@ -20,6 +20,8 @@ namespace mysimulator {
       if(im==VectorMode)  vflag=true;
       else if(im==ValueMode)  vflag=false;
       else Error("Unknown Mode for UniqueParameter-64bit Input!");
+      std::cout<<vflag<<std::endl;
+      std::cout<<flag<<std::endl;
       if((flag=='D')||(flag=='d'))        is>>P.d;
       else if((flag=='L')||(flag=='l'))   is>>P.ull;
       else if((flag=='F')||(flag=='f')) {

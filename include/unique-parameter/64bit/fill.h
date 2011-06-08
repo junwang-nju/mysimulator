@@ -4,6 +4,8 @@
 
 #include "unique-parameter/64bit/interface.h"
 #include "intrinsic-type/copy.h"
+#include <cstring>
+#include <iostream>
 
 namespace mysimulator {
 
@@ -109,6 +111,14 @@ namespace mysimulator {
            const_cast<long*>(&lOne));
   }
 
+  void fill(Vector<UniqueParameter64Bit>& v, const long long& d) {
+    assert(IsValid(v));
+    dcopy_(reinterpret_cast<long*>(&(v.size)),
+           reinterpret_cast<double*>(const_cast<long long*>(&d)),
+           const_cast<long*>(&lZero),reinterpret_cast<double*>(v()),
+           const_cast<long*>(&lOne));
+  }
+
   void fill(Vector<UniqueParameter64Bit>& v, const double& d) {
     fill(v,*reinterpret_cast<const unsigned long long*>(&d));
   }
@@ -138,6 +148,18 @@ namespace mysimulator {
     scopy_(&n,reinterpret_cast<float*>(const_cast<unsigned int*>(&u)),
            const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
+  }
+
+  void fill(Vector<UniqueParameter64Bit>& v, const short& s) {
+    UniqueParameter64Bit u;
+    fill(u,s);
+    fill(v,u);
+  }
+
+  void fill(Vector<UniqueParameter64Bit>& v, const unsigned short& s) {
+    UniqueParameter64Bit u;
+    fill(u,s);
+    fill(v,u);
   }
 
   void fill(Vector<UniqueParameter64Bit>& v, const unsigned char& c) {
