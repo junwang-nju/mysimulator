@@ -3,6 +3,7 @@
 #include "unique-parameter/64bit/fill.h"
 #include "unique-parameter/64bit/io.h"
 #include "unique-parameter/128bit/interface.h"
+#include "unique-parameter/128bit/fill.h"
 #include "io/console.h"
 using namespace mysimulator;
 
@@ -172,7 +173,141 @@ int main() {
   release(UL);
   cout<<"Release does nothing!\t"<<UL.value<long double>()<<endl;
   UniqueParameter128Bit UL3(122132ULL,2378008ULL);
+  cout<<"Initiate UniqueParameter128Bit with unsigned long long value:"<<endl;
+  cout<<"\t"<<UL3.ull[0]<<"\t"<<UL3.ull[1]<<endl;
   UniqueParameter128Bit UL4(122.132,-23780.08);
+  cout<<"Initiate UniqueParameter128Bit with double value:"<<endl;
+  cout<<"\t"<<UL3.d[0]<<"\t"<<UL3.d[1]<<endl;
+
+  cout<<endl;
+  copy(UL1,UL);
+  cout<<"UniqueParameter128Bit Copied from UniqueParameter128Bit:\t"<<UL1.value<unsigned long long>()<<endl;
+  copy(UL,34232e34L);
+  cout<<"UniqueParameter128Bit Copied from long double:\t"<<UL.value<long double>()<<endl;
+  copy(UL,109.78236);
+  cout<<"UniqueParameter128Bit Copied from double:\t"<<UL.value<unsigned long long>()<<endl;
+  copy(d,UL);
+  cout<<"double Copied from UniqueParameter128Bit:\t"<<d<<endl;
+  copy(UL,&d);
+  cout<<"UniqueParameter128Bit Copied from a double pointer:\t"<<UL.pointer<double>()<<endl;
+  copy(up,UL);
+  cout<<"unsigned long long Copied from pointer of UniqueParameter128Bit:\t"<<(*up)<<endl;
+  Vector<UniqueParameter128Bit> vUL(5),vUL1(6);
+  for(unsigned int i=0;i<vUL.size;i++) copy(vUL[i],i*(-234879.12));
+  copy(vUL1,vUL);
+  cout<<"UniqueParameter128Bit Vector Copied from UniqueParameter128Bit Vector:"<<endl;
+  for(unsigned int i=0;i<vUL1.size;i++)  cout<<"\t"<<i<<"\t"<<vUL1[i].value<double>()<<endl;
+  for(unsigned int i=0;i<vD.size;++i) vD[i]=i+901.89;
+  copy(vUL,vD);
+  cout<<"UniqueParameter128Bit Vector Copied from double Vector:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++)  cout<<"\t"<<i<<"\t"<<vUL[i].value<double>()<<endl;
+  Vector<long double> vLD(7);
+  for(unsigned int i=0;i<vLD.size;i++)  vLD[i]=-2242e98L;
+  copy(vUL,vLD);
+  cout<<"UniqueParameter128Bit Vector Copied from long double Vector:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++)  cout<<"\t"<<i<<"\t"<<vUL[i].value<long double>()<<endl;
+  for(unsigned int i=0;i<vL.size;++i) vL[i]=i*i*89L;
+  copy(vUL,vL);
+  cout<<"UniqueParameter128Bit Vector Copied from unsigned long long Vector:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++)  cout<<"\t"<<i<<"\t"<<vUL[i].value<unsigned long long>()<<endl;
+  for(unsigned int i=0;i<vI.size;i++) vI[i]=(i+1)*(i+3)*731;
+  copy(vUL,vI);
+  cout<<"UniqueParameter128Bit Vector Copied from int Vector:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++)  cout<<"\t"<<i<<"\t"<<vUL[i].value<int>()<<endl;
+  for(unsigned int i=0;i<vF.size;i++) vF[i]=(i+3.5)*7.3;
+  copy(vUL,vF);
+  cout<<"UniqueParameter64Bit Vector Copied from float Vector:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++)  cout<<"\t"<<i<<"\t"<<vUL[i].value<float>()<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) vUL[i].value<double>()=i+5.6788;
+  copy(vD,vUL);
+  cout<<"Copy UniqueParameter128Bit Vector to double Vector:"<<endl;
+  for(unsigned int i=0;i<vD.size;i++)  cout<<"\t"<<i<<"\t"<<vD[i]<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) vUL[i].value<long double>()=i*5.6788e23;
+  copy(vLD,vUL);
+  cout<<"Copy UniqueParameter128Bit Vector to long double Vector:"<<endl;
+  for(unsigned int i=0;i<vLD.size;i++)  cout<<"\t"<<i<<"\t"<<vLD[i]<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) vUL[i].value<unsigned long long>()=i+56788;
+  copy(vL,vUL);
+  cout<<"Copy UniqueParameter128Bit Vector to unsigned long long Vector:"<<endl;
+  for(unsigned int i=0;i<vL.size;i++)  cout<<"\t"<<i<<"\t"<<vL[i]<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) vUL[i].value<float>()=i+56.788f;
+  copy(vF,vUL);
+  cout<<"Copy UniqueParameter128Bit Vector to float Vector:"<<endl;
+  for(unsigned int i=0;i<vF.size;i++)  cout<<"\t"<<i<<"\t"<<vF[i]<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) vUL[i].value<int>()=i-5688;
+  copy(vI,vUL);
+  cout<<"Copy UniqueParameter128Bit Vector to float Vector:"<<endl;
+  for(unsigned int i=0;i<vI.size;i++)  cout<<"\t"<<i<<"\t"<<vI[i]<<endl;
+
+  cout<<endl;
+  fill(UL,12.34234e-18L);
+  cout<<"Fill UniqueParameter128Bit with long double:"<<endl;
+  cout<<"\t"<<UL.ld<<endl;
+  fill(UL,1.89034);
+  cout<<"Fill UniqueParameter128Bit with double:"<<endl;
+  for(unsigned int i=0;i<2;i++) cout<<"\t"<<UL.d[i]<<endl;
+  fill(UL,1.23224f);
+  cout<<"Fill UniqueParameter128Bit with float:"<<endl;
+  for(unsigned int i=0;i<4;i++) cout<<"\t"<<UL.f[i]<<endl;
+  fill(UL,23424ULL);
+  cout<<"Fill UniqueParameter128Bit with unsigned long long:"<<endl;
+  for(unsigned int i=0;i<2;i++) cout<<"\t"<<UL.ull[i]<<endl;
+  fill(UL,-23424LL);
+  cout<<"Fill UniqueParameter128Bit with long long:"<<endl;
+  for(unsigned int i=0;i<2;i++) cout<<"\t"<<UL.ll[i]<<endl;
+  fill(UL,1231);
+  cout<<"Fill UniqueParameter128Bit with int:"<<endl;
+  for(unsigned int i=0;i<4;i++) cout<<"\t"<<UL.i[i]<<endl;
+  fill(UL,2321231U);
+  cout<<"Fill UniqueParameter128Bit with unsigned int:"<<endl;
+  for(unsigned int i=0;i<4;i++) cout<<"\t"<<UL.u[i]<<endl;
+  fill(UL,static_cast<short>(219));
+  cout<<"Fill UniqueParameter128Bit with short:"<<endl;
+  for(unsigned int i=0;i<8;i++) cout<<"\t"<<UL.s[i]<<endl;
+  fill(UL,'A');
+  cout<<"Fill UniqueParameter128Bit with char:"<<endl;
+  for(unsigned int i=0;i<16;i++) cout<<"\t"<<UL.c[i]<<endl;
+  fill(UL,1.89034,-213812.23);
+  cout<<"Fill UniqueParameter128Bit with double:"<<endl;
+  for(unsigned int i=0;i<2;i++) cout<<"\t"<<UL.d[i]<<endl;
+  fill(UL,1.23224f,-2372e10f,237209.0f,19231.232f);
+  cout<<"Fill UniqueParameter128Bit with float:"<<endl;
+  for(unsigned int i=0;i<4;i++) cout<<"\t"<<UL.f[i]<<endl;
+  fill(UL,1231,-23772,43301,8321212);
+  cout<<"Fill UniqueParameter128Bit with int:"<<endl;
+  for(unsigned int i=0;i<4;i++) cout<<"\t"<<UL.i[i]<<endl;
+  fill(UL,static_cast<short>(219),static_cast<short>(-90),static_cast<short>(34),static_cast<short>(-121),static_cast<short>(321),static_cast<short>(1235),static_cast<short>(-719),static_cast<short>(-1328));
+  cout<<"Fill UniqueParameter128Bit with short:"<<endl;
+  for(unsigned int i=0;i<8;i++) cout<<"\t"<<UL.s[i]<<endl;
+  fill(UL,'A','C','V','R','Y','G','Q','W','#','&','e','>','*','H','8','?');
+  cout<<"Fill UniqueParameter128Bit with char:"<<endl;
+  for(unsigned int i=0;i<16;i++) cout<<"\t"<<UL.c[i]<<endl;
+  /*
+  fill(vU,102872123ULL);
+  cout<<"Fill UniqueParameter64Bit Vector with unsigned long long:"<<endl;
+  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].value<unsigned long long>()<<endl;
+  fill(vU,-9823.23e-5);
+  cout<<"Fill UniqueParameter64Bit Vector with double:"<<endl;
+  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].value<double>()<<endl;
+  fill(vU,U);
+  cout<<"Fill UniqueParameter64Bit Vector with UniqueParameter64Bit:"<<endl;
+  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].value<unsigned long long>()<<endl;
+  fill(vU,-9823.23e-10f);
+  cout<<"Fill UniqueParameter64Bit Vector with float:"<<endl;
+  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].f[0]<<"\t"<<vU[i].f[1]<<endl;
+  fill(vU,-24879);
+  cout<<"Fill UniqueParameter64Bit Vector with int:"<<endl;
+  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].i[0]<<"\t"<<vU[i].i[1]<<endl;
+  fill(vU,static_cast<short>(-8917));
+  cout<<"Fill UniqueParameter64Bit Vector with short:"<<endl;
+  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].s[0]<<"\t"<<vU[i].s[1]<<"\t"<<vU[i].s[2]<<"\t"<<vU[i].s[3]<<endl;
+  fill(vU,'W');
+  cout<<"Fill UniqueParameter64Bit Vector with char:"<<endl;
+  for(unsigned int i=0;i<vU.size;i++) {
+    for(unsigned int j=0;j<8;j++) cout<<"\t"<<vU[i].c[j];
+    cout<<endl;
+  }
+  */
 
   return 0;
 }
