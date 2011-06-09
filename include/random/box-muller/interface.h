@@ -3,6 +3,7 @@
 #define _Random_Box_Muller_Interface_H_
 
 #include "random/base/interface.h"
+#include <cmath>
 
 namespace mysimulator {
 
@@ -26,7 +27,11 @@ namespace mysimulator {
 
     void clearData() { urng.clearData(); isSecond=true; }
     virtual void init(const unsigned int seed) {
-      init(urng,seed);
+      urng.init(seed);
+      isSecond=false;
+    }
+    void init(const Vector<unsigned int>& seed) {
+      urng.init(seed);
       isSecond=false;
     }
     const double _drand() {

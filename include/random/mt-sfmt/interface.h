@@ -112,7 +112,7 @@ namespace mysimulator {
     void init(const unsigned int* key, const unsigned int len,
               const unsigned int off=uZero, const unsigned int step=uOne) {
       unsigned int i,j,g,count,r,tmid,*p=s[0].u;
-      memset(s.pdata,0x8B,NStatusByte);
+      memset(s,0x8B,NStatusByte);
       count=(len+1>N32?len+1:N32);
       r=_Op1(p[0]^p[Mid]^p[N32-1]);
       p[Mid]+=r;
@@ -262,6 +262,8 @@ namespace mysimulator {
       _GenAll(reinterpret_cast<UniqueParameter128Bit*>(array),size>>2);
       idx=N32;
     }
+
+    void fillFast(Vector<unsigned int>& v) { fillFast(v.pdata,v.size); }
 
   };
 

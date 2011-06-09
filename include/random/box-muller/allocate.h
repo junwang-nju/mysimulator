@@ -10,7 +10,12 @@ namespace mysimulator {
   void allocate(BoxMuller<UniformRNG>& G) {
     release(G);
     allocate(G.urng);
-    isSecond=true;
+    G.isSecond=true;
+  }
+
+  template <typename UniformRNG>
+  void imprint(BoxMuller<UniformRNG>& G, const BoxMuller<UniformRNG>&) {
+    allocate(G);
   }
 
 }

@@ -4,6 +4,7 @@
 
 #include "random/mt-sfmt/interface.h"
 #include "unique-parameter/128bit/copy.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 

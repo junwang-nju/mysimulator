@@ -3,7 +3,7 @@
 #define _Random_MT_Standard_Copy_H_
 
 #include "random/mt-standard/interface.h"
-#include "unique-parameter/128bit/copy.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 

@@ -3,15 +3,16 @@
 #define _Random_MT_SFMT_InputOutput_H_
 
 #include "random/mt-sfmt/interface.h"
-#include "io/input/interface.h"
-#include "io/output/interface.h"
+#include "unique-parameter/128bit/io.h"
 
 namespace mysimulator {
 
   template <unsigned int LFac>
   OutputBase& operator<<(OutputBase& os, const MT_SFMT<LFac>& G) {
     assert(IsValid(G));
-    os<<LFac<<"\t"<<G.s<<"\t"<<G.idx;
+    os<<LFac;
+    for(unsigned int i=0;i<G.NStatus;++i) os<<"\t"<<G.s[i];
+    os<<"\t"<<G.idx;
     return os;
   }
 
@@ -21,7 +22,8 @@ namespace mysimulator {
     unsigned int rFac;
     is>>rFac;
     if(rFac!=LFac)  Error("Incompatible Factor for MT_dSFMT!");
-    is>>G.s>>G.idx;
+    for(unsigned int i=0;i<G.NStatus;++i) is>>G.s[i];
+    is>>G.idx;
     return is;
   }
 

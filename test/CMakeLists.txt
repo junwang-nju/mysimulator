@@ -50,24 +50,9 @@ target_link_libraries (test-pair-storage.run blas)
 add_executable (test-distance-calc-pairbuffer.run test-distance-calc-pairbuffer.cxx)
 target_link_libraries (test-distance-calc-pairbuffer.run blas)
 
-#add_executable (test-unique-parameter-128bit.run test-unique-parameter-128bit.cxx)
-#target_link_libraries (test-unique-parameter-128bit.run blas)
-#set_source_files_properties (test-unique-parameter-128bit.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
-
-add_executable (test-random-generator-mt-standard.run test-random-generator-mt-standard.cxx)
-target_link_libraries (test-random-generator-mt-standard.run blas)
-
-add_executable (test-random-generator-mt-dsfmt-sse2.run test-random-generator-mt-dsfmt.cxx)
-set_source_files_properties (test-random-generator-mt-dsfmt.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
-target_link_libraries (test-random-generator-mt-dsfmt-sse2.run blas)
-
-add_executable (test-random-generator-mt-sfmt-sse2.run test-random-generator-mt-sfmt.cxx)
-set_source_files_properties (test-random-generator-mt-sfmt.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
-target_link_libraries (test-random-generator-mt-sfmt-sse2.run blas)
-
-add_executable (test-random-generator-boxmuller-sse2.run test-random-generator-boxmuller.cxx)
-set_source_files_properties (test-random-generator-boxmuller.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
-target_link_libraries (test-random-generator-boxmuller-sse2.run blas)
+add_executable (test-random.run test-random.cxx)
+target_link_libraries (test-random.run blas)
+set_source_files_properties (test-random.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 
 add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
 target_link_libraries (test-interaction-pairwise-base.run blas)

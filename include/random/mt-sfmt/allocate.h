@@ -7,9 +7,10 @@
 namespace mysimulator {
 
   template <unsigned int LFac>
-  void allocate(MT_SFMT<LFac>& G) {
-    G.init(5489U);
-  }
+  void allocate(MT_SFMT<LFac>& G) { G.init(5489U); }
+
+  template <unsigned int LFac>
+  void imprint(MT_SFMT<LFac>& G, const MT_SFMT<LFac>&) { allocate(G); }
 
 }
 

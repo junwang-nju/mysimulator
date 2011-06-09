@@ -3,7 +3,6 @@
 #define _Random_MT_DSFMT_Interface_H_
 
 #include "unique-parameter/128bit/copy.h"
-#include "unique-parameter/128bit/fill.h"
 #include "random/base/interface.h"
 #include "random/mt-dsfmt/bound/convert.h"
 
@@ -114,9 +113,7 @@ namespace mysimulator {
               const unsigned int off=uZero, const int step=iOne) {
       assert(IsValid(key));
       unsigned int *p=s[0].u;
-      UniqueParameter128Bit tmp;
-      fill(tmp,0x8B);
-      fill(s,tmp);
+      memset(s,0x8B,16*NStatus);
       unsigned int count=(nkey+1>NStatusU32?nkey+1:NStatusU32);
       unsigned int tmid=Mid%NStatusU32;
       unsigned int i,j,g,r;
