@@ -227,12 +227,6 @@ namespace mysimulator {
 
   void fill(UniqueParameter128Bit& P, const long double& ld) { copy(P.ld,ld); }
 
-}
-
-#include "vector/interface.h"
-
-namespace mysimulator {
-
   void fill(Vector<UniqueParameter128Bit>& v, const UniqueParameter128Bit& P) {
     assert(IsValid(v));
     dcopy_(reinterpret_cast<long*>(const_cast<unsigned int*>(&(v.size))),
@@ -243,6 +237,22 @@ namespace mysimulator {
            reinterpret_cast<double*>(const_cast<UniqueParameter128Bit*>(&P))+1,
            const_cast<long*>(&lZero),reinterpret_cast<double*>(v())+1,
            const_cast<long*>(&lTwo));
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const long double& d) {
+    assert(IsValid(v));
+    scopy_(reinterpret_cast<long*>(const_cast<unsigned int*>(&(v.size))),
+           reinterpret_cast<float*>(const_cast<long double*>(&d)),
+           const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lFour));
+    scopy_(reinterpret_cast<long*>(const_cast<unsigned int*>(&(v.size))),
+           reinterpret_cast<float*>(const_cast<long double*>(&d))+1,
+           const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lFour));
+    scopy_(reinterpret_cast<long*>(const_cast<unsigned int*>(&(v.size))),
+           reinterpret_cast<float*>(const_cast<long double*>(&d))+2,
+           const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
+           const_cast<long*>(&lFour));
   }
 
   void fill(Vector<UniqueParameter128Bit>& v, const double& d) {
@@ -259,6 +269,22 @@ namespace mysimulator {
            reinterpret_cast<float*>(v()),const_cast<long*>(&lOne));
   }
 
+  void fill(Vector<UniqueParameter128Bit>& v, const unsigned long long& d) {
+    assert(IsValid(v));
+    long n=v.size+v.size;
+    dcopy_(&n,reinterpret_cast<double*>(const_cast<unsigned long long*>(&d)),
+           const_cast<long*>(&lZero),
+           reinterpret_cast<double*>(v()),const_cast<long*>(&lOne));
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const long long& d) {
+    assert(IsValid(v));
+    long n=v.size+v.size;
+    dcopy_(&n,reinterpret_cast<double*>(const_cast<long long*>(&d)),
+           const_cast<long*>(&lZero),
+           reinterpret_cast<double*>(v()),const_cast<long*>(&lOne));
+  }
+
   void fill(Vector<UniqueParameter128Bit>& v, const int& i) {
     assert(IsValid(v));
     long n=v.size*4;
@@ -273,6 +299,18 @@ namespace mysimulator {
     scopy_(&n,reinterpret_cast<float*>(const_cast<unsigned int*>(&u)),
            const_cast<long*>(&lZero),reinterpret_cast<float*>(v()),
            const_cast<long*>(&lOne));
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const unsigned short& s) {
+    UniqueParameter128Bit u;
+    fill(u,s);
+    fill(v,u);
+  }
+
+  void fill(Vector<UniqueParameter128Bit>& v, const short& s) {
+    UniqueParameter128Bit u;
+    fill(u,s);
+    fill(v,u);
   }
 
   void fill(Vector<UniqueParameter128Bit>& v, const char& c) {

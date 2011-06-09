@@ -2,8 +2,8 @@
 #include "unique-parameter/64bit/copy.h"
 #include "unique-parameter/64bit/fill.h"
 #include "unique-parameter/64bit/io.h"
-#include "unique-parameter/128bit/interface.h"
 #include "unique-parameter/128bit/fill.h"
+#include "unique-parameter/128bit/io.h"
 #include "io/console.h"
 using namespace mysimulator;
 
@@ -282,32 +282,59 @@ int main() {
   fill(UL,'A','C','V','R','Y','G','Q','W','#','&','e','>','*','H','8','?');
   cout<<"Fill UniqueParameter128Bit with char:"<<endl;
   for(unsigned int i=0;i<16;i++) cout<<"\t"<<UL.c[i]<<endl;
-  /*
-  fill(vU,102872123ULL);
-  cout<<"Fill UniqueParameter64Bit Vector with unsigned long long:"<<endl;
-  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].value<unsigned long long>()<<endl;
-  fill(vU,-9823.23e-5);
-  cout<<"Fill UniqueParameter64Bit Vector with double:"<<endl;
-  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].value<double>()<<endl;
-  fill(vU,U);
-  cout<<"Fill UniqueParameter64Bit Vector with UniqueParameter64Bit:"<<endl;
-  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].value<unsigned long long>()<<endl;
-  fill(vU,-9823.23e-10f);
-  cout<<"Fill UniqueParameter64Bit Vector with float:"<<endl;
-  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].f[0]<<"\t"<<vU[i].f[1]<<endl;
-  fill(vU,-24879);
-  cout<<"Fill UniqueParameter64Bit Vector with int:"<<endl;
-  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].i[0]<<"\t"<<vU[i].i[1]<<endl;
-  fill(vU,static_cast<short>(-8917));
-  cout<<"Fill UniqueParameter64Bit Vector with short:"<<endl;
-  for(unsigned int i=0;i<vU.size;i++)   cout<<"\t"<<vU[i].s[0]<<"\t"<<vU[i].s[1]<<"\t"<<vU[i].s[2]<<"\t"<<vU[i].s[3]<<endl;
-  fill(vU,'W');
-  cout<<"Fill UniqueParameter64Bit Vector with char:"<<endl;
-  for(unsigned int i=0;i<vU.size;i++) {
-    for(unsigned int j=0;j<8;j++) cout<<"\t"<<vU[i].c[j];
+  fill(vUL,102872123ULL);
+  cout<<"Fill UniqueParameter128Bit Vector with unsigned long long:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) {
+    for(unsigned int j=0;j<2;j++) cout<<"\t"<<vUL[i].ull[j];
     cout<<endl;
   }
-  */
+  fill(vUL,-9823.23e-5);
+  cout<<"Fill UniqueParameter128Bit Vector with double:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) {
+    for(unsigned int j=0;j<2;j++) cout<<"\t"<<vUL[i].d[j];
+    cout<<endl;
+  }
+  fill(vUL,UL);
+  cout<<"Fill UniqueParameter128Bit Vector with UniqueParameter128Bit:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) {
+    for(unsigned int j=0;j<2;j++) cout<<"\t"<<vUL[i].d[j];
+    cout<<endl;
+  }
+  fill(vUL,-9823.23e-10f);
+  cout<<"Fill UniqueParameter128Bit Vector with float:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) {
+    for(unsigned int j=0;j<4;j++) cout<<"\t"<<vUL[i].f[j];
+    cout<<endl;
+  }
+  fill(vUL,-24879);
+  cout<<"Fill UniqueParameter128Bit Vector with int:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) {
+    for(unsigned int j=0;j<4;j++) cout<<"\t"<<vUL[i].i[j];
+    cout<<endl;
+  }
+  fill(vUL,static_cast<short>(-8917));
+  cout<<"Fill UniqueParameter128Bit Vector with short:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) {
+    for(unsigned int j=0;j<8;j++) cout<<"\t"<<vUL[i].s[j];
+    cout<<endl;
+  }
+  fill(vUL,'W');
+  cout<<"Fill UniqueParameter128Bit Vector with char:"<<endl;
+  for(unsigned int i=0;i<vUL.size;i++) {
+    for(unsigned int j=0;j<16;j++) cout<<"\t"<<vUL[i].c[j];
+    cout<<endl;
+  }
+
+  cout<<endl;
+  cout<<"default output of UniqueParameter128Bit:\t";
+  COut<<UL<<Endl;
+  CIn>>UL;
+  cout<<"Input a long double value:\t";
+  COut<<UL.value<long double>()<<Endl;
+  CIn>>UL;
+  cout<<"Input int values to fill UniqueParameter128Bit:\t";
+  for(unsigned int j=0;j<4;j++) cout<<"\t"<<UL.i[j];
+  cout<<endl;
 
   return 0;
 }
