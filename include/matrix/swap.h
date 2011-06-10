@@ -4,6 +4,8 @@
 
 #include "matrix/interface.h"
 #include "list/swap.h"
+#include "referable-object/swap.h"
+#include "generic/exchange.h"
 
 namespace mysimulator {
 
@@ -11,7 +13,7 @@ namespace mysimulator {
   void swap(Matrix<T>& Ma, Matrix<T>& Mb) {
     swap(Ma.property,Mb.property);
     swap(Ma.other,Mb.other);
-    swap(Ma.GetFunc,Mb.GetFunc);
+    exchange(Ma.GetFunc,Mb.GetFunc);
     swap(static_cast<List<T>&>(Ma),static_cast<List<T>&>(Mb));
   }
 

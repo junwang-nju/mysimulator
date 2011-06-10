@@ -26,7 +26,7 @@ namespace mysimulator {
           M.property[MatrixNumberColumns]:cM.property[MatrixNumberColumns]));
     assert(mrb+nrow*mrs<=M.property[MatrixNumberRows]);
     assert(crb+nrow*crs<=cM.property[MatrixNumberRows]);
-    assert(mcb+ncol*mcs<=M.property[MatrixNumberColumns])
+    assert(mcb+ncol*mcs<=M.property[MatrixNumberColumns]);
     assert(ccb+ncol*ccs<=cM.property[MatrixNumberColumns]);
     for(unsigned int i=0,mr=mrb,cr=crb;i<nrow;++i,mr+=mrs,cr+=crs)
     for(unsigned int j=0,mc=mcb,cc=ccb;j<ncol;++j,mc+=mcs,cc+=ccs)

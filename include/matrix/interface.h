@@ -14,7 +14,7 @@ namespace mysimulator {
     typedef List<T>     ParentType;
 
     typedef T& (*GetFuncType)(Vector<Vector<T> >&,
-                              const unsigned int,const unsigned int,T&);
+                              const unsigned int,const unsigned int,T* const&);
 
     Vector<unsigned int> property;
     Object<T> other;
@@ -35,10 +35,11 @@ namespace mysimulator {
       release(static_cast<ParentType&>(*this));
     }
     T& operator()(const unsigned int I, const unsigned int J) {
-      return GetFunc(this->infra,I,J,other());
+      return GetFunc(this->infra,I,J,other.pdata);
     }
     const T& operator()(const unsigned int I, const unsigned int J) const {
-      return GetFunc(this->infra,I,J,other());
+      return GetFunc(const_cast<Vector<Vector<T> >&>(this->infra),I,J,
+                     other.pdata);
     }
 
   };

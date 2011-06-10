@@ -11,7 +11,8 @@
 #include "matrix/triangle/triangle-part-name.h"
 #include "matrix/triangle/data-pattern-name.h"
 #include "matrix/triangle/get-func.h"
-#include "vector/allocate.h"
+#include "list/allocate.h"
+#include "referable-object/allocate.h"
 
 namespace mysimulator {
 
@@ -43,32 +44,62 @@ namespace mysimulator {
     if(M.property[MatrixActualOrder]==OrderC) {
       if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
         M.property[MatrixActualDataPattern]=PatternCUpper;
-        M.GetFunc=SFlag?(DFlag?MatrixTri_Get4CUSD<T>:MatrixTri_Get4CUSN<T>):
-                        (DFlag?MatrixTri_Get4CUAD<T>:MatrixTri_Get4CUAN<T>);
+        if(SFlag) {
+          if(DFlag) M.GetFunc=MatrixTri_Get4CUSD<T>;
+          else      M.GetFunc=MatrixTri_Get4CUSN<T>;
+        } else {
+          if(DFlag) M.GetFunc=MatrixTri_Get4CUAD<T>;
+          else      M.GetFunc=MatrixTri_Get4CUAN<T>;
+        }
       } else if(M.property[MatrixActualTrianglePart]==LowerTriangle) {
         M.property[MatrixActualDataPattern]=PatternFortranUpper;
-        M.GetFunc=SFlag?(DFlag?MatrixTri_Get4CLSD<T>:MatrixTri_Get4CLSN<T>):
-                        (DFlag?MatrixTri_Get4CLAD<T>:MatrixTri_Get4CLAN<T>);
+        if(SFlag) {
+          if(DFlag) M.GetFunc=MatrixTri_Get4CLSD<T>;
+          else      M.GetFunc=MatrixTri_Get4CLSN<T>;
+        } else {
+          if(DFlag) M.GetFunc=MatrixTri_Get4CLAD<T>;
+          else      M.GetFunc=MatrixTri_Get4CLAN<T>;
+        }
       } else Error("Improper Triangle Part to allocate Triangle Matrix!");
     } else if(M.property[MatrixActualOrder]==OrderFortran) {
       if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
         M.property[MatrixActualDataPattern]=PatternFortranUpper;
-        M.GetFunc=SFlag?(DFlag?MatrixTri_Get4FUSD<T>:MatrixTri_Get4FUSN<T>):
-                        (DFlag?MatrixTri_Get4FUAD<T>:MatrixTri_Get4FUAN<T>);
+        if(SFlag) {
+          if(DFlag) M.GetFunc=MatrixTri_Get4FUSD<T>;
+          else      M.GetFunc=MatrixTri_Get4FUSN<T>;
+        } else {
+          if(DFlag) M.GetFunc=MatrixTri_Get4FUAD<T>;
+          else      M.GetFunc=MatrixTri_Get4FUAN<T>;
+        }
       } else if(M.property[MatrixActualTrianglePart]==LowerTriangle) {
         M.property[MatrixActualDataPattern]=PatternCUpper;
-        M.GetFunc=SFlag?(DFlag?MatrixTri_Get4FLSD<T>:MatrixTri_Get4FLSN<T>):
-                        (DFlag?MatrixTri_Get4FLAD<T>:MatrixTri_Get4FLAN<T>);
+        if(SFlag) {
+          if(DFlag) M.GetFunc=MatrixTri_Get4FLSD<T>;
+          else      M.GetFunc=MatrixTri_Get4FLSN<T>;
+        } else {
+          if(DFlag) M.GetFunc=MatrixTri_Get4FLAD<T>;
+          else      M.GetFunc=MatrixTri_Get4FLAN<T>;
+        }
       } else Error("Improper Triangle Part to allocate Triangle Matrix!");
     } else if(M.property[MatrixActualOrder]==OrderDiagonal) {
       if(M.property[MatrixActualTrianglePart]==UpperTriangle) {
         M.property[MatrixActualDataPattern]=PatternDiagonal;
-        M.GetFunc=SFlag?(DFlag?MatrixTri_Get4DUSD<T>:MatrixTri_Get4DUSN<T>):
-                        (DFlag?MatrixTri_Get4DUAD<T>:MatrixTri_Get4DUAN<T>);
+        if(SFlag) {
+          if(DFlag) M.GetFunc=MatrixTri_Get4DUSD<T>;
+          else      M.GetFunc=MatrixTri_Get4DUSN<T>;
+        } else {
+          if(DFlag) M.GetFunc=MatrixTri_Get4DUAD<T>;
+          else      M.GetFunc=MatrixTri_Get4DUAN<T>;
+        }
       } else if(M.property[MatrixActualTrianglePart]==LowerTriangle) {
         M.property[MatrixActualDataPattern]=PatternDiagonal;
-        M.GetFunc=SFlag?(DFlag?MatrixTri_Get4DLSD<T>:MatrixTri_Get4DLSN<T>):
-                        (DFlag?MatrixTri_Get4DLAD<T>:MatrixTri_Get4DLAN<T>);
+        if(SFlag) {
+          if(DFlag) M.GetFunc=MatrixTri_Get4DLSD<T>;
+          else      M.GetFunc=MatrixTri_Get4DLSN<T>;
+        } else {
+          if(DFlag) M.GetFunc=MatrixTri_Get4DLAD<T>;
+          else      M.GetFunc=MatrixTri_Get4DLAN<T>;
+        }
       } else Error("Improper Triangle Part to allocate Triangle Matrix!");
     } else Error("Improper Actual Data Order to allocate Triangle Matrix!");
     unsigned int rdim=dim-(DFlag?0:1);
@@ -88,7 +119,10 @@ namespace mysimulator {
     for(unsigned int i=1;i<rdim;++i)
       sz[i]=static_cast<unsigned int>(static_cast<int>(sz[i-1])+szshift);
     allocate(static_cast<List<T>&>(M),sz);
-    if(SFlag&&DFlag)  allocate(M.other);
+    if((!SFlag)||(!DFlag))  {
+      allocate(M.other);
+      allocate(M.other());
+    }
   }
 
 }

@@ -8,7 +8,7 @@
 #include "matrix/type-name.h"
 #include "matrix/property/op.h"
 #include "matrix/rectangle/get-func.h"
-#include "vector/allocate.h"
+#include "list/allocate.h"
 #include "vector/fill.h"
 
 namespace mysimulator {
@@ -33,6 +33,9 @@ namespace mysimulator {
       fill(sz,nc);
       M.GetFunc=MatrixRect_Get4C<T>;
     } else if(M.property[MatrixActualOrder]==OrderFortran) {
+      allocate(sz,nc);
+      fill(sz,nr);
+      M.GetFunc=MatrixRect_Get4F<T>;
     } else Error("Improper Data Order in allocating Rectangle Matrix!");
     allocate(static_cast<List<T>&>(M),sz);
   }

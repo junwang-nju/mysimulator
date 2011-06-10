@@ -4,6 +4,7 @@
 
 #include "matrix/storage/interface.h"
 #include "matrix/allocate.h"
+#include "matrix/storage/item/allocate.h"
 
 namespace mysimulator {
 
@@ -12,6 +13,12 @@ namespace mysimulator {
     release(S);
     allocate(S.data,MatrixTriangle,n,OrderC,Transposed,UpperTriangle,
              true,false);
+    S.status()=1;
+  }
+
+  template <typename T>
+  void imprint(MatrixStorage<T>& S, const MatrixStorage<T>& sS) {
+    imprint(S.data,sS.data);
     S.status()=1;
   }
 

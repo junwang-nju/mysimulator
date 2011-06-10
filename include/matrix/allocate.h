@@ -4,6 +4,7 @@
 
 #include "matrix/rectangle/allocate.h"
 #include "matrix/triangle/allocate.h"
+#include "vector/copy.h"
 #include <cstdarg>
 
 namespace mysimulator {

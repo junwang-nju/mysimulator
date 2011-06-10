@@ -9,6 +9,11 @@ namespace mysimulator {
   template <typename T>
   void allocate(MatrixStorageItem<T>& U) { release(U); }
 
+  template <typename T>
+  void imprint(MatrixStorageItem<T>& U,const MatrixStorageItem<T>&) {
+    allocate(U);
+  }
+
 }
 
 #endif
