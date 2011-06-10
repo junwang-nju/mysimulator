@@ -22,7 +22,10 @@ namespace mysimulator {
     ~LatticeMotif() { clearData(); }
 
     void clearData() { release(bond); release(coordinate); }
-    const unsigned int Dimension() const { return coordinate[0].size; }
+    const unsigned int Dimension() const {
+      assert(IsValid(coordinate));
+      return coordinate[0].size;
+    }
 
   };
 
