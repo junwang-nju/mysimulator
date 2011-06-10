@@ -3,6 +3,7 @@
 #define _Map_Allocate_H_
 
 #include "map/interface.h"
+#include "chain/allocate.h"
 
 namespace mysimulator {
 

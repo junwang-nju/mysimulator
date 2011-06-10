@@ -10,7 +10,7 @@ namespace mysimulator {
   void allocate(MapHash<nhash>& H) { H.clearData(); }
 
   template <unsigned int nhash>
-  void imprint(MapHash<nhash>& H, MapHash<nhash>& cH) { allocate(H); }
+  void imprint(MapHash<nhash>& H, const MapHash<nhash>&) { allocate(H); }
 
 }
 

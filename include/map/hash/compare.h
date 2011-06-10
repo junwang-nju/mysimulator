@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <unsigned int nhash1, unsigned int nhash2>
-  int IsHashSame(const MapHash<nhash1>& H1, const MapHash<nhash2>& H2) {
+  int compare(const MapHash<nhash1>& H1, const MapHash<nhash2>& H2) {
     if(nhash1>nhash2)       return 1;
     else if(nhash1<nhash2)  return -1;
     else

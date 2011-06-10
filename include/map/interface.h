@@ -2,11 +2,13 @@
 #ifndef _Map_Interface_H_
 #define _Map_Interface_H_
 
-#include "map/element/interface.h"
 #include "btree/interface.h"
 #include "chain/interface.h"
+#include "chain/node/copy.h"
 #include "vector/interface.h"
-#include "map/hash/allocate.h"
+#include "map/element/allocate.h"
+#include "map/element/copy.h"
+#include "map/hash/compare.h"
 
 namespace mysimulator {
 
@@ -32,6 +34,7 @@ namespace mysimulator {
       release(data);
     }
     void update() {
+      for(unsigned int i=0;i<0xFFFF;++i)  release(mesh[i]);
       unsigned int n;
       Object<ChainNode<ElementType> >  nd;
       Object<ElementType> e;
@@ -40,34 +43,34 @@ namespace mysimulator {
         refer(e,nd().content);
         e().update();
         n=(e().hash(0)&0xFFFF0000)>>16;
-        mesh[n].insert(e().hash,nd());
+        mesh[n].insert(e().hash,nd(),Referred,Referred);
         refer(nd,nd().child);
       }
     }
     const ValueType* _find(const ElementType& E) {
       unsigned int n=(E.hash(0)&0xFFFF0000U)>>16;
-      ChainNode<ElementType>* pnd=mesh[n].get(E.hash);
-      return pnd==NULL?NULL:&(pnd->content().value);
+      ChainNode<ElementType>* pnd=mesh[n].getValue(E.hash);
+      return pnd==NULL?NULL:&(pnd->content().value());
     }
     const ValueType* find(const KeyType& key) {
       MapHash<3>  hash;
       allocate(hash);
       key2hash(key,hash);
       unsigned int n=(hash(0)&0xFFFF0000U)>>16;
-      const ChainNode<ElementType>* pnd=mesh[n].get(hash);
-      return pnd==NULL?NULL:&(pnd->content().value);
+      const ChainNode<ElementType>* pnd=mesh[n].getValue(hash);
+      return pnd==NULL?NULL:&(pnd->content().value());
     }
     bool IsHaveKey(const KeyType& key) { return find(key)!=NULL; }
 
     void add(const MapElement<KeyType,ValueType>& E,
              const ObjectStateName& flag=Referred) {
-      assert(!IsHaveKey(E.key));
+      assert(!IsHaveKey(E.key()));
       data.append(E,flag);
       Object<ChainNode<ElementType> > now;
       refer(now,data.head.parent);
       now().content().update();
       unsigned int n=(now().content().hash(0)&0xFFFF0000U)>>16;
-      mesh[n].insert(now().content().hash,now());
+      mesh[n].insert(now().content().hash,now(),Referred,Referred);
     }
     void add(const KeyType& key, const ValueType& value,
              const ObjectStateName& kflag=Referred,
@@ -85,7 +88,7 @@ namespace mysimulator {
       copy(e().value,value,vflag);
       e().update();
       unsigned int n=(e().hash(0)&0xFFFF0000U)>>16;
-      mesh[n].insert(e().hash,now());
+      mesh[n].insert(e().hash,now(),Referred,Referred);
     }
 
     void remove(const KeyType& key) {
@@ -93,10 +96,11 @@ namespace mysimulator {
       allocate(hash);
       key2hash(key,hash);
       unsigned int n=(hash(0)&0xFFFF0000U)>>16;
-      const ChainNode<ElementType> *pnd=mesh[n].get(hash);
-      if(pnd==NULL) return;
-      mesh[n]._remove(hash);
-      data.remove(pnd);
+      const BTreeNode<MapHash<3>,ChainNode<ElementType> >* pN=
+        mesh[n]._getNode(hash);
+      ChainNode<ElementType> *pnd=(pN==NULL?NULL:pN->value.pdata);
+      mesh[n]._remove(pN);
+      if(pnd!=NULL) data._remove(pnd);
     }
 
   };

@@ -47,6 +47,9 @@ target_link_libraries (test-distance-calc-pairbuffer.run blas)
 add_executable (test-referable-object.run test-referable-object.cxx)
 target_link_libraries (test-referable-object.run blas)
 
+add_executable (test-map.run test-map.cxx)
+target_link_libraries (test-map.run blas)
+
 add_executable (test-random.run test-random.cxx)
 target_link_libraries (test-random.run blas)
 set_source_files_properties (test-random.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")

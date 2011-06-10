@@ -3,6 +3,7 @@
 #define _Map_Element_Interface_H_
 
 #include "map/hash/build.h"
+#include "referable-object/interface.h"
 
 namespace mysimulator {
 
@@ -11,8 +12,8 @@ namespace mysimulator {
 
     typedef MapElement<KeyType,ValueType>   Type;
 
-    KeyType key;
-    ValueType value;
+    Object<KeyType> key;
+    Object<ValueType> value;
     MapHash<3>  hash;
 
     MapElement() : key(), value(), hash() {}
@@ -28,12 +29,12 @@ namespace mysimulator {
       release(value);
       release(hash);
     }
-    void update() { key2hash(key,hash); }
+    void update() { key2hash(key(),hash); }
 
   };
 
   template <typename ktype, typename vtype>
-  void IsValid(const MapElement<ktype,vtype>& E) {
+  bool IsValid(const MapElement<ktype,vtype>& E) {
     return IsValid(E.key)&&IsValid(E.value)&&IsValid(E.hash);
   }
   template <typename ktype, typename vtype>
