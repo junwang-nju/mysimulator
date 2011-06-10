@@ -26,7 +26,7 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void imprint(const T& value, const Object<T>& cO) {
+  void imprint(T& value, const Object<T>& cO) {
     assert(IsValid(cO));
     imprint(value,cO());
   }

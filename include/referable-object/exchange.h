@@ -3,7 +3,7 @@
 #define _Referable_Object_Exchange_H_
 
 #include "referable-object/interface.h"
-#include "intrinsic-type/exchange.h"
+#include "generic/exchange.h"
 
 namespace mysimulator {
 

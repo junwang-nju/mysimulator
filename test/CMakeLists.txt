@@ -38,17 +38,14 @@ target_link_libraries (test-periodic-box.run blas)
 add_executable (test-distance-calc-simplebuffer.run test-distance-calc-simplebuffer.cxx)
 target_link_libraries (test-distance-calc-simplebuffer.run blas)
 
-add_executable (test-pair-item.run test-pair-item.cxx)
-target_link_libraries (test-pair-item.run blas)
-
 add_executable (test-displacement-calc-direct.run test-displacement-calc-direct.cxx)
 target_link_libraries (test-displacement-calc-direct.run blas)
 
-add_executable (test-pair-storage.run test-pair-storage.cxx)
-target_link_libraries (test-pair-storage.run blas)
-
 add_executable (test-distance-calc-pairbuffer.run test-distance-calc-pairbuffer.cxx)
 target_link_libraries (test-distance-calc-pairbuffer.run blas)
+
+add_executable (test-referable-object.run test-referable-object.cxx)
+target_link_libraries (test-referable-object.run blas)
 
 add_executable (test-random.run test-random.cxx)
 target_link_libraries (test-random.run blas)
