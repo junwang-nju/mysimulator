@@ -14,6 +14,10 @@ namespace mysimulator {
     allocate(C.motifValue,LatticeMotifChain<LS,Dim,L>::NumMotifs);
   }
 
+  template <LatticeShapeName LS, unsigned int Dim, unsigned int L>
+  void imprint(LatticeMotifChain<LS,Dim,L>& C,
+               const LatticeMotifChain<LS,Dim,L>&) { allocate(C); }
+
 }
 
 #endif

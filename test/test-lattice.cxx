@@ -2,6 +2,7 @@
 #include "lattice/motif/allocate.h"
 #include "lattice/motif/copy.h"
 #include "lattice/motif/build.h"
+#include "lattice/motif-chain/allocate.h"
 using namespace mysimulator;
 
 #include <iostream>
@@ -39,6 +40,12 @@ int main() {
   cout<<"The buit Motif is"<<endl;
   for(unsigned int i=0;i<M.bond.size;i++)
     cout<<"\t"<<M.bond[i]<<"\t"<<M.coordinate[i][0]<<"\t"<<M.coordinate[i][1]<<endl;
+
+  cout<<endl;
+  LatticeMotifChain<SquareLattice,2,5>  MC,MC1;
+  allocate(MC);
+  imprint(MC1,MC);
+
   return 0;
 }
 
