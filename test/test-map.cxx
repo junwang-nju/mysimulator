@@ -1,5 +1,6 @@
 
 #include "map/allocate.h"
+#include "map/copy.h"
 using namespace mysimulator;
 
 #include <iostream>
@@ -112,6 +113,22 @@ int main() {
   cout<<"\t"<<M.data.root.child().content().value()<<endl;
   cout<<"\t"<<M.data.root.child().child().content().key();
   cout<<"\t"<<M.data.root.child().child().content().value()<<endl;
+  cout<<"Check Key existence: existed key case\t"<<M.IsHaveKey(4)<<endl;
+  cout<<"Check Key existence: not existed key case\t"<<M.IsHaveKey(44)<<endl;
+  const double* pv=M.find(4);
+  const double* pv2=M.find(44);
+  cout<<"Find value: pointer and value:\t"<<pv<<"\t"<<*pv<<endl;
+  cout<<"Find value: pointer:\t"<<pv2<<endl;
+
+  cout<<endl;
+  copy(M1,M);
+  cout<<"Status of Map:"<<endl;
+  for(unsigned int i=0;i<0xFFFFU;i++) if(IsValid(M1.mesh[i]))  cout<<"\t"<<i;
+  cout<<endl;
+  cout<<"\t"<<M1.data.root.child().content().key();
+  cout<<"\t"<<M1.data.root.child().content().value()<<endl;
+  cout<<"\t"<<M1.data.root.child().child().content().key();
+  cout<<"\t"<<M1.data.root.child().child().content().value()<<endl;
   return 0;
 }
 
