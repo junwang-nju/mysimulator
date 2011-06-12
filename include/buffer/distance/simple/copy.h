@@ -10,7 +10,7 @@ namespace mysimulator {
   template <typename T, typename cT>
   void copy(SimpleDistanceBuffer<T>& B, const SimpleDistanceBuffer<cT>& cB) {
     copy(static_cast<DistanceBufferBase<T>&>(B),
-         static_cast<DistanceBufferBase<cT>&>(cB));
+         static_cast<const DistanceBufferBase<cT>&>(cB));
   }
 
 }

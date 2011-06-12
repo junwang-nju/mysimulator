@@ -39,12 +39,12 @@ namespace mysimulator {
     const T& DistanceSquare() const {
       return data[DBBase_DistanceSQ].value<T>();
     }
-    const unsigned int Dimension() { return DisplaceVector.size; }
+    const unsigned int Dimension() const { return DisplaceVector.size; }
 
   };
 
   template <typename T>
-  bool IsValid(DistanceBufferBase<T>& B) {
+  bool IsValid(const DistanceBufferBase<T>& B) {
     return IsValid(B.data)&&IsValid(B.DisplaceVector);
   }
 

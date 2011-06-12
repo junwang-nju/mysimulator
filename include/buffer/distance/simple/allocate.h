@@ -17,6 +17,13 @@ namespace mysimulator {
     copy(B.UnitNumber(),nunit);
   }
 
+  template <typename T>
+  void imprint(SimpleDistanceBuffer<T>& B,
+               const SimpleDistanceBuffer<T>& cB) {
+    assert(IsValid(cB));
+    allocate(B,cB.Dimension(),cB.UnitNumber());
+  }
+
 }
 
 #endif

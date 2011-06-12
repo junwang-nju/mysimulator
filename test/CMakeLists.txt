@@ -26,17 +26,14 @@ target_link_libraries (test-parameter-list.run blas)
 add_executable(test-chain.run test-chain.cxx)
 target_link_libraries (test-chain.run blas)
 
+add_executable(test-buffer.run test-buffer.cxx)
+target_link_libraries (test-buffer.run blas)
+
 add_executable(test-distance-calc.run test-distance-calc.cxx)
 target_link_libraries (test-distance-calc.run blas)
 
-add_executable (test-distance-calc-simplebuffer.run test-distance-calc-simplebuffer.cxx)
-target_link_libraries (test-distance-calc-simplebuffer.run blas)
-
 add_executable (test-displacement-calc-direct.run test-displacement-calc-direct.cxx)
 target_link_libraries (test-displacement-calc-direct.run blas)
-
-add_executable (test-distance-calc-pairbuffer.run test-distance-calc-pairbuffer.cxx)
-target_link_libraries (test-distance-calc-pairbuffer.run blas)
 
 add_executable (test-referable-object.run test-referable-object.cxx)
 target_link_libraries (test-referable-object.run blas)

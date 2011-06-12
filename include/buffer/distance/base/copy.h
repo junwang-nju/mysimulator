@@ -3,6 +3,8 @@
 #define _Buffer_Distance_Base_Copy_H_
 
 #include "buffer/distance/base/interface.h"
+#include "unique-parameter/64bit/copy.h"
+#include "vector/copy.h"
 
 namespace mysimulator {
 

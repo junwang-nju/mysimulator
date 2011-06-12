@@ -3,6 +3,7 @@
 #define _Referable_Object_Allocate_H_
 
 #include "referable-object/interface.h"
+#include "intrinsic-type/validity-check.h"
 
 namespace mysimulator {
 
@@ -15,12 +16,14 @@ namespace mysimulator {
 
   template <typename T>
   void imprint(Object<T>& O, const Object<T>& cO) {
+    assert(IsValid(cO));
     allocate(O);
     imprint(O(),cO());
   }
 
   template <typename T>
   void imprint(Object<T>& O, const T& value) {
+    assert(IsValid(value));
     allocate(O);
     imprint(O(),value);
   }

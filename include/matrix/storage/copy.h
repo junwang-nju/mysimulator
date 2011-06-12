@@ -3,6 +3,8 @@
 #define _Matrix_Storage_Copy_H_
 
 #include "matrix/storage/interface.h"
+#include "matrix/copy.h"
+#include "matrix/storage/item/copy.h"
 #include <cstring>
 
 namespace mysimulator {

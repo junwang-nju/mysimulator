@@ -17,6 +17,12 @@ namespace mysimulator {
     allocate(B.DSqMat,nunit);
   }
 
+  template <typename T>
+  void imprint(PairDistanceBuffer<T>& B, const PairDistanceBuffer<T>& cB) {
+    assert(IsValid(cB));
+    allocate(B,cB.Dimension(),cB.UnitNumber());
+  }
+
 }
 
 #endif

@@ -3,6 +3,7 @@
 #define _Buffer_Distance_Pair_Copy_H_
 
 #include "buffer/distance/pair/interface.h"
+#include "matrix/storage/copy.h"
 
 namespace mysimulator {
 

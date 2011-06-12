@@ -33,6 +33,7 @@ namespace mysimulator {
 
   template <typename T>
   void imprint(Matrix<T>& M, const Matrix<T>& cM) {
+    assert(IsValid(cM));
     imprint(static_cast<List<T>&>(M),static_cast<const List<T>&>(cM));
     imprint(M.property,cM.property);
     copy(M.property,cM.property);
