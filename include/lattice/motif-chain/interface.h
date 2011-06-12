@@ -29,18 +29,20 @@ namespace mysimulator {
     void clearData() { release(motifValue); }
 
     unsigned int bondValue(const unsigned int n) {
+      assert(n<Length);
       unsigned int u=LatticeLibrary<LShape,Dimen>::MaxBondOfMotif;
       unsigned int I=n/u;
       unsigned int J=n%u;
-      unsigned int NB=(I==Length-1?NumBondsLastMotif:u);
+      unsigned int NB=(I==NumMotifs-1?NumBondsLastMotif:u)-1;
       assert(IsValid(LatticeLibrary<LShape,Dimen>::map));
       return LatticeLibrary<LShape,Dimen>::map[NB][motifValue[I]].bond[J];
     }
-    unsigned int bondVec(const unsigned int n) {
+    const Vector<int>& bondVec(const unsigned int n) {
+      assert(n<Length);
       unsigned int u=LatticeLibrary<LShape,Dimen>::MaxBondOfMotif;
       unsigned int I=n/u;
       unsigned int J=n%u;
-      unsigned int NB=(I==Length-1?NumBondsLastMotif:u);
+      unsigned int NB=(I==NumMotifs-1?NumBondsLastMotif:u)-1;
       assert(IsValid(LatticeLibrary<LShape,Dimen>::map));
       return LatticeLibrary<LShape,Dimen>::map[NB][motifValue[I]].coordinate[J];
     }

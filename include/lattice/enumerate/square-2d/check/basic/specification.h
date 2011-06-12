@@ -34,11 +34,6 @@ namespace mysimulator {
     return true;
   }
 
-  void release(
-      LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodBasic>& C) {
-    C.clearData();
-  }
-
 }
 
 #endif

@@ -3,19 +3,20 @@
 #define _Lattice_Motif_Chain_Convert_H_
 
 #include "lattice/motif-chain/interface.h"
+#include "vector/fill.h"
 
 namespace mysimulator {
 
   template <LatticeShapeName LS, unsigned int D, unsigned int L>
-  void convert(const Vector<unsigned char>& bond, LatticeMotifChain<LS,D,L>& C){
+  void convert(const Vector<unsigned int>& bond, LatticeMotifChain<LS,D,L>& C){
     assert(bond.size>=L);
     assert(IsValid(C));
     bool flag;
-    Vector<unsigned short> motifID(LatticeMotifChain<LS,D,L>::NumMotifs);
-    copy(motifID,LatticeLibrary<LS,D>::MaxBondOfMotif);
+    Vector<unsigned int> motifID(LatticeMotifChain<LS,D,L>::NumMotifs);
+    fill(motifID,LatticeLibrary<LS,D>::MaxBondOfMotif);
     motifID[LatticeMotifChain<LS,D,L>::NumMotifs-1]=
       LatticeMotifChain<LS,D,L>::NumBondsLastMotif;
-    unsigned short nmotifs;
+    unsigned int nmotifs;
     unsigned int bsh=0,sz,u;
     for(unsigned int i=0;i<LatticeMotifChain<LS,D,L>::NumMotifs;++i) {
       u=motifID[i];
@@ -35,6 +36,13 @@ namespace mysimulator {
       }
       bsh+=motifID[i];
     }
+  }
+
+  template <LatticeShapeName LS, unsigned int D, unsigned int L>
+  void convert(const Vector<unsigned char>& bond,LatticeMotifChain<LS,D,L>& C){
+    Vector<unsigned int> bd(bond.size);
+    for(unsigned int i=0;i<bd.size;++i) bd[i]=bond[i];
+    convert(bd,C);
   }
 
 }

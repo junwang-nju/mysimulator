@@ -64,11 +64,6 @@ namespace mysimulator {
       const LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodFixBonds>&
             C) { return IsValid(C.flag)&& IsValid(C.fixedBond); }
 
-  void release(
-      LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodFixBonds>& C) {
-    C.clearData();
-  }
-
 }
 
 #endif

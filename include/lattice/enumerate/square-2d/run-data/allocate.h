@@ -36,6 +36,10 @@ namespace mysimulator {
     D.bHigh[0]=LatticeLibrary<SquareLattice,2>::shiftLoc[D.Len[0]-1][0];
   }
 
+  template <unsigned int L>
+  void imprint(LatticeEnumSquare2DRunData<L>& D,
+               const LatticeEnumSquare2DRunData<L>& cD) { allocate(D); }
+
 }
 
 #endif

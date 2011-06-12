@@ -30,15 +30,19 @@ namespace mysimulator {
   };
 
   template <LatticeEnumSquare2DCheckMethodName Method>
-  bool IsValid(LatticeEnumSquare2DCheck<Method>& C) { return false; }
-
-  template <LatticeEnumSquare2DCheckMethodName Method>
-  void release(LatticeEnumSquare2DCheck<Method>& C) { C.clearData(); }
+  bool IsValid(const LatticeEnumSquare2DCheck<Method>& C) { return false; }
 
 }
 
 #include "lattice/enumerate/square-2d/check/basic/specification.h"
 #include "lattice/enumerate/square-2d/check/fix-bonds/specification.h"
+
+namespace mysimulator {
+
+  template <LatticeEnumSquare2DCheckMethodName Method>
+  void release(LatticeEnumSquare2DCheck<Method>& C) { C.clearData(); }
+
+}
 
 #endif
 

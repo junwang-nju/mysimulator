@@ -3,6 +3,8 @@
 #define _Lattice_Enumerate_Square2D_RunData_Copy_H_
 
 #include "lattice/enumerate/square-2d/run-data/interface.h"
+#include "list/copy.h"
+#include "lattice/motif-chain/copy.h"
 
 namespace mysimulator {
 
@@ -10,8 +12,8 @@ namespace mysimulator {
   void copy(LatticeEnumSquare2DRunData<L>& D,
             const LatticeEnumSquare2DRunData<L>& cD) {
     assert(IsValid(D)&&IsValid(cD));
-    copy(D.Mesh,cD.Mesh);
-    copy(D.Loc,cD.Loc);
+    ecopy(D.Mesh,cD.Mesh);
+    ecopy(D.Loc,cD.Loc);
     copy(D.C,cD.C);
     copy(D.Len,cD.Len);
     copy(D.bHigh,cD.bHigh);

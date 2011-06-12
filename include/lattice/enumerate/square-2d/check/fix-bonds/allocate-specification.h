@@ -17,6 +17,13 @@ namespace mysimulator {
     allocate(C.fixedBond,sz);
   }
 
+  void imprint(
+      LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodFixBonds>& C,
+      const LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodFixBonds>&
+      cC) {
+    allocate(C,cC.fixedBond.ListSize());
+  }
+
 }
 
 #endif

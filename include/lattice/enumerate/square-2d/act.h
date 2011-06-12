@@ -72,7 +72,7 @@ namespace mysimulator {
           _NewBond_LatticeEnumSquare2D(Data);
           bflag=false;
         } else {
-          //os<<Data.C<<Endl;
+          os<<Data.C<<Endl;
           ++NC;
         }
       }

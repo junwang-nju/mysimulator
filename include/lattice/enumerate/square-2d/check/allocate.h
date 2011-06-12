@@ -11,6 +11,10 @@ namespace mysimulator {
     Error("Allocate for LatticeEnumSquare2DCheck of this Method Disabled!");
   }
 
+  template <LatticeEnumSquare2DCheckMethodName Method>
+  void imprint(LatticeEnumSquare2DCheck<Method>& C,
+               const LatticeEnumSquare2DCheck<Method>&) { allocate(C); }
+
 }
 
 #include "lattice/enumerate/square-2d/check/basic/allocate-specification.h"
