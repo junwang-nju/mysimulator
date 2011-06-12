@@ -9,7 +9,7 @@ namespace mysimulator {
 
   template <typename TA, typename TB, typename T, typename TP>
   void DisplacementCalc(
-      const TA* a, const TB* b, const T* v, const unsigned int n,
+      const TA* a, const TB* b, T* v, const unsigned int n,
       const PeriodicBox<TP>& B, const int aoff=iZero, const long astep=lOne,
       const int boff=iZero, const long bstep=lOne,
       const int off=iZero, const long step=lOne) {

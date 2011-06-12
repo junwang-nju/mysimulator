@@ -68,7 +68,7 @@ namespace mysimulator {
     unsigned int n;
     n=(a.size<b.size?a.size:b.size);
     n=(n<v.size?n:v.size);
-    Direct(a.pdata,b.pdata,v.pdata,n);
+    DisplacementCalcDirect(a.pdata,b.pdata,v.pdata,n);
   }
 
 }

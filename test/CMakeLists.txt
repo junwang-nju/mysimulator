@@ -14,6 +14,9 @@ target_link_libraries (test-list.run blas)
 add_executable (test-btree.run test-btree.cxx)
 target_link_libraries (test-btree.run blas)
 
+add_executable (test-geometry.run test-geometry.cxx)
+target_link_libraries (test-geometry.run blas)
+
 add_executable (test-hash-func.run test-hash-func.cxx)
 
 add_executable (test-unique-parameter.run test-unique-parameter.cxx)
@@ -28,12 +31,6 @@ target_link_libraries (test-chain.run blas)
 
 add_executable(test-buffer.run test-buffer.cxx)
 target_link_libraries (test-buffer.run blas)
-
-add_executable(test-distance-calc.run test-distance-calc.cxx)
-target_link_libraries (test-distance-calc.run blas)
-
-add_executable (test-displacement-calc-direct.run test-displacement-calc-direct.cxx)
-target_link_libraries (test-displacement-calc-direct.run blas)
 
 add_executable (test-referable-object.run test-referable-object.cxx)
 target_link_libraries (test-referable-object.run blas)
