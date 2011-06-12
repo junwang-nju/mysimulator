@@ -4,6 +4,7 @@
 
 #include "lattice/enumerate/square-2d/check/interface.h"
 #include "lattice/enumerate/square-2d/run-data/allocate.h"
+#include "lattice/motif-chain/io.h"
 #include "vector/copy.h"
 #include "vector/shift.h"
 

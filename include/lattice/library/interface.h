@@ -51,6 +51,7 @@ namespace mysimulator {
       FileInput ifs;
       sprintf(nmbuffer,"%s-library",fnTemplate);
       ifs.open(nmbuffer);
+      if(IsFailed(ifs)) { Error("Library File Not Found!"); }
       for(unsigned int i=0;i<MaxBondOfMotif;++i) {
         ifs>>shiftLoc[i]>>nmbuffer;
         sz[i]=shiftLoc[i][NumShifts-1];
@@ -67,6 +68,7 @@ namespace mysimulator {
         ifs>>shiftLoc[i]>>nmbuffer1;
         sprintf(nmbuffer,"%s%s",fnTemplate,nmbuffer1);
         ifs1.open(nmbuffer);
+        if(IsFailed(ifs1)) { Error("Library Data File Not Found!"); }
         for(unsigned int k=0;k<map[i].size;++k) {
           ifs1>>map[i][k].bond;
           build<LShape,Dimension>(map[i][k]);

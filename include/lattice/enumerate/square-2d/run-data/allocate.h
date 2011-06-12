@@ -3,6 +3,7 @@
 #define _Lattice_Enumerate_Square2D_RunData_Allocate_H_
 
 #include "lattice/enumerate/square-2d/run-data/interface.h"
+#include "lattice/motif-chain/allocate.h"
 #include "list/allocate.h"
 #include "list/fill.h"
 
