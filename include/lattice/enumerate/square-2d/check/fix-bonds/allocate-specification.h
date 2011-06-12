@@ -21,6 +21,7 @@ namespace mysimulator {
       LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodFixBonds>& C,
       const LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodFixBonds>&
       cC) {
+    assert(IsValid(c));
     allocate(C,cC.fixedBond.ListSize());
   }
 

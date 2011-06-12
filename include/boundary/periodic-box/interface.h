@@ -4,6 +4,7 @@
 
 #include "vector/copy.h"
 #include "vector/scale.h"
+#include "intrinsic-type/shift.h"
 
 namespace mysimulator {
 
@@ -32,7 +33,7 @@ namespace mysimulator {
     void synchronize() {
       assert(IsValid(*this));
       copy(hbox,box);
-      scale(box,0.5);
+      scale(hbox,0.5);
     }
     template <typename vT>
     void vectorNormalize(vT* v, const unsigned int dim,
@@ -43,7 +44,9 @@ namespace mysimulator {
       vT* pend=pv+n*step;
       T*  pb=const_cast<T*>(box.pdata);
       T*  ph=const_cast<T*>(hbox.pdata);
-      for(;pv!=pend;pv+=step,++pb,++ph) {
+      bool* pf=const_cast<bool*>(flag.pdata);
+      for(;pv!=pend;pv+=step,++pb,++ph,++pf) {
+        if(!(*pf))  continue;
         while((*pv)<-(*ph))   shift(*pv,cOne,*pb);
         while((*pv)>=(*ph))   shift(*pv,-cOne,*pb);
       }

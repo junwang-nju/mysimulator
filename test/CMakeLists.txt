@@ -23,17 +23,11 @@ set_source_files_properties (test-unique-parameter.cxx COMPILE_FLAGS "-msse2 -DH
 add_executable (test-parameter-list.run test-parameter-list.cxx)
 target_link_libraries (test-parameter-list.run blas)
 
-add_executable (test-free-space.run test-free-space.cxx)
-target_link_libraries (test-free-space.run blas)
-
 add_executable(test-chain.run test-chain.cxx)
 target_link_libraries (test-chain.run blas)
 
 add_executable(test-distance-calc.run test-distance-calc.cxx)
 target_link_libraries (test-distance-calc.run blas)
-
-add_executable (test-periodic-box.run test-periodic-box.cxx)
-target_link_libraries (test-periodic-box.run blas)
 
 add_executable (test-distance-calc-simplebuffer.run test-distance-calc-simplebuffer.cxx)
 target_link_libraries (test-distance-calc-simplebuffer.run blas)
@@ -173,6 +167,9 @@ target_link_libraries (test-neighbor-list.run blas)
 
 add_executable (test-lattice.run test-lattice.cxx)
 target_link_libraries (test-lattice.run blas)
+
+add_executable (test-boundary.run test-boundary.cxx)
+target_link_libraries (test-boundary.run blas)
 
 add_executable (test-meta-calc.run test-meta-calc.cxx)
 target_link_libraries (test-meta-calc.run blas)

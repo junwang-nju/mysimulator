@@ -3,6 +3,7 @@
 #define _Boundary_PeriodicBox_Copy_H_
 
 #include "boundary/periodic-box/interface.h"
+#include "vector/copy.h"
 
 namespace mysimulator {
 
