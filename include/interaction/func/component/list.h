@@ -9,14 +9,17 @@
 #include "functional/harmonic/func.h"
 #include "functional/lj612/func.h"
 #include "functional/lj612cut/func.h"
+#include "functional/lj1012/func.h"
 
 #include "functional/harmonic/diff.h"
 #include "functional/lj612/diff.h"
 #include "functional/lj612cut/diff.h"
+#include "functional/lj1012/diff.h"
 
 #include "functional/harmonic/both.h"
 #include "functional/lj612/both.h"
 #include "functional/lj612cut/both.h"
+#include "functional/lj1012/both.h"
 
 #include "interaction/func/component/method/pairwise/energy.h"
 #include "interaction/func/component/method/pairwise/gradient.h"
@@ -62,7 +65,8 @@ namespace mysimulator {
   InteractionFuncList<DBuffer,GeomType,T>::EFunctional[]={
     FuncHarmonic<T>,
     FuncLJ612<T>,
-    FuncLJ612Cut<T>
+    FuncLJ612Cut<T>,
+    FuncLJ1012<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
@@ -70,7 +74,8 @@ namespace mysimulator {
   InteractionFuncList<DBuffer,GeomType,T>::DFunctional[]={
     DiffHarmonic<T>,
     DiffLJ612<T>,
-    DiffLJ612Cut<T>
+    DiffLJ612Cut<T>,
+    DiffLJ1012<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
@@ -78,7 +83,8 @@ namespace mysimulator {
   InteractionFuncList<DBuffer,GeomType,T>::BFunctional[]={
     BothHarmonic<T>,
     BothLJ612<T>,
-    BothLJ612Cut<T>
+    BothLJ612Cut<T>,
+    BothLJ1012<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>

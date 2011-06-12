@@ -8,6 +8,7 @@ namespace mysimulator {
     Harmonic=0,
     LJ612,
     LJ612Cut,
+    LJ1012,
     InteractionNumberFunction
   };
 
