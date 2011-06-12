@@ -13,6 +13,10 @@
 #include "interaction/func/interface.h"
 #include "interaction/func/component/list.h"
 
+#include "functional/lj1012/func.h"
+#include "functional/lj1012/diff.h"
+#include "functional/lj1012/both.h"
+#include "functional/lj1012/parameter/build.h"
 #include "functional/lj612cut/both.h"
 #include "functional/lj612cut/parameter/build.h"
 #include "functional/harmonic/both.h"
