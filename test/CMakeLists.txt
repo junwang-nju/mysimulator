@@ -42,6 +42,9 @@ add_executable (test-random.run test-random.cxx)
 target_link_libraries (test-random.run blas)
 set_source_files_properties (test-random.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 
+add_executable (test-interaction.run test-interaction.cxx)
+target_link_libraries(test-interaction.run blas)
+
 add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
 target_link_libraries (test-interaction-pairwise-base.run blas)
 

@@ -12,7 +12,7 @@ using namespace mysimulator;
 using namespace std;
 
 int main() {
-  const unsigned int L=12;
+  const unsigned int L=20;
   LatticeLibrary<SquareLattice,2>::load("../../..");
   LatticeEnumSquare2DCheck<LatticeEnumSquare2DCheckMethodBasic> LEC;
   allocate(LEC);
@@ -22,9 +22,12 @@ int main() {
   FO.close();
   unsigned int n,m;
   int maxX,minX,maxY,minY;
-  Vector<unsigned long long> NE;
+  double mcX,mcY;
+  Vector<unsigned long long> NE,NC;
   allocate(NE,L+1);
+  allocate(NC,L+1);
   fill(NE,0ULL);
+  fill(NC,0ULL);
   unsigned int cntMaxX,cntMinX,cntMaxY,cntMinY;
   List<int> coor;
   Vector<unsigned int> sz(L);
@@ -54,6 +57,7 @@ int main() {
     }
     maxX=maxY=minX=minY=0;
     cntMaxX=cntMinX=cntMaxY=cntMinY=1;
+    mcX=mcY=0;
     for(unsigned int i=1;i<L;++i) {
       if(maxX<coor[i][0]) { maxX=coor[i][0]; cntMaxX=1; }
       else if(maxX==coor[i][0]) cntMaxX++;
@@ -63,16 +67,30 @@ int main() {
       else if(maxY==coor[i][1]) cntMaxY++;
       if(minY>coor[i][1]) { minY=coor[i][1]; cntMinY=1; }
       else if(minY==coor[i][1]) cntMinY++;
+      mcX+=coor[i][0];
+      mcY+=coor[i][1];
     }
+    mcX/=(L+0.);
+    mcY/=(L+0.);
     if((maxX==minX)||(maxY==minY)) {
       NE[cntMaxX]++; NE[cntMinX]++;
       NE[cntMaxY]++; NE[cntMinY]++;
+      NC[(int)(mcX-minX)]++;
+      NC[(int)(maxX-mcX)]++;
+      NC[(int)(mcY-minY)]++;
+      NC[(int)(maxY-mcY)]++;
     } else {
       NE[cntMaxX]+=2;    NE[cntMinX]+=2;
       NE[cntMaxY]+=2;    NE[cntMinY]+=2;
+      NC[(int)(mcX-minX)]+=2;
+      NC[(int)(maxX-mcX)]+=2;
+      NC[(int)(mcY-minY)]+=2;
+      NC[(int)(maxY-mcY)]+=2;
     }
   }
   FI.close();
+  for(unsigned int i=0;i<NE.size;++i)
+    cout<<i<<"\t"<<NE[i]<<"\t"<<NC[i]<<endl;
   return 0;
 }
 
