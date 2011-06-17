@@ -3,7 +3,7 @@
 #define _Interaction_Function_Component_Method_Pairwise_Gradient_H_
 
 #include "unique-parameter/64bit/interface.h"
-#include "vector/interface.h"
+#include "vector/shift.h"
 
 namespace mysimulator {
 

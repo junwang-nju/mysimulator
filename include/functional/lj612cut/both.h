@@ -14,7 +14,7 @@ namespace mysimulator {
     else {
       T d=sqroot(dsq);
       T ivd=1./d;
-      T ivd2=ivd2*ivd2;
+      T ivd2=ivd*ivd;
       T id6=ivd2*ivd2*ivd2;
       T ivr6=prm[LJ612CutRealSigma6].value<T>()*id6;
       fc=prm[LJ612CutRealStrength].value<T>()*ivr6*(ivr6-2.);

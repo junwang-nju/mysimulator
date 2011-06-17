@@ -3,7 +3,7 @@
 #define _Functional_LJ1012_Parameter_Build_H_
 
 #include "functional/lj1012/parameter/name.h"
-#include "unique-parameter/64bit/interface.h"
+#include "unique-parameter/64bit/copy.h"
 #include "intrinsic-type/square.h"
 
 namespace mysimulator {

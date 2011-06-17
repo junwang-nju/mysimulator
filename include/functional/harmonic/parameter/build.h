@@ -2,7 +2,7 @@
 #ifndef _Functional_Harmonic_Parameter_Build_H_
 #define _Functional_Harmonic_Parameter_Build_H_
 
-#include "unique-parameter/64bit/interface.h"
+#include "unique-parameter/64bit/copy.h"
 #include "functional/harmonic/parameter/name.h"
 
 namespace mysimulator {

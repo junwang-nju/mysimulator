@@ -4,6 +4,7 @@
 
 #include "vector/interface.h"
 #include "intrinsic-type/shift.h"
+#include "linear-algebra/blas.h"
 
 namespace mysimulator {
 
