@@ -96,7 +96,7 @@ namespace mysimulator {
     BothLJ612Cut<T>,
     BothLJ1012<T>,
     BothLJ1012Cut<T>,
-    BothLJ1012<T>
+    BothCore12<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
