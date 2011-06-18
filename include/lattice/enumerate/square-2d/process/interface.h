@@ -6,9 +6,11 @@
 
 namespace mysimulator {
 
-  template <typename T>
+  template <unsigned int L>
   struct LatticeEnumSquare2DProcessBase {
-    void operator()(const LatticeEnumSquare2DRunData<L>&)=0;
+
+    virtual void operator()(const LatticeEnumSquare2DRunData<L>&)=0;
+
   };
 
 }

@@ -1,6 +1,6 @@
 
-#ifndef _InputOutput_Output_File_Interface_H_
-#define _InputOutput_Output_File_Interface_H_
+#ifndef _InputOutput_Output_File_Copy_H_
+#define _InputOutput_Output_File_Copy_H_
 
 #include "io/output/interface.h"
 #include "io/output/copy.h"

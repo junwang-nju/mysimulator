@@ -7,7 +7,21 @@
 namespace mysimulator {
 
   template <unsigned int L, typename OutputStream>
-  struct LatticeEnumSquare2DProcessOutputChain {
+  struct LatticeEnumSquare2DProcessOutputChain
+      : public LatticeEnumSquare2DProcessBase<L> {
+
+    typedef LatticeEnumSquare2DProcessOutputChain<L,OutputStream> Type;
+    typedef LatticeEnumSquare2DProcessBase<L> ParentType;
+
+    OutputStream os;
+
+    LatticeEnumSquare2DProcessOutputChain() : os(stdout) {}
+
+    virtual void operator()(const LatticeEnumSquare2DRunData<L>& Data) {
+      assert(IsValid(os));
+      os<<Data.C<<Endl;
+    }
+
   };
 
 }

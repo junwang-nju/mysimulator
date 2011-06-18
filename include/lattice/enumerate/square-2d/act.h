@@ -57,8 +57,7 @@ namespace mysimulator {
     }
   }
   
-  template <unsigned int L, unsigned int ProcMethod,
-            LatticeEnumSquare2DCheckMethodName Method>
+  template <unsigned int L, LatticeEnumSquare2DCheckMethodName Method>
   unsigned long long enumerate(
       const LatticeEnumSquare2DCheck<Method>& Check,
       LatticeEnumSquare2DProcessBase<L>& Proc) {
