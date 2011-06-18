@@ -4,7 +4,7 @@
 
 #include "lattice/enumerate/square-2d/check/interface.h"
 #include "lattice/enumerate/square-2d/run-data/allocate.h"
-#include "lattice/motif-chain/io.h"
+#include "lattice/enumerate/square-2d/process/interface.h"
 #include "vector/copy.h"
 #include "vector/shift.h"
 
@@ -57,9 +57,11 @@ namespace mysimulator {
     }
   }
   
-  template <unsigned int L, LatticeEnumSquare2DCheckMethodName Method>
-  unsigned long long enumerate(const LatticeEnumSquare2DCheck<Method>& Check,
-                               OutputBase& os) {
+  template <unsigned int L, unsigned int ProcMethod,
+            LatticeEnumSquare2DCheckMethodName Method>
+  unsigned long long enumerate(
+      const LatticeEnumSquare2DCheck<Method>& Check,
+      LatticeEnumSquare2DProcessBase<L>& Proc) {
     unsigned long long NC=0;
     bool oflag, bflag;
     LatticeEnumSquare2DRunData<L> Data;
@@ -73,7 +75,7 @@ namespace mysimulator {
           _NewBond_LatticeEnumSquare2D(Data);
           bflag=false;
         } else {
-          os<<Data.C<<Endl;
+          Proc(Data);
           ++NC;
         }
       }
