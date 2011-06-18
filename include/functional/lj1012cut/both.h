@@ -20,11 +20,11 @@ namespace mysimulator {
       sgr10=sgr2*sgr2;
       sgr10*=sgr10;
       sgr10*=sgr2;
-      func=prm[LJ1012CutEqEnergyDepth].value<T>()*sgr10*(5*sgr2-6.);
-      func-=prm[LJ1012CutVc].value<T>();
-      func-=prm[LJ1012CutKc].value<T>()*(d-prm[LJ1012CutCutR].value<T>());
-      diff=prm[LJ1012CutSixtyRealEnergyDepth].value<T>()*sgr10*(1.-sgr2)*ivd2;
-      diff-=prm[LJ1012CutKc].value<T>()*ivd;
+      fc=prm[LJ1012CutEqEnergyDepth].value<T>()*sgr10*(5*sgr2-6.);
+      fc-=prm[LJ1012CutVc].value<T>();
+      fc-=prm[LJ1012CutKc].value<T>()*(d-prm[LJ1012CutCutR].value<T>());
+      df=prm[LJ1012CutSixtyRealEnergyDepth].value<T>()*sgr10*(1.-sgr2)*ivd2;
+      df-=prm[LJ1012CutKc].value<T>()*ivd;
     }
   }
 

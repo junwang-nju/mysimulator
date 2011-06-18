@@ -12,6 +12,8 @@
 #include "functional/lj1012/func.h"
 #include "functional/lj1012cut/func.h"
 #include "functional/core12/func.h"
+#include "functional/corelj612/func.h"
+#include "functional/coulomb/func.h"
 
 #include "functional/harmonic/diff.h"
 #include "functional/lj612/diff.h"
@@ -19,6 +21,8 @@
 #include "functional/lj1012/diff.h"
 #include "functional/lj1012cut/diff.h"
 #include "functional/core12/diff.h"
+#include "functional/corelj612/diff.h"
+#include "functional/coulomb/diff.h"
 
 #include "functional/harmonic/both.h"
 #include "functional/lj612/both.h"
@@ -26,6 +30,8 @@
 #include "functional/lj1012/both.h"
 #include "functional/lj1012cut/both.h"
 #include "functional/core12/both.h"
+#include "functional/corelj612/both.h"
+#include "functional/coulomb/both.h"
 
 #include "interaction/func/component/method/pairwise/energy.h"
 #include "interaction/func/component/method/pairwise/gradient.h"
@@ -75,7 +81,8 @@ namespace mysimulator {
     FuncLJ1012<T>,
     FuncLJ1012Cut<T>,
     FuncCore12<T>,
-    FuncCoreLJ612<T>
+    FuncCoreLJ612<T>,
+    FuncCoulomb<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
@@ -87,7 +94,8 @@ namespace mysimulator {
     DiffLJ1012<T>,
     DiffLJ1012Cut<T>,
     DiffCore12<T>,
-    DiffCoreLJ612<T>
+    DiffCoreLJ612<T>,
+    DiffCoulomb<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
@@ -99,7 +107,8 @@ namespace mysimulator {
     BothLJ1012<T>,
     BothLJ1012Cut<T>,
     BothCore12<T>,
-    BothCoreLJ612<T>
+    BothCoreLJ612<T>,
+    BothCoulomb<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
@@ -123,6 +132,7 @@ namespace mysimulator {
   template <template<typename> class DBuffer,typename GeomType,typename T>
   const InteractionFunctionMethodName
   InteractionFuncList<DBuffer,GeomType,T>::MethodMap[]={
+    PairwiseMethod,
     PairwiseMethod,
     PairwiseMethod,
     PairwiseMethod,

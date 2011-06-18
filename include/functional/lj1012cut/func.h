@@ -14,7 +14,7 @@ namespace mysimulator {
     else {
       T d=sqroot(dsq);
       T sgr2=prm[LJ1012CutRealRadiusSq].value<T>()/dsq;
-      T sqr10;
+      T sgr10;
       sgr10=sgr2*sgr2;
       sgr10*=sgr10;
       sgr10*=sgr2;
