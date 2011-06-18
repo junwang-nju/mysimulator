@@ -74,7 +74,8 @@ namespace mysimulator {
     FuncLJ612Cut<T>,
     FuncLJ1012<T>,
     FuncLJ1012Cut<T>,
-    FuncCore12<T>
+    FuncCore12<T>,
+    FuncCoreLJ612<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
@@ -85,7 +86,8 @@ namespace mysimulator {
     DiffLJ612Cut<T>,
     DiffLJ1012<T>,
     DiffLJ1012Cut<T>,
-    DiffCore12<T>
+    DiffCore12<T>,
+    DiffCoreLJ612<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
@@ -96,7 +98,8 @@ namespace mysimulator {
     BothLJ612Cut<T>,
     BothLJ1012<T>,
     BothLJ1012Cut<T>,
-    BothCore12<T>
+    BothCore12<T>,
+    BothCoreLJ612<T>
   };
 
   template <template<typename> class DBuffer,typename GeomType,typename T>
@@ -120,6 +123,7 @@ namespace mysimulator {
   template <template<typename> class DBuffer,typename GeomType,typename T>
   const InteractionFunctionMethodName
   InteractionFuncList<DBuffer,GeomType,T>::MethodMap[]={
+    PairwiseMethod,
     PairwiseMethod,
     PairwiseMethod,
     PairwiseMethod,

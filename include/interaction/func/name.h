@@ -11,6 +11,7 @@ namespace mysimulator {
     LJ1012,
     LJ1012Cut,
     Core12,
+    CoreLJ612,
     InteractionNumberFunction
   };
 
