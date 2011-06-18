@@ -9,8 +9,10 @@
 #include "lattice/enumerate/square-2d/run-data/copy.h"
 #include "lattice/enumerate/square-2d/check/allocate.h"
 #include "lattice/enumerate/square-2d/check/copy.h"
+#include "lattice/enumerate/square-2d/process/output-chain/interface.h"
 #include "lattice/enumerate/square-2d/act.h"
 #include "io/console.h"
+#include "io/output/file/copy.h"
 using namespace mysimulator;
 
 #include <iostream>
@@ -178,9 +180,11 @@ int main(int argc, char** argv) {
   cout<<endl;
   cout<<EMF.Act(RD)<<endl;
 
+  LatticeEnumSquare2DProcessOutputChain<12,FileOutput> OP;
+  copy(OP.os,COut);
   cout<<endl;
-  cout<<enumerate<12>(EM,COut)<<endl;
-  cout<<enumerate<12>(EMF,COut)<<endl;
+  cout<<enumerate<12>(EM,OP)<<endl;
+  cout<<enumerate<12>(EMF,OP)<<endl;
 
   return 0;
 }
