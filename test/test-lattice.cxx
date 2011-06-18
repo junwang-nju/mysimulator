@@ -155,6 +155,7 @@ int main(int argc, char** argv) {
   allocate(EMF,5);
   cout<<"After Allocation: status of fixedBond is:\t";
   cout<<IsValid(EMF.fixedBond)<<endl;
+  cout<<IsValid(EMF.flag)<<endl;
   imprint(EMF1,EMF);
   cout<<"After Imprint: status of fixedBond is:\t";
   cout<<IsValid(EMF1.fixedBond)<<endl;

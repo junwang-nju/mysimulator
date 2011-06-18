@@ -37,7 +37,7 @@ namespace mysimulator {
     }
 
     void clearData() {
-      if(fptr!=NULL)  fclose(fptr);
+      if((fptr!=NULL)&&(fptr!=stdout))    fclose(fptr);
       fptr=NULL;
       release(static_cast<ParentType&>(*this));
     }
