@@ -67,8 +67,6 @@ namespace mysimulator {
     static const EFuncMethodType EFuncMethod[InteractionFuncNumberMode];
     static const GFuncMethodType GFuncMethod[InteractionFuncNumberMode];
     static const BFuncMethodType BFuncMethod[InteractionFuncNumberMode];
-    static const InteractionFunctionMethodName
-                                 MethodMap[InteractionNumberFunction];
 
   };
 
@@ -129,9 +127,8 @@ namespace mysimulator {
     BFuncMethodPairwise
   };
 
-  template <template<typename> class DBuffer,typename GeomType,typename T>
-  const InteractionFunctionMethodName
-  InteractionFuncList<DBuffer,GeomType,T>::MethodMap[]={
+  static const InteractionFunctionMethodName
+  MethodMap[InteractionNumberFunction]={
     PairwiseMethod,
     PairwiseMethod,
     PairwiseMethod,

@@ -82,22 +82,19 @@ namespace mysimulator {
             typename GeomType, typename T>
   const typename InteractionFunc<IF,DBuffer,GeomType,T>::EFuncMethodType
   InteractionFunc<IF,DBuffer,GeomType,T>::efuncmethod=
-    InteractionFuncList<DBuffer,GeomType,T>::EFuncMethod[
-      InteractionFuncList<DBuffer,GeomType,T>::MethodMap[IF]];
+    InteractionFuncList<DBuffer,GeomType,T>::EFuncMethod[MethodMap[IF]];
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T>
   const typename InteractionFunc<IF,DBuffer,GeomType,T>::GFuncMethodType
   InteractionFunc<IF,DBuffer,GeomType,T>::gfuncmethod=
-    InteractionFuncList<DBuffer,GeomType,T>::GFuncMethod[
-      InteractionFuncList<DBuffer,GeomType,T>::MethodMap[IF]];
+    InteractionFuncList<DBuffer,GeomType,T>::GFuncMethod[MethodMap[IF]];
 
   template <InteractionFunctionName IF, template<typename> class DBuffer,
             typename GeomType, typename T>
   const typename InteractionFunc<IF,DBuffer,GeomType,T>::BFuncMethodType
   InteractionFunc<IF,DBuffer,GeomType,T>::bfuncmethod=
-    InteractionFuncList<DBuffer,GeomType,T>::BFuncMethod[
-      InteractionFuncList<DBuffer,GeomType,T>::MethodMap[IF]];
+    InteractionFuncList<DBuffer,GeomType,T>::BFuncMethod[MethodMap[IF]];
 
 }
 

@@ -1,6 +1,9 @@
 
 
 #include "interaction/func/interface.h"
+#include "interaction/kernel/allocate.h"
+#include "interaction/parameter/unit/allocate.h"
+#include "interaction/calc.h"
 #include "functional/harmonic/parameter/build.h"
 #include "functional/lj612/parameter/build.h"
 #include "functional/lj612cut/parameter/build.h"
@@ -225,6 +228,57 @@ int main() {
   Energy=0.;
   fill(G,0.);
   InteractionFunc<Coulomb,SimpleDistanceBuffer,FreeSpace>::Both(X.pdata,id.pdata,Prm.pdata,SDB,FS,Energy,G.pdata,NULL);
+  cout<<"Calculate Energy and Gradient both:"<<endl;
+  cout<<Energy<<endl;
+  COut<<"\t"<<G[id[0]]<<Endl;
+  COut<<"\t"<<G[id[1]]<<Endl;
+
+  cout<<endl;
+  InteractionKernel<Harmonic,SimpleDistanceBuffer,FreeSpace,double> K,K1;
+  cout<<"Before Allocation: status of object is:\t";
+  cout<<IsValid(K)<<endl;
+  allocate(K,4,2);
+  cout<<"After Allocation: status of object is:\t";
+  cout<<IsValid(K)<<endl;
+  imprint(K1,K);
+  cout<<"After Imprint: status of object is:\t";
+  cout<<IsValid(K1)<<endl;
+  release(K1);
+  cout<<"After Release: status of object is:\t";
+  cout<<IsValid(K1)<<endl;
+
+  cout<<endl;
+  InteractionParameterUnit P,P1;
+  cout<<"Before Allocation: status of object is:\t";
+  cout<<IsValid(P)<<endl;
+  allocate(P,Harmonic);
+  cout<<"After Allocation: status of object is:\t";
+  cout<<IsValid(P)<<endl;
+  imprint(P1,P);
+  cout<<"After Imprint: status of object is:\t";
+  cout<<IsValid(P1)<<endl;
+  release(P1);
+  cout<<"After Release: status of object is:\t";
+  cout<<IsValid(P1)<<endl;
+
+  cout<<endl;
+  P.idx[0]=0;
+  P.idx[1]=1;
+  P.prm[HarmonicEqLength].value<double>()=0.8;
+  P.prm[HarmonicEqStrength].value<double>()=100.;
+  BuildParameterHarmonic<double>(P.prm);
+  Energy=0.;
+  Calc(K,X.pdata,P,Energy);
+  cout<<"Calculate Energy only:"<<endl;
+  cout<<Energy<<endl;
+  fill(G,0.);
+  Calc(K,X.pdata,P,G.pdata);
+  cout<<"Calculate Gradient only:"<<endl;
+  COut<<"\t"<<G[id[0]]<<Endl;
+  COut<<"\t"<<G[id[1]]<<Endl;
+  Energy=0.;
+  fill(G,0.);
+  Calc(K,X.pdata,P,Energy,G.pdata);
   cout<<"Calculate Energy and Gradient both:"<<endl;
   cout<<Energy<<endl;
   COut<<"\t"<<G[id[0]]<<Endl;
