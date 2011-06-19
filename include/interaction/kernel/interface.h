@@ -2,22 +2,20 @@
 #ifndef _Interaction_Kernel_Interface_H_
 #define _Interaction_Kernel_Interface_H_
 
-#include "list/interface.h"
-#include "interaction/func/name.h"
+#include "interaction/kernel/unit/interface.h"
 
 namespace mysimulator {
 
-  template <InteractionFunctionName ItType, template<typename> class DBuffer,
-            typename GeomType, typename T=double>
+  template<template<typename>class DBuffer,typename GeomType,typename T=double>
   struct InteractionKernel {
 
-    typedef InteractionKernel<ItType,DBuffer,GeomType,T>    Type;
+    typedef InteractionKernel<DBuffer,GeomType,T>    Type;
 
-    List<T> tmvec;
+    Vector<InteractionKernelUnit<DBuffer,GeomType,T> > iunit;
     DBuffer<T> DB;
     GeomType  Geo;
 
-    InteractionKernel() : tmvec(), DB(), Geo() {}
+    InteractionKernel() : iunit(), DB(), Geo() {}
     InteractionKernel(const Type&) {
       Error("Copier of InteractionKernel Disabled!");
     }
@@ -27,21 +25,20 @@ namespace mysimulator {
     }
     ~InteractionKernel() { clearData(); }
 
-    void clearData() { release(tmvec); release(DB); release(Geo); }
+    void clearData() { release(iunit); release(DB); release(Geo); }
+    const unsigned int NumInteractionType() const { return iunit.size; }
     const unsigned int NumUnit() const { return DB.UnitNumber(); }
     const unsigned int Dimension() const { return DB.Dimension(); }
 
   };
 
-  template <InteractionFunctionName ItType,template<typename> class DBuffer,
-            typename GeomType, typename T>
-  bool IsValid(const InteractionKernel<ItType,DBuffer,GeomType,T>& K) {
-    return IsValid(K.DB)&&IsValid(K.Geo);
+  template <template<typename> class DBuffer, typename GeomType, typename T>
+  bool IsValid(const InteractionKernel<DBuffer,GeomType,T>& K) {
+    return IsValid(K.iunit)&&IsValid(K.DB)&&IsValid(K.Geo);
   }
 
-  template <InteractionFunctionName ItType,template<typename> class DBuffer,
-            typename GType, typename T>
-  void release(InteractionKernel<ItType,DBuffer,GType,T>& K) { K.clearData(); }
+  template <template<typename> class DBuffer, typename GType, typename T>
+  void release(InteractionKernel<DBuffer,GType,T>& K) { K.clearData(); }
 
 }
 

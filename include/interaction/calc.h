@@ -8,31 +8,28 @@
 
 namespace mysimulator {
 
-  template <typename T, InteractionFunctionName ItType,
-            template<typename> class DBuffer,typename GeomType>
-  void Calc(InteractionKernel<ItType,DBuffer,GeomType,T>& K,
-            const Vector<T>* X, const InteractionParameterUnit& P,
-            T& Energy) {
-    InteractionFunc<ItType,DBuffer,GeomType,T>::Energy(X,P.idx.pdata,
-        P.prm.pdata,K.DB,K.Geo,Energy,K.tmvec.infra.pdata);
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(InteractionKernel<DBuffer,GeomType,T>& K, const Vector<T>* X,
+            const InteractionParameterUnit& P, T& Energy) {
+    for(unsigned int i=0;i<K.iunit.size;++i)
+      K.iunit[i].EFunc(X,P.idx.pdata,P.prm.pdata,K.DB,K.Geo,Energy,
+                       K.iunit[i].tmvec.infra.pdata);
   }
 
-  template <typename T, InteractionFunctionName ItType,
-            template<typename> class DBuffer,typename GeomType>
-  void Calc(InteractionKernel<ItType,DBuffer,GeomType,T>& K,
-            const Vector<T>* X, const InteractionParameterUnit& P,
-            Vector<T>* Gradient) {
-    InteractionFunc<ItType,DBuffer,GeomType,T>::Gradient(X,P.idx.pdata,
-        P.prm.pdata,K.DB,K.Geo,Gradient,K.tmvec.infra.pdata);
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(InteractionKernel<DBuffer,GeomType,T>& K, const Vector<T>* X,
+            const InteractionParameterUnit& P, Vector<T>* Gradient) {
+    for(unsigned int i=0;i<K.iunit.size;++i)
+      K.iunit[i].GFunc(X,P.idx.pdata,P.prm.pdata,K.DB,K.Geo,Gradient,
+                       K.iunit[i].tmvec.infra.pdata);
   }
 
-  template <typename T, InteractionFunctionName ItType,
-            template<typename> class DBuffer,typename GeomType>
-  void Calc(InteractionKernel<ItType,DBuffer,GeomType,T>& K,
-            const Vector<T>* X, const InteractionParameterUnit& P,
-            T& Energy, Vector<T>* Gradient) {
-    InteractionFunc<ItType,DBuffer,GeomType,T>::Both(X,P.idx.pdata,
-        P.prm.pdata,K.DB,K.Geo,Energy,Gradient,K.tmvec.infra.pdata);
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(InteractionKernel<DBuffer,GeomType,T>& K, const Vector<T>* X,
+            const InteractionParameterUnit& P, T& Energy,Vector<T>* Gradient) {
+    for(unsigned int i=0;i<K.iunit.size;++i)
+      K.iunit[i].BFunc(X,P.idx.pdata,P.prm.pdata,K.DB,K.Geo,Energy,Gradient,
+                       K.iunit[i].tmvec.infra.pdata);
   }
 
 }

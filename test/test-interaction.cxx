@@ -234,10 +234,10 @@ int main() {
   COut<<"\t"<<G[id[1]]<<Endl;
 
   cout<<endl;
-  InteractionKernel<Harmonic,SimpleDistanceBuffer,FreeSpace,double> K,K1;
+  InteractionKernel<SimpleDistanceBuffer,FreeSpace,double> K,K1;
   cout<<"Before Allocation: status of object is:\t";
   cout<<IsValid(K)<<endl;
-  allocate(K,4,2);
+  allocate(K,Harmonic,4,2);
   cout<<"After Allocation: status of object is:\t";
   cout<<IsValid(K)<<endl;
   imprint(K1,K);

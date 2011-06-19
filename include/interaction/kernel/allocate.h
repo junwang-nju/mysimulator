@@ -3,35 +3,40 @@
 #define _Interaction_Kernel_Allocate_H_
 
 #include "interaction/kernel/interface.h"
+#include "interaction/kernel/unit/allocate.h"
+#include "vector/allocate.h"
 
 namespace mysimulator {
 
-  template <InteractionFunctionName ItType, template<typename> class DBuffer,
-            typename GeomType, typename T>
-  void allocate(InteractionKernel<ItType,DBuffer,GeomType,T>& K,
-                const unsigned int nunit, const unsigned int dim, ...) {
-    switch(ItType) {
-      case Harmonic:
-      case LJ612:
-      case LJ612Cut:
-      case LJ1012:
-      case LJ1012Cut:
-      case Core12:
-      case CoreLJ612:
-      case Coulomb:
-        release(K.tmvec);   break;
-      default:
-        Error("Unknown Interaction Function Name!");
-    };
+  template <template<typename> class DBuffer, typename GeomType, typename T>
+  void allocate(InteractionKernel<DBuffer,GeomType,T>& K,
+                const InteractionFunctionName& itag, const unsigned int nunit,
+                const unsigned int dim, ...) {
+    release(K);
+    allocate(K.iunit,1);
+    allocate(K.iunit[0],itag);
     allocate(K.DB,dim,nunit);
     allocate(K.Geo,dim);
   }
 
-  template <InteractionFunctionName ItType, template<typename> class DBuffer,
-            typename GeomType, typename T>
-  void imprint(InteractionKernel<ItType,DBuffer,GeomType,T>& K,
-               const InteractionKernel<ItType,DBuffer,GeomType,T>& cK) {
-    allocate(K,cK.NumUnit(),cK.Dimension());
+  template <template<typename> class DBuffer, typename GeomType, typename T>
+  void allocate(InteractionKernel<DBuffer,GeomType,T>& K,
+                const Vector<InteractionFunctionName>& tagvec,
+                const unsigned int nunit, const unsigned int dim,...) {
+    release(K);
+    allocate(K.iunit,tagvec.size);
+    for(unsigned int i=0;i<K.iunit.size;++i)  allocate(K.iunit[i],tagvec[i]);
+    allocate(K.DB,dim,nunit);
+    allocate(K.Geo,dim);
+  }
+
+  template <template<typename> class DBuffer, typename GeomType, typename T>
+  void imprint(InteractionKernel<DBuffer,GeomType,T>& K,
+               const InteractionKernel<DBuffer,GeomType,T>& cK) {
+    release(K);
+    imprint(K.iunit,cK.iunit);
+    allocate(K.DB,cK.Dimension(),cK.NumUnit());
+    allocate(K.Geo,cK.Dimension());
   }
 
 }
