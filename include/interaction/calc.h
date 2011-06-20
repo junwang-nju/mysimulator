@@ -80,6 +80,57 @@ namespace mysimulator {
     for(unsigned int i=0;i<n;++i) Calc(FGS[i],IG,X,PS[i],Energy,Gradient);
   }
 
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(Vector<InteractionFuncGeneric<DBuffer,GeomType,T> >& FGS,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
+            const List<InteractionParameterUnit>& PL, T& Energy) {
+    unsigned int n=(FGS.size<PL.ListSize()?FGS.size:PL.ListSize());
+    for(unsigned int i=0;i<n;++i) Calc(FGS[i],IG,X,PL[i],Energy);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(Vector<InteractionFuncGeneric<DBuffer,GeomType,T> >& FGS,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
+            const List<InteractionParameterUnit>& PL, Vector<T>* Gradient) {
+    unsigned int n=(FGS.size<PL.ListSize()?FGS.size:PL.ListSize());
+    for(unsigned int i=0;i<n;++i) Calc(FGS[i],IG,X,PL[i],Gradient);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(Vector<InteractionFuncGeneric<DBuffer,GeomType,T> >& FGS,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
+            const List<InteractionParameterUnit>& PL,
+            T& Energy, Vector<T>* Gradient) {
+    unsigned int n=(FGS.size<PL.ListSize()?FGS.size:PL.ListSize());
+    for(unsigned int i=0;i<n;++i) Calc(FGS[i],IG,X,PL[i],Energy,Gradient);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(Vector<InteractionFuncGeneric<DBuffer,GeomType,T> >& FGS,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
+            const Vector<Vector<InteractionParameterUnit> >& PL, T& Energy) {
+    unsigned int n=(FGS.size<PL.size?FGS.size:PL.size);
+    for(unsigned int i=0;i<n;++i) Calc(FGS[i],IG,X,PL[i],Energy);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(Vector<InteractionFuncGeneric<DBuffer,GeomType,T> >& FGS,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
+            const Vector<Vector<InteractionParameterUnit> >& PL,
+            Vector<T>* Gradient) {
+    unsigned int n=(FGS.size<PL.size?FGS.size:PL.size);
+    for(unsigned int i=0;i<n;++i) Calc(FGS[i],IG,X,PL[i],Gradient);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType>
+  void Calc(Vector<InteractionFuncGeneric<DBuffer,GeomType,T> >& FGS,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
+            const Vector<Vector<InteractionParameterUnit> >& PL,
+            T& Energy, Vector<T>* Gradient) {
+    unsigned int n=(FGS.size<PL.size?FGS.size:PL.size);
+    for(unsigned int i=0;i<n;++i) Calc(FGS[i],IG,X,PL[i],Energy,Gradient);
+  }
+
 }
 
 #endif
