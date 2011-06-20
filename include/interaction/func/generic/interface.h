@@ -8,7 +8,7 @@
 
 namespace mysimulator {
 
-  template <template<typename> typename DBuffer,typename GeomType,typename T>
+  template <template<typename> class DBuffer,typename GeomType,typename T>
   struct InteractionFuncGeneric {
 
     typedef InteractionFuncGeneric<DBuffer,GeomType,T>  Type;
@@ -47,13 +47,13 @@ namespace mysimulator {
 
   };
 
-  template <template<typename> typename DBuffer,typename GeomType,typename T>
+  template <template<typename> class DBuffer,typename GeomType,typename T>
   bool IsValid(const InteractionFuncGeneric<DBuffer,GeomType,T>& G) {
     return (G.tag!=UnknownInteractionFunc)&&(G.EFunc!=NULL)&&
            (G.GFunc!=NULL)&&(G.BFunc!=NULL);
   }
 
-  template <template<typename> typename DBuffer,typename GeomType,typename T>
+  template <template<typename> class DBuffer,typename GeomType,typename T>
   void release(InteractionFuncGeneric<DBuffer,GeomType,T>& G) { G.clearData(); }
 
 }

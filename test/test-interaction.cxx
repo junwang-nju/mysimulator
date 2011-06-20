@@ -1,7 +1,8 @@
 
 
 #include "interaction/func/interface.h"
-#include "interaction/kernel/allocate.h"
+#include "interaction/func/generic/allocate.h"
+#include "interaction/geometry/allocate.h"
 #include "interaction/parameter/unit/allocate.h"
 #include "interaction/calc.h"
 #include "functional/harmonic/parameter/build.h"
@@ -234,10 +235,10 @@ int main() {
   COut<<"\t"<<G[id[1]]<<Endl;
 
   cout<<endl;
-  InteractionKernel<SimpleDistanceBuffer,FreeSpace,double> K,K1;
+  InteractionFuncGeneric<SimpleDistanceBuffer,FreeSpace,double> K,K1;
   cout<<"Before Allocation: status of object is:\t";
   cout<<IsValid(K)<<endl;
-  allocate(K,Harmonic,4,2);
+  allocate(K,Harmonic);
   cout<<"After Allocation: status of object is:\t";
   cout<<IsValid(K)<<endl;
   imprint(K1,K);
@@ -262,23 +263,37 @@ int main() {
   cout<<IsValid(P1)<<endl;
 
   cout<<endl;
+  InteractionGeometry<SimpleDistanceBuffer,FreeSpace,double> IG,IG1;
+  cout<<"Before Allocation: status of the object is:\t";
+  cout<<IsValid(IG)<<endl;
+  allocate(IG,4,2);
+  cout<<"After Allocation: status of the object is:\t";
+  cout<<IsValid(IG)<<endl;
+  imprint(IG1,IG);
+  cout<<"After Imprint: status of the object is:\t";
+  cout<<IsValid(IG1)<<endl;
+  release(IG1);
+  cout<<"After Release: status of the object is:\t";
+  cout<<IsValid(IG1)<<endl;
+
+  cout<<endl;
   P.idx[0]=0;
   P.idx[1]=1;
   P.prm[HarmonicEqLength].value<double>()=0.8;
   P.prm[HarmonicEqStrength].value<double>()=100.;
   BuildParameterHarmonic<double>(P.prm);
   Energy=0.;
-  Calc(K,X.pdata,P,Energy);
+  Calc(K,IG,X.pdata,P,Energy);
   cout<<"Calculate Energy only:"<<endl;
   cout<<Energy<<endl;
   fill(G,0.);
-  Calc(K,X.pdata,P,G.pdata);
+  Calc(K,IG,X.pdata,P,G.pdata);
   cout<<"Calculate Gradient only:"<<endl;
   COut<<"\t"<<G[id[0]]<<Endl;
   COut<<"\t"<<G[id[1]]<<Endl;
   Energy=0.;
   fill(G,0.);
-  Calc(K,X.pdata,P,Energy,G.pdata);
+  Calc(K,IG,X.pdata,P,Energy,G.pdata);
   cout<<"Calculate Energy and Gradient both:"<<endl;
   cout<<Energy<<endl;
   COut<<"\t"<<G[id[0]]<<Endl;

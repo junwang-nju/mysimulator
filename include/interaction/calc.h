@@ -2,34 +2,35 @@
 #ifndef _Interaction_Calc_H_
 #define _Interaction_Calc_H_
 
-#include "interaction/kernel/interface.h"
+#include "interaction/func/generic/interface.h"
+#include "interaction/geometry/interface.h"
 #include "interaction/parameter/unit/interface.h"
 #include "interaction/func/interface.h"
 
 namespace mysimulator {
 
   template <typename T, template<typename> class DBuffer,typename GeomType>
-  void Calc(InteractionKernel<DBuffer,GeomType,T>& K, const Vector<T>* X,
+  void Calc(InteractionFuncGeneric<DBuffer,GeomType,T>& FG,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
             const InteractionParameterUnit& P, T& Energy) {
-    for(unsigned int i=0;i<K.iunit.size;++i)
-      K.iunit[i].EFunc(X,P.idx.pdata,P.prm.pdata,K.DB,K.Geo,Energy,
-                       K.iunit[i].tmvec.infra.pdata);
+    FG.EFunc(X,P.idx.pdata,P.prm.pdata,IG.DB,IG.Geo,Energy,
+             FG.tmvec.infra.pdata);
   }
 
   template <typename T, template<typename> class DBuffer,typename GeomType>
-  void Calc(InteractionKernel<DBuffer,GeomType,T>& K, const Vector<T>* X,
+  void Calc(InteractionFuncGeneric<DBuffer,GeomType,T>& FG,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
             const InteractionParameterUnit& P, Vector<T>* Gradient) {
-    for(unsigned int i=0;i<K.iunit.size;++i)
-      K.iunit[i].GFunc(X,P.idx.pdata,P.prm.pdata,K.DB,K.Geo,Gradient,
-                       K.iunit[i].tmvec.infra.pdata);
+    FG.GFunc(X,P.idx.pdata,P.prm.pdata,IG.DB,IG.Geo,Gradient,
+             FG.tmvec.infra.pdata);
   }
 
   template <typename T, template<typename> class DBuffer,typename GeomType>
-  void Calc(InteractionKernel<DBuffer,GeomType,T>& K, const Vector<T>* X,
+  void Calc(InteractionFuncGeneric<DBuffer,GeomType,T>& FG,
+            InteractionGeometry<DBuffer,GeomType,T>& IG, const Vector<T>* X,
             const InteractionParameterUnit& P, T& Energy,Vector<T>* Gradient) {
-    for(unsigned int i=0;i<K.iunit.size;++i)
-      K.iunit[i].BFunc(X,P.idx.pdata,P.prm.pdata,K.DB,K.Geo,Energy,Gradient,
-                       K.iunit[i].tmvec.infra.pdata);
+    FG.BFunc(X,P.idx.pdata,P.prm.pdata,IG.DB,IG.Geo,Energy,Gradient,
+             FG.tmvec.infra.pdata);
   }
 
 }

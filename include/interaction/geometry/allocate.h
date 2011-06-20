@@ -17,7 +17,7 @@ namespace mysimulator {
   template <template<typename>class DBuffer,typename GeomType,typename T>
   void imprint(InteractionGeometry<DBuffer,GeomType,T>& G,
                const InteractionGeometry<DBuffer,GeomType,T>& cG) {
-    allocate(G,cG.NumUnit(),G.Dimension());
+    allocate(G,cG.NumUnit(),cG.Dimension());
   }
 
 }
