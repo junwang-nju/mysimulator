@@ -6,6 +6,7 @@
 #include "interaction/geometry/interface.h"
 #include "interaction/parameter/unit/interface.h"
 #include "interaction/func/interface.h"
+#include <iostream>
 
 namespace mysimulator {
 
@@ -129,6 +130,80 @@ namespace mysimulator {
             T& Energy, Vector<T>* Gradient) {
     unsigned int n=(FGS.size<PL.size?FGS.size:PL.size);
     for(unsigned int i=0;i<n;++i) Calc(FGS[i],IG,X,PL[i],Energy,Gradient);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const List<T>& X, const IPType& P, T& Energy) {
+    Calc(FG,IG,X.infra.pdata,P,Energy);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const Vector<Vector<T> >& X, const IPType& P, T& Energy) {
+    Calc(FG,IG,X.pdata,P,Energy);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const List<T>& X, const IPType& P, List<T>& Gradient) {
+    Calc(FG,IG,X.infra.pdata,P,Gradient.infra.pdata);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const Vector<Vector<T> >& X, const IPType& P, List<T>& Gradient) {
+    Calc(FG,IG,X.pdata,P,Gradient.infra.pdata);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const List<T>& X, const IPType& P, Vector<Vector<T> >& Gradient) {
+    Calc(FG,IG,X.infra.pdata,P,Gradient.pdata);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const Vector<Vector<T> >& X, const IPType& P,
+            Vector<Vector<T> >& Gradient) {
+    Calc(FG,IG,X.pdata,P,Gradient.pdata);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const List<T>& X, const IPType& P, T& Energy, List<T>& Gradient) {
+    Calc(FG,IG,X.infra.pdata,P,Energy,Gradient.infra.pdata);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const Vector<Vector<T> >& X, const IPType& P, T& Energy,
+            List<T>& Gradient) {
+    Calc(FG,IG,X.pdata,P,Energy,Gradient.infra.pdata);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const List<T>& X, const IPType& P, T& Energy,
+            Vector<Vector<T> >& Gradient) {
+    Calc(FG,IG,X.infra.pdata,P,Energy,Gradient.pdata);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType>
+  void Calc(IFType& FG, InteractionGeometry<DBuffer,GeomType,T>& IG,
+            const Vector<Vector<T> >& X, const IPType& P, T& Energy,
+            Vector<Vector<T> >& Gradient) {
+    Calc(FG,IG,X.pdata,P,Energy,Gradient.pdata);
   }
 
 }

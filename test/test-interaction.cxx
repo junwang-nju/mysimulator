@@ -299,6 +299,25 @@ int main() {
   COut<<"\t"<<G[id[0]]<<Endl;
   COut<<"\t"<<G[id[1]]<<Endl;
 
+  cout<<endl;
+  Energy=0.;
+  Calc(K,IG,X,P,Energy);
+  cout<<"Calculate Energy only:"<<endl;
+  cout<<Energy<<endl;
+  fill(G,0.);
+  Calc(K,IG,X,P,G);
+  cout<<"Calculate Gradient only:"<<endl;
+  COut<<"\t"<<G[id[0]]<<Endl;
+  COut<<"\t"<<G[id[1]]<<Endl;
+  Energy=0.;
+  fill(G,0.);
+  Calc(K,IG,X,P,Energy,G);
+  cout<<"Calculate Energy and Gradient both:"<<endl;
+  cout<<Energy<<endl;
+  COut<<"\t"<<G[id[0]]<<Endl;
+  COut<<"\t"<<G[id[1]]<<Endl;
+
+
   return 0;
 }
 
