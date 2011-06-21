@@ -3,7 +3,7 @@
 #define _Interaction_Calc_H_
 
 #include "interaction/func/generic/interface.h"
-#include "interaction/geometry/interface.h"
+#include "interaction/kernel/interface.h"
 #include "interaction/parameter/unit/interface.h"
 #include "interaction/func/interface.h"
 #include <iostream>
@@ -204,6 +204,27 @@ namespace mysimulator {
             const Vector<Vector<T> >& X, const IPType& P, T& Energy,
             Vector<Vector<T> >& Gradient) {
     Calc(FG,IG,X.pdata,P,Energy,Gradient.pdata);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType, typename XType>
+  void Calc(InteractionKernel<IFType,DBuffer,GeomType,T>& K, const XType& X,
+            const IPType& P, T& Energy) {
+    Calc(K.IF,K.IG,X,P,Energy);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType, typename XType,typename GType>
+  void Calc(InteractionKernel<IFType,DBuffer,GeomType,T>& K, const XType& X,
+            const IPType& P, GType& Gradient) {
+    Calc(K.IF,K.IG,X,P,Gradient);
+  }
+
+  template <typename T, template<typename> class DBuffer,typename GeomType,
+            typename IFType, typename IPType, typename XType,typename GType>
+  void Calc(InteractionKernel<IFType,DBuffer,GeomType,T>& K, const XType& X,
+            const IPType& P, T& Energy, GType& Gradient) {
+    Calc(K.IF,K.IG,X,P,Energy,Gradient);
   }
 
 }
