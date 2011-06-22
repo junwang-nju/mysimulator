@@ -45,6 +45,9 @@ set_source_files_properties (test-random.cxx COMPILE_FLAGS "-msse2 -DHAVE_SSE2")
 add_executable (test-interaction.run test-interaction.cxx)
 target_link_libraries(test-interaction.run blas)
 
+add_executable (test-minimizer.run test-minimizer.cxx)
+target_link_libraries(test-minimizer.run blas)
+
 #add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
 #target_link_libraries (test-interaction-pairwise-base.run blas)
 
@@ -75,23 +78,23 @@ target_link_libraries(test-interaction.run blas)
 #add_executable (test-interaction-pairwise-quadharm.run test-interaction-pairwise-quadharm.cxx)
 #target_link_libraries (test-interaction-pairwise-quadharm.run blas)
 
-add_executable (test-minimizer-buffer-base.run test-minimizer-buffer-base.cxx)
-target_link_libraries (test-minimizer-buffer-base.run blas)
+#add_executable (test-minimizer-buffer-base.run test-minimizer-buffer-base.cxx)
+#target_link_libraries (test-minimizer-buffer-base.run blas)
 
-add_executable (test-line-minimizer-buffer-base.run test-line-minimizer-buffer-base.cxx)
-target_link_libraries (test-line-minimizer-buffer-base.run blas)
+#add_executable (test-line-minimizer-buffer-base.run test-line-minimizer-buffer-base.cxx)
+#target_link_libraries (test-line-minimizer-buffer-base.run blas)
 
-add_executable (test-tracking-line-minimizer-buffer.run test-tracking-line-minimizer-buffer.cxx)
-target_link_libraries (test-tracking-line-minimizer-buffer.run blas)
+#add_executable (test-tracking-line-minimizer-buffer.run test-tracking-line-minimizer-buffer.cxx)
+#target_link_libraries (test-tracking-line-minimizer-buffer.run blas)
 
-add_executable (test-steep-minimizer-buffer.run test-steep-minimizer-buffer.cxx)
-target_link_libraries (test-steep-minimizer-buffer.run blas)
+#add_executable (test-steep-minimizer-buffer.run test-steep-minimizer-buffer.cxx)
+#target_link_libraries (test-steep-minimizer-buffer.run blas)
 
-add_executable (test-conjg-minimizer-buffer.run test-conjg-minimizer-buffer.cxx)
-target_link_libraries (test-conjg-minimizer-buffer.run blas)
+#add_executable (test-conjg-minimizer-buffer.run test-conjg-minimizer-buffer.cxx)
+#target_link_libraries (test-conjg-minimizer-buffer.run blas)
 
-add_executable (test-lbfgs-minimizer-buffer.run test-lbfgs-minimizer-buffer.cxx)
-target_link_libraries (test-lbfgs-minimizer-buffer.run blas)
+#add_executable (test-lbfgs-minimizer-buffer.run test-lbfgs-minimizer-buffer.cxx)
+#target_link_libraries (test-lbfgs-minimizer-buffer.run blas)
 
 add_executable (test-propagator-conste-vverlet.run test-propagator-conste-vverlet.cxx)
 target_link_libraries (test-propagator-conste-vverlet.run blas)

@@ -24,9 +24,40 @@ namespace mysimulator {
   static const float fOne=1.;
   static const float fNOne=-1.;
 
+  static const float FRelDelta=5.9604644775390625e-8;
+  static const float FSqrtRelDelta=0.000244140625;
+
   static const double dOne=1.;
   static const double dNOne=-1.;
   static const double dTwo=2.;
+
+  static const double DRelDelta=1.1107651257113993e-16;
+  static const double DSqrtRelDelta=1.0539284253265965e-8;
+  static const double Gold=0.618033988749894848205;
+  static const double IvGold=1.618033988749894848205;
+
+}
+
+#include "io/error.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  const T& RelativeDelta() {
+    Error("Unknown Type for Relative Delta!");
+    return static_cast<T>(cZero);
+  }
+  
+  template <> const double& RelativeDelta<double>() { return DRelDelta; }
+  template <> const float& RelativeDelta<float>() { return FRelDelta; }
+
+  template <typename T>
+  const T& GoldenValue() {
+    Error("Unknown Type for Golden Value!");
+    return static_cast<T>(cZero);
+  }
+
+  template <> const double& GoldenValue<double>() { return Gold; }
 
 }
 

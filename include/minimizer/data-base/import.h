@@ -1,15 +1,15 @@
 
-#ifndef _Minimizer_Base_Import_H_
-#define _Minimizer_Base_Import_H_
+#ifndef _Minimizer_Data_Base_Import_H_
+#define _Minimizer_Data_Base_Import_H_
 
-#include "minimizer/base/interface.h"
+#include "minimizer/data-base/interface.h"
 #include "vector/sum.h"
 #include "vector/allocate.h"
 
 namespace mysimulator {
 
   template <typename KT, template<typename> class VT,  typename PT, typename T>
-  void import(MinimizerBase<KT,VT,PT,T>& M,const KT* FG, const VT<T>* Coor, 
+  void import(MinimizerDataBase<KT,VT,PT,T>& M,const KT* FG, const VT<T>* Coor, 
               const PT* P, const VT<unsigned int>* umask) {
     if(FG!=NULL) {
       assert(IsValid(*FG));
