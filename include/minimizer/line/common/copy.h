@@ -15,6 +15,7 @@ namespace mysimulator {
     copy(static_cast<Type&>(L),static_cast<const Type&>(cL));
     copy(L.RunX,cL.RunX);
     copy(L.RunG,cL.RunG);
+    copy(L.LineDirc,cL.LineDirc);
     copy(L.LineSearchCount,cL.LineSearchCount);
     copy(L.RunEnergy,cL.RunEnergy);
     copy(L.RunProject,cL.RunProject);
