@@ -9,7 +9,7 @@
 namespace mysimulator {
 
   void copy(InteractionParameterUnit& P, const InteractionParameterUnit& cP) {
-    assert(IsValid(O)&&IsValid(cP));
+    assert(IsValid(P)&&IsValid(cP));
     assert(P.tag==cP.tag);
     copy(P.prm,cP.prm);
     copy(P.idx,cP.idx);

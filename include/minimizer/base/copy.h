@@ -3,14 +3,25 @@
 #define _Minimizer_Base_Copy_H_
 
 #include "minimizer/base/interface.h"
-#include "minimizer/data-base/copy.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 
-  template <typename FT,template<typename> class VT, typename PT, typename T>
-  void copy(MinimizerBase<FT,VT,PT,T>& M,const MinimizerBase<FT,VT,PT,T>& cM){
-    assert(IsValid(M)&&IsValid(cM));
-    copy(M.Data,cM.Data);
+  template <typename KT,template<typename> class VT, typename PT, typename T>
+  void copy(MinimizerBase<KT,VT,PT,T>& M,const MinimizerBase<KT,VT,PT,T>& cM){
+    assert(IsValid(M)&&(IsValid(cM)));
+    copy(M.MinFunc,cM.MinFunc);
+    copy(M.MinX,cM.MinX);
+    copy(M.MinG,cM.MinG);
+    copy(M.MinP,cM.MinP);
+    copy(M.MinMask,cM.MinMask);
+    copy(M.MinUMask,cM.MinUMask);
+    copy(M.MinEnergy,cM.MinEnergy);
+    copy(M.MinProject,cM.MinProject);
+    copy(M.MinMove,cM.MinMove);
+    copy(M.GCalcCount,cM.GCalcCount);
+    copy(M.SearchScale,cM.SearchScale);
+    copy(M.DOF,cM.DOF);
   }
 
 }

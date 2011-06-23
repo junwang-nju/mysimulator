@@ -7,11 +7,11 @@
 
 namespace mysimulator {
 
-  template <typename FT,template<typename> class VT,typename PT,typename T>
-  void copy(LineMinimizerCommon<FT,VT,PT,T>& L,
-            const LineMinimizerCommon<FT,VT,PT,T>& cL) {
+  template <typename KT,template<typename> class VT,typename PT,typename T>
+  void copy(LineMinimizerCommon<KT,VT,PT,T>& L,
+            const LineMinimizerCommon<KT,VT,PT,T>& cL) {
     assert(IsValid(L)&&IsValid(cL));
-    typedef MinimizerBase<FT,VT,PT,T>    Type;
+    typedef MinimizerBase<KT,VT,PT,T>    Type;
     copy(static_cast<Type&>(L),static_cast<const Type&>(cL));
     copy(L.RunX,cL.RunX);
     copy(L.RunG,cL.RunG);

@@ -27,6 +27,7 @@ namespace mysimulator {
     void clearData() { release(DB); release(Geo); }
     const unsigned int Dimension() const { return DB.Dimension(); }
     const unsigned int NumUnit() const { return DB.UnitNumber(); }
+    void update() { DB.renew(); }
 
   };
 

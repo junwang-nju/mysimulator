@@ -3,25 +3,34 @@
 #define _Minimizer_Line_Tracking_Specification_H_
 
 #include "minimizer/line/interface.h"
+#include "minimizer/base/produce.h"
 #include "minimizer/line/common/interface.h"
+#include "minimizer/line/condition/name.h"
+#include "minimizer/line/condition/evaluate.h"
+#include "referable-object/swap.h"
 
 namespace mysimulator {
 
-  template <typename IFuncType,template<typename> class SpaceVType,
+  template <typename IKernelType,template<typename> class SpaceVType,
             typename IParamType,typename T>
-  struct LineMinimizer<TrackingMethod,IFuncType,SpaceVType,IParamType,T>
-      : public LineMinimizerCommon<IFuncType,SpaceVType,IParamType,T> {
+  struct LineMinimizer<TrackingMethod,IKernelType,SpaceVType,IParamType,T>
+      : public LineMinimizerCommon<IKernelType,SpaceVType,IParamType,T> {
 
-    typedef LineMinimizer<TrackingMethod,IFuncType,SpaceVType,IParamType,T>
+    typedef LineMinimizer<TrackingMethod,IKernelType,SpaceVType,IParamType,T>
             Type;
-    typedef LineMinimizerCommon<IFuncType,SpaceVType,IParamType,T>
+    typedef LineMinimizerCommon<IKernelType,SpaceVType,IParamType,T>
             ParentType;
+    typedef MinimizerBase<IKernelType,SpaceVType,IParamType,T> BaseType;
+    typedef bool (*ConditionFuncType)(const T&,const T&,const T&,const T&,
+                                      const T&,const T&);
 
     static const unsigned int DefaultMaxIterations;
 
     T TrackingFac;
+    ConditionFuncType Condition;
 
-    LineMinimizer() : ParentType(), TrackingFac(GoldenValue<T>()) {}
+    LineMinimizer()
+        : ParentType(), TrackingFac(GoldenValue<T>()), Condition(NULL) {}
     LineMinimizer(const Type&) { Error("Copier of LineMinimizer Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for LineMinimizer Disabled!");
@@ -29,50 +38,57 @@ namespace mysimulator {
     }
     ~LineMinimizer() { clearData(); }
 
-    void clearData() { static_cast<ParentType*>(this)->.clearData(); }
+    void clearData() {
+      static_cast<ParentType*>(this)->clearData();
+      Condition=NULL;
+    }
 
-    virtual int Go(const unsigned int MaxIt=DefaultMaxIterations) {
+    int _Go(const unsigned int MaxIt=DefaultMaxIterations) {
       assert(IsValid(*this));
-      assert(MinProject<=0);
-      if(MinProject>=-GradThreshold)  return 2;
-      const T mstep=MinimalStep();
-      T dstep=SearchScale;
+      assert(this->MinProject<=0);
+      if(this->MinProject>=-this->GradThreshold)  return 2;
+      const T mstep=this->MinimalStep();
+      T dstep=this->SearchScale;
       T step=dstep;
-      T c1pj=DecreaseFac*MinProject;
-      T c2pj=CurvatureFac*MinProject;
+      T c1pj=this->DecreaseFac*this->MinProject;
+      T c2pj=this->CurvatureFac*this->MinProject;
       unsigned int state=0;
       for(unsigned int niter=0;niter<MaxIt;++niter) {
-        ProduceNewPosition();
-        /// add RunCondi, modify MinXRunX,MinG,RUnG as Object
-        if(RunCondition(RunEnergy,RunProject,MinEnergy,c1pj,c2pj,step)) {
-          swap(MinX,RunX);
-          swap(MinG,RunG);
-          MinEnergy=RunEnergy;
-          MinProject=RunProject;
-          MinMove=step;
+        ProduceNew(static_cast<BaseType&>(*this),this->MinX(),this->LineDirc,
+                   step,this->RunX(),this->RunEnergy,this->RunG(),
+                   this->RunProject);
+        if(Condition(this->RunEnergy,this->RunProject,this->MinEnergy,
+                     c1pj,c2pj,step)) {
+          swap(this->MinX,this->RunX);
+          swap(this->MinG,this->RunG);
+          this->MinEnergy=this->RunEnergy;
+          this->MinProject=this->RunProject;
+          this->MinMove=step;
           state=1;
         }
-        if(dstep*RunProject>0)   dstep*=-TrackingFac;
+        if(dstep*this->RunProject>0)   dstep*=-TrackingFac;
         step+=dstep;
         if(absval(dstep)<mstep) { state=2; break; }
       }
       return state;
     }
 
+    virtual int Go(const unsigned int MaxIt) { return _Go(MaxIt); }
+
   };
 
-  template <typename FT,template<typename> class VT,typename PT,typename T>
+  template <typename KT,template<typename> class VT,typename PT,typename T>
   const unsigned int
-  LineMinimizer<TrackingMethod,FT,VT,PT,T>::DefaultMaxIterations=10000;
+  LineMinimizer<TrackingMethod,KT,VT,PT,T>::DefaultMaxIterations=10000;
 
-  template <typename FT,template<typename> class VT,typename PT,typename T>
-  bool IsValid(const LineMinimizer<TrackingMethod,FT,VT,PT,T>& L) {
-    typedef LineMinimizerCommon<FT,VT,PT,T>   Type;
-    return IsValid(static_cast<const Type&>(L));
+  template <typename KT,template<typename> class VT,typename PT,typename T>
+  bool IsValid(const LineMinimizer<TrackingMethod,KT,VT,PT,T>& L) {
+    typedef LineMinimizerCommon<KT,VT,PT,T>   Type;
+    return IsValid(static_cast<const Type&>(L))&&IsValid(L.Condition);
   }
 
-  template <typename FT,template<typename> class VT,typename PT,typename T>
-  void release(LineMinimizer<TrackingMethod,FT,VT,PT,T>& L) { L.clearData(); }
+  template <typename KT,template<typename> class VT,typename PT,typename T>
+  void release(LineMinimizer<TrackingMethod,KT,VT,PT,T>& L) { L.clearData(); }
 
 }
 

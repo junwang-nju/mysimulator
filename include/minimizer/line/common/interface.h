@@ -9,23 +9,23 @@
 
 namespace mysimulator {
 
-  template <typename IFuncType,template<typename> class SpaceVType,
+  template <typename IKernelType,template<typename> class SpaceVType,
             typename IParamType,typename T>
   struct LineMinimizerCommon
-      : public MinimizerBase<IFuncType,SpaceVType,IParamType,T> {
+      : public MinimizerBase<IKernelType,SpaceVType,IParamType,T> {
 
-    typedef LineMinimizerCommon<IFuncType,SpaceVType,IParamType,T>   Type;
-    typedef MinimizerBase<IFuncType,SpaceVType,IParamType,T>    ParentType;
+    typedef LineMinimizerCommon<IKernelType,SpaceVType,IParamType,T>   Type;
+    typedef MinimizerBase<IKernelType,SpaceVType,IParamType,T>    ParentType;
 
-    SpaceVType<T>   RunX;
-    SpaceVType<T>   RunG;
-    SpaceVType<T>   LineDirc;
-    unsigned int    LineSearchCount;
-    T               RunEnergy;
-    T               RunProject;
-    T               DecreaseFac;
-    T               CurvatureFac;
-    T               GradThreshold;
+    Object<SpaceVType<T> >    RunX;
+    Object<SpaceVType<T> >    RunG;
+    SpaceVType<T>             LineDirc;
+    unsigned int              LineSearchCount;
+    T                         RunEnergy;
+    T                         RunProject;
+    T                         DecreaseFac;
+    T                         CurvatureFac;
+    T                         GradThreshold;
 
     LineMinimizerCommon()
         : ParentType(), RunX(), RunG(), LineDirc(), LineSearchCount(0),
@@ -46,23 +46,23 @@ namespace mysimulator {
     }
 
     T MinimalStep() const {
-      Error("Minimal Step is not available for this kind of SpaceVType!");
-      return static_cast<T>(cZero);
+      return CalcMinimalStep(this->MinX(),LineDirc,this->MinUMask,this->DOF);
     }
 
     virtual int Go(const unsigned int)=0;
 
   };
 
-  template <typename FT,template<typename> class VT,typename PT,typename T>
-  bool IsValid(const LineMinimizerCommon<FT,VT,PT,T>& L) {
-    typedef MinimizerBase<FT,VT,PT,T>    Type;
+  template <typename KT,template<typename> class VT,typename PT,typename T>
+  bool IsValid(const LineMinimizerCommon<KT,VT,PT,T>& L) {
+    typedef MinimizerBase<KT,VT,PT,T>    Type;
     return IsValid(static_cast<const Type&>(L))&&
-           IsValid(L.RunX)&&IsValid(L.RunG)&&IsValid(L.LineDirc);
+           IsValid(L.RunX)&&IsValid(L.RunX())&&IsValid(L.RunG)&&
+           IsValid(L.RunG())&&IsValid(L.LineDirc);
   }
 
-  template <typename FT,template<typename> class VT,typename PT,typename T>
-  void release(LineMinimizerCommon<FT,VT,PT,T>& L) { L.clearData(); }
+  template <typename KT,template<typename> class VT,typename PT,typename T>
+  void release(LineMinimizerCommon<KT,VT,PT,T>& L) { L.clearData(); }
 
 }
 
@@ -70,38 +70,37 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename FT,typename PT,typename T>
-  T LineMinimizerCommon<FT,Vector,PT,T>::MinimalStep() const {
-    assert(IsValid(*this));
+  template <template<typename> class VT, typename T>
+  T CalcMinimalStep(const VT<T>&,const VT<T>&,const VT<unsigned int>&,
+                    const unsigned int&) {
+    Error("Minimal-Step Calculation for this VType Not Implemented!");
+    return static_cast<T>(cZero);
+  }
+
+  template <typename T>
+  T CalcMinimalStep(const Vector<T>& X, const Vector<T>& D,
+                    const Vector<unsigned int>& M, const unsigned int& F) {
+    assert(IsValid(X)&&IsValid(D)&&IsValid(M));
     T mstep;
     T tmd;
     copy(mstep,0.);
-    for(unsigned int i=0;i<MinUMask.size;++i) {
-      if(MinUMask[i]==0)    continue;
-      tmd=absval(MinX[i]);
-      tmd=(tmd<1.?LineDirc[i]:LineDirc/tmd);
+    for(unsigned int i=0;i<M.size;++i) {
+      if(M[i]==0)    continue;
+      tmd=absval(X[i]);
+      tmd=(tmd<1.?D[i]:D[i]/tmd);
       mstep+=tmd*tmd;
     }
-    return RelativeDelta<T>()*sqroot(DOF/mstep);
+    return RelativeDelta<T>()*sqroot(F/mstep);
   }
 
 
-  template <typename FT,typename PT,typename T>
-  T LineMinimizerCommon<FT,List,PT,T>::MinimalStep() {
-    assert(IsValid(*this));
-    T mstep;
-    T tmd;
-    copy(mstep,0.);
-    const T *px=MinX.pdata;
-    const T *pd=LineDirc.pdata;
-    const unsigned int *pm=MinUMask.pdata;
-    for(unsigned int i=0;i<MinUMask.NumElements();++i) {
-      if(pm[i]==0)  continue;
-      tmd=absval(px[i]);
-      tmd=(tmd<1.?pd[i]:pd[i]/tmd);
-      mstep+=tmd*tmd;
-    }
-    return RelativeDelta<T>()*sqroot(DOF/mstep);
+  template <typename T>
+  T CalcMinimalStep(const List<T>& X, const List<T>& D,
+                    const List<unsigned int>& M, const unsigned int& F) {
+    assert(IsValid(X)&&IsValid(D)&&IsValid(M));
+    return CalcMinimalStep(static_cast<const Vector<T>&>(X),
+                           static_cast<const Vector<T>&>(D),
+                           static_cast<const Vector<unsigned int>&>(M),F);
   }    
 
 }

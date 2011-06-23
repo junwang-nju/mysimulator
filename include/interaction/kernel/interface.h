@@ -26,6 +26,7 @@ namespace mysimulator {
     ~InteractionKernel() { clearData(); }
 
     void clearData() { release(IF); release(IG); }
+    void update() { return IG.update(); }
 
   };
 

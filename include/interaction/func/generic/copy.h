@@ -13,7 +13,7 @@ namespace mysimulator {
     assert(IsValid(cG));
     G.tag=cG.tag;
     G.EFunc=cG.EFunc;
-    G.GFunc=cG.BFunc;
+    G.GFunc=cG.GFunc;
     G.BFunc=cG.BFunc;
     if(IsValid(cG.tmvec))  imprint(G.tmvec,cG.tmvec);
   }

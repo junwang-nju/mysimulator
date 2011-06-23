@@ -6,14 +6,16 @@
 
 namespace mysimulator {
 
-  template <LineMinimizerName LN,typename FT,template<typename> class VT,
+  template <LineMinimizerName LN,typename KT,template<typename> class VT,
             typename PT, typename T>
-  void copy(LineMinimizer<LN,FT,VT,PT,T>& L,
-            const LineMinimizer<LN,FT,VT,PT,T>& cL) {
-    assert(IsValid(L)&&IsValid(cL));
+  void copy(LineMinimizer<LN,KT,VT,PT,T>& L,
+            const LineMinimizer<LN,KT,VT,PT,T>& cL) {
+    Error("Operation Copy for this Object Disabled!");
   }
 
 }
+
+#include "minimizer/line/tracking/copy-specification.h"
 
 #endif
 
