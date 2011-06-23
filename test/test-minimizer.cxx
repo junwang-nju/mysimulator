@@ -17,11 +17,11 @@
 #include "interaction/parameter/unit/allocate.h"
 #include "interaction/parameter/unit/copy.h"
 
+#include "list/allocate.h"
 #include "list/copy.h"
 #include "list/fill.h"
 
 #include "vector/dot.h"
-#include "list/allocate.h"
 #include "interaction/calc.h"
 #include "geometry/distance/dbuffer-simple/calc.h"
 #include "geometry/displacement/free/calc.h"
