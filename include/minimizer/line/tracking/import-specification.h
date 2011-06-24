@@ -8,8 +8,8 @@
 namespace mysimulator {
 
   template <typename KT, template<typename> class VT,  typename PT, typename T>
-  void import(LineMinimizer<TrackingMethod,KT,VT,PT,T>& L,const KT* FG,
-              const VT<T>* Coor,const PT* P, const VT<unsigned int>* umask) {
+  void import(LineMinimizer<TrackingMethod,KT,VT,PT,T>& L,const void* FG,
+              const void* Coor,const void* P, const void* umask) {
     typedef LineMinimizerCommon<KT,VT,PT,T> Type;
     import(static_cast<Type&>(L),FG,Coor,P,umask);
   }

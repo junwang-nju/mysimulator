@@ -6,14 +6,12 @@
 
 namespace mysimulator {
 
-  /*
   template <LineMinimizerName LNM,typename KT, template<typename> class VT,
             typename PT, typename T>
-  void import(LineMinimizer<LNM,KT,VT,PT,T>& L,const KT* FG,const VT<T>* Coor,
-              const PT* P, const VT<unsigned int>* umask) {
+  void import(LineMinimizer<LNM,KT,VT,PT,T>& L,const void* FG,const void* Coor,
+              const void* P, const void* umask) {
     Error("Operation Import for this Object Disabled!");
   }
-  */
 
 }
 

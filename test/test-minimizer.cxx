@@ -2,25 +2,20 @@
 #include "minimizer/line/import.h"
 #include "minimizer/line/copy.h"
 
+// These headers are generally necessary for Minimizer
 #include "interaction/kernel/allocate.h"
 #include "interaction/kernel/copy.h"
-
 #include "interaction/func/generic/allocate.h"
 #include "interaction/func/generic/copy.h"
-
 #include "buffer/distance/simple/allocate.h"
 #include "buffer/distance/simple/copy.h"
-
 #include "boundary/free/allocate.h"
 #include "boundary/free/copy.h"
-
 #include "interaction/parameter/unit/allocate.h"
 #include "interaction/parameter/unit/copy.h"
-
 #include "list/allocate.h"
 #include "list/copy.h"
 #include "list/fill.h"
-
 #include "vector/dot.h"
 #include "list/scale.h"
 #include "interaction/calc.h"
@@ -28,9 +23,8 @@
 #include "geometry/displacement/free/calc.h"
 
 #include "functional/harmonic/parameter/build.h"
-#include "vector/norm.h"
-#include "minimizer/base/produce.h"
 #include "list/io.h"
+#include "vector/norm.h"
 
 using namespace mysimulator;
 
@@ -60,7 +54,15 @@ int main() {
   X[3][0]=-1.5;   X[3][1]=0.7;
   fill(Msk,1U);
 
-  import(LM,static_cast<const IKType*>(NULL),&X,static_cast<const IPType*>(NULL),&Msk);
+  cout<<endl;
+  cout<<"Before Import: status of MinX in minimier is:\t";
+  cout<<IsValid(LM.MinX)<<endl;
+  import(LM,
+         (void*)NULL,&X,
+         //static_cast<const IKType*>(NULL),&X,
+         static_cast<const IPType*>(NULL),&Msk);
+  cout<<"After Import: status of MinX in minimier is:\t";
+  cout<<IsValid(LM.MinX)<<endl;
   allocate(LM.MinFunc,Harmonic,NUnit,Dim);
   allocate(LM.MinP,NPrm);
   for(unsigned int i=0;i<NPrm;++i)    allocate(LM.MinP[i],Harmonic);
@@ -84,6 +86,7 @@ int main() {
   LM.MinP[5].prm[HarmonicEqStrength].value<double>()=50.;
   for(unsigned int i=0;i<NPrm;++i)
     BuildParameterHarmonic<double>(LM.MinP[i].prm);
+  cout<<"MinFunc and MinP are allocated and assigned!"<<endl;
 
   LM.LineDirc[0][0]=0;    LM.LineDirc[0][1]=1.;
   LM.LineDirc[1][0]=1;    LM.LineDirc[1][1]=0.;
@@ -92,14 +95,28 @@ int main() {
   double d;
   d=norm(LM.LineDirc);
   scale(LM.LineDirc,-1./d);
-  ProduceNew(LM,LM.MinX(),LM.LineDirc,0.,LM.MinX(),LM.MinEnergy,LM.MinG(),LM.MinProject);
+  cout<<"Direction of Line search is assigned!"<<endl;
+
+  cout<<endl;
+  ProduceNew(LM,LM.MinX(),LM.LineDirc,0.,LM.MinX(),LM.MinEnergy,LM.MinG(),
+             LM.MinProject);
+  cout<<"Using ProduceNew method to update Energy, Gradient and Project!"<<endl;
+  cout<<"present Project value is:\t";
   cout<<LM.MinProject<<endl;
 
   LM.SetCondition(StrongWolfe);
+  cout<<"assign Condition using the name of Condition!"<<endl;
+
+  cout<<endl;
+  cout<<"Before Line Minimization: Coordination is:"<<endl;
   COut<<LM.MinX()<<Endl;
+  cout<<"Energy is:\t";
   COut<<LM.MinEnergy<<Endl;
+  cout<<"Flag of search operation is:\t";
   cout<<LM.Go(10000)<<endl;
+  cout<<"After Line Minimization: Coordination and Energy are:"<<endl;
   COut<<LM.MinX()<<Endl;
+  cout<<"Energy is:\t";
   COut<<LM.MinEnergy<<Endl;
   return 0;
 }

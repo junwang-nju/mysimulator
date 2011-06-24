@@ -8,15 +8,16 @@
 namespace mysimulator {
 
   template <typename KT, template<typename> class VT,  typename PT, typename T>
-  void import(LineMinimizerCommon<KT,VT,PT,T>& L,const KT* FG,const VT<T>* Coor,
-              const PT* P, const VT<unsigned int>* umask) {
+  void import(LineMinimizerCommon<KT,VT,PT,T>& L, const void* FG,
+              const void* Coor, const void* P, const void* umask) {
     typedef MinimizerBase<KT,VT,PT,T>   Type;
     import(static_cast<Type&>(L),FG,Coor,P,umask);
     if(Coor!=NULL) {
-      assert(IsValid(*Coor));
-      imprint(L.RunX,*Coor);
-      imprint(L.RunG,*Coor);
-      imprint(L.LineDirc,*Coor);
+      const VT<T>* pCoor=static_cast<const VT<T>*>(Coor);
+      assert(IsValid(*pCoor));
+      imprint(L.RunX,*pCoor);
+      imprint(L.RunG,*pCoor);
+      imprint(L.LineDirc,*pCoor);
     }
   }
 
