@@ -2,6 +2,7 @@
 #ifndef _Minimizer_Line_Condition_Evaluate_H_
 #define _Minimizer_Line_Condition_Evaluate_H_
 
+
 namespace mysimulator {
 
   template <typename T>
@@ -19,7 +20,7 @@ namespace mysimulator {
   template <typename T>
   bool StrongWolfeCondition(const T& ry,const T& rp,const T& my,const T& dp,
                             const T& cp, const T& step) {
-    return WolfeCondition(ry,rp,my,dp,cp,step)&&(rp<=cp);
+    return WolfeCondition(ry,rp,my,dp,cp,step)&&(rp<=-cp);
   }
 
 }

@@ -75,6 +75,15 @@ namespace mysimulator {
 
     virtual int Go(const unsigned int MaxIt) { return _Go(MaxIt); }
 
+    void SetCondition(const LineMinimizerConditionName& CName) {
+      switch(CName) {
+        case Armijo:  Condition=ArmijoCondition<T>; break;
+        case Wolfe:   Condition=WolfeCondition<T>;  break;
+        case StrongWolfe: Condition=StrongWolfeCondition<T>;  break;
+        default:  Error("Unknow Name for Line search Condition!");
+      }
+    }
+
   };
 
   template <typename KT,template<typename> class VT,typename PT,typename T>
