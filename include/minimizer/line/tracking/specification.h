@@ -65,6 +65,7 @@ namespace mysimulator {
           this->MinProject=this->RunProject;
           this->MinMove=step;
           state=1;
+          break;
         }
         if(dstep*this->RunProject>0)   dstep*=-TrackingFac;
         step+=dstep;

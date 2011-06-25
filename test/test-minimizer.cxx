@@ -1,6 +1,6 @@
 
-#include "minimizer/line/import.h"
-#include "minimizer/line/copy.h"
+#include "minimizer/import.h"
+#include "minimizer/copy.h"
 
 // These headers are generally necessary for Minimizer
 #include "interaction/kernel/allocate.h"
@@ -57,10 +57,7 @@ int main() {
   cout<<endl;
   cout<<"Before Import: status of MinX in minimier is:\t";
   cout<<IsValid(LM.MinX)<<endl;
-  import(LM,
-         (void*)NULL,&X,
-         //static_cast<const IKType*>(NULL),&X,
-         static_cast<const IPType*>(NULL),&Msk);
+  import(LM,NULL,&X,NULL,&Msk);
   cout<<"After Import: status of MinX in minimier is:\t";
   cout<<IsValid(LM.MinX)<<endl;
   allocate(LM.MinFunc,Harmonic,NUnit,Dim);
@@ -118,6 +115,7 @@ int main() {
   COut<<LM.MinX()<<Endl;
   cout<<"Energy is:\t";
   COut<<LM.MinEnergy<<Endl;
+
   return 0;
 }
 
