@@ -16,6 +16,7 @@ namespace mysimulator {
 }
 
 #include "minimizer/steep/copy-specification.h"
+#include "minimizer/conjg/copy-specification.h"
 
 #endif
 

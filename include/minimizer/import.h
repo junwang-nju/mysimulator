@@ -16,5 +16,6 @@ namespace mysimulator {
 }
 
 #include "minimizer/steep/import-specification.h"
+#include "minimizer/conjg/import-specification.h"
 
 #endif
