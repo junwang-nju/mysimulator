@@ -30,7 +30,7 @@ namespace mysimulator {
 
     void clearData() { static_cast<ParentType*>(this)->clearData(); }
 
-    virtual int Go(const unsigned int MaxIt) {
+    virtual int Go(const unsigned int MaxIt=DefaultMaxIterations) {
       this->GCalcCount=0;
       this->LineSearchCount=0;
       T tmd;

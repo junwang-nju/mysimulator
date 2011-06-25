@@ -74,7 +74,9 @@ namespace mysimulator {
       return state;
     }
 
-    virtual int Go(const unsigned int MaxIt) { return _Go(MaxIt); }
+    virtual int Go(const unsigned int MaxIt=DefaultMaxIterations) {
+      return _Go(MaxIt);
+    }
 
     void SetCondition(const LineMinimizerConditionName& CName) {
       switch(CName) {

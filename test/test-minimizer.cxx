@@ -116,6 +116,25 @@ int main() {
   cout<<"Energy is:\t";
   COut<<LM.MinEnergy<<Endl;
 
+  cout<<endl;
+  Minimizer<SteepestDescent,TrackingMethod,IKType,List,IPType,double> M;
+  import(M,&(LM.MinFunc),&(LM.MinX()),&(LM.MinP),&(LM.MinUMask));
+  copy(M.LineDirc,LM.LineDirc);
+  ProduceNew(M,M.MinX(),M.LineDirc,0.,M.MinX(),M.MinEnergy,M.MinG(),
+             M.MinProject);
+  M.SetCondition(StrongWolfe);
+  cout<<"Import data, and prodcue some other internal data, and set up condition functions with basic method"<<endl;
+  cout<<endl;
+  cout<<"Before Steep Minimization: Coordination is:"<<endl;
+  COut<<M.MinX()<<Endl;
+  cout<<"Energy is:\t";
+  COut<<M.MinEnergy<<Endl;
+  M.Go();
+  cout<<"After Steep Minimization: Coordination is:"<<endl;
+  COut<<M.MinX()<<Endl;
+  cout<<"Energy is:\t";
+  COut<<M.MinEnergy<<Endl;
+
   return 0;
 }
 
