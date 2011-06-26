@@ -64,44 +64,12 @@ namespace mysimulator {
   template <typename KT,template<typename> class VT,typename PT,typename T>
   void release(LineMinimizerCommon<KT,VT,PT,T>& L) { L.clearData(); }
 
-}
-
-#include "list/interface.h"
-
-namespace mysimulator {
-
   template <template<typename> class VT, typename T>
   T CalcMinimalStep(const VT<T>&,const VT<T>&,const VT<unsigned int>&,
                     const unsigned int&) {
     Error("Minimal-Step Calculation for this VType Not Implemented!");
     return static_cast<T>(cZero);
   }
-
-  template <typename T>
-  T CalcMinimalStep(const Vector<T>& X, const Vector<T>& D,
-                    const Vector<unsigned int>& M, const unsigned int& F) {
-    assert(IsValid(X)&&IsValid(D)&&IsValid(M));
-    T mstep;
-    T tmd;
-    copy(mstep,0.);
-    for(unsigned int i=0;i<M.size;++i) {
-      if(M[i]==0)    continue;
-      tmd=absval(X[i]);
-      tmd=(tmd<1.?D[i]:D[i]/tmd);
-      mstep+=tmd*tmd;
-    }
-    return RelativeDelta<T>()*sqroot(F/mstep);
-  }
-
-
-  template <typename T>
-  T CalcMinimalStep(const List<T>& X, const List<T>& D,
-                    const List<unsigned int>& M, const unsigned int& F) {
-    assert(IsValid(X)&&IsValid(D)&&IsValid(M));
-    return CalcMinimalStep(static_cast<const Vector<T>&>(X),
-                           static_cast<const Vector<T>&>(D),
-                           static_cast<const Vector<unsigned int>&>(M),F);
-  }    
 
 }
 

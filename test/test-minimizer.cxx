@@ -1,6 +1,7 @@
 
 #include "minimizer/import.h"
 #include "minimizer/copy.h"
+#include "minimizer/line/common/calc-minimal-step-list.h"
 
 // These headers are generally necessary for Minimizer
 #include "interaction/kernel/allocate.h"
@@ -18,6 +19,7 @@
 #include "list/fill.h"
 #include "vector/dot.h"
 #include "list/scale.h"
+#include "list/shift.h"
 #include "interaction/calc.h"
 #include "geometry/distance/dbuffer-simple/calc.h"
 #include "geometry/displacement/free/calc.h"
@@ -134,6 +136,57 @@ int main() {
   COut<<M.MinX()<<Endl;
   cout<<"Energy is:\t";
   COut<<M.MinEnergy<<Endl;
+  cout<<"Number of Line Searches is:\t";
+  cout<<M.LineSearchCount<<endl;
+  cout<<"Number of Gradient Evaluation is:\t";
+  cout<<M.GCalcCount<<endl;
+
+  cout<<endl;
+  Minimizer<ConjugateGradient,TrackingMethod,IKType,List,IPType,double> MC;
+  import(MC,&(LM.MinFunc),&(LM.MinX()),&(LM.MinP),&(LM.MinUMask));
+  copy(MC.LineDirc,LM.LineDirc);
+  ProduceNew(MC,MC.MinX(),MC.LineDirc,0.,MC.MinX(),MC.MinEnergy,MC.MinG(),
+             MC.MinProject);
+  MC.SetCondition(StrongWolfe);
+  MC.SetMaxBeta();
+  cout<<"Import data, and prodcue some other internal data, and set up condition functions and Maximal Beta with basic method"<<endl;
+  cout<<endl;
+  cout<<"Before Steep Minimization: Coordination is:"<<endl;
+  COut<<MC.MinX()<<Endl;
+  cout<<"Energy is:\t";
+  COut<<MC.MinEnergy<<Endl;
+  MC.Go();
+  cout<<"After Steep Minimization: Coordination is:"<<endl;
+  COut<<MC.MinX()<<Endl;
+  cout<<"Energy is:\t";
+  COut<<MC.MinEnergy<<Endl;
+  cout<<"Number of Line Searches is:\t";
+  cout<<MC.LineSearchCount<<endl;
+  cout<<"Number of Gradient Evaluation is:\t";
+  cout<<MC.GCalcCount<<endl;
+
+  cout<<endl;
+  Minimizer<LBFGS,TrackingMethod,IKType,List,IPType,double> ML;
+  import(ML,&(LM.MinFunc),&(LM.MinX()),&(LM.MinP),&(LM.MinUMask));
+  copy(ML.LineDirc,LM.LineDirc);
+  ProduceNew(ML,ML.MinX(),ML.LineDirc,0.,ML.MinX(),ML.MinEnergy,ML.MinG(),
+             ML.MinProject);
+  ML.SetCondition(StrongWolfe);
+  cout<<"Import data, and prodcue some other internal data, and set up condition functions and Maximal Beta with basic method"<<endl;
+  cout<<endl;
+  cout<<"Before Steep Minimization: Coordination is:"<<endl;
+  COut<<ML.MinX()<<Endl;
+  cout<<"Energy is:\t";
+  COut<<ML.MinEnergy<<Endl;
+  ML.Go();
+  cout<<"After Steep Minimization: Coordination is:"<<endl;
+  COut<<ML.MinX()<<Endl;
+  cout<<"Energy is:\t";
+  COut<<ML.MinEnergy<<Endl;
+  cout<<"Number of Line Searches is:\t";
+  cout<<ML.LineSearchCount<<endl;
+  cout<<"Number of Gradient Evaluation is:\t";
+  cout<<ML.GCalcCount<<endl;
 
   return 0;
 }

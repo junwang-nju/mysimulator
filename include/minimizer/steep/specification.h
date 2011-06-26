@@ -31,6 +31,7 @@ namespace mysimulator {
     void clearData() { static_cast<ParentType*>(this)->clearData(); }
 
     virtual int Go(const unsigned int MaxIt=DefaultMaxIterations) {
+      assert(IsValid(*this));
       this->GCalcCount=0;
       this->LineSearchCount=0;
       T tmd;
@@ -46,7 +47,7 @@ namespace mysimulator {
         if(lf==2) { this->LineSearchCount=neval; f=1; break; }
         else if(lf==0)  { this->LineSearchCount=neval; f=4; break; }
         if(2*absval(tmd-this->MinEnergy)<=
-           (tmd+this->MinEnergy)*RelativeDelta<T>()) {
+           absval(tmd+this->MinEnergy)*RelativeDelta<T>()) {
           this->LineSearchCount=neval;
           f=2;
           break;

@@ -6,6 +6,7 @@
 #include "minimizer/line/interface.h"
 #include "intrinsic-type/abs-value.h"
 #include "intrinsic-type/sqroot.h"
+#include <iostream>
 
 namespace mysimulator {
 
@@ -40,13 +41,16 @@ namespace mysimulator {
       MaxBeta=0;
     }
 
+    void SetMaxBeta() { copy(MaxBeta,5); }
+    void SetMaxBeta(const T& MB) { copy(MaxBeta,MB); }
+
     virtual int Go(const unsigned int MaxIt=DefaultMaxIterations) {
+      assert(IsValid(*this));
       this->GCalcCount=0;
       this->LineSearchCount=0;
       bool isSteep=true;
       bool nextMode;
-      T beta=0;
-      T fnorm,fnorm2;
+      T beta=0,fnorm,fnorm2;
       fnorm=norm(this->MinG());
       if(fnorm<this->GradThreshold) { return 3; }
       fnorm2=fnorm*fnorm;
@@ -59,10 +63,7 @@ namespace mysimulator {
           fnorm2=fnorm*fnorm;
           tmd=dot(this->MinG(),this->OldMinG);
           beta=(fnorm2-tmd)/oldfnorm2;
-          if(absval(beta)>MaxBeta) {
-            beta=0.;
-            isSteep=true;
-          } else isSteep=false;
+          isSteep=(absval(beta)>MaxBeta);
         }
         if(!isSteep) {
           tmd=beta*dnorm;
@@ -70,12 +71,10 @@ namespace mysimulator {
           this->MinProject*=tmd;
           dnorm=sqroot(tmd*tmd+fnorm2-2*this->MinProject);
           this->MinProject-=fnorm2;
-          if((this->MinProject>0)&&(dnorm<this->GradThreshold)) {
-            copy(beta,0);
-            isSteep=true;
-          }
+          isSteep=((this->MinProject>0)||(dnorm<this->GradThreshold)); 
         }
         if(isSteep) {
+          copy(beta,0);
           dnorm=fnorm;
           if(dnorm<this->GradThreshold) {
             this->LineSearchCount=neval-1;
@@ -83,7 +82,7 @@ namespace mysimulator {
             break;
           }
           copy(this->LineDirc,this->MinG);
-          scale(this->LineDirc(),-iOne);
+          scale(this->LineDirc,-iOne);
           this->MinProject=-fnorm2;
         }
         tmd=1./dnorm;
@@ -94,12 +93,14 @@ namespace mysimulator {
         lf=static_cast<ParentType*>(this)->_Go();
         if(lf==2) {
           if(isSteep) { this->LineSearchCount=neval; f=1; break; }
-          else { nextMode=true; --neval; }
+          --neval;
+          nextMode=true;
         } else if(lf==0) { this->LineSearchCount=neval; f=5; break; }
         if(2*absval(tmd-this->MinEnergy)<
            absval(tmd+this->MinEnergy)*RelativeDelta<T>()) {
           if(isSteep) { this->LineSearchCount=neval; f=2; break; }
-          else { nextMode=true; --neval; }
+          --neval;
+          nextMode=true;
         }
         isSteep=nextMode;
         fnorm=norm(this->MinG());
@@ -120,7 +121,8 @@ namespace mysimulator {
             typename PT, typename T>
   bool IsValid(const Minimizer<ConjugateGradient,LMN,KT,VT,PT,T>& M) {
     typedef LineMinimizer<LMN,KT,VT,PT,T>   Type;
-    return IsValid(static_cast<const Type&>(M))&&IsValid(M.OldMinG);
+    return IsValid(static_cast<const Type&>(M))&&IsValid(M.OldMinG)&&
+           (M.MaxBeta>0);
   }
 
   template <LineMinimizerName LMN, typename KT, template<typename> class VT,

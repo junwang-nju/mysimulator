@@ -42,6 +42,7 @@ namespace mysimulator {
 
 #include "minimizer/steep/specification.h"
 #include "minimizer/conjg/specification.h"
+#include "minimizer/lbfgs/specification.h"
 
 #endif
 

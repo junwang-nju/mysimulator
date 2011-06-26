@@ -8,6 +8,7 @@
 #include "minimizer/line/condition/name.h"
 #include "minimizer/line/condition/evaluate.h"
 #include "referable-object/swap.h"
+#include "intrinsic-type/abs-value.h"
 
 namespace mysimulator {
 
