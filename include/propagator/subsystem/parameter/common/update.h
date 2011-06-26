@@ -2,7 +2,7 @@
 #ifndef _Propagator_Subsystem_Parameter_Update_Common_H_
 #define _Propagator_Subsystem_Parameter_Update_Common_H_
 
-#include "propagator/subsystem/common/param-name.h"
+#include "propagator/subsystem/parameter/common/name.h"
 #include "propagator/subsystem/interface.h"
 
 namespace mysimulator {

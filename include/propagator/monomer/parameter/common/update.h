@@ -2,7 +2,7 @@
 #ifndef _Propagator_Monomer_Parameter_Common_Update_H_
 #define _Propagator_Monomer_Parameter_Common_Update_H_
 
-#include "propagator/monomer/common/param-name.h"
+#include "propagator/monomer/parameter/common/name.h"
 #include "vector/interface.h"
 #include "unique-parameter/64bit/interface.h"
 

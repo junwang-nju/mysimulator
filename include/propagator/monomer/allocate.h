@@ -4,9 +4,9 @@
 
 #include "propagator/monomer/interface.h"
 #include "vector/allocate.h"
-#include "propagator/monomer/vverlet/constE/particle/param-update.h"
-#include "propagator/monomer/vverlet/constE/particle/move-name.h"
-#include "propagator/monomer/vverlet/constE/particle/move.h"
+#include "propagator/monomer/parameter/vverlet/conste/particle/update.h"
+#include "propagator/move/vverlet/conste/particle/name.h"
+#include "propagator/move/vverlet/conste/particle/monomer.h"
 
 namespace mysimulator {
 
@@ -29,7 +29,7 @@ namespace mysimulator {
                     MonomerPropagatorNumberParameterParticleConstEVelVerlet);
                 allocate(
                     P.Move,
-                    MonomerPropagatorNumberMoveParticleConstEVelVerlet);
+                    PropagatorNumberMoveVelocityVerletConstantEParticle);
                 P.Move[BeforeG]=PEVMove_BeforeG<T>;
                 P.Move[AfterG]=PEVMove_AfterG<T>;
                 P.Update=UpdateMonomerPropagatorParticleConstEVelVerlet<T>;

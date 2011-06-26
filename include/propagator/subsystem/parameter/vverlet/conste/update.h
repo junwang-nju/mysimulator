@@ -2,8 +2,8 @@
 #ifndef _Propagator_Subsystem_Parameter_Update_VelocityVerlet_ConstantE_H_
 #define _Propagator_Subsystem_Parameter_Update_VelocityVerlet_ConstantE_H_
 
-#include "propagator/subsystem/vverlet/param-update.h"
-#include "propagator/subsystem/vverlet/constE/param-name.h"
+#include "propagator/subsystem/parameter/vverlet/update.h"
+#include "propagator/subsystem/parameter/vverlet/conste/name.h"
 
 namespace mysimulator {
 

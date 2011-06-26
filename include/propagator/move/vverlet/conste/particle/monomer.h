@@ -2,7 +2,8 @@
 #ifndef _Propagator_Monomer_Move_VelocityVerlet_ConstantE_Particle_H_
 #define _Propagator_Monomer_Move_VelocityVerlet_ConstantE_Particle_H_
 
-#include "propagator/monomer/vverlet/constE/particle/param-name.h"
+#include "propagator/monomer/parameter/vverlet/conste/particle/name.h"
+#include "propagator/subsystem/parameter/common/name.h"
 #include "unique-parameter/64bit/interface.h"
 #include "vector/shift.h"
 

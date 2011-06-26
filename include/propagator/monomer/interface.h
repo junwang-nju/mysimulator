@@ -4,7 +4,7 @@
 
 #include "vector/interface.h"
 #include "unique-parameter/64bit/interface.h"
-#include "propagator/move-name.h"
+#include "propagator/move/name.h"
 #include "propagator/ensemble-name.h"
 #include "propagator/monomer/name.h"
 
