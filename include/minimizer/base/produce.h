@@ -13,7 +13,7 @@ namespace mysimulator {
                   VT<T>& Dest, T& DestE, VT<T>& DestG, T& DestPrj) {
     assert(IsValid(M));
     copy(Dest,Origin);
-    eshift(Dest,step,M.MinMask,Dirc);
+    shift(Dest,step,M.MinMask,Dirc);
     M.MinFunc.update();
     DestE=0.;
     fill(DestG,0.);
