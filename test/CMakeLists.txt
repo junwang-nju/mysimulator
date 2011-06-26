@@ -48,6 +48,9 @@ target_link_libraries(test-interaction.run blas)
 add_executable (test-minimizer.run test-minimizer.cxx)
 target_link_libraries(test-minimizer.run blas)
 
+add_executable (test-propagator.run test-propagator.cxx)
+target_link_libraries(test-propagator.run blas)
+
 #add_executable (test-interaction-pairwise-base.run test-interaction-pairwise-base.cxx)
 #target_link_libraries (test-interaction-pairwise-base.run blas)
 
@@ -96,14 +99,14 @@ target_link_libraries(test-minimizer.run blas)
 #add_executable (test-lbfgs-minimizer-buffer.run test-lbfgs-minimizer-buffer.cxx)
 #target_link_libraries (test-lbfgs-minimizer-buffer.run blas)
 
-add_executable (test-propagator-conste-vverlet.run test-propagator-conste-vverlet.cxx)
-target_link_libraries (test-propagator-conste-vverlet.run blas)
+#add_executable (test-propagator-conste-vverlet.run test-propagator-conste-vverlet.cxx)
+#target_link_libraries (test-propagator-conste-vverlet.run blas)
 
-add_executable (test-propagator-berendsen-vverlet.run test-propagator-berendsen-vverlet.cxx)
-target_link_libraries (test-propagator-berendsen-vverlet.run blas)
+#add_executable (test-propagator-berendsen-vverlet.run test-propagator-berendsen-vverlet.cxx)
+#target_link_libraries (test-propagator-berendsen-vverlet.run blas)
 
-add_executable (test-propagator-langevin-vverlet.run test-propagator-langevin-vverlet.cxx)
-target_link_libraries (test-propagator-langevin-vverlet.run blas)
+#add_executable (test-propagator-langevin-vverlet.run test-propagator-langevin-vverlet.cxx)
+#target_link_libraries (test-propagator-langevin-vverlet.run blas)
 
 #add_executable (test-system-op.run test-system-op.cxx)
 #target_link_libraries (test-system-op.run blas)
