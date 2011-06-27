@@ -10,10 +10,10 @@ int main() {
   //const int ND=113;
   //const int ND=151;
   //const int ND=256;
-  const int ND=281;
+  const int ND=191;
 
   ifstream ifs;
-  ifs.open("25a");
+  ifs.open("2");
   int NE[ND];
   int NW[ND];
   long long int CT[ND];
@@ -22,12 +22,12 @@ int main() {
   for(unsigned int i=0;i<17;++i)  F[i]=0;
   for(unsigned int i=0;i<ND;++i) {
     ifs>>NE[i]>>NW[i]>>CT[i];
-    cout<<NE[i]<<"\t"<<NW[i]<<"\t"<<CT[i]<<endl;
+    //cout<<NE[i]<<"\t"<<NW[i]<<"\t"<<CT[i]<<endl;
     F[NE[i]]+=CT[i]*expl(+(NE[i]+NW[i]*1.6L)/0.625);
-    cout<<F[NE[i]]<<endl;getchar();
+    //cout<<F[NE[i]]<<endl;getchar();
   }
 
-  for(unsigned int i=0;i<17;++i)
+  for(unsigned int i=0;i<10;++i)
     cout<<i<<"\t"<<-logl(F[i])<<endl;
 
   return 0;

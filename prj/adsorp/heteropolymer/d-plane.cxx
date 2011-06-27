@@ -7,18 +7,18 @@ using namespace mysimulator;
 using namespace std;
 
 int main() {
-  const int L=25;
+  const int L=16;
   Vector<int> dirc;
   Vector<int> X,Y;
 
-  //const unsigned int NC=9;
-  //const unsigned int CA[NC]={0,1,2, 4, 5,6, 8, 9,10};
-  //const unsigned int CB[NC]={7,6,5,11,10,9,15,14,13};
-  const unsigned int NC=16;
-  const unsigned int CA[NC]={0,1,2,3, 5, 6, 7, 8,10,11,12,13,15,16,17,18};
-  const unsigned int CB[NC]={9,8,7,6,14,13,12,11,19,18,17,16,24,23,22,21};
+  const unsigned int NC=9;
+  const unsigned int CA[NC]={0,1,2, 4, 5,6, 8, 9,10};
+  const unsigned int CB[NC]={7,6,5,11,10,9,15,14,13};
+  //const unsigned int NC=16;
+  //const unsigned int CA[NC]={0,1,2,3, 5, 6, 7, 8,10,11,12,13,15,16,17,18};
+  //const unsigned int CB[NC]={9,8,7,6,14,13,12,11,19,18,17,16,24,23,22,21};
   const int D=6;
-  const int NT=5;
+  const int NT=4;
   int En;
   int Ew;
   List<unsigned long long> Hist;
@@ -28,8 +28,8 @@ int main() {
   allocate(Hist,sz);
   fill(Hist,0ULL);
 
-  const double DMin=7.5-1e-8;
-  const double DMax=8.5+1e-8;
+  const double DMin=1.5-1e-8;
+  const double DMax=2.5+1e-8;
   double cX,cY;
   int minY,SYLow,SYUpp;
 
@@ -91,7 +91,7 @@ int main() {
         if(okfg) {
           for(int s=SYLow;s<=SYUpp;++s) {
             Ew=0;
-            for(unsigned int i=0;i<NT;++i)
+            for(int i=0;i<NT;++i)
               if(Y[i]+s<D) Ew+=D-(Y[i]+s);
             Hist[En][Ew]++;
             //cout<<En<<"\t"<<Ew<<endl;getchar();
@@ -110,7 +110,7 @@ int main() {
     }
   } while(rHead>=0);
   cout<<"# "<<NS<<endl;
-  for(int i=0;i<=NC;++i)
+  for(unsigned int i=0;i<=NC;++i)
   for(int j=0;j<=D*NT;++j) {
     if(Hist[i][j]>0)
       cout<<i<<"\t"<<j<<"\t"<<Hist[i][j]<<endl;
