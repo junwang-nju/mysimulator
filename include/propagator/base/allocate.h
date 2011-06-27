@@ -1,15 +1,15 @@
 
-#ifndef _Propagator_Allocate_H_
-#define _Propagator_Allocate_H_
+#ifndef _Propagator_Base_Allocate_H_
+#define _Propagator_Base_Allocate_H_
 
-#include "propagator/parameter/vverlet/update.h"
+#include "propagator/base/parameter/vverlet/update.h"
 #include "list/allocate.h"
 #include "vector/fill.h"
 
 namespace mysimulator {
 
   template <typename T>
-  void allocate(Propagator<T>& P, const PropagatorMoveName& Mv,
+  void allocate(PropagatorBase<T>& P, const PropagatorMoveName& Mv,
                 const Vector<PropagatorEnsembleName>& Es,
                 const Vector<Vector<PropagatorMonomerName> >& Mn,
                 const unsigned int nunit, const unsigned int dim) {
@@ -17,8 +17,8 @@ namespace mysimulator {
     P.MoveMode=Mv;
     switch(Mv) {
       case VelocityVerlet:
-        allocate(P.Data,PropagatorNumberParameterVelocityVerlet);
-        P.Update=UpdatePropagatorVelocityVerlet<T>;
+        allocate(P.Data,PropagatorBaseNumberParameterVelocityVerlet);
+        P.Update=UpdatePropagatorBaseVelocityVerlet<T>;
         break;
       default:
         Error("Unknown Move Type!");
@@ -40,7 +40,7 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void allocate(Propagator<T>& P, const PropagatorMoveName& Mv,
+  void allocate(PropagatorBase<T>& P, const PropagatorMoveName& Mv,
                 const Vector<PropagatorEnsembleName>& Es,
                 const List<PropagatorMonomerName>& Mn,
                 const unsigned int nunit, const unsigned int dim) {
@@ -48,7 +48,7 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void imprint(Propagator<T>& P, const Propagator<T>& cP) {
+  void imprint(PropagatorBase<T>& P, const PropagatorBase<T>& cP) {
     assert(IsValid(cP));
     release(P);
     P.MoveMode=cP.MoveMode;

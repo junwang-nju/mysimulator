@@ -1,13 +1,13 @@
 
-#ifndef _Propagator_Copy_H_
-#define _Propagator_Copy_H_
+#ifndef _Propagator_Base_Copy_H_
+#define _Propagator_Base_Copy_H_
 
 #include "propagator/interface.h"
 
 namespace mysimulator {
 
   template <typename T>
-  void copy(Propagator<T>& P, const Propagator<T>& cP) {
+  void copy(PropagatorBase<T>& P, const PropagatorBase<T>& cP) {
     assert(IsValid(P)&&IsValid(cP));
     assert(P.MoveMode==cP.MoveMode);
     copy(P.Data,cP.Data);

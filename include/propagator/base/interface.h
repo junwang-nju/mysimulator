@@ -1,6 +1,6 @@
 
-#ifndef _Propagator_Interaction_H_
-#define _Propagator_Interaction_H_
+#ifndef _Propagator_Base_Interface_H_
+#define _Propagator_Base_Interface_H_
 
 #include "propagator/subsystem/interface.h"
 #include "list/interface.h"
@@ -8,9 +8,9 @@
 namespace mysimulator {
 
   template <typename T>
-  struct Propagator {
+  struct PropagatorBase {
 
-    typedef Propagator<T>   Type;
+    typedef PropagatorBase<T>   Type;
     typedef void (*BuildParameterType)(Type&);
 
     PropagatorMoveName  MoveMode;
@@ -23,14 +23,14 @@ namespace mysimulator {
     List<T> Msk;
     BuildParameterType  Update;
 
-    Propagator()
+    PropagatorBase()
       :MoveMode(UnknownMove),Data(),Sys(),ID(),X(),V(),G(),Msk(),Update(NULL){}
-    Propagator(const Type&) { Error("Copier of Propagator Disabled!"); }
+    PropagatorBase(const Type&) { Error("Copier of Propagator Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for Propagator Disabled!");
       return *this;
     }
-    ~Propagator() { clearData(); }
+    ~PropagatorBase() { clearData(); }
 
     void clearData() {
       MoveMode=UnknownMove;
@@ -44,13 +44,13 @@ namespace mysimulator {
   };
 
   template <typename T>
-  bool IsValid(const Propagator<T>& P) {
+  bool IsValid(const PropagatorBase<T>& P) {
     return (P.MoveMode!=UnknownMove)&&IsValid(P.Data)&&IsValid(P.Sys)&&
            IsValid(P.X)&&IsValid(P.V)&&IsValid(P.G)&&IsValid(P.Msk);
   }
 
   template <typename T>
-  void release(Propagator<T>& P) { P.clearData(); }
+  void release(PropagatorBase<T>& P) { P.clearData(); }
 
 } 
 

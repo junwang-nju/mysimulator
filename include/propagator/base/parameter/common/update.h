@@ -2,14 +2,14 @@
 #ifndef _Propagator_Parameter_Update_Common_H_
 #define _Propagator_Parameter_Update_Common_H_
 
-#include "propagator/parameter/common/name.h"
+#include "propagator/base/interface.h"
+#include "propagator/base/parameter/common/name.h"
 #include "propagator/subsystem/parameter/common/name.h"
-#include "propagator/interface.h"
 
 namespace mysimulator {
 
   template <typename T>
-  void UpdatePropagatorCommon(Propagator<T>& P) {
+  void UpdatePropagatorBaseCommon(PropagatorBase<T>& P) {
     T mstep;
     mstep=P.Sys[0].value(TimeStep);
     for(unsigned int i=1;i<P.Sys.size;++i)

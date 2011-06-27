@@ -1,10 +1,10 @@
 
-#ifndef _Propagator_Parameter_Name_Common_H_
-#define _Propagator_Parameter_Name_Common_H_
+#ifndef _Propagator_Base_Parameter_Name_Common_H_
+#define _Propagator_Base_Parameter_Name_Common_H_
 
 namespace mysimulator {
 
-  enum PropagatorParameterNameCommon {
+  enum PropagatorBaseParameterNameCommon {
     StartTime=0,
     RunTimeStep,
     TotalTime,
@@ -13,8 +13,7 @@ namespace mysimulator {
     OutputInterval,
     NumberOutput,
     NumberStepPerOutput,
-    StepFuncPtr,
-    PropagatorNumberParameterCommon
+    PropagatorBaseNumberParameterCommon
   };
 
 }
