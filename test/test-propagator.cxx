@@ -2,6 +2,7 @@
 #include "propagator/monomer/allocate.h"
 #include "propagator/subsystem/allocate.h"
 #include "propagator/base/allocate.h"
+#include "propagator/md/allocate.h"
 using namespace mysimulator;
 
 #include <iostream>

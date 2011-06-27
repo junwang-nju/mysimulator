@@ -24,7 +24,8 @@ namespace mysimulator {
     BuildParameterType  Update;
 
     PropagatorBase()
-      :MoveMode(UnknownMove),Data(),Sys(),ID(),X(),V(),G(),Msk(),Update(NULL){}
+      : MoveMode(UnknownMove),Data(),Sys(),ID(),X(),V(),G(),Msk(),
+        Update(NULL){}
     PropagatorBase(const Type&) { Error("Copier of Propagator Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for Propagator Disabled!");
