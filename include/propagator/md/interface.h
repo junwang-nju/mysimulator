@@ -13,7 +13,7 @@ namespace mysimulator {
 
     typedef MDPropagator<T,DBuffer,GeomType,IFType,IPType>  Type;
     typedef PropagatorBase<T>   ParentType;
-    typedef void (RunStepType)(Type&);
+    typedef void (*RunStepType)(Type&);
 
     InteractionKernel<IFType,DBuffer,GeomType,T>  IK;
     IPType  Prm;

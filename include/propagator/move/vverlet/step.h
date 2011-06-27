@@ -13,12 +13,12 @@ namespace mysimulator {
 
   template <typename T, template<typename> class DBuffer, typename GeomType,
             typename IFType, typename IPType>
-  void VelVerletStep(MDPropagator<T>& P) {
+  void VelVerletStep(MDPropagator<T,DBuffer,GeomType,IFType,IPType>& P) {
     P.Data[NowStepID].u++;
     for(unsigned int i=0;i<P.Sys.size;++i)
       if(P[NowStepID].u==P.Sys[i].Data[MoveTrig])
         P.Sys[i].Move[BeforeG](P.Sys[i]);
-    K.update();
+    P.IK.update();
     fill(P.G,cZero);
     Calc(P.IK,P.X,P.Prm,P.G);
     for(unsigned int i=0;i<P.Sys.size;++i)
