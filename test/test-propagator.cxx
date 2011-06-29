@@ -1,5 +1,5 @@
 
-#include "propagator/monomer/interface.h"
+#include "propagator/monomer/allocate.h"
 using namespace mysimulator;
 
 #include <iostream>

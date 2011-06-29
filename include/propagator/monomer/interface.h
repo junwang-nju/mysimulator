@@ -16,14 +16,19 @@ namespace mysimulator {
     typedef MonomerPropagator<T>  Type;
     typedef void (*MoveType)(Vector<UniqueParameter64Bit>&,
                              const Vector<UniqueParameter64Bit>&);
+    typedef void (*BuildParameterType)(Vector<UniqueParameter64Bit>&,
+                                       const Vector<UniqueParameter64Bit>&);
 
     PropagatorMoveName  MoveMode;
     PropagatorEnsembleName  EnsembleMode;
     PropagatorMonomerName   MonomerMode;
     Vector<UniqueParameter64Bit>  Data;
     Vector<MoveType>  Move;
+    BuildParameterType  Update;
 
-    MonomerPropagator() : Data(), Move() {}
+    MonomerPropagator()
+      : MoveMode(UnknownMove), EnsembleMode(UnknownEnsemble),
+        MonomerMode(UnknownMonomer), Data(), Move(), Update(NULL) {}
     MonomerPropagator(const Type&) {
       Error("Copier of MonomerPropagator Disabled!");
     }
@@ -33,7 +38,13 @@ namespace mysimulator {
     }
     ~MonomerPropagator() { clearData(); }
 
-    void clearData() { release(Data); release(Move); }
+    void clearData() {
+      MoveMode=UnknownMove;
+      EnsembleMode=UnknownEnsemble;
+      MonomerMode=UnknownMonomer;
+      release(Data); release(Move);
+      Update=NULL;
+    }
 
   };
 

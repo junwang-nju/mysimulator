@@ -3,6 +3,7 @@
 #define _Propagator_Monomer_Copy_H_
 
 #include "propagator/monomer/interface.h"
+#include "vector/copy.h"
 
 namespace mysimulator {
 
@@ -13,7 +14,6 @@ namespace mysimulator {
     assert(P.EnsembleMode==cP.EnsembleMode);
     assert(P.MonomerMode==cP.MonomerMode);
     copy(P.Data,cP.Data);
-    copy(P.Move,cP.Move);
   }
 
 }
