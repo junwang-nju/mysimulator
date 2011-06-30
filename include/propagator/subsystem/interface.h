@@ -37,6 +37,8 @@ namespace mysimulator {
       release(Data); release(Mer);  release(Move);
       Update=NULL;
     }
+    T& value(const unsigned int I) { return Data[I].value<T>(); }
+    const T& value(const unsigned int I) const { return Data[I].value<T>(); }
 
   };
 

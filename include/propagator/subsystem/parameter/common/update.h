@@ -9,7 +9,7 @@ namespace mysimulator {
 
   template <typename T>
   void UpdateSubsysPropagatorCommon(SubsysPropagator<T>& SP) {
-    copy(SP.Data[HalfTimeStep],0.5*SP.Data[TimeStep].value<T>());
+    SP.value(HalfTimeStep)=0.5*SP.value(TimeStep);
     SP.Data[MoveTrig].u=SP.Data[MoveTrigInterval].u;
   }
 

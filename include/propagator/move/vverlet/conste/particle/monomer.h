@@ -24,6 +24,8 @@ namespace mysimulator {
                       const Vector<UniqueParameter64Bit>& SP) {
     Vector<T> *V=MP[VData].pointer<Vector<T> >();
     Vector<T> *G=MP[GData].pointer<Vector<T> >();
+    Vector<T> *Msk=MP[MskData].pointer<Vector<T> >();
+    scale(*G,*Msk);
     shift(*V,-MP[PEVHalfTimeStepIvM].value<T>(),*G);
   }
 

@@ -17,11 +17,8 @@ namespace mysimulator {
 
   template <typename T>
   void EVMove_AfterG(SubsysPropagator<T>& SP) {
-    for(unsigned int i=0;i<SP.Mer.size;++i) {
-      //scale(*(SP.Mer[i].Data[GData].pointer<Vector<T> >()),
-      //      *(SP.Mer[i].Data[MskData].pointer<Vector<T> >()));
+    for(unsigned int i=0;i<SP.Mer.size;++i)
       SP.Mer[i].Move[AfterG](SP.Mer[i].Data,SP.Data);
-    }
   }
 
 }
