@@ -68,8 +68,8 @@ int main(int argc, char** argv) {
   const double epsilon=100;
   const double d0=2;
 
-  //const double T=1.48;    //Tf
-  const double T=1.036;
+  const double T=1.48;    //Tf
+  //const double T=1.036;
 
   double d,d1,d2;
   unsigned int r,r1,r2;
@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
     C=(f(d)-T*S(Nd,d))-e1*r1-e2*r2;
     FL=Intg(R,d0,epsilon,T,RA,RB,d1,d2);
     FL=C-T*log(FL);
-    //COut<<d<<"\t"<<C<<"\t"<<FL<<Endl;
+    COut<<d<<"\t"<<C<<"\t"<<FL<<"\t11111111"<<Endl;
     dv[g]=FL;
     d+=dstep;
   }

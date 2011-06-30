@@ -87,20 +87,24 @@ int main() {
   CT[0]=1;  CT[1]=1;  CT[2]=1;  CT[3]=1;  CT[4]=1;
   LOOP;
 
-  ifstream ifs("case-25");
+  ifstream ifs("case-25.new");
+  //ifstream ifs("case-25");
   int Y,En,Mode;
   double E;
   unsigned long long Nm;
   double F[17];
   for(int i=0;i<17;++i) F[i]=0;
-  for(int i=0;i<10375;++i) {
+  for(int i=0;i<10218;++i) {
+  //for(int i=0;i<10375;++i) {
     ifs>>Y>>En>>Mode>>Nm; 
     //cout<<Y<<"\t"<<En<<"\t"<<Mode<<"\t"<<Nm<<endl; getchar();
-    if(Y==6) {
+    if(Y==2) {
       E=En;
-      for(int k=0;k<D;++k)  E+=Shp[Mode][k]*(D-k)*5.8;
-      if((En==15)||(En==16)) {
-      cout<<Y<<"\t"<<En<<"\t"<<E<<endl;getchar(); }
+      //for(int k=0;k<1;++k)  E+=Shp[Mode][k]*(1-k)*1.6;
+      ///for(int k=0;k<D;++k)  E+=Shp[Mode][k]*0.6;
+      for(int k=0;k<D;++k)  E+=Shp[Mode][k]*(D-k)*0.2;
+      //if((En==15)||(En==16)) {
+      //cout<<Y<<"\t"<<En<<"\t"<<E<<endl;getchar(); }
       F[En]+=Nm*exp(E/0.68);
     }
   }
