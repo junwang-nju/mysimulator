@@ -16,6 +16,7 @@ namespace mysimulator {
     PropagatorMoveName  MoveMode;
     Vector<UniqueParameter64Bit>  Data;
     Vector<SubsysPropagator<T> >  Sys;
+    List<T> ID;
     List<T> X;
     List<T> V;
     List<T> G;
@@ -23,7 +24,7 @@ namespace mysimulator {
     BuildParameterType  Update;
 
     Propagator()
-      : MoveMode(UnknownMove),Data(),Sys(),X(),V(),G(),Msk(),Update(NULL) {}
+      :MoveMode(UnknownMove),Data(),Sys(),ID(),X(),V(),G(),Msk(),Update(NULL){}
     Propagator(const Type&) { Error("Copier of Propagator Disabled!"); }
     Type& operator=(const Type&) {
       Error("Operator= for Propagator Disabled!");
@@ -34,11 +35,11 @@ namespace mysimulator {
     void clearData() {
       MoveMode=UnknownMove;
       release(Data);    release(Sys);
-      release(X); release(V); release(G); release(Msk);
+      release(ID); release(X); release(V); release(G); release(Msk);
       Update=NULL;
     }
-    T& value(const unsigned int I) { return Data.value<T>(); }
-    const T& value(const unsigned int I) const { return Data.value<T>(); }
+    T& value(const unsigned int I) { return Data[I].value<T>(); }
+    const T& value(const unsigned int I) const { return Data[I].value<T>(); }
 
   };
 

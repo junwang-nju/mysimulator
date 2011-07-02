@@ -31,6 +31,13 @@ namespace mysimulator {
     P.value(TotalTime)=P.Data[NumberOutput].u*P.value(OutputInterval);
     copy(P.data[NowTime],P.data[StartTime]);
     P.Data[NowStepID].u=0;
+    for(unsigned int i=0;i<P.Sys.size;++i)
+    for(unsigned int j=0;j<P.Sys[i].Mer.size;++j) {
+      P.Sys[i].Mer[j].Data[XData].ptr=(&(P.X[P.ID[i][j]]));
+      P.Sys[i].Mer[j].Data[VData].ptr=(&(P.V[P.ID[i][j]]));
+      P.Sys[i].Mer[j].Data[GData].ptr=(&(P.G[P.ID[i][j]]));
+      P.Sys[i].Mer[j].Data[MskData].ptr=(&(P.Msk[P.ID[i][j]]));
+    }
   }
 
 }
