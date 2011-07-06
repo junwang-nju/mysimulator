@@ -10,3 +10,6 @@ target_link_libraries (ht-plane.run blas)
 add_executable (hd-plane.run d-plane.cxx)
 target_link_libraries (hd-plane.run blas)
 
+add_executable (hd2-plane.run d-plane-2.cxx)
+target_link_libraries (hd2-plane.run blas)
+

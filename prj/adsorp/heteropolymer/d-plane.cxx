@@ -28,8 +28,8 @@ int main() {
   allocate(Hist,sz);
   fill(Hist,0ULL);
 
-  const double DMin=1.5-1e-8;
-  const double DMax=2.5+1e-8;
+  const double DMin=0.0-1e-8;
+  const double DMax=1.0-1e-8;
   double cX,cY;
   int minY,SYLow,SYUpp;
 
@@ -94,6 +94,8 @@ int main() {
             for(int i=0;i<NT;++i)
               if(Y[i]+s<D) Ew+=D-(Y[i]+s);
             Hist[En][Ew]++;
+            if((En==0)&&(Ew==24))
+              cout<<"-----  "<<NS<<"\t"<<cY+s<<endl;
             //cout<<En<<"\t"<<Ew<<endl;getchar();
           }
         }
