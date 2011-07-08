@@ -152,7 +152,7 @@ int main() {
         }
         cX/=(L+0.);   cY/=(L+0.);
         minY=-minY;
-        while(cY+minY<20) {
+        while(cY+minY+0.5<20) {
           for(int i=0;i<D;++i)  CT[i]=0;
           for(int i=0;i<NT;++i) if(Y[i]+minY<D) CT[Y[i]+minY]++;
           TCT=CT[0];  for(int i=1;i<D;++i)  TCT=TCT*(NT+1)+CT[i];
@@ -160,7 +160,7 @@ int main() {
           //cout<<En<<endl;
           //cout<<TCT<<endl;
           //cout<<NTMap[TCT]<<endl; cout<<"======="<<endl; getchar();
-          Hist[static_cast<int>(cY+minY)][En][NTMap[TCT]]++;
+          Hist[static_cast<int>(cY+minY+0.5)][En][NTMap[TCT]]++;
           minY++;
         }
         incflag=false;

@@ -13,3 +13,6 @@ target_link_libraries (hd-plane.run blas)
 add_executable (hd2-plane.run d-plane-2.cxx)
 target_link_libraries (hd2-plane.run blas)
 
+add_executable (proc2.run proc2.cxx)
+target_link_libraries (proc2.run blas)
+
