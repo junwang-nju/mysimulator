@@ -22,6 +22,27 @@ namespace mysimulator {
   }
 
   template <typename T1, typename T2>
+  void copy(Array2DContent<T1>& A, const Array2DContent<T2>& B,
+            const int& alb, const int& blb, const unsigned int& nl,
+            const int& arb, const int& brb, const unsigned int& nr) {
+    assert(IsValid(A,alb,nl,arb,nr)&&IsValid(B,blb,nl,brb,nr));
+    Array1DContent<T1>* p=A.infra.head+alb;
+    Array1DContent<T2>* q=const_cast<Array1DContent<T2>*>(B.infra.head+blb);
+    Array1DContent<T1>* e=p+nl;
+    for(;p!=e;)  copy(*(p++),*(q++),arb,brb,nr);
+  }
+
+  template <typename T1, typename T2>
+  void copy(Array2DContent<T1>& A, const Array2DContent<T2>& B,
+            const unsigned int& nl, const unsigned int& nr) {
+    assert(IsValid(A,nl,nr)&&IsValid(B,nl,nr));
+    Array1DContent<T1>* p=A.infra.start
+    Array1DContent<T2>* q=const_cast<Array1DContent<T2>*>(B.infra.start);
+    Array1DContent<T1>* e=p+nl;
+    for(;p!=e;)  copy(*(p++),*(q++),nr);
+  }
+
+  template <typename T1, typename T2>
   void copy(Array2DContent<T1>& A, const Array2DContent<T2>& B) {
     unsigned int n=(A.NumLines()<B.NumLines()?A.NumLines():B.NumLines());
     Array1DContent<T1>* p=A.infra.start;
@@ -41,6 +62,18 @@ namespace mysimulator {
   void ecopy(Array2DContent<T>& A, const Array2DContent<T>& B) {
     assert(IsSameSize(A,B));
     copy(A.base,B.base);
+  }
+
+  template <typename T>
+  void ecopy(Array2DContent<T>& A, const Array2DContent<T>& B,
+             const int& alb, const int& blb, const unsigned int& nl) {
+    assert(IsSameSize(A,B,alb,blb,nl));
+    int ale=alb+n-1;
+    int ab=static_cast<int>(A[alb].start-A.infra.start->start);
+    int bb=static_cast<int>(B[blb].start-B.infra.start->start);
+    unsigned int s;
+    s=static_cast<unsigned int>(A[ale].head+A[ale].last-A[alb].start);
+    copy(A.base.B.base,ab,bb,s);
   }
 
 }

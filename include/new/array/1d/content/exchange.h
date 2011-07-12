@@ -59,27 +59,26 @@ namespace mysimulator {
     _exchange_blas(p,q,n);\
   }
 
+#define _EXCHANGE_DATA(type) \
+  _EXCHANGE_WithDel(type)\
+  _EXCHANGE(type)
+
 namespace mysimulator {
 
-  _EXCHANGE_WithDel(double)
-  _EXCHANGE_WithDel(float)
-  _EXCHANGE_WithDel(long long)
-  _EXCHANGE_WithDel(unsigned long long)
-  _EXCHANGE_WithDel(int)
-  _EXCHANGE_WithDel(unsigned int)
-  _EXCHANGE_WithDel(long)
-  _EXCHANGE_WithDel(unsigned long)
-
-  _EXCHANGE(double)
-  _EXCHANGE(float)
-  _EXCHANGE(long long)
-  _EXCHANGE(unsigned long long)
-  _EXCHANGE(int)
-  _EXCHANGE(unsigned int)
-  _EXCHANGE(long)
-  _EXCHANGE(unsigned long)
+  _EXCHANGE_DATA(double)
+  _EXCHANGE_DATA(float)
+  _EXCHANGE_DATA(long long)
+  _EXCHANGE_DATA(unsigned long long)
+  _EXCHANGE_DATA(int)
+  _EXCHANGE_DATA(unsigned int)
+  _EXCHANGE_DATA(long)
+  _EXCHANGE_DATA(unsigned long)
 
 }
+
+#undef _EXCHANGE_DATA
+#undef _EXCHANGE
+#undef _EXCHANGE_WithDel
 
 #define _FLOAT_POINTER(a) reinterpret_cast<float*>(a)
 
@@ -112,8 +111,6 @@ namespace mysimulator {
 }
 
 #undef _FLOAT_POINTER
-#undef _EXCHANGE
-#undef _EXCHANGE_WithDel
 #undef _LONG_POINTER
 
 namespace mysimulator {
