@@ -21,10 +21,22 @@ namespace mysimulator {
   template <typename T1, typename T2>
   bool IsSameSize(const Array2DContent<T1>& A1, const Array2DContent<T2>& A2,
                   const int& lb1, const int& lb2, const unsigned int& nl) {
-    assert(IsValid(A)&&IsValid(B));
-    assert(IsValid(A.infra,lb1,nl)&&IsValid(A2.infra.lb2,nl));
+    assert(IsValid(A1)&&IsValid(A2));
+    assert(IsValid(A1.infra,lb1,nl)&&IsValid(A2.infra,lb2,nl));
     Array1DContent<T1>* p=const_cast<Array1DContent<T1>*>(A1.infra.head+lb1);
     Array1DContent<T2>* q=const_cast<Array1DContent<T2>*>(A2.infra.head+lb2);
+    Array1DContent<T1>* e=p+nl;
+    for(;p!=e;) if(!IsSameSize(*(p++),*(q++)))  return false;
+    return true;
+  }
+
+  template <typename T1, typename T2>
+  bool IsSameSize(const Array2DContent<T1>& A1, const Array2DContent<T2>& A2,
+                  const unsigned int& nl) {
+    assert(IsValid(A1)&&IsValid(A2));
+    assert(IsValid(A1.infra,nl)&&IsValid(A2.infra,nl));
+    Array1DContent<T1>* p=const_cast<Array1DContent<T1>*>(A1.infra.start);
+    Array1DContent<T2>* q=const_cast<Array1DContent<T2>*>(A2.infra.start);
     Array1DContent<T1>* e=p+nl;
     for(;p!=e;) if(!IsSameSize(*(p++),*(q++)))  return false;
     return true;
