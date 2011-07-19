@@ -30,20 +30,20 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  double dot(const Array1D<double>& va, const Array1D<double>& vb) {
+  template <typename T>
+  T _dot(const Array1D<T>& va, const Array1D<T>& vb) {
     assert(IsValid(va)&&IsValid(vb));
     long n=(va.size<vb.size?va.size:vb.size);
-    return BLAS<double>::Dot(
-        &n,const_cast<double*>(va.start),const_cast<long*>(&lOne),
-           const_cast<double*>(vb.start),const_cast<long*>(&lOne));
+    return BLAS<T>::Dot(&n,const_cast<T*>(va.start),const_cast<long*>(&lOne),
+                           const_cast<T*>(vb.start),const_cast<long*>(&lOne));
+  }
+
+  double dot(const Array1D<double>& va, const Array1D<double>& vb) {
+    return _dot(va,vb);
   }
 
   float dot(const Array1D<float>& va, const Array1D<float>& vb) {
-    assert(IsValid(va)&&IsValid(vb));
-    long n=(va.size<vb.size?va.size:vb.size);
-    return BLAS<float>::Dot(
-        &n,const_cast<float*>(va.start),const_cast<long*>(&lOne),
-           const_cast<float*>(vb.start),const_cast<long*>(&lOne));
+    return _dot(va,vb);
   }
 
 }

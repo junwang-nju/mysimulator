@@ -52,12 +52,18 @@ namespace mysimulator {
   template <> const float& RelativeDelta<float>() { return FRelDelta; }
 
   template <typename T>
-  const T& GoldenValue() {
+  const T& ValueGolden() {
     //Error("Unknown Type for Golden Value!");
     return static_cast<T>(cZero);
   }
 
-  template <> const double& GoldenValue<double>() { return Gold; }
+  template <> const double& ValueGolden<double>() { return Gold; }
+
+  template <typename T>
+  const T& ValueOne() { /*Error();*/ return cOne; }
+
+  template <> const double& ValueOne<double>() { return dOne; }
+  template <> const float& ValueOne<float>() { return fOne; }
 
 }
 

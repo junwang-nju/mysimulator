@@ -39,9 +39,13 @@ namespace mysimulator {
     typedef void (*CopyType)(long*,T*,long*,T*,long*);
     typedef void (*SwapType)(long*,T*,long*,T*,long*);
     typedef T (*DotType)(long*,T*,long*,T*,long*);
+    typedef T (*NormType)(long*,T*,long*);
+    typedef T (*ASumType)(long*,T*,long*);
     static const CopyType Copy;
     static const SwapType Swap;
     static const DotType  Dot;
+    static const NormType Norm;
+    static const ASumType ASum;
   };
 
   template <typename T>
@@ -58,6 +62,16 @@ namespace mysimulator {
   const typename BLAS<T>::DotType BLAS<T>::Dot=NULL;
   template <> const typename BLAS<double>::DotType BLAS<double>::Dot=ddot_;
   template <> const typename BLAS<float>::DotType BLAS<float>::Dot=sdot_;
+
+  template <typename T>
+  const typename BLAS<T>::NormType BLAS<T>::Norm=NULL;
+  template <> const typename BLAS<double>::NormType BLAS<double>::Norm=dnrm2_;
+  template <> const typename BLAS<float>::NormType BLAS<float>::Norm=snrm2_;
+
+  template <typename T>
+  const typename BLAS<T>::ASumType BLAS<T>::ASum=NULL;
+  template <> const typename BLAS<double>::ASumType BLAS<double>::ASum=dasum_;
+  template <> const typename BLAS<float>::ASumType BLAS<float>::ASum=sasum_;
 
 }
 

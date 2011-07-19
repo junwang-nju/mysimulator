@@ -15,5 +15,14 @@ namespace mysimulator {
 
 }
 
+#include "intrinsic-type/constant.h"
+
+namespace mysimulator {
+
+  template <typename T1, typename T2>
+  void shift(T1& a, const T2& b) { shift(a,cOne,b); }
+
+}
+
 #endif
 
