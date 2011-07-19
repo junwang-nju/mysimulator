@@ -36,16 +36,25 @@ namespace mysimulator {
 
   template <typename T>
   struct BLAS {
+
     typedef void (*CopyType)(long*,T*,long*,T*,long*);
     typedef void (*SwapType)(long*,T*,long*,T*,long*);
     typedef T (*DotType)(long*,T*,long*,T*,long*);
     typedef T (*NormType)(long*,T*,long*);
     typedef T (*ASumType)(long*,T*,long*);
-    static const CopyType Copy;
-    static const SwapType Swap;
-    static const DotType  Dot;
-    static const NormType Norm;
-    static const ASumType ASum;
+    typedef void (*ScaleType)(long*,T*,T*,long*);
+    typedef void (*TbMvType)(char*,char*,char*,long*,long*,T*,long*,T*,long*);
+    typedef void (*ShiftType)(long*,T*,T*,long*,T*,long*);
+
+    static const CopyType   Copy;
+    static const SwapType   Swap;
+    static const DotType    Dot;
+    static const NormType   Norm;
+    static const ASumType   ASum;
+    static const ScaleType  Scale;
+    static const TbMvType   TbMv;
+    static const ShiftType  Shift;
+
   };
 
   template <typename T>
@@ -72,6 +81,21 @@ namespace mysimulator {
   const typename BLAS<T>::ASumType BLAS<T>::ASum=NULL;
   template <> const typename BLAS<double>::ASumType BLAS<double>::ASum=dasum_;
   template <> const typename BLAS<float>::ASumType BLAS<float>::ASum=sasum_;
+
+  template <typename T>
+  const typename BLAS<T>::ScaleType BLAS<T>::Scale=NULL;
+  template <> const typename BLAS<double>::ScaleType BLAS<double>::Scale=dscal_;
+  template <> const typename BLAS<float>::ScaleType BLAS<float>::Scale=sscal_;
+
+  template <typename T>
+  const typename BLAS<T>::TbMvType BLAS<T>::TbMv=NULL;
+  template <> const typename BLAS<double>::TbMvType BLAS<double>::TbMv=dtbmv_;
+  template <> const typename BLAS<float>::TbMvType BLAS<float>::TbMv=stbmv_;
+
+  template <typename T>
+  const typename BLAS<T>::ShiftType BLAS<T>::Shift=NULL;
+  template <> const typename BLAS<double>::ShiftType BLAS<double>::Shift=daxpy_;
+  template <> const typename BLAS<float>::ShiftType BLAS<float>::Shift=saxpy_;
 
 }
 
