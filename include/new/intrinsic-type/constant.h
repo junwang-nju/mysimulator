@@ -44,7 +44,7 @@ namespace mysimulator {
 
   template <typename T>
   const T& RelativeDelta() {
-    //Error("Unknown Type for Relative Delta!");
+    Error("Unknown Type for Relative Delta!");
     return static_cast<T>(cZero);
   }
   
@@ -53,14 +53,17 @@ namespace mysimulator {
 
   template <typename T>
   const T& ValueGolden() {
-    //Error("Unknown Type for Golden Value!");
+    Error("Unknown Type for Golden Value!");
     return static_cast<T>(cZero);
   }
 
   template <> const double& ValueGolden<double>() { return Gold; }
 
   template <typename T>
-  const T& ValueOne() { /*Error();*/ return cOne; }
+  const T& ValueOne() {
+    Error("Unknown Type to have a value of one!");
+    return cOne;
+  }
 
   template <> const double& ValueOne<double>() { return dOne; }
   template <> const float& ValueOne<float>() { return fOne; }

@@ -45,6 +45,8 @@ namespace mysimulator {
     typedef void (*ScaleType)(long*,T*,T*,long*);
     typedef void (*TbMvType)(char*,char*,char*,long*,long*,T*,long*,T*,long*);
     typedef void (*ShiftType)(long*,T*,T*,long*,T*,long*);
+    typedef void (*SbMvType)(char*,long*,long*,T*,T*,long*,T*,long*,T*,T*,
+                             long*);
 
     static const CopyType   Copy;
     static const SwapType   Swap;
@@ -54,6 +56,7 @@ namespace mysimulator {
     static const ScaleType  Scale;
     static const TbMvType   TbMv;
     static const ShiftType  Shift;
+    static const SbMvType   SbMv;
 
   };
 
@@ -96,6 +99,11 @@ namespace mysimulator {
   const typename BLAS<T>::ShiftType BLAS<T>::Shift=NULL;
   template <> const typename BLAS<double>::ShiftType BLAS<double>::Shift=daxpy_;
   template <> const typename BLAS<float>::ShiftType BLAS<float>::Shift=saxpy_;
+
+  template <typename T>
+  const typename BLAS<T>::SbMvType BLAS<T>::SbMv=NULL;
+  template <> const typename BLAS<double>::SbMvType BLAS<double>::SbMv=dsbmv_;
+  template <> const typename BLAS<float>::SbMvType BLAS<float>::SbMv=ssbmv_;
 
 }
 

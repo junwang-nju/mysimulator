@@ -2,18 +2,160 @@
 #ifndef _Intrinsic_Type_Compare_H_
 #define _Intrinsic_Type_Compare_H_
 
-#include "intrinsic-type/reflection/dual.h"
+#define _COMPARE(type1,type2) \
+  int compare(const type1& a, const type2& b) { return (a==b?0:(a<b?-1:1)); }
 
 namespace mysimulator {
 
-  template <typename T1, typename T2>
-  int compare(const T1& d1, const T2& d2) {
-    typedef typename _Dual<T1,T2>::CombineType  Type;
-    return static_cast<Type>(d1)==static_cast<Type>(d2)?0:
-          (static_cast<Type>(d1)<static_cast<Type>(d2)?-1:1);
-  }
+  _COMPARE(long double,long double)
+  _COMPARE(long double,double)
+  _COMPARE(long double,float)
+  _COMPARE(long double,long long)
+  _COMPARE(long double,unsigned long long)
+  _COMPARE(long double,int)
+  _COMPARE(long double,unsigned int)
+  _COMPARE(long double,long)
+  _COMPARE(long double,unsigned long)
+  _COMPARE(long double,short)
+  _COMPARE(long double,unsigned short)
+  _COMPARE(long double,char)
+  _COMPARE(long double,unsigned char)
+
+  _COMPARE(double,long double)
+  _COMPARE(double,double)
+  _COMPARE(double,float)
+  _COMPARE(double,long long)
+  _COMPARE(double,unsigned long long)
+  _COMPARE(double,int)
+  _COMPARE(double,unsigned int)
+  _COMPARE(double,long)
+  _COMPARE(double,unsigned long)
+  _COMPARE(double,short)
+  _COMPARE(double,unsigned short)
+  _COMPARE(double,char)
+  _COMPARE(double,unsigned char)
+
+  _COMPARE(float,long double)
+  _COMPARE(float,double)
+  _COMPARE(float,float)
+  _COMPARE(float,long long)
+  _COMPARE(float,unsigned long long)
+  _COMPARE(float,int)
+  _COMPARE(float,unsigned int)
+  _COMPARE(float,long)
+  _COMPARE(float,unsigned long)
+  _COMPARE(float,short)
+  _COMPARE(float,unsigned short)
+  _COMPARE(float,char)
+  _COMPARE(float,unsigned char)
+
+  _COMPARE(long long,long double)
+  _COMPARE(long long,double)
+  _COMPARE(long long,float)
+  _COMPARE(long long,long long)
+  _COMPARE(long long,int)
+  _COMPARE(long long,unsigned int)
+  _COMPARE(long long,long)
+  _COMPARE(long long,unsigned long)
+  _COMPARE(long long,short)
+  _COMPARE(long long,unsigned short)
+  _COMPARE(long long,char)
+  _COMPARE(long long,unsigned char)
+
+  _COMPARE(unsigned long long,long double)
+  _COMPARE(unsigned long long,double)
+  _COMPARE(unsigned long long,float)
+  _COMPARE(unsigned long long,unsigned long long)
+  _COMPARE(unsigned long long,unsigned int)
+  _COMPARE(unsigned long long,unsigned long)
+  _COMPARE(unsigned long long,unsigned short)
+  _COMPARE(unsigned long long,unsigned char)
+
+  _COMPARE(int,long double)
+  _COMPARE(int,double)
+  _COMPARE(int,float)
+  _COMPARE(int,long long)
+  _COMPARE(int,int)
+  _COMPARE(int,long)
+  _COMPARE(int,short)
+  _COMPARE(int,unsigned short)
+  _COMPARE(int,char)
+  _COMPARE(int,unsigned char)
+
+  _COMPARE(unsigned int,long double)
+  _COMPARE(unsigned int,double)
+  _COMPARE(unsigned int,float)
+  _COMPARE(unsigned int,unsigned long long)
+  _COMPARE(unsigned int,unsigned int)
+  _COMPARE(unsigned int,unsigned long)
+  _COMPARE(unsigned int,unsigned short)
+  _COMPARE(unsigned int,unsigned char)
+
+  _COMPARE(long,long double)
+  _COMPARE(long,double)
+  _COMPARE(long,float)
+  _COMPARE(long,long long)
+  _COMPARE(long,int)
+  _COMPARE(long,long)
+  _COMPARE(long,short)
+  _COMPARE(long,unsigned short)
+  _COMPARE(long,char)
+  _COMPARE(long,unsigned char)
+
+  _COMPARE(unsigned long,long double)
+  _COMPARE(unsigned long,double)
+  _COMPARE(unsigned long,float)
+  _COMPARE(unsigned long,unsigned long long)
+  _COMPARE(unsigned long,unsigned int)
+  _COMPARE(unsigned long,unsigned long)
+  _COMPARE(unsigned long,unsigned short)
+  _COMPARE(unsigned long,unsigned char)
+
+  _COMPARE(short,long double)
+  _COMPARE(short,double)
+  _COMPARE(short,float)
+  _COMPARE(short,long long)
+  _COMPARE(short,int)
+  _COMPARE(short,long)
+  _COMPARE(short,short)
+  _COMPARE(short,char)
+  _COMPARE(short,unsigned char)
+
+  _COMPARE(unsigned short,long double)
+  _COMPARE(unsigned short,double)
+  _COMPARE(unsigned short,float)
+  _COMPARE(unsigned short,unsigned long long)
+  _COMPARE(unsigned short,unsigned int)
+  _COMPARE(unsigned short,unsigned long)
+  _COMPARE(unsigned short,unsigned short)
+  _COMPARE(unsigned short,unsigned char)
+
+  _COMPARE(char,long double)
+  _COMPARE(char,double)
+  _COMPARE(char,float)
+  _COMPARE(char,long long)
+  _COMPARE(char,int)
+  _COMPARE(char,long)
+  _COMPARE(char,short)
+  _COMPARE(char,char)
+
+  _COMPARE(unsigned char,long double)
+  _COMPARE(unsigned char,double)
+  _COMPARE(unsigned char,float)
+  _COMPARE(unsigned char,unsigned long long)
+  _COMPARE(unsigned char,unsigned int)
+  _COMPARE(unsigned char,unsigned long)
+  _COMPARE(unsigned char,unsigned short)
+  _COMPARE(unsigned char,unsigned char)
+
+  _COMPARE(void*,void*)
+  template <typename T> _COMPARE(void*,T*)
+  template <typename T> _COMPARE(T*,void*)
+  template <typename T> _COMPARE(T*,T*)
 
 }
+
+#undef _COMPARE
 
 #endif
 

@@ -3,44 +3,42 @@
 #define _Array_1D_Refer_H_
 
 #include "array/1d/interface.h"
+#include "array/1d/content/refer.h"
 #include "pointer/refer.h"
-#include "intrinsic-type/refer.h"
+
+#define _REFER_BASIC(A,cA) \
+  assert(IsValid(cA));\
+  release(A);\
+  refer(A.data,cA.data);\
+  typedef typename Array1D<T>::ParentType::ParentType   Type;
 
 namespace mysimulator {
 
   template <typename T>
-  void refer(Array1D<T>& v, const Array1D<T>& rv,
-             const int& partb, const int& parte, const int& newb) {
-    assert(IsValid(rv));
-    typedef typename Array1D<T>::ParentType PType;
-    refer(static_cast<PType&>(v),static_cast<const PType&>(rv));
-    assert(parte>partb);
-    assert((partb>=rv.first)&&(parte<=rv.last));
-    refer(v.size,parte-partb+1);
-    refer(v.first,newb);
-    refer(v.last,newb+parte-partb);
-    refer(v.head,rv.head+partb-newb);
-    v.start=v.head+v.first;
+  void refer(Array1D<T>& A, Array1D<T>& cA, const int& partb, const int& parte,
+             const int& newb) {
+    _REFER_BASIC(A,cA);
+    refer(static_cast<Type&>(A),static_cast<const Type&>(cA),partb,parte,newb);
   }
 
   template <typename T>
-  void refer(Array1D<T>& v, const Array1D<T>& rv,
-             const int& partb, const int& parte) {
-    refer(v,rv,partb,parte,partb);
+  void refer(Array1D<T>& A, Array1D<T>& cA, const int& partb, const int& parte){
+    _REFER_BASIC(A,cA);
+    refer(static_cast<Type&>(A),static_cast<const Type&>(cA),partb,parte);
   }
 
   template <typename T>
-  void refer(Array1D<T>& v, const Array1D<T> rv) {
-    refer(v,rv,rv.first,rv.last);
+  void refer(Array1D<T>& A, Array1D<T>& cA) {
+    _REFER_BASIC(A,cA);
+    refer(static_cast<Type&>(A),static_cast<const Type&>(cA));
   }
 
   template <typename T>
-  void refer(Array1D<T>& v, const Array1D<T> rv, const unsigned int& n) {
-    assert(rv.size>=n);
-    refer(v,rv,rv.first,rv.first+n-1);  // first+n is not checked for overflow
+  void refer(Array1D<T>& A, Array1D<T>& cA, const unsigned int& n) {
+    _REFER_BASIC(A,cA);
+    refer(static_cast<Type&>(A),static_cast<const Type&>(cA),n);
   }
 
 }
 
 #endif
-

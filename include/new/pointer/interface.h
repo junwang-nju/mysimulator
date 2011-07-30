@@ -34,7 +34,7 @@ namespace mysimulator {
               fprintf(stderr,"state prohibits clearData Operation");
               exit(1);
             }
-          } else if(parent!=NULL) --(parent.state);
+          } else if(parent!=NULL) --(parent->state);
         }
         ptr=NULL;
         state=-1;
@@ -60,7 +60,7 @@ namespace mysimulator {
   bool IsValid(const Pointer<T>& P) { return P.isvalid(); }
 
   template <typename T>
-  void release(const Pointer<T>& P) { return P.clearData(); }
+  void release(Pointer<T>& P) { return P.clearData(); }
 
 }
 

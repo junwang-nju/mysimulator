@@ -6,8 +6,6 @@
 #define _SINGLE_STRUCT(type,typeA) \
   template <> struct _Single_Array<typeA> { _OPERATE(type); }
 
-#include "linear-algebra/blas.h"
-
 namespace mysimulator {
 
   template <typename T>
