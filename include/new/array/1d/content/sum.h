@@ -14,14 +14,16 @@ namespace mysimulator {
     copy(sum,cZero);
     T* e=p+n*del;
     for(;p!=e;p+=del) shift(sum,*p);
+    return sum;
   }
 
   template <typename T>
   T _sum(T* p, const unsigned int& n) {
     T sum;
-    copy(sum,cZero);
+    copy(sum,uZero);
     T* e=p+n;
     for(;p!=e;) shift(sum,*(p++));
+    return sum;
   }
 
 }
@@ -79,28 +81,28 @@ namespace mysimulator {
         const unsigned int& n) {
     assert(IsValid(A,fst,del,n));
     T* p=const_cast<T*>(A.head+fst);
-    _sum(p,del,n);
+    return _sum(p,del,n);
   }
 
   template <typename T>
   T sum(const Array1DContent<T>& A, const int& fst, const unsigned int& n) {
     assert(IsValid(A,fst,n));
     T* p=const_cast<T*>(A.head+fst);
-    _sum(p,n);
+    return _sum(p,n);
   }
 
   template <typename T>
   T sum(const Array1DContent<T>& A, const unsigned int& n) {
     assert(IsValid(A,n));
     T* p=const_cast<T*>(A.start);
-    _sum(p,n);
+    return _sum(p,n);
   }
 
   template <typename T>
   T sum(const Array1DContent<T>& A) {
     assert(IsValid(A));
     T* p=const_cast<T*>(A.start);
-    _sum(p,A.size);
+    return _sum(p,A.size);
   }
 
 }

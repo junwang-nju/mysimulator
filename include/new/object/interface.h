@@ -3,6 +3,7 @@
 #define _Object_Interface_H_
 
 #include "pointer/interface.h"
+#include <cassert>
 
 namespace mysimulator {
 

@@ -4,6 +4,7 @@
 
 #include "array/1d/interface.h"
 #include "pointer/allocate.h"
+#include "array/1d/content/init.h"
 
 namespace mysimulator {
 
@@ -12,11 +13,7 @@ namespace mysimulator {
     assert(n!=0);
     release(v);
     allocate(v.data,n);
-    v.size=n;
-    v.first=0;
-    v.last=static_cast<int>(n-1);
-    v.head=v.data();
-    v.start=v.head+v.first;
+    init(v,v.data(),n);
   }
 
   template <typename T>
@@ -25,11 +22,7 @@ namespace mysimulator {
     release(v);
     unsigned int n=static_cast<unsigned int>(lst-fst+1);
     allocate(v.data,n);
-    v.size=n;
-    v.first=fst;
-    v.last=lst;
-    v.head=v.data()-v.first;
-    v.start=v.head+v.first;
+    init(v,v.data(),fst,lst);
   }
 
 }
