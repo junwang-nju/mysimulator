@@ -33,9 +33,10 @@ namespace mysimulator {
       }
       bool isvalid() const { return IsValid(head); }
 
-      void _remove(ChainNode<T>* pnode) {
-        ChainNode<T>* mparent=pnode->parent;
-        ChainNode<T>* mchild=pnode->child;
+      void _remove(const NodeType* const& pnode) {
+        if(!IsValid(pnode)) return;
+        NodeType* mparent=const_cast<NodeType* const&>(pnode->parent);
+        NodeType* mchild=const_cast<NodeType* const&>(pnode->child);
         delete_pointer(mparent->child);
         mparent->child=mchild;
         mchild->parent=mparent;
@@ -48,11 +49,11 @@ namespace mysimulator {
           if(compare(now->content,d)==0) { _remove(now); break; }
         }
       }
-      void append(const T& d) {
+      void append(const T& d, const bool& RefFlag=false) {
         assert(isvalid());
         ChainNode<T>* middle=new ChainNode<T>;
-        allocate(middle->content);
-        middle->content()=d;
+        if(RefFlag) refer(middle->content,d);
+        else { imprint(middle->content,d); middle->content()=d; }
         ChainNode<T>* mparent=head->parent;
         ChainNode<T>* mchild=head;
         middle->parent=mparent;

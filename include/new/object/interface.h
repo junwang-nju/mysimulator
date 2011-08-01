@@ -3,6 +3,7 @@
 #define _Object_Interface_H_
 
 #include "pointer/interface.h"
+#include "intrinsic-type/valid.h"
 #include <cassert>
 
 namespace mysimulator {
@@ -18,7 +19,9 @@ namespace mysimulator {
       Object() : ParentType() {}
       ~Object() { clearData(); }
 
-      bool _isparentvalid() {return static_cast<ParentType*>(this)->isvalid();}
+      bool _isparentvalid() const {
+        return static_cast<const ParentType*>(this)->isvalid();
+      }
 
       void clearData() { static_cast<ParentType*>(this)->clearData(); }
       bool isvalid() const { return _isparentvalid()&&IsValid(operator()()); }
