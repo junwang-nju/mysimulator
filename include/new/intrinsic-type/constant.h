@@ -23,6 +23,7 @@ namespace mysimulator {
 
   static const float fOne=1.;
   static const float fNOne=-1.;
+  static const float fHalf=0.5;
 
   static const float FRelDelta=5.9604644775390625e-8;
   static const float FSqrtRelDelta=0.000244140625;
@@ -30,6 +31,7 @@ namespace mysimulator {
   static const double dOne=1.;
   static const double dNOne=-1.;
   static const double dTwo=2.;
+  static const double dHalf=0.5;
 
   static const double DRelDelta=1.1107651257113993e-16;
   static const double DSqrtRelDelta=1.0539284253265965e-8;
@@ -62,11 +64,20 @@ namespace mysimulator {
   template <typename T>
   const T& ValueOne() {
     Error("Unknown Type to have a value of one!");
-    return cOne;
+    return static_cast<T>(cOne);
   }
 
   template <> const double& ValueOne<double>() { return dOne; }
   template <> const float& ValueOne<float>() { return fOne; }
+
+  template <typename T>
+  const T& ValueHalf() {
+    Error("Unknown Type to have a value of half!");
+    return static_cast<T>(fHalf);
+  }
+
+  template <> const double& ValueHalf<double>() { return dHalf; }
+  template <> const float& ValueHalf<float>() { return fHalf; }
 
 }
 
