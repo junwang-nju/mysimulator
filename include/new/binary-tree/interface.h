@@ -36,7 +36,6 @@ namespace mysimulator {
         while(true) {
           cmp=0;
           if(IsValid(now)) cmp=compare(key,now->key);
-          if(IsValid(now)) COut<<key<<"\t"<<now->key<<"\t"<<cmp<<Endl;
           iflag=false;
           if(cmp==0) {
             if(IsValid(now)) Warn("Same Key When Inserting for Binary-Tree!");
@@ -88,7 +87,7 @@ namespace mysimulator {
       }
 
       const ValueType* get(const KeyType& key) const {
-        NodeType* p=_get(key);
+        const NodeType* p=_get(key);
         return IsValid(p)?p->value.ptr:NULL;
       }
 

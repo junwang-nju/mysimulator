@@ -6,6 +6,7 @@
 #include "intrinsic-type/release.h"
 #include "intrinsic-type/valid.h"
 #include "intrinsic-type/compare.h"
+#include "intrinsic-type/copy.h"
 #include "object/allocate.h"
 
 namespace mysimulator {
@@ -49,17 +50,21 @@ namespace mysimulator {
           if(compare(now->content,d)==0) { _remove(now); break; }
         }
       }
-      void append(const T& d, const bool& RefFlag=false) {
+      void _append() {
         assert(isvalid());
         ChainNode<T>* middle=new ChainNode<T>;
-        if(RefFlag) refer(middle->content,d);
-        else { imprint(middle->content,d); middle->content()=d; }
         ChainNode<T>* mparent=head->parent;
         ChainNode<T>* mchild=head;
         middle->parent=mparent;
         middle->child=mchild;
         mparent->child=middle;
         mchild->parent=middle;
+      }
+      void append(const T& d, const bool& RefFlag=false) {
+        _append();
+        ChainNode<T>* middle=head->parent;
+        if(RefFlag) refer(middle->content,d);
+        else { imprint(middle->content,d); copy(middle->content(),d); }
       }
 
     private:
