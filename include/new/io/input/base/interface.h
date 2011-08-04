@@ -53,5 +53,47 @@ namespace mysimulator {
 
 }
 
+#define _INPUT(type) \
+  InputBase& operator>>(InputBase& I, type& val) { return I.read(val); }
+
+namespace mysimulator {
+
+  _INPUT(bool)
+  _INPUT(char)
+  _INPUT(unsigned char)
+  _INPUT(short)
+  _INPUT(unsigned short)
+  _INPUT(long)
+  _INPUT(unsigned long)
+  _INPUT(int)
+  _INPUT(unsigned int)
+  _INPUT(long long)
+  _INPUT(unsigned long long)
+  _INPUT(float)
+  _INPUT(double)
+  _INPUT(void*)
+  _INPUT(char* const)
+
+}
+
+#undef _INPUT
+
+namespace mysimulator {
+
+  unsigned int getline(char* buff, const unsigned int nbuff, InputBase& I) {
+    unsigned int n=0;
+    for(unsigned int i=0;i<nbuff-1;++i) {
+      I>>buff[i];
+      if(buff[i]=='\n') {
+        n=i+1;
+        buff[n]='\0';
+        break;
+      }
+    }
+    return n;
+  }
+
+}
+
 #endif
 
