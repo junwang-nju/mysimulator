@@ -28,5 +28,9 @@ namespace mysimulator {
 
 }
 
+#ifdef _Distance_Calc_H_
+#include "displacement/free/calc.h"
+#endif
+
 #endif
 

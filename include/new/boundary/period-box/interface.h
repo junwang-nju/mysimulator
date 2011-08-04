@@ -47,5 +47,9 @@ namespace mysimulator {
 
 }
 
+#ifdef _Distance_Calc_H_
+#include "displacement/period-box/calc.h"
+#endif
+
 #endif
 
