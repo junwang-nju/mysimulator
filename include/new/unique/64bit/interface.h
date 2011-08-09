@@ -49,7 +49,8 @@ namespace mysimulator {
       T*& pointer() { return reinterpret_cast<T*&>(ptr[0]); }
       template <typename T>
       const T* const& pointer() const {
-        return reinterpret_cast<const T* const&>(ptr[0]); }
+        return reinterpret_cast<const T* const&>(ptr[0]);
+      }
 
     private:
 

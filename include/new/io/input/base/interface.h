@@ -71,6 +71,7 @@ namespace mysimulator {
   _INPUT(unsigned long long)
   _INPUT(float)
   _INPUT(double)
+  _INPUT(long double)
   _INPUT(void*)
   _INPUT(char* const)
 
