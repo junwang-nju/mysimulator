@@ -9,7 +9,7 @@ namespace mysimulator {
 
   template <typename GeomType, typename T>
   void BFuncMethodPairwise(
-      const Array1DContent<T>* X, const unsigned int* idx, const Unique64Bit* P,
+      const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* Grad,
       Array1DContent<T>* tmvec,
       void (*bfunc)(const T&,const Unique64Bit*,T&,T&)) {

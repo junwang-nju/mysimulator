@@ -11,7 +11,7 @@ namespace mysimulator {
     T ivr2=1./dsq;
     T ivr6=ivr2*ivr2*ivr2;
     T ivr12=ivr6*ivr6;
-    diff=-prm[Core12TwlfEqStrength].value<T>()*ivr12*ivr2;
+    diff=-P[Core12TwlfEqStrength].value<T>()*ivr12*ivr2;
   }
 
 }
