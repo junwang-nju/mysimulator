@@ -16,7 +16,7 @@ double Intg(double R, double d0, double epsilon,double T,
             double RA, double RB, double d1, double d2) {
   //static const int ncth=50000;
   //static const double Dcth=1./(ncth+0.);
-  double sum1,sum2,sum,sfac;
+  double sum1,sum2,sum;
   //double dA,dB;
   double tmdA,tmdB;
   tmdA=RA+d1;
@@ -30,19 +30,28 @@ double Intg(double R, double d0, double epsilon,double T,
   double dthL,dthU;
   dthL=thL/nth;
   dthU=thU/nth;
+  double pdL,pdU,dpdL,dpdU;
   sum1=0;
-  for(int i=-nth;i<=0;++i) {
-    if((i==-nth)||(i==0)) sfac=0.5;
-    else sfac=1.;
-    sum1+=sfac*exp(epsilon/T*exp(i*dthL-R/d0));
+  pdL=epsilon/T*exp(-nth*dthL-R/d0);
+  dpdL=exp(dthL);
+  sum1+=0.5*exp(pdL);
+  for(int i=-nth+1;i<0;++i) {
+    pdL*=dpdL;
+    sum1+=exp(pdL);
   }
+  pdL*=dpdL;
+  sum1+=0.5*exp(pdL);
   sum1*=dthL;
   sum2=0;
-  for(int i=0;i<=nth;++i) {
-    if((i==nth)||(i==0)) sfac=0.5;
-    else sfac=1.;
-    sum2+=sfac*exp(epsilon/T*exp(i*dthU-R/d0));
+  pdU=epsilon/T*exp(-R/d0);
+  dpdU=exp(dthU);
+  sum2+=0.5*exp(pdU);
+  for(int i=1;i<nth;++i) {
+    pdU*=dpdU;
+    sum2+=exp(pdU);
   }
+  pdU*=dpdU;
+  sum2+=0.5*exp(pdU);
   sum2*=dthU;
   sum=(sum1+sum2)*d0/tmdA;
   return sum;
