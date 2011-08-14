@@ -67,5 +67,27 @@ namespace mysimulator {
 
 }
 
+#include "array/1d/allocate.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  void imprint(Array2D<T>& A, const Array2D<T>& cA) {
+    assert(IsValid(cA));
+    int lfst=cA.infra.first;
+    Array1D<int> fst,lst;
+    allocate(fst,cA.NumLines());
+    allocate(lst,cA.NumLines());
+    Array1DContent<T>* p=const_cast<Array1DContent<T>*>(cA.infra.start);
+    Array1DContent<T>* e=p+cA.infra.size;
+    int* q=fst.start;
+    int* r=lst.start;
+    for(;p!=e;) { *(q++)=(*p).first;  *(r++)=(*(p++)).last; }
+    allocate(A,lfst,fst,lst);
+    release(fst);
+    release(lst);
+  }
+}
+
 #endif
 
