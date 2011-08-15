@@ -58,7 +58,7 @@ double Intg(double R, double d0, double epsilon,double T,
 }
       
 double f(double d) {
-  return -exp(-d/0.5)*10;
+  return -exp(-d/0.2)*10;
 }
 
 double S(double n, double d) {
@@ -66,7 +66,7 @@ double S(double n, double d) {
 }
 
 int main(int argc, char** argv) {
-  if(argc<2)  { CErr<<"binding-plane.run <R-Value>"<<Endl<<Endl; return 1; }
+  if(argc<3)  { CErr<<"binding-plane.run <d0> <R-Value>"<<Endl<<Endl; return 1; }
   const unsigned int N1=50;
   const unsigned int N2=50;
   const unsigned int Nm=10;
@@ -74,11 +74,12 @@ int main(int argc, char** argv) {
 
   const double e1=0;
   const double e2=0;
-  const double epsilon=100;
-  const double d0=2;
+  const double epsilon=600;
+  double d0=2;
 
-  const double T=1.48;    //Tf
+  //const double T=1.48;    //Tf
   //const double T=1.036;
+  const double T=1.07;    //Tf
 
   double d,d1,d2;
   unsigned int r,r1,r2;
@@ -87,7 +88,8 @@ int main(int argc, char** argv) {
   unsigned int NA,NB,Nd;
   double C;
 
-  R=atof(argv[1]);
+  d0=atof(argv[1]);
+  R=atof(argv[2]);
   d=6;
 
   r=0;
@@ -110,7 +112,7 @@ int main(int argc, char** argv) {
     C=(f(d)-T*S(Nd,d))-e1*r1-e2*r2;
     FL=Intg(R,d0,epsilon,T,RA,RB,d1,d2);
     FL=C-T*log(FL);
-    COut<<d<<"\t"<<C<<"\t"<<FL<<"\t11111111"<<Endl;
+    //COut<<d<<"\t"<<C<<"\t"<<FL<<"\t11111111"<<Endl;
     dv[g]=FL;
     d+=dstep;
   }
