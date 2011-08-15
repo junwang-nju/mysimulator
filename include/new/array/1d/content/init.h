@@ -4,7 +4,6 @@
 
 #include "array/1d/content/interface.h"
 #include "intrinsic-type/copy.h"
-#include "intrinsic-type/valid.h"
 
 namespace mysimulator {
 

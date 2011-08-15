@@ -25,6 +25,7 @@ namespace mysimulator {
 #include "intrinsic-type/constant.h"
 
 #define _LONG_POINTER(a) reinterpret_cast<long*>(const_cast<unsigned int*>(a))
+#define _TYPE_POINTER(a) reinterpret_cast<Type*>(a)
 
 namespace mysimulator {
 
@@ -35,9 +36,8 @@ namespace mysimulator {
     copy(td,d);
     typedef typename _Single_Array<T1>::OperateType  Type;
     BLAS<Type>::Copy(
-        _LONG_POINTER(&n),reinterpret_cast<Type*>(&td),
-        const_cast<long*>(&lZero),reinterpret_cast<Type*>(p),
-        _LONG_POINTER(&del));
+        _LONG_POINTER(&n),_TYPE_POINTER(&td),const_cast<long*>(&lZero),
+        _TYPE_POINTER(p),_LONG_POINTER(&del));
   }
 
   template <typename T1, typename T2>
@@ -46,12 +46,13 @@ namespace mysimulator {
     copy(td,d);
     typedef typename _Single_Array<T1>::OperateType  Type;
     BLAS<Type>::Copy(
-        _LONG_POINTER(&n),reinterpret_cast<Type*>(&td),
-        const_cast<long*>(&lZero),reinterpret_cast<Type*>(p),
-        const_cast<long*>(&lOne));
+        _LONG_POINTER(&n),_TYPE_POINTER(&td),const_cast<long*>(&lZero),
+        _TYPE_POINTER(p),const_cast<long*>(&lOne));
   }
 
 }
+
+#undef _TYPE_POINTER
 
 #define _FILL_WithDel(type) \
   template <typename T>\
@@ -63,28 +64,24 @@ namespace mysimulator {
   template <typename T>\
   void _fill(type* p,const T& d,const unsigned int& n) { _fill_blas(p,d,n); }
 
+#define _FILL_DATA(type) \
+  _FILL_WithDel(type) \
+  _FILL(type)
+
 namespace mysimulator {
 
-  _FILL_WithDel(double)
-  _FILL_WithDel(float)
-  _FILL_WithDel(long long)
-  _FILL_WithDel(unsigned long long)
-  _FILL_WithDel(int)
-  _FILL_WithDel(unsigned int)
-  _FILL_WithDel(long)
-  _FILL_WithDel(unsigned long)
-
-  _FILL(double)
-  _FILL(float)
-  _FILL(long long)
-  _FILL(unsigned long long)
-  _FILL(int)
-  _FILL(unsigned int)
-  _FILL(long)
-  _FILL(unsigned long)
+  _FILL_DATA(double)
+  _FILL_DATA(float)
+  _FILL_DATA(long long)
+  _FILL_DATA(unsigned long long)
+  _FILL_DATA(int)
+  _FILL_DATA(unsigned int)
+  _FILL_DATA(long)
+  _FILL_DATA(unsigned long)
 
 }
 
+#undef _FILL_DATA
 #undef _FILL
 #undef _FILL_WithDel
 
@@ -97,7 +94,7 @@ namespace mysimulator {
              const unsigned int& del) {
     long double td;
     copy(td,d);
-    long tridel=static_cast<long>(3*del);
+    long tridel=static_cast<long>(del+del+del);
     BLAS<float>::Copy(
         _LONG_POINTER(&n),_FLOAT_POINTER(&td),const_cast<long*>(&lZero),
         _FLOAT_POINTER(p),&tridel);
@@ -164,7 +161,6 @@ namespace mysimulator {
 #undef _FILL_SHORT
 
 #include "array/1d/content/interface.h"
-#include "intrinsic-type/valid.h"
 
 namespace mysimulator {
 
