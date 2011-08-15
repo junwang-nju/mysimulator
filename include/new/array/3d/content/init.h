@@ -30,9 +30,8 @@ namespace mysimulator {
   template <typename T>
   void init(Array3DContent<T>& A, const T* const& ptr,
             const Array1DContent<T>* const& s2ptr,
-            const Array2DContent<T>* const& s3ptr, const int& pb,
-            const int& pe, const int& lb, const int& le, const int& rb,
-            const int& re) {
+            const Array2DContent<T>* const& s3ptr, const int& pb, const int& pe,
+            const int& lb, const int& le, const int& rb, const int& re) {
     unsigned int np,nl,nr;
     np=static_cast<unsigned int>(pe-pb+1);
     nl=static_cast<unsigned int>(le-lb+1);
