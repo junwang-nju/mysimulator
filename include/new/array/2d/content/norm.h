@@ -8,6 +8,19 @@
 namespace mysimulator {
 
   template <typename T>
+  T normSQ(const Array2DContent<T>& A, const int& lb, const unsigned int& ld,
+           const unsigned int& ln, const int& rb, const unsigned int& rd,
+           const unsigned int& rn) {
+    assert(IsValid(A,lb,ld,ln,rb,rd,rn));
+    Array1DContent<T>* p=const_cast<Array1DContent<T>*>(A.infra.head)+lb;
+    Array1DContent<T>* e=p+ld*ln;
+    T sum;
+    copy(sum,cZero);
+    for(;p!=e;p+=ld)  sum+=normSQ(*p,rb,rd,rn);
+    return sum;
+  }
+
+  template <typename T>
   T normSQ(const Array2DContent<T>& A) { return normSQ(A.base); }
 
   template <typename T>

@@ -5,6 +5,7 @@
 #include "interaction/calc.h"
 #include "object/allocate.h"
 #include "object/copy.h"
+#include "intrinsic-type/constant.h"
 
 #define _LOAD(PART) \
   void load##PART(const PART##Type& i##PART) {\
@@ -71,8 +72,10 @@ namespace mysimulator {
       }
 
       void UpdateE() { Energy=0; Calc(Func,X,ID,Param,Geom,Energy); }
-      void UpdateG() { fill(G); Calc(Func,X,ID,Param,Geom,G); }
-      void Update()  { Energy=0; fill(G); Calc(Func,X,ID,Param,Geom,Energy,G); }
+      void UpdateG() { fill(G,cZero); Calc(Func,X,ID,Param,Geom,G); }
+      void Update()  {
+        Energy=0; fill(G,cZero); Calc(Func,X,ID,Param,Geom,Energy,G);
+      }
 
     private:
 

@@ -3,6 +3,7 @@
 #define _System_Copy_H_
 
 #include "system/interface.h"
+#include "intrinsic-type/copy.h"
 
 namespace mysimulator {
 
