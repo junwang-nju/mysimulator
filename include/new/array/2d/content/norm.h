@@ -47,6 +47,29 @@ namespace mysimulator {
   template <typename T>
   T normSQ(const Array2DContent<T>& A) { return normSQ(A.base); }
 
+}
+
+#include "intrinsic-type/square-root.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  T norm(const Array2DContent<T>& A, const int& lb, const unsigned int& ld,
+         const unsigned int& ln, const int& rb, const unsigned int& rd,
+         const unsigned int& rn) {
+    return sqroot(normSQ(A,lb,ld,ln,rb,rd,rn));
+  }
+
+  template <typename T>
+  T norm(const Array2DContent<T>& A, const int& lb, const unsigned int& ln,
+         const int& rb, const unsigned int& rn) {
+    return sqroot(normSQ(A,lb,ln,rb,rn));
+  }
+
+  template <typename T>
+  T norm(const Array2DContent<T>& A, const unsigned int& ln,
+         const unsigned int& rn) { return sqroot(normSQ(A,ln,rn));  }
+
   template <typename T>
   T norm(const Array2DContent<T>& A) { return norm(A.base); }
 
