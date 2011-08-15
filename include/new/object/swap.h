@@ -9,8 +9,8 @@ namespace mysimulator {
 
   template <typename T>
   void Swap(Object<T>& O1, Object<T>& O2) {
-    Swap(static_cast<typename Object<T>::ParentType&>(O1),
-         static_cast<typename Object<T>::ParentType&>(O2));
+    typedef typename Object<T>::ParentType  Type;
+    Swap(static_cast<Type&>(O1),static_cast<Type&>(O2));
   }
 
 }

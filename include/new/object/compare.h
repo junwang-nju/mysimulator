@@ -36,7 +36,7 @@ namespace mysimulator {
   int compare(const Object<T1>& O, const T2& d) { return compare(O(),d); }
 
   template <typename T1, typename T2>
-  int compare(const T1& d, const Object<T2>& O) { return compare(d,O()); }
+  int compare(const T1& d, const Object<T2>& O) { return compare(O,d); }
 
 }
 
