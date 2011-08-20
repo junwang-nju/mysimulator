@@ -36,7 +36,7 @@ namespace mysimulator {
   void copy(Array2DContent<T1>& A, const Array2DContent<T2>& B,
             const unsigned int& nl, const unsigned int& nr) {
     assert(IsValid(A,nl,nr)&&IsValid(B,nl,nr));
-    Array1DContent<T1>* p=A.infra.start
+    Array1DContent<T1>* p=A.infra.start;
     Array1DContent<T2>* q=const_cast<Array1DContent<T2>*>(B.infra.start);
     Array1DContent<T1>* e=p+nl;
     for(;p!=e;)  copy(*(p++),*(q++),nr);
@@ -68,12 +68,22 @@ namespace mysimulator {
   void ecopy(Array2DContent<T>& A, const Array2DContent<T>& B,
              const int& alb, const int& blb, const unsigned int& nl) {
     assert(IsSameSize(A,B,alb,blb,nl));
-    int ale=alb+n-1;
+    int ale=alb+static_cast<int>(nl-1);
     int ab=static_cast<int>(A[alb].start-A.infra.start->start);
     int bb=static_cast<int>(B[blb].start-B.infra.start->start);
     unsigned int s;
     s=static_cast<unsigned int>(A[ale].head+A[ale].last-A[alb].start);
     copy(A.base.B.base,ab,bb,s);
+  }
+
+  template <typename T>
+  void ecopy(Array2DContent<T>& A, const Array2DContent<T>& B,
+             const unsigned int& nl) {
+    assert(IsSameSize(A,B,nl));
+    int ale=static_cast<int>(nl-1);
+    unsigned int s;
+    s=static_cast<unsigned int>(A[ale].head+A[ale].last-A.infra.start->start);
+    copy(A.base,B.base,s);
   }
 
 }
