@@ -72,7 +72,7 @@ namespace mysimulator {
     int ab=static_cast<int>(A[alb].start-A.infra.start->start);
     int bb=static_cast<int>(B[blb].start-B.infra.start->start);
     unsigned int s;
-    s=static_cast<unsigned int>(A[ale].head+A[ale].last-A[alb].start);
+    s=static_cast<unsigned int>(A[ale].head+A[ale].last-A[alb].start+1);
     copy(A.base.B.base,ab,bb,s);
   }
 
@@ -82,7 +82,7 @@ namespace mysimulator {
     assert(IsSameSize(A,B,nl));
     int ale=static_cast<int>(nl-1);
     unsigned int s;
-    s=static_cast<unsigned int>(A[ale].head+A[ale].last-A.infra.start->start);
+    s=static_cast<unsigned int>(A[ale].head+A[ale].last-A.infra.start->start+1);
     copy(A.base,B.base,s);
   }
 

@@ -72,6 +72,30 @@ namespace mysimulator {
     return dot(A1.base,A2.base);
   }
 
+  template <typename T1, typename T2>
+  _DotTYPE(T1,T2)
+  edot(const Array2DContent<T1>& A, const Array2DContent<T2>& B,
+       const int& alb, const int& blb, const unsigned int& nl) {
+    assert(IsSameSize(A,B,alb,blb,nl));
+    int ale=alb+static_cast<int>(nl-1);
+    int ab=static_cast<int>(A[alb].start-A.infra.start->start);
+    int bb=static_cast<int>(B[blb].start-B.infra.start->start);
+    unsigned int s;
+    s=static_cast<unsigned int>(A[ale].head+A[ale].last-A[alb].start+1);
+    return dot(A.base.B.base,ab,bb,s);
+  }
+
+  template <typename T1, typename T2>
+  _DotTYPE(T1,T2)
+  edot(const Array2DContent<T1>& A, const Array2DContent<T2>& B,
+       const unsigned int& nl) {
+    assert(IsSameSize(A,B,nl));
+    int le=static_cast<int>(nl-1);
+    unsigned int s;
+    s=static_cast<unsigned int>(A[le].head+A[le].last-A.infra.start->start+1);
+    return dot(A.base,B.base,s);
+  }
+
 }
 
 #endif
