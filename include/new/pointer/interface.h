@@ -43,8 +43,6 @@ namespace mysimulator {
         delfunc=NULL;
       }
       bool isvalid() const { return (ptr!=NULL)&&(state>=0); }
-      static void _DelVariable(T*& p) { delete p; p=NULL; }
-      static void _DelArray(T*& p) { delete[] p; p=NULL; }
 
       T*& operator()() { return ptr; }
       const T* const& operator()() const { return ptr; }

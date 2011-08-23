@@ -57,28 +57,24 @@ namespace mysimulator {
     _copy_blas(p,q,n);\
   }
 
+#define _COPY_Data(type) \
+  _COPY_WithDel(type) \
+  _COPY(type)
+
 namespace mysimulator {
 
-  _COPY_WithDel(double)
-  _COPY_WithDel(float)
-  _COPY_WithDel(long long)
-  _COPY_WithDel(unsigned long long)
-  _COPY_WithDel(int)
-  _COPY_WithDel(unsigned int)
-  _COPY_WithDel(long)
-  _COPY_WithDel(unsigned long)
-
-  _COPY(double)
-  _COPY(float)
-  _COPY(long long)
-  _COPY(unsigned long long)
-  _COPY(int)
-  _COPY(unsigned int)
-  _COPY(long)
-  _COPY(unsigned long)
+  _COPY_Data(double)
+  _COPY_Data(float)
+  _COPY_Data(long long)
+  _COPY_Data(unsigned long long)
+  _COPY_Data(int)
+  _COPY_Data(unsigned int)
+  _COPY_Data(long)
+  _COPY_Data(unsigned long)
 
 }
 
+#undef _COPY_Data
 #undef _COPY
 #undef _COPY_WithDel
 

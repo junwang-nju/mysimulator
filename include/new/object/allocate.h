@@ -4,7 +4,6 @@
 
 #include "object/interface.h"
 #include "pointer/allocate.h"
-#include "intrinsic-type/valid.h"
 
 namespace mysimulator {
 
@@ -22,7 +21,6 @@ namespace mysimulator {
 
   template <typename T>
   void imprint(Object<T>& O, const T& d) {
-    assert(IsValid(d));
     allocate(O);
     imprint(O(),d);
   }

@@ -9,10 +9,10 @@ namespace mysimulator {
 
   template <typename T>
   void refer(Object<T>& O, Object<T>& cO) {
+    typedef typename Object<T>::ParentType  Type;
     assert(IsValid(cO));
     release(O);
-    refer(static_cast<typename Object<T>::ParentType&>(O),
-          static_cast<typename Object<T>::ParentType&>(cO));
+    refer(static_cast<Type&>(O),static_cast<Type&>(cO));
   }
 
   template <typename T>

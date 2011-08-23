@@ -47,6 +47,25 @@ namespace mysimulator {
   template <typename T>
   T sum(const Array2DContent<T>& A) { return sum(A.base); }
 
+  template <typename T>
+  T esum(const Array2DContent<T>& A, const int& lb, const unsigned int& nl) {
+    assert(IsValid(A)&&IsValid(A.infra,lb,nl));
+    int le=lb+static_cast<int>(nl-1);
+    int ab=static_cast<int>(A[lb].start-A.infra.start->start);
+    unsigned int s;
+    s=static_cast<unsigned int>(A[le].head+A[le].last-A[lb].start+1);
+    return sum(A.base,ab,s);
+  }
+
+  template <typename T>
+  T sum(const Array2DContent<T>& A, const unsigned int& nl) {
+    assert(IsValid(A)&&IsValid(A.infra,nl));
+    int le=static_cast<int>(nl-1);
+    unsigned int s;
+    s=static_cast<unsigned int>(A[le].head+A[le].last-A.infra.start->start+1);
+    return sum(A.base,s);
+  }
+
 }
 
 #endif

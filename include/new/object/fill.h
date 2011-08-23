@@ -11,10 +11,10 @@ namespace mysimulator {
   void fill(Object<T1>& O, const Object<T2>& fO) { fill(O(),fO()); }
 
   template <typename T1, typename T2>
-  void fill(Object<T1>& O, const T2& d) { assert(IsValid(d)); fill(O(),d); }
+  void fill(Object<T1>& O, const T2& d) { fill(O(),d); }
 
   template <typename T1, typename T2>
-  void fill(T1& d, const Object<T2>& O) { assert(IsValid(d)); fill(d,O()); }
+  void fill(T1& d, const Object<T2>& O) { fill(d,O()); }
 
 }
 

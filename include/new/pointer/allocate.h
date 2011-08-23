@@ -4,6 +4,7 @@
 
 #include "pointer/interface.h"
 #include "intrinsic-type/allocate.h"
+#include "intrinsic-type/release.h"
 
 namespace mysimulator {
 
@@ -14,7 +15,7 @@ namespace mysimulator {
     p.state=0;
     p.parent=NULL;
     p.pstate=-1;
-    p.delfunc=Pointer<T>::_DelVariable;
+    p.delfunc=delete_pointer<T>;
   }
 
   template <typename T>
@@ -24,7 +25,7 @@ namespace mysimulator {
     p.state=0;
     p.parent=NULL;
     p.pstate=-1;
-    p.delfunc=Pointer<T>::_DelArray;
+    p.delfunc=delete_array<T>;
   }
 
 }
