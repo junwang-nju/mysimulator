@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
   int nmin;
 
   fg=false;
-  for(;R>5;R-=0.01) {
+  //for(;R>5;R-=0.01) {
   d=0.25;
   
   r=0;
@@ -115,10 +115,10 @@ int main(int argc, char** argv) {
   RA=pow(NA,1./3.);
   RB=pow(NB,1./3.);
   nd=5;
-  //nd=284;
+  nd=284;
   d=nd*dstep;
-  for(unsigned int g=nd;g<MaxND;++g) {
-  //for(R=20;R>5;R-=0.01) {
+  //for(unsigned int g=nd;g<MaxND;++g) {
+  for(R=20;R>5;R-=0.01) {
     d1=(-RA*NA+(RB+d)*NB+d/2.*Nd)/(N+0.);
     d2=d-d1;
     
@@ -127,11 +127,12 @@ int main(int argc, char** argv) {
     FL=C-T*log(FL);
     //COut<<R<<"\t"<<-T*log(FL)<<Endl;
     //COut<<d<<"\t"<<-T*log(FL)<<Endl;
-    //COut<<R<<"\t"<<FL<<"\t"<<"aaaaaa"<<Endl;
-    dv[g]=FL;
-    d+=dstep;
+    COut<<R<<"\t"<<FL<<"\t"<<"aaaaaa"<<Endl;
+    //dv[g]=FL;
+    //d+=dstep;
   }
 
+  /*
   nmin=0;
   COut.precision(8);
   for(unsigned int g=nd+1;g<MaxND-1;++g) {
@@ -154,6 +155,7 @@ int main(int argc, char** argv) {
   COut<<d0<<"\t";
   if(fg)    COut<<"Yes"<<Endl;
   else      COut<<"No"<<Endl;
+  */
    
   return 0;
 }

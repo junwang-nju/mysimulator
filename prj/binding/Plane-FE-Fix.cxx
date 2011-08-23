@@ -58,7 +58,7 @@ double Intg(double R, double d0, double epsilon,double T,
 }
       
 double f(double d) {
-  return -exp(-d/0.1)*10;
+  return -exp(-d/0.2)*10;
 }
 
 double S(double n, double d) {
@@ -74,13 +74,12 @@ int main(int argc, char** argv) {
 
   const double e1=0;
   const double e2=0;
-  const double epsilon=600;
+  const double epsilon=500;
   double d0=2;
 
   //const double T=1.48;    //Tf
   //const double T=1.036;
-  //const double T=1.07;    //Tf for 0.2-10 type
-  const double T=0.898;    //Tf for 0.1-10 type
+  const double T=1.07;    //Tf
 
   double d,d1,d2;
   unsigned int r,r1,r2;
@@ -95,15 +94,13 @@ int main(int argc, char** argv) {
   Vector<double> dv(MaxND);
   int nmin;
   bool fg;
-  double m1,m2;
 
   d0=atof(argv[1]);
   R=atof(argv[2]);
   if(R>50)  R=50;
 
   fg=false;
-  for(;R>5;R-=0.01) {
-  //{
+  //for(;R>5;R-=0.01) {
   d=6;
 
   r=0;
@@ -114,9 +111,11 @@ int main(int argc, char** argv) {
   RA=pow(NA,1./3.);
   RB=pow(NB,1./3.);
   nd=5;
+  nd=284;
   d=nd*dstep;
   //for(d=0.001;d<Nm;d+=0.0002) {
-  for(unsigned int g=nd;g<MaxND;++g) {
+  //for(unsigned int g=nd;g<MaxND;++g) {
+  for(;R>5;R-=0.01) {
     d1=(-RA*NA+(RB+d)*NB+d/2.*Nd)/(N+0.);
     d2=d-d1;
     
@@ -124,18 +123,19 @@ int main(int argc, char** argv) {
     FL=Intg(R,d0,epsilon,T,RA,RB,d1,d2);
     FL=C-T*log(FL);
     //COut<<d<<"\t"<<C<<"\t"<<FL<<"\t11111111"<<Endl;
-    dv[g]=FL;
-    d+=dstep;
+    COut<<R<<"\t"<<C<<"\t"<<FL<<"\t11111111"<<Endl;
+    //dv[g]=FL;
+    //d+=dstep;
   }
 
+  /*
   nmin=0;
-  m1=m2=1e100;
   //COut.precision(8);
   for(unsigned int g=nd+1;g<MaxND-1;++g) {
     if((dv[g]-dv[g-1])*(dv[g]-dv[g+1])>0) {
       //COut<<R<<"\t"<<g*dstep<<"\t"<<dv[g]<<"\t";
-      if(dv[g]>dv[g-1]) { if(m2>1e50) m2=dv[g]; } //COut<<"Max"<<Endl;
-      else              { if(m1>1e50) m1=dv[g]; nmin++; }//COut<<"Min"<<Endl;
+      if(dv[g]>dv[g-1]) {} //COut<<"Max"<<Endl;
+      else              nmin++; //COut<<"Min"<<Endl;
     }
   }
   //COut<<R<<"\t"<<nd*dstep<<"\t"<<dv[nd]<<"\t";
@@ -144,13 +144,13 @@ int main(int argc, char** argv) {
   //COut<<R<<"\t"<<(MaxND-1)*dstep<<"\t"<<dv[MaxND-1]<<"\t";
   if(dv[MaxND-1]<dv[MaxND-2]) nmin++;// COut<<"Min"<<Endl;
   else                        {} //COut<<"Max"<<Endl;
-  if((m1<1e50)&&(m2<1e50))  { /*if(m2-m1<T) { COut<<R<<Endl; break; }*/ }
   if(nmin==1)   { COut<<R<<Endl; fg=true; break; }
   }
 
   COut<<d0<<"\t";
   if(fg)    COut<<"Yes"<<Endl;
   else      COut<<"No"<<Endl;
+  */
 
   return 0;
 }
