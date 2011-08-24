@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
 
   const double e1=0;
   const double e2=0;
-  const double epsilon=600;
+  const double epsilon=700;
   double d0=2;
 
   //const double T=1.48;    //Tf
