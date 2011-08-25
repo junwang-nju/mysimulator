@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
 
   const double e1=0;
   const double e2=0;
-  const double epsilon=700;
+  const double epsilon=900;
   double d0=2;
 
   //const double T=1.48;    //Tf
@@ -102,8 +102,8 @@ int main(int argc, char** argv) {
   if(R>50)  R=50;
 
   fg=false;
-  for(;R>5;R-=0.01) {
-  //{
+  //for(;R>5;R-=0.01) {
+  {
   d=6;
 
   r=0;
@@ -145,7 +145,8 @@ int main(int argc, char** argv) {
   if(dv[MaxND-1]<dv[MaxND-2]) nmin++;// COut<<"Min"<<Endl;
   else                        {} //COut<<"Max"<<Endl;
   if((m1<1e50)&&(m2<1e50))  { /*if(m2-m1<T) { COut<<R<<Endl; break; }*/ }
-  if(nmin==1)   { COut<<R<<Endl; fg=true; break; }
+  //if(nmin==1)   { COut<<R<<Endl; fg=true; break; }
+  if(nmin==1)   { COut<<R<<Endl; fg=true; }
   }
 
   COut<<d0<<"\t";
