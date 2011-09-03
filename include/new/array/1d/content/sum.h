@@ -20,7 +20,7 @@ namespace mysimulator {
   template <typename T>
   T _sum(T* p, const unsigned int& n) {
     T sum;
-    copy(sum,uZero);
+    copy(sum,static_cast<T>(cZero));
     T* e=p+n;
     for(;p!=e;) shift(sum,*(p++));
     return sum;
