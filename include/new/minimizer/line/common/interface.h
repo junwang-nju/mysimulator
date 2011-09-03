@@ -48,7 +48,7 @@ namespace mysimulator {
       }
 
       T MinimalStep() const {
-        MinimalStepCalc<SpaceType,T>::Do(
+        return MinimalStepCalc<SpaceType,T>::Do(
             this->Sys().X(),LineDirc,this->Sys().UMask);
       }
 

@@ -99,21 +99,21 @@ namespace mysimulator {
   }
 
   template <typename T>
-  T _norm(const Array1DContent<T>& A, const int& fst, const unsigned int& n) {
+  T norm(const Array1DContent<T>& A, const int& fst, const unsigned int& n) {
     assert(IsValid(A,fst,n));
     T* p=A.head+fst;
     return _norm(p,n);
   }
 
   template <typename T>
-  T _norm(const Array1DContent<T>& A, const unsigned int& n) {
+  T norm(const Array1DContent<T>& A, const unsigned int& n) {
     assert(IsValid(A,n));
     T* p=A.start;
     return _norm(p,n);
   }
 
   template <typename T>
-  T _norm(const Array1DContent<T>& A) {
+  T norm(const Array1DContent<T>& A) {
     assert(IsValid(A));
     T* p=A.start;
     return _norm(p,A.size);

@@ -61,17 +61,17 @@ namespace mysimulator {
         T c2pj=this->CurvFac*this->Proj;
         unsigned int state=0;
         for(unsigned int nite=0;nite<MaxIt;++nite) {
-          copy(this->RunX,this->X);
+          copy(this->RunX,this->Sys().X);
           shift(this->RunX(),step,this->LineDirc);
-          Calc(this->Func,this->RunX(),this->ID,this->Param,this->Geom,
-               this->RunEnergy,this->RunG);
-          this->RunProj=dot(this->RunG,this->LineDirc);
+          Calc(this->Sys().Func,this->RunX(),this->Sys().ID,this->Sys().Param,
+               this->Sys().Geom,this->RunEnergy,this->RunG());
+          this->RunProj=dot(this->RunG(),this->LineDirc);
           this->GCalcCount++;
-          if(CondFunc(this->RunEnergy,this->RunProj,this->Energy,
+          if(CondFunc(this->RunEnergy,this->RunProj,this->Sys().Energy,
                       c1pj,c2pj,step)) {
-            swap(this->X,this->RunX);
-            swap(this->G,this->RunG);
-            this->Energy=this->RunEnergy;
+            Swap(this->Sys().X,this->RunX);
+            Swap(this->Sys().G,this->RunG);
+            this->Sys().Energy=this->RunEnergy;
             this->Proj=this->RunProj;
             this->Move=step;
             state=1;

@@ -34,19 +34,19 @@ namespace mysimulator {
         T tmd;
         int f=0, lf;
         for(unsigned int nite=0;nite<MaxIt;++nite) {
-          copy(this->LineDirc,this->G);
+          copy(this->LineDirc,this->Sys().G);
           tmd=norm(this->LineDirc);
           if(tmd<this->GradThreshold) {
             this->LineSearchCount=nite; f=3; break;
           }
           scale(this->LineDirc,-1./tmd);
           this->Proj=-tmd;
-          tmd=this->Energy;
+          tmd=this->Sys().Energy;
           lf=static_cast<ParentType*>(this)->_Go();
           if(lf==2) { this->LineSearchCount=nite; f=1; break; }
           else if(lf==0) { this->LineSearchCount=nite; f=4; break; }
-          if(2*absval(tmd-this->Energy)<=
-             absval(tmd+this->Energy)*RelativeDelta<T>()) {
+          if(2*absval(tmd-this->Sys().Energy)<=
+             absval(tmd+this->Sys().Energy)*RelativeDelta<T>()) {
             this->LineSearchCount=nite; f=2;  break;
           }
         }

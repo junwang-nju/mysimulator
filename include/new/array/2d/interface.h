@@ -25,7 +25,7 @@ namespace mysimulator {
         release(subdata);
       }
       bool isvalid() const {
-        return IsValid(*static_cast<ParentType*>(this))&&IsValid(subdata);
+        return IsValid(*static_cast<const ParentType*>(this))&&IsValid(subdata);
       }
 
     private:

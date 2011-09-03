@@ -15,5 +15,7 @@ namespace mysimulator {
 
 }
 
+#include "minimizer/steep/allocate-specification.h"
+
 #endif
 
