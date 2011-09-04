@@ -6,6 +6,8 @@
 #include "object/allocate.h"
 #include "object/copy.h"
 #include "intrinsic-type/constant.h"
+#include "object/io.h"
+#include "object/fill.h"
 
 #define _LOAD(PART) \
   void load##PART(const PART##Type& i##PART) {\
@@ -40,7 +42,7 @@ namespace mysimulator {
 
       void clearData() {
         release(Func);  release(ID);  release(Param); release(Geom);
-        release(X); release(G); release(Mask), release(UMask); Energy=0;
+        release(X); release(G); release(Mask); release(UMask); Energy=0;
       }
       bool isvalid() const {
         return
@@ -71,10 +73,10 @@ namespace mysimulator {
         loadMask(iMask());
       }
 
-      void UpdateE() { Energy=0; Calc(Func,X,ID,Param,Geom,Energy); }
-      void UpdateG() { fill(G,cZero); Calc(Func,X,ID,Param,Geom,G); }
+      void UpdateE() { Energy=0; Calc(Func,X(),ID,Param,Geom,Energy); }
+      void UpdateG() { fill(G,cZero); Calc(Func,X(),ID,Param,Geom,G()); }
       void Update()  {
-        Energy=0; fill(G,cZero); Calc(Func,X,ID,Param,Geom,Energy,G);
+        Energy=0; fill(G,cZero); Calc(Func,X(),ID,Param,Geom,Energy,G());
       }
 
     private:

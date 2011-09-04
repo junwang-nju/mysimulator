@@ -3,6 +3,7 @@
 #define _Minimizer_Steep_Allocate_Specification_H_
 
 #include "minimizer/interface.h"
+#include "minimizer/line/allocate.h"
 
 namespace mysimulator {
 

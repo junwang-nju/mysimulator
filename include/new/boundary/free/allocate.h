@@ -8,7 +8,7 @@ namespace mysimulator {
 
   void allocate(FreeSpace&, const unsigned int&) {}
 
-  void imprint(FreeSpace& const FreeSpace&) {}
+  void imprint(FreeSpace&, const FreeSpace&) {}
 
 }
 

@@ -63,6 +63,8 @@ namespace mysimulator {
         for(unsigned int nite=0;nite<MaxIt;++nite) {
           copy(this->RunX,this->Sys().X);
           shift(this->RunX(),step,this->LineDirc);
+          this->RunEnergy=0.;
+          fill(this->RunG,cZero);
           Calc(this->Sys().Func,this->RunX(),this->Sys().ID,this->Sys().Param,
                this->Sys().Geom,this->RunEnergy,this->RunG());
           this->RunProj=dot(this->RunG(),this->LineDirc);

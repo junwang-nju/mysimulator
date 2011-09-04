@@ -47,7 +47,7 @@ namespace mysimulator {
                 const Array1DContent<int>& lst) {
     assert(fst.size==lst.size);
     release(A);
-    unsigned int s=sum(lst)-sum(fst);
+    unsigned int s=sum(lst)-sum(fst)+fst.size;
     allocate(A.data,s);
     allocate(A.subdata,fst.size);
     init(A,A.data(),A.subdata(),s,lfst,fst,lst);

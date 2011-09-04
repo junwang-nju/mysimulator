@@ -52,7 +52,7 @@ namespace mysimulator {
             const Array1DContent<T>* const& sptr, 
             const unsigned int& s, const int& lfst,
             const Array1DContent<int>& fst, const Array1DContent<int>& lst) {
-    init(A.base,ptr,0,s);
+    init(A.base,ptr,0,s-1);
     init(A.infra,sptr,lfst,lfst+static_cast<int>(fst.size-1));
     Array1DContent<T>* p=A.infra.start;
     Array1DContent<T>* e=p+fst.size;
