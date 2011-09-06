@@ -17,6 +17,7 @@ namespace mysimulator {
 
 #include "minimizer/steep/allocate-specification.h"
 #include "minimizer/conjg/allocate-specification.h"
+#include "minimizer/lbfgs/allocate-specification.h"
 
 #endif
 
