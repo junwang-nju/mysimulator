@@ -81,11 +81,19 @@ namespace mysimulator {
 #define _SCALEC_WithDel(type) \
   template <typename T>\
   void _scale(type* p, const T& q, const unsigned int& del,\
-              const unsigned int& n) { _scale_blas(p,q,del,n); }
+              const unsigned int& n) {\
+    type rq;\
+    copy(rq,q);\
+    _scale_blas(p,rq,del,n);\
+  }
 
 #define _SCALEC(type) \
   template <typename T>\
-  void _scale(type* p,const T& q,const unsigned int& n) { _scale_blas(p,q,n); }
+  void _scale(type* p,const T& q,const unsigned int& n) {\
+    type rq;\
+    copy(rq,q);\
+    _scale_blas(p,rq,n);\
+  }
 
 #define _SCALEV_WithDel(type) \
   void _scale(type* p, type* q, const unsigned int& d1, const unsigned int& d2,\
