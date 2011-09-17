@@ -5,7 +5,8 @@
 namespace mysimulator {
 
   enum LatticeShapeName {
-    SquareLattice
+    SquareLattice,
+    UnknownShape
   };
 
 }
