@@ -9,25 +9,26 @@
 namespace mysimulator {
 
   template <LatticeShapeName LSN, unsigned int Dim>
-  void _update_coordinate(LatticeMotif& M) { Error("Unknown Shape with Dim!"); }
+  void _update_coordinate(LatticeMotif<LSN,Dim>& M) {
+    Error("Unknown Shape with Dim!");
+  }
 
   template <>
-  void _update_coordinate<SquareLattice,2U>(LatticeMotif& M) {
-    int coor[2];
-    coor[0]=coor[1]=0;
+  void _update_coordinate(LatticeMotif<SquareLattice,2U>& M) {
+    Square2DCoordinateType coor;
+    coor.us=0;
     for(unsigned int i=0;i<M.bond.size;++i) {
-      createNeighbor<SquareLattice,2>(coor,M.bond[i]);
-      M.coordinate[i][0]=coor[0];
-      M.coordinate[i][1]=coor[1];
+      createNeighbor<SquareLattice,2U>(coor,M.bond[i]);
+      M.coordinate[i].us=coor.us;
     }
   }
 
   template <LatticeShapeName LSN, unsigned int Dim>
-  void import(LatticeMotif& M, const Array1DContent<unsigned short>& bd) {
+  void import(LatticeMotif<LSN,Dim>& M,const Array1DContent<unsigned char>& bd){
     release(M);
-    allocate(M,LSN,bd.size,Dim);
+    allocate(M,bd.size);
     copy(M.bond,bd);
-    _update_coordinate<LSN,Dim>(M);
+    _update_coordinate(M);
   }
 
 }

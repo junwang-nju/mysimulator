@@ -3,29 +3,29 @@
 #define _Lattice_Motif_Allocate_H_
 
 #include "lattice/motif/interface.h"
-#include "array/2d/allocate.h"
+#include "array/1d/allocate.h"
 #include "array/1d/fill.h"
 
 namespace mysimulator {
 
-  void allocate(LatticeMotif& M, const LatticeShapeName& Nm,
-                const unsigned int& len,const unsigned int& d=0) {
+  template <LatticeShapeName LSN, unsigned int Dim>
+  void allocate(LatticeMotif<LSN,Dim>& M, const unsigned int& len) {
     release(M);
-    unsigned int rd;
-    if(Nm==SquareLattice) {
-      assert(d!=0);
-      rd=d;
+    unsigned int d;
+    if(LSN==SquareLattice) {
+      assert(Dim!=0);
+      d=Dim;
       M.name=SquareLattice;
     } else Error("Improper Name for Lattice!");
     allocate(M.bond,len);
     fill(M.bond,ucZero);
-    allocate(M.coordinate,len,rd);
+    allocate(M.coordinate,len);
   }
 
-  void imprint(LatticeMotif& M, const LatticeMotif& cM) {
+  template <LatticeShapeName LSN, unsigned int Dim>
+  void imprint(LatticeMotif<LSN,Dim>& M, const LatticeMotif<LSN,Dim>& cM) {
     assert(IsValid(cM));
     release(M);
-    M.name=cM.name;
     imprint(M.bond,cM.bond);
     imprint(M.coordinate,cM.coordinate);
   }

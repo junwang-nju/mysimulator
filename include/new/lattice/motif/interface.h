@@ -3,33 +3,28 @@
 #define _Lattice_Motif_Interfce_H_
 
 #include "array/1d/interface.h"
-#include "array/2d/interface.h"
-#include "lattice/shape/name.h"
+#include "lattice/shape/coordinate-type.h"
 
 namespace mysimulator {
 
+  template <LatticeShapeName LSN, unsigned int Dim>
   struct LatticeMotif {
 
     public:
 
-      typedef LatticeMotif    Type;
+      typedef LatticeMotif<LSN,Dim>   Type;
 
-      LatticeShapeName  name;
-      Array1D<unsigned short> bond;
-      Array2D<int>  coordinate;
+      static const LatticeShapeName   Name;
+      static const unsigned int Dimension;
 
-      LatticeMotif() : name(UnknownShape), bond(), coordinate() {}
+      Array1D<unsigned char> bond;
+      Array1D<typename LatticeCoordinate<LSN,Dim>::Type>  coordinate;
+
+      LatticeMotif() : bond(), coordinate() {}
       ~LatticeMotif() { clearData(); }
 
-      void clearData(){ name=UnknownShape; release(bond); release(coordinate); }
-      bool isvalid() const {
-        return (name!=UnknownShape)&&IsValid(bond)&&IsValid(coordinate);
-      }
-
-      const unsigned int Dimension() const {
-        assert(IsValid(coordinate));
-        return coordinate[0].size;
-      }
+      void clearData(){ release(coordinate); release(bond); }
+      bool isvalid() const { return IsValid(bond)&&IsValid(coordinate); }
 
     private:
 
@@ -38,8 +33,17 @@ namespace mysimulator {
 
   };
 
-  bool IsValid(const LatticeMotif& M) { return M.isvalid(); }
-  void release(LatticeMotif& M) { M.clearData(); }
+  template <LatticeShapeName LSN, unsigned int Dim>
+  const LatticeShapeName LatticeMotif<LSN,Dim>::Name=LSN;
+
+  template <LatticeShapeName LSN, unsigned int Dim>
+  const unsigned int LatticeMotif<LSN,Dim>::Dimension=Dim;
+
+  template <LatticeShapeName LSN, unsigned int Dim>
+  bool IsValid(const LatticeMotif<LSN,Dim>& M) { return M.isvalid(); }
+
+  template <LatticeShapeName LSN, unsigned int Dim>
+  void release(LatticeMotif<LSN,Dim>& M) { M.clearData(); }
 
 }
 
