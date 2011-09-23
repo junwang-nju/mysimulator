@@ -1,0 +1,39 @@
+
+#ifndef _Square_2D_Create_Neighbor_Specification_H_
+#define _Square_2D_Create_Neighbor_Specification_H_
+
+#include "lattice/shape/create-neighbor.h"
+
+namespace mysimulator {
+
+  union Square2DCoordinateType {
+    unsigned short int us;
+    char c[2];
+  };
+
+}
+
+#include "intrinsic-type/constant.h"
+
+namespace mysimulator {
+
+  static const unsigned short int Square2DCoordinateShift[4]={
+    cOne, cOne<<8, cNOne, cNOne<<8 };
+
+  template <>
+  void createNeighbor<SquareLattice,2>(Square2DCoordinateType& coor,
+                                       const unsigned int& bd) {
+    coor.us+=Square2DCoordinateShift[bd];
+  }
+
+  template <>
+  void createNeighbor<SquareLattice,2>(const Square2DCoordinateType& coor0,
+                                       const unsigned int& bd,
+                                       Square2DCoordinateType& coor) {
+    coor.us=coor0.us+Square2DCoordinateShift[bd];
+  }
+
+}
+
+#endif
+
