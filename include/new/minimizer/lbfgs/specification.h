@@ -28,18 +28,24 @@ namespace mysimulator {
       ST<T>             lastX;
       ST<T>             lastG;
 
-      Minimizer() : ParentType(),dX(),dG(),alpha(),rho(),lastX(),lastG() {}
+      Minimizer()
+        : ParentType(),
+          MaxCorrelation(0U),dX(),dG(),alpha(),rho(),lastX(),lastG() {}
       ~Minimizer() { clearData(); }
 
       void clearData() {
         static_cast<ParentType*>(this)->clearData();
-        MaxCorrelation=0;
         release(lastG);
         release(lastX);
         release(rho);
         release(alpha);
+        for(unsigned int i=0;i<MaxCorrelation;++i) {
+          release(dG[i]);
+          release(dX[i]);
+        }
         release(dG);
         release(dX);
+        MaxCorrelation=0;
       }
       bool isvalid() const {
         return static_cast<const ParentType*>(this)->isvalid()&&IsValid(dX)&&
