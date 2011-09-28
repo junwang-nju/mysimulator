@@ -25,12 +25,25 @@ namespace mysimulator {
       bool isvalid() const { return IsValid(SegMotif); }
 
       unsigned char bondID(const unsigned int& n) {
+        assert(n<Len);
         unsigned int u=LatticeMotifLibrary<LSN,Dim>::MaxBondOfMotif;
         unsigned int I=n/u;
         unsigned int R=n%u;
-        unsigned int NB=(I==NumMotifs-1?R:u);
+        unsigned int NB=(I==NumMotifs-1?NumBondsLastMotif:u);
         assert(IsValid(LatticeMotifLibrary<LSN,Dim>::map));
         return LatticeMotifLibrary<LSN,Dim>::map[NB-1][SegMotif[I]].bond[R];
+      }
+
+      typename LatticeCoordinate<LSN,Dim>::Type&
+      nodePosition(const unsigned int& n) {
+        assert((n>0)&&(n<=Len));
+        unsigned int u=LatticeMotifLibrary<LSN,Dim>::MaxBondOfMotif;
+        unsigned int I=(n-1)/u;
+        unsigned int R=(n-1)%u;
+        unsigned int NB=(I==NumMotifs-1?NumBondsLastMotif:u);
+        assert(IsValid(LatticeMotifLibrary<LSN,Dim>::map));
+        return
+        LatticeMotifLibrary<LSN,Dim>::map[NB-1][SegMotif[I]].coordinate[R];
       }
 
     private:
@@ -39,6 +52,14 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <LatticeShapeName LSN, unsigned int Dim, unsigned int Len>
+  const unsigned int LatticeMotifChain<LSN,Dim,Len>::NumMotifs=
+    (Len==1?0:(Len-2)/LatticeMotifLibrary<LSN,Dim>::MaxBondOfMotif+1);
+
+  template <LatticeShapeName LSN, unsigned int Dim, unsigned int Len>
+  const unsigned int LatticeMotifChain<LSN,Dim,Len>::NumBondsLastMotif=
+    (Len==1?0:(Len-2)%LatticeMotifLibrary<LSN,Dim>::MaxBondOfMotif+1);
 
   template <LatticeShapeName LSN, unsigned int Dim, unsigned int L>
   bool IsValid(const LatticeMotifChain<LSN,Dim,L>& C) { return C.isvalid(); }
