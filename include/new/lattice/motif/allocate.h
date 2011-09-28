@@ -11,11 +11,8 @@ namespace mysimulator {
   template <LatticeShapeName LSN, unsigned int Dim>
   void allocate(LatticeMotif<LSN,Dim>& M, const unsigned int& len) {
     release(M);
-    unsigned int d;
     if(LSN==SquareLattice) {
       assert(Dim!=0);
-      d=Dim;
-      M.name=SquareLattice;
     } else Error("Improper Name for Lattice!");
     allocate(M.bond,len);
     fill(M.bond,ucZero);
