@@ -44,6 +44,7 @@ namespace mysimulator {
       template <typename T>
       Type& _read(const char* const& pat, T& val) {
         assert(isvalid());
+        assert(!IsFailed(*this));
         int n=fscanf(fptr,pat,&val);
         if(n!=1)  set(FailBit);
         return *this;
