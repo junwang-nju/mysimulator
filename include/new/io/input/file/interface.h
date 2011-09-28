@@ -49,7 +49,7 @@ namespace mysimulator {
         return *this;
       }
       Type& read(bool& b) {
-        int i; _read("%d",i); b=(i==0?false:true);
+        int i; _read("%d",i); if(!IsFailed(*this))  b=(i==0?false:true);
         return *this;
       }
       virtual Type& read(char& c) { return _read("%c",c); }
@@ -69,9 +69,9 @@ namespace mysimulator {
       virtual Type& read(char* const& s) {
         assert(isvalid());
         char c=' ';
-        while(isspace(c)) read(c); // may be a dead end
+        while(isspace(c)&&!IsFailed(*this)) read(c);
         int i=0;
-        while(!isspace(c)) {
+        while(!isspace(c)&&!IsFailed(*this)) {
           if(s[i]==CharEOF) { unget(c); break; }
           s[i++]=c;
           read(c);
