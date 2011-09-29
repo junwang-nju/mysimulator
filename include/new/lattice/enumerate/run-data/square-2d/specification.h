@@ -17,19 +17,19 @@ namespace mysimulator {
       Array1D<bool> Mesh;
       LatticeMotifChain<SquareLattice,2U,Len> C;
       Array1D<typename LatticeCoordinate<SquareLattice,2U>::Type> HeadPos;
-      Array1D<unsigned int> NowRegion;
-      int RunRegion;
+      Array1D<unsigned int> RunRegion;
+      int RunMotif;
 
-      LatticeEumRunData() : Mesh(),C(),HeadPos(),NowRegion(),RunRegion(-1) {}
+      LatticeEumRunData() : Mesh(),C(),HeadPos(),RunRegion(),RunMotif(-1) {}
       ~LatticeEumRunData() { clearData(); }
 
       void clearData() {
-        release(Mesh); release(C); release(HeadPos); release(NowRegion);
-        RunRegion=-1;
+        release(Mesh); release(C); release(HeadPos); release(RunRegion);
+        RunMotif=-1;
       }
       bool isvalid() const {
         return IsValid(Mesh)&&IsValid(C)&&IsValid(HeadPos)&&
-               IsValid(NowRegion)&&(RunRegion>0);
+               IsValid(RunRegion);
       }
 
     private:
