@@ -24,7 +24,10 @@ namespace mysimulator {
 
       template <unsigned int Len>
       bool operator()(LatticeEumRunData<SquareLattice,2U,Len>& D) {
-        if(D.RunMotif>1) {
+        if(D.RunMotif>0) {
+          for(unsigned int i=D.RunMotifHead;i<=D.RunMotifEnd;++i)
+            D.Pos[i].us=D.HeadPos[D.RunMotif].us+LatticeMotifLibrary<SquareLattice,2U>::map[D.RunMotifSize-1][D.RunMotif].coordinate[i-D.RunMotifHead].us;
+          // TEMP MARK: here define many variables for run-data
         }
         return true;
       }

@@ -16,23 +16,23 @@ namespace mysimulator {
 
       Array1D<bool> Mesh;
       LatticeMotifChain<SquareLattice,2U,Len> C;
-      Array1D<typename LatticeCoordinate<SquareLattice,2U>::Type> HeadPos;
       Array1D<typename LatticeCoordinate<SquareLattice,2U>::Type> Pos;
-      Array1D<unsigned int> RunRegion;
-      int RunMotif;
+      Array1D<unsigned short int> RunMotifLast;
+      Array1D<unsigned int> MotifPosHead, MotifPosTail;
+      int RunMotifLoc;
 
-      LatticeEumRunData() : Mesh(),C(),HeadPos(),Pos(),RunRegion(),
-                            RunMotif(-1) {}
+      LatticeEumRunData() : Mesh(),C(),Pos(),RunMotifLast(),
+                            MotifPosHead(),MotifPosTail(),RunMotifLoc(-1) {}
       ~LatticeEumRunData() { clearData(); }
 
       void clearData() {
-        release(Mesh); release(C); release(HeadPos); release(Pos);
-        release(RunRegion);
-        RunMotif=-1;
+        release(Mesh); release(C); release(Pos);  release(RunMotifLast);
+        release(MotifPosHead);  release(MotifPosTail);
+        RunMotifLoc=-1;
       }
       bool isvalid() const {
-        return IsValid(Mesh)&&IsValid(C)&&IsValid(HeadPos)&&IsValid(Pos)&&
-               IsValid(RunRegion);
+        return IsValid(Mesh)&&IsValid(C)&&IsValid(Pos)&&IsValid(RunMotifLast)&&
+               IsValid(MotifPosHead)&&IsValid(MotifPosTail);
       }
 
     private:
