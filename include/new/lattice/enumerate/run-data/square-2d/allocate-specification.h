@@ -12,6 +12,7 @@ namespace mysimulator {
     allocate(D.Mesh,(1<<16));
     allocate(D.C);
     allocate(M.HeadPos,LatticeMotifChain<SquareLattice,2U,Len>::NumMotifs);
+    allocate(M.Pos,Len);
     allocate(M.RunRegion,LatticeMotifChain<SquareLattice,2U,Len>::NumMotifs);
     D.RunMotif=-1;
   }
