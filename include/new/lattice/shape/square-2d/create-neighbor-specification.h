@@ -8,19 +8,19 @@
 namespace mysimulator {
 
   static const unsigned short int Square2DCoordinateShift[4]={
-    cOne, cOne<<8, cNOne, cNOne<<8 };
+    cOne, cOne<<8, cNOne<<8, cNOne };
 
   template <>
   void createNeighbor<SquareLattice,2>(Square2DCoordinateType& coor,
                                        const unsigned char& bd) {
-    coor.us+=Square2DCoordinateShift[bd];
+    coor.us+=Square2DCoordinateShift[bd-'0'];
   }
 
   template <>
   void createNeighbor<SquareLattice,2>(const Square2DCoordinateType& coor0,
                                        const unsigned char& bd,
                                        Square2DCoordinateType& coor) {
-    coor.us=coor0.us+Square2DCoordinateShift[bd];
+    coor.us=coor0.us+Square2DCoordinateShift[bd-'0'];
   }
 
 }

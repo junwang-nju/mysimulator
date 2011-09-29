@@ -9,6 +9,7 @@ namespace mysimulator {
   static const char cNOne=-1;
 
   static const unsigned char ucZero=0;
+  static const unsigned char ucOne=1;
 
   static const int iZero=0;
   static const int iOne=1;
