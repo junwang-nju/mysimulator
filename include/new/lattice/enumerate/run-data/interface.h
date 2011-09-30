@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <LatticeShapeName LSN, unsigned int Dim, unsigned int Len>
-  struct LatticeEumRunData {};
+  struct LatticeEnumRunData {};
 
 }
 

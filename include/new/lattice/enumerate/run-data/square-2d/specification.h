@@ -8,11 +8,11 @@
 namespace mysimulator {
 
   template <unsigned int Len>
-  struct LatticeEumRunData<SquareLattice,2U,Len> {
+  struct LatticeEnumRunData<SquareLattice,2U,Len> {
 
     public:
 
-      typedef LatticeEumRunData<SquareLattice,2U,Len>   Type;
+      typedef LatticeEnumRunData<SquareLattice,2U,Len>   Type;
 
       Array1D<bool> Mesh;
       LatticeMotifChain<SquareLattice,2U,Len> C;
@@ -20,34 +20,43 @@ namespace mysimulator {
       Array1D<unsigned int> RunRegion;
       Array1D<unsigned int> MotifPosHead, MotifPosTail;
       int RunMotifLoc;
+      Array1D<int> RunMotifSeg;
+      Array1D<unsigned int> RunMotifSegMax;
+      Array1D<unsigned short int> RunMotifSegHead,RunMotifSegTail;
 
-      LatticeEumRunData() : Mesh(),C(),Pos(),RunRegion(),
-                            MotifPosHead(),MotifPosTail(),RunMotifLoc(-1) {}
-      ~LatticeEumRunData() { clearData(); }
+      LatticeEnumRunData()
+        : Mesh(),C(),Pos(), RunRegion(), MotifPosHead(),MotifPosTail(),
+          RunMotifLoc(-1), RunMotifSeg(), RunMotifSegMax(),
+          RunMotifSegHead(),RunMotifSegTail() {}
+      ~LatticeEnumRunData() { clearData(); }
 
       void clearData() {
         release(Mesh); release(C); release(Pos);  release(RunRegion);
         release(MotifPosHead);  release(MotifPosTail);
         RunMotifLoc=-1;
+        release(RunMotifSeg); release(RunMotifSegMax);
+        release(RunMotifSegHead); release(RunMotifSegTail);
       }
       bool isvalid() const {
         return IsValid(Mesh)&&IsValid(C)&&IsValid(Pos)&&IsValid(RunRegion)&&
-               IsValid(MotifPosHead)&&IsValid(MotifPosTail);
+               IsValid(MotifPosHead)&&IsValid(MotifPosTail)&&
+               IsValid(RunMotifSeg)&&IsValid(RunMotifSegMax)&&
+               IsValid(RunMotifSegHead)&&IsValid(RunMotifSegTail);
       }
 
     private:
-      LatticeEumRunData(const Type&) {}
+      LatticeEnumRunData(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };
 
   template <unsigned int Len>
-  bool IsValid(const LatticeEumRunData<SquareLattice,2U,Len>& D) {
+  bool IsValid(const LatticeEnumRunData<SquareLattice,2U,Len>& D) {
     return D.isvalid();
   }
 
   template <unsigned int Len>
-  void release(LatticeEumRunData<SquareLattice,2U,Len>& D) { D.clearData(); }
+  void release(LatticeEnumRunData<SquareLattice,2U,Len>& D) { D.clearData(); }
 
 }
 

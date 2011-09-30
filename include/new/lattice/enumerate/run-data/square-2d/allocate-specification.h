@@ -12,10 +12,15 @@ namespace mysimulator {
     allocate(D.Mesh,(1<<16));
     allocate(D.C);
     allocate(M.Pos,Len);
-    allocate(M.RunRegion,LatticeMotifChain<SquareLattice,2U,Len>::NumMotifs);
-    allocate(M.MotifPosHead,LatticeMotifChain<SquareLattice,2U,Len>::NumMotifs);
-    allocate(M.MotifPosTail,LatticeMotifChain<SquareLattice,2U,Len>::NumMotifs);
+    unsigned int NMotifs=LatticeMotifChain<SquareLattice,2U,Len>::NumMotifs;
+    allocate(M.RunRegion,NMotifs);
+    allocate(M.MotifPosHead,NMotifs);
+    allocate(M.MotifPosTail,NMotifs);
     D.RunMotifLoc=-1;
+    allocate(M.RunMotifSeg,NMotifs);
+    allocate(M.RunMotifSegMax,NMotifs);
+    allocate(M.RunMotifSegHead,NMotifs);
+    allocate(M.RunMotifSegTail,NMotifs);
   }
 
 }
