@@ -47,6 +47,7 @@ namespace mysimulator {
       ~LatticeLibrary() { clearData(); }
 
       static void load() {
+        if(IsValid(root)) return;
         unsigned int level;
         Array1D<int> Branch;
         Array1D<bool> Valid;

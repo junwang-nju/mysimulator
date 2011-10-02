@@ -12,7 +12,7 @@ namespace mysimulator {
   template <LatticeShapeName LSN, unsigned int Dim, LatticeEnumMethodName LEN>
   void enumerate(const unsigned int& L, LatticeEnumMethod<LSN,Dim,LEN>& Method){
   //               LatticeOutput<LSN,Dim>& os) {
-    if(!IsValid(LatticeLibrary<LSN,Dim>::root)) LatticeLibrary<LSN,Dim>::load();
+    LatticeLibrary<LSN,Dim>::load();
     LatticeMesh<LSN,Dim> M;
     Array1D<typename LatticeNodeCoordinate<LSN,Dim>::Type> Pos;
     Array1D<typename LatticeLibrary<LSN,Dim>::NodeType*> parent,child;
@@ -37,16 +37,10 @@ namespace mysimulator {
       --v;
     }
     allocate(Branch,L);   fill(Branch,-1);
-    Branch[0]=0;
     refer(oBranch,Branch,1,L-1,1);
     allocate(State,L);
-    State[0]=0;
 
-    level=0;
-    now=LatticeLibrary<LSN,Dim>::root;
-    Pos[level].nullify();
-    parent[level]=now->parent;
-    child[level]=now->child;
+    Method.PreProcess(Branch,State,Pos,M,level,parent,child,now);
 
     unsigned long long int NC=0;
     while(true) {
@@ -71,7 +65,7 @@ namespace mysimulator {
             Branch[level]++;
           }
           if(level==0)  break;
-          state=Method.NextState(Branch[level-1],Branch[level],State[level-1]);
+          state=Method.NextState(Branch,State,Pos,level);
         } while(state<0);
         if(level==0)  break;
         now=child[level-1]+Branch[level];
