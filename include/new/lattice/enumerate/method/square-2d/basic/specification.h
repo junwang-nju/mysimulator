@@ -14,15 +14,33 @@ namespace mysimulator {
 
       typedef LatticeEnumMethod<SquareLattice,2U,LatticeEnumBasic>  Type;
 
+      static const int Map[3][4][4];
+
       LatticeEnumMethod() {}
       ~LatticeEnumMethod() { clearData(); }
 
       void clearData() {}
       bool isvalid() const { return true; }
 
-      bool Check(const Array1DContent<int>& Branch, const Array1DContent<int>
+      int NextState(const int& pBranch, const int& Branch, const int& pState) {
+        return Map[pState][pBranch][Branch];
+      }
 
   };
+
+  const int LatticeEnumMethod<SquareLattice,2U,LatticeEnumBasic>::Map[3][4][4]=
+    { { {  1, -1, -1, -1},
+        {  1, -1, -1, -1},
+        {  1, -1, -1, -1},
+        {  1, -1, -1, -1} },
+      { {  1,  2, -1, -1},
+        { -1, -1, -1, -1},
+        { -1, -1, -1, -1},
+        { -1, -1, -1, -1} },
+      { {  2,  2,  2, -1},
+        {  2,  2, -1,  2},
+        {  2, -1,  2,  2},
+        { -1,  2,  2,  2} } };
 
 }
 

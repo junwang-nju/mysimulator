@@ -29,5 +29,7 @@ namespace mysimulator {
 
 }
 
+#include "lattice/enumerate/method/square-2d/basic/specification.h"
+
 #endif
 
