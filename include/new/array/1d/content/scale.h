@@ -124,7 +124,6 @@ namespace mysimulator {
 #undef _SCALEC_WithDel
 
 #include "array/1d/content/interface.h"
-#include "intrinsic-type/valid.h"
 
 #define _SCALE1_CONST(type) \
   template <typename T>\

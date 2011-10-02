@@ -1,9 +1,0 @@
-define a=strings not 0 or 1 or 01
-0                     A
-01                    B
-01a                   C
-1                     D
-1a                    E
-a0                    F
-a2                    G
-a3                    H
