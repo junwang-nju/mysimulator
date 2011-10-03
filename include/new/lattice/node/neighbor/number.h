@@ -16,6 +16,7 @@ namespace mysimulator {
 }
 
 #include "lattice/node/neighbor/square/2d/number-specification.h"
+#include "lattice/node/neighbor/square/3d/number-specification.h"
 
 #endif
 

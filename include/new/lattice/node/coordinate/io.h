@@ -3,6 +3,7 @@
 #define _Lattice_Node_Coordinate_InputOutput_H_
 
 #include "lattice/node/coordinate/square/2d/io-specification.h"
+#include "lattice/node/coordinate/square/3d/io-specification.h"
 
 #endif
 
