@@ -6,12 +6,12 @@
 
 namespace mysimulator {
 
-  static const unsigned short int Square2DCoordinateShift[4]={
-    cOne,       // x plus 1
-    cOne<<8,    // y plus 1
-    cNOne<<8,   // y minus 1
-    cNOne       // x minus 1
-  };
+  static const char Square2DCoordinateShift[4][2]=
+    { {   1,   0   },     // x plus 1
+      {   0,   1   },     // y plus 1
+      {   0,  -1   },     // y minus 1
+      {  -1,   0   } };   // x minus 1
+
 }
 
 #include "lattice/node/coordinate/create.h"
@@ -21,14 +21,16 @@ namespace mysimulator {
   template <>
   void create<SquareLattice,2U>(Square2DCoordinateType& coor,
                                 const unsigned char& bond) {
-    coor()+=Square2DCoordinateShift[bond];
+    coor.c[0]+=Square2DCoordinateShift[bond][0];
+    coor.c[1]+=Square2DCoordinateShift[bond][1];
   }
 
   template <>
   void create<SquareLattice,2U>(const Square2DCoordinateType& coor0,
                                 const unsigned char& bond,
                                 Square2DCoordinateType& coor) {
-    coor()=coor0()+Square2DCoordinateShift[bond];
+    coor.c[0]=coor0.c[0]+Square2DCoordinateShift[bond][0];
+    coor.c[1]=coor0.c[1]+Square2DCoordinateShift[bond][1];
   }
 
 }

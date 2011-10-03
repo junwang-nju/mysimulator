@@ -94,6 +94,7 @@ namespace mysimulator {
           now=now->parent->child+Branch[level];
           create<LSN,Dim>(now->parent->Pos,Branch[level],now->Pos);
         }
+        release(Valid);
         release(Branch);
       }
 
