@@ -20,22 +20,19 @@ namespace mysimulator {
       Array1D<int>  Max,Min;
       Array1D<int>  RangeMax,RangeMin;
       Array1D<char> posMax,posMin;
-      Array1D<unsigned char> numMax,numMin;
 
       LatticeOutput()
-        : Max(), Min(), RangeMax(), RangeMin(),
-          posMax(), posMin(), numMax(), numMin() {}
+        : Max(), Min(), RangeMax(), RangeMin(), posMax(), posMin() {}
       ~LatticeOutput() { clearData(); }
 
       void clearData() {
         release(Max); release(Min); release(RangeMax);  release(RangeMin);
-        release(posMax); release(posMin); release(numMax);  release(numMin);
+        release(posMax); release(posMin);
       }
       bool isvalid() const {
         return IsValid(Max)&&IsValid(Min)&&
                IsValid(RangeMax)&&IsValid(RangeMin)&&
-               IsValid(posMax)&&IsValid(posMin)&&
-               IsValid(numMax)&&IsValid(numMin);
+               IsValid(posMax)&&IsValid(posMin);
       }
 
       void operator()(
@@ -44,16 +41,12 @@ namespace mysimulator {
           const Array1DContent<CoorType>& Pos) {
         fill(posMax,cMin);
         fill(posMin,cMax);
-        fill(numMax,ucZero);
-        fill(numMin,ucZero);
         char c;
         for(unsigned int i=0;i<Pos.size;++i)
         for(unsigned int k=0;k<Dim;++k) {
           c=Pos[i].c[k];
-          if(posMax[k]<c) { posMax[k]=c; numMax[k]=1; }
-          else if(posMax[k]==c)   numMax[k]++;
-          if(posMin[k]>c) { posMin[k]=c; numMin[k]=1; }
-          else if(posMin[k]==c)   numMin[k]++;
+          if(posMax[k]<c)   posMax[k]=c;
+          if(posMin[k]>c)   posMin[k]=c;
         }
         for(unsigned int i=0;i<Dim;++i) {
           RangeMax[i]=Max[i]-1-posMax[i];

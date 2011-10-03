@@ -15,8 +15,6 @@ namespace mysimulator {
     allocate(O.RangeMin,Dim);
     allocate(O.posMax,Dim);
     allocate(O.posMin,Dim);
-    allocate(O.numMax,Dim);
-    allocate(O.numMin,Dim);
   }
 
 }
