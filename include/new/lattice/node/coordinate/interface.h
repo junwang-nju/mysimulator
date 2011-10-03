@@ -11,7 +11,7 @@ namespace mysimulator {
 
 }
 
-#include "lattice/node/coordinate/square-2d/specification.h"
+#include "lattice/node/coordinate/square/2d/specification.h"
 
 #endif
 

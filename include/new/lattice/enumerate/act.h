@@ -12,8 +12,9 @@ namespace mysimulator {
 
   template <LatticeShapeName LSN, unsigned int Dim, LatticeEnumMethodName LEN,
             LatticeOutputMethodName LON>
-  void enumerate(const unsigned int& L, LatticeEnumMethod<LSN,Dim,LEN>& Method,
-                 LatticeOutput<LSN,Dim,LON>& Out){
+  unsigned long long
+  enumerate(const unsigned int& L, LatticeEnumMethod<LSN,Dim,LEN>& Method,
+            LatticeOutput<LSN,Dim,LON>& Out){
     LatticeLibrary<LSN,Dim>::load();
     LatticeMesh<LSN,Dim> M;
     Array1D<typename LatticeNodeCoordinate<LSN,Dim>::Type> Pos;
@@ -89,7 +90,7 @@ namespace mysimulator {
     release(parent);
     release(Pos);
 
-    COut<<NC<<Endl;
+    return NC;
   }
 
 }

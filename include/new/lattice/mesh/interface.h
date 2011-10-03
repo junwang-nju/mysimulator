@@ -27,7 +27,7 @@ namespace mysimulator {
 
 }
 
-#include "lattice/mesh/square-2d/specification.h"
+#include "lattice/mesh/square/2d/specification.h"
 
 #endif
 
