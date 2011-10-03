@@ -5,6 +5,8 @@
 #include "lattice/output/interface.h"
 
 #include "lattice/output/square/2d/stream/allocate-specification.h"
+#include "lattice/output/null/allocate-specification.h"
+#include "lattice/output/square/box/allocate-specification.h"
 
 #endif
 

@@ -43,6 +43,7 @@ namespace mysimulator {
 
 #include "lattice/output/null/specification.h"
 #include "lattice/output/square/2d/stream/specification.h"
+#include "lattice/output/square/box/specification.h"
 
 #endif
 

@@ -7,6 +7,8 @@ namespace mysimulator {
   static const char cZero=0;
   static const char cOne=1;
   static const char cNOne=-1;
+  static const char cMax=127;
+  static const char cMin=-128;
 
   static const unsigned char ucZero=0;
   static const unsigned char ucOne=1;
