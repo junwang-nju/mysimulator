@@ -3,6 +3,7 @@
 #define _Lattice_Output_Square_Box_Allocate_Specification_H_
 
 #include "lattice/output/square/box/specification.h"
+#include "array/1d/allocate.h"
 
 namespace mysimulator {
 
