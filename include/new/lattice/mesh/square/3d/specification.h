@@ -4,6 +4,7 @@
 
 #include "lattice/node/coordinate/square/3d/specification.h"
 #include "array/1d/fill.h"
+#include "array/1d/allocate.h"
 #include <cassert>
 
 namespace mysimulator {
@@ -15,10 +16,10 @@ namespace mysimulator {
       
       Array1D<bool> data; // valid for 256x256*256 size
 
-      LatticeMesh() : data() {}
-      ~LatticeMesh() { clearData(); }
+      LatticeMesh() : data() { allocate(data,16777216U); }
+      ~LatticeMesh() { clearData(); release(data); }
 
-      void clearData() { release(data); } 
+      void clearData() { } 
       bool isvalid() const { return IsValid(data); }
       void nullify() {  assert(isvalid()); fill(data,false); }
 

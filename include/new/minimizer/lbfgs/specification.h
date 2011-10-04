@@ -60,7 +60,7 @@ namespace mysimulator {
         assert(isvalid());
         this->GCalcCount=0;
         this->LineSearchCount=0;
-        unsigned int ncr,point,cp;
+        unsigned int ncr=0,point,cp;
         point=0;
         T diag,dgdg,dgdx,beta,fnorm,dnorm,tmd;
         fnorm=norm(this->Sys().G());
