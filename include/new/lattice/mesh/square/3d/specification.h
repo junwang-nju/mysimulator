@@ -16,10 +16,10 @@ namespace mysimulator {
       
       Array1D<bool> data; // valid for 256x256*256 size
 
-      LatticeMesh() : data() { allocate(data,16777216U); }
-      ~LatticeMesh() { clearData(); release(data); }
+      LatticeMesh() : data() {}
+      ~LatticeMesh() { clearData(); }
 
-      void clearData() { } 
+      void clearData() { release(data); } 
       bool isvalid() const { return IsValid(data); }
       void nullify() {  assert(isvalid()); fill(data,false); }
 

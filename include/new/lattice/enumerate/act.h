@@ -25,6 +25,7 @@ namespace mysimulator {
     unsigned int level;
     int state;
 
+    allocate(M);
     M.nullify();
     allocate(Pos,L);
     allocate(parent,L);
@@ -89,6 +90,7 @@ namespace mysimulator {
     release(child);
     release(parent);
     release(Pos);
+    release(M);
 
     return NC;
   }

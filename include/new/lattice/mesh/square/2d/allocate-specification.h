@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <>
-  void allocate(LatticeMesh<SquareLattice,Dim>& M) {}
+  void allocate(LatticeMesh<SquareLattice,2U>& M) {}
 
 }
 

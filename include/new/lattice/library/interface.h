@@ -5,7 +5,7 @@
 #include "lattice/node/coordinate/create.h"
 #include "array/1d/allocate.h"
 #include "array/1d/fill.h"
-#include "lattice/mesh/interface.h"
+#include "lattice/mesh/allocate.h"
 #include "array/1d/io.h"
 
 namespace mysimulator {
@@ -57,6 +57,7 @@ namespace mysimulator {
         fill(Valid,false);
         NodeType *now,*run;
         LatticeMesh<LSN,Dim> M;
+        allocate(M);
         M.nullify();
         root=new NodeType;
         root->Pos.nullify();
@@ -96,6 +97,7 @@ namespace mysimulator {
         }
         release(Valid);
         release(Branch);
+        release(M);
       }
 
       void clearData() { delete_pointer(root); }
