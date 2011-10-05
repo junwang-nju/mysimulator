@@ -24,9 +24,13 @@ int main() {
   unsigned int n;
   FI.open("1gb1.ca");
   FI>>n;
-  allocate(Pos,n,3);
+  allocate(Pos,n+1,3);
   for(unsigned int i=0;i<n;++i) FI>>Pos[i];
   FI.close();
+  copy(Pos[n],Pos[n-1]);
+  shift(Pos[n],-1.,Pos[0]);
+  scale(Pos[n],(1+norm(Pos[n]))/norm(Pos[n]));
+  shift(Pos[n],1.,Pos[0]);
   imprint(NPos,Pos);
   copy(NPos,Pos);
 
@@ -69,6 +73,7 @@ int main() {
     allocate(S.Param[i],HarmonicNumberParameters);
   for(unsigned int i=Cnt.NumLines(),j=0;i<n;++i,++j) {
     S.Param[i][HarmonicEqStrength].d=100.;
+    if(i==n-1)  S.Param[i][HarmonicEqStrength].d=1.;
     copy(tvec,NPos[j]);
     shift(tvec,-1.,NPos[j+1]);
     S.Param[i][HarmonicEqLength].d=norm(tvec);
