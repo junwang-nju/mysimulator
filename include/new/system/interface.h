@@ -74,9 +74,13 @@ namespace mysimulator {
       }
 
       void UpdateE() { Energy=0; Calc(Func,X(),ID,Param,Geom,Energy); }
-      void UpdateG() { fill(G,cZero); Calc(Func,X(),ID,Param,Geom,G()); }
+      void UpdateG() {
+        fill(G,cZero); Calc(Func,X(),ID,Param,Geom,G());
+        scale(G(),Mask);
+      }
       void Update()  {
         Energy=0; fill(G,cZero); Calc(Func,X(),ID,Param,Geom,Energy,G());
+        scale(G(),Mask);
       }
 
     private:

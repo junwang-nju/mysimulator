@@ -25,6 +25,11 @@ namespace mysimulator {
   _SCALE(char)
   _SCALE(unsigned char)
 
+  template <typename T1, typename T2>
+  void scale(Array2DContent<T1>& A, const Array2DContent<T2>& B) {
+    scale(A.base,B.base);
+  }
+
 }
 
 #undef _SCALE

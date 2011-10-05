@@ -149,7 +149,7 @@ namespace mysimulator {
   template <LineMinimizerName LMN, typename T,typename FT,typename IDT,
             typename PT,typename GT,template<typename> class ST>
   const unsigned int
-  Minimizer<LBFGS,LMN,T,FT,IDT,PT,GT,ST>::DefaultMaxIterations=1000;
+  Minimizer<LBFGS,LMN,T,FT,IDT,PT,GT,ST>::DefaultMaxIterations=10000;
 
 }
 

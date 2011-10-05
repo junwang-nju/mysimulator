@@ -6,7 +6,6 @@
 #include "array/1d/io.h"
 #include "array/1d/allocate.h"
 #include "array/1d/copy.h"
-#include "array/1d/scale.h"
 #include "array/1d/shift.h"
 #include "array/1d/norm.h"
 #include "array/1d/fill.h"
@@ -57,7 +56,8 @@ int main() {
   for(unsigned int i=0;i<Cnt.NumLines();++i)  allocate(S.Func[i],LJ612,3);
   for(unsigned int i=Cnt.NumLines();i<n;++i)  allocate(S.Func[i],Harmonic,3);
   allocate(S.Param,n);
-  for(unsigned int i=0;i<Cnt.NumLines();++i)  allocate(S.Param[i],LJ612NumberParameters);
+  for(unsigned int i=0;i<Cnt.NumLines();++i)
+    allocate(S.Param[i],LJ612NumberParameters);
   for(unsigned int i=0;i<Cnt.NumLines();++i) {
     S.Param[i][LJ612EqEnergyDepth].d=1.;
     copy(tvec,NPos[Cnt[i][0]-1]);
@@ -65,7 +65,8 @@ int main() {
     S.Param[i][LJ612EqRadius].d=norm(tvec);
     BuildParameterLJ612<double>(S.Param[i]);
   }
-  for(unsigned int i=Cnt.NumLines();i<n;++i)  allocate(S.Param[i],HarmonicNumberParameters);
+  for(unsigned int i=Cnt.NumLines();i<n;++i)
+    allocate(S.Param[i],HarmonicNumberParameters);
   for(unsigned int i=Cnt.NumLines(),j=0;i<n;++i,++j) {
     S.Param[i][HarmonicEqStrength].d=100.;
     copy(tvec,NPos[j]);
@@ -83,11 +84,26 @@ int main() {
     S.ID[i][0]=j;
     S.ID[i][1]=j+1;
   }
+  S.Update();
+
+  MinimizerRegular<LBFGS,TrackingMethod,double,Array1D<FuncType>,Array1D<IDType>,Array1D<ParamType>,FreeSpace>  M;
+  allocate(M,S);
+  M.SetCondition(StrongWolfe);
 
   n=NPos.NumLines();
   copy(tvec,NPos[n-1]);
   shift(tvec,-1.,NPos[0]);
-  shift(Pos[n-1],0.001,tvec);
+  for(unsigned int i=0;i<1000;++i) {
+    copy(S.X(),NPos);
+    shift(S.X()[n-1],0.005*i,tvec);
+    S.Update();
+    COut<<i<<"\t";
+    COut<<S.Energy+127<<"\t";
+
+    M.Go();
+    COut<<S.Energy+127<<"\t";
+    COut<<M.GCalcCount<<"\t"<<M.LineSearchCount<<Endl;
+  }
 
   release(S);
   release(tvec);

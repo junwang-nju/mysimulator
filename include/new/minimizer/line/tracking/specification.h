@@ -67,6 +67,7 @@ namespace mysimulator {
           fill(this->RunG,cZero);
           Calc(this->Sys().Func,this->RunX(),this->Sys().ID,this->Sys().Param,
                this->Sys().Geom,this->RunEnergy,this->RunG());
+          scale(this->RunG(),this->Sys().Mask);
           this->RunProj=dot(this->RunG(),this->LineDirc);
           this->GCalcCount++;
           if(CondFunc(this->RunEnergy,this->RunProj,this->Sys().Energy,
