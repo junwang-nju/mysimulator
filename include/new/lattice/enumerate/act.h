@@ -6,12 +6,14 @@
 #include "lattice/enumerate/method/interface.h"
 #include "lattice/node/coordinate/plus.h"
 #include "array/1d/refer.h"
+#include "lattice/output/interface.h"
 
 namespace mysimulator {
 
-  template <LatticeShapeName LSN, unsigned int Dim, LatticeEnumMethodName LEN>
-  void enumerate(const unsigned int& L, LatticeEnumMethod<LSN,Dim,LEN>& Method){
-  //               LatticeOutput<LSN,Dim>& os) {
+  template <LatticeShapeName LSN, unsigned int Dim, LatticeEnumMethodName LEN,
+            LatticeOutputMethodName LON>
+  void enumerate(const unsigned int& L, LatticeEnumMethod<LSN,Dim,LEN>& Method,
+                 LatticeOutput<LSN,Dim,LON>& Out){
     LatticeLibrary<LSN,Dim>::load();
     LatticeMesh<LSN,Dim> M;
     Array1D<typename LatticeNodeCoordinate<LSN,Dim>::Type> Pos;
@@ -51,6 +53,7 @@ namespace mysimulator {
           parent[level]=now;
         } else {
           NC++;
+          Out(oBranch,M,Pos);
         }
       }
       do {

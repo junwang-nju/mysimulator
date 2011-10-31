@@ -8,9 +8,11 @@
 namespace mysimulator {
 
   template <>
-  struct LatticeOutput<SquareLattice,2D,StreamOutput> {
+  struct LatticeOutput<SquareLattice,2U,StreamOutput> {
     public:
       typedef LatticeOutput<SquareLattice,2U,StreamOutput>  Type;
+      typedef typename LatticeNodeCoordinate<SquareLattice,2U>::Type
+              CoorType;
 
       FileOutput OS;
 
@@ -20,9 +22,9 @@ namespace mysimulator {
       void clearData() { OS.close(); }
       bool isvalid() const { return IsValid(OS); }
 
-      void operator()(
-          const Array1DContent<int>& Branch, const LatticeMesh<LSN,Dim>& M,
-          const Array1DContent<CoorType>& Pos) {
+      void operator()(const Array1DContent<int>& Branch,
+                      const LatticeMesh<SquareLattice,2U>& M,
+                      const Array1DContent<CoorType>& Pos) {
         assert(IsValid(OS));
         OS<<Branch<<Endl;
       }

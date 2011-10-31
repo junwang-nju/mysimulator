@@ -41,5 +41,7 @@ namespace mysimulator {
 
 }
 
+#include "lattice/output/square-2d/stream/specification.h"
+
 #endif
 

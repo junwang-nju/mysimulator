@@ -5,7 +5,7 @@
 namespace mysimulator {
 
   enum LatticeOutputMethodName {
-    StreamOutput;
+    StreamOutput
   };
 
 }
