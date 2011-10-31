@@ -20,7 +20,7 @@ namespace mysimulator {
       bool isvalid() const { return true; }
       void nullify() { for(unsigned int i=0;i<65538;++i) data[i]=false; }
 
-      bool occupied(const Square2DCoordinateType& Pos) { return data[Pos()]; }
+      bool occupied(const Square2DCoordinateType& Pos) const { return data[Pos()]; }
       void set_occupied(const Square2DCoordinateType& Pos) { data[Pos()]=true; }
       void remove_occupied(const Square2DCoordinateType& Pos) {
         data[Pos()]=false;

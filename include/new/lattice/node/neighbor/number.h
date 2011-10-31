@@ -3,6 +3,7 @@
 #define _Lattice_Node_Neighbor_Number_H_
 
 #include "lattice/shape/name.h"
+#include "io/error.h"
 
 namespace mysimulator {
 
