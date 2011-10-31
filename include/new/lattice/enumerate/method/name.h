@@ -5,7 +5,8 @@
 namespace mysimulator {
 
   enum  LatticeEnumMethodName {
-    LatticeEnumBasic
+    LatticeEnumBasic,
+    LatticeEnumProhibitSite
   };
 
 }

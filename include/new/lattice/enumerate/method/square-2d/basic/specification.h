@@ -29,7 +29,7 @@ namespace mysimulator {
           LatticeMesh<SquareLattice,2U>& Mesh, unsigned int& level,
           Array1DContent<NodeType*>& parent, Array1DContent<NodeType*>& child,
           NodeType* &now) {
-          LatticeLibrary<SquareLattice,2U>::load();
+        LatticeLibrary<SquareLattice,2U>::load();
         Branch[0]=0;
         State[0]=0;
         level=0;
