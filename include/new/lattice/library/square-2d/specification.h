@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <>
-  const unsigned int LatticeLibrary<SquareLattice,2U>::MaxDepth=3;
+  const unsigned int LatticeLibrary<SquareLattice,2U>::MaxDepth=8;
 
 }
 

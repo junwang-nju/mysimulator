@@ -16,81 +16,77 @@ namespace mysimulator {
   //               LatticeOutput<LSN,Dim>& os) {
   template <LatticeShapeName LSN, unsigned int Dim>
   void enumerate(const unsigned int& L) {
+    if(!IsValid(LatticeLibrary<LSN,Dim>::root)) LatticeLibrary<LSN,Dim>::load();
     LatticeMesh<LSN,Dim> M;
-    M.nullify();
-    typename LatticeNodeCoordinate<LSN,Dim>::Type *Pos;
-    Pos=new typename LatticeNodeCoordinate<LSN,Dim>::Type[L];
-    for(unsigned int i=0;i<L;++i) Pos[i].nullify();
-    unsigned int level;
-    Array1D<int> Branch,LevRq,PosOrigin;
-    allocate(Branch,1U,L-1);
-    fill(Branch,-1);
-    allocate(LevRq,L);
-    int u=LatticeLibrary<LSN,Dim>::MaxDepth,v;
-    for(unsigned int i=0;i<L;++i) {
-      LevRq[i]=u;
-      u--;
-      if(u==0) u=LatticeLibrary<LSN,Dim>::MaxDepth;
-    }
-    allocate(PosOrigin,L);
-    u=0; v=0;
-    for(unsigned int i=0;i<L;++i) {
-      PosOrigin[i]=v;
-      if(u==(int)(LatticeLibrary<LSN,Dim>::MaxDepth))  { v+=u; u=0; }
-      u++;
-    }
-
+    Array1D<typename LatticeNodeCoordinate<LSN,Dim>::Type> Pos;
+    Array1D<typename LatticeLibrary<LSN,Dim>::NodeType*> parent,child;
+    Array1D<unsigned int> DepthReq,PosOrigin;
+    Array1D<int> Branch;
     typename LatticeLibrary<LSN,Dim>::NodeType *now;
+    unsigned int level;
+
+    M.nullify();
+    allocate(Pos,L);
+    allocate(parent,L);
+    allocate(child,L);
+    allocate(DepthReq,L);
+    allocate(PosOrigin,L);
+    for(unsigned int i=0,w=0,v=L-1,u=LatticeLibrary<LSN,Dim>::MaxDepth;i<L;++i) {
+      u=(u<v?u:v);
+      DepthReq[i]=u;
+      PosOrigin[i]=w;
+      if(u==0) { u=LatticeLibrary<LSN,Dim>::MaxDepth; w=i; }
+      --u;
+      --v;
+    }
+    allocate(Branch,1,L-1);   fill(Branch,-1);
+
     level=0;
     now=LatticeLibrary<LSN,Dim>::root;
-    Pos[0].nullify();
+    Pos[level].nullify();
+    parent[level]=now->parent;
+    child[level]=now->child;
+
+    unsigned long long int NC=0,ND=0;
     while(true) {
-      COut<<Branch<<Endl;
-      COut<<level<<Endl;
-      COut<<Pos[level]<<Endl;
-      COut<<"######  "<<M.occupied(Pos[level])<<Endl;
       if(!M.occupied(Pos[level])) {
         if(level<L-1) {
           M.set_occupied(Pos[level]);
-          level++;
-          if((level>0)&&(level%LatticeLibrary<LSN,Dim>::MaxDepth==0))
-            now=LatticeLibrary<LSN,Dim>::root->child;
-          else now=now->child;
-          COut<<"*******  "<<LevRq[level]<<"\t"<<now->Depth<<Endl;
-          if(((int)(L-1-level)>now->Depth)&&(now->Depth<LevRq[level])) {
-            level--;
-            now=now->parent;
-            COut<<"+++++++++++"<<Endl;
-          }
+          ++level;
+          parent[level]=now;
+          //now=child[level-1];
         } else {
-          COut<<"=======A======"<<Endl;
+          NC++;
         }
-        COut<<"-----------1-----------"<<Endl;
       }
-      Branch[level]++;
-      COut<<Branch<<Endl;
-      while(true) {
-        COut<<level<<"\t"<<Branch[level]<<Endl;
-        if(Branch[level]>=static_cast<int>(LatticeLibrary<LSN,Dim>::NumChildren)) {
+      do {
+        Branch[level]++;
+        while(Branch[level]>=static_cast<int>(LatticeLibrary<LSN,Dim>::NumChildren)) {
           Branch[level]=-1;
-          level--;
-          now=now->parent;
-          if(level==0) break;
+          //now=parent[level];
+          --level;
+          if(level==0)  break;
           M.remove_occupied(Pos[level]);
           Branch[level]++;
-        } else if(now->parent->child[Branch[level]].Depth==-1) {
-          Branch[level]++;
-        } else break;
-      }
-      COut<<"--------------2----------------"<<Endl;
-      now=now->parent->child+Branch[level];
-      COut<<PosOrigin[level]<<Endl;
+        }
+        if(level==0)  break;
+        now=child[level-1]+Branch[level];
+        if(now->Depth==-1) ND++;
+      } while(now->Depth<static_cast<int>(DepthReq[level]));
+      if(level==0)  break;
+      child[level]=(DepthReq[level]==0?LatticeLibrary<LSN,Dim>::root->child:now->child);
       plus(Pos[level],Pos[PosOrigin[level]],now->Pos);
-      COut<<Branch<<Endl;
-      COut<<"--------------3----------------"<<Endl;
     }
+
     release(Branch);
-    delete_array(Pos);
+    release(PosOrigin);
+    release(DepthReq);
+    release(child);
+    release(parent);
+    release(Pos);
+
+    COut<<NC<<Endl;
+    COut<<ND<<Endl;
   }
 
 }
