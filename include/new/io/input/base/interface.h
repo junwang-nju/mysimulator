@@ -44,7 +44,7 @@ namespace mysimulator {
 
       virtual InputBase& getline(char* buff) {
         int i=-1;
-        while(1) {
+        while(!isfail()) {
           read(buff[++i]);
           if(buff[i]==CharLineEnd)  { buff[i]='\0'; break; }
           if(buff[i+1]==CharEOF)    { buff[i+1]='\0'; break; }
@@ -53,7 +53,7 @@ namespace mysimulator {
       } // may overwrite CharEOF
       virtual InputBase& getline(char* buff, const unsigned int& nbuff) {
         int i=-1;
-        while(1) {
+        while(!isfail()) {
           read(buff[++i]);
           if(buff[i]==CharLineEnd)  { buff[i]='\0'; break; }
           if(static_cast<unsigned int>(i+2)==nbuff) { buff[i+1]='\0'; break; }

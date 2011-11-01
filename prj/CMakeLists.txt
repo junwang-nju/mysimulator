@@ -8,4 +8,5 @@ add_subdirectory (binding)
 add_subdirectory (adsorp)
 add_subdirectory (rumor)
 add_subdirectory (binding-new)
+add_subdirectory (force)
 

@@ -9,7 +9,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void BuildParmeterLJ612(Unique64Bit* prm) {
+  void BuildParameterLJ612(Unique64Bit* prm) {
     copy(prm[LJ612EqRadiusSQ],square(prm[LJ612EqRadius].value<T>()));
     copy(prm[LJ612TwlfEnergyDepth],12*prm[LJ612EqEnergyDepth].value<T>());
   }
@@ -21,9 +21,9 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  void BuildParmeterLJ612(Array1DContent<Unique64Bit>& prm) {
+  void BuildParameterLJ612(Array1DContent<Unique64Bit>& prm) {
     assert(prm.size>=LJ612NumberParameters);
-    BuildParmeterLJ612<T>(prm.start);
+    BuildParameterLJ612<T>(prm.start);
   }
 
 }
