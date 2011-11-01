@@ -51,6 +51,15 @@ namespace mysimulator {
         }
         return *this;
       } // may overwrite CharEOF
+      virtual InputBase& getline(char* buff, const unsigned int& nbuff) {
+        int i=-1;
+        while(1) {
+          read(buff[++i]);
+          if(buff[i]==CharLineEnd)  { buff[i]='\0'; break; }
+          if(static_cast<unsigned int>(i+2)==nbuff) { buff[i+1]='\0'; break; }
+        }
+        return *this;
+      } // may overwrite CharEOF
 
     private:
 
