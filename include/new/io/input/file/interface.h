@@ -3,7 +3,6 @@
 #define _InputOutput_Input_File_H_
 
 #include "io/input/base/interface.h"
-#include "io/special-char.h"
 #include <cstdio>
 #include <cctype>
 #include <cassert>
@@ -77,7 +76,7 @@ namespace mysimulator {
           s[i++]=c;
           read(c);
         }
-        s[i]='\0';
+        s[i]='\0';  // may overwrite CharEOF
         return *this;
       }
       virtual Type& unget(const char& c) { ungetc(c,fptr); return *this; }

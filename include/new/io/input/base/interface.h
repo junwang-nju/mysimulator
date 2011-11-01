@@ -3,6 +3,7 @@
 #define _InputOutput_Input_Base_H_
 
 #include "io/base/interface.h"
+#include "io/special-char.h"
 
 namespace mysimulator {
 
@@ -41,6 +42,16 @@ namespace mysimulator {
       virtual InputBase& unget(const char&)=0;
       virtual InputBase& unget()=0;
 
+      virtual InputBase& getline(char* buff) {
+        int i=-1;
+        while(1) {
+          read(buff[++i]);
+          if(buff[i]==CharLineEnd)  { buff[i]='\0'; break; }
+          if(buff[i+1]==CharEOF)    { buff[i+1]='\0'; break; }
+        }
+        return *this;
+      } // may overwrite CharEOF
+
     private:
 
       InputBase(const Type&) {}
@@ -78,23 +89,6 @@ namespace mysimulator {
 }
 
 #undef _INPUT
-
-namespace mysimulator {
-
-  unsigned int getline(char* buff, const unsigned int nbuff, InputBase& I) {
-    unsigned int n=0;
-    for(unsigned int i=0;i<nbuff-1;++i) {
-      I>>buff[i];
-      if(buff[i]=='\n') {
-        n=i+1;
-        buff[n]='\0';
-        break;
-      }
-    }
-    return n;
-  }
-
-}
 
 #endif
 

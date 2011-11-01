@@ -5,6 +5,7 @@
 namespace mysimulator {
 
   static const char CharEOF=static_cast<char>(26);
+  static const char CharLineEnd='\n';
 
 }
 
