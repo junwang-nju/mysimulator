@@ -28,6 +28,7 @@ namespace mysimulator {
 }
 
 #include "lattice/mesh/square/2d/specification.h"
+#include "lattice/mesh/square/3d/specification.h"
 
 #endif
 

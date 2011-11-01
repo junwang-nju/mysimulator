@@ -33,9 +33,6 @@ namespace mysimulator {
 
   };
 
-  void release(LatticeMesh<SquareLattice,2U>& M) { M.clearData(); }
-  bool IsValid(const LatticeMesh<SquareLattice,2U>& M) { return M.isvalid(); }
-
 }
 
 #endif

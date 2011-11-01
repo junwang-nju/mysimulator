@@ -8,7 +8,8 @@ namespace mysimulator {
 
   void plus(Square2DCoordinateType& X, const Square2DCoordinateType& Origin,
             const Square2DCoordinateType& Dpls) {
-    X.us=Origin.us+Dpls.us;
+    X.c[0]=Origin.c[0]+Dpls.c[0];
+    X.c[1]=Origin.c[1]+Dpls.c[1];
   }
 
 }
