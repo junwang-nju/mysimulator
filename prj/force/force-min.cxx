@@ -94,7 +94,7 @@ int main() {
   copy(tvec,NPos[n-1]);
   shift(tvec,-1.,NPos[0]);
   for(unsigned int i=0;i<1000;++i) {
-    copy(S.X(),NPos);
+    copy(S.X()[n-1],NPos[n-1]);
     shift(S.X()[n-1],0.005*i,tvec);
     S.Update();
     COut<<i<<"\t";
