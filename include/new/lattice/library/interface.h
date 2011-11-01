@@ -129,6 +129,7 @@ namespace mysimulator {
 }
 
 #include "lattice/library/square/2d/specification.h"
+#include "lattice/library/square/3d/specification.h"
 
 #endif
 

@@ -31,6 +31,7 @@ namespace mysimulator {
 
 #include "lattice/enumerate/method/square/2d/basic/specification.h"
 #include "lattice/enumerate/method/square/2d/prohibit-site/specification.h"
+#include "lattice/enumerate/method/square/3d/basic/specification.h"
 
 #endif
 
