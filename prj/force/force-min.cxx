@@ -41,12 +41,20 @@ int main() {
   for(unsigned int i=0;i<n;++i) FI>>Cnt[i];
   FI.close();
 
+  Array1D<double> tvec;
+  allocate(tvec,3);
+  Array1D<double> Dnat;
+  allocate(Dnat,Cnt.NumLines());
+  for(unsigned int i=0;i<Dnat.size;++i) {
+    copy(tvec,NPos[Cnt[i][0]]);
+    shift(tvec,-1.,NPos[Cnt[i][1]]);
+    Dnat[i]=norm(tvec);
+  }
+
   typedef InteractionFunc<FreeSpace,double> FuncType;
   typedef Array1D<int> IDType;
   typedef Array1D<Unique64Bit>  ParamType;
 
-  Array1D<double> tvec;
-  allocate(tvec,3);
   n=NPos.NumLines();
   System<double,Array1D<FuncType>,Array1D<IDType>,Array1D<ParamType>,FreeSpace,Array2D> S;
   S.loadCoor(NPos);
@@ -98,6 +106,10 @@ int main() {
   n=NPos.NumLines();
   copy(tvec,NPos[n-1]);
   shift(tvec,-1.,NPos[0]);
+
+  Array1D<double> uvec;
+  allocate(uvec,3);
+  unsigned int Q;
   for(unsigned int i=0;i<1000;++i) {
     copy(S.X()[n-1],NPos[n-1]);
     shift(S.X()[n-1],0.005*i,tvec);
@@ -107,11 +119,19 @@ int main() {
 
     M.Go();
     COut<<S.Energy+127<<"\t";
+    Q=0;
+    for(unsigned int k=0;k<Dnat.size;++k) {
+      copy(uvec,S.X()[Cnt[k][0]]);
+      shift(uvec,-1.,S.X()[Cnt[k][1]]);
+      if(norm(uvec)>1.2*Dnat[k])  Q++;
+    }
+    COut<<Q<<"\t";
     COut<<M.GCalcCount<<"\t"<<M.LineSearchCount<<Endl;
   }
 
   release(S);
   release(tvec);
+  release(Dnat);
   release(Cnt);
   release(NPos);
   release(Pos);
