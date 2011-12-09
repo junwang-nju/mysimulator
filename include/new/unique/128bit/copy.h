@@ -48,10 +48,10 @@ namespace mysimulator {
   }
 
   void copy(Unique128Bit& U, const __m128d& d) {
-    _mm_storeu_pd(U.d,_mm_loadu_pd(&d));
+    _mm_storeu_pd(U.d,_mm_loadu_pd(reinterpret_cast<const double*>(&d)));
   }
   void copy(__m128d& d, const Unique128Bit& U) {
-    _mm_storeu_pd(&d,_mm_loadu_pd(U.d));
+    _mm_storeu_pd(reinterpret_cast<double*>(&d),_mm_loadu_pd(U.d));
   }
 
   void copy(Unique128Bit& U, const Unique128Bit& cU) { copy(U,cU.si); }

@@ -20,7 +20,7 @@ namespace mysimulator {
       typedef RandomBase  ParentType;
 
       static const unsigned int N;
-      static const unsigned int NByte
+      static const unsigned int NByte;
       static const unsigned int N32;
       static const unsigned int N32m1;
       static const unsigned int N64;
@@ -38,12 +38,17 @@ namespace mysimulator {
 
       Array1D<Unique128Bit> s;
       unsigned int idx;
+
+    private:
+
       Unique128Bit _u;
+
+    public:
 
       MersenneTwister() : s(), idx(0), _u() {}
       ~MersenneTwister() { clearData(); }
 
-      void clearData() { release(s); idx=0; copy(u,0); }
+      void clearData() { release(s); idx=0; copy(_u,0); }
       bool isvalid() const { return IsValid(s); }
 
       void _PeriodCertification() {
@@ -56,7 +61,7 @@ namespace mysimulator {
         for(unsigned int i=0,work=1;i<4;++i)
         for(unsigned int j=0;j<32;++j) {
           if((work&Pty.u[i])!=0)  { p[i]^=work; return; }
-          work<<1;
+          work<<=1;
         }
       }
       void _rshift(Unique128Bit& out,const Unique128Bit& in,const int& shift){
@@ -78,10 +83,10 @@ namespace mysimulator {
         Unique128Bit x,y;
 #ifdef _Have_SSE2
         Unique128Bit v,u;
-        y.si=_mm_srli_epi64(b.si,SR1);
-        u.si=_mm_srli_si128(c.si,SR2);
-        v.si=_mm_slli_epi32(d.si,SL1);
-        x.si=_mm_slli_si128(a.si,SL2);
+        y.si=_mm_srli_epi32(_mm_loadu_si128(&(b.si)),SR1);
+        u.si=_mm_srli_si128(_mm_loadu_si128(&(c.si)),SR2);
+        v.si=_mm_slli_epi32(_mm_loadu_si128(&(d.si)),SL1);
+        x.si=_mm_slli_si128(_mm_loadu_si128(&(a.si)),SL2);
         u.si=_mm_xor_si128(u.si,_mm_loadu_si128(&(a.si)));
         y.si=_mm_and_si128(y.si,_mm_loadu_si128(&(Msk.si)));
         u.si=_mm_xor_si128(u.si,x.si);
@@ -104,17 +109,21 @@ namespace mysimulator {
         p[0]=seed;
         work=*p;
         for(unsigned int i=1;i<N32;++i) {
-          work=1812433253UL*(wok^(work>>30))+i;
+          work=1812433253UL*(work^(work>>30))+i;
           p[i]=work;
         }
         idx=N32;
         _PeriodCertification();
+        COut<<s[0].u[0]<<Endl;
+        COut<<s[0].u[1]<<Endl;
+        COut<<s[0].u[2]<<Endl;
+        COut<<s[0].u[3]<<Endl;
       }
       void init(const unsigned int* key, const unsigned int& len,
                 const unsigned int& off=uZero, const unsigned int step=uOne) {
         unsigned int i,j,g,r,count,tmid;
         unsigned int *p=s[0].u;
-        memset(s.0x8B,NByte);
+        memset(s[0].c,0x8B,NByte);
         count=(len>N32m1?len+1:N32);
         r=_initFuncA(p[0]^p[Mid]^p[N32m1]);
         p[Mid]+=r;
@@ -177,6 +186,7 @@ namespace mysimulator {
         idx=0;
       }
       void _GenArray(Unique128Bit* array, const unsigned int& size) {
+        assert(idx==N32);
         assert(size>=N);
         unsigned int i,j;
         Unique128Bit r1,r2;
@@ -193,7 +203,7 @@ namespace mysimulator {
           copy(r2,array[i]);
         }
         for(;i+N<size;++i) {
-          copy(aray[i],_Recursion(array[i-N],array[i-NmPos],r1,r2));
+          copy(array[i],_Recursion(array[i-N],array[i-NmPos],r1,r2));
           copy(r1,r2);
           copy(r2,array[i]);
         }
@@ -215,9 +225,7 @@ namespace mysimulator {
 
       const unsigned int _irand() {
         if(idx>=N32)  _GenAll();
-        unsigned int i=s[0].u[idx];
-        ++idx;
-        return i;
+        return s[0].u[idx++];
       }
       const unsigned long long _lirand() {
         assert((idx&1)==0);
@@ -226,7 +234,7 @@ namespace mysimulator {
         idx+=2;
         return ll;
       }
-      const unsigned int _drand() {
+      const double _drand() {
         long x=static_cast<long>(_irand()>>5);
         long y=static_cast<long>(_irand()>>6);
         return (x*67108864.0+y)*(1./9007199254740992.0);
@@ -249,12 +257,12 @@ namespace mysimulator {
                (1./4294967296.0)+(0.5+0.5/4294967296.0);
       }
 
-      const double53BitSlow() {
+      const double double53BitSlow() {
         unsigned int x=_irand();
         unsigned int y=_irand();
         return (x*67108864.0+y)*(1./9007199254740992.0);
       }
-      const longdouble63BitSlow() {
+      const long double longdouble63BitSlow() {
         unsigned int x=_irand();
         unsigned int y=_irand();
         return (x|(static_cast<unsigned long long>(y)<<32))*
@@ -263,6 +271,13 @@ namespace mysimulator {
 
       virtual const double randomDouble();
       virtual const unsigned int randomUInt();
+
+      void fillFast(unsigned int* const& array, const unsigned int& size) {
+        assert(size%4==0);
+        assert(size>=N32);
+        _GenArray(reinterpret_cast<Unique128Bit*>(array),size>>2);
+        idx=N32;
+      }
 
     private:
 
@@ -296,20 +311,6 @@ namespace mysimulator {
   template <unsigned int Fac>
   const unsigned int MersenneTwister<SFMT,Fac>::LagMid=
       MersenneTwister<SFMT,Fac>::Lag+MersenneTwister<SFMT,Fac>::Mid;
-  template <unsigned int Fac>
-  const unsigned int MersenneTwister<SFMT,Fac>::Pos;
-  template <unsigned int Fac>
-  const unsigned int MersenneTwister<SFMT,Fac>::SL1;
-  template <unsigned int Fac>
-  const unsigned int MersenneTwister<SFMT,Fac>::SL2;
-  template <unsigned int Fac>
-  const unsigned int MersenneTwister<SFMT,Fac>::SR1;
-  template <unsigned int Fac>
-  const unsigned int MersenneTwister<SFMT,Fac>::SR2;
-  template <unsigned int Fac>
-  const Unique128Bit MersenneTwister<SFMT,Fac>::Msk;
-  template <unsigned int Fac>
-  const Unique128Bit MersenneTwister<SFMT,Fac>::Pty;
 
   template <> const unsigned int MersenneTwister<SFMT,607>::Pos=2;
   template <> const unsigned int MersenneTwister<SFMT,607>::SL1=15;
@@ -413,7 +414,7 @@ namespace mysimulator {
   template <> const unsigned int MersenneTwister<SFMT,44497>::SR1=9;
   template <> const unsigned int MersenneTwister<SFMT,44497>::SR2=3;
   template <>
-  const Unique128Bit MersenneTwister<SFMT,44497>::Msk(0xEFFFFFFBDFBEBFFFULL
+  const Unique128Bit MersenneTwister<SFMT,44497>::Msk(0xEFFFFFFBDFBEBFFFULL,
                                                       0xBFBF7BEF9FFD7BFFULL);
   template <>
   const Unique128Bit MersenneTwister<SFMT,44497>::Pty(0x0000000100000000ULL,
@@ -479,7 +480,32 @@ namespace mysimulator {
   template <> template<>
   const double MersenneTwister<SFMT,607>::rand<double>() { return _drand(); }
   template <> template<>
-  const double MersenneTwister<SFMT,1297>::rand<double>() { return _drand(); }
+  const double MersenneTwister<SFMT,1279>::rand<double>() { return _drand(); }
+  template <> template<>
+  const double MersenneTwister<SFMT,11213>::rand<double>() { return _drand(); }
+  template <> template<>
+  const double MersenneTwister<SFMT,19937>::rand<double>() { return _drand(); }
+  template <> template<>
+  const double MersenneTwister<SFMT,132049>::rand<double>() { return _drand(); }
+  template <> template<>
+  const double MersenneTwister<SFMT,216091>::rand<double>() { return _drand(); }
+  template <> template<>
+  const double MersenneTwister<SFMT,2281>::rand<double>() { return _drand(); }
+  template <> template<>
+  const double MersenneTwister<SFMT,4253>::rand<double>() { return _drand(); }
+  template <> template<>
+  const double MersenneTwister<SFMT,44497>::rand<double>() { return _drand(); }
+  template <> template<>
+  const double MersenneTwister<SFMT,86243>::rand<double>() { return _drand(); }
+
+  template <unsigned int Fac>
+  const double MersenneTwister<SFMT,Fac>::randomDouble() {
+    return rand<double>();
+  }
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<SFMT,Fac>::randomUInt() {
+    return rand<unsigned int>();
+  }
 
 }
 
