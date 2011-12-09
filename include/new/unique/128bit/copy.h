@@ -40,15 +40,21 @@ namespace mysimulator {
 
 #ifdef _Have_SSE2
 
-  void copy(Unique128Bit& U, const __m128i& i) { _mm_storeu_si128(&(U.si),i); }
-  void copy(__m128i& i, const Unique128Bit& U) { _mm_storeu_si128(&i,U.si); }
-
-  void copy(Unique128Bit& U, const __m128d& d) { _mm_storeu_pd(U.d,d); }
-  void copy(__m128d& d, const Unique128Bit& U) { d=_mm_loadu_pd(U.d); }
-
-  void copy(Unique128Bit& U, const Unique128Bit& cU) {
-    _mm_storeu_si128(&(U.si),cU.si);
+  void copy(Unique128Bit& U, const __m128i& i) {
+    _mm_storeu_si128(&(U.si),_mm_loadu_si128(&i));
   }
+  void copy(__m128i& i, const Unique128Bit& U) {
+    _mm_storeu_si128(&i,_mm_loadu_si128(&(U.si)));
+  }
+
+  void copy(Unique128Bit& U, const __m128d& d) {
+    _mm_storeu_pd(U.d,_mm_loadu_pd(&d));
+  }
+  void copy(__m128d& d, const Unique128Bit& U) {
+    _mm_storeu_pd(&d,_mm_loadu_pd(U.d));
+  }
+
+  void copy(Unique128Bit& U, const Unique128Bit& cU) { copy(U,cU.si); }
 
 #else
 

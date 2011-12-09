@@ -6,10 +6,10 @@
 
 namespace mysimulator {
 
-  template <MTMethodName MM>
+  template <MTMethodName MM, unsigned int Fac=0U>
   struct MersenneTwister {
     public:
-      typedef MersenneTwister<MM>   Type;
+      typedef MersenneTwister<MM,Fac>   Type;
       MersenneTwister() {}
       ~MersenneTwister() { clearData(); }
 
@@ -21,13 +21,16 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
   };
 
-  template <MTMethodName MM>
-  void release(MersenneTwister<MM>& R) { R.clearData(); }
+  template <MTMethodName MM, unsigned int Fac>
+  void release(MersenneTwister<MM,Fac>& R) { R.clearData(); }
 
-  template <MTMethodName MM>
-  bool IsValid(const MersenneTwister<MM>& R) { return R.isvalid(); }
+  template <MTMethodName MM, unsigned int Fac>
+  bool IsValid(const MersenneTwister<MM,Fac>& R) { return R.isvalid(); }
 
 }
+
+#include "random/mt/standard/specification.h"
+#include "random/mt/dsfmt/specification.h"
 
 #endif
 

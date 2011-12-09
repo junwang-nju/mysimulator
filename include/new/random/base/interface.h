@@ -10,7 +10,7 @@ namespace mysimulator {
 
   struct RandomBase {
 
-    virtual void init(const unsigned int)=0;
+    virtual void init(const unsigned int&)=0;
     virtual const double randomDouble()=0;
     virtual const unsigned int randomUInt()=0;
 
