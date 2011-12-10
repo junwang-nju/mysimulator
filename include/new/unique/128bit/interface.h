@@ -115,5 +115,36 @@ namespace mysimulator {
 #undef _CVALUEDEF
 #undef _VVALUEDEF
 
+#ifdef _Have_SSE2
+
+#include "intrinsic-type/allocate.h"
+#include "intrinsic-type/release.h"
+
+namespace mysimulator {
+
+  template <>
+  void allocate<Unique128Bit>(Unique128Bit* &p) {
+    p=(Unique128Bit*)_mm_malloc(1*sizeof(Unique128Bit),16);
+  }
+
+  template <>
+  void allocate<Unique128Bit>(Unique128Bit* &p, const unsigned int& n) {
+    p=(Unique128Bit*)_mm_malloc(n*sizeof(Unique128Bit),16);
+  }
+
+  template <>
+  void delete_pointer<Unique128Bit>(Unique128Bit* &p) {
+    if(p!=NULL) _mm_free(p); p=NULL;
+  }
+
+  template <>
+  void delete_array<Unique128Bit>(Unique128Bit* &p) {
+    if(p!=NULL) _mm_free(p); p=NULL;
+  }
+
+}
+
+#endif
+
 #endif
 

@@ -10,6 +10,7 @@ namespace mysimulator {
   void allocate(MersenneTwister<StandardMT>& R) {
     release(R);
     allocate(R.s,MersenneTwister<StandardMT>::N);
+    R.sl=0;
   }
 
 }

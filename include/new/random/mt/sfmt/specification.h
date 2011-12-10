@@ -54,7 +54,10 @@ namespace mysimulator {
       void _PeriodCertification() {
         unsigned int inner=0;
         unsigned int *p=s[0].u;
-        for(unsigned int i=0;i<4;++i) inner^=p[i]&Pty.u[i];
+        inner^=p[0]&Pty.u[0];
+        inner^=p[1]&Pty.u[1];
+        inner^=p[2]&Pty.u[2];
+        inner^=p[3]&Pty.u[3];
         for(unsigned int i=16;i>0;i>>=1)  inner^=inner>>i;
         inner&=1;
         if(inner==1)  return;
@@ -114,10 +117,6 @@ namespace mysimulator {
         }
         idx=N32;
         _PeriodCertification();
-        COut<<s[0].u[0]<<Endl;
-        COut<<s[0].u[1]<<Endl;
-        COut<<s[0].u[2]<<Endl;
-        COut<<s[0].u[3]<<Endl;
       }
       void init(const unsigned int* key, const unsigned int& len,
                 const unsigned int& off=uZero, const unsigned int step=uOne) {

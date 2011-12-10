@@ -20,7 +20,7 @@ namespace mysimulator {
 
   void fill(Unique128Bit& U, const __m128i& i) { copy(U,i); }
   void fill(Unique128Bit& U, const __m128d& d) { copy(U,d); }
-  void fill(Unique128Bit& U, const double& d) { U.sd=_mm_set_pd(d,d); }
+  void fill(Unique128Bit& U, const double& d) { U.sd=_mm_set1_pd(d); }
   void fill(Unique128Bit& U, const float& f) { U.sm=_mm_set_ps(f,f,f,f); }
   void fill(Unique128Bit& U, const unsigned long long& ull) {
     const double* pd=_TYPE(const double,&ull);
