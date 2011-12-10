@@ -3,17 +3,20 @@
 #define _Lattice_Enumerate_Method_Square2D_ProhibitSite_Specification_H_
 
 #include "lattice/enumerate/method/interface.h"
+#include "lattice/enumerate/method/base/interface.h"
 #include "lattice/node/coordinate/copy.h"
 
 namespace mysimulator {
 
   template <>
-  struct LatticeEnumMethod<SquareLattice,2U,LatticeEnumProhibitSite> {
+  struct LatticeEnumMethod<SquareLattice,2U,LatticeEnumProhibitSite>
+      : public LatticeEnumMethodBase<SquareLattice,2U> {
 
     public:
 
       typedef LatticeEnumMethod<SquareLattice,2U,LatticeEnumProhibitSite>
               Type;
+      typedef LatticeEnumMethodBase<SquareLattice,2U>   ParentType;
       typedef LatticeNodeCoordinate<SquareLattice,2U>::Type CoorType;
       typedef typename LatticeLibrary<SquareLattice,2U>::NodeType   NodeType;
 
@@ -22,11 +25,16 @@ namespace mysimulator {
       CoorType StartPos;
       Array1D<CoorType> HPos;
 
-      LatticeEnumMethod() : StartPos(), HPos() {}
+      LatticeEnumMethod() : ParentType(), StartPos(), HPos() {}
       ~LatticeEnumMethod() { clearData(); }
 
-      void clearData() { StartPos.nullify(); release(HPos); }
-      bool isvalid() const { return IsValid(HPos); }
+      void clearData() {
+        StartPos.nullify(); release(HPos);
+        static_cast<ParentType*>(this)->clearData();
+      }
+      bool isvalid() const {
+        return IsValid(HPos)&&static_cast<const ParentType*>(this)->isvalid();
+      }
 
       void PreProcess(
           Array1DContent<int>& Branch, Array1DContent<int>& State,
@@ -34,12 +42,13 @@ namespace mysimulator {
           LatticeMesh<SquareLattice,2U>& Mesh, unsigned int& level,
           Array1DContent<NodeType*>& parent, Array1DContent<NodeType*>& child,
           NodeType* &now) {
+        assert(isvalid());
         for(unsigned int i=0;i<HPos.size;++i) Mesh.set_occupied(HPos[i]);
         Branch[0]=4;
         State[0]=0;
         level=0;
         copy(Pos[level],StartPos);
-        now=LatticeLibrary<SquareLattice,2U>::root;
+        now=Lib().root;
         parent[level]=now->parent;
         child[level]=now->child;
       }

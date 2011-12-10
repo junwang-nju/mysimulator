@@ -25,10 +25,10 @@ namespace mysimulator {
           NodeType() : Depth(-1), Pos(), parent(NULL), child(NULL) {}
           ~NodeType() { clearData(); }
           void clearData() {
-            Depth=-1;
-            Pos.nullify();
-            parent=NULL;
             delete_array(child);
+            parent=NULL;
+            Pos.nullify();
+            Depth=-1;
           }
         private:
           NodeType(const NodeType&) {}
@@ -41,13 +41,16 @@ namespace mysimulator {
       static const unsigned int MaxDepth;
       static const unsigned int NumChildren;
 
-      static NodeType *root;
+      NodeType *root;
 
-      LatticeLibrary() {}
+      LatticeLibrary() : root(NULL) {}
       ~LatticeLibrary() { clearData(); }
 
-      static void load() {
-        if(IsValid(root)) return;
+      void clearData() { delete_pointer(root); }
+      bool isvalid() const { return IsValid(root); }
+
+      void load() {
+        if(isvalid()) return;
         unsigned int level;
         Array1D<int> Branch;
         Array1D<bool> Valid;
@@ -55,7 +58,7 @@ namespace mysimulator {
         allocate(Valid,MaxDepth);
         fill(Branch,-1);
         fill(Valid,false);
-        NodeType *now,*run;
+        NodeType *now=NULL,*run=NULL;
         LatticeMesh<LSN,Dim> M;
         allocate(M);
         M.nullify();
@@ -99,9 +102,7 @@ namespace mysimulator {
         release(Branch);
         release(M);
       }
-
-      void clearData() { delete_pointer(root); }
-      bool isvalid() const { return IsValid(root); }
+      void unload() { delete_pointer(root); }
 
   };
 
@@ -123,10 +124,6 @@ namespace mysimulator {
   template <LatticeShapeName LSN, unsigned int Dim>
   const unsigned int LatticeLibrary<LSN,Dim>::NumChildren=
     NumNeighbors<LSN,Dim>();
-
-  template <LatticeShapeName LSN, unsigned int Dim>
-  typename LatticeLibrary<LSN,Dim>::NodeType *LatticeLibrary<LSN,Dim>::root=
-    NULL;
 
 }
 

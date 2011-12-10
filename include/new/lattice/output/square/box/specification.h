@@ -52,7 +52,6 @@ namespace mysimulator {
           RangeMax[i]=Max[i]-1-posMax[i];
           RangeMin[i]=Min[i]+1-posMin[i];
         }
-        COut<<Branch<<"\t"<<RangeMax<<"\t"<<RangeMin<<Endl;
       }
 
     private:

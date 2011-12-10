@@ -11,7 +11,7 @@ namespace mysimulator {
       typedef Square3DCoordinateType  Type;
 
       unsigned int u;
-      char c[3];
+      char c[4];
 
       Square3DCoordinateType() : u(0) {}
       Type& operator=(const Type& C) { u=C.u; return *this; }

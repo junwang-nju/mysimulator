@@ -15,7 +15,7 @@ namespace mysimulator {
   unsigned long long
   enumerate(const unsigned int& L, LatticeEnumMethod<LSN,Dim,LEN>& Method,
             LatticeOutput<LSN,Dim,LON>& Out){
-    LatticeLibrary<LSN,Dim>::load();
+    assert(IsValid(Method));
     LatticeMesh<LSN,Dim> M;
     Array1D<typename LatticeNodeCoordinate<LSN,Dim>::Type> Pos;
     Array1D<typename LatticeLibrary<LSN,Dim>::NodeType*> parent,child;
@@ -77,7 +77,7 @@ namespace mysimulator {
       } while(now->Depth<static_cast<int>(DepthReq[level]));
       if(level==0)  break;
       State[level]=state;
-      child[level]=(DepthReq[level]==0?LatticeLibrary<LSN,Dim>::root->child:
+      child[level]=(DepthReq[level]==0?Method.Lib().root->child:
                                        now->child);
       plus(Pos[level],Pos[PosOrigin[level]],now->Pos);
     }
