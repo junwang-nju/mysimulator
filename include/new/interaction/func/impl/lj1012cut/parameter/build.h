@@ -14,7 +14,7 @@ namespace mysimulator {
     r02=prm[LJ1012CutEqRadius].value<T>();
     r0rc=r02/rc2;
     rc2*=rc2;
-    copy(prm[LJ1012CutCutSQ],rc2);
+    copy(prm[LJ1012CutCutRSQ],rc2);
     r02*=r02;
     r0rc2=r0rc*r0rc;
     r0rc10=r0rc2*r0rc2;

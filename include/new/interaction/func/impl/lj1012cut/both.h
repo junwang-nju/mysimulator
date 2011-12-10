@@ -9,7 +9,7 @@ namespace mysimulator {
 
   template <typename T>
   void BothLJ1012Cut(const T& dsq, const Unique64Bit* P, T& fc, T& df) {
-    if(dsq>P[LJ1012CutCutSQ].value<T>())  fc=df=0;
+    if(dsq>P[LJ1012CutCutRSQ].value<T>())  fc=df=0;
     else {
       T d=sqroot(dsq);
       T ivd2=1./dsq;
@@ -22,8 +22,8 @@ namespace mysimulator {
       fc=P[LJ1012CutEqEnergyDepth].value<T>()*sgr10*(5*sgr2-6.);
       fc-=P[LJ1012CutVc].value<T>();
       fc-=P[LJ1012CutKc].value<T>()*(d-P[LJ1012CutCutR].value<T>());
-      df=prm[LJ1012CutSixtyRealEnergyDepth].value<T>()*sgr10*(1.-sgr2)*ivd2;
-      df-=prm[LJ1012CutKc].value<T>()*ivd;
+      df=P[LJ1012CutSixtyRealEnergyDepth].value<T>()*sgr10*(1.-sgr2)*ivd2;
+      df-=P[LJ1012CutKc].value<T>()*ivd;
     }
   }
 

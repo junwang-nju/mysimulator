@@ -8,7 +8,7 @@ namespace mysimulator {
     LJ1012CutEqRadius=0,
     LJ1012CutEqEnergyDepth,
     LJ1012CutCutR,
-    LJ1012CutCutSQ,
+    LJ1012CutCutRSQ,
     LJ1012CutRealEnergyDepth,
     LJ1012CutRealRadiusSQ,
     LJ1012CutSixtyRealEnergyDepth,

@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void FuncLJ1012Cut(const T& dsq, const Unique64Bit& P, T& func) {
+  void FuncLJ1012Cut(const T& dsq, const Unique64Bit* P, T& func) {
     if(dsq>P[LJ1012CutCutRSQ].value<T>())   func=0;
     else {
       T d=sqroot(dsq);

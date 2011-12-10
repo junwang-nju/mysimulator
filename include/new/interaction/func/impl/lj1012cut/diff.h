@@ -8,8 +8,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void DiffLJ1012Cut(const T& dsq, consts Unique64Bit* P, T& diff) {
-    if(dsq>P[LJ1012CutCutSQ].value<T>())  diff=0;
+  void DiffLJ1012Cut(const T& dsq, const Unique64Bit* P, T& diff) {
+    if(dsq>P[LJ1012CutCutRSQ].value<T>())  diff=0;
     else {
       T ivd2=1./dsq;
       T ivd=sqroot(ivd2);
