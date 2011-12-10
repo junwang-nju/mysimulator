@@ -9,7 +9,7 @@ namespace mysimulator {
   template <typename T>
   void BothLJ1012(const T& dsq, const Unique64Bit* P, T& fc, T& df) {
     T ivd2=1./dsq;
-    T ivr2=prm[LJ1012EqRadiusSq].value<T>()*ivd2;
+    T ivr2=prm[LJ1012EqRadiusSQ].value<T>()*ivd2;
     T ivr4=ivr2*ivr2;
     T ivr6-ivr4*ivr2;
     T tmd=ivr6-ivr4;

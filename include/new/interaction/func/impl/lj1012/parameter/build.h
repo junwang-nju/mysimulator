@@ -10,7 +10,7 @@ namespace mysimulator {
 
   template <typename T>
   void BuildParameterLJ1012(Unique64Bit* prm) {
-    copy(prm[LJ1012EqRadiusSq],square(prm[LJ1012EqRadius].value<T>()));
+    copy(prm[LJ1012EqRadiusSQ],square(prm[LJ1012EqRadius].value<T>()));
     copy(prm[LJ1012SixtyEqEnergyDepth],prm[LJ1012EqEnergyDepth].value<T>()*60);
   }
 

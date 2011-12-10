@@ -8,7 +8,7 @@ namespace mysimulator {
 
   template <typename T>
   void FuncLJ1012(const T& dsq, const Unique64Bit& P, T& func) {
-    T ivr2=P[LJ1012EqRadiusSq].value<T>()/dsq;
+    T ivr2=P[LJ1012EqRadiusSQ].value<T>()/dsq;
     T ivr4=ivr2*ivr2;
     T ivr6=ivr4*ivr2;
     T tmd=ivr6-ivr4;

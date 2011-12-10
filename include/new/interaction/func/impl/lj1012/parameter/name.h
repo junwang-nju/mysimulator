@@ -7,7 +7,7 @@ namespace mysimulator {
   enum LJ1012ParameterName {
     LJ1012EqRadius=0,
     LJ1012EqEnergyDepth,
-    LJ1012EqRadiusSq,
+    LJ1012EqRadiusSQ,
     LJ1012SixtyEqEnergyDepth,
     LJ1012NumberParameters
   };
