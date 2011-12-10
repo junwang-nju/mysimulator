@@ -30,7 +30,7 @@ namespace mysimulator {
       Array1D<unsigned int> s;
       unsigned int sl;
 
-      MersenneTwister() : s(), sl(0) { assert(Fac==0); }
+      MersenneTwister() : ParentType(), s(), sl(0) { assert(Fac==0); }
       ~MersenneTwister() { clearData(); }
 
       void clearData() { release(s); sl=0; }

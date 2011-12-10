@@ -70,7 +70,7 @@ namespace mysimulator {
       Array1D<Unique128Bit> s;
       unsigned int idx;
 
-      MersenneTwister() : s(), idx(0U) {}
+      MersenneTwister() : ParentType(), s(), idx(0U) {}
       ~MersenneTwister() { clearData(); }
 
       void clearData() { release(s); idx=0U; }

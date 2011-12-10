@@ -45,7 +45,7 @@ namespace mysimulator {
 
     public:
 
-      MersenneTwister() : s(), idx(0), _u() {}
+      MersenneTwister() : ParentType(), s(), idx(0), _u() {}
       ~MersenneTwister() { clearData(); }
 
       void clearData() { release(s); idx=0; copy(_u,0); }
