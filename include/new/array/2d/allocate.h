@@ -71,21 +71,32 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T>
-  void imprint(Array2D<T>& A, const Array2D<T>& cA) {
+  template <typename T1, typename T2>
+  void _imprint_structure(Array2D<T1>& A, const Array2DContent<T2>& cA) {
     assert(IsValid(cA));
-    int lfst=cA.infra.first;
+    release(A);
+    allocate(A.data,cA.base.size);
+    allocate(A.subdata,cA.NumLines());
     Array1D<int> fst,lst;
     allocate(fst,cA.NumLines());
     allocate(lst,cA.NumLines());
-    Array1DContent<T>* p=const_cast<Array1DContent<T>*>(cA.infra.start);
-    Array1DContent<T>* e=p+cA.infra.size;
+    Array1DContent<T2>* p=const_cast<Array1DContent<T2>*>(cA.infra.start);
+    Array1DContent<T2>* e=p+cA.infra.size;
     int* q=fst.start;
     int* r=lst.start;
     for(;p!=e;) { *(q++)=(*p).first;  *(r++)=(*(p++)).last; }
-    allocate(A,lfst,fst,lst);
-    release(fst);
+    init(A,A.data(),A.subdata(),cA.base.size,cA.infra.first,fst,lst);
     release(lst);
+    release(fst);
+  }
+
+  template <typename T>
+  void imprint(Array2D<T>& A, const Array2D<T>& cA) {
+    _imprint_structure(A,cA);
+    T* p=A.base.start;
+    T* q=const_cast<T*>(cA.base.start);
+    T* e=p+A.base.size;
+    for(;p!=e;) imprint(*(p++),*(q++));
   }
 }
 
