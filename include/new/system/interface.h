@@ -1,6 +1,6 @@
 
-#ifndef _System_Interface_H_
-#define _System_Interface_H_
+#ifndef _System_Content_Interface_H_
+#define _System_Content_Interface_H_
 
 #include "interaction/calc.h"
 #include "object/allocate.h"

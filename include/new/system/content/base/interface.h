@@ -1,6 +1,6 @@
 
-#ifndef _System_Base_Interface_H_
-#define _System_Base_Interface_H_
+#ifndef _System_Content_Base_Interface_H_
+#define _System_Content_Base_Interface_H_
 
 #include "object/copy.h"
 #include "object/allocate.h"

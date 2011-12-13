@@ -1,8 +1,8 @@
 
-#ifndef _System_With_Energy_Copy_H_
-#define _System_With_Energy_Copy_H_
+#ifndef _System_Content_With_Energy_Copy_H_
+#define _System_Content_With_Energy_Copy_H_
 
-#include "system/with-e/interface.h"
+#include "system/content/with-e/interface.h"
 
 namespace mysimulator {
 

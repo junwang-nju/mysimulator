@@ -1,8 +1,8 @@
 
-#ifndef _System_With_Eenergy_Interface_H_
-#define _System_With_Eenergy_Interface_H_
+#ifndef _System_Content_With_Energy_Interface_H_
+#define _System_Content_With_Energy_Interface_H_
 
-#include "system/base/interface.h"
+#include "system/content/base/interface.h"
 #include "interaction/func/allocate.h"
 #include "interaction/func/copy.h"
 

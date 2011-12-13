@@ -1,6 +1,6 @@
 
-#ifndef _System_Masked_Component_Interface_H_
-#define _System_Masked_Component_Interface_H_
+#ifndef _System_Masking_Component_Interface_H_
+#define _System_Masking_Component_Interface_H_
 
 #include "object/allocate.h"
 #include "intrinsic-type/constant.h"
