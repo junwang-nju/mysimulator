@@ -2,46 +2,37 @@
 #ifndef _System_Content_Base_Interface_H_
 #define _System_Content_Base_Interface_H_
 
-#include "object/copy.h"
-#include "object/allocate.h"
+#include "object/interface.h"
+
 namespace mysimulator {
 
-  template <typename T, template<typename> class SpaceType>
-  struct SystemBase {
+  template <typename T, template<typename> class VecType>
+  struct SysContentBase {
 
     public:
 
-      typedef SystemBase<T,SpaceType>   Type;
+      typedef SysContentBase<T,VecType>   Type;
 
-      Object<SpaceType<T> > X;
+      Object<VecType<T> > X;
 
-      SystemBase() : X() {}
-      ~SystemBase() { clearData(); }
-
-      virtual void loadCoor(const SpaceType<T>& rX) {
-        assert(IsValid(rX));
-        imprint(X,rX);
-        copy(X,rX);
-      }
-      void loadCoor(const Object<SpaceType<T> >& iX) {
-        loadCoor(iX());
-      }
+      SysContentBase() : X() {}
+      ~SysContentBase() { clearData(); }
 
       void clearData() { release(X); }
       bool isvalid() const { return IsValid(X); }
 
     private:
 
-      SystemBase(const Type&) {}
+      SysContentBase(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };
 
-  template <typename T, template<typename> class SpaceType>
-  void release(SystemBase<T,SpaceType>& S) { S.clearData(); }
+  template <typename T, template<typename> class VecType>
+  void release(SysContentBase<T,VecType>& S) { S.clearData(); }
 
-  template <typename T, template<typename> class SpaceType>
-  bool IsValid(const SystemBase<T,SpaceType>& S) { return S.isvalid(); }
+  template <typename T, template<typename> class VecType>
+  bool IsValid(const SysContentBase<T,VecType>& S) { return S.isvalid(); }
 
 }
 

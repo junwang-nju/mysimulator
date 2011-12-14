@@ -2,7 +2,7 @@
 #ifndef _Array_1D_Content_Refer_H_
 #define _Array_1D_Content_Refer_H_
 
-#include "array/1d/content/interface.h"
+#include "array/1d/content/init.h"
 #include "intrinsic-type/refer.h"
 
 namespace mysimulator {
@@ -14,11 +14,7 @@ namespace mysimulator {
     assert(partb<parte);
     assert((partb>=cA.first)&&(parte<=cA.last));
     release(A);
-    refer(A.size,cA.size);
-    refer(A.first,newb);
-    refer(A.last,A.first+parte-partb);
-    refer(A.head,cA.head+partb-newb);
-    refer(A.start,A.head+A.first);
+    init(A,cA.head+partb,newb,newb+parte-partb);
   }
 
   template <typename T>

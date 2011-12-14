@@ -1,56 +1,44 @@
 
-#ifndef _System_Content_WithEGV_Interface_H_
-#define _System_Content_WithEGV_Interface_H_
+#ifndef _System_Content_WithEGV_H_
+#define _System_Content_WithEGV_H_
 
 #include "system/content/with-eg/interface.h"
 
 namespace mysimulator {
 
-  template <typename T,typename IDType,typename ParamType,typename GeomType,
-            template<typename> class SpaceType>
-  struct SystemWithEGV
-      : public SystemWithEG<T,IDType,ParamType,GeomType,SpaceType> {
+  template <typename T, template<typename> class VecType>
+  struct SysContentWithEGV : public SysContentWithEG<T,VecType> {
 
     public:
 
-      typedef SystemWithEGV<T,IDType,ParamType,GeomType,SpaceType> Type;
-      typedef SystemWithEG<T,IDType,ParamType,GeomType,SpaceType>  ParentType;
+      typedef SysContentWithEGV<T,VecType>    Type;
+      typedef SysContentWithEG<T,VecType>     ParentType;
 
-      Object<SpaceType<T> >   G;
-      Object<SpaceType<T> >   V;
+      Object<VecType<T> >   Velocity;
 
-      SystemWithEGV() : ParentType(), G(), V() {}
-      ~SystemWithEGV() { clearData(); }
+      SysContentWithEGV() : ParentType(), Velocity() {}
+      ~SysContentWithEGV() { clearData(); }
 
       void clearData() {
-        release(V);
-        release(G);
         static_cast<ParentType*>(this)->clearData();
+        release(Velocity);
       }
       bool isvalid() const {
-        return IsValid(V)&&IsValid(G)&&
-               static_cast<ParentType*>(this)->isvalid();
+        return static_cast<ParentType*>(this)->isvalid()&&IsValid(Velocity);
       }
 
-      void loadCoor(const SpaceType<T>& iX) {
-        static_cast<ParentType*>(this)->loadCoor(iX);
-        imprint(G,iX);
-        imprint(V,iX);
-      }
+    private:
+
+      SysContentWithEGV(const Type&) {}
+      Type& operator=(const Type&) { return *this; }
 
   };
 
-  template <typename T,typename IDType,typename ParamType,typename GeomType,
-            template<typename> class SpaceType>
-  void release(SystemWithEGV<T,IDType,ParamType,GeomType,SpaceType>& S) {
-    S.clearData();
-  }
+  template <typename T, template<typename> class VecType>
+  void release(SysContentWithEGV<T,VecType>& S) { S.clearData(); }
 
-  template <typename T,typename IDType,typename ParamType,typename GeomType,
-            template<typename> class SpaceType>
-  void IsValid(const SystemWithEGV<T,IDType,ParamType,GeomType,SpaceType>& S) {
-    return S.isvalid();
-  }
+  template <typename T, template<typename> class VecType>
+  bool IsValid(const SysContentWithEGV<T,VecType>& S) { return S.isvalid(); }
 
 }
 
