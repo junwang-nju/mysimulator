@@ -31,6 +31,7 @@ namespace mysimulator {
 
 #include "random/mt/standard/specification.h"
 #include "random/mt/dsfmt/specification.h"
+#include "random/mt/sfmt/specification.h"
 
 #endif
 

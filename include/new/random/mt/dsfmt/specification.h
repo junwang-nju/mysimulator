@@ -3,16 +3,13 @@
 #define _Random_MT_DSFMT_Specification_H_
 
 #include "random/mt/interface.h"
+#include "random/base/interface.h"
 #include "unique/128bit/copy.h"
 #include "array/1d/interface.h"
+#include "random/mt/_initfunc.h"
 #include <cstring>
 
 namespace mysimulator {
-
-  unsigned int _initFuncA(const unsigned int x) { return (x^(x>>27))*1664525U; }
-  unsigned int _initFuncB(const unsigned int x) {
-    return (x^(x>>27))*1566083941U;
-  }
 
   static const Unique128Bit SSE2_DoubleTwo(dTwo,dTwo);
   static const Unique128Bit SSE2_DoubleNOne(dNOne,dNOne);
@@ -57,7 +54,6 @@ namespace mysimulator {
       static const unsigned int Lag;
       static const unsigned int Mid;
       static const unsigned int LagMid;
-      static const unsigned int N32;
       static const unsigned int N64;
       static const unsigned long long Low;
       static const unsigned long long Upp;
@@ -319,9 +315,6 @@ namespace mysimulator {
   template <unsigned int Fac>
   const unsigned int MersenneTwister<dSFMT,Fac>::LagMid=
     MersenneTwister<dSFMT,Fac>::Lag+MersenneTwister<dSFMT,Fac>::Mid;
-  template <unsigned int Fac>
-  const unsigned int MersenneTwister<dSFMT,Fac>::N32=
-    MersenneTwister<dSFMT,Fac>::N*4;
   template <unsigned int Fac>
   const unsigned int MersenneTwister<dSFMT,Fac>::N64=
     MersenneTwister<dSFMT,Fac>::DualN;

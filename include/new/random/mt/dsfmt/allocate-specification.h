@@ -11,6 +11,7 @@ namespace mysimulator {
   void allocate(MersenneTwister<dSFMT,Fac>& R) {
     release(R);
     allocate(R.s,MersenneTwister<dSFMT,Fac>::NStatus);
+    R.idx=0;
   }
 
 }

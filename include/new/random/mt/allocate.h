@@ -4,6 +4,7 @@
 
 #include "random/mt/standard/allocate-specification.h"
 #include "random/mt/dsfmt/allocate-specification.h"
+#include "random/mt/sfmt/allocate-specification.h"
 
 #endif
 
