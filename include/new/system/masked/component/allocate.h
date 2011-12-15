@@ -35,7 +35,7 @@ namespace mysimulator {
 
   template <typename T>
   void allocate(Mask4System<T,Array2D>& M, const unsigned int& n,
-                const unsigned int& dim, const unsigned int& fg) {
+                const unsigned int& dim, const unsigned int& fg=1U) {
     allocate(M.iMask,n,dim);
     allocate(M.Mask,n,dim);
     fill(M.iMask,fg);

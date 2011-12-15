@@ -3,7 +3,6 @@
 #define _System_Masked_Method_Interface_H_
 
 #include "system/masked/method/name.h"
-#include "system/masked/component/interface.h"
 
 namespace mysimulator {
 
