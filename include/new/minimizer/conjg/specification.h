@@ -33,8 +33,8 @@ namespace mysimulator {
         MaxBeta=0;
       }
       bool isvalid() const {
-        return static_cast<ParentType*>(this)->isvalid()&&IsValid(OldMinG)&&
-               (MaxBeta>0.);
+        return static_cast<const ParentType*>(this)->isvalid()&&
+               IsValid(OldMinG)&&(MaxBeta>0.);
       }
 
       void SetMaxBeta() { copy(MaxBeta,5.); }

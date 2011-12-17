@@ -30,7 +30,7 @@ namespace mysimulator {
         break;
       case SystemMinimizerLineRegular:
         allocate(SG.Param,NumParameterMinimizerLineRegularName);
-        SG.evfunc=EvoluteMinimizerLineRegular<T,IDT,PT,GT,VT,SCT>;
+        SG.evfunc=EvoluteMinimizerLineRegular<T,IDT,PT,GT,VT>;
         SG.inifunc=InitMinimizerLineRegular<T,IDT,PT,GT,VT,SCT>;
         break;
       default:

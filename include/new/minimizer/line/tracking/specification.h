@@ -6,6 +6,7 @@
 #include "minimizer/line/common/interface.h"
 #include "minimizer/line/condition/interface.h"
 #include "system/sync.h"
+#include "object/swap.h"
 
 namespace mysimulator {
 
@@ -40,7 +41,9 @@ namespace mysimulator {
         copy(TrackingFac,ValueGolden<T>());
         static_cast<ParentType*>(this)->clearData();
       }
-      bool isvalid() const { return static_cast<ParentType*>(this)->isvalid(); }
+      bool isvalid() const {
+        return static_cast<const ParentType*>(this)->isvalid();
+      }
 
       int Go(const unsigned int& MaxSteps=DefaultMaxSteps) {
         assert(isvalid());
@@ -50,7 +53,7 @@ namespace mysimulator {
         this->Step=dstep;
         T c1pj=this->DecreaseFac*this->Proj;
         T c2pj=this->CurvatureFac*this->Proj;
-        unsigned int state;
+        unsigned int state=0;
         for(unsigned int nit=0;nit<MaxSteps;++nit) {
           copy(this->RunSys().Content().X(),this->MemSys().Content().X());
           this->RunSys().evolute();
@@ -72,6 +75,7 @@ namespace mysimulator {
           this->Step+=dstep;
           if(absval(dstep)<mstep) { state=2; break; }
         }
+        return state;
       }
 
   };

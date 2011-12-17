@@ -57,7 +57,7 @@ namespace mysimulator {
       }
       void evolute(SysContentType<T,VecType>& SC,
                    SysInteraction<IDType,ParamType,GeomType,T>& SI) {
-        evfunv(SC,SI,*this);
+        evfunc(SC,SI,*this);
       }
       void update(const unsigned int& method_id,
                   SysContentType<T,VecType>& SC,

@@ -53,13 +53,13 @@ namespace mysimulator {
         static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
-        return static_cast<ParentType*>(this)->isvalid()&&IsValid(RunSys)&&
-               IsValid(MemSys)&&IsValid(LineDirc);
+        return static_cast<const ParentType*>(this)->isvalid()&&
+               IsValid(RunSys)&&IsValid(MemSys)&&IsValid(LineDirc);
       }
 
       T MininalStep() {
-        return getMinimalStep(RunSys.SysContent().X(),RunSys.SysContent().V(),
-                              this->DOF);
+        return getMinimalStep(RunSys().Content().X(),
+                              RunSys().Content().Velocity(),this->DOF);
       }
 
       void _load();

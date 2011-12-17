@@ -48,7 +48,8 @@ namespace mysimulator {
         static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
-        return static_cast<ParentType*>(this)->isvalid()&&(MaxCorrelations>0)&&
+        return static_cast<const ParentType*>(this)->isvalid()&&
+               (MaxCorrelations>0)&&
                IsValid(dX)&&IsValid(dG)&&IsValid(alpha)&&IsValid(rho)&&
                IsValid(lastX)&&IsValid(lastG);
       }

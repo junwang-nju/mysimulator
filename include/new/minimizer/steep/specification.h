@@ -25,7 +25,9 @@ namespace mysimulator {
       ~Minimizer() { clearData(); }
 
       void clearData() { static_cast<ParentType*>(this)->clearData(); }
-      bool isvalid() const { return static_cast<ParentType*>(this)->isvalid(); }
+      bool isvalid() const {
+        return static_cast<const ParentType*>(this)->isvalid();
+      }
 
       int Go(const unsigned int& MaxSteps=DefaultMaxSteps) {
         assert(isvalid());

@@ -7,16 +7,12 @@
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename ParamT,typename GeomT,
-            template<typename> class SpaceType>
-  void copy(SystemWithEGV<T,IDT,ParamT,GeomT,SpaceType>& S,
-            const SystemWithEGV<T,IDT,ParamT,GeomT,SpaceType>& rS) {
+  template <typename T, template <typename> class VT>
+  void copy(SysContentWithEGV<T,VT>& S, const SysContentWithEGV<T,VT>& rS) {
     assert(IsValid(S)&&IsValid(rS));
-    typedef
-      typename SystemWithEGV<T,IDT,ParamT,GeomT,SpaceType>::ParentType
-      Type;
+    typedef typename SysContentWithEGV<T,VT>::ParentType  Type;
     copy(static_cast<Type&>(S),static_cast<const Type&>(rS));
-    copy(S.V,rS.V);
+    copy(S.Velocity,rS.Velocity);
   }
 
 }
