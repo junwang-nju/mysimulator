@@ -81,9 +81,9 @@ namespace mysimulator {
               copy(beta,cZero);
               dnorm=fnorm;
               copy(this->LineDirc(),
-                  this->MemSys().Content().Gradient());
+                   this->MemSys().Content().Gradient());
               scale(this->LineDirc(),-cOne);
-              this->Proj=fnorm;
+              this->Proj=-fnorm;
             }
             tmd=1./dnorm;
             scale(this->LineDirc(),tmd);

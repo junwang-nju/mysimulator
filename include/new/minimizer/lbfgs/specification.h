@@ -95,6 +95,7 @@ namespace mysimulator {
           copy(lastG,this->MemSys().Content().Gradient());
           tmd=this->MemSys().Content().Energy();
           lfg=static_cast<ParentType*>(this)->Go();
+          ++(this->LineSearchCount);
           nextMode=false;
           if(lfg==2) {
             if(isSteep) {

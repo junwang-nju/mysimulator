@@ -4,25 +4,32 @@
 
 #include "minimizer/interface.h"
 #include "array/2d/norm.h"
-#include "array/2d/scale.h"
-#include "array/2d/copy.h"
-#include "array/2d/shift.h"
 #include "array/2d/dot.h"
+#include "array/2d/scale.h"
+#include "array/2d/shift.h"
+#include "array/2d/copy.h"
 
 namespace mysimulator {
 
-  template <MinimizerName MinName, LineMinimizerName LMinName, typename T,
-            typename FT, typename IDT, typename PT, typename GT>
+  template <MinimizerMethodName MN, LineMinimizerMethodName LMN, typename T,
+            typename IDT,typename PT,typename GT,
+            template<typename,template<typename> class> class SCT,
+            LineMinimizerConditionMethodName LCM=StrongWolfe>
   struct MinimizerRegular
-      : public Minimizer<MinName,LMinName,T,FT,IDT,PT,GT,Array2D> {
+      : public Minimizer<MN,LMN,T,IDT,PT,GT,Array2D,SCT,LCM> {
 
     public:
 
-      typedef MinimizerRegular<MinName,LMinName,T,FT,IDT,PT,GT>   Type;
-      typedef Minimizer<MinName,LMinName,T,FT,IDT,PT,GT,Array2D>  ParentType;
+      typedef MinimizerRegular<MN,LMN,T,IDT,PT,GT,SCT,LCM>    Type;
+      typedef Minimizer<MN,LMN,T,IDT,PT,GT,Array2D,SCT,LCM>   ParentType;
 
       MinimizerRegular() : ParentType() {}
-      ~MinimizerRegular() { this->clearData(); }
+      ~MinimizerRegular() { clearData(); }
+
+      void clearData() { static_cast<ParentType*>(this)->clearData(); }
+      bool isvalid() const {
+        return static_cast<const ParentType*>(this)->isvalid();
+      }
 
     private:
 
@@ -31,15 +38,21 @@ namespace mysimulator {
 
   };
 
-  template <MinimizerName MN, LineMinimizerName LMN, typename T,
-            typename FT, typename IDT, typename PT, typename GT>
-  bool IsValid(const MinimizerRegular<MN,LMN,T,FT,IDT,PT,GT>& M) {
-    return M.isvalid();
+  template <MinimizerMethodName MN, LineMinimizerMethodName LMN, typename T,
+            typename IDT,typename PT,typename GT,
+            template<typename,template<typename> class> class SCT,
+            LineMinimizerConditionMethodName LCM>
+  void release(MinimizerRegular<MN,LMN,T,IDT,PT,GT,SCT,LCM>& M) {
+    return M.clearData();
   }
 
-  template <MinimizerName MN, LineMinimizerName LMN, typename T,
-            typename FT, typename IDT, typename PT, typename GT>
-  void release(MinimizerRegular<MN,LMN,T,FT,IDT,PT,GT>& M) { M.clearData(); }
+  template <MinimizerMethodName MN, LineMinimizerMethodName LMN, typename T,
+            typename IDT,typename PT,typename GT,
+            template<typename,template<typename> class> class SCT,
+            LineMinimizerConditionMethodName LCM>
+  bool IsValid(const MinimizerRegular<MN,LMN,T,IDT,PT,GT,SCT,LCM>& M) {
+    return M.isvalid();
+  }
 
 }
 

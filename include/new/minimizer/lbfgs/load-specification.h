@@ -12,12 +12,7 @@ namespace mysimulator {
             typename GT,template<typename> class VT,
             template<typename,template<typename>class> class SCT,
             LineMinimizerConditionMethodName LCM>
-  void load(Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>& M,
-            System<T,IDT,PT,GT,VT,SCT>& S) {
-    typedef
-    typename Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>::ParentType
-    Type;
-    load(static_cast<Type&>(M),S);
+  void _create_minimizer(Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>& M) {
     if(M.MaxCorrelations==0)  M.SetMaxCorrelations();
     allocate(M.dX,M.MaxCorrelations);
     allocate(M.dG,M.MaxCorrelations);
@@ -31,16 +26,35 @@ namespace mysimulator {
     imprint(M.lastG,M.MemSys().Content().X);
   }
 
+}
+
+#define _Load_Min \
+  assert(IsValid(S));\
+  typedef \
+  typename Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>::ParentType \
+  Type;\
+  load(static_cast<Type&>(M),S);\
+  _create_minimizer(M);
+
+namespace mysimulator {
+
   template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
             typename GT,template<typename> class VT,
             template<typename,template<typename>class> class SCT,
             LineMinimizerConditionMethodName LCM>
   void load(Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>& M,
-            Object<System<T,IDT,PT,GT,VT,SCT> >& S) {
-    load(M.S());
-  }
+            System<T,IDT,PT,GT,VT,SCT>& S) { _Load_Min }
+
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
+  void load(Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>& M,
+            Object<System<T,IDT,PT,GT,VT,SCT> >& S) { _Load_Min }
 
 }
+
+#undef _Load_Min
 
 #endif
 
