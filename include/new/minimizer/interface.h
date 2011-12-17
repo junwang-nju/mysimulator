@@ -2,44 +2,52 @@
 #ifndef _Minimizer_Interface_H_
 #define _Minimizer_Interface_H_
 
-#include "minimizer/name.h"
-#include "minimizer/line/name.h"
+#include "minimizer/method-name.h"
+#include "minimizer/line/method-name.h"
+#include "minimizer/line/condition/method-name.h"
 
 namespace mysimulator {
 
-  template <MinimizerName MinName, LineMinimizerName LMinName, typename T,
-            typename FT, typename IDT, typename PT, typename GT,
-            template <typename> class ST>
+  template <MinimizerMethodName MN, LineMinimizerMethodName LMN,
+            typename T,typename IDType,typename ParamType,typename GeomType,
+            template<typename> class VecType,
+            template<typename,template<typename>class> class SysContentType,
+            LineMinimizerConditionMethodName LCM=StrongWolfe>
   struct Minimizer {
 
     public:
+      typedef
+      Minimizer<MN,LMN,T,IDType,ParamType,GeomType,VecType,SysContentType,LCM>
+      Type;
 
-      typedef Minimizer<MinName,LMinName,T,FT,IDT,PT,GT,ST>   Type;
-
+      Minimizer() { Error("This type of Minimizer Not Available!"); }
       ~Minimizer() { clearData(); }
 
       void clearData() {}
       bool isvalid() const { return false; }
 
-      virtual int Go(const unsigned int&) { return 0; }
-
     private:
 
-      Minimizer() {}
       Minimizer(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };
 
-  template <MinimizerName MN, LineMinimizerName LMN, typename T, typename FT,
-            typename IDT,typename PT,typename GT,template<typename> class ST>
-  bool IsValid(const Minimizer<MN,LMN,T,FT,IDT,PT,GT,ST>& M) {
+  template <MinimizerMethodName MN, LineMinimizerMethodName LMN,
+            typename T,typename IDT,typename PT,typename GT,
+            template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
+  void release(Minimizer<MN,LMN,T,IDT,PT,GT,VT,SCT,LCM>& M) { M.clearData(); }
+
+  template <MinimizerMethodName MN, LineMinimizerMethodName LMN,
+            typename T,typename IDT,typename PT,typename GT,
+            template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
+  bool IsValid(const Minimizer<MN,LMN,T,IDT,PT,GT,VT,SCT,LCM>& M) {
     return M.isvalid();
   }
-
-  template <MinimizerName MN, LineMinimizerName LMN, typename T, typename FT,
-            typename IDT,typename PT,typename GT,template<typename> class ST>
-  void release(Minimizer<MN,LMN,T,FT,IDT,PT,GT,ST>& M) { M.clearData(); }
 
 }
 

@@ -24,7 +24,8 @@ namespace mysimulator {
         release(Velocity);
       }
       bool isvalid() const {
-        return static_cast<ParentType*>(this)->isvalid()&&IsValid(Velocity);
+        return static_cast<const ParentType*>(this)->isvalid()&&
+               IsValid(Velocity);
       }
 
     private:

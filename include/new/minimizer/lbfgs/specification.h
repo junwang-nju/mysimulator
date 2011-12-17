@@ -4,113 +4,125 @@
 
 #include "minimizer/interface.h"
 #include "minimizer/line/interface.h"
-#include "array/1d/interface.h"
 
 namespace mysimulator {
 
-  template <LineMinimizerName LMinName, typename T,typename FT,typename IDT,
-            typename PT,typename GT,template<typename> class ST>
-  struct Minimizer<LBFGS,LMinName,T,FT,IDT,PT,GT,ST>
-      : public LineMinimizer<LMinName,T,FT,IDT,PT,GT,ST> {
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
+  struct Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>
+      : public LineMinimizer<LMN,T,IDT,PT,GT,VT,SCT,LCM> {
 
     public:
 
-      typedef Minimizer<LBFGS,LMinName,T,FT,IDT,PT,GT,ST>   Type;
-      typedef LineMinimizer<LMinName,T,FT,IDT,PT,GT,ST>     ParentType;
+      typedef Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>   Type;
+      typedef LineMinimizer<LMN,T,IDT,PT,GT,VT,SCT,LCM>     ParentType;
 
-      static const unsigned int DefaultMaxIterations;
+      static const unsigned int DefaultMaxSteps;
 
-      unsigned int MaxCorrelation;
-      Array1D<ST<T> >   dX;
-      Array1D<ST<T> >   dG;
-      Array1D<T>        alpha;
-      Array1D<T>        rho;
-      ST<T>             lastX;
-      ST<T>             lastG;
+      unsigned int MaxCorrelations;
+      Array1D<VT<T> >     dX;
+      Array1D<VT<T> >     dG;
+      Array1D<T>          alpha;
+      Array1D<T>          rho;
+      VT<T>               lastX;
+      VT<T>               lastG;
 
-      Minimizer()
-        : ParentType(),
-          MaxCorrelation(0U),dX(),dG(),alpha(),rho(),lastX(),lastG() {}
+      Minimizer() : ParentType(), MaxCorrelations(0U), dX(), dG(), alpha(),
+                    rho(), lastX(), lastG() {}
       ~Minimizer() { clearData(); }
 
       void clearData() {
-        static_cast<ParentType*>(this)->clearData();
         release(lastG);
         release(lastX);
         release(rho);
         release(alpha);
-        for(unsigned int i=0;i<MaxCorrelation;++i) {
+        for(unsigned int i=0;i<MaxCorrelations;++i) {
           release(dG[i]);
           release(dX[i]);
         }
         release(dG);
         release(dX);
-        MaxCorrelation=0;
+        MaxCorrelations=0U;
+        static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
-        return static_cast<const ParentType*>(this)->isvalid()&&IsValid(dX)&&
-               IsValid(dG)&&IsValid(alpha)&&IsValid(rho)&&IsValid(lastX)&&
-               IsValid(lastG);
+        return static_cast<ParentType*>(this)->isvalid()&&(MaxCorrelations>0)&&
+               IsValid(dX)&&IsValid(dG)&&IsValid(alpha)&&IsValid(rho)&&
+               IsValid(lastX)&&IsValid(lastG);
       }
 
-      void SetMaxCorrelation() { MaxCorrelation=6; }
-      void SetMaxCorrelation(const unsigned int& MC) { MaxCorrelation=MC; }
+      void SetMaxCorrelations() { MaxCorrelations=6; }
+      void SetMaxCorrelations(const unsigned int& MC) { MaxCorrelations=MC; }
 
-      virtual int Go(const unsigned int& MaxIt=DefaultMaxIterations) {
+      int Go(const unsigned int& MaxSteps=DefaultMaxSteps) {
         assert(isvalid());
         this->GCalcCount=0;
         this->LineSearchCount=0;
-        unsigned int ncr=0,point,cp;
-        point=0;
-        T diag,dgdg,dgdx,beta,fnorm,dnorm,tmd;
-        fnorm=norm(this->Sys().G());
-        if(fnorm<this->GradThreshold)   return 3;
-        bool isSteep,nxMode;
-        isSteep=true;
-        unsigned int f=0, lf;
-        for(unsigned int neval=0;neval<MaxIt;++neval) {
+        _load(*this);
+        unsigned int ncr=0, point=0, cp;
+        T diag,dgdg,dgdx,beta,fnorm,dnorm,tmd,tmd2;
+        fnorm=norm(this->MemSys().Content().Gradient());
+        if(fnorm<this->GradientThreshold) return 3;
+        bool isSteep=true, nextMode;
+        unsigned int fg=0, lfg;
+        for(unsigned int ns=0;ns<MaxSteps;++ns) {
           if(!isSteep) {
-            this->Proj=dot(this->LineDirc,this->Sys().G());
-            dnorm=norm(this->LineDirc);
+            this->Proj=dot(this->LineDirc(),
+                           this->MemSys().Content().Gradient());
+            dnorm=norm(this->LineDirc());
             this->Proj/=dnorm;
-            isSteep=((this->Proj>0)||(dnorm<this->GradThreshold));
+            isSteep=((this->Proj>0)||(dnorm<this->GradientThreshold));
           }
           if(isSteep) {
-            if(fnorm<this->GradThreshold) {
-              this->LineSearchCount=neval;
-              f=4;
+            if(fnorm<this->GradientThreshold) {
+              fg=4;
               break;
+            } else {
+              ncr=0;
+              copy(diag,iOne);
+              copy(this->LineDirc(),this->MemSys().Content().Gradient());
+              scale(this->LineDirc(),-diag);
+              this->Proj=-fnorm*diag;
+              dnorm=fnorm*diag;
             }
-            ncr=0;
-            copy(diag,iOne);
-            copy(this->LineDirc,this->Sys().G);
-            scale(this->LineDirc,-diag);
-            this->Proj=-fnorm*diag;
-            dnorm=fnorm*diag;
           }
-          scale(this->LineDirc,1./dnorm);
-          copy(dX[point],this->LineDirc);
-          copy(lastX,this->Sys().X);
-          copy(lastG,this->Sys().G);
-          tmd=this->Sys().Energy;
-          lf=static_cast<ParentType*>(this)->_Go();
-          nxMode=false;
-          if(lf==2) {
-            if(isSteep) { this->LineSearchCount=neval; f=1; break; }
-            --neval;
-            nxMode=true;
-          } else if(lf==0) { this->LineSearchCount=neval; f=5; break; }
-          if(2*absval(tmd-this->Sys().Energy)<
-             absval(tmd+this->Sys().Energy)*RelativeDelta<T>()) {
-            if(isSteep) { this->LineSearchCount=neval; f=2; break; }
-            --neval;
-            nxMode=true;
+          scale(this->LineDirc(),1./dnorm);
+          copy(dX[point],this->LineDirc());
+          copy(lastX,this->MemSys().Content().X());
+          copy(lastG,this->MemSys().Content().Gradient());
+          tmd=this->MemSys().Content().Energy();
+          lfg=static_cast<ParentType*>(this)->Go();
+          nextMode=false;
+          if(lfg==2) {
+            if(isSteep) {
+              fg=1;
+              break;
+            } else {
+              --ns;
+              nextMode=true;
+            }
+          } else if(lfg==0) {
+            fg=5;
+            break;
+          } else {
+            tmd2=this->MemSys().Content().Energy();
+            if(2*absval(tmd-tmd2)<absval(tmd+tmd2)*RelativeDelta<T>()) {
+              if(isSteep) {
+                fg=2;
+                break;
+              } else {
+                --ns;
+                nextMode=true;
+              }
+            }
           }
-          isSteep=nxMode;
-          fnorm=norm(this->Sys().G());
+          isSteep=nextMode;
+          fnorm=norm(this->MemSys().Content().Gradient());
           if(!isSteep) {
-            if(ncr<MaxCorrelation)  ++ncr;
-            copy(dG[point],this->Sys().G);
+            if(ncr<MaxCorrelations)   ++ncr;
+            copy(dG[point],this->MemSys().Content().Gradient());
             shift(dG[point],-cOne,lastG);
             scale(dX[point],this->Move);
             dgdg=normSQ(dG[point]);
@@ -118,38 +130,35 @@ namespace mysimulator {
             diag=dgdx/dgdg;
             rho[point]=iOne/dgdx;
             ++point;
-            if(point>=MaxCorrelation) point=0;
-            copy(this->LineDirc,this->Sys().G);
-            scale(this->LineDirc,-cOne);
+            if(point>=MaxCorrelations)  point=0;
+            copy(this->LineDirc(),this->MemSys().Content().Gradient());
+            scale(this->LineDirc(),-cOne);
             cp=point;
             for(unsigned int k=0;k<ncr;++k) {
               cp=(cp==0?ncr-1:cp-1);
-              alpha[cp]=rho[cp]*dot(dX[cp],this->LineDirc);
-              shift(this->LineDirc,-alpha[cp],dG[cp]);
+              alpha[cp]=rho[cp]*dot(dX[cp],this->LineDirc());
+              shift(this->LineDirc(),-alpha[cp],dG[cp]);
             }
-            scale(this->LineDirc,diag);
+            scale(this->LineDirc(),diag);
             for(unsigned int k=0;k<ncr;++k) {
-              beta=alpha[cp]-rho[cp]*dot(this->LineDirc,dG[cp]);
-              shift(this->LineDirc,beta,dX[cp]);
+              beta=alpha[cp]-rho[cp]*dot(this->LineDirc(),dG[cp]);
+              shift(this->LineDirc(),beta,dX[cp]);
               cp=(cp==ncr-1?0:cp+1);
             }
           }
         }
-        if(f==0)  this->LineSearchCount=MaxIt;
-        return f;
+        _write(*this);
+        return fg;
       }
-
-    private:
-
-      Minimizer(const Type&) {}
-      Type& operator=(const Type&) { return *this; }
-
   };
 
-  template <LineMinimizerName LMN, typename T,typename FT,typename IDT,
-            typename PT,typename GT,template<typename> class ST>
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
   const unsigned int
-  Minimizer<LBFGS,LMN,T,FT,IDT,PT,GT,ST>::DefaultMaxIterations=10000;
+  Minimizer<LBFGS,LMN,T,IDT,PT,GT,VT,SCT,LCM>::DefaultMaxSteps=
+      1000;
 
 }
 

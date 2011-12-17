@@ -20,7 +20,7 @@ namespace mysimulator {
   template <typename T>
   void init(Array1DContent<T>& A, const T* const& ptr, const int& fst,
             const int& lst) {
-    assert(IsValid(ptr)&&(fst<lst));
+    assert(IsValid(ptr)&&(fst<=lst));
     copy(A.size,static_cast<unsigned int>(lst-fst+1));
     copy(A.first,fst);
     copy(A.last,lst);

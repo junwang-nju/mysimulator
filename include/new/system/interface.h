@@ -3,7 +3,8 @@
 #define _System_Interface_H_
 
 #include "system/grouping/interface.h"
-#include "array/1d/interface.h"
+#include "array/1d/allocate.h"
+#include "array/1d/fill.h"
 
 namespace mysimulator {
 
@@ -17,24 +18,48 @@ namespace mysimulator {
       typedef System<T,IDType,ParamType,GeomType,VecType,SysContentType>
               Type;
 
-      SysContentType<T,VecType> SysContent;
-      SysInteraction<IDType,ParamType,GeomType,T> SysInteract;
+      Object<SysContentType<T,VecType> > Content;
+      Object<SysInteraction<IDType,ParamType,GeomType,T> > Interaction;
       Array1D<SysGrouping<T,IDType,ParamType,GeomType,VecType,SysContentType> >
-        SysGroups;
+        Groups;
+      Array1D<Array1D<unsigned int> > GrpMap;
 
-      System() : SysContent(), SysInteract(), SysGroups() {}
+      System() : Content(), Interaction(), Groups(), GrpMap() {}
       ~System() { clearData(); }
 
       void clearData() {
-        release(SysContent); release(SysInteract); release(SysGroups);
+        release(GrpMap);release(Groups);release(Content);release(Interaction);
       }
       bool isvalid() const {
-        return IsValid(SysContent)&&IsValid(SysInteract)&&IsValid(SysGroups);
+        return IsValid(Content)&&IsValid(Interaction)&&IsValid(Groups)&&
+               IsValid(GrpMap);
       }
 
+      void init() {
+        assert(isvalid());
+        for(unsigned int i=0;i<Groups.size;++i)
+          Groups[i].init(Content(),Interaction());
+      }
       void evolute() {
-        for(unsigned int i=0;i<SysGroups.size;++i)
-          SysGroups[i].evolute(SysContent,SysInteract);
+        assert(isvalid());
+        for(unsigned int i=0;i<Groups.size;++i)
+          Groups[i].evolute(Content(),Interaction());
+      }
+
+      void mapBuild() {
+        assert(IsValid(Groups));
+        Array1D<unsigned int> sz;
+        allocate(sz,NumSystemGroupingMethods);
+        fill(sz,0U);
+        for(unsigned int i=0;i<Groups.size;++i) sz[Groups[i].Method]++;
+        allocate(GrpMap,NumSystemGroupingMethods);
+        for(unsigned int i=0;i<NumSystemGroupingMethods;++i)
+          if(sz[i]>0) { allocate(GrpMap[i],sz[i]); sz[i]=0; }
+        for(unsigned int i=0,k;i<Groups.size;++i) {
+          k=Groups[i].Method;
+          GrpMap[k][sz[k]]=i;   sz[k]++;
+        }
+        release(sz);
       }
 
     private:

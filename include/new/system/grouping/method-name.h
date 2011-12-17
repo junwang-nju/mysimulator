@@ -5,9 +5,10 @@
 namespace mysimulator {
 
   enum SystemGroupingMethodName {
-    SystemUnassigned,
-    SystemFixPosition,
-    SystemMinimizeLineRegular
+    SystemFixPosition=0,
+    SystemMinimizerLineRegular,
+    NumSystemGroupingMethods,
+    SystemUnassigned
   };
 
 }

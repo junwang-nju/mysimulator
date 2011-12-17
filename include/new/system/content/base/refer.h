@@ -3,6 +3,7 @@
 #define _System_Content_Base_Refer_H_
 
 #include "system/content/base/interface.h"
+#include "object/allocate.h"
 
 namespace mysimulator {
 
@@ -11,6 +12,7 @@ namespace mysimulator {
              const int& partb, const int& parte, const int newb) {
     assert(IsValid(rS));
     release(S);
+    allocate(S.X);
     refer(S.X(),rS.X(),partb,parte,newb);
   }
 

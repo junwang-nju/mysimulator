@@ -23,7 +23,8 @@ namespace mysimulator {
         release(Gradient);  static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
-        return static_cast<ParentType*>(this)->isvalid()&&IsValid(Gradient);
+        return static_cast<const ParentType*>(this)->isvalid()&&
+               IsValid(Gradient);
       }
 
     private:

@@ -5,7 +5,6 @@
 #include "system/grouping/method-name.h"
 #include "system/interaction/interface.h"
 #include "array/1d/interface.h"
-#include "unique/64bit/interface.h"
 
 namespace mysimulator {
 
@@ -19,26 +18,51 @@ namespace mysimulator {
       typedef SysGrouping<T,IDType,ParamType,GeomType,VecType,SysContentType>
               Type;
       typedef 
-      void (*EvFunc)(SysContentType<T,VecType>&,
-                     const SysInteraction<IDType,ParamType,GeomType,T>&,
-                     Array1DContent<SysContentType<T,VecType> >&,
-                     const Array1DContent<Unique64Bit>&);
+      void (*FuncType)(SysContentType<T,VecType>&,
+                       SysInteraction<IDType,ParamType,GeomType,T>&,
+                       Type&);
 
       SystemGroupingMethodName  Method;
       Array1D<Unique64Bit> MerIDRange;
+      Array1D<SysContentType<T,VecType> > grpContent;
       Array1D<Unique64Bit> Param;
-      EvFunc evfunc;
+      FuncType evfunc;
+      FuncType inifunc;
+      Array1D<FuncType> updfunc;
 
       SysGrouping()
-        : Method(SystemUnassigned), MerIDRange(), Param(), evfunc(NULL) {}
+        : Method(SystemUnassigned), MerIDRange(), grpContent(),
+          Param(), evfunc(NULL), inifunc(NULL), updfunc() {}
       ~SysGrouping() { clearData(); }
 
       void clearData() {
-        evfunc=NULL;  release(Param);   release(MerIDRange);
-        Method=SystemUnassigned;
+        release(updfunc); inifunc=NULL;   evfunc=NULL;  release(Param);
+        release(grpContent);  release(MerIDRange);  Method=SystemUnassigned;
       }
       bool isvalid() const {
-        return IsValid(evfunc)&&IsValid(MerIDRange)&&(Method!=SystemUnassigned);
+        return IsValid(evfunc)&&IsValid(inifunc)&&
+               IsValid(MerIDRange)&&IsValid(grpContent)&&
+               (Method!=SystemUnassigned)&&
+               (IsValid(Param)||(Method==SystemFixPosition));
+      }
+
+      void buildGrpContent(SysContentType<T,VecType>& SC) {
+        for(unsigned int i=0;i<grpContent.size;++i)
+          refer(grpContent[i],SC,MerIDRange[i].u[0],MerIDRange[i].u[1]);
+      }
+
+      void init(SysContentType<T,VecType>& SC,
+                SysInteraction<IDType,ParamType,GeomType,T>& SI) {
+        inifunc(SC,SI,*this);
+      }
+      void evolute(SysContentType<T,VecType>& SC,
+                   SysInteraction<IDType,ParamType,GeomType,T>& SI) {
+        evfunv(SC,SI,*this);
+      }
+      void update(const unsigned int& method_id,
+                  SysContentType<T,VecType>& SC,
+                  SysInteraction<IDType,ParamType,GeomType,T>& SI) {
+        updfunc[method_id](SC,SI,*this);
       }
 
     private:

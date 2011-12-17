@@ -3,7 +3,7 @@
 #define _System_Content_WithEGV_Refer_H_
 
 #include "system/content/with-egv/interface.h"
-#include "system/content/with-eg/allocate.h"
+#include "system/content/with-eg/refer.h"
 
 namespace mysimulator {
 
@@ -14,6 +14,7 @@ namespace mysimulator {
     release(S);
     typedef typename SysContentWithEGV<T,VecType>::ParentType   Type;
     refer(static_cast<Type&>(S),static_cast<Type&>(rS),partb,parte,newb);
+    allocate(S.Velocity);
     refer(S.Velocity(),rS.Velocity(),partb,parte,newb);
   }
 

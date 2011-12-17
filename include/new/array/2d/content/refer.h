@@ -11,12 +11,12 @@ namespace mysimulator {
   void refer(Array2DContent<T>& A, const Array2DContent<T>& cA,
              const int& partb, const int& parte, const int& newb) {
     assert(IsValid(cA));
-    assert(partb<parte);
+    assert(partb<=parte);
     assert((partb>=cA.infra.first)&&(parte<=cA.infra.last));
     release(A);
     int begin,end;
     begin=cA.infra[partb].start-cA.base.start;
-    end=cA.infra[parte].start-cA.base.start+cA.infra[parte].size;
+    end=cA.infra[parte].start-cA.base.start+cA.infra[parte].size-1;
     refer(A.base,cA.base,begin,end,0);
     refer(A.infra,cA.infra,partb,parte,newb);
   }
@@ -35,6 +35,7 @@ namespace mysimulator {
   template <typename T>
   void refer(Array2DContent<T>& A, const Array2DContent<T>& cA,
              const unsigned int& n) {
+    assert(cA.NumLines()>=n);
     refer(A,cA,cA.first,cA.first+n-1);
   }
 

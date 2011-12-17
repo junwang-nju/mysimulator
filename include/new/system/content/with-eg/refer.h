@@ -14,6 +14,7 @@ namespace mysimulator {
     release(S);
     typedef typename SysContentWithEG<T,VecType>::ParentType  Type;
     refer(static_cast<Type&>(S),static_cast<Type&>(rS),partb,parte,newb);
+    allocate(S.Gradient);
     refer(S.Gradient(),rS.Gradient(),partb,parte,newb);
   }
 

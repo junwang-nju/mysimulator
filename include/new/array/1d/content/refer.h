@@ -11,7 +11,7 @@ namespace mysimulator {
   void refer(Array1DContent<T>& A, const Array1DContent<T>& cA,
              const int& partb, const int& parte, const int& newb) {
     assert(IsValid(cA));
-    assert(partb<parte);
+    assert(partb<=parte);
     assert((partb>=cA.first)&&(parte<=cA.last));
     release(A);
     init(A,cA.head+partb,newb,newb+parte-partb);

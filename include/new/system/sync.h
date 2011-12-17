@@ -11,9 +11,9 @@ namespace mysimulator {
   template <typename T, typename IDType, typename ParamType, typename GeomType,
             template<typename> class VecType>
   void sync(SysContentWithE<T,VecType>& S,
-            const SysInteraction<IDType,ParamType,GeomType,T>& SI) {
-    S.Energy=0;
-    Calc(SI.Func(),S.X(),SI.ID(),SI.Param(),SI.Geom(),S.Energy);
+            SysInteraction<IDType,ParamType,GeomType,T>& SI) {
+    S.Energy()=0;
+    Calc(SI.Func(),S.X(),SI.ID(),SI.Param(),SI.Geom(),S.Energy());
   }
 
 }
@@ -25,10 +25,10 @@ namespace mysimulator {
   template <typename T, typename IDType, typename ParamType, typename GeomType,
             template<typename> class VecType>
   void sync(SysContentWithEG<T,VecType>& S,
-            const SysInteraction<IDType,ParamType,GeomType,T>& SI) {
-    S.Energy=0;
-    fill(S.Gradient,cZero);
-    Calc(SI.Func(),S.X(),SI.ID(),SI.Param(),SI.Geom(),S.Energy,S.Gradient());
+            SysInteraction<IDType,ParamType,GeomType,T>& SI) {
+    S.Energy()=0;
+    fill(S.Gradient(),cZero);
+    Calc(SI.Func(),S.X(),SI.ID(),SI.Param(),SI.Geom(),S.Energy(),S.Gradient());
   }
 
 }
@@ -40,8 +40,8 @@ namespace mysimulator {
   template <typename T, typename IDType, typename ParamType, typename GeomType,
             template<typename> class VecType>
   void sync(SysContentWithG<T,VecType>& S,
-            const SysInteraction<IDType,ParamType,GeomType,T>& SI) {
-    fill(S.Gradient,cZero);
+            SysInteraction<IDType,ParamType,GeomType,T>& SI) {
+    fill(S.Gradient(),cZero);
     Calc(SI.Func(),S.X(),SI.ID(),SI.Param(),SI.Geom(),S.Gradient());
   }
 

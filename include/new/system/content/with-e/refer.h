@@ -3,6 +3,7 @@
 #define _System_Content_WithE_Refer_H_
 
 #include "system/content/with-e/interface.h"
+#include "system/content/base/refer.h"
 
 namespace mysimulator {
 

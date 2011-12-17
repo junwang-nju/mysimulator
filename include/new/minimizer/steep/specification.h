@@ -7,65 +7,72 @@
 
 namespace mysimulator {
 
-  template <LineMinimizerName LMinName, typename T,typename FT,typename IDT,
-            typename PT,typename GT,template <typename> class ST>
-  struct Minimizer<SteepestDescent,LMinName,T,FT,IDT,PT,GT,ST>
-    : public LineMinimizer<LMinName,T,FT,IDT,PT,GT,ST> {
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
+  struct Minimizer<SteepestDescent,LMN,T,IDT,PT,GT,VT,SCT,LCM>
+      : public LineMinimizer<LMN,T,IDT,PT,GT,VT,SCT,LCM> {
 
     public:
 
-      typedef Minimizer<SteepestDescent,LMinName,T,FT,IDT,PT,GT,ST> Type;
-      typedef LineMinimizer<LMinName,T,FT,IDT,PT,GT,ST>   ParentType;
+      typedef Minimizer<SteepestDescent,LMN,T,IDT,PT,GT,VT,SCT,LCM>   Type;
+      typedef LineMinimizer<LMN,T,IDT,PT,GT,VT,SCT,LCM> ParentType;
 
-      static const unsigned int DefaultMaxIterations;
+      static const unsigned int DefaultMaxSteps;
 
       Minimizer() : ParentType() {}
       ~Minimizer() { clearData(); }
 
       void clearData() { static_cast<ParentType*>(this)->clearData(); }
-      bool isvalid() const {
-        return static_cast<const ParentType*>(this)->isvalid();
-      }
+      bool isvalid() const { return static_cast<ParentType*>(this)->isvalid(); }
 
-      virtual int Go(const unsigned int& MaxIt=DefaultMaxIterations) {
+      int Go(const unsigned int& MaxSteps=DefaultMaxSteps) {
         assert(isvalid());
         this->GCalcCount=0;
         this->LineSearchCount=0;
-        T tmd;
-        int f=0, lf;
-        for(unsigned int nite=0;nite<MaxIt;++nite) {
-          copy(this->LineDirc,this->Sys().G);
-          tmd=norm(this->LineDirc);
-          if(tmd<this->GradThreshold) {
-            this->LineSearchCount=nite; f=3; break;
+        _load(*this);
+        T tmd,tmd2;
+        int fg=0, lfg;
+        for(unsigned int ns=0;ns<MaxSteps;++ns) {
+          copy(this->LineDirc(),this->MemSys().Content().Gradient());
+          tmd=norm(this->LineDirc());
+          if(tmd<this->GradientThreshold) {
+            fg=3;
+            break;
           }
-          scale(this->LineDirc,-1./tmd);
+          scale(this->LineDirc(),-1./tmd);
           this->Proj=-tmd;
-          tmd=this->Sys().Energy;
-          lf=static_cast<ParentType*>(this)->_Go();
-          if(lf==2) { this->LineSearchCount=nite; f=1; break; }
-          else if(lf==0) { this->LineSearchCount=nite; f=4; break; }
-          if(2*absval(tmd-this->Sys().Energy)<=
-             absval(tmd+this->Sys().Energy)*RelativeDelta<T>()) {
-            this->LineSearchCount=nite; f=2;  break;
+          tmd=this->MemSys().Content().Energy();
+          lfg=static_cast<ParentType*>(this)->Go();
+          this->LineSearchCount++;
+          if(lfg==2) {
+            fg=1;
+            break;
+          } else if(lfg==0) {
+            fg=4;
+            break;
+          } else {
+            tmd2=this->MemSys().Content().Energy();
+            if(2*absval(tmd-tmd2)<=absval(tmd+tmd2)*RelativeDelta<T>()) {
+              fg=2;
+              break;
+            }
           }
         }
-        if(f==0)  this->LineSearchCount=MaxIt;
-        return f;
+        _write(*this);
+        return fg;
       }
-
-    private:
-
-      Minimizer(const Type&) {}
-      Type& operator=(const Type&) { return *this; }
 
   };
 
-  template <LineMinimizerName LMinName, typename T,typename FT,typename IDT,
-            typename PT,typename GT,template <typename> class ST>
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
   const unsigned int
-  Minimizer<SteepestDescent,LMinName,T,FT,IDT,PT,GT,ST>::DefaultMaxIterations
-  =10000;
+  Minimizer<SteepestDescent,LMN,T,IDT,PT,GT,VT,SCT,LCM>::DefaultMaxSteps=
+      10000;
 
 }
 

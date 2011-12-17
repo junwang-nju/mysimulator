@@ -41,4 +41,6 @@ namespace mysimulator {
 
 }
 
+#undef _REFER_BASIC
+
 #endif

@@ -7,103 +7,122 @@
 
 namespace mysimulator {
 
-  template <LineMinimizerName LMinName, typename T, typename FT,typename IDT,
-            typename PT,typename GT,template <typename> class ST>
-  struct Minimizer<ConjugateGradient,LMinName,T,FT,IDT,PT,GT,ST>
-    : public LineMinimizer<LMinName,T,FT,IDT,PT,GT,ST> {
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
+  struct Minimizer<ConjugateGradient,LMN,T,IDT,PT,GT,VT,SCT,LCM>
+      : public LineMinimizer<LMN,T,IDT,PT,GT,VT,SCT,LCM> {
 
     public:
 
-      typedef Minimizer<ConjugateGradient,LMinName,T,FT,IDT,PT,GT,ST> Type;
-      typedef LineMinimizer<LMinName,T,FT,IDT,PT,GT,ST>     ParentType;
+      typedef Minimizer<ConjugateGradient,LMN,T,IDT,PT,GT,VT,SCT,LCM>   Type;
+      typedef LineMinimizer<LMN,T,IDT,PT,GT,VT,SCT,LCM>   ParentType;
 
-      static const unsigned int DefaultMaxIterations;
+      static const unsigned int DefaultMaxSteps;
 
-      ST<T> OldMinG;
+      VT<T> OldMinG;
       T MaxBeta;
 
-      Minimizer() : ParentType(), OldMinG(), MaxBeta() {}
+      Minimizer() : ParentType(), OldMinG(), MaxBeta(0) {}
       ~Minimizer() { clearData(); }
 
       void clearData() {
         static_cast<ParentType*>(this)->clearData();
         release(OldMinG);
-        MaxBeta=0.;
+        MaxBeta=0;
       }
       bool isvalid() const {
-        return static_cast<const ParentType*>(this)->isvalid()&&
-               IsValid(OldMinG)&&(MaxBeta>0.);
+        return static_cast<ParentType*>(this)->isvalid()&&IsValid(OldMinG)&&
+               (MaxBeta>0.);
       }
 
-      void SetMaxBeta() { copy(MaxBeta,5); }
+      void SetMaxBeta() { copy(MaxBeta,5.); }
       template <typename T1>
       void SetMaxBeta(const T1& MB) { copy(MaxBeta,MB); }
 
-      virtual int Go(const unsigned int& MaxIt=DefaultMaxIterations) {
+      int Go(const unsigned int& MaxSteps=DefaultMaxSteps) {
         assert(isvalid());
         this->GCalcCount=0;
         this->LineSearchCount=0;
+        _load(*this);
+        int fg=0, lfg;
         bool isSteep=true;
-        bool nxMode;
+        bool nextMode;
         T beta=0;
         T fnorm,fnorm2;
-        fnorm=norm(this->Sys().G());
-        if(fnorm<this->GradThreshold) return 3;
-        fnorm2=fnorm*fnorm;
-        T tmd,oldfnorm2=1,dnorm=0;
-        int f=0, lf;
-        for(unsigned int neval=0;neval<MaxIt;++neval) {
-          if(!isSteep) {
-            tmd=dot(this->Sys().G(),this->OldMinG);
-            beta=(fnorm2-tmd)/oldfnorm2;
-            isSteep=(absval(beta)>MaxBeta);
-          }
-          if(!isSteep) {
-            tmd=beta*dnorm;
-            scale(this->LineDirc,tmd);
-            shift(this->LineDirc,-cOne,this->Sys().G());
-            this->Proj*=tmd;
-            dnorm=sqroot(tmd*tmd+fnorm2-2*this->Proj);
-            this->Proj-=fnorm2;
-            this->Proj/=dnorm;
-            isSteep=((this->Proj>0)||(dnorm<this->GradThreshold));
-          }
-          if(isSteep) {
-            if(fnorm<this->GradThreshold) {
-              this->LineSearchCount=neval-1;
-              f=4;
-              break;
-            }
-            copy(beta,cZero);
-            dnorm=fnorm;
-            copy(this->LineDirc,this->Sys().G);
-            scale(this->LineDirc,-cOne);
-            this->Proj=-fnorm;
-          }
-          tmd=1./dnorm;
-          scale(this->LineDirc,tmd);
-          copy(this->OldMinG,this->Sys().G);
-          tmd=this->Sys().Energy;
-          lf=static_cast<ParentType*>(this)->_Go();
-          nxMode=false;
-          if(lf==2) {
-            if(isSteep) { this->LineSearchCount=neval; f=1; break; }
-            --neval;
-            nxMode=true;
-          } else if(lf==0) { this->LineSearchCount=neval; f=5; break; }
-          if(2*absval(tmd-this->Sys().Energy)<
-             absval(tmd+this->Sys().Energy)*RelativeDelta<T>()) {
-            if(isSteep) { this->LineSearchCount=neval; f=2; break; }
-            --neval;
-            nxMode=true;
-          }
-          isSteep=nxMode;
-          oldfnorm2=fnorm2;
-          fnorm=norm(this->Sys().G());
+        fnorm=norm(this->MemSys().Content().Gradient());
+        if(fnorm<this->GradientThreshold) fg=3;
+        else {
           fnorm2=fnorm*fnorm;
+          T tmd,tmd2,oldfnorm2=1,dnorm=0;
+          for(unsigned int ns=0;ns<MaxSteps;++ns) {
+            if(!isSteep) {
+              tmd=dot(this->MemSys().Content().Gradient(),OldMinG);
+              beta=(fnorm2-tmd)/oldfnorm2;
+              isSteep=(absval(beta)>MaxBeta);
+            }
+            if(!isSteep) {
+              tmd=beta*dnorm;
+              scale(this->LineDirc(),tmd);
+              shift(this->LineDirc(),-cOne,
+                    this->MemSys().Content().Gradient());
+              this->Proj*=tmd;
+              dnorm=sqroot(tmd*tmd+fnorm2-2*this->Proj);
+              this->Proj-=fnorm2;
+              this->Proj/=dnorm;
+              isSteep=((this->Proj>0)||(dnorm<this->GradientThreshold));
+            }
+            if(isSteep) {
+              if(fnorm<this->GradientThreshold) {
+                fg=4;
+                break;
+              }
+              copy(beta,cZero);
+              dnorm=fnorm;
+              copy(this->LineDirc(),
+                  this->MemSys().Content().Gradient());
+              scale(this->LineDirc(),-cOne);
+              this->Proj=fnorm;
+            }
+            tmd=1./dnorm;
+            scale(this->LineDirc(),tmd);
+            copy(OldMinG,this->MemSys().Content().Gradient());
+            tmd=this->MemSys().Content().Energy();
+            lfg=static_cast<ParentType*>(this)->Go();
+            this->LineSearchCount++;
+            nextMode=false;
+            if(lfg==2) {
+              if(isSteep) {
+                fg=1;
+                break;
+              } else {
+                --ns;
+                nextMode=true;
+              }
+            } else if(lfg==0) {
+              fg=5;
+              break;
+            } else {
+              tmd2=this->MemSys().Content().Energy();
+              if(2*absval(tmd-tmd2)<absval(tmd+tmd2)*RelativeDelta<T>()) {
+                if(isSteep) {
+                  fg=2;
+                  break;
+                } else {
+                  --ns;
+                  nextMode=true;
+                }
+              }
+            }
+            isSteep=nextMode;
+            oldfnorm2=fnorm2;
+            fnorm=norm(this->MemSys().Content().Gradient());
+            fnorm2=fnorm*fnorm;
+          }
         }
-        if(f==0)  this->LineSearchCount=MaxIt;
-        return f;
+        _write(*this);
+        return fg;
       }
 
     private:
@@ -113,11 +132,13 @@ namespace mysimulator {
 
   };
 
-  template <LineMinimizerName LMN, typename T, typename FT,typename IDT,
-            typename PT,typename GT,template <typename> class ST>
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,template<typename> class VT,
+            template<typename,template<typename>class> class SCT,
+            LineMinimizerConditionMethodName LCM>
   const unsigned int
-  Minimizer<ConjugateGradient,LMN,T,FT,IDT,PT,GT,ST>::DefaultMaxIterations
-  =1000;
+  Minimizer<ConjugateGradient,LMN,T,IDT,PT,GT,VT,SCT,LCM>::DefaultMaxSteps=
+      1000;
 
 }
 

@@ -20,10 +20,12 @@ namespace mysimulator {
       ~SysContentWithE() { clearData(); }
 
       void clearData() {
+        release(Energy);
         static_cast<ParentType*>(this)->clearData();
-        Energy=0;
       }
-      bool isvalid() { return static_cast<ParentType*>(this)->isvalid(); }
+      bool isvalid() const {
+        return static_cast<const ParentType*>(this)->isvalid();
+      }
 
     private:
 
