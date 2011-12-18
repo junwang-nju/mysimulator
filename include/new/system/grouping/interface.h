@@ -26,17 +26,17 @@ namespace mysimulator {
       Array1D<Unique64Bit> MerIDRange;
       Array1D<SysContentType<T,VecType> > grpContent;
       Array1D<Unique64Bit> Param;
-      FuncType evfunc;
+      Array1D<FuncType> evfunc;
       FuncType inifunc;
       Array1D<FuncType> updfunc;
 
       SysGrouping()
         : Method(SystemUnassigned), MerIDRange(), grpContent(),
-          Param(), evfunc(NULL), inifunc(NULL), updfunc() {}
+          Param(), evfunc(), inifunc(NULL), updfunc() {}
       ~SysGrouping() { clearData(); }
 
       void clearData() {
-        release(updfunc); inifunc=NULL;   evfunc=NULL;  release(Param);
+        release(updfunc); inifunc=NULL;   release(evfunc);  release(Param);
         release(grpContent);  release(MerIDRange);  Method=SystemUnassigned;
       }
       bool isvalid() const {
@@ -55,9 +55,10 @@ namespace mysimulator {
                 SysInteraction<IDType,ParamType,GeomType,T>& SI) {
         inifunc(SC,SI,*this);
       }
-      void evolute(SysContentType<T,VecType>& SC,
+      void evolute(const unsigned int& method_id,
+                   SysContentType<T,VecType>& SC,
                    SysInteraction<IDType,ParamType,GeomType,T>& SI) {
-        evfunc(SC,SI,*this);
+        evfunc[method_id](SC,SI,*this);
       }
       void update(const unsigned int& method_id,
                   SysContentType<T,VecType>& SC,
