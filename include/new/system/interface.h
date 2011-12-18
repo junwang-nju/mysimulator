@@ -5,6 +5,9 @@
 #include "system/grouping/interface.h"
 #include "array/1d/allocate.h"
 #include "array/1d/fill.h"
+#include "system/evolute/mode-1.h"
+#include "system/evolute/mode-2.h"
+#include "system/evolute/mode-3.h"
 
 namespace mysimulator {
 
@@ -17,22 +20,30 @@ namespace mysimulator {
 
       typedef System<T,IDType,ParamType,GeomType,VecType,SysContentType>
               Type;
+      typedef SysContentType<T,VecType> ContentType;
+      typedef SysInteraction<IDType,ParamType,GeomType,T> InteractionType;
+      typedef SysGrouping<T,IDType,ParamType,GeomType,VecType,SysContentType>
+              GroupingType;
+      typedef void (*EvFuncType)(ContentType&,InteractionType&,
+                                 Array1D<GroupingType>&,
+                                 const Array1D<Array1D<unsigned int> >&);
 
-      Object<SysContentType<T,VecType> > Content;
-      Object<SysInteraction<IDType,ParamType,GeomType,T> > Interaction;
-      Array1D<SysGrouping<T,IDType,ParamType,GeomType,VecType,SysContentType> >
-        Groups;
+      Object<ContentType> Content;
+      Object<InteractionType> Interaction;
+      Array1D<GroupingType> Groups;
       Array1D<Array1D<unsigned int> > GrpMap;
+      EvFuncType evfunc;
 
-      System() : Content(), Interaction(), Groups(), GrpMap() {}
+      System() : Content(), Interaction(), Groups(), GrpMap(), evfunc(NULL) {}
       ~System() { clearData(); }
 
       void clearData() {
         release(GrpMap);release(Groups);release(Content);release(Interaction);
+        evfunc=NULL;
       }
       bool isvalid() const {
         return IsValid(Content)&&IsValid(Interaction)&&IsValid(Groups)&&
-               IsValid(GrpMap);
+               IsValid(GrpMap)&&IsValid(evfunc);
       }
 
       void init() {
@@ -42,11 +53,10 @@ namespace mysimulator {
       }
       void evolute() {
         assert(isvalid());
-        for(unsigned int i=0;i<Groups.size;++i)
-          Groups[i].evolute(Content(),Interaction());
+        evfunc(Content(),Interaction(),Groups,GrpMap);
       }
 
-      void mapBuild() {
+      void Build() {
         assert(IsValid(Groups));
         Array1D<unsigned int> sz;
         allocate(sz,NumSystemGroupingMethods);
@@ -60,6 +70,25 @@ namespace mysimulator {
           GrpMap[k][sz[k]]=i;   sz[k]++;
         }
         release(sz);
+        unsigned int mode=0;
+        for(unsigned int i=0;i<GrpMap.size;++i)
+          mode+=(GrpMap[i].size>0?1:0)<<i;
+        switch(mode) {
+          case 1:
+            evfunc=SystemEvoluteMode1<T,IDType,ParamType,GeomType,VecType,
+                                      SysContentType>;
+            break;
+          case 2:
+            evfunc=SystemEvoluteMode2<T,IDType,ParamType,GeomType,VecType,
+                                      SysContentType>;
+            break;
+          case 3:
+            evfunc=SystemEvoluteMode3<T,IDType,ParamType,GeomType,VecType,
+                                      SysContentType>;
+            break;
+          default:
+            Error("Unknown Mode for Evolution!");
+        }
       }
 
     private:

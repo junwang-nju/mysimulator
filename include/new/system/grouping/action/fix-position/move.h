@@ -10,8 +10,8 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,
             template<typename> class VT,
             template<typename,template<typename> class> class SCT>
-  void EvoluteFixPosition(SCT<T,VT>& S, SysInteraction<IDT,PT,GT,T>& SI,
-                          SysGrouping<T,IDT,PT,GT,VT,SCT>& SG) {}
+  void EvoluteFixPositionNoMove(SCT<T,VT>& S, SysInteraction<IDT,PT,GT,T>& SI,
+                                SysGrouping<T,IDT,PT,GT,VT,SCT>& SG) {}
 
 }
 

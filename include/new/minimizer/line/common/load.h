@@ -56,8 +56,8 @@ namespace mysimulator {
           Error("This Grouping Method Cannot be processed!");
       }
     }
-    M.MemSys().mapBuild();
-    M.RunSys().mapBuild();
+    M.MemSys().Build();
+    M.RunSys().Build();
     M.MemSys().init();
     M.RunSys().init();
   }

@@ -11,7 +11,7 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  void EvoluteMinimizerLineRegular(
+  void EvoluteMinimizerLineRegularShift(
       SCT<T,VT>& SC, SysInteraction<IDT,PT,GT,T>&,
       SysGrouping<T,IDT,PT,GT,VT,SCT>& SG) {
     Error("Improper System Content Type!");
@@ -19,7 +19,7 @@ namespace mysimulator {
 
   template <typename T,typename IDT,typename PT,typename GT,
             template<typename> class VT>
-  void EvoluteMinimizerLineRegular(
+  void EvoluteMinimizerLineRegularShift(
       SysContentWithEGV<T,VT>& SC, SysInteraction<IDT,PT,GT,T>&,
       SysGrouping<T,IDT,PT,GT,VT,SysContentWithEGV>& SG) {
     assert(IsValid(SC)&&IsValid(SG));
