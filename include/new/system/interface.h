@@ -7,7 +7,7 @@
 #include "array/1d/fill.h"
 
 #define _DefEvFunc(name) \
-  evfunc=name<T,IDType,ParamType,GeomType,VecType,SysContentType>
+  evfunc=name<T,IDType,ParamType,GeomType,VecType,SysContentType>;
 
 namespace mysimulator {
 
@@ -89,31 +89,34 @@ namespace mysimulator {
               Error("No Propagate Available!");
               break;
             case 2:
-              _DefEvFunc(SysEvoluteModeFPOnly);
+              _DefEvFunc(SysEvoluteModeFPOnly)
               break;
             case 4:
-              _DefEvFunc(SysEvoluteModeMLROnly);
+              _DefEvFunc(SysEvoluteModeMLROnly)
               break;
             case 6:   //  4+2
-              _DefEvFunc(SysEvoluteModeFPMLR);
+              _DefEvFunc(SysEvoluteModeFPMLR)
               break;
             case 8:
-              _DefEvFunc(SysEvoluteModeCEVVOnly);
+              _DefEvFunc(SysEvoluteModeCEVVOnly)
               break;
             case 10:  //  8+2
-              _DefEvFunc(SysEvoluteModeFPCEVV);
+              _DefEvFunc(SysEvoluteModeFPCEVV)
               break;
             case 16:
-              _DefEvFunc(SysEvoluteModeLgVVOnly);
+              _DefEvFunc(SysEvoluteModeLgVVOnly)
               break;
             case 18:  //  16+2
-              _DefEvFunc(SysEvoluteModeFPLgVV);
+              _DefEvFunc(SysEvoluteModeFPLgVV)
               break;
             case 24:  //  16+8
-              _DefEvFunc(SysEvoluteModeCELgVV);
+              _DefEvFunc(SysEvoluteModeCELgVV)
               break;
             case 26:  //  16+8+2
-              _DefEvFunc(SysEvoluteModeFPCELgVV);
+              _DefEvFunc(SysEvoluteModeFPCELgVV)
+              break;
+            case 32:
+              _DefEvFunc(SysEvoluteModeBsVVOnly)
               break;
             default:
               Error("Unknown Mode to Evalute!");

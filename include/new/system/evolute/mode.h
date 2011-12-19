@@ -12,6 +12,7 @@
 #include "system/evolute/mode-lgv-fp.h"
 #include "system/evolute/mode-cev-fp.h"
 #include "system/evolute/mode-cev-lgv-fp.h"
+#include "system/evolute/mode-bsv-only.h"
 
 #endif
 
