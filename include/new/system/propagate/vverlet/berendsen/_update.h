@@ -7,59 +7,54 @@
 namespace mysimulator {
 
   template <typename T>
-  void _UpdateFuncBsVVerletNegHTIMGlobalMass(
-      const T& dt,const Unique64Bit& Mass,Unique64Bit& nhtim,
-      const unsigned int&) {
-    _UpdateFuncCEVVerletHTIMGlobaleMass<T>(dt,Mass,nhtim,0);
+  void _UpdateFuncBsVVerletNegHTIMGMass(
+      const T& dt,const Unique64Bit& Mass,Unique64Bit& nhtim) {
+    _UpdateFuncCEVVerletHTIMGMass<T>(dt,Mass,nhtim);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncBsVVerletNegHTIMArrayMass(
-      const T& dt,const Unique64Bit& Mass,Unique64Bit& nhtim,
-      const unsigned int& n) {
-    _UpdateFuncCEVVerletHTIMArrayMass<T,VT>(dt,Mass,nhtim,n);
+  void _UpdateFuncBsVVerletNegHTIMAMass(
+      const T& dt,const Unique64Bit& Mass,Unique64Bit& nhtim) {
+    _UpdateFuncCEVVerletHTIMAMass<T,VT>(dt,Mass,nhtim);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncBsVVerletVSQGlobalMass(
-      Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int&) {
-    _UpdateFuncCEVVerletVSQGlobalMass<T,VT>(VSQ,Vel,0);
+  void _UpdateFuncBsVVerletVSQGMass(
+      Unique64Bit& VSQ, const Array1DContent<SysContentWithEGV<T,VT> >& gC) {
+    _UpdateFuncCEVVerletVSQGMass<T,VT>(VSQ,gC);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncBsVVerletVSQArrayMass(
-      Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int& n) {
-    _UpdateFuncCEVVerletVSQArrayMass<T,VT>(VSQ,Vel,n);
-  }
-
-  template <typename T>
-  void _UpdateFuncBsVVerletVSQInitGlobalMass(Unique64Bit& VSQ) {
-    _UpdateFuncCEVVerletVSQInitGlobalMass<T>(VSQ);
-  }
-
-  template <typename T, template<typename> class VT>
-  void _UpdateFuncBsVVerletVSQInitArrayMass(Unique64Bit& VSQ) {
-    _UpdateFuncCEVVerletVSQInitArrayMass<T,VT>(VSQ);
-  }
-
-  template <typename T>
-  void _UpdateFuncBsVVerletDualKEGlobalMass(
-      const Unique64Bit& VSQ, const Unique64Bit& Mass, T& dKE) {
-    dKE=(*reinterpret_cast<T*>(VSQ.ptr[0]))*
-        (*reinterpret_cast<T*>(Mass.ptr[0]));
-  }
-
-  template <typename T, template<typename> class VT>
-  void _UpdateFuncBsVVerletDualKEArrayMass(
-      const Unique64Bit& VSQ, const Unique64Bit& Mass, T& dKE) {
-    typedef Array1D<VT<T> >   AVT;
-    dKE=0;
-    for(unsigned int i=0;i<reinterpret_cast<AVT*>(VSQ.ptr[0])->size;++i)
-      dKE+=dot((*reinterpret_cast<AVT*>(Mass.ptr[0]))[i],
-               (*reinterpret_cast<AVT*>(VSQ.ptr[0]))[i]);
+  void _UpdateFuncBsVVerletVSQAMass(
+      Unique64Bit& VSQ, const Array1DContent<SysContentWithEGV<T,VT> >& gC) {
+    _UpdateFuncCEVVerletVSQAMass<T,VT>(VSQ,gC);
   }
 
 }
+
+#define _VALUE(name) (*reinterpret_cast<T*>(name.ptr[0]))
+#define _CARRAY(name) (*reinterpret_cast<const Array1D<VT<T> >*>(name.ptr[0]))
+
+namespace mysimulator {
+
+  template <typename T>
+  void _UpdateFuncBsVVerletDualKEGMass(
+      const Unique64Bit& VSQ, const Unique64Bit& Mass, T& dKE) {
+    dKE=_VALUE(VSQ)*_VALUE(Mass);
+  }
+
+  template <typename T, template<typename> class VT>
+  void _UpdateFuncBsVVerletDualKEAMass(
+      const Unique64Bit& VSQ, const Unique64Bit& Mass, T& dKE) {
+    dKE=0;
+    for(unsigned int i=0;i<_CARRAY(VSQ).size;++i)
+      dKE+=dot(_CARRAY(Mass)[i],_CARRAY(VSQ)[i]);
+  }
+
+}
+
+#undef _CARRAY
+#undef _VALUE
 
 #endif
 

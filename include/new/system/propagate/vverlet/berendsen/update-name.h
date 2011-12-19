@@ -5,11 +5,11 @@
 namespace mysimulator {
 
   enum UpdateBerendsenVelVerletName {
-    BsVVerletNegHTIMCalc=0,
-    BsVVerletFacCalc,
-    BsVVerletVSQCalc,
-    BsVVerletDualKECalc,
-    BsVVerletKECalc,
+    CalcBsVVerletNegHTIM=0,
+    CalcBsVVerletFac,
+    CalcBsVVerletVSQ,
+    CalcBsVVerletDualKE,
+    CalcBsVVerletKE,
     NumberUpdateBerendsenVelVerlet
   };
 

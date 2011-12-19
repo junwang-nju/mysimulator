@@ -7,29 +7,29 @@
 namespace mysimulator {
 
   template <typename T, template<typename> class VT>
-  void _BfMoveFuncBsVVerletGlobalMass(
+  void _BfMoveFuncBsVVerletGMass(
       VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
       const unsigned int&) {
-    _BfMoveFuncCEVVerletGlobalMass<T,VT>(X,V,G,dt,nhtim,0);
+    _BfMoveFuncCEVVerletGMass<T,VT>(X,V,G,dt,nhtim,0);
   }
 
   template <typename T, template<typename> class VT>
-  void _BfMoveFuncBsVVerletArrayMass(
+  void _BfMoveFuncBsVVerletAMass(
       VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
       const unsigned int& n) {
-    _BfMoveFuncCEVVerletArrayMass<T,VT>(X,V,G,dt,nhtim,n);
+    _BfMoveFuncCEVVerletAMass<T,VT>(X,V,G,dt,nhtim,n);
   }
 
   template <typename T, template<typename> class VT>
-  void _AfMoveFuncBsVVerletGlobalMass(
+  void _AfMoveFuncBsVVerletGMass(
       VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const unsigned int&) {
-    _AfMoveFuncCEVVerletGlobalMass<T,VT>(V,G,nhtim,0);
+    _AfMoveFuncCEVVerletGMass<T,VT>(V,G,nhtim,0);
   }
 
   template <typename T, template<typename> class VT>
-  void _AfMoveFuncBsVerletArrayMass(
+  void _AfMoveFuncBsVerletAMass(
       VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const unsigned int& n) {
-    _AfMoveFuncCEVVerletArrayMass<T,VT>(V,G,nhtim,n);
+    _AfMoveFuncCEVVerletAMass<T,VT>(V,G,nhtim,n);
   }
 
 }
