@@ -29,54 +29,52 @@ namespace mysimulator {
 
 #include "system/content/with-egv/interface.h"
 
+#define _VALUE(name) (*reinterpret_cast<T*>(name.ptr[0]))
+
 namespace mysimulator {
 
   template <typename T, template<typename> class VT>
   void _UpdateCEVVerletHTIM(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
     typedef
-    void (*_RunUpdateFunc)(const T&,const Unique64Bit&,Unique64Bit&,
-                           const unsigned int&);
+    void (*_UpFunc)(const T&,const Unique64Bit&,Unique64Bit&,
+                    const unsigned int&);
     Unique64Bit* P=SE.Param.start;
-    _RunUpdateFunc updfunc=
-      reinterpret_cast<_RunUpdateFunc>(P[CEVVerletUpdateHTIMFunc].ptr[0]);
-    T dt=*reinterpret_cast<T*>(P[CEVVerletTimeStep].ptr[0]);
+    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FunCEVVerletUpdateHTIM].ptr[0]);
+    T dt=_VALUE(P[PtrCEVVerletTimeStep]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      updfunc(dt,P[CEVVerletMass],P[CEVVerletNegHTimeIMass],i);
+      updfunc(dt,P[PtrCEVVerletMass],P[PtrCEVVerletNegHTIM],i);
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateCEVVerletVelocitySQ(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
-    typedef
-    void (*_RunUpdateFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
-    typedef
-    void (*_IniUpdateFunc)(Unique64Bit&);
+    typedef void (*_UpFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
+    typedef void (*_IUpFunc)(Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
     assert(P[CEVVerletVelocitySQ].ptr[0]!=NULL);
-    _RunUpdateFunc updfunc=
-      reinterpret_cast<_RunUpdateFunc>(P[CEVVerletUpdateVSQFunc].ptr[0]);
-    _IniUpdateFunc inifunc=
-      reinterpret_cast<_IniUpdateFunc>(P[CEVVerletUpdateVSQInitFunc].ptr[0]);
-    inifunc(P[CEVVerletVelocitySQ]);
+    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FunCEVVerletUpdateVSQ].ptr[0]);
+    _IUpFunc inifunc=
+      reinterpret_cast<_IUpFunc>(P[FunCEVVerletUpdateVSQInit].ptr[0]);
+    inifunc(P[PtrCEVVerletVelocitySQ]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      updfunc(P[CEVVerletVelocitySQ],SE.grpContent[i].Velocity(),i);
+      updfunc(P[PtrCEVVerletVelocitySQ],SE.grpContent[i].Velocity(),i);
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateCEVVerletKEnergy(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
-    typedef
-    void (*_RunUpdateFunc)(T&,const Unique64Bit&,const Unique64Bit&);
+    typedef void (*_UpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
-    assert(P[CEVVerletVelocitySQ].ptr[0]!=NULL);
-    _RunUpdateFunc updfunc=
-      reinterpret_cast<_RunUpdateFunc>(P[CEVVerletUpdateKEFunc].ptr[0]);
-    updfunc(P[CEVVerletKineticEnergy].value<T>(),P[CEVVerletMass],
-            P[CEVVerletVelocitySQ]);
+    assert(P[PtrCEVVerletVelocitySQ].ptr[0]!=NULL);
+    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FunCEVVerletUpdateKE].ptr[0]);
+    updfunc(P[ValCEVVerletKineticEnergy].value<T>(),P[PtrCEVVerletMass],
+            P[PtrCEVVerletVelocitySQ]);
   }
 
 }
+
+#undef _VALUE
 
 namespace mysimulator {
 

@@ -5,21 +5,21 @@
 namespace mysimulator {
 
   enum ParameterConstEVelVerletame {
-    CEVVerletTimeStep=0,
-    CEVVerletMassMode,
-    CEVVerletMass,
-    CEVVerletMassData,
-    CEVVerletNegHTimeIMass,
-    CEVVerletNegHTimeIMassData,
-    CEVVerletVelocitySQ,
-    CEVVerletVelocitySQData,
-    CEVVerletKineticEnergy,
-    CEVVerletUpdateHTIMFunc,
-    CEVVerletUpdateVSQFunc,
-    CEVVerletUpdateVSQInitFunc,
-    CEVVerletUpdateKEFunc,
-    CEVVerletBfMoveFunc,
-    CEVVerletAfMoveFunc,
+    ModCEVVerletMass=0,
+    PtrCEVVerletTimeStep,
+    PtrCEVVerletMass,
+    PtrCEVVerletNegHTIM,
+    PtrCEVVerletVelocitySQ,
+    DatCEVVerletMass,
+    DatCEVVerletNegHTIM,
+    DatCEVVerletVelocitySQ,
+    ValCEVVerletKineticEnergy,
+    FunCEVVerletUpdateHTIM,
+    FunCEVVerletUpdateVSQ,
+    FunCEVVerletUpdateVSQInit,
+    FunCEVVerletUpdateKE,
+    FunCEVVerletBfMove,
+    FunCEVVerletAfMove,
     NumberParameterConstEVelVerlet
   };
 

@@ -5,73 +5,70 @@
 #include "unique/64bit/interface.h"
 #include "array/1d/interface.h"
 
+#define _VALUE(name) (*reinterpret_cast<T*>(name.ptr[0]))
+#define _ARRAY(name) (*reinterpret_cast<Array1D<VT<T> >*>(name.ptr[0]))
+#define _CARRAY(name) (*reinterpret_cast<const Array1D<VT<T> >*>(name.ptr[0]))
+
 namespace mysimulator {
 
   template <typename T>
-  void _UpdateFuncCEVVerletHTIMGlobaleMass(
+  void _UpdateFuncCEVVerletHTIMGMass(
       const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM,
       const unsigned int&) {
-    *reinterpret_cast<T*>(negHTIM.ptr[0])=
-      -0.5*dt/(*reinterpret_cast<T*>(Mass.ptr[0]));
+    _VALUE(negHTIM)=-0.5*dt/_VALUE(Mass);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncCEVVerletHTIMArrayMass(
+  void _UpdateFuncCEVVerletHTIMAMass(
       const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM,
       const unsigned int& n) {
-    typedef Array1D<VT<T> > AVT;
-    copy((*reinterpret_cast<AVT*>(negHTIM.ptr[0]))[n],
-         (*reinterpret_cast<const AVT*>(Mass.ptr[0]))[n]);
-    inverse((*reinterpret_cast<AVT*>(negHTIM.ptr[0]))[n]);
-    scale((*reinterpret_cast<AVT*>(negHTIM.ptr[0]))[n],-dt*0.5);
+    copy(_ARRAY(negHTIM)[n],_CARRAY(Mass)[n]);
+    inverse(_ARRAY(negHTIM)[n]);
+    scale(_ARRAY(negHTIM)[n],-dt*0.5);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncCEVVerletVSQGlobalMass(
+  void _UpdateFuncCEVVerletVSQGMass(
       Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int&) {
-    (*reinterpret_cast<T*>(VSQ.ptr[0]))+=dot(Vel,Vel);
+    _VALUE(VSQ)+=dot(VeL,Vel);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncCEVVerletVSQArrayMass(
+  void _UpdateFuncCEVVerletVSQAMass(
       Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int& n) {
-    typedef Array1D<VT<T> > AVT;
-    copy((*reinterpret_cast<AVT*>(VSQ.ptr[0]))[n],Vel);
-    scale((*reinterpret_cast<AVT*>(VSQ.ptr[0]))[n],Vel);
+    copy(_ARRAY(VSQ)[n],Vel);
+    scale(_ARRAY(VSQ)[n],Vel);
   }
 
   template <typename T>
-  void _UpdateFuncCEVVerletVSQInitGlobalMass(Unique64Bit& VSQ) {
-    (*reinterpret_cast<T*>(VSQ.ptr[0]))=0;
+  void _UpdateFuncCEVVerletVSQInitGMass(Unique64Bit& VSQ) {
+    _VALUE(VSQ)=0;
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncCEVVerletVSQInitArrayMass(Unique64Bit& VSQ) {
-    typedef Array1D<VT<T> > AVT;
-    unsigned int n=reinterpret_cast<AVT*>(VSQ.ptr[0])->size;
-    for(unsigned int i=0;i<n;++i)
-      fill((*reinterpret_cast<AVT*>(VSQ.ptr[0]))[i],0);
+  void _UpdateFuncCEVVerletVSQInitAMass(Unique64Bit& VSQ) {
+    for(unsigned int i=0;i<_ARRAY(VSQ).size;++i)  fill(_ARRAY(VSQ)[i],0);
   }
 
   template <typename T>
-  void _UpdateFuncCEVVerletKEnergyGlobalMass(
+  void _UpdateFuncCEVVerletKEnergyGMass(
       T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
-    KE=0.5*(*reinterpret_cast<T*>(Mass.ptr[0]))*
-           (*reinterpret_cast<T*>(VelSQ.ptr[0]));
+    KE=0.5*_VALUE(Mass)*_VALUE(VelSQ);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncCEVVerletKEnergyArrayMass(
+  void _UpdateFuncCEVVerletKEnergyAMass(
       T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
-    typedef Array1D<VT<T> > AVT;
-    unsigned int n=reinterpret_cast<AVT*>(VelSQ.ptr[0])->size;
     KE=0;
-    for(unsigned int i=0;i<n;++i)
-      KE+=0.5*dot((*reinterpret_cast<AVT*>(Mass.ptr[0]))[i],
-                  (*reinterpret_cast<AVT*>(VelSQ.ptr[0]))[i]);
+    for(unsigned int i=0;i<_ARRAY(VelSQ).size;++i)
+      KE+=0.5*dot(_ARRAY(Mass)[i],_ARRAY(VelSQ)[i]);
   }
 
 }
+
+#undef _CARRAY
+#undef _ARRAY
+#undef _VALUE
 
 #endif
 

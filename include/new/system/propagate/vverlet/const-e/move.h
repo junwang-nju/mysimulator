@@ -23,34 +23,33 @@ namespace mysimulator {
 
 #include "system/content/with-egv/interface.h"
 
+#define _VALUE(name) (*reinterpret_cast<T*>(name.ptr[0]))
+
 namespace mysimulator {
 
   template <typename T, template<typename> class VT>
   void _BfMoveCEVVerlet(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
-    typedef void (*_RunMoveFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,
-                                 const Unique64Bit&,const unsigned int&);
+    typedef void (*_MvFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,const Unique64Bit&,
+                            const unsigned int&);
     Unique64Bit* P=SE.Param.start;
-    _RunMoveFunc mvFunc=
-      reinterpret_cast<_RunMoveFunc>(P[CEVVerletBfMoveFunc].ptr[0]);
-    T dt=*reinterpret_cast<T*>(P[CEVVerletTimeStep].ptr[0]);
+    _MvFunc mvFunc=reinterpret_cast<_MvFunc>(P[FunCEVVerletBfMove].ptr[0]);
+    T dt=_VALUE(P[PtrCEVVerletTimeStep]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
       mvFunc(SE.grpContent[i].X(),SE.grpContent[i].Velocity(),
-             SE.grpContent[i].EGData.Gradient(),dt,
-             P[CEVVerletNegHTimeIMass],i);
+             SE.grpContent[i].EGData.Gradient(),dt,P[PtrCEVVerletNegHTIM],i);
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveCEVVerlet(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
-    typedef void (*_RunMoveFunc)(VT<T>&,VT<T>&,
-                                 const Unique64Bit&,const unsigned int&);
+    typedef void (*_MvFunc)(VT<T>&,VT<T>&,const Unique64Bit&,
+                            const unsigned int&);
     Unique64Bit* P=SE.Param.start;
-    _RunMoveFunc mvFunc=
-      reinterpret_cast<_RunMoveFunc>(P[CEVVerletAfMoveFunc].ptr[0]);
+    _MvFunc mvFunc=reinterpret_cast<_MvFunc>(P[FunCEVVerletAfMove].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
       mvFunc(SE.grpContent[i].Velocity(),SE.grpContent[i].EGData.Gradient(),
-             P[CEVVerletNegHTimeIMass],i);
+             P[PtrCEVVerletNegHTIM],i);
   }
 
 }

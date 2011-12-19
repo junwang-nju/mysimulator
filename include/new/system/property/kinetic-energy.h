@@ -19,12 +19,10 @@ namespace mysimulator {
         SE.update(CEVVerletVSQCalc);
         SE.update(CEVVerletKECalc);
         copy(ke,SE.Param[CEVVerletKineticEnergy]);
-        //ke=SE.Param[CEVVerletKineticEnergy].value<T>();
         break;
       case SysLangevinVelVerlet:
         SE.update(LgVVerletVSQCalc);
         SE.update(LgVVerletKECalc);
-        //ke=SE.Param[LgVVerletKineticEnergy].value<T>();
         copy(ke,SE.Param[LgVVerletKineticEnergy]);
         break;
       default:

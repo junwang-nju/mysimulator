@@ -10,7 +10,6 @@
 #include "array/1d/allocate.h"
 
 #define _CreateElement(name) \
-  assert(P[name##Data].ptr[0]!=NULL);\
   P[name].ptr[0]=P[name##Data].ptr[0];
 
 #define _CreateArray(name,pv,pgv) \
