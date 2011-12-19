@@ -31,8 +31,10 @@ namespace mysimulator {
 
 #define PName(U)    PtrCEVVerlet##U
 #define FName(U)    FunCEVVerlet##U
+#define VName(U)    ValCEVVerlet##U
 
-#define _VALUE(name) (*reinterpret_cast<T*>(name.ptr[0]))
+#define _PVALUE(U)   (*reinterpret_cast<T*>(P[PName(U)].ptr[0]))
+#define _VVALUE(U)   (P[VName(U)].value<T>())
 
 namespace mysimulator {
 
@@ -40,27 +42,21 @@ namespace mysimulator {
   void _UpdateCEVVerletHTIM(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
     typedef
-    void (*_UpFunc)(const T&,const Unique64Bit&,Unique64Bit&,
-                    const unsigned int&);
+    void (*_UpFunc)(const T&,const Unique64Bit&,Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
     _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateHTIM)].ptr[0]);
-    T dt=_VALUE(P[PName(TimeStep)]);
-    for(unsigned int i=0;i<SE.grpContent.size;++i)
-      updfunc(dt,P[PName(Mass)],P[PName(NegHTIM)],i);
+    updfunc(_PVALUE(TimeStep),P[PName(Mass)],P[PName(NegHTIM)]);
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateCEVVerletVelocitySQ(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
-    typedef void (*_UpFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
-    typedef void (*_IUpFunc)(Unique64Bit&);
+    typedef void (*_UpFunc)(Unique64Bit&,
+                            const Array1DContent<SysContentWithEGV<T,VT> >&);
     Unique64Bit* P=SE.Param.start;
     assert(P[PName(VelocitySQ)].ptr[0]!=NULL);
     _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateVSQ)].ptr[0]);
-    _IUpFunc inifunc=reinterpret_cast<_IUpFunc>(P[FName(UpdateVSQInit)].ptr[0]);
-    inifunc(P[PName(VelocitySQ)]);
-    for(unsigned int i=0;i<SE.grpContent.size;++i)
-      updfunc(P[PName(VelocitySQ)],SE.grpContent[i].Velocity(),i);
+    updfunc(P[PName(VelocitySQ)],SE.grpContent);
   }
 
   template <typename T, template<typename> class VT>
@@ -70,14 +66,15 @@ namespace mysimulator {
     Unique64Bit* P=SE.Param.start;
     assert(P[PName(VelocitySQ)].ptr[0]!=NULL);
     _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateKE)].ptr[0]);
-    updfunc(P[ValCEVVerletKineticEnergy].value<T>(),P[PName(Mass)],
-            P[PName(VelocitySQ)]);
+    updfunc(_VVALUE(KineticEnergy),P[PName(Mass)],P[PName(VelocitySQ)]);
   }
 
 }
 
-#undef _VALUE
+#undef _PVALUE
+#undef _VVALUE
 
+#undef VName
 #undef FName
 #undef PName
 

@@ -33,11 +33,10 @@ namespace mysimulator {
   template <typename T, template<typename> class VT,
             template<typename,template<typename>class> class SCT>
   void InitCEVVerlet(SysPropagate<T,VT,SCT>& SE) {
-    typedef void (*UpFunc)(const T&,const Unique64Bit&,Unique64Bit&,
-                           const unsigned int&);
-    typedef void (*UpVFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
+    typedef void (*UpFunc)(const T&,const Unique64Bit&,Unique64Bit&);
+    typedef void (*UpVFunc)(Unique64Bit&,
+                            const Array1DContent<SysContentWithEGV<T,VT> >&);
     typedef void (*UpKFunc)(T&,const Unique64Bit&,const Unique64Bit&);
-    typedef void (*UpIFunc)(Unique64Bit&);
     typedef void (*BMvFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,const Unique64Bit&,
                             const unsigned int&);
     typedef void (*AMvFunc)(VT<T>&,VT<T>&,const Unique64Bit&,
@@ -57,7 +56,6 @@ namespace mysimulator {
         _CreateElement(VelocitySQ)
         _AssignFunc(UpdateVSQ,UpVFunc,(_UpdateFuncCEVVerletVSQGMass<T,VT>))
         _AssignFunc(UpdateKE,UpKFunc,_UpdateFuncCEVVerletKEnergyGMass<T>)
-        _AssignFunc(UpdateVSQInit,UpIFunc,_UpdateFuncCEVVerletVSQInitGMass<T>)
         break;
       case ArrayMass:
         _CreateArray(Mass)
@@ -66,8 +64,6 @@ namespace mysimulator {
           _CreateArray(VelocitySQ)
           _AssignFunc(UpdateVSQ,UpVFunc,(_UpdateFuncCEVVerletVSQAMass<T,VT>))
           _AssignFunc(UpdateKE,UpKFunc,(_UpdateFuncCEVVerletKEnergyAMass<T,VT>))
-          _AssignFunc(UpdateVSQInit,UpIFunc,
-                      (_UpdateFuncCEVVerletVSQInitAMass<T,VT>))
         }
         _AssignFunc(UpdateHTIM,UpFunc,(_UpdateFuncCEVVerletHTIMAMass<T,VT>))
         _AssignFunc(BfMove,BMvFunc,(_BfMoveFuncCEVVerletAMass<T,VT>))

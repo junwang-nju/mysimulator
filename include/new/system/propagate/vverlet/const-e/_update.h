@@ -4,6 +4,7 @@
 
 #include "unique/64bit/interface.h"
 #include "array/1d/interface.h"
+#include "system/content/with-egv/interface.h"
 
 #define _VALUE(name) (*reinterpret_cast<T*>(name.ptr[0]))
 #define _ARRAY(name) (*reinterpret_cast<Array1D<VT<T> >*>(name.ptr[0]))
@@ -13,41 +14,34 @@ namespace mysimulator {
 
   template <typename T>
   void _UpdateFuncCEVVerletHTIMGMass(
-      const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM,
-      const unsigned int&) {
+      const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM) {
     _VALUE(negHTIM)=-0.5*dt/_VALUE(Mass);
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncCEVVerletHTIMAMass(
-      const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM,
-      const unsigned int& n) {
-    copy(_ARRAY(negHTIM)[n],_CARRAY(Mass)[n]);
-    inverse(_ARRAY(negHTIM)[n]);
-    scale(_ARRAY(negHTIM)[n],-dt*0.5);
+      const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM) {
+    for(unsigned int i=0;i<_ARRAY(Mass).size;++i) {
+      copy(_ARRAY(negHTIM)[i],_CARRAY(Mass)[i]);
+      inverse(_ARRAY(negHTIM)[i]);
+      scale(_ARRAY(negHTIM)[i],-dt*0.5);
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncCEVVerletVSQGMass(
-      Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int&) {
-    _VALUE(VSQ)+=dot(Vel,Vel);
+      Unique64Bit& VSQ, const Array1DContent<SysContentWithEGV<T,VT> > & gC) {
+    _VALUE(VSQ)=0;
+    for(unsigned int i=0;i<gC.size;++i) _VALUE(VSQ)+=normSQ(gC.Velocity());
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncCEVVerletVSQAMass(
-      Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int& n) {
-    copy(_ARRAY(VSQ)[n],Vel);
-    scale(_ARRAY(VSQ)[n],Vel);
-  }
-
-  template <typename T>
-  void _UpdateFuncCEVVerletVSQInitGMass(Unique64Bit& VSQ) {
-    _VALUE(VSQ)=0;
-  }
-
-  template <typename T, template<typename> class VT>
-  void _UpdateFuncCEVVerletVSQInitAMass(Unique64Bit& VSQ) {
-    for(unsigned int i=0;i<_ARRAY(VSQ).size;++i)  fill(_ARRAY(VSQ)[i],0);
+      Unique64Bit& VSQ, const Array1DContent<SysContentWithEGV<T,VT> > & gC) {
+    for(unsigned int i=0;i<gC.size;++i) {
+      copy(_ARRAY(VSQ)[i],gC.Velocity());
+      scale(_ARRAY(VSQ)[i],gC.Velocity());
+    }
   }
 
   template <typename T>
