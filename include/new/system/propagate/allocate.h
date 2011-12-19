@@ -39,6 +39,13 @@
 #include "system/propagate/vverlet/langevin/update.h"
 #include "system/propagate/vverlet/langevin/clear.h"
 
+#include "system/propagate/vverlet/berendsen/move-name.h"
+#include "system/propagate/vverlet/berendsen/update-name.h"
+#include "system/propagate/vverlet/berendsen/init.h"
+#include "system/propagate/vverlet/berendsen/move.h"
+#include "system/propagate/vverlet/berendsen/update.h"
+#include "system/propagate/vverlet/berendsen/clear.h"
+
 namespace mysimulator {
 
   template <typename T,template<typename> class VT,
@@ -92,6 +99,21 @@ namespace mysimulator {
         SE.updfunc[CalcLgVVerletVSQ]=UpdateLgVVerletVelocitySQ<T,VT,SCT>;
         SE.updfunc[CalcLgVVerletKE]=UpdateLgVVerletKEnergy<T,VT,SCT>;
         allocate(SE.Param,NumberParameterLangevinVelVerlet);
+        break;
+      case SysBerendsenVelVerlet:
+        SE.inifunc=InitBsVVerlet<T,VT,SCT>;
+        SE.clrfunc=ClearBsVVerlet<T,VT,SCT>;
+        allocate(SE.evfunc,NumberMoveBerendsenVelVerlet);
+        SE.evfunc[BsVVerletBeforeG]=MoveBsVVerletBeforeG<T,VT,SCT>;
+        SE.evfunc[BsVVerletAfterG]=MoveBsVVerletAfterG<T,VT,SCT>;
+        allocate(SE.updfunc,NumberUpdateBerendsenVelVerlet);
+        SE.updfunc[CalcBsVVerletNegHTIM]=UpdateBsVVerletHTIM<T,VT,SCT>;
+        SE.updfunc[CalcBsVVerletFac]=UpdateBsVVerletFac<T,VT,SCT>;
+        SE.updfunc[CalcBsVVerletDOF]=UpdateBsVVerletDOF<T,VT,SCT>;
+        SE.updfunc[CalcBsVVerletVSQ]=UpdateBsVVerletVSQ<T,VT,SCT>;
+        SE.updfunc[CalcBsVVerletDualKE]=UpdateBsVVerletDualKEnergy<T,VT,SCT>;
+        SE.updfunc[CalcBsVVerletKE]=UpdateBsVVerletKEnergy<T,VT,SCT>;
+        allocate(SE.Param,NumberParameterBerendsenVelVerlet);
         break;
       default:
         Error("Unknown Method for System Evolution!");

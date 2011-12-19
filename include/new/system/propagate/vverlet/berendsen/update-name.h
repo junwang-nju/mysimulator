@@ -6,6 +6,7 @@ namespace mysimulator {
 
   enum UpdateBerendsenVelVerletName {
     CalcBsVVerletNegHTIM=0,
+    CalcBsVVerletDOF,
     CalcBsVVerletFac,
     CalcBsVVerletVSQ,
     CalcBsVVerletDualKE,

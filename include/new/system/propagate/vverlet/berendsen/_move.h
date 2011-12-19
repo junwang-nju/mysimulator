@@ -8,28 +8,28 @@ namespace mysimulator {
 
   template <typename T, template<typename> class VT>
   void _BfMoveFuncBsVVerletGMass(
-      VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
-      const unsigned int&) {
-    _BfMoveFuncCEVVerletGMass<T,VT>(X,V,G,dt,nhtim,0);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const T& dt,
+      const Unique64Bit& nhtim) {
+    _BfMoveFuncCEVVerletGMass<T,VT>(gC,dt,nhtim);
   }
 
   template <typename T, template<typename> class VT>
   void _BfMoveFuncBsVVerletAMass(
-      VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
-      const unsigned int& n) {
-    _BfMoveFuncCEVVerletAMass<T,VT>(X,V,G,dt,nhtim,n);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const T& dt,
+      const Unique64Bit& nhtim) {
+    _BfMoveFuncCEVVerletAMass<T,VT>(gC,dt,nhtim);
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncBsVVerletGMass(
-      VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const unsigned int&) {
-    _AfMoveFuncCEVVerletGMass<T,VT>(V,G,nhtim,0);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const Unique64Bit& nhtim){
+    _AfMoveFuncCEVVerletGMass<T,VT>(gC,nhtim);
   }
 
   template <typename T, template<typename> class VT>
-  void _AfMoveFuncBsVerletAMass(
-      VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const unsigned int& n) {
-    _AfMoveFuncCEVVerletAMass<T,VT>(V,G,nhtim,n);
+  void _AfMoveFuncBsVVerletAMass(
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const Unique64Bit& nhtim){
+    _AfMoveFuncCEVVerletAMass<T,VT>(gC,nhtim);
   }
 
 }

@@ -61,7 +61,6 @@ namespace mysimulator {
 
 #undef FName
 #undef PName
-#undef RMode
 
 #endif
 
