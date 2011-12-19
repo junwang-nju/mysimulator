@@ -6,13 +6,11 @@
 #include "object/refer.h"
 #include "dynamics/micro-canonical/specification.h"
 
-#define _OLinkElement(name,obj) \
-  if(obj.size<S.Propagates.size)  allocate(obj,S.Propagates.size);\
-  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&(obj[i]));
+#define DName(U)      DatCEVVerlet##U
 
-#define _OLinkArray(name,obj) \
+#define _LinkArray(U,obj) \
   if(!IsSameSize(obj,S.Content().X()))  imprint(obj,S.Content().X());\
-  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&obj);
+  S.Propagates[i].Param[DName(U)].ptr[0]=reinterpret_cast<void*>(&(obj));
 
 namespace mysimulator {
 
@@ -26,12 +24,11 @@ namespace mysimulator {
     assert(IsMatch(D,S));
     refer(D.Output.S,S);
     for(unsigned int i=0;i<S.Propagates.size;++i) {
-      switch(S.Propagates[i].Param[CEVVerletMassMode].u[0]) {
+      switch(S.Propagates[i].Param[ModCEVVerletMass].u[0]) {
         case GlobalMass:
-          _OLinkElement(CEVVerletVelocitySQData,D.Output.gVelocitySQ)
           break;
         case ArrayMass:
-          _OLinkArray(CEVVerletVelocitySQData,D.Output.vVelocitySQ)
+          _LinkArray(VelocitySQ,D.Output.VelocitySQ)
           break;
         default:
           Error("Unknown Mass Mode!");
@@ -48,7 +45,17 @@ namespace mysimulator {
 
 }
 
+#undef _LinkArray
+
+#undef DName
+
 #include "dynamics/langevin/specification.h"
+
+#define DName(U)      DatLgVVerlet##U
+
+#define _LinkArray(U,obj) \
+  if(!IsSameSize(obj,S.Content().X()))  imprint(obj,S.Content().X());\
+  S.Propagates[i].Param[DName(U)].ptr[0]=reinterpret_cast<void*>(&(obj));
 
 namespace mysimulator {
 
@@ -62,12 +69,11 @@ namespace mysimulator {
     assert(IsMatch(D,S));
     refer(D.Output.S,S);
     for(unsigned int i=0;i<S.Propagates.size;++i) {
-      switch(S.Propagates[i].Param[LgVVerletMassMode].u[0]) {
+      switch(S.Propagates[i].Param[ModLgVVerletMass].u[0]) {
         case GlobalMass:
-          _OLinkElement(LgVVerletVelocitySQData,D.Output.gVelocitySQ)
           break;
         case ArrayMass:
-          _OLinkArray(LgVVerletVelocitySQData,D.Output.vVelocitySQ)
+          _LinkArray(VelocitySQ,D.Output.VelocitySQ)
           break;
         default:
           Error("Unknown Mass Mode!");
@@ -84,8 +90,9 @@ namespace mysimulator {
 
 }
 
-#undef _OLinkArray
-#undef _OLinkElement
+#undef _LinkArray
+
+#undef DName
 
 #endif
 

@@ -10,13 +10,12 @@
 #include "unique/64bit/copy.h"
 #include "array/1d/allocate.h"
 
-#define _LinkElement(name,obj) \
-  if(obj.size<S.Propagates.size)  allocate(obj,S.Propagates.size);\
-  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&(obj[i]));
+#define PName(U)    PtrLgVVerlet##U
+#define DName(U)    DatLgVVerlet##U
 
-#define _LinkArray(name,obj) \
+#define _LinkArray(U,obj) \
   if(!IsSameSize(obj,S.Content().X())) imprint(obj,S.Content().X());\
-  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&obj);
+  S.Propagates[i].Param[DName(U)].ptr[0]=reinterpret_cast<void*>(&(obj));
 
 namespace mysimulator {
 
@@ -29,30 +28,22 @@ namespace mysimulator {
       typedef DynamicsBase<T,OC>   ParentType;
 
       T Temperature;
-      Array1D<T> gMass;
-      Array1D<T> gFric;
-      Array1D<T> gNegHTIM;
-      Array1D<T> gRandS;
-      Array1D<T> gFac1;
-      Array1D<T> gFac2;
-      VT<T>   vRandV;
-      VT<T>   vMass;
-      VT<T>   vFric;
-      VT<T>   vNegHTIM;
-      VT<T>   vRandS;
-      VT<T>   vFac1;
-      VT<T>   vFac2;
+      VT<T>   RandV;
+      VT<T>   Mass;
+      VT<T>   Fric;
+      VT<T>   NegHTIM;
+      VT<T>   RandS;
+      VT<T>   Fac1;
+      VT<T>   Fac2;
 
-      Dynamics() : ParentType(), gMass(), gFric(), gNegHTIM(), gRandS(),
-                   gFac1(), gFac2(), vRandV(), vMass(), vFric(), vNegHTIM(),
-                   vRandS(), vFac1(), vFac2() {}
+      Dynamics() : ParentType(),  RandV(), Mass(), Fric(), NegHTIM(),
+                   RandS(), Fac1(), Fac2() {}
       ~Dynamics() { clearData(); }
 
       void clearData() {
-        release(vFac2); release(vFac1); release(vRandS);  release(vNegHTIM);
-        release(vFric); release(vMass); release(vRandV);  release(gFac2);
-        release(gFac1); release(gRandS); release(gNegHTIM); release(gFric);
-        release(gMass); static_cast<ParentType*>(this)->clearData();
+        release(Fac2); release(Fac1); release(RandS);  release(NegHTIM);
+        release(Fric); release(Mass); release(RandV);
+        static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
         return static_cast<const ParentType*>(this)->isvalid();
@@ -71,30 +62,24 @@ namespace mysimulator {
         MassMethodName MMN;
         FrictionMethodName  FMN;
         for(unsigned int i=0;i<S.Propagates.size;++i) {
-          Unique64Bit *P;
-          P=S.Propagates[i].Param.start;
-          P[LgVVerletTimeStep].ptr[0]=&(this->TimeStep);
-          P[LgVVerletTemperature].ptr[0]=&Temperature;
-          _LinkArray(LgVVerletRandVectorData,vRandV)
-          MMN=static_cast<MassMethodName>(P[LgVVerletMassMode].u[0]);
-          if(MMN==GlobalMass) {
-            _LinkElement(LgVVerletMassData,gMass)
-            _LinkElement(LgVVerletNegHTIMData,gNegHTIM)
-          } else if(MMN==ArrayMass) {
-            _LinkArray(LgVVerletMassData,vMass)
-            _LinkArray(LgVVerletNegHTIMData,vNegHTIM)
-          } else Error("Unknown Mass Mode!");
-          FMN=static_cast<FrictionMethodName>(P[LgVVerletFrictionMode].u[0]);
-          if((MMN==GlobalMass)&&(FMN=GlobalFriction)) {
-            _LinkElement(LgVVerletFrictionData,gFric)
-            _LinkElement(LgVVerletRandSizeData,gRandS)
-            _LinkElement(LgVVerletFac1Data,gFac1)
-            _LinkElement(LgVVerletFac2Data,gFac2)
-          } else {
-            _LinkArray(LgVVerletFrictionData,vFric)
-            _LinkArray(LgVVerletRandSizeData,vRandS)
-            _LinkArray(LgVVerletFac1Data,vFac1)
-            _LinkArray(LgVVerletFac2Data,vFac2)
+          S.Propagates[i].Param[PName(TimeStep)].ptr[0]=&(this->TimeStep);
+          S.Propagates[i].Param[PName(Temperature)].ptr[0]=&Temperature;
+          _LinkArray(RandVector,RandV)
+          MMN=static_cast<MassMethodName>(
+                  S.Propagates[i].Param[ModLgVVerletMass].u[0]);
+          assert(MMN!=UnknownMassFormat);
+          if(MMN==ArrayMass) {
+            _LinkArray(Mass,Mass)
+            _LinkArray(NegHTIM,NegHTIM)
+          }
+          FMN=static_cast<FrictionMethodName>(
+                  S.Propagates[i].Param[ModLgVVerletFriction].u[0]);
+          assert(FMN!=UnknownFrictionFormat);
+          if(FMN==ArrayFriction) { _LinkArray(Friction,Fric) }
+          if((MMN!=GlobalMass)||(FMN!=GlobalFriction)) {
+            _LinkArray(RandSize,RandS)
+            _LinkArray(Fac1,Fac1)
+            _LinkArray(Fac2,Fac2)
           }
         }
         S.init();
@@ -114,7 +99,9 @@ namespace mysimulator {
 }
 
 #undef _LinkArray
-#undef _LinkElement
+
+#undef DName
+#undef PName
 
 #endif
 

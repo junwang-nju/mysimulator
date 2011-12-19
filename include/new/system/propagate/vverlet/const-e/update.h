@@ -29,6 +29,9 @@ namespace mysimulator {
 
 #include "system/content/with-egv/interface.h"
 
+#define PName(U)    PtrCEVVerlet##U
+#define FName(U)    FunCEVVerlet##U
+
 #define _VALUE(name) (*reinterpret_cast<T*>(name.ptr[0]))
 
 namespace mysimulator {
@@ -40,10 +43,10 @@ namespace mysimulator {
     void (*_UpFunc)(const T&,const Unique64Bit&,Unique64Bit&,
                     const unsigned int&);
     Unique64Bit* P=SE.Param.start;
-    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FunCEVVerletUpdateHTIM].ptr[0]);
-    T dt=_VALUE(P[PtrCEVVerletTimeStep]);
+    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateHTIM)].ptr[0]);
+    T dt=_VALUE(P[PName(TimeStep)]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      updfunc(dt,P[PtrCEVVerletMass],P[PtrCEVVerletNegHTIM],i);
+      updfunc(dt,P[PName(Mass)],P[PName(NegHTIM)],i);
   }
 
   template <typename T, template<typename> class VT>
@@ -52,13 +55,12 @@ namespace mysimulator {
     typedef void (*_UpFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
     typedef void (*_IUpFunc)(Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
-    assert(P[CEVVerletVelocitySQ].ptr[0]!=NULL);
-    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FunCEVVerletUpdateVSQ].ptr[0]);
-    _IUpFunc inifunc=
-      reinterpret_cast<_IUpFunc>(P[FunCEVVerletUpdateVSQInit].ptr[0]);
-    inifunc(P[PtrCEVVerletVelocitySQ]);
+    assert(P[PName(VelocitySQ)].ptr[0]!=NULL);
+    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateVSQ)].ptr[0]);
+    _IUpFunc inifunc=reinterpret_cast<_IUpFunc>(P[FName(UpdateVSQInit)].ptr[0]);
+    inifunc(P[PName(VelocitySQ)]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      updfunc(P[PtrCEVVerletVelocitySQ],SE.grpContent[i].Velocity(),i);
+      updfunc(P[PName(VelocitySQ)],SE.grpContent[i].Velocity(),i);
   }
 
   template <typename T, template<typename> class VT>
@@ -66,15 +68,18 @@ namespace mysimulator {
     assert(IsValid(SE));
     typedef void (*_UpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
-    assert(P[PtrCEVVerletVelocitySQ].ptr[0]!=NULL);
-    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FunCEVVerletUpdateKE].ptr[0]);
-    updfunc(P[ValCEVVerletKineticEnergy].value<T>(),P[PtrCEVVerletMass],
-            P[PtrCEVVerletVelocitySQ]);
+    assert(P[PName(VelocitySQ)].ptr[0]!=NULL);
+    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateKE)].ptr[0]);
+    updfunc(P[ValCEVVerletKineticEnergy].value<T>(),P[PName(Mass)],
+            P[PName(VelocitySQ)]);
   }
 
 }
 
 #undef _VALUE
+
+#undef FName
+#undef PName
 
 namespace mysimulator {
 

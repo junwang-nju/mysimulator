@@ -5,11 +5,11 @@
 namespace mysimulator {
 
   enum UpdateLangevinVelVerletName {
-    LgVVerletFacCalc=0,
-    LgVVerletRandSizeCalc,
-    LgVVerletNegHTIMCalc,
-    LgVVerletVSQCalc,
-    LgVVerletKECalc,
+    CalcLgVVerletFac=0,
+    CalcLgVVerletRandSize,
+    CalcLgVVerletNegHTIM,
+    CalcLgVVerletVSQ,
+    CalcLgVVerletKE,
     NumberUpdateLangevinVelVerlet
   };
 
