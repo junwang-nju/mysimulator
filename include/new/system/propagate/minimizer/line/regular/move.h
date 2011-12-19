@@ -20,7 +20,7 @@ namespace mysimulator {
   template <typename T, template<typename> class VT>
   void _MoveMinLineRegularShift(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
-    T step=*reinterpret_cast<T*>(SE.Param[MinLineRegularStep].ptr[0]);
+    T step=*reinterpret_cast<T*>(SE.Param[PtrMinLineRegularStep].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
       shift(SE.grpContent[i].X(),step,SE.grpContent[i].Velocity());
   }

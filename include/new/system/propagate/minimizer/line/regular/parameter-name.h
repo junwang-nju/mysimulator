@@ -5,7 +5,7 @@
 namespace mysimulator {
 
   enum ParameterMinimizerLineRegularName {
-    MinLineRegularStep=0,
+    PtrMinLineRegularStep=0,
     NumberParameterMinimizerLineRegular
   };
 

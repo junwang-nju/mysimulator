@@ -75,8 +75,8 @@ namespace mysimulator {
         case SysFixPosition:
           break;
         case SysMinimizerLineRegular:
-          M.MemSys().Propagates[i].Param[MinLineRegularStep].ptr[0]=pStep;
-          M.RunSys().Propagates[i].Param[MinLineRegularStep].ptr[0]=pStep;
+          M.MemSys().Propagates[i].Param[PtrMinLineRegularStep].ptr[0]=pStep;
+          M.RunSys().Propagates[i].Param[PtrMinLineRegularStep].ptr[0]=pStep;
           break;
         default:
           Error("This Grouping Method Cannot be processed!");
