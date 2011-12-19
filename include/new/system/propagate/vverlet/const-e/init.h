@@ -9,20 +9,25 @@
 #include "system/propagate/vverlet/const-e/_move.h"
 #include "array/1d/allocate.h"
 
-#define _CreateElement(name) \
-  P[name].ptr[0]=P[name##Data].ptr[0];
+#define RMode  CEVVerlet
+#define PName(U)  Ptr##RMode##U
+#define DName(U)  Dat##RMode##U
+#define FName(U)  Fun##RMode##U
 
-#define _CreateArray(name,pv,pgv) \
-  assert(P[name##Data].ptr[0]!=NULL);\
-  pv=reinterpret_cast<VT<T>*>(P[name##Data].ptr[0]);\
+#define _CreateElement(U) \
+  P[PName(U)].ptr[0]=reinterpret_cast<void*>(&(P[DName(U)].value<T>()));
+
+#define _CreateArray(U) \
+  assert(P[DName(U)].ptr[0]!=NULL);\
+  pv=reinterpret_cast<VT<T>*>(P[DName(U)].ptr[0]);\
   pgv=new Array1D<VT<T> >;\
   allocate(*pgv,SE.MerIDRange.size);\
   for(unsigned int i=0;i<pgv->size;++i) \
     refer((*pgv)[i],*pv,SE.MerIDRange[i].u[0],SE.MerIDRange[i].u[1]);\
-  P[name].ptr[0]=reinterpret_cast<void*>(pgv);
+  P[PName(U)].ptr[0]=reinterpret_cast<void*>(pgv);
 
-#define _Func(type,name) \
-  reinterpret_cast<void*>(static_cast<type>(name))
+#define _AssignFunc(U,type,f) \
+  P[FName(U)].ptr[0]=reinterpret_cast<void*>(static_cast<type>(f));
 
 namespace mysimulator {
 
@@ -45,42 +50,29 @@ namespace mysimulator {
       static_cast<MassMethodName>(P[CEVVerletMassMode].u[0]);
     switch(MMN) {
       case GlobalMass:
-        _CreateElement(CEVVerletMass)
-        _CreateElement(CEVVerletNegHTimeIMass)
-        if(P[CEVVerletVelocitySQData].ptr[0]!=NULL) {
-          _CreateElement(CEVVerletVelocitySQ)
-          P[CEVVerletUpdateVSQFunc].ptr[0]=
-            _Func(UpVFunc,(_UpdateFuncCEVVerletVSQGlobalMass<T,VT>));
-          P[CEVVerletUpdateKEFunc].ptr[0]=
-            _Func(UpKFunc,_UpdateFuncCEVVerletKEnergyGlobalMass<T>);
-          P[CEVVerletUpdateVSQInitFunc].ptr[0]=
-            _Func(UpIFunc,_UpdateFuncCEVVerletVSQInitGlobalMass<T>);
-        }
-        P[CEVVerletUpdateHTIMFunc].ptr[0]=
-          _Func(UpFunc,_UpdateFuncCEVVerletHTIMGlobaleMass<T>);
-        P[CEVVerletBfMoveFunc].ptr[0]=
-          _Func(BMvFunc,(_BfMoveFuncCEVVerletGlobalMass<T,VT>));
-        P[CEVVerletAfMoveFunc].ptr[0]=
-          _Func(AMvFunc,(_AfMoveFuncCEVVerletGlobalMass<T,VT>));
+        _CreateElement(Mass)
+        _CreateElement(NegHTIM)
+        _AssignFunc(UpdateHTIM,UpFunc,_UpdateFuncCEVVerletHTIMGMass<T>)
+        _AssignFunc(BfMove,BMvFunc,(_BfMoveFuncCEVVerletGMass<T,VT>))
+        _AssignFunc(AfMove,AMvFunc,(_AfMoveFuncCEVVerletGMass<T,VT>))
+        _CreateElement(VelocitySQ)
+        _AssignFunc(UpdateVSQ,UpVFunc,(_UpdateFuncCEVVerletVSQGMass<T,VT>))
+        _AssignFunc(UpdateKE,UpKFunc,_UpdateFuncCEVVerletKEnergyGMass<T>)
+        _AssignFunc(UpdateVSQInit,UpIFunc,_UpdateFuncCEVVerletVSQInitGMass<T>)
         break;
       case ArrayMass:
-        _CreateArray(CEVVerletMass,pv,pgv)
-        _CreateArray(CEVVerletNegHTimeIMass,pv,pgv)
-        if(P[CEVVerletVelocitySQData].ptr[0]!=NULL) {
-          _CreateArray(CEVVerletVelocitySQ,pv,pgv)
-          P[CEVVerletUpdateVSQFunc].ptr[0]=
-            _Func(UpVFunc,(_UpdateFuncCEVVerletVSQArrayMass<T,VT>));
-          P[CEVVerletUpdateKEFunc].ptr[0]=
-            _Func(UpKFunc,(_UpdateFuncCEVVerletKEnergyArrayMass<T,VT>));
-          P[CEVVerletUpdateVSQInitFunc].ptr[0]=
-            _Func(UpIFunc,(_UpdateFuncCEVVerletVSQInitArrayMass<T,VT>));
+        _CreateArray(Mass)
+        _CreateArray(NegHTIM)
+        if(P[DatCEVVerletVelocitySQ].ptr[0]!=NULL) {
+          _CreateArray(VelocitySQ)
+          _AssignFunc(UpdateVSQ,UpVFunc,(_UpdateFuncCEVVerletVSQAMass<T,VT>))
+          _AssignFunc(UpdateKE,UpKFunc,(_UpdateFuncCEVVerletKEnergyAMass<T,VT>))
+          _AssignFunc(UpdateVSQInit,UpIFunc,
+                      (_UpdateFuncCEVVerletVSQInitAMass<T,VT>))
         }
-        P[CEVVerletUpdateHTIMFunc].ptr[0]=
-          _Func(UpFunc,(_UpdateFuncCEVVerletHTIMArrayMass<T,VT>));
-        P[CEVVerletBfMoveFunc].ptr[0]=
-          _Func(BMvFunc,(_BfMoveFuncCEVVerletArrayMass<T,VT>));
-        P[CEVVerletAfMoveFunc].ptr[0]=
-          _Func(AMvFunc,(_AfMoveFuncCEVVerletArrayMass<T,VT>));
+        _AssignFunc(UpdateHTIM,UpFunc,(_UpdateFuncCEVVerletHTIMAMass<T,VT>))
+        _AssignFunc(BfMove,BMvFunc,(_BfMoveFuncCEVVerletAMass<T,VT>))
+        _AssignFunc(AfMove,AMvFunc,(_AfMoveFuncCEVVerletAMass<T,VT>))
         break;
       default:
         Error("Unknown method related Mass!");
@@ -89,9 +81,14 @@ namespace mysimulator {
 
 }
 
-#undef _Func
+#undef _AssignFunc
 #undef _CreateArray
 #undef _CreateElement
+
+#undef FName
+#undef DName
+#undef PName
+#undef RMode
 
 #endif
 
