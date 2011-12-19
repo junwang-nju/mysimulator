@@ -16,44 +16,50 @@ namespace mysimulator {
   template <typename T>
   void _UpdateFuncLgVVerletRSizeGMassGFric(
       const T& dt, const T& Temp, const Unique64Bit& Mass,
-      const Unique64Bit& Fric, Unique64Bit& RSize, const unsigned int&) {
+      const Unique64Bit& Fric, Unique64Bit& RSize) {
     _VALUE(RSize)=sqroot(dt*Temp*_VALUE(Fric)/_VALUE(Mass));
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletRSizeAMassGFric(
       const T& dt, const T& Temp, const Unique64Bit& Mass,
-      const Unique64Bit& Fric, Unique64Bit& RSize, const unsigned int& n) {
-    copy(_ARRAY(RSize)[n],_CARRAY(Mass)[n]);
-    inverse(_ARRAY(RSize)[n]);
-    scale(_ARRAY(RSize)[n],dt*Temp*_VALUE(Fric));
-    sqroot(_ARRAY(RSize)[n]);
+      const Unique64Bit& Fric, Unique64Bit& RSize) {
+    for(unsigned int n=0;n<_ARRAY(Mass).size;++n) {
+      copy(_ARRAY(RSize)[n],_CARRAY(Mass)[n]);
+      inverse(_ARRAY(RSize)[n]);
+      scale(_ARRAY(RSize)[n],dt*Temp*_VALUE(Fric));
+      sqroot(_ARRAY(RSize)[n]);
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletRSizeGMassAFric(
       const T& dt, const T& Temp, const Unique64Bit& Mass,
-      const Unique64Bit& Fric, Unique64Bit& RSize, const unsigned int& n) {
-    copy(_ARRAY(RSize)[n],_CARRAY(Fric)[n]);
-    scale(_ARRAY(RSize)[n],dt*Temp*_VALUE(Mass));
-    sqroot(_ARRAY(RSize)[n]);
+      const Unique64Bit& Fric, Unique64Bit& RSize) {
+    for(unsigned int n=0;n<_ARRAY(Fric).size;++n) {
+      copy(_ARRAY(RSize)[n],_CARRAY(Fric)[n]);
+      scale(_ARRAY(RSize)[n],dt*Temp*_VALUE(Mass));
+      sqroot(_ARRAY(RSize)[n]);
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletRSizeAMassAFric(
       const T& dt, const T& Temp, const Unique64Bit& Mass,
-      const Unique64Bit& Fric, Unique64Bit& RSize, const unsigned int& n) {
-    copy(_ARRAY(RSize)[n],_CARRAY(Mass)[n]);
-    inverse(_ARRAY(RSize)[n]);
-    scale(_ARRAY(RSize)[n],dt*Temp);
-    scale(_ARRAY(RSize)[n],_CARRAY(Fric)[n]);
-    sqroot(_ARRAY(RSize)[n]);
+      const Unique64Bit& Fric, Unique64Bit& RSize) {
+    for(unsigned int n=0;n<_ARRAY(Mass).size;++n) {
+      copy(_ARRAY(RSize)[n],_CARRAY(Mass)[n]);
+      inverse(_ARRAY(RSize)[n]);
+      scale(_ARRAY(RSize)[n],dt*Temp);
+      scale(_ARRAY(RSize)[n],_CARRAY(Fric)[n]);
+      sqroot(_ARRAY(RSize)[n]);
+    }
   }
 
   template <typename T>
   void _UpdateFuncLgVVerletFacGMassGFric(
       const T& dt, const Unique64Bit& Mass, const Unique64Bit& Fric,
-      Unique64Bit& Fac1, Unique64Bit& Fac2, const unsigned int&) {
+      Unique64Bit& Fac1, Unique64Bit& Fac2) {
     T d=0.5*dt*_VALUE(Fric)/_VALUE(Mass);
     _VALUE(Fac1)=ValueOne<T>()-d;
     _VALUE(Fac2)=ValueOne<T>()+d;
@@ -63,43 +69,49 @@ namespace mysimulator {
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletFacAMassGFric(
       const T& dt, const Unique64Bit& Mass, const Unique64Bit& Fric,
-      Unique64Bit& Fac1, Unique64Bit& Fac2, const unsigned int& n) {
-    copy(_ARRAY(Fac1)[n],_CARRAY(Mass)[n]);
-    inverse(_ARRAY(Fac1)[n]);
-    scale(_ARRAY(Fac1)[n],-0.5*dt*_VALUE(Fric));
-    copy(_ARRAY(Fac2)[n],_CARRAY(Fac1)[n]);
-    shift(_ARRAY(Fac1)[n],cOne);
-    scale(_ARRAY(Fac2)[n],-cOne);
-    shift(_ARRAY(Fac2)[n],cOne);
-    inverse(_ARRAY(Fac2)[n]);
+      Unique64Bit& Fac1, Unique64Bit& Fac2) {
+    for(unsigned int n=0;n<_ARRAY(Mass).size;++n) {
+      copy(_ARRAY(Fac1)[n],_CARRAY(Mass)[n]);
+      inverse(_ARRAY(Fac1)[n]);
+      scale(_ARRAY(Fac1)[n],-0.5*dt*_VALUE(Fric));
+      copy(_ARRAY(Fac2)[n],_CARRAY(Fac1)[n]);
+      shift(_ARRAY(Fac1)[n],cOne);
+      scale(_ARRAY(Fac2)[n],-cOne);
+      shift(_ARRAY(Fac2)[n],cOne);
+      inverse(_ARRAY(Fac2)[n]);
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletFacGMassAFric(
       const T& dt, const Unique64Bit& Mass, const Unique64Bit& Fric,
-      Unique64Bit& Fac1, Unique64Bit& Fac2, const unsigned int& n) {
-    copy(_ARRAY(Fac1)[n],_CARRAY(Fric)[n]);
-    scale(_ARRAY(Fac1)[n],-0.5*dt/_VALUE(Mass));
-    copy(_ARRAY(Fac2)[n],_CARRAY(Fac1)[n]);
-    shift(_ARRAY(Fac1)[n],cOne);
-    scale(_ARRAY(Fac2)[n],-cOne);
-    shift(_ARRAY(Fac2)[n],cOne);
-    inverse(_ARRAY(Fac2)[n]);
+      Unique64Bit& Fac1, Unique64Bit& Fac2) {
+    for(unsigned int n=0;n<_ARRAY(Fric).size;++n) {
+      copy(_ARRAY(Fac1)[n],_CARRAY(Fric)[n]);
+      scale(_ARRAY(Fac1)[n],-0.5*dt/_VALUE(Mass));
+      copy(_ARRAY(Fac2)[n],_CARRAY(Fac1)[n]);
+      shift(_ARRAY(Fac1)[n],cOne);
+      scale(_ARRAY(Fac2)[n],-cOne);
+      shift(_ARRAY(Fac2)[n],cOne);
+      inverse(_ARRAY(Fac2)[n]);
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletFacAMassAFric(
       const T& dt, const Unique64Bit& Mass, const Unique64Bit& Fric,
-      Unique64Bit& Fac1, Unique64Bit& Fac2, const unsigned int& n) {
-    copy(_ARRAY(Fac1)[n],_ARRAY(Mass)[n]);
-    inverse(_ARRAY(Fac1)[n]);
-    scale(_ARRAY(Fac1)[n],-0.5*dt);
-    scale(_ARRAY(Fac1)[n],_CARRAY(Fric)[n]);
-    copy(_ARRAY(Fac2)[n],_CARRAY(Fac1)[n]);
-    shift(_ARRAY(Fac1)[n],cOne);
-    scale(_ARRAY(Fac2)[n],-cOne);
-    shift(_ARRAY(Fac2)[n],cOne);
-    inverse(_ARRAY(Fac2)[n]);
+      Unique64Bit& Fac1, Unique64Bit& Fac2) {
+    for(unsigned int n=0;n<_ARRAY(Mass).size;++n) {
+      copy(_ARRAY(Fac1)[n],_ARRAY(Mass)[n]);
+      inverse(_ARRAY(Fac1)[n]);
+      scale(_ARRAY(Fac1)[n],-0.5*dt);
+      scale(_ARRAY(Fac1)[n],_CARRAY(Fric)[n]);
+      copy(_ARRAY(Fac2)[n],_CARRAY(Fac1)[n]);
+      shift(_ARRAY(Fac1)[n],cOne);
+      scale(_ARRAY(Fac2)[n],-cOne);
+      shift(_ARRAY(Fac2)[n],cOne);
+      inverse(_ARRAY(Fac2)[n]);
+    }
   }
 
 }
@@ -114,38 +126,26 @@ namespace mysimulator {
 
   template <typename T>
   void _UpdateFuncLgVVerletHTIMGMass(
-      const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM,
-      const unsigned int&) {
-    _UpdateFuncCEVVerletHTIMGMass<T>(dt,Mass,negHTIM,0);
+      const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM) {
+    _UpdateFuncCEVVerletHTIMGMass<T>(dt,Mass,negHTIM);
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletHTIMAMass(
-      const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM,
-      const unsigned int& n) {
-    _UpdateFuncCEVVerletHTIMAMass<T,VT>(dt,Mass,negHTIM,n);
+      const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM) {
+    _UpdateFuncCEVVerletHTIMAMass<T,VT>(dt,Mass,negHTIM);
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletVSQGMass(
-      Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int& n) {
-    _UpdateFuncCEVVerletVSQGMass<T,VT>(VSQ,Vel,n);
+      Unique64Bit& VSQ, const Array1DContent<SysContentWithEGV<T,VT> >& gC) {
+    _UpdateFuncCEVVerletVSQGMass<T,VT>(VSQ,gC);
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncLgVVerletVSQAMass(
-      Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int& n) {
-    _UpdateFuncCEVVerletVSQAMass<T,VT>(VSQ,Vel,n);
-  }
-
-  template <typename T>
-  void _UpdateFuncLgVVerletVSQInitGMass(Unique64Bit& VSQ) {
-    _UpdateFuncCEVVerletVSQInitGMass<T>(VSQ);
-  }
-
-  template <typename T, template<typename> class VT>
-  void _UpdateFuncLgVVerletVSQInitAMass(Unique64Bit& VSQ) {
-    _UpdateFuncCEVVerletVSQInitAMass<T,VT>(VSQ);
+      Unique64Bit& VSQ, const Array1DContent<SysContentWithEGV<T,VT> >& gC) {
+    _UpdateFuncCEVVerletVSQAMass<T,VT>(VSQ,gC);
   }
 
   template <typename T>

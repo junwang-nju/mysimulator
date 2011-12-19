@@ -66,14 +66,13 @@ namespace mysimulator {
     }
 
     typedef void (*FUpFunc)(const T&,const Unique64Bit&,const Unique64Bit&,
-                            Unique64Bit&,Unique64Bit&,const unsigned int&);
-    typedef void (*MUpFunc)(const T&,const Unique64Bit&,Unique64Bit&,
-                            const unsigned int&);
+                            Unique64Bit&,Unique64Bit&);
+    typedef void (*MUpFunc)(const T&,const Unique64Bit&,Unique64Bit&);
     typedef void (*RUpFunc)(const T&,const T&,const Unique64Bit&,
                             const Unique64Bit&,Unique64Bit&,
                             const unsigned int&);
-    typedef void (*VUpFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
-    typedef void (*IUpFunc)(Unique64Bit&);
+    typedef void (*VUpFunc)(Unique64Bit&,
+                            const Array1DContent<SysContentWithEGV<T,VT> >&);
     typedef void (*KUpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
     typedef void (*BMvFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,const Unique64Bit&,
                             const Unique64Bit&,const VT<T>&,const Unique64Bit&,
@@ -84,7 +83,6 @@ namespace mysimulator {
     if(MMN==GlobalMass) {
       _AssignFunc(UpdateHTIM,MUpFunc,_UpdateFuncLgVVerletHTIMGMass<T>)
       _AssignFunc(UpdateVSQ,VUpFunc,(_UpdateFuncLgVVerletVSQGMass<T,VT>))
-      _AssignFunc(UpdateVSQInit,IUpFunc,_UpdateFuncLgVVerletVSQInitGMass<T>)
       _AssignFunc(UpdateKE,KUpFunc,_UpdateFuncLgVVerletKEnergyGMass<T>)
       if(FMN==GlobalFriction) {
         _AssignFunc(UpdateRandSize,RUpFunc,
@@ -103,8 +101,6 @@ namespace mysimulator {
       _AssignFunc(UpdateHTIM,MUpFunc,(_UpdateFuncLgVVerletHTIMAMass<T,VT>))
       if(P[DName(VelocitySQ)].ptr[0]!=NULL) {
         _AssignFunc(UpdateVSQ,VUpFunc,(_UpdateFuncLgVVerletVSQAMass<T,VT>))
-        _AssignFunc(UpdateVSQInit,IUpFunc,
-                    (_UpdateFuncLgVVerletVSQInitAMass<T,VT>))
         _AssignFunc(UpdateKE,KUpFunc,(_UpdateFuncLgVVerletKEnergyAMass<T,VT>))
       }
       if(FMN==GlobalFriction) {
