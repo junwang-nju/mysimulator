@@ -7,19 +7,18 @@
 
 namespace mysimulator {
 
-  template <typename T, template<typename> class VecType>
-  void refer(SysContentBase<T,VecType>& S, SysContentBase<T,VecType>& rS,
-             const int& partb, const int& parte, const int newb) {
+  template <typename T, template<typename> class VT>
+  void refer(SysContentBase<T,VT>& S, SysContentBase<T,VT>& rS,
+             const int& partb, const int& parte, const int& newb) {
     assert(IsValid(rS));
     release(S);
     allocate(S.X);
     refer(S.X(),rS.X(),partb,parte,newb);
   }
 
-  template <typename T, template<typename> class VecType,
-            template<typename,template<typename>class> class SysContentType>
-  void refer(SysContentType<T,VecType>& S, SysContentType<T,VecType>& rS,
-             const int& partb, const int& parte) {
+  template <typename T, template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
+  void refer(SCT<T,VT>& S, SCT<T,VT>& rS, const int& partb, const int& parte) {
     refer(S,rS,partb,parte,partb);
   }
 

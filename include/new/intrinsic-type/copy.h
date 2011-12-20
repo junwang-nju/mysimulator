@@ -1,6 +1,6 @@
 
-#ifndef _Intrisic_Type_COPY_H_
-#define _Intrisic_Type_COPY_H_
+#ifndef _Intrinsic_Type_COPY_H_
+#define _Intrinsic_Type_COPY_H_
 
 #define _COPY(type1,type2) \
   void copy(type1& a, const type2& b) { a=const_cast<type2&>(b); }

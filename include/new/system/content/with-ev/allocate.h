@@ -7,13 +7,13 @@
 
 namespace mysimulator {
 
-  template <typename T, template<typename> class VT>
-  void allocate(SysContentWithEV<T,VT>& S, const VT<T>& iX) {
-    assert(IsValid(iX));
+  template <typename T, template<typename> class VT, typename T1>
+  void allocate(SysContentWithEV<T,VT>& S, const VT<T1>& X) {
+    assert(IsValid(X));
     release(S);
-    typedef typename SysContentWithEV<T,VT>::ParentType   Type;
-    allocate(static_cast<Type&>(S),iX);
-    imprint(S.Velocity,iX);
+    typedef typename SysContentWithEV<T,VT>::ParentType    Type;
+    allocate(static_cast<Type&>(S),X);
+    _imprint_structure(S.Velocity,X);
   }
 
 }

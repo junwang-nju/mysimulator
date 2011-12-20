@@ -12,15 +12,16 @@ namespace mysimulator {
     public:
 
       typedef SysContentWithEV<T,VecType>   Type;
-      typedef SysContentWithE<T,VecType>    ParentType;
+      typedef SysContentWithE<T,VecType>     ParentType;
 
-      Object<VecType<T> > Velocity;
+      Object<VecType<T> >   Velocity;
 
       SysContentWithEV() : ParentType(), Velocity() {}
       ~SysContentWithEV() { clearData(); }
 
       void clearData() {
-        static_cast<ParentType*>(this)->clearData(); release(Velocity);
+        release(Velocity);
+        static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
         return static_cast<const ParentType*>(this)->isvalid()&&
@@ -34,11 +35,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T, template<typename> class VecType>
-  void release(SysContentWithEV<T,VecType>& S) { S.clearData(); }
+  template <typename T, template<typename> class VT>
+  void release(SysContentWithEV<T,VT>& S) { S.clearData(); }
 
-  template <typename T, template<typename> class VecType>
-  bool IsValid(const SysContentWithEV<T,VecType>& S) { return S.isvalid(); }
+  template <typename T, template<typename> class VT>
+  bool IsValid(const SysContentWithEV<T,VT>& S) { return S.isvalid(); }
 
 }
 

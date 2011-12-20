@@ -2,16 +2,13 @@
 #ifndef _System_Interface_H_
 #define _System_Interface_H_
 
-#include "system/grouping/interface.h"
+#include "system/evolute/mode.h"
 #include "array/1d/allocate.h"
 #include "array/1d/fill.h"
-#include "system/evolute/mode-1.h"
-#include "system/evolute/mode-2.h"
-#include "system/evolute/mode-3.h"
 
 namespace mysimulator {
 
-  template <typename T,typename IDType,typename ParamType,typename GeomType,
+  template <typename T, typename IDType, typename ParamType, typename GeomType,
             template<typename> class VecType,
             template<typename,template<typename>class> class SysContentType>
   struct System {
@@ -20,74 +17,83 @@ namespace mysimulator {
 
       typedef System<T,IDType,ParamType,GeomType,VecType,SysContentType>
               Type;
-      typedef SysContentType<T,VecType> ContentType;
-      typedef SysInteraction<IDType,ParamType,GeomType,T> InteractionType;
-      typedef SysGrouping<T,IDType,ParamType,GeomType,VecType,SysContentType>
-              GroupingType;
-      typedef void (*EvFuncType)(ContentType&,InteractionType&,
-                                 Array1D<GroupingType>&,
-                                 const Array1D<Array1D<unsigned int> >&);
+      typedef SysContentType<T,VecType>   ContentType;
+      typedef SysInteraction<T,IDType,ParamType,GeomType,VecType,SysContentType>
+              InteractionType;
+      typedef SysPropagate<T,VecType,SysContentType>  PropagateType;
+      typedef void (*EvFuncType)(ContentType&,Array1DContent<InteractionType>&,
+                                 Array1DContent<PropagateType>&,
+                                 const Array1DContent<Array1D<unsigned int> >&);
 
       Object<ContentType> Content;
-      Object<InteractionType> Interaction;
-      Array1D<GroupingType> Groups;
+      Array1D<InteractionType>  Interactions;
+      Array1D<PropagateType>  Propagates;
       Array1D<Array1D<unsigned int> > GrpMap;
-      EvFuncType evfunc;
+      EvFuncType  evfunc;
 
-      System() : Content(), Interaction(), Groups(), GrpMap(), evfunc(NULL) {}
+      System() : Content(), Interactions(), Propagates(), GrpMap(),
+                 evfunc(NULL) {}
       ~System() { clearData(); }
 
       void clearData() {
-        release(GrpMap);release(Groups);release(Content);release(Interaction);
-        evfunc=NULL;
+        release(GrpMap);  release(Propagates);  release(Interactions);
+        release(Content); evfunc=NULL;
       }
       bool isvalid() const {
-        return IsValid(Content)&&IsValid(Interaction)&&IsValid(Groups)&&
+        return IsValid(Content)&&IsValid(Interactions)&&IsValid(Propagates)&&
                IsValid(GrpMap)&&IsValid(evfunc);
       }
 
       void init() {
         assert(isvalid());
-        for(unsigned int i=0;i<Groups.size;++i)
-          Groups[i].init(Content(),Interaction());
+        for(unsigned int i=0;i<Propagates.size;++i) Propagates[i].init();
       }
       void evolute() {
         assert(isvalid());
-        evfunc(Content(),Interaction(),Groups,GrpMap);
+        evfunc(Content(),Interactions,Propagates,GrpMap);
       }
 
-      void Build() {
-        assert(IsValid(Groups));
+      void build() {
+        assert(IsValid(Propagates));
         Array1D<unsigned int> sz;
-        allocate(sz,NumSystemGroupingMethods);
+        allocate(sz,NumberSystemPropagateMethods);
         fill(sz,0U);
-        for(unsigned int i=0;i<Groups.size;++i) sz[Groups[i].Method]++;
-        allocate(GrpMap,NumSystemGroupingMethods);
-        for(unsigned int i=0;i<NumSystemGroupingMethods;++i)
-          if(sz[i]>0) { allocate(GrpMap[i],sz[i]); sz[i]=0; }
-        for(unsigned int i=0,k;i<Groups.size;++i) {
-          k=Groups[i].Method;
-          GrpMap[k][sz[k]]=i;   sz[k]++;
+        for(unsigned int i=0;i<Propagates.size;++i) sz[Propagates[i].Method]++;
+        allocate(GrpMap,NumberSystemPropagateMethods);
+        for(unsigned int i=0;i<sz.size;++i)
+          if(sz[i]>0) { allocate(GrpMap[i],sz[i]);  sz[i]=0; }
+        for(unsigned int i=0,k;i<Propagates.size;++i) {
+          k=Propagates[i].Method;
+          GrpMap[k][sz[k]]=i;
+          ++sz[k];
         }
         release(sz);
         unsigned int mode=0;
         for(unsigned int i=0;i<GrpMap.size;++i)
           mode+=(GrpMap[i].size>0?1:0)<<i;
         switch(mode) {
+          case 0:
+            Error("No Propagate Available!");
+            break;
           case 1:
-            evfunc=SystemEvoluteMode1<T,IDType,ParamType,GeomType,VecType,
-                                      SysContentType>;
+          case 3:
+            evfunc=SysEvoluteModeTBD<T,IDType,ParamType,GeomType,VecType,
+                                     SysContentType>;
             break;
           case 2:
-            evfunc=SystemEvoluteMode2<T,IDType,ParamType,GeomType,VecType,
-                                      SysContentType>;
+            evfunc=SysEvoluteModeFPOnly<T,IDType,ParamType,GeomType,VecType,
+                                        SysContentType>;
             break;
-          case 3:
-            evfunc=SystemEvoluteMode3<T,IDType,ParamType,GeomType,VecType,
-                                      SysContentType>;
+          case 4:
+            evfunc=SysEvoluteModeMLROnly<T,IDType,ParamType,GeomType,VecType,
+                                         SysContentType>;
+            break;
+          case 6:
+            evfunc=SysEvoluteModeFPMLR<T,IDType,ParamType,GeomType,VecType,
+                                       SysContentType>;
             break;
           default:
-            Error("Unknown Mode for Evolution!");
+            Error("Unknown Mode to Evalute!");
         }
       }
 

@@ -7,10 +7,10 @@
 
 namespace mysimulator {
 
-  template <typename T,template<typename> class VecType>
-  void copy(SysContentBase<T,VecType>& S, const SysContentBase<T,VecType>& rS) {
-    assert(IsValid(S)&&IsValid(rS));
-    copy(S.X,rS.X);
+  template <typename T, template<typename> class VT>
+  void copy(SysContentBase<T,VT>& S, const SysContentBase<T,VT>& cS) {
+    assert(IsValid(S)&&IsValid(cS));
+    copy(S.X,cS.X);
   }
 
 }

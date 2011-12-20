@@ -4,16 +4,17 @@
 
 #include "system/content/with-g/interface.h"
 #include "system/content/base/allocate.h"
+#include "system/content/data/g/allocate.h"
 
 namespace mysimulator {
 
-  template <typename T, template<typename> class VecType>
-  void allocate(SysContentWithG<T,VecType>& S, const VecType<T>& iX) {
-    assert(IsValid(iX));
+  template <typename T, template<typename> class VT, typename T1>
+  void allocate(SysContentWithG<T,VT>& S, const VT<T1>& X) {
+    assert(IsValid(X));
     release(S);
-    typedef typename SysContentBase<T,VecType>::ParentType  Type;
-    allocate(static_cast<Type&>(S),iX);
-    imprint(S.Gradient(),iX);
+    typedef typename SysContentWithG<T,VT>::ParentType   Type;
+    allocate(static_cast<Type&>(S),X);
+    allocate(S.EGData,X);
   }
 
 }

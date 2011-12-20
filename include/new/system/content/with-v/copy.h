@@ -7,12 +7,12 @@
 
 namespace mysimulator {
 
-  template <typename T, template <typename> class VT>
-  void copy(SysContentWithV<T,VT>& S, const SysContentWithV<T,VT>& rS) {
-    assert(IsValid(S)&&IsValid(rS));
+  template <typename T, template<typename> class VT>
+  void copy(SysContentWithV<T,VT>& S, const SysContentWithV<T,VT>& cS) {
+    assert(IsValid(S)&&IsValid(cS));
     typedef typename SysContentWithV<T,VT>::ParentType  Type;
-    copy(static_cast<Type&>(S),static_cast<const Type&>(rS));
-    copy(S.Velocity,rS.Velocity);
+    copy(static_cast<Type&>(S),static_cast<const Type&>(cS));
+    copy(S.Velocity,cS.Velocity);
   }
 
 }

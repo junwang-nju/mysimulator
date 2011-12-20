@@ -7,18 +7,18 @@
 
 namespace mysimulator {
 
-  template <typename T, template<typename> class VecType>
-  void allocate(SysContentBase<T,VecType>& S, const VecType<T>& iX) {
-    assert(IsValid(iX));
+  template <typename T, template<typename> class VT, typename T1>
+  void allocate(SysContentBase<T,VT>& S, const VT<T1>& X) {
+    assert(IsValid(X));
     release(S);
-    imprint(S.X,iX);
+    _imprint_structure(S.X,X);
   }
 
-  template <typename T, template<typename> class VecType,
+  template <typename T, template<typename> class VT, typename T1,
             template<typename,template<typename>class> class SysContentType>
-  void allocate(SysContentType<T,VecType>& S, const Object<VecType<T> >& iX) {
-    assert(IsValid(iX));
-    allocate(S,iX());
+  void allocate(SysContentType<T,VT>& S, const Object<VT<T1> >& X) {
+    assert(IsValid(X));
+    allocate(S,X());
   }
 
 }

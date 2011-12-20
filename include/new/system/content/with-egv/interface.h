@@ -1,6 +1,6 @@
 
-#ifndef _System_Content_WithEGV_H_
-#define _System_Content_WithEGV_H_
+#ifndef _System_Content_WithEGV_Interface_H_
+#define _System_Content_WithEGV_Interface_H_
 
 #include "system/content/with-eg/interface.h"
 
@@ -11,8 +11,8 @@ namespace mysimulator {
 
     public:
 
-      typedef SysContentWithEGV<T,VecType>    Type;
-      typedef SysContentWithEG<T,VecType>     ParentType;
+      typedef SysContentWithEGV<T,VecType>  Type;
+      typedef SysContentWithEG<T,VecType>   ParentType;
 
       Object<VecType<T> >   Velocity;
 
@@ -20,8 +20,8 @@ namespace mysimulator {
       ~SysContentWithEGV() { clearData(); }
 
       void clearData() {
-        static_cast<ParentType*>(this)->clearData();
         release(Velocity);
+        static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
         return static_cast<const ParentType*>(this)->isvalid()&&
@@ -35,11 +35,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T, template<typename> class VecType>
-  void release(SysContentWithEGV<T,VecType>& S) { S.clearData(); }
+  template <typename T, template<typename> class VT>
+  void release(SysContentWithEGV<T,VT>& S) { S.clearData(); }
 
-  template <typename T, template<typename> class VecType>
-  bool IsValid(const SysContentWithEGV<T,VecType>& S) { return S.isvalid(); }
+  template <typename T, template<typename> class VT>
+  bool IsValid(const SysContentWithEGV<T,VT>& S) { return S.isvalid(); }
 
 }
 

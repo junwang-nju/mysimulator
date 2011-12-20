@@ -3,6 +3,7 @@
 #define _System_Content_WithE_Interface_H_
 
 #include "system/content/base/interface.h"
+#include "system/content/data/e/interface.h"
 
 namespace mysimulator {
 
@@ -13,18 +14,19 @@ namespace mysimulator {
 
       typedef SysContentWithE<T,VecType>    Type;
       typedef SysContentBase<T,VecType>     ParentType;
+      typedef SysContentDataE<T>            EGDataType;
 
-      Object<T> Energy;
+      EGDataType  EGData;
 
-      SysContentWithE() : ParentType(), Energy() {}
+      SysContentWithE() : ParentType(), EGData() {}
       ~SysContentWithE() { clearData(); }
 
       void clearData() {
-        release(Energy);
+        release(EGData);
         static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
-        return static_cast<const ParentType*>(this)->isvalid();
+        return static_cast<const ParentType*>(this)->isvalid()&&IsValid(EGData);
       }
 
     private:
@@ -34,11 +36,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T, template<typename> class VecType>
-  void release(SysContentWithE<T,VecType>& S) { S.clearData(); }
+  template <typename T, template<typename> class VT>
+  void release(SysContentWithE<T,VT>& S) { S.clearData(); }
 
-  template <typename T, template<typename> class VecType>
-  bool IsValid(const SysContentWithE<T,VecType>& S) { return S.isvalid(); }
+  template <typename T, template<typename> class VT>
+  bool IsValid(const SysContentWithE<T,VT>& S) { return S.isvalid(); }
 
 }
 

@@ -12,7 +12,7 @@ namespace mysimulator {
              const int& partb, const int& parte, const int& newb) {
     assert(IsValid(rS));
     release(S);
-    typedef typename SysContentWithV<T,VT>::ParentType    Type;
+    typedef typename SysContentWithV<T,VT>::ParentType  Type;
     refer(static_cast<Type&>(S),static_cast<Type&>(rS),partb,parte,newb);
     allocate(S.Velocity);
     refer(S.Velocity(),rS.Velocity(),partb,parte,newb);

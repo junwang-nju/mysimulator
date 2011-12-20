@@ -3,6 +3,7 @@
 #define _System_Content_WithG_Interface_H_
 
 #include "system/content/base/interface.h"
+#include "system/content/data/g/interface.h"
 
 namespace mysimulator {
 
@@ -11,20 +12,21 @@ namespace mysimulator {
 
     public:
 
-      typedef SysContentWithG<T,VecType>      Type;
-      typedef SysContentBase<T,VecType>       ParentType;
+      typedef SysContentWithG<T,VecType>    Type;
+      typedef SysContentBase<T,VecType>     ParentType;
+      typedef SysContentDataG<T,VecType>    EGDataType;
 
-      Object<VecType<T> >   Gradient;
+      EGDataType  EGData;
 
-      SysContentWithG() : ParentType(), Gradient() {}
+      SysContentWithG() : ParentType(), EGData() {}
       ~SysContentWithG() { clearData(); }
 
       void clearData() {
-        release(Gradient);  static_cast<ParentType*>(this)->clearData();
+        release(EGData);
+        static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
-        return static_cast<const ParentType*>(this)->isvalid()&&
-               IsValid(Gradient);
+        return static_cast<const ParentType*>(this)->isvalid()&&IsValid(EGData);
       }
 
     private:
@@ -34,11 +36,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T, template<typename> class VecType>
-  void release(SysContentWithG<T,VecType>& S) { S.clearData(); }
+  template <typename T, template<typename> class VT>
+  void release(SysContentWithG<T,VT>& S) { S.clearData(); }
 
-  template <typename T, template<typename> class VecType>
-  bool IsValid(const SysContentWithG<T,VecType>& S) { return S.isvalid(); }
+  template <typename T, template<typename> class VT>
+  bool IsValid(const SysContentWithG<T,VT>& S) { return S.isvalid(); }
 
 }
 

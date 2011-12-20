@@ -28,11 +28,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T, template<typename> class VecType>
-  void release(SysContentBase<T,VecType>& S) { S.clearData(); }
+  template <typename T, template<typename> class VT>
+  void release(SysContentBase<T,VT>& S) { S.clearData(); }
 
-  template <typename T, template<typename> class VecType>
-  bool IsValid(const SysContentBase<T,VecType>& S) { return S.isvalid(); }
+  template <typename T, template<typename> class VT>
+  bool IsValid(const SysContentBase<T,VT>& S) { return S.isvalid(); }
 
 }
 
