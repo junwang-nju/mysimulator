@@ -22,6 +22,7 @@ namespace mysimulator {
             template<typename,template<typename>class> class SCT>\
   void _EvaluateBoth(SCT<T,VT>& SC,SysInteraction<T,IDT,PT,GT,VT,SCType>& SI){\
     assert(IsValid(SC)&&IsValid(SI));\
+    nullifyBoth(SI.EGData());\
     Calc(SI.Func(),SC.X(),SI.ID(),SI.Param(),SI.Geom(),\
          SI.EGData().Energy(),SI.EGData().Gradient());\
   }
@@ -29,6 +30,7 @@ namespace mysimulator {
 #include "interaction/calc.h"
 #include "system/content/with-eg/interface.h"
 #include "system/content/with-egv/interface.h"
+#include "system/content/data/nullify.h"
 
 namespace mysimulator {
 
@@ -38,6 +40,8 @@ namespace mysimulator {
 }
 
 #undef _EvalBoth
+
+#include "system/content/data/accumulate.h"
 
 namespace mysimulator {
 
@@ -50,7 +54,7 @@ namespace mysimulator {
       Array1DContent<SysInteraction<T,IDT,PT,GT,VT,SCT2> >& SI) {
     assert(IsValid(SC)&&IsValid(SI));
     for(unsigned int i=0;i<SI.size;++i) _EvaluateBoth(SC,SI[i]);
-    nullify(SC.EGData);
+    nullifyBoth(SC.EGData);
     for(unsigned int i=0;i<SI.size;++i)
       accumulateBoth(SC.EGData,SI[i].EGData());
   }

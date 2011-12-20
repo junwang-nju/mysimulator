@@ -17,6 +17,12 @@ namespace mysimulator {
     allocate(S.EGData);
   }
 
+  template <typename T, template<typename> class VT, typename T1>
+  void allocate(SysContentWithE<T,VT>& S, const Object<VT<T1> >& X) {
+    assert(IsValid(X));
+    allocate(S,X());
+  }
+
 }
 
 #endif

@@ -17,8 +17,8 @@ namespace mysimulator {
     public:
 
       typedef
-        LineMinimizerCommon<T,IDType,ParamType,GeomType,VecType,SysContentType>
-        Type;
+      LineMinimizerCommon<T,IDType,ParamType,GeomType,VecType,SysContentType>
+      Type;
       typedef MinimizerBase<T,IDType,ParamType,GeomType,VecType,SysContentType>
               ParentType;
       typedef System<T,IDType,ParamType,GeomType,VecType,SysContentWithEGV>
@@ -62,9 +62,6 @@ namespace mysimulator {
                               RunSys().Content().Velocity(),this->DOF);
       }
 
-      void _load();
-      void _write();
-
     private:
 
       LineMinimizerCommon(const Type&) {}
@@ -88,124 +85,85 @@ namespace mysimulator {
 
 #define _LoadOperateXE \
   copy(M.MemSys().Content().X(),M.Sys().Content().X());\
-  copy(M.MemSys().Content().Energy(),M.Sys().Content().Energy());
+  copy(M.MemSys().Content().EGData.Energy(),M.Sys().Content().EGData.Energy());
+
+#define _LoadXE(SCType) \
+  template <typename T,typename IDT,typename PT,typename GT,\
+            template<typename> class VT> \
+  void _load(LineMinimizerCommon<T,IDT,PT,GT,VT,SCType>& M) { \
+    _LoadOperateXE \
+    GenericEvaluateGradient(M.MemSys().Content(),M.MemSys().Interactions);\
+    M.GCalcCount++;\
+  }
 
 #include "system/content/with-ev/interface.h"
+#include "system/evaluate/gradient.h"
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void _load(LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithE>& M) {
-    _LoadOperateXE
-    sync(M.MemSys().Content(),M.MemSys().Interaction());
-    M.GCalcCount++;
-  }
-
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void _load(LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEV>& M) {
-    _LoadOperateXE
-    sync(M.MemSys().Content(),M.MemSys().Interaction());
-    M.GCalcCount++;
-  }
-
-  /*
-  void LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithE>::_load() {
-    _LoadOperateXE
-    sync(MemSys().Content(),MemSys().Interaction());
-    this->GCalcCount++;
-  }
-
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEV>::_load() {
-    _LoadOperateXE
-    sync(MemSys().Content(),MemSys().Interaction());
-    this->GCalcCount++;
-  }
-  */
+  _LoadXE(SysContentWithE)
+  _LoadXE(SysContentWithEV)
 
 }
 
-#define _LoadOperateXEG \
-  _LoadOperateXE \
-  copy(M.MemSys().Content().Gradient(),M.Sys().Content().Gradient());
+#undef LoadXE
+
+#define _LoadXEG(SCType) \
+  template <typename T,typename IDT,typename PT,typename GT,\
+            template<typename> class VT> \
+  void _load(LineMinimizerCommon<T,IDT,PT,GT,VT,SCType>& M) { \
+    _LoadOperateXE \
+    copy(M.MemSys().Content().EGData.Gradient(),\
+         M.Sys().Content().EGData.Gradient()); \
+  }
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void _load(LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEG>& M) {
-    _LoadOperateXEG
-  }
-
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void _load(LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEGV>& M) {
-    _LoadOperateXEG
-  }
-
-  /*
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEG>::_load() {
-    _LoadOperateXEG
-  }
-
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEGV>::_load() {
-    _LoadOperateXEG
-  }
-  */
+  _LoadXEG(SysContentWithEG)
+  _LoadXEG(SysContentWithEGV)
 
 }
 
-#undef _LoadOperateXEG
+#undef _LoadXEG
 #undef _LoadOperateXE
 
 #define _WriteOperateXE \
   copy(M.Sys().Content().X(),M.MemSys().Content().X());\
-  copy(M.Sys().Content().Energy(),M.MemSys().Content().Energy());
+  copy(M.Sys().Content().EGData.Energy(),M.MemSys().Content().EGData.Energy());
+
+#define _WriteXE(SCType) \
+  template <typename T,typename IDT,typename PT,typename GT,\
+            template<typename> class VT>\
+  void _write(LineMinimizerCommon<T,IDT,PT,GT,VT,SCType>& M) { \
+    _WriteOperateXE \
+  }
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void _write(LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithE>& M) {
-    _WriteOperateXE
-  }
-
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void _write(LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEV>& M) {
-    _WriteOperateXE
-  }
+  _WriteXE(SysContentWithE)
+  _WriteXE(SysContentWithEV)
 
 }
 
-#define _WriteOperateXEG \
-  _WriteOperateXE \
-  copy(M.Sys().Content().Gradient(),M.MemSys().Content().Gradient());
+#undef _WriteXE
+
+#define _WriteXEG(SCType) \
+  template <typename T,typename IDT,typename PT,typename GT,\
+            template<typename> class VT> \
+  void _write(LineMinimizerCommon<T,IDT,PT,GT,VT,SCType>& M) { \
+    _WriteOperateXE \
+    copy(M.Sys().Content().EGData.Gradient(),\
+         M.MemSys().Content().EGData.Gradient()); \
+  }
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void _write(LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEG>& M) {
-    _WriteOperateXEG
-  }
-
-  template <typename T,typename IDT,typename PT,typename GT,
-            template<typename> class VT>
-  void _write(LineMinimizerCommon<T,IDT,PT,GT,VT,SysContentWithEGV>& M) {
-    _WriteOperateXEG
-  }
+  _WriteXEG(SysContentWithEG)
+  _WriteXEG(SysContentWithEGV)
 
 }
 
-#undef _WriteOperateXEG
+#undef _WriteXEG
 #undef _WriteOperateXE
 
 #endif

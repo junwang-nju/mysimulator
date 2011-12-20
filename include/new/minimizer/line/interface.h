@@ -18,8 +18,8 @@ namespace mysimulator {
     public:
 
       typedef
-        LineMinimizer<LM,T,IDType,ParamType,GeomType,VecType,SysContentType,LCM>
-        Type;
+      LineMinimizer<LM,T,IDType,ParamType,GeomType,VecType,SysContentType,LCM>
+      Type;
 
       LineMinimizer() { Error("Unknown Method for Line Minimizer"); }
       ~LineMinimizer() { clearData(); }

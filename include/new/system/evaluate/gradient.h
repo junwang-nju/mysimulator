@@ -22,6 +22,7 @@ namespace mysimulator {
             template<typename,template<typename>class> class SCT>\
   void _EvaluateGradient(SCT<T,VT>& S,SysInteraction<T,IDT,PT,GT,VT,ISCT>& SI){\
     assert(IsValid(S)&&IsValid(SI));\
+    nullifyGradient(SI.EGData());\
     Calc(SI.Func(),S.X(),SI.ID(),SI.Param(),SI.Geom(),SI.EGData().Gradient());\
   }
 
@@ -30,6 +31,7 @@ namespace mysimulator {
 #include "system/content/with-gv/interface.h"
 #include "system/content/with-eg/interface.h"
 #include "system/content/with-egv/interface.h"
+#include "system/content/data/nullify.h"
 
 namespace mysimulator {
 
@@ -42,6 +44,8 @@ namespace mysimulator {
 
 #undef _EvalGradient
 
+#include "system/content/data/accumulate.h"
+
 namespace mysimulator {
 
   template <typename T,typename IDT,typename PT,typename GT,
@@ -53,7 +57,7 @@ namespace mysimulator {
       Array1DContent<SysInteraction<T,IDT,PT,GT,VT,SCT2> >& SI) {
     assert(IsValid(SC)&&IsValid(SI));
     for(unsigned int i=0;i<SI.size;++i) _EvaluateGradient(SC,SI[i]);
-    nullify(SC.EGData);
+    nullifyGradient(SC.EGData);
     for(unsigned int i=0;i<SI.size;++i)
       accumulateGradient(SC.EGData,SI[i].EGData());
   }

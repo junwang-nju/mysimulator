@@ -37,7 +37,7 @@ namespace mysimulator {
         T tmd,tmd2;
         int fg=0, lfg;
         for(unsigned int ns=0;ns<MaxSteps;++ns) {
-          copy(this->LineDirc(),this->MemSys().Content().Gradient());
+          copy(this->LineDirc(),this->MemSys().Content().EGData.Gradient());
           tmd=norm(this->LineDirc());
           if(tmd<this->GradientThreshold) {
             fg=3;
@@ -45,7 +45,7 @@ namespace mysimulator {
           }
           scale(this->LineDirc(),-1./tmd);
           this->Proj=-tmd;
-          tmd=this->MemSys().Content().Energy();
+          tmd=this->MemSys().Content().EGData.Energy();
           lfg=static_cast<ParentType*>(this)->Go();
           this->LineSearchCount++;
           if(lfg==2) {
@@ -55,7 +55,7 @@ namespace mysimulator {
             fg=4;
             break;
           } else {
-            tmd2=this->MemSys().Content().Energy();
+            tmd2=this->MemSys().Content().EGData.Energy();
             if(2*absval(tmd-tmd2)<=absval(tmd+tmd2)*RelativeDelta<T>()) {
               fg=2;
               break;

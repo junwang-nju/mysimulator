@@ -73,6 +73,9 @@ namespace mysimulator {
 
 #undef EvalEG
 
+#include "system/content/data/nullify.h"
+#include "system/content/data/accumulate.h"
+
 namespace mysimulator {
 
   template <typename T,typename IDT,typename PT,typename GT,

@@ -51,14 +51,14 @@ namespace mysimulator {
         bool nextMode;
         T beta=0;
         T fnorm,fnorm2;
-        fnorm=norm(this->MemSys().Content().Gradient());
+        fnorm=norm(this->MemSys().Content().EGData.Gradient());
         if(fnorm<this->GradientThreshold) fg=3;
         else {
           fnorm2=fnorm*fnorm;
           T tmd,tmd2,oldfnorm2=1,dnorm=0;
           for(unsigned int ns=0;ns<MaxSteps;++ns) {
             if(!isSteep) {
-              tmd=dot(this->MemSys().Content().Gradient(),OldMinG);
+              tmd=dot(this->MemSys().Content().EGData.Gradient(),OldMinG);
               beta=(fnorm2-tmd)/oldfnorm2;
               isSteep=(absval(beta)>MaxBeta);
             }
@@ -66,7 +66,7 @@ namespace mysimulator {
               tmd=beta*dnorm;
               scale(this->LineDirc(),tmd);
               shift(this->LineDirc(),-cOne,
-                    this->MemSys().Content().Gradient());
+                    this->MemSys().Content().EGData.Gradient());
               this->Proj*=tmd;
               dnorm=sqroot(tmd*tmd+fnorm2-2*this->Proj);
               this->Proj-=fnorm2;
@@ -81,14 +81,14 @@ namespace mysimulator {
               copy(beta,cZero);
               dnorm=fnorm;
               copy(this->LineDirc(),
-                   this->MemSys().Content().Gradient());
+                   this->MemSys().Content().EGData.Gradient());
               scale(this->LineDirc(),-cOne);
               this->Proj=-fnorm;
             }
             tmd=1./dnorm;
             scale(this->LineDirc(),tmd);
-            copy(OldMinG,this->MemSys().Content().Gradient());
-            tmd=this->MemSys().Content().Energy();
+            copy(OldMinG,this->MemSys().Content().EGData.Gradient());
+            tmd=this->MemSys().Content().EGData.Energy();
             lfg=static_cast<ParentType*>(this)->Go();
             this->LineSearchCount++;
             nextMode=false;
@@ -104,7 +104,7 @@ namespace mysimulator {
               fg=5;
               break;
             } else {
-              tmd2=this->MemSys().Content().Energy();
+              tmd2=this->MemSys().Content().EGData.Energy();
               if(2*absval(tmd-tmd2)<absval(tmd+tmd2)*RelativeDelta<T>()) {
                 if(isSteep) {
                   fg=2;
@@ -117,7 +117,7 @@ namespace mysimulator {
             }
             isSteep=nextMode;
             oldfnorm2=fnorm2;
-            fnorm=norm(this->MemSys().Content().Gradient());
+            fnorm=norm(this->MemSys().Content().EGData.Gradient());
             fnorm2=fnorm*fnorm;
           }
         }

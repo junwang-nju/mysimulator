@@ -22,21 +22,21 @@ namespace mysimulator {
 
 }
 
-#include "system/evolute/interface.h"
+#include "system/propagate/interface.h"
 
 namespace mysimulator {
 
   template <typename T, template<typename> class VT,
             template<typename,template<typename>class> class SCT>
   unsigned int _DegreeOfFreeDom(
-      const Array1DContent<SysEvolute<T,VT,SCT> >& SE) {
+      const Array1DContent<SysPropagate<T,VT,SCT> >& SE) {
     assert(IsValid(SE));
     unsigned int dof=0;
     for(unsigned int i=0;i<SE.size;++i) {
       switch(SE[i].Method) {
         case SysFixPosition:
           break;
-        case SysRegular:
+        case SysToBeDetermined:
         case SysMinimizerLineRegular:
           for(unsigned int j=0;j<SE[i].grpContent.size;++j)
             dof+=DegreeOfFreedom(SE[i].grpContent[j].X());
@@ -51,7 +51,17 @@ namespace mysimulator {
 }
 
 #include "system/interface.h"
-#error "No implemented to Get DOF for System!"
+
+namespace mysimulator {
+
+  template <typename T,typename IDT,typename PT,typename GT,
+            template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
+  unsigned int DegreeOfFreedom(const System<T,IDT,PT,GT,VT,SCT>& S) {
+    return _DegreeOfFreeDom(S.Propagates);
+  }
+
+}
 
 #endif
 

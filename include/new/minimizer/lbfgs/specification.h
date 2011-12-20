@@ -64,14 +64,14 @@ namespace mysimulator {
         _load(*this);
         unsigned int ncr=0, point=0, cp;
         T diag,dgdg,dgdx,beta,fnorm,dnorm,tmd,tmd2;
-        fnorm=norm(this->MemSys().Content().Gradient());
+        fnorm=norm(this->MemSys().Content().EGData.Gradient());
         if(fnorm<this->GradientThreshold) return 3;
         bool isSteep=true, nextMode;
         unsigned int fg=0, lfg;
         for(unsigned int ns=0;ns<MaxSteps;++ns) {
           if(!isSteep) {
             this->Proj=dot(this->LineDirc(),
-                           this->MemSys().Content().Gradient());
+                           this->MemSys().Content().EGData.Gradient());
             dnorm=norm(this->LineDirc());
             this->Proj/=dnorm;
             isSteep=((this->Proj>0)||(dnorm<this->GradientThreshold));
@@ -83,7 +83,7 @@ namespace mysimulator {
             } else {
               ncr=0;
               copy(diag,iOne);
-              copy(this->LineDirc(),this->MemSys().Content().Gradient());
+              copy(this->LineDirc(),this->MemSys().Content().EGData.Gradient());
               scale(this->LineDirc(),-diag);
               this->Proj=-fnorm*diag;
               dnorm=fnorm*diag;
@@ -92,8 +92,8 @@ namespace mysimulator {
           scale(this->LineDirc(),1./dnorm);
           copy(dX[point],this->LineDirc());
           copy(lastX,this->MemSys().Content().X());
-          copy(lastG,this->MemSys().Content().Gradient());
-          tmd=this->MemSys().Content().Energy();
+          copy(lastG,this->MemSys().Content().EGData.Gradient());
+          tmd=this->MemSys().Content().EGData.Energy();
           lfg=static_cast<ParentType*>(this)->Go();
           ++(this->LineSearchCount);
           nextMode=false;
@@ -109,7 +109,7 @@ namespace mysimulator {
             fg=5;
             break;
           } else {
-            tmd2=this->MemSys().Content().Energy();
+            tmd2=this->MemSys().Content().EGData.Energy();
             if(2*absval(tmd-tmd2)<absval(tmd+tmd2)*RelativeDelta<T>()) {
               if(isSteep) {
                 fg=2;
@@ -121,10 +121,10 @@ namespace mysimulator {
             }
           }
           isSteep=nextMode;
-          fnorm=norm(this->MemSys().Content().Gradient());
+          fnorm=norm(this->MemSys().Content().EGData.Gradient());
           if(!isSteep) {
             if(ncr<MaxCorrelations)   ++ncr;
-            copy(dG[point],this->MemSys().Content().Gradient());
+            copy(dG[point],this->MemSys().Content().EGData.Gradient());
             shift(dG[point],-cOne,lastG);
             scale(dX[point],this->Move);
             dgdg=normSQ(dG[point]);
@@ -133,7 +133,7 @@ namespace mysimulator {
             rho[point]=iOne/dgdx;
             ++point;
             if(point>=MaxCorrelations)  point=0;
-            copy(this->LineDirc(),this->MemSys().Content().Gradient());
+            copy(this->LineDirc(),this->MemSys().Content().EGData.Gradient());
             scale(this->LineDirc(),-cOne);
             cp=point;
             for(unsigned int k=0;k<ncr;++k) {

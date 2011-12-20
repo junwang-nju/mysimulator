@@ -8,11 +8,26 @@
 namespace mysimulator {
 
   template <typename T, template <typename> class VT>
-  void Nullify(SysContentDataEG<T,VT>& D) {
+  void nullifyEnergy(SysContentDataEG<T,VT>& D) {
+    assert(IsValid(D));
+    copy(D.Energy(),cZero);
+  }
+
+  template <typename T, template <typename> class VT>
+  void nullifyGradient(SysContentDataEG<T,VT>& D) {
+    assert(IsValid(D));
+    fill(D.Gradient(),cZero);
+  }
+
+  template <typename T, template <typename> class VT>
+  void nullifyBoth(SysContentDataEG<T,VT>& D) {
     assert(IsValid(D));
     copy(D.Energy(),cZero);
     fill(D.Gradient(),cZero);
   }
+
+  template <typename T, template <typename> class VT>
+  void nullify(SysContentDataEG<T,VT>& D) { nullifyBoth(D); }
 
 }
 

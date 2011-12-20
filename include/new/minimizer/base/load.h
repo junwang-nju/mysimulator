@@ -4,7 +4,7 @@
 
 #include "minimizer/base/interface.h"
 #include "object/refer.h"
-#include "system/get-degree-of-freedom.h"
+#include "system/get-DOF.h"
 
 #define _Load_Min \
   assert(IsValid(S));\

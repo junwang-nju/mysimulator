@@ -8,10 +8,23 @@
 namespace mysimulator {
 
   template <typename T, template <typename> class VT>
-  void nullify(SysContentDataG<T,VT>& D) {
+  void nullifyEnergy(SysContentDataG<T,VT>&) {
+    Error("Not available for this data!");
+  }
+
+  template <typename T, template <typename> class VT>
+  void nullifyGradient(SysContentDataG<T,VT>& D) {
     assert(IsValid(D));
     fill(D.Gradient(),cZero);
   }
+
+  template <typename T, template <typename> class VT>
+  void nullifyBoth(SysContentDataG<T,VT>&) {
+    Error("Not available for this data!");
+  }
+
+  template <typename T, template <typename> class VT>
+  void nullify(SysContentDataG<T,VT>& D) { nullifyGradient(D); }
 
 }
 

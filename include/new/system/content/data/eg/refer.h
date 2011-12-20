@@ -15,7 +15,7 @@ namespace mysimulator {
     release(D);
     refer(D.Energy,rD.Energy);
     allocate(D.Gradient);
-    refer(D.Gradient,rD.Gradient,partb,parte,newb);
+    refer(D.Gradient(),rD.Gradient(),partb,parte,newb);
   }
 
   template <typename T, template<typename> class VT>

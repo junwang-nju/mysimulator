@@ -10,6 +10,7 @@
   assert(IsValid(cA));\
   release(A);\
   refer(A.data,cA.data);\
+  refer(A.subdata,cA.subdata);\
   typedef typename Array2D<T>::ParentType::ParentType   Type;
 
 namespace mysimulator {

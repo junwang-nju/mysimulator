@@ -8,10 +8,23 @@
 namespace mysimulator {
 
   template <typename T>
-  void nullify(SysContentDataE<T>& D) {
+  void nullifyEnergy(SysContentDataE<T>& D) {
     assert(IsValid(D));
     copy(D.Energy(),cZero);
   }
+
+  template <typename T>
+  void nullifyGradient(SysContentDataE<T>&) {
+    Error("No availbale for this data!");
+  }
+
+  template <typename T>
+  void nullifyBoth(SysContentDataE<T>&) {
+    Error("No availbale for this data!");
+  }
+
+  template <typename T>
+  void nullify(SysContentDataE<T>& D) { nullifyEnergy(D); }
 
 }
 

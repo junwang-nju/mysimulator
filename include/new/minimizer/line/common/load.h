@@ -4,10 +4,12 @@
 
 #include "minimizer/line/common/interface.h"
 #include "minimizer/base/load.h"
-#include "minimizer/system-grouping-method-mapping.h"
+#include "minimizer/system-propagate-method-mapping.h"
 #include "array/1d/refer.h"
-#include "system/grouping/action/minimizer/line/regular/parameter-name.h"
-#include "system/grouping/allocate.h"
+#include "system/propagate/minimizer/line/regular/parameter-name.h"
+#include "system/propagate/allocate.h"
+#include "system/content/data/eg/allocate.h"
+#include "system/content/with-egv/refer.h"
 
 namespace mysimulator {
 
@@ -20,44 +22,60 @@ namespace mysimulator {
     allocate(M.MemSys().Content);
     allocate(M.RunSys().Content);
     imprint(M.MemSys().Content().X,M.Sys().Content().X);
-    imprint(M.MemSys().Content().Gradient,M.Sys().Content().X);
+    allocate(M.MemSys().Content().EGData,M.Sys().Content().X);
     imprint(M.RunSys().Content().X,M.Sys().Content().X);
-    imprint(M.RunSys().Content().Gradient,M.Sys().Content().X);
-    allocate(M.MemSys().Content().Energy);
-    allocate(M.RunSys().Content().Energy);
+    allocate(M.RunSys().Content().EGData,M.Sys().Content().X);
     imprint(M.LineDirc,M.Sys().Content().X);
     refer(M.MemSys().Content().Velocity,M.LineDirc);
     refer(M.RunSys().Content().Velocity,M.LineDirc);
-    refer(M.MemSys().Interaction,M.Sys().Interaction);
-    refer(M.RunSys().Interaction,M.Sys().Interaction);
-    allocate(M.MemSys().Groups,M.Sys().Groups.size);
-    allocate(M.RunSys().Groups,M.Sys().Groups.size);
-    for(unsigned int i=0;i<M.Sys().Groups.size;++i) {
-      SystemGroupingMethodName SGN;
-      SGN=MinimizerSysGrpMethodMapping(M.Sys().Groups[i].Method);
-      allocate(M.MemSys().Groups[i],SGN);
-      allocate(M.RunSys().Groups[i],SGN);
-      refer(M.MemSys().Groups[i].MerIDRange,M.Sys().Groups[i].MerIDRange);
-      refer(M.RunSys().Groups[i].MerIDRange,M.Sys().Groups[i].MerIDRange);
-      unsigned int n=M.Sys().Groups[i].MerIDRange.size;
-      allocate(M.MemSys().Groups[i].grpContent,n);
-      allocate(M.RunSys().Groups[i].grpContent,n);
-      M.MemSys().Groups[i].buildGrpContent(M.MemSys().Content());
-      M.RunSys().Groups[i].buildGrpContent(M.RunSys().Content());
+    allocate(M.MemSys().Interactions,M.Sys().Interactions.size);
+    for(unsigned int i=0;i<M.Sys().Interactions.size;++i) {
+      refer(M.MemSys().Interactions[i].Func,M.Sys().Interactions[i].Func);
+      refer(M.MemSys().Interactions[i].ID,M.Sys().Interactions[i].ID);
+      refer(M.MemSys().Interactions[i].Param,M.Sys().Interactions[i].Param);
+      refer(M.MemSys().Interactions[i].Geom,M.Sys().Interactions[i].Geom);
+      allocate(M.MemSys().Interactions[i].EGData);
+      allocate(M.MemSys().Interactions[i].EGData(),M.Sys().Content().X);
+    }
+    allocate(M.RunSys().Interactions,M.Sys().Interactions.size);
+    for(unsigned int i=0;i<M.Sys().Interactions.size;++i) {
+      refer(M.RunSys().Interactions[i].Func,M.Sys().Interactions[i].Func);
+      refer(M.RunSys().Interactions[i].ID,M.Sys().Interactions[i].ID);
+      refer(M.RunSys().Interactions[i].Param,M.Sys().Interactions[i].Param);
+      refer(M.RunSys().Interactions[i].Geom,M.Sys().Interactions[i].Geom);
+      allocate(M.RunSys().Interactions[i].EGData);
+      allocate(M.RunSys().Interactions[i].EGData(),M.Sys().Content().X);
+    }
+    allocate(M.MemSys().Propagates,M.Sys().Propagates.size);
+    allocate(M.RunSys().Propagates,M.Sys().Propagates.size);
+    for(unsigned int i=0;i<M.Sys().Propagates.size;++i) {
+      SystemPropagateMethodName SPN;
+      SPN=MinimizerSysPropagateMethodMapping(M.Sys().Propagates[i].Method);
+      allocate(M.MemSys().Propagates[i],SPN);
+      allocate(M.RunSys().Propagates[i],SPN);
+      refer(M.MemSys().Propagates[i].MerIDRange,
+            M.Sys().Propagates[i].MerIDRange);
+      refer(M.RunSys().Propagates[i].MerIDRange,
+            M.Sys().Propagates[i].MerIDRange);
+      unsigned int n=M.Sys().Propagates[i].MerIDRange.size;
+      allocate(M.MemSys().Propagates[i].grpContent,n);
+      allocate(M.RunSys().Propagates[i].grpContent,n);
+      M.MemSys().Propagates[i].buildGroupContent(M.MemSys().Content());
+      M.RunSys().Propagates[i].buildGroupContent(M.RunSys().Content());
       void* pStep=reinterpret_cast<void*>(&(M.Step));
-      switch(SGN) {
-        case SystemFixPosition:
+      switch(SPN) {
+        case SysFixPosition:
           break;
-        case SystemMinimizerLineRegular:
-          M.MemSys().Groups[i].Param[MinLineRegularStep].ptr[0]=pStep;
-          M.RunSys().Groups[i].Param[MinLineRegularStep].ptr[0]=pStep;
+        case SysMinimizerLineRegular:
+          M.MemSys().Propagates[i].Param[MinLineRegularStep].ptr[0]=pStep;
+          M.RunSys().Propagates[i].Param[MinLineRegularStep].ptr[0]=pStep;
           break;
         default:
           Error("This Grouping Method Cannot be processed!");
       }
     }
-    M.MemSys().Build();
-    M.RunSys().Build();
+    M.MemSys().build();
+    M.RunSys().build();
     M.MemSys().init();
     M.RunSys().init();
   }
@@ -83,7 +101,7 @@ namespace mysimulator {
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
   void load(LineMinimizerCommon<T,IDT,PT,GT,VT,SCT>& M,
-      Object<System<T,IDT,PT,GT,VT,SCT> >& S) { _Load_Min }
+            Object<System<T,IDT,PT,GT,VT,SCT> >& S) { _Load_Min }
 
 }
 

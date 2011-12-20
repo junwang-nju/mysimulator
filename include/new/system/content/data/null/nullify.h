@@ -8,7 +8,16 @@
 namespace mysimulator {
 
   template <typename T, template <typename> class VT>
-  void nullify(SysContentDataNull&) { Warn("No action for this Data!"); }
+  void nullifyEnergy(SysContentDataNull&) { Error("No action for this Data!"); }
+
+  template <typename T, template <typename> class VT>
+  void nullifyGradient(SysContentDataNull&) {Error("No action for this Data!");}
+
+  template <typename T, template <typename> class VT>
+  void nullifyBoth(SysContentDataNull&) { Error("No action for this Data!"); }
+
+  template <typename T, template <typename> class VT>
+  void nullify(SysContentDataNull&) { Error("No action for this Data!"); }
 
 }
 

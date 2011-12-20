@@ -13,8 +13,11 @@ namespace mysimulator {
     allocate(D.Energy);
   }
 
-  template <typename T, template<typename> class VT>
-  void allocate(SysContentDataE<T>& D, const VT<T>&) { allocate(D); }
+  template <typename T, template<typename> class VT, typename T1>
+  void allocate(SysContentDataE<T>& D, const VT<T1>&) { allocate(D); }
+
+  template <typename T, template<typename> class VT, typename T1>
+  void allocate(SysContentDataE<T>& D, const Object<VT<T1> >&) { allocate(D); }
 
 }
 

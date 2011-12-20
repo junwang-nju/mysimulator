@@ -5,7 +5,6 @@
 #include "minimizer/line/interface.h"
 #include "minimizer/line/common/interface.h"
 #include "minimizer/line/condition/interface.h"
-#include "system/sync.h"
 #include "object/swap.h"
 
 namespace mysimulator {
@@ -57,13 +56,12 @@ namespace mysimulator {
         for(unsigned int nit=0;nit<MaxSteps;++nit) {
           copy(this->RunSys().Content().X(),this->MemSys().Content().X());
           this->RunSys().evolute();
-          sync(this->RunSys().Content(),this->RunSys().Interaction());
           this->GCalcCount++;
-          this->RunProj=dot(this->RunSys().Content().Gradient(),
+          this->RunProj=dot(this->RunSys().Content().EGData.Gradient(),
                             this->LineDirc());
-          if(Condition<T,LCM>::Check(this->RunSys().Content().Energy(),
+          if(Condition<T,LCM>::Check(this->RunSys().Content().EGData.Energy(),
                                      this->RunProj,
-                                     this->MemSys().Content().Energy(),
+                                     this->MemSys().Content().EGData.Energy(),
                                      c1pj,c2pj,this->Step)) {
             Swap(this->RunSys,this->MemSys);
             this->Proj=this->RunProj;
