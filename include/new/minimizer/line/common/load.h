@@ -31,6 +31,10 @@ namespace mysimulator {
     allocate(M.MemSys().Interactions,M.Sys().Interactions.size);
     for(unsigned int i=0;i<M.Sys().Interactions.size;++i) {
       refer(M.MemSys().Interactions[i].Func,M.Sys().Interactions[i].Func);
+      if(M.MemSys().Interactions[i].Func.size==1)
+        SetWorkFunc(M.MemSys().Interactions[i],SingleInteraction);
+      else
+        SetWorkFunc(M.MemSys().Interactions[i],ArrayInteraction);
       refer(M.MemSys().Interactions[i].ID,M.Sys().Interactions[i].ID);
       refer(M.MemSys().Interactions[i].Param,M.Sys().Interactions[i].Param);
       refer(M.MemSys().Interactions[i].Geom,M.Sys().Interactions[i].Geom);
@@ -40,6 +44,10 @@ namespace mysimulator {
     allocate(M.RunSys().Interactions,M.Sys().Interactions.size);
     for(unsigned int i=0;i<M.Sys().Interactions.size;++i) {
       refer(M.RunSys().Interactions[i].Func,M.Sys().Interactions[i].Func);
+      if(M.RunSys().Interactions[i].Func.size==1)
+        SetWorkFunc(M.RunSys().Interactions[i],SingleInteraction);
+      else
+        SetWorkFunc(M.RunSys().Interactions[i],ArrayInteraction);
       refer(M.RunSys().Interactions[i].ID,M.Sys().Interactions[i].ID);
       refer(M.RunSys().Interactions[i].Param,M.Sys().Interactions[i].Param);
       refer(M.RunSys().Interactions[i].Geom,M.Sys().Interactions[i].Geom);

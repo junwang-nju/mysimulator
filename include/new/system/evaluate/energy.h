@@ -20,10 +20,12 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,\
             template<typename> class VT,\
             template<typename,template<typename>class> class SCT>\
-  void _EvaluateEnergy(SCT<T,VT>& SC,SysInteraction<T,IDT,PT,GT,VT,ISCT>& SI){\
+  void _EvaluateEnergy(SCT<T,VT>& SC,\
+                       SysInteraction<T,IDT,PT,GT,VT,ISCT>& SI){\
     assert(IsValid(SC)&&IsValid(SI));\
     nullifyEnergy(SI.EGData());\
-    Calc(SI.Func(),SC.X(),SI.ID(),SI.Param(),SI.Geom(),SI.EGData().Energy());\
+    SI.WorkE(SI.Func,SC.X(),SI.ID(),SI.Param(),SI.Geom(),\
+             SI.EGData().Energy());\
   }
 
 #include "interaction/calc.h"

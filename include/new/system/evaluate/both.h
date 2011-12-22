@@ -20,11 +20,12 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,\
             template<typename> class VT,\
             template<typename,template<typename>class> class SCT>\
-  void _EvaluateBoth(SCT<T,VT>& SC,SysInteraction<T,IDT,PT,GT,VT,SCType>& SI){\
+  void _EvaluateBoth(SCT<T,VT>& SC,\
+                     SysInteraction<T,IDT,PT,GT,VT,SCType>& SI){\
     assert(IsValid(SC)&&IsValid(SI));\
     nullifyBoth(SI.EGData());\
-    Calc(SI.Func(),SC.X(),SI.ID(),SI.Param(),SI.Geom(),\
-         SI.EGData().Energy(),SI.EGData().Gradient());\
+    SI.WorkB(SI.Func,SC.X(),SI.ID(),SI.Param(),SI.Geom(),\
+             SI.EGData().Energy(),SI.EGData().Gradient());\
   }
 
 #include "interaction/calc.h"

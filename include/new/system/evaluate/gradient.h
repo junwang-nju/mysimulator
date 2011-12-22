@@ -20,10 +20,12 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,\
             template<typename> class VT,\
             template<typename,template<typename>class> class SCT>\
-  void _EvaluateGradient(SCT<T,VT>& S,SysInteraction<T,IDT,PT,GT,VT,ISCT>& SI){\
+  void _EvaluateGradient(SCT<T,VT>& S,\
+                         SysInteraction<T,IDT,PT,GT,VT,ISCT>& SI){\
     assert(IsValid(S)&&IsValid(SI));\
     nullifyGradient(SI.EGData());\
-    Calc(SI.Func(),S.X(),SI.ID(),SI.Param(),SI.Geom(),SI.EGData().Gradient());\
+    SI.WorkG(SI.Func,S.X(),SI.ID(),SI.Param(),SI.Geom(),\
+             SI.EGData().Gradient());\
   }
 
 #include "interaction/calc.h"
