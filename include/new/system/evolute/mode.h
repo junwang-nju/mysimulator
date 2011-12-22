@@ -6,6 +6,7 @@
 #include "system/evolute/mode-fp-only.h"
 #include "system/evolute/mode-mlr-only.h"
 #include "system/evolute/mode-mlr-fp.h"
+#include "system/evolute/mode-cevp-only.h"
 
 #endif
 

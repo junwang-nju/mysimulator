@@ -22,6 +22,12 @@
 #include "system/propagate/to-be-determined/move.h"
 #include "system/propagate/to-be-determined/update.h"
 
+#include "system/propagate/constE-vverlet-particle/move-name.h"
+#include "system/propagate/constE-vverlet-particle/update-name.h"
+#include "system/propagate/constE-vverlet-particle/init.h"
+#include "system/propagate/constE-vverlet-particle/move.h"
+#include "system/propagate/constE-vverlet-particle/update.h"
+
 namespace mysimulator {
 
   template <typename T,template<typename> class VT,
@@ -47,6 +53,17 @@ namespace mysimulator {
         allocate(SE.evfunc,NumberMoveToBeDetermined);
         SE.evfunc[ToBeDeterminedNoMove]=MoveToBeDeterminedNoMove;
         break;
+      case SysConstEVelVerletParticle:
+        SE.initfunc=InitCEVVerletParticle<T,VT,SCT>;
+        allocate(SE.evfunc,NumberMoveConstEVelVerletParticle);
+        SE.evfunc[CEVVerletParticleBeforeG]=
+          MoveCEVVerletParticleBeforeG<T,VT,SCT>;
+        SE.evfunc[CEVVerletParticleAfterG]=
+          MoveCEVVerletParticleAfterG<T,VT,SCT>;
+        allocate(SE.updfunc,NumberUpdateConstEVelVerletParticle);
+        SE.updfunc[CEVVerletParticleHTIM]=UpdateCEVVerletParticleHTIM<T,VT,SCT>;
+        allocate(SE.Param,NumberParameterConstEVelVerletParticle);
+        break;
       default:
         Error("Unknown Method for System Evolution!");
     }
@@ -62,6 +79,8 @@ namespace mysimulator {
   }
 
 }
+
+#include "system/propagate/constE-vverlet-particle/set.h"
 
 #endif
 

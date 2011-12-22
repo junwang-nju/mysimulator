@@ -12,7 +12,7 @@ namespace mysimulator {
     release(R);
     allocate(R.urng);
     allocate(R.s,3);
-    isSecond=false;
+    R.isSecond=false;
   }
 
 }

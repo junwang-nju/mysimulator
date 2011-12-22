@@ -31,5 +31,36 @@ namespace mysimulator {
 
 #undef _SHIFT
 
+namespace mysimulator {
+
+  template <typename T,typename T1,typename T2>
+  void shift(Array2DContent<T>& A, const Array2DContent<T1>& B1,
+             const Array2DContent<T2>& B2) {
+    assert(IsSameSize(A,B1)&&IsSameSize(A,B2));
+    shift(A.base,B1.base,B2.base);
+  }
+
+  template <typename T,typename Tf,typename T1,typename T2>
+  void shift(Array2DContent<T>& A, const Tf& u, const Array2DContent<T1>& B1,
+             const Array2DContent<T2>& B2) {
+    assert(IsSameSize(A,B1)&&IsSameSize(A,B2));
+    shift(A.base,u,B1.base,B2.base);
+  }
+
+  template <typename T,typename Tu,typename Tv,typename T1,typename T2>
+  void scaleshift(Array2DContent<T>& A, const Tu& u, const Tv& v,
+                  const Array2DContent<T1>& B1, const Array2DContent<T2>& B2) {
+    assert(IsSameSize(A,B1)&&IsSameSize(A,B2));
+    scaleshift(A.base,u,v,B1.base,B2.base);
+  }
+
+  template <typename T,typename Tu,typename T1,typename T2>
+  void scaleshift(Array2DContent<T>& A, const Tu& u, const Array2DContent<T1>& B1,
+                  const Array2DContent<T2>& B2) {
+    scaleshift(A.base,u,B1.base,B2.base);  
+  }
+
+}
+
 #endif
 

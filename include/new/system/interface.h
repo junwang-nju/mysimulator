@@ -77,6 +77,9 @@ namespace mysimulator {
             break;
           case 1:
           case 3:
+          case 5:
+          case 7:
+          case 9:
             evfunc=SysEvoluteModeTBD<T,IDType,ParamType,GeomType,VecType,
                                      SysContentType>;
             break;
@@ -91,6 +94,10 @@ namespace mysimulator {
           case 6:
             evfunc=SysEvoluteModeFPMLR<T,IDType,ParamType,GeomType,VecType,
                                        SysContentType>;
+            break;
+          case 8:
+            evfunc=SysEvoluteModeCEVPOnly<T,IDType,ParamType,GeomType,VecType,
+                                          SysContentType>;
             break;
           default:
             Error("Unknown Mode to Evalute!");

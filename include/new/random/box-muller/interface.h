@@ -36,14 +36,14 @@ namespace mysimulator {
       }
 
       const double _drand() {
-        doble d;
+        double d;
         if(isSecond) d=s[1]*s[2];
         else {
           do {
             s[0]=urng.randomDouble(); s[0]+=s[0]; s[0]-=1.;
             s[1]=urng.randomDouble(); s[1]+=s[1]; s[1]-=1.;
             s[2]=s[0]*s[0]+s[1]*s[1];
-          } while((s[2]>1.)&&(s[2]==0.));
+          } while((s[2]>1.)||(s[2]==0.));
           s[2]=sqrt(-2.0*log(s[2])/s[2]);
           d=s[0]*s[2];
         }
