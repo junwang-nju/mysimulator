@@ -1,10 +1,10 @@
 
-#ifndef _System_Evolute_Mode_ConstE_VelocityVerlet_H_
-#define _System_Evolute_Mode_ConstE_VelocityVerlet_H_
+#ifndef _System_Evolute_Langevin_VelocityVerlet_Only_H_
+#define _System_Evolute_Langevin_VelocityVerlet_Only_H_
 
 #include "system/interaction/interface.h"
 #include "system/propagate/interface.h"
-#include "system/propagate/vverlet/const-e/move-name.h"
+#include "system/propagate/vverlet/langevin/move-name.h"
 #include "system/evaluate/gradient.h"
 
 namespace mysimulator {
@@ -12,16 +12,16 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  void SysEvoluteModeCEVPOnly(
+  void SysEvoluteModeLgVVOnly(
       SCT<T,VT>& SC,
       Array1DContent<SysInteraction<T,IDT,PT,GT,VT,SCT> >& SI,
       Array1DContent<SysPropagate<T,VT,SCT> >& SE,
       const Array1DContent<Array1D<unsigned int> >& GMap) {
     for(unsigned int i=0;i<SE.size;++i)
-      SE[i].propagate(CEVVerletBeforeG);
+      SE[i].propagate(LgVVerletBeforeG);
     GenericEvaluateGradient(SC,SI);
     for(unsigned int i=0;i<SE.size;++i)
-      SE[i].propagate(CEVVerletAfterG);
+      SE[i].propagate(LgVVerletAfterG);
   }
 
 }

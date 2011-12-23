@@ -89,7 +89,7 @@ namespace mysimulator {
   void _AfMoveFuncLgVVerletAMassAFric(
       VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const Unique64Bit& fac,
       const VT<T>& rv, const Unique64Bit& rsize, const unsigned int& n) {
-    _AfMoveFuncLgVVerletAMassAFric(V,G,nhtim,fac,rv,rsize,n);
+    _AfMoveFuncLgVVerletAMassGFric(V,G,nhtim,fac,rv,rsize,n);
   }
 
 }

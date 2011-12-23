@@ -80,6 +80,9 @@ namespace mysimulator {
           case 5:
           case 7:
           case 9:
+          case 11:
+          case 13:
+          case 15:
             evfunc=SysEvoluteModeTBD<T,IDType,ParamType,GeomType,VecType,
                                      SysContentType>;
             break;
@@ -96,7 +99,11 @@ namespace mysimulator {
                                        SysContentType>;
             break;
           case 8:
-            evfunc=SysEvoluteModeCEVPOnly<T,IDType,ParamType,GeomType,VecType,
+            evfunc=SysEvoluteModeCEVVOnly<T,IDType,ParamType,GeomType,VecType,
+                                          SysContentType>;
+            break;
+          case 16:
+            evfunc=SysEvoluteModeLgVVOnly<T,IDType,ParamType,GeomType,VecType,
                                           SysContentType>;
             break;
           default:

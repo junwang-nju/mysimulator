@@ -14,7 +14,7 @@
   delete_pointer(reinterpret_cast<T*&>(P[name##Data].ptr[0]));
 
 #define _DeleteArray(name,p) \
-  if(!IsValid(P[name].ptr[0])) {\
+  if(P[name].ptr[0]!=NULL) {\
     p=reinterpret_cast<Array1D<VT<T> >*>(P[name].ptr[0]);\
     release(*p);\
     delete_pointer(p);\
