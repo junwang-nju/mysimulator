@@ -6,6 +6,9 @@
 #include "array/1d/allocate.h"
 #include "array/1d/fill.h"
 
+#define _DefEvFunc(name) \
+  evfunc=name<T,IDType,ParamType,GeomType,VecType,SysContentType>
+
 namespace mysimulator {
 
   template <typename T, typename IDType, typename ParamType, typename GeomType,
@@ -71,43 +74,41 @@ namespace mysimulator {
         unsigned int mode=0;
         for(unsigned int i=0;i<GrpMap.size;++i)
           mode+=(GrpMap[i].size>0?1:0)<<i;
-        switch(mode) {
-          case 0:
-            Error("No Propagate Available!");
-            break;
-          case 1:
-          case 3:
-          case 5:
-          case 7:
-          case 9:
-          case 11:
-          case 13:
-          case 15:
-            evfunc=SysEvoluteModeTBD<T,IDType,ParamType,GeomType,VecType,
-                                     SysContentType>;
-            break;
-          case 2:
-            evfunc=SysEvoluteModeFPOnly<T,IDType,ParamType,GeomType,VecType,
-                                        SysContentType>;
-            break;
-          case 4:
-            evfunc=SysEvoluteModeMLROnly<T,IDType,ParamType,GeomType,VecType,
-                                         SysContentType>;
-            break;
-          case 6:
-            evfunc=SysEvoluteModeFPMLR<T,IDType,ParamType,GeomType,VecType,
-                                       SysContentType>;
-            break;
-          case 8:
-            evfunc=SysEvoluteModeCEVVOnly<T,IDType,ParamType,GeomType,VecType,
-                                          SysContentType>;
-            break;
-          case 16:
-            evfunc=SysEvoluteModeLgVVOnly<T,IDType,ParamType,GeomType,VecType,
-                                          SysContentType>;
-            break;
-          default:
-            Error("Unknown Mode to Evalute!");
+        if(mode&1)
+          evfunc=SysEvoluteModeTBD<T,IDType,ParamType,GeomType,VecType,
+                                   SysContentType>;
+        else {
+          switch(mode) {
+            case 0:
+              Error("No Propagate Available!");
+              break;
+            case 2:
+              _DefEvFunc(SysEvoluteModeFPOnly);
+              break;
+            case 4:
+              _DefEvFunc(SysEvoluteModeMLROnly);
+              break;
+            case 6:   //  4+2
+              _DefEvFunc(SysEvoluteModeFPMLR);
+              break;
+            case 8:
+              _DefEvFunc(SysEvoluteModeCEVVOnly);
+              break;
+            case 10:  //  8+2
+              _DefEvFunc(SysEvoluteModeFPCEVV);
+              break;
+            case 16:
+              _DefEvFunc(SysEvoluteModeLgVVOnly);
+              break;
+            case 18:  //  16+2
+              _DefEvFunc(SysEvoluteModeFPLgVV);
+              break;
+            case 24:  //  16+8
+              _DefEvFunc(SysEvoluteModeCELgVV);
+              break;
+            default:
+              Error("Unknown Mode to Evalute!");
+          }
         }
       }
 
@@ -129,6 +130,8 @@ namespace mysimulator {
   bool IsValid(const System<T,IDT,PT,GT,VT,SCT>& S) { return S.isvalid(); }
 
 }
+
+#undef _DefEvFunc
 
 #endif
 
