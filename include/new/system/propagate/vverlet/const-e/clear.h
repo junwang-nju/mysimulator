@@ -24,8 +24,20 @@ namespace mysimulator {
         SE.Param[CEVVerletNegHTimeIMass].ptr[0]=NULL;
         break;
       case ArrayMass:
-        release(*reinterpret_cast<Array1D<VT<T> >*>(SE.Param[CEVVerletNegHTimeIMass].ptr[0]));
-        release(*reinterpret_cast<Array1D<VT<T> >*>(SE.Param[CEVVerletMass].ptr[0]));
+        typedef Array1D<VT<T> >   AVT;
+        AVT* p;
+        if(SE.Param[CEVVerletNegHTimeIMass].ptr[0]!=NULL) {
+          p=reinterpret_cast<AVT*>(SE.Param[CEVVerletNegHTimeIMass].ptr[0]);
+          release(*p);
+          delete p;
+          SE.Param[CEVVerletNegHTimeIMass].ptr[0]=NULL;
+        }
+        if(SE.Param[CEVVerletMass].ptr[0]!=NULL) {
+          p=reinterpret_cast<AVT*>(SE.Param[CEVVerletMass].ptr[0]);
+          release(*p);
+          delete p;
+          SE.Param[CEVVerletMass].ptr[0]=NULL;
+        }
         break;
       default:
         Error("Unknown Method related to Mass!");
