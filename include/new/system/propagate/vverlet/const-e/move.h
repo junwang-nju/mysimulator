@@ -43,14 +43,13 @@ namespace mysimulator {
   template <typename T, template<typename> class VT>
   void _AfMoveCEVVerlet(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
-    typedef void (*_RunMoveFunc)(VT<T>&,VT<T>&,const T&,
+    typedef void (*_RunMoveFunc)(VT<T>&,VT<T>&,
                                  const Unique64Bit&,const unsigned int&);
     Unique64Bit* P=SE.Param.start;
     _RunMoveFunc mvFunc=
       reinterpret_cast<_RunMoveFunc>(P[CEVVerletAfMoveFunc].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
       mvFunc(SE.grpContent[i].Velocity(),SE.grpContent[i].EGData.Gradient(),
-             P[CEVVerletTimeStep].value<T>(),
              P[CEVVerletNegHTimeIMass],i);
   }
 

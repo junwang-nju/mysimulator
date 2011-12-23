@@ -7,47 +7,48 @@
 #include "system/propagate/vverlet/const-e/parameter-name.h"
 #include "intrinsic-type/release.h"
 
+#define _DeleteElement(name) \
+  P[name].ptr[0]=NULL;\
+  delete_pointer(reinterpret_cast<T*&>(P[name##Data].ptr[0]));
+
+#define _DeleteArray(name,p) \
+  if(P[name].ptr[0]!=NULL) {\
+    p=reinterpret_cast<Array1D<VT<T> >*>(P[name].ptr[0]);\
+    release(*p);\
+    delete_pointer(p);\
+    P[name].ptr[0]=NULL;\
+  }
+
 namespace mysimulator {
 
   template <typename T, template<typename> class VT,
             template<typename,template<typename>class> class SCT>
   void ClearCEVVerlet(SysPropagate<T,VT,SCT>& SE) {
+    Array1D<VT<T> >* p=NULL;
+    Unique64Bit* P=SE.Param.start;
     MassMethodName MMN=
-      static_cast<MassMethodName>(SE.Param[CEVVerletMassMode].u[0]);
+      static_cast<MassMethodName>(P[CEVVerletMassMode].u[0]);
     switch(MMN) {
       case GlobalMass:
-        delete_pointer(
-            reinterpret_cast<T*&>(SE.Param[CEVVerletMassData].ptr[0]));
-        delete_pointer(
-            reinterpret_cast<T*&>(SE.Param[CEVVerletNegHTimeIMassData].ptr[0]));
-        SE.Param[CEVVerletMass].ptr[0]=NULL;
-        SE.Param[CEVVerletNegHTimeIMass].ptr[0]=NULL;
+        _DeleteElement(CEVVerletMass)
+        _DeleteElement(CEVVerletNegHTimeIMass)
         break;
       case ArrayMass:
-        typedef Array1D<VT<T> >   AVT;
-        AVT* p;
-        if(SE.Param[CEVVerletNegHTimeIMass].ptr[0]!=NULL) {
-          p=reinterpret_cast<AVT*>(SE.Param[CEVVerletNegHTimeIMass].ptr[0]);
-          release(*p);
-          delete p;
-          SE.Param[CEVVerletNegHTimeIMass].ptr[0]=NULL;
-        }
-        if(SE.Param[CEVVerletMass].ptr[0]!=NULL) {
-          p=reinterpret_cast<AVT*>(SE.Param[CEVVerletMass].ptr[0]);
-          release(*p);
-          delete p;
-          SE.Param[CEVVerletMass].ptr[0]=NULL;
-        }
+        _DeleteArray(CEVVerletNegHTimeIMass,p)
+        _DeleteArray(CEVVerletMass,p)
         break;
       default:
         Error("Unknown Method related to Mass!");
     }
-    SE.Param[CEVVerletUpdateHTIMFunc].ptr[0]=NULL;
-    SE.Param[CEVVerletBfMoveFunc].ptr[0]=NULL;
-    SE.Param[CEVVerletAfMoveFunc].ptr[0]=NULL;
+    P[CEVVerletUpdateHTIMFunc].ptr[0]=NULL;
+    P[CEVVerletBfMoveFunc].ptr[0]=NULL;
+    P[CEVVerletAfMoveFunc].ptr[0]=NULL;
   }
 
 }
+
+#undef _DeleteArray
+#undef _DeleteElement
 
 #endif
 

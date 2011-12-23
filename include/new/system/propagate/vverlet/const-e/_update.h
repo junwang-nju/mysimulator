@@ -11,7 +11,7 @@ namespace mysimulator {
   void _UpdateFuncCEVVerletHTIMGlobaleMass(
       const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM,
       const unsigned int&) {
-    negHTIM.value<T>()=-0.5*dt*Mass.value<T>();
+    negHTIM.value<T>()=-0.5*dt/Mass.value<T>();
   }
 
   template <typename T, template<typename> class VT>

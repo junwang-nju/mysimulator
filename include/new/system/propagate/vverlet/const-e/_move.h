@@ -28,16 +28,14 @@ namespace mysimulator {
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncCEVVerletGlobalMass(
-      VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
-      const unsigned int&) {
+      VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const unsigned int&) {
     assert(IsValid(V)&&IsValid(G));
     shift(V,nhtim.value<T>(),G);
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncCEVVerletArrayMass(
-      VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
-      const unsigned int& n) {
+      VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const unsigned int& n) {
     typedef Array1D<VT<T> >   AVT;
     assert(IsValid(V)&&IsValid(G));
     shift(V,(*reinterpret_cast<const AVT*>(nhtim.ptr[0]))[n],G);

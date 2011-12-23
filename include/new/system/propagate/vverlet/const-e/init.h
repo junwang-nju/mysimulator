@@ -9,11 +9,21 @@
 #include "system/propagate/vverlet/const-e/_move.h"
 #include "array/1d/allocate.h"
 
-#define _CreateArray(pv,pgv) \
+#define _CreateElement(name) \
+  P[name##Data].ptr[0]=reinterpret_cast<void*>(new T);\
+  P[name].ptr[0]=P[name##Data].ptr[0];
+
+#define _CreateArray(name,pv,pgv) \
+  assert(IsValid(P[name##Data].ptr[0]));\
+  pv=reinterpret_cast<VT<T>*>(P[name##Data].ptr[0]);\
   pgv=new Array1D<VT<T> >;\
   allocate(*pgv,SE.MerIDRange.size);\
   for(unsigned int i=0;i<pgv->size;++i) \
-    refer((*pgv)[i],*pv,SE.MerIDRange[i].u[0],SE.MerIDRange[i].u[1]);
+    refer((*pgv)[i],*pv,SE.MerIDRange[i].u[0],SE.MerIDRange[i].u[1]);\
+  P[name].ptr[0]=reinterpret_cast<void*>(pgv);
+
+#define _Func(type,name) \
+  reinterpret_cast<void*>(static_cast<type>(name))
 
 namespace mysimulator {
 
@@ -24,48 +34,33 @@ namespace mysimulator {
                            const unsigned int&);
     typedef void (*BMvFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,const Unique64Bit&,
                             const unsigned int&);
-    typedef void (*AMvFunc)(VT<T>&,VT<T>&,const T&,const Unique64Bit&,
+    typedef void (*AMvFunc)(VT<T>&,VT<T>&,const Unique64Bit&,
                             const unsigned int&);
+    Unique64Bit* P=SE.Param.start;
     MassMethodName MMN=
-      static_cast<MassMethodName>(SE.Param[CEVVerletMassMode].u[0]);
+      static_cast<MassMethodName>(P[CEVVerletMassMode].u[0]);
     switch(MMN) {
       case GlobalMass:
-        SE.Param[CEVVerletMassData].ptr[0]=reinterpret_cast<void*>(new T);
-        SE.Param[CEVVerletMass].ptr[0]=SE.Param[CEVVerletMassData].ptr[0];
-        SE.Param[CEVVerletNegHTimeIMassData].ptr[0]=
-          reinterpret_cast<void*>(new T);
-        SE.Param[CEVVerletNegHTimeIMass].ptr[0]=
-          SE.Param[CEVVerletNegHTimeIMassData].ptr[0];
-        SE.Param[CEVVerletUpdateHTIMFunc].ptr[0]=
-          reinterpret_cast<void*>(
-              static_cast<UpFunc>(_UpdateFuncCEVVerletHTIMGlobaleMass<T>));
-        SE.Param[CEVVerletBfMoveFunc].ptr[0]=
-          reinterpret_cast<void*>(
-              static_cast<BMvFunc>(_BfMoveFuncCEVVerletGlobalMass<T,VT>));
-        SE.Param[CEVVerletAfMoveFunc].ptr[0]=
-          reinterpret_cast<void*>(
-              static_cast<AMvFunc>(_AfMoveFuncCEVVerletGlobalMass<T,VT>));
+        _CreateElement(CEVVerletMass)
+        _CreateElement(CEVVerletNegHTimeIMass)
+        P[CEVVerletUpdateHTIMFunc].ptr[0]=
+          _Func(UpFunc,_UpdateFuncCEVVerletHTIMGlobaleMass<T>);
+        P[CEVVerletBfMoveFunc].ptr[0]=
+          _Func(BMvFunc,(_BfMoveFuncCEVVerletGlobalMass<T,VT>));
+        P[CEVVerletAfMoveFunc].ptr[0]=
+          _Func(AMvFunc,(_AfMoveFuncCEVVerletGlobalMass<T,VT>));
         break;
       case ArrayMass:
-        assert(IsValid(SE.Param[CEVVerletMassData].ptr[0]));
-        assert(IsValid(SE.Param[CEVVerletNegHTimeIMassData].ptr[0]));
         VT<T> *pv;
         Array1D<VT<T> >* pgv;
-        pv=reinterpret_cast<VT<T>*>(SE.Param[CEVVerletMassData].ptr[0]);
-        _CreateArray(pv,pgv);
-        SE.Param[CEVVerletMass].ptr[0]=reinterpret_cast<void*>(pgv);
-        pv=reinterpret_cast<VT<T>*>(SE.Param[CEVVerletNegHTimeIMassData].ptr[0]);
-        _CreateArray(pv,pgv);
-        SE.Param[CEVVerletNegHTimeIMass].ptr[0]=reinterpret_cast<void*>(pgv);
-        SE.Param[CEVVerletUpdateHTIMFunc].ptr[0]=
-          reinterpret_cast<void*>(
-              static_cast<UpFunc>(_UpdateFuncCEVVerletHTIMArrayMass<T,VT>));
-        SE.Param[CEVVerletBfMoveFunc].ptr[0]=
-          reinterpret_cast<void*>(
-              static_cast<BMvFunc>(_BfMoveFuncCEVVerletArrayMass<T,VT>));
-        SE.Param[CEVVerletAfMoveFunc].ptr[0]=
-          reinterpret_cast<void*>(
-              static_cast<AMvFunc>(_AfMoveFuncCEVVerletArrayMass<T,VT>));
+        _CreateArray(CEVVerletMass,pv,pgv)
+        _CreateArray(CEVVerletNegHTimeIMass,pv,pgv)
+        P[CEVVerletUpdateHTIMFunc].ptr[0]=
+          _Func(UpFunc,(_UpdateFuncCEVVerletHTIMArrayMass<T,VT>));
+        P[CEVVerletBfMoveFunc].ptr[0]=
+          _Func(BMvFunc,(_BfMoveFuncCEVVerletArrayMass<T,VT>));
+        P[CEVVerletAfMoveFunc].ptr[0]=
+          _Func(AMvFunc,(_AfMoveFuncCEVVerletArrayMass<T,VT>));
         break;
       default:
         Error("Unknown method related Mass!");
@@ -74,7 +69,9 @@ namespace mysimulator {
 
 }
 
+#undef _Func
 #undef _CreateArray
+#undef _CreateElement
 
 #endif
 
