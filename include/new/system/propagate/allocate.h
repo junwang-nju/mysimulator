@@ -9,24 +9,28 @@
 #include "system/propagate/fix-position/init.h"
 #include "system/propagate/fix-position/move.h"
 #include "system/propagate/fix-position/update.h"
+#include "system/propagate/fix-position/clear.h"
 
 #include "system/propagate/minimizer/line/regular/move-name.h"
 #include "system/propagate/minimizer/line/regular/update-name.h"
 #include "system/propagate/minimizer/line/regular/init.h"
 #include "system/propagate/minimizer/line/regular/move.h"
 #include "system/propagate/minimizer/line/regular/update.h"
+#include "system/propagate/minimizer/line/regular/clear.h"
 
 #include "system/propagate/to-be-determined/move-name.h"
 #include "system/propagate/to-be-determined/update-name.h"
 #include "system/propagate/to-be-determined/init.h"
 #include "system/propagate/to-be-determined/move.h"
 #include "system/propagate/to-be-determined/update.h"
+#include "system/propagate/to-be-determined/clear.h"
 
-#include "system/propagate/constE-vverlet-particle/move-name.h"
-#include "system/propagate/constE-vverlet-particle/update-name.h"
-#include "system/propagate/constE-vverlet-particle/init.h"
-#include "system/propagate/constE-vverlet-particle/move.h"
-#include "system/propagate/constE-vverlet-particle/update.h"
+#include "system/propagate/vverlet/const-e/move-name.h"
+#include "system/propagate/vverlet/const-e/update-name.h"
+#include "system/propagate/vverlet/const-e/init.h"
+#include "system/propagate/vverlet/const-e/move.h"
+#include "system/propagate/vverlet/const-e/update.h"
+#include "system/propagate/vverlet/const-e/clear.h"
 
 namespace mysimulator {
 
@@ -39,30 +43,32 @@ namespace mysimulator {
     switch(SE.Method) {
       case SysFixPosition:
         SE.initfunc=InitFixPosition<T,VT,SCT>;
+        SE.clrfunc=ClearFixPosition<T,VT,SCT>;
         allocate(SE.evfunc,NumberMoveFixPosition);
         SE.evfunc[FixPosNoMove]=MoveFixPosNoMove<T,VT,SCT>;
         break;
       case SysMinimizerLineRegular:
         SE.initfunc=InitMinimizerLineRegular<T,VT,SCT>;
+        SE.clrfunc=ClearMinimizerLineRegular<T,VT,SCT>;
         allocate(SE.evfunc,NumberMoveMinimizerLineRegular);
         SE.evfunc[MinLineRegularShift]=MoveMinLineRegularShift<T,VT,SCT>;
         allocate(SE.Param,NumberParameterMinimizerLineRegular);
         break;
       case SysToBeDetermined:
         SE.initfunc=InitToBeDetermined<T,VT,SCT>;
+        SE.clrfunc=ClearToBeDetermined<T,VT,SCT>;
         allocate(SE.evfunc,NumberMoveToBeDetermined);
         SE.evfunc[ToBeDeterminedNoMove]=MoveToBeDeterminedNoMove;
         break;
-      case SysConstEVelVerletParticle:
-        SE.initfunc=InitCEVVerletParticle<T,VT,SCT>;
-        allocate(SE.evfunc,NumberMoveConstEVelVerletParticle);
-        SE.evfunc[CEVVerletParticleBeforeG]=
-          MoveCEVVerletParticleBeforeG<T,VT,SCT>;
-        SE.evfunc[CEVVerletParticleAfterG]=
-          MoveCEVVerletParticleAfterG<T,VT,SCT>;
-        allocate(SE.updfunc,NumberUpdateConstEVelVerletParticle);
-        SE.updfunc[CEVVerletParticleHTIM]=UpdateCEVVerletParticleHTIM<T,VT,SCT>;
-        allocate(SE.Param,NumberParameterConstEVelVerletParticle);
+      case SysConstEVelVerlet:
+        SE.initfunc=InitCEVVerlet<T,VT,SCT>;
+        SE.clrfunc=ClearCEVVerlet<T,VT,SCT>;
+        allocate(SE.evfunc,NumberMoveConstEVelVerlet);
+        SE.evfunc[CEVVerletBeforeG]=MoveCEVVerletBeforeG<T,VT,SCT>;
+        SE.evfunc[CEVVerletAfterG]=MoveCEVVerletAfterG<T,VT,SCT>;
+        allocate(SE.updfunc,NumberUpdateConstEVelVerlet);
+        SE.updfunc[CEVVerletHTIM]=UpdateCEVVerletHTIM<T,VT,SCT>;
+        allocate(SE.Param,NumberParameterConstEVelVerlet);
         break;
       default:
         Error("Unknown Method for System Evolution!");
@@ -79,8 +85,6 @@ namespace mysimulator {
   }
 
 }
-
-#include "system/propagate/constE-vverlet-particle/set.h"
 
 #endif
 

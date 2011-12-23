@@ -1,10 +1,10 @@
 
-#ifndef _System_Evolute_Mode_ConstE_VelocityVerlet_Particle_H_
-#define _System_Evolute_Mode_ConstE_VelocityVerlet_Particle_H_
+#ifndef _System_Evolute_Mode_ConstE_VelocityVerlet_H_
+#define _System_Evolute_Mode_ConstE_VelocityVerlet_H_
 
 #include "system/interaction/interface.h"
 #include "system/propagate/interface.h"
-#include "system/propagate/constE-vverlet-particle/move-name.h"
+#include "system/propagate/vverlet/const-e/move-name.h"
 #include "system/evaluate/gradient.h"
 
 namespace mysimulator {
@@ -18,10 +18,10 @@ namespace mysimulator {
       Array1DContent<SysPropagate<T,VT,SCT> >& SE,
       const Array1DContent<Array1D<unsigned int> >& GMap) {
     for(unsigned int i=0;i<SE.size;++i)
-      SE[i].propagate(CEVVerletParticleBeforeG);
+      SE[i].propagate(CEVVerletBeforeG);
     GenericEvaluateGradient(SC,SI);
     for(unsigned int i=0;i<SE.size;++i)
-      SE[i].propagate(CEVVerletParticleAfterG);
+      SE[i].propagate(CEVVerletAfterG);
   }
 
 }

@@ -8,7 +8,7 @@ namespace mysimulator {
     SysToBeDetermined=0, //used as Bai-Da
     SysFixPosition,
     SysMinimizerLineRegular,
-    SysConstEVelVerletParticle,
+    SysConstEVelVerlet,
     NumberSystemPropagateMethods,
     SysPropagateUnassigned
   };

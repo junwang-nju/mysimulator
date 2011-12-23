@@ -29,7 +29,7 @@ namespace mysimulator {
 
   template <typename T>
   void refer(Array2DContent<T>& A, const Array2DContent<T>& cA) {
-    refer(A,cA,cA.first,cA.last);
+    refer(A,cA,cA.infra.first,cA.infra.last);
   }
 
   template <typename T>

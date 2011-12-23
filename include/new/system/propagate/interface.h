@@ -5,6 +5,7 @@
 #include "system/propagate/method-name.h"
 #include "array/1d/interface.h"
 #include "unique/64bit/interface.h"
+#include "intrinsic-type/valid.h"
 
 namespace mysimulator {
 
@@ -24,18 +25,23 @@ namespace mysimulator {
       Array1D<MethodType>   evfunc;
       MethodType            initfunc;
       Array1D<MethodType>   updfunc;
+      MethodType            clrfunc;
 
-      SysPropagate() : Method(SysPropagateUnassigned),MerIDRange(),grpContent(),
-                       Param(), evfunc(), initfunc(NULL), updfunc() {}
+      SysPropagate()
+        : Method(SysPropagateUnassigned),MerIDRange(),grpContent(),
+          Param(), evfunc(), initfunc(NULL), updfunc(), clrfunc(NULL) {}
       ~SysPropagate() { clearData(); }
 
       void clearData() {
+        if(clrfunc!=NULL)  clear();
+        clrfunc=NULL;
         release(updfunc); initfunc=NULL; release(evfunc); release(Param);
         release(grpContent);  release(MerIDRange);
         Method=SysPropagateUnassigned;
       }
       bool isvalid() const {
-        return IsValid(evfunc)&&IsValid(initfunc)&&IsValid(grpContent)&&
+        return IsValid(clrfunc)&&IsValid(evfunc)&&IsValid(initfunc)&&
+               IsValid(grpContent)&&
                IsValid(MerIDRange)&&(Method!=SysPropagateUnassigned)&&
                (IsValid(Param)||(Method==SysFixPosition));
       }
@@ -50,6 +56,7 @@ namespace mysimulator {
       void init() { initfunc(*this); }
       void propagate(const unsigned int& move) { evfunc[move](*this); }
       void update(const unsigned int& update) { updfunc[update](*this); }
+      void clear() { clrfunc(*this); }
 
     private:
 
