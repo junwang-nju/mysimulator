@@ -3,6 +3,7 @@
 #define _Array_1D_Content_Inverse_H_
 
 #include "array/1d/content/interface.h"
+#include "intrinsic-type/inverse.h"
 
 namespace mysimulator {
 
@@ -12,7 +13,7 @@ namespace mysimulator {
     assert(IsValid(A,b,d,n));
     T* p=A.head+b;
     T* pend=p+d*n;
-    for(;p!=pend;)  { *p=1./(*p); p+=d; }
+    for(;p!=pend;)  { inverse(*p); p+=d; }
   }
 
   template <typename T>
@@ -20,7 +21,7 @@ namespace mysimulator {
     assert(IsValid(A,b,n));
     T* p=A.head+b;
     T* pend=p+n;
-    for(;p!=pend;)  { *p=1./(*p); ++p; }
+    for(;p!=pend;)  { inverse(*p); ++p; }
   }
 
   template <typename T>
@@ -28,7 +29,7 @@ namespace mysimulator {
     assert(IsValid(A,n));
     T* p=A.start;
     T* pend=p+n;
-    for(;p!=pend;)  { *p=1./(*p); ++p; }
+    for(;p!=pend;)  { inverse(*p); ++p; }
   }
 
   template <typename T>

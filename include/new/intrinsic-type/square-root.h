@@ -14,5 +14,7 @@ namespace mysimulator {
 
 }
 
+#undef _SQROOT
+
 #endif
 

@@ -5,7 +5,7 @@
 namespace mysimulator {
 
   enum UpdateConstEVelVerletName {
-    CEVVerletHTIM=0,
+    CEVVerletHTIMCalc=0,
     NumberUpdateConstEVelVerlet
   };
 

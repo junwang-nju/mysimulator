@@ -9,6 +9,7 @@ namespace mysimulator {
     SysFixPosition,
     SysMinimizerLineRegular,
     SysConstEVelVerlet,
+    SysLangevinVelVerlet,
     NumberSystemPropagateMethods,
     SysPropagateUnassigned
   };

@@ -32,6 +32,13 @@
 #include "system/propagate/vverlet/const-e/update.h"
 #include "system/propagate/vverlet/const-e/clear.h"
 
+#include "system/propagate/vverlet/langevin/move-name.h"
+#include "system/propagate/vverlet/langevin/update-name.h"
+#include "system/propagate/vverlet/langevin/init.h"
+#include "system/propagate/vverlet/langevin/move.h"
+#include "system/propagate/vverlet/langevin/update.h"
+#include "system/propagate/vverlet/langevin/clear.h"
+
 namespace mysimulator {
 
   template <typename T,template<typename> class VT,
@@ -67,8 +74,20 @@ namespace mysimulator {
         SE.evfunc[CEVVerletBeforeG]=MoveCEVVerletBeforeG<T,VT,SCT>;
         SE.evfunc[CEVVerletAfterG]=MoveCEVVerletAfterG<T,VT,SCT>;
         allocate(SE.updfunc,NumberUpdateConstEVelVerlet);
-        SE.updfunc[CEVVerletHTIM]=UpdateCEVVerletHTIM<T,VT,SCT>;
+        SE.updfunc[CEVVerletHTIMCalc]=UpdateCEVVerletHTIM<T,VT,SCT>;
         allocate(SE.Param,NumberParameterConstEVelVerlet);
+        break;
+      case SysLangevinVelVerlet:
+        SE.initfunc=InitLgVVerlet<T,VT,SCT>;
+        SE.clrfunc=ClearLgVVerlet<T,VT,SCT>;
+        allocate(SE.evfunc,NumberMoveLangevinVelVerlet);
+        SE.evfunc[LgVVerletBeforeG]=MoveLgVVerletBeforeG<T,VT,SCT>;
+        SE.evfunc[LgVVerletAfterG]=MoveLgVVerletAfterG<T,VT,SCT>;
+        allocate(SE.updfunc,NumberUpdateLangevinVelVerlet);
+        SE.updfunc[LgVVerletNegHTIMCalc]=UpdateLgVVerletNegHTIM<T,VT,SCT>;
+        SE.updfunc[LgVVerletRandSizeCalc]=UpdateLgVVerletRandSize<T,VT,SCT>;
+        SE.updfunc[LgVVerletFacCalc]=UpdateLgVVerletFac<T,VT,SCT>;
+        allocate(SE.Param,NumberParameterLangevinVelVerlet);
         break;
       default:
         Error("Unknown Method for System Evolution!");

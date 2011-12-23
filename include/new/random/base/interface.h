@@ -31,6 +31,18 @@ namespace mysimulator {
 
   };
 
+  template <typename T>
+  void fillArray(RandomBase& R, Array1DContent<T>& A) { R.fill(A); }
+
+}
+
+#include "array/2d/content/interface.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  void fillArray(RandomBase& R, Array2DContent<T>& A) { R.fill(A.base); }
+
 }
 
 #endif

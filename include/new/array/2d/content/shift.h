@@ -5,6 +5,30 @@
 #include "array/2d/content/interface.h"
 #include "array/1d/content/shift.h"
 
+#define _SHIFTC(type) \
+  template <typename T>\
+  void shift(Array2DContent<T>& A, const type& d) { shift(A.base,d); }
+
+namespace mysimulator {
+
+  _SHIFTC(long double)
+  _SHIFTC(double)
+  _SHIFTC(float)
+  _SHIFTC(long long)
+  _SHIFTC(unsigned long long)
+  _SHIFTC(int)
+  _SHIFTC(unsigned int)
+  _SHIFTC(long)
+  _SHIFTC(unsigned long)
+  _SHIFTC(short)
+  _SHIFTC(unsigned short)
+  _SHIFTC(char)
+  _SHIFTC(unsigned char)
+
+}
+
+#undef _SHIFTC
+
 #define _SHIFT(type) \
   template <typename T>\
   void shift(Array2DContent<T>& A, const type& d, const Array2DContent<T>& B) {\
