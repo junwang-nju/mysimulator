@@ -106,6 +106,9 @@ namespace mysimulator {
             case 24:  //  16+8
               _DefEvFunc(SysEvoluteModeCELgVV);
               break;
+            case 26:  //  16+8+2
+              _DefEvFunc(SysEvoluteModeFPCELgVV);
+              break;
             default:
               Error("Unknown Mode to Evalute!");
           }
