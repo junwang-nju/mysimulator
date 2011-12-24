@@ -14,11 +14,16 @@ namespace mysimulator {
       T CutRadius;
       T InteractionCutRadius;
       T BufferRadius;
+      T UpdateTime;
 
-      NeighborList() : CutRadius(0), InteractionCutRadius(0), BufferRadius(0) {}
+      NeighborList()
+        : CutRadius(0), InteractionCutRadius(0), BufferRadius(0),
+          UpdateTime(0) {}
       ~NeighborList() { clearData(); }
 
-      void clearData() { CutRadius=0; InteractionCutRadius=0; BufferRadius=0; }
+      void clearData() {
+        CutRadius=0; InteractionCutRadius=0; BufferRadius=0; UpdateTime=0;
+      }
       bool isvalid() const { return true; }
 
     private:
