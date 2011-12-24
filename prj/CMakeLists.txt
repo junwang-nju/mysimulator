@@ -9,4 +9,5 @@ add_subdirectory (adsorp)
 add_subdirectory (rumor)
 add_subdirectory (binding-new)
 add_subdirectory (force)
+add_subdirectory (bind-integral)
 
