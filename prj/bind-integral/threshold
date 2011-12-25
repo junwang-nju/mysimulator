@@ -3,10 +3,10 @@
 (>9.165 unfold+diag) (>4.285  diag) (<4.285 small)
 0.2   0.7     4.785     3.105     0.1
 (>4.785 diag+unfold) (>3.105 unfold)  (<3.105 small)
-0.2   0.5     2.325     0.1
-(>2.325 unfold (no diag)) (<2.325 small)
-0.2   0.3     1.555     0.1
-same as above (0.2,0.5) case
+0.2   0.5     6.370     2.325     0.1
+(>6.370 diag+unfold) (>2.325 unfold)  (<2.325 small)
+0.2   0.3     16.300    1.555     0.1
+(>16.30 diag+unfold) (>1.555 unfold)  (<1.555 small)
 0.2   0.27    1.435     0.1
 (>1.435 unfold (no diag)) (<1.435 small)
 0.2   0.26    1.415     1.405     0.1
