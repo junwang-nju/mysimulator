@@ -6,7 +6,8 @@ namespace mysimulator {
 
   enum MassMethodName {
     GlobalMass,
-    ArrayMass
+    ArrayMass,
+    UnknownMassFormat
   };
 
 }

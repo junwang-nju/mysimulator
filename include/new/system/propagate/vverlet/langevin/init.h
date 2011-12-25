@@ -11,11 +11,11 @@
 #include "array/1d/allocate.h"
 
 #define _CreateElement(name) \
-  P[name##Data].ptr[0]=reinterpret_cast<void*>(new T);\
+  assert(P[name##Data].ptr[0]!=NULL);\
   P[name].ptr[0]=P[name##Data].ptr[0];
 
 #define _CreateArray(name,pv,pgv) \
-  assert(IsValid(P[name##Data].ptr[0]));\
+  assert(P[name##Data].ptr[0]!=NULL);\
   pv=reinterpret_cast<VT<T>*>(P[name##Data].ptr[0]);\
   pgv=new Array1D<VT<T> >;\
   allocate(*pgv,SE.MerIDRange.size);\
@@ -39,7 +39,7 @@ namespace mysimulator {
     FrictionMethodName FMN=
       static_cast<FrictionMethodName>(P[LgVVerletFrictionMode].u[0]);
 
-    assert(IsValid(P[LgVVerletGaussRNG].ptr[0]));
+    assert(P[LgVVerletGaussRNG].ptr[0]!=NULL);
     _CreateArray(LgVVerletRandVector,pv,pgv)
     if(MMN==GlobalMass) {
       _CreateElement(LgVVerletMass)

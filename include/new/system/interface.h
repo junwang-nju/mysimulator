@@ -28,23 +28,24 @@ namespace mysimulator {
                                  Array1DContent<PropagateType>&,
                                  const Array1DContent<Array1D<unsigned int> >&);
 
+      unsigned int EvoluteMode;
       Object<ContentType> Content;
       Array1D<InteractionType>  Interactions;
       Array1D<PropagateType>  Propagates;
       Array1D<Array1D<unsigned int> > GrpMap;
       EvFuncType  evfunc;
 
-      System() : Content(), Interactions(), Propagates(), GrpMap(),
-                 evfunc(NULL) {}
+      System() : EvoluteMode(0), Content(), Interactions(), Propagates(),
+                 GrpMap(), evfunc(NULL) {}
       ~System() { clearData(); }
 
       void clearData() {
         release(GrpMap);  release(Propagates);  release(Interactions);
-        release(Content); evfunc=NULL;
+        release(Content); evfunc=NULL; EvoluteMode=0;
       }
       bool isvalid() const {
         return IsValid(Content)&&IsValid(Interactions)&&IsValid(Propagates)&&
-               IsValid(GrpMap)&&IsValid(evfunc);
+               IsValid(GrpMap)&&IsValid(evfunc)&&(EvoluteMode!=0);
       }
 
       void init() {
@@ -74,11 +75,12 @@ namespace mysimulator {
         unsigned int mode=0;
         for(unsigned int i=0;i<GrpMap.size;++i)
           mode+=(GrpMap[i].size>0?1:0)<<i;
-        if(mode&1)
+        EvoluteMode=mode;
+        if(EvoluteMode&1)
           evfunc=SysEvoluteModeTBD<T,IDType,ParamType,GeomType,VecType,
                                    SysContentType>;
         else {
-          switch(mode) {
+          switch(EvoluteMode) {
             case 0:
               Error("No Propagate Available!");
               break;

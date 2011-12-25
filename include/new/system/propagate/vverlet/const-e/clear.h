@@ -8,8 +8,7 @@
 #include "intrinsic-type/release.h"
 
 #define _DeleteElement(name) \
-  P[name].ptr[0]=NULL;\
-  delete_pointer(reinterpret_cast<T*&>(P[name##Data].ptr[0]));
+  P[name].ptr[0]=NULL;
 
 #define _DeleteArray(name,p) \
   if(P[name].ptr[0]!=NULL) {\
