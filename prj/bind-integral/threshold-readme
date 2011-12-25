@@ -1,0 +1,9 @@
+the columns are
+(monomer decay length)
+(binding range or binding decay length)
+(minimal binding energy to fly-casting)
+(temperature)
+
+the monomer interaction strength is assumed as 1
+monomer maximal extension is assumed 10
+two parts of monomers are assumed to have equal masses.

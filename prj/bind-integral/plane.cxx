@@ -6,9 +6,9 @@ using namespace mysimulator;
 const double em0=1;
 const double rm0=0.2;
 const double R=10;
-const double Lc=2;
-const double l0=2;
-const double eb0=10;
+const double Lc=1;
+const double l0=Lc;
+const double eb0=30;
 const double T=0.1;
 
 double em(const double& r) {
@@ -35,11 +35,14 @@ int main() {
   double minr,maxr;
   double dr;
   double sum;
+  double minf,minfr;
   l=1.;
   minr=0.002;
-  maxr=10.;
-  for(l=1.;l<20;l+=0.05) {
-  for(r=minr;r<maxr;r+=0.003) {
+  maxr=2.;
+  for(l=0.05;l<8;l+=0.003) {
+  minf=1e10;
+  minfr=1e10;
+  for(r=minr;r<maxr;r+=0.001) {
     sr=(l>r?r:l);
     dr=sr/1000.;
     sum=0;
@@ -49,10 +52,17 @@ int main() {
     sum+=0.5*Z(eb(l+sr));
     sum*=dr;
     sum/=r;
-    COut<<l<<"\t"<<r<<"\t"<<-T*log(sum)+em(r)-T*sm(r)-T*log(2*M_PI)<<Endl;
+    if(minf>-T*log(sum)+em(r)-T*sm(r)-T*log(2*M_PI)) {
+      minf=-T*log(sum)+em(r)-T*sm(r)-T*log(2*M_PI);
+      minfr=r;
+    } else break;
+    //COut<<l<<"\t"<<r<<"\t"<<-T*log(sum)+em(r)-T*sm(r)-T*log(2*M_PI)<<Endl;
   }
-  COut<<Endl;
+  COut<<l<<"\t"<<minfr<<Endl;
+  //if(minfr>l) { CErr<<eb0<<"\t"<<">\t"<<l<<Endl; return 0; }
+  //COut<<Endl;
   }
+  //CErr<<eb0<<"\t"<<"<"<<Endl;
   return 0;
 }
 
