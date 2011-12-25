@@ -10,7 +10,7 @@ namespace mysimulator {
   template <typename T>
   void DiffCoulomb(const T& dsq, const Unique64Bit* P,T& diff) {
     T d3=dsq*sqroot(dsq);
-    diff=-prm[CoulombStrength].value<T>()/d3;
+    diff=-P[CoulombStrength].value<T>()/d3;
   }
 
 }

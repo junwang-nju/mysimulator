@@ -11,7 +11,7 @@ namespace mysimulator {
   void BothCoulomb(const T& dsq,const Unique64Bit* P,T& func, T& diff) {
     T ivd2=1./dsq;
     T ivd=sqroot(ivd2);
-    func=prm[CoulombStrength].value<T>()*ivd;
+    func=P[CoulombStrength].value<T>()*ivd;
     diff=func*ivd2;
   }
 

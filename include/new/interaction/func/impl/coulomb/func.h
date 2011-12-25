@@ -9,7 +9,7 @@ namespace mysimulator {
 
   template <typename T>
   void FuncCoulomb(const T& dsq, const Unique64Bit* P, T& func) {
-    func=prm[CoulombStrength].value<T>()/sqroot(dsq);
+    func=P[CoulombStrength].value<T>()/sqroot(dsq);
   }
 
 }
