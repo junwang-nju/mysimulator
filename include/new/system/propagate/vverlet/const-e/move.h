@@ -33,10 +33,10 @@ namespace mysimulator {
     Unique64Bit* P=SE.Param.start;
     _RunMoveFunc mvFunc=
       reinterpret_cast<_RunMoveFunc>(P[CEVVerletBfMoveFunc].ptr[0]);
+    T dt=*reinterpret_cast<T*>(P[CEVVerletTimeStep].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
       mvFunc(SE.grpContent[i].X(),SE.grpContent[i].Velocity(),
-             SE.grpContent[i].EGData.Gradient(),
-             P[CEVVerletTimeStep].value<T>(),
+             SE.grpContent[i].EGData.Gradient(),dt,
              P[CEVVerletNegHTimeIMass],i);
   }
 

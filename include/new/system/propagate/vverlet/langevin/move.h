@@ -40,9 +40,9 @@ namespace mysimulator {
     for(unsigned int i=0;i<SE.grpContent.size;++i) {
       fillArray(*reinterpret_cast<RandomBase*>(P[LgVVerletGaussRNG].ptr[0]),
                 (*reinterpret_cast<AVT*>(P[LgVVerletRandVector].ptr[0]))[i]);
+      T dt=*reinterpret_cast<T*>(P[LgVVerletTimeStep].ptr[0]);
       mvfunc(SE.grpContent[i].X(),SE.grpContent[i].Velocity(),
-             SE.grpContent[i].EGData.Gradient(),
-             P[LgVVerletTimeStep].value<T>(),P[LgVVerletNegHTIM],
+             SE.grpContent[i].EGData.Gradient(),dt,P[LgVVerletNegHTIM],
              P[LgVVerletFac1],
              (*reinterpret_cast<AVT*>(P[LgVVerletRandVector].ptr[0]))[i],
              P[LgVVerletRandSize],i);

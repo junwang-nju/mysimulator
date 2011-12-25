@@ -40,8 +40,9 @@ namespace mysimulator {
     Unique64Bit* P=SE.Param.start;
     _UpFunc upfunc=
       reinterpret_cast<_UpFunc>(P[LgVVerletUpdateFacFunc].ptr[0]);
+    T dt=*reinterpret_cast<T*>(P[LgVVerletTimeStep].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      upfunc(P[LgVVerletTimeStep].value<T>(),P[LgVVerletMass],
+      upfunc(dt,P[LgVVerletMass],
              P[LgVVerletFriction],P[LgVVerletFac1],P[LgVVerletFac2],i);
   }
 
@@ -54,9 +55,9 @@ namespace mysimulator {
     Unique64Bit* P=SE.Param.start;
     _UpFunc upfunc=
       reinterpret_cast<_UpFunc>(P[LgVVerletUpdateHTIMFunc].ptr[0]);
+    T dt=*reinterpret_cast<T*>(P[LgVVerletTimeStep].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      upfunc(P[LgVVerletTimeStep].value<T>(),P[LgVVerletMass],
-             P[LgVVerletNegHTIM],i);
+      upfunc(dt,P[LgVVerletMass],P[LgVVerletNegHTIM],i);
   }
 
   template <typename T,template<typename> class VT>
@@ -68,8 +69,9 @@ namespace mysimulator {
     Unique64Bit* P=SE.Param.start;
     _UpFunc upfunc=
       reinterpret_cast<_UpFunc>(P[LgVVerletUpdateRandSizeFunc].ptr[0]);
+    T dt=*reinterpret_cast<T*>(P[LgVVerletTimeStep].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      upfunc(P[LgVVerletTimeStep].value<T>(),P[LgVVerletTemperature].value<T>(),
+      upfunc(dt,P[LgVVerletTemperature].value<T>(),
              P[LgVVerletMass],P[LgVVerletFriction],P[LgVVerletRandSize],i);
   }
 

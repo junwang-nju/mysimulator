@@ -6,6 +6,8 @@
 #include "dynamics/base/interface.h"
 #include "system/propagate/vverlet/const-e/parameter-name.h"
 #include "system/property/mass-method-name.h"
+#include "unique/64bit/copy.h"
+#include "array/1d/allocate.h"
 
 namespace mysimulator {
 
@@ -40,19 +42,24 @@ namespace mysimulator {
       void bind(System<T,IDT,PT,GT,VT,SCT>& S) {
         assert((S.EvoluteMode==8)||(S.EvoluteMode==10));
         for(unsigned int i=0;i<S.Propagates.size;++i) {
-          S.Propagates[i].Param[CEVVerletTimeStep].value<T>()=this->TimeStep;
+          S.Propagates[i].Param[CEVVerletTimeStep].ptr[0]=
+            &(this->TimeStep);
           switch(S.Propagates[i].Param[CEVVerletMassMode].u[0]) {
             case GlobalMass:
-              assert(gMass.size>=S.Propagates.size);
-              assert(gNegHTIM.size>=S.Propagates.size);
+              if(gMass.size<S.Propagates.size)
+                allocate(gMass,S.Propagates.size);
+              if(gNegHTIM.size<S.Propagates.size)
+                allocate(gNegHTIM,S.Propagates.size);
               S.Propagates[i].Param[CEVVerletMassData].ptr[0]=
                 reinterpret_cast<void*>(&(gMass[i]));
               S.Propagates[i].Param[CEVVerletNegHTimeIMassData].ptr[0]=
                 reinterpret_cast<void*>(&(gNegHTIM[i]));
               break;
-            case ArrayMass:
-              assert(IsValid(vMass));
-              assert(IsValid(vNegHTIM));
+            case ArrayMass: // assume various propagates share same mass
+              if(!IsSameSize(vMass,S.Content().X()))
+                imprint(vMass,S.Content().X());
+              if(!IsSameSize(vNegHTIM,S.Content().X()))
+                imprint(vNegHTIM,S.Content().X());
               S.Propagates[i].Param[CEVVerletMassData].ptr[0]=
                 reinterpret_cast<void*>(&vMass);
               S.Propagates[i].Param[CEVVerletNegHTimeIMassData].ptr[0]=

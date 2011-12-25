@@ -28,9 +28,9 @@ namespace mysimulator {
     Unique64Bit* P=SE.Param.start;
     _RunUpdateFunc updfunc=
       reinterpret_cast<_RunUpdateFunc>(P[CEVVerletUpdateHTIMFunc].ptr[0]);
+    T dt=*reinterpret_cast<T*>(P[CEVVerletTimeStep].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      updfunc(P[CEVVerletTimeStep].value<T>(),P[CEVVerletMass],
-              P[CEVVerletNegHTimeIMass],i);
+      updfunc(dt,P[CEVVerletMass],P[CEVVerletNegHTimeIMass],i);
   }
 
 }

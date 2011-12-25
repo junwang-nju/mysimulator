@@ -12,7 +12,7 @@ namespace mysimulator {
 
     public:
 
-      typedef Dyanmics<DMN,T,VecType>   Type;
+      typedef Dynamics<DMN,T,VecType>   Type;
 
       Dynamics() {}
       ~Dynamics() { clearData(); }
