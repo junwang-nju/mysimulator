@@ -25,13 +25,13 @@ namespace mysimulator {
       VT<T> vNegHTIM;
 
       Dynamics() : ParentType(),
-                   gMass(0), gNegHTIM(0), vMass(), vNegHTIM() {}
+                   gMass(), gNegHTIM(), vMass(), vNegHTIM() {}
       ~Dynamics() { clearData(); }
 
       void clearData() {
         static_cast<ParentType*>(this)->clearData();
         release(vMass); release(vNegHTIM);
-        gMass=0;  gNegHTIM=0;
+        release(gMass); release(gNegHTIM);
       }
       bool isvalid() const {
         return static_cast<const ParentType*>(this)->isvalid();
@@ -71,6 +71,10 @@ namespace mysimulator {
         }
         S.init();
       }
+
+      template <typename IDT,typename PT,typename GT,
+                template<typename,template<typename>class> class SCT>
+      void unbind(System<T,IDT,PT,GT,VT,SCT>& S) { S.clear(); }
 
       template <typename IDT,typename PT,typename GT,
                 template<typename,template<typename>class> class SCT>

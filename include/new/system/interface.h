@@ -56,6 +56,10 @@ namespace mysimulator {
         assert(isvalid());
         evfunc(Content(),Interactions,Propagates,GrpMap);
       }
+      void clear() {
+        assert(isvalid());
+        for(unsigned int i=0;i<Propagates.size;++i) Propagates[i].clear();
+      }
 
       void build() {
         assert(IsValid(Propagates));
