@@ -13,6 +13,7 @@ namespace mysimulator {
     Core12,
     CoreLJ612,
     Coulomb,
+    distCoulomb,
     InteractionNumberFuncs,
     UnknownInteractionFunc
   };

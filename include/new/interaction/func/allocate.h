@@ -12,6 +12,7 @@
 #include "interaction/func/impl/core12/func.h"
 #include "interaction/func/impl/corelj612/func.h"
 #include "interaction/func/impl/coulomb/func.h"
+#include "interaction/func/impl/dist-coulomb/func.h"
 
 #include "interaction/func/impl/harmonic/diff.h"
 #include "interaction/func/impl/lj612/diff.h"
@@ -21,6 +22,7 @@
 #include "interaction/func/impl/core12/diff.h"
 #include "interaction/func/impl/corelj612/diff.h"
 #include "interaction/func/impl/coulomb/diff.h"
+#include "interaction/func/impl/dist-coulomb/diff.h"
 
 #include "interaction/func/impl/harmonic/both.h"
 #include "interaction/func/impl/lj612/both.h"
@@ -30,6 +32,7 @@
 #include "interaction/func/impl/core12/both.h"
 #include "interaction/func/impl/corelj612/both.h"
 #include "interaction/func/impl/coulomb/both.h"
+#include "interaction/func/impl/dist-coulomb/both.h"
 
 #include "interaction/func/method/pairwise/energy.h"
 
@@ -112,6 +115,15 @@ namespace mysimulator {
         F.EFunc=FuncCoulomb<T>;
         F.GFunc=DiffCoulomb<T>;
         F.BFunc=BothCoulomb<T>;
+        F.EMethod=EFuncMethodPairwise<GeomType,T>;
+        F.GMethod=GFuncMethodPairwise<GeomType,T>;
+        F.BMethod=BFuncMethodPairwise<GeomType,T>;
+        allocate(F.tmvec,1U,dim);
+        break;
+      case distCoulomb:
+        F.EFunc=FuncDistCoulomb<T>;
+        F.GFunc=DiffDistCoulomb<T>;
+        F.BFunc=BothDistCoulomb<T>;
         F.EMethod=EFuncMethodPairwise<GeomType,T>;
         F.GMethod=GFuncMethodPairwise<GeomType,T>;
         F.BMethod=BFuncMethodPairwise<GeomType,T>;
