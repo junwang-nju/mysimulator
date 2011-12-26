@@ -25,6 +25,13 @@ namespace mysimulator {
 
       virtual void write() = 0;
 
+      void updateNumStepsBwOutput(const T& dt) {
+        NumStepsBwOutput=static_cast<unsigned int>(TimeBwOutput/dt+0.5);
+      }
+      void updateTimeBwOutput(const T& dt) {
+        TimeBwOutput=dt*NumStepsBwOutput;
+      }
+
     private:
 
       DynOutputBase(const Type&) {}

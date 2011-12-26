@@ -9,6 +9,14 @@
 #include "unique/64bit/copy.h"
 #include "array/1d/allocate.h"
 
+#define _LinkElement(name,obj) \
+  if(obj.size<S.Propagates.size) allocate(obj,S.Propagates.size);\
+  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&(obj[i]));
+
+#define _LinkArray(name,obj) \
+  if(!IsSameSize(obj,S.Content().X())) imprint(obj,S.Content().X());\
+  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&obj);
+
 namespace mysimulator {
 
   template <typename T,template<typename> class VT,typename OC>
@@ -43,28 +51,15 @@ namespace mysimulator {
         assert(ismatch(S));
         bindOutput(*this,S);
         for(unsigned int i=0;i<S.Propagates.size;++i) {
-          S.Propagates[i].Param[CEVVerletTimeStep].ptr[0]=
-            &(this->TimeStep);
+          S.Propagates[i].Param[CEVVerletTimeStep].ptr[0]=&(this->TimeStep);
           switch(S.Propagates[i].Param[CEVVerletMassMode].u[0]) {
             case GlobalMass:
-              if(gMass.size<S.Propagates.size)
-                allocate(gMass,S.Propagates.size);
-              if(gNegHTIM.size<S.Propagates.size)
-                allocate(gNegHTIM,S.Propagates.size);
-              S.Propagates[i].Param[CEVVerletMassData].ptr[0]=
-                reinterpret_cast<void*>(&(gMass[i]));
-              S.Propagates[i].Param[CEVVerletNegHTimeIMassData].ptr[0]=
-                reinterpret_cast<void*>(&(gNegHTIM[i]));
+              _LinkElement(CEVVerletMassData,gMass)
+              _LinkElement(CEVVerletNegHTimeIMassData,gNegHTIM)
               break;
             case ArrayMass: // assume various propagates share same mass
-              if(!IsSameSize(vMass,S.Content().X()))
-                imprint(vMass,S.Content().X());
-              if(!IsSameSize(vNegHTIM,S.Content().X()))
-                imprint(vNegHTIM,S.Content().X());
-              S.Propagates[i].Param[CEVVerletMassData].ptr[0]=
-                reinterpret_cast<void*>(&vMass);
-              S.Propagates[i].Param[CEVVerletNegHTimeIMassData].ptr[0]=
-                reinterpret_cast<void*>(&vNegHTIM);
+              _LinkArray(CEVVerletMassData,vMass)
+              _LinkArray(CEVVerletNegHTimeIMassData,vNegHTIM)
               break;
             default:
               Error("Unknown Mass Mode!");
@@ -91,6 +86,9 @@ namespace mysimulator {
   };
 
 }
+
+#undef _LinkArray
+#undef _LinkElement
 
 #endif
 
