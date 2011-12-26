@@ -6,25 +6,36 @@
 
 namespace mysimulator {
 
-  template <typename T>
+  template <typename T, typename OutputChannel>
   struct DynamicsBase {
 
     public:
 
-      typedef DynamicsBase<T>   Type;
+      typedef DynamicsBase<T,OutputChannel>   Type;
 
       T TimeStep;
       T RunPeriod;
       T StartTime;
       unsigned int NumSteps;
+      OutputChannel Output;
 
-      DynamicsBase() : TimeStep(0), RunPeriod(0), StartTime(0), NumSteps(0) {}
+      DynamicsBase() : TimeStep(0), RunPeriod(0), StartTime(0), NumSteps(0),
+                       Output() {}
       ~DynamicsBase() { clearData(); }
 
       void clearData() {
-        TimeStep=0; RunPeriod=0; StartTime=0; NumSteps=0;
+        TimeStep=0; RunPeriod=0; StartTime=0; NumSteps=0; release(Output);
       }
-      bool isvalid() const { return TimeStep>RelativeDelta<T>(); }
+      bool isvalid() const {
+        return (TimeStep>RelativeDelta<T>())&&IsValid(Output);
+      }
+
+      void updateNumSteps() {
+        NumSteps=static_cast<unsigned int>(RunPeriod/TimeStep+0.5);
+        updateRunPeriod();
+      }
+
+      void updateRunPeriod() { RunPeriod=NumSteps*TimeStep; }
 
     private:
 
@@ -33,11 +44,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T>
-  void release(DynamicsBase<T>& D) { D.clearData(); }
+  template <typename T, typename OC>
+  void release(DynamicsBase<T,OC>& D) { D.clearData(); }
 
-  template <typename T>
-  bool IsValid(const DynamicsBase<T>& D) { return D.isvalid(); }
+  template <typename T, typename OC>
+  bool IsValid(const DynamicsBase<T,OC>& D) { return D.isvalid(); }
 
 }
 

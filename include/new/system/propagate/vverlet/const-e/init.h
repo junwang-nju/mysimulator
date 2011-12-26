@@ -32,17 +32,31 @@ namespace mysimulator {
   void InitCEVVerlet(SysPropagate<T,VT,SCT>& SE) {
     typedef void (*UpFunc)(const T&,const Unique64Bit&,Unique64Bit&,
                            const unsigned int&);
+    typedef void (*UpVFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
+    typedef void (*UpKFunc)(T&,const Unique64Bit&,const Unique64Bit&);
+    typedef void (*UpIFunc)(Unique64Bit&);
     typedef void (*BMvFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,const Unique64Bit&,
                             const unsigned int&);
     typedef void (*AMvFunc)(VT<T>&,VT<T>&,const Unique64Bit&,
                             const unsigned int&);
     Unique64Bit* P=SE.Param.start;
+    VT<T> *pv=NULL;
+    Array1D<VT<T> >* pgv=NULL;
     MassMethodName MMN=
       static_cast<MassMethodName>(P[CEVVerletMassMode].u[0]);
     switch(MMN) {
       case GlobalMass:
         _CreateElement(CEVVerletMass)
         _CreateElement(CEVVerletNegHTimeIMass)
+        if(P[CEVVerletVelocitySQData].ptr[0]!=NULL) {
+          _CreateElement(CEVVerletVelocitySQ)
+          P[CEVVerletUpdateVSQFunc].ptr[0]=
+            _Func(UpVFunc,(_UpdateFuncCEVVerletVSQGlobalMass<T,VT>));
+          P[CEVVerletUpdateKEFunc].ptr[0]=
+            _Func(UpKFunc,_UpdateFuncCEVVerletKEnergyGlobalMass<T>);
+          P[CEVVerletUpdateVSQInitFunc].ptr[0]=
+            _Func(UpIFunc,_UpdateFuncCEVVerletVSQInitGlobalMass<T>);
+        }
         P[CEVVerletUpdateHTIMFunc].ptr[0]=
           _Func(UpFunc,_UpdateFuncCEVVerletHTIMGlobaleMass<T>);
         P[CEVVerletBfMoveFunc].ptr[0]=
@@ -51,10 +65,17 @@ namespace mysimulator {
           _Func(AMvFunc,(_AfMoveFuncCEVVerletGlobalMass<T,VT>));
         break;
       case ArrayMass:
-        VT<T> *pv;
-        Array1D<VT<T> >* pgv;
         _CreateArray(CEVVerletMass,pv,pgv)
         _CreateArray(CEVVerletNegHTimeIMass,pv,pgv)
+        if(P[CEVVerletVelocitySQData].ptr[0]!=NULL) {
+          _CreateArray(CEVVerletVelocitySQ,pv,pgv)
+          P[CEVVerletUpdateVSQFunc].ptr[0]=
+            _Func(UpVFunc,(_UpdateFuncCEVVerletVSQArrayMass<T,VT>));
+          P[CEVVerletUpdateKEFunc].ptr[0]=
+            _Func(UpKFunc,(_UpdateFuncCEVVerletKEnergyArrayMass<T,VT>));
+          P[CEVVerletUpdateVSQInitFunc].ptr[0]=
+            _Func(UpIFunc,(_UpdateFuncCEVVerletVSQInitArrayMass<T,VT>));
+        }
         P[CEVVerletUpdateHTIMFunc].ptr[0]=
           _Func(UpFunc,(_UpdateFuncCEVVerletHTIMArrayMass<T,VT>));
         P[CEVVerletBfMoveFunc].ptr[0]=

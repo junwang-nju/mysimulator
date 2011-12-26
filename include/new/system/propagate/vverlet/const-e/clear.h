@@ -31,15 +31,20 @@ namespace mysimulator {
       case GlobalMass:
         _DeleteElement(CEVVerletMass)
         _DeleteElement(CEVVerletNegHTimeIMass)
+        _DeleteElement(CEVVerletVelocitySQ)
         break;
       case ArrayMass:
         _DeleteArray(CEVVerletNegHTimeIMass,p)
         _DeleteArray(CEVVerletMass,p)
+        _DeleteArray(CEVVerletVelocitySQ,p)
         break;
       default:
         Error("Unknown Method related to Mass!");
     }
+    _DeleteArray(CEVVerletVelocitySQ,p)
     P[CEVVerletUpdateHTIMFunc].ptr[0]=NULL;
+    P[CEVVerletUpdateVSQFunc].ptr[0]=NULL;
+    P[CEVVerletUpdateKEFunc].ptr[0]=NULL;
     P[CEVVerletBfMoveFunc].ptr[0]=NULL;
     P[CEVVerletAfMoveFunc].ptr[0]=NULL;
   }

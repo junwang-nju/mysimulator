@@ -35,24 +35,31 @@ namespace mysimulator {
     if(MMN==GlobalMass) {
       _DeleteElement(LgVVerletMass)
       _DeleteElement(LgVVerletNegHTIM)
-    } else {
+      _DeleteElement(LgVVerletVelocitySQ)
+    } else if(MMN==ArrayMass) {
       _DeleteArray(LgVVerletMass,p)
       _DeleteArray(LgVVerletNegHTIM,p)
-    }
+      _DeleteArray(LgVVerletVelocitySQ,p)
+    } else Error("Unknown Mass Mode!");
     if((MMN==GlobalMass)&&(FMN==GlobalFriction)) {
       _DeleteElement(LgVVerletFriction)
       _DeleteElement(LgVVerletRandSize)
       _DeleteElement(LgVVerletFac1)
       _DeleteElement(LgVVerletFac2)
+      _DeleteElement(LgVVerletVelocitySQ);
     } else {
       _DeleteArray(LgVVerletFriction,p)
       _DeleteArray(LgVVerletRandSize,p)
       _DeleteArray(LgVVerletFac1,p)
       _DeleteArray(LgVVerletFac2,p)
+      _DeleteArray(LgVVerletVelocitySQ,p)
     }
     P[LgVVerletUpdateHTIMFunc].ptr[0]=NULL;
     P[LgVVerletUpdateFacFunc].ptr[0]=NULL;
     P[LgVVerletUpdateRandSizeFunc].ptr[0]=NULL;
+    P[LgVVerletUpdateVSQFunc].ptr[0]=NULL;
+    P[LgVVerletUpdateVSQInitFunc].ptr[0]=NULL;
+    P[LgVVerletUpdateKEFunc].ptr[0]=NULL;
     P[LgVVerletBfMoveFunc].ptr[0]=NULL;
     P[LgVVerletAfMoveFunc].ptr[0]=NULL;
   }

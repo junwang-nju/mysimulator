@@ -7,18 +7,24 @@
 
 namespace mysimulator {
 
-  template <DynamicsModeName DMN, typename T,template<typename> class VecType>
+  template <DynamicsModeName DMN, typename T,template<typename> class VecType,
+            typename OutputChannel>
   struct Dynamics {
 
     public:
 
-      typedef Dynamics<DMN,T,VecType>   Type;
+      typedef Dynamics<DMN,T,VecType,OutputChannel>   Type;
 
       Dynamics() {}
       ~Dynamics() { clearData(); }
 
       void clearData() {}
       bool isvalid() const { return false; }
+      template <typename IDT,typename PT,typename GT,
+                template<typename,template<typename>class> class SCT>
+      bool ismatch(const System<T,IDT,PT,GT,VecType,SCT>& S) const {
+        return false;
+      }
 
       template <typename IDType,typename ParamType,typename GeomType,
                 template<typename,template<typename>class> class SysContentType>
@@ -33,11 +39,19 @@ namespace mysimulator {
 
   };
 
-  template <DynamicsModeName DMN,typename T,template<typename> class VT>
-  void release(Dynamics<DMN,T,VT>& D) { D.clearData(); }
+  template <DynamicsModeName DMN,typename T,template<typename> class VT,
+            typename OC>
+  void release(Dynamics<DMN,T,VT,OC>& D) { D.clearData(); }
 
-  template <DynamicsModeName DMN,typename T,template<typename> class VT>
-  bool IsValid(const Dynamics<DMN,T,VT>& D) { return D.isvalid(); }
+  template <DynamicsModeName DMN,typename T,template<typename> class VT,
+            typename OC>
+  bool IsValid(const Dynamics<DMN,T,VT,OC>& D) { return D.isvalid(); }
+
+  template <DynamicsModeName DMN,typename T,template<typename> class VT,
+            typename OC,typename IDT,typename PT,typename GT,
+            template<typename,template<typename>class> class SCT>
+  bool IsMatch(const Dynamics<DMN,T,VT,OC>& D,
+               const System<T,IDT,PT,GT,VT,SCT>& S) { return D.ismatch(S); }
 
 }
 

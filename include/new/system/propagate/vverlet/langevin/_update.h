@@ -140,5 +140,45 @@ namespace mysimulator {
 
 }
 
+#include "system/propagate/vverlet/const-e/_update.h"
+
+namespace mysimulator {
+
+  template <typename T, template<typename> class VT>
+  void _UpdateFuncLgVVerletVSQGMass(
+      Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int& n) {
+    _UpdateFuncCEVVerletVSQGlobalMass<T,VT>(VSQ,Vel,n);
+  }
+
+  template <typename T, template<typename> class VT>
+  void _UpdateFuncLgVVerletVSQAMass(
+      Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int& n) {
+    _UpdateFuncCEVVerletVSQArrayMass<T,VT>(VSQ,Vel,n);
+  }
+
+  template <typename T>
+  void _UpdateFuncLgVVerletVSQInitGMass(Unique64Bit& VSQ) {
+    _UpdateFuncCEVVerletVSQInitGlobalMass<T>(VSQ);
+  }
+
+  template <typename T, template<typename> class VT>
+  void _UpdateFuncLgVVerletVSQInitAMass(Unique64Bit& VSQ) {
+    _UpdateFuncCEVVerletVSQInitArrayMass<T,VT>(VSQ);
+  }
+
+  template <typename T>
+  void _UpdateFuncLgVVerletKEnergyGMass(
+      T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
+    _UpdateFuncCEVVerletKEnergyGlobalMass<T>(KE,Mass,VelSQ);
+  }
+
+  template <typename T, template<typename> class VT>
+  void _UpdateFuncLgVVerletKEnergyAMass(
+      T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
+    _UpdateFuncCEVVerletKEnergyArrayMass<T,VT>(KE,Mass,VelSQ);
+  }
+
+}
+
 #endif
 

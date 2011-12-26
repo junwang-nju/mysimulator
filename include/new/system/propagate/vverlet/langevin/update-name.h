@@ -8,6 +8,8 @@ namespace mysimulator {
     LgVVerletFacCalc=0,
     LgVVerletRandSizeCalc,
     LgVVerletNegHTIMCalc,
+    LgVVerletVSQCalc,
+    LgVVerletKECalc,
     NumberUpdateLangevinVelVerlet
   };
 

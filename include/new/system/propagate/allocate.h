@@ -75,6 +75,8 @@ namespace mysimulator {
         SE.evfunc[CEVVerletAfterG]=MoveCEVVerletAfterG<T,VT,SCT>;
         allocate(SE.updfunc,NumberUpdateConstEVelVerlet);
         SE.updfunc[CEVVerletHTIMCalc]=UpdateCEVVerletHTIM<T,VT,SCT>;
+        SE.updfunc[CEVVerletVSQCalc]=UpdateCEVVerletVelocitySQ<T,VT,SCT>;
+        SE.updfunc[CEVVerletKECalc]=UpdateCEVVerletKEnergy<T,VT,SCT>;
         allocate(SE.Param,NumberParameterConstEVelVerlet);
         break;
       case SysLangevinVelVerlet:
@@ -87,6 +89,8 @@ namespace mysimulator {
         SE.updfunc[LgVVerletNegHTIMCalc]=UpdateLgVVerletNegHTIM<T,VT,SCT>;
         SE.updfunc[LgVVerletRandSizeCalc]=UpdateLgVVerletRandSize<T,VT,SCT>;
         SE.updfunc[LgVVerletFacCalc]=UpdateLgVVerletFac<T,VT,SCT>;
+        SE.updfunc[LgVVerletVSQCalc]=UpdateLgVVerletVelocitySQ<T,VT,SCT>;
+        SE.updfunc[LgVVerletKECalc]=UpdateLgVVerletKEnergy<T,VT,SCT>;
         allocate(SE.Param,NumberParameterLangevinVelVerlet);
         break;
       default:

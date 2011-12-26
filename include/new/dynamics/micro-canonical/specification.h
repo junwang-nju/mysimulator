@@ -11,13 +11,13 @@
 
 namespace mysimulator {
 
-  template <typename T,template<typename> class VT>
-  struct Dynamics<MicroCanonical,T,VT> : public DynamicsBase<T> {
+  template <typename T,template<typename> class VT,typename OC>
+  struct Dynamics<MicroCanonical,T,VT,OC> : public DynamicsBase<T,OC> {
 
     public:
 
-      typedef Dynamics<MicroCanonical,T,VT>   Type;
-      typedef DynamicsBase<T>   ParentType;
+      typedef Dynamics<MicroCanonical,T,VT,OC>   Type;
+      typedef DynamicsBase<T,OC>   ParentType;
 
       Array1D<T> gMass;
       Array1D<T> gNegHTIM;
@@ -40,7 +40,8 @@ namespace mysimulator {
       template <typename IDT,typename PT,typename GT,
                 template<typename,template<typename>class> class SCT>
       void bind(System<T,IDT,PT,GT,VT,SCT>& S) {
-        assert((S.EvoluteMode==8)||(S.EvoluteMode==10));
+        assert(ismatch(S));
+        bindOutput(*this,S);
         for(unsigned int i=0;i<S.Propagates.size;++i) {
           S.Propagates[i].Param[CEVVerletTimeStep].ptr[0]=
             &(this->TimeStep);
@@ -78,9 +79,8 @@ namespace mysimulator {
 
       template <typename IDT,typename PT,typename GT,
                 template<typename,template<typename>class> class SCT>
-      void evolute(System<T,IDT,PT,GT,VT,SCT>& S) {
-        assert((S.EvoluteMode==8)||(S.EvoluteMode==10));
-        for(unsigned int i=0;i<this->NumSteps;++i)  S.evolute();
+      bool ismatch(const System<T,IDT,PT,GT,VT,SCT>& S) const {
+        return (S.EvoluteMode==8)||(S.EvoluteMode==10);
       }
 
     private:

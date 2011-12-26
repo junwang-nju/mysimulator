@@ -44,9 +44,13 @@ namespace mysimulator {
     if(MMN==GlobalMass) {
       _CreateElement(LgVVerletMass)
       _CreateElement(LgVVerletNegHTIM)
+      if(P[LgVVerletVelocitySQData].ptr[0]!=NULL)
+        _CreateElement(LgVVerletVelocitySQ)
     } else {
       _CreateArray(LgVVerletMass,pv,pgv)
       _CreateArray(LgVVerletNegHTIM,pv,pgv)
+      if(P[LgVVerletVelocitySQData].ptr[0]!=NULL)
+        _CreateArray(LgVVerletVelocitySQ,pv,pgv)
     }
     if((MMN==GlobalMass)&&(FMN==GlobalFriction)) {
       _CreateElement(LgVVerletFriction)
@@ -70,6 +74,12 @@ namespace mysimulator {
     void (*RUpFunc)(const T&,const T&,const Unique64Bit&,const Unique64Bit&,
                     Unique64Bit&,const unsigned int&);
     typedef
+    void (*VUpFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
+    typedef
+    void (*IUpFunc)(Unique64Bit&);
+    typedef
+    void (*KUpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
+    typedef
     void (*BMvFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,const Unique64Bit&,
                     const Unique64Bit&,const VT<T>&,const Unique64Bit&,
                     const unsigned int&);
@@ -79,6 +89,14 @@ namespace mysimulator {
     if(MMN==GlobalMass) {
       P[LgVVerletUpdateHTIMFunc].ptr[0]=
         _Func(MUpFunc,_UpdateFuncLgVVerletHTIMGMass<T>);
+      if(P[LgVVerletVelocitySQData].ptr[0]!=NULL) {
+        P[LgVVerletUpdateVSQFunc].ptr[0]=
+          _Func(VUpFunc,(_UpdateFuncLgVVerletVSQGMass<T,VT>));
+        P[LgVVerletUpdateVSQInitFunc].ptr[0]=
+          _Func(IUpFunc,_UpdateFuncLgVVerletVSQInitGMass<T>);
+        P[LgVVerletUpdateKEFunc].ptr[0]=
+          _Func(KUpFunc,_UpdateFuncLgVVerletKEnergyGMass<T>);
+      }
       if(FMN==GlobalFriction) {
         P[LgVVerletUpdateRandSizeFunc].ptr[0]=
           _Func(RUpFunc,_UpdateFuncLgVVerletRSizeGMassGFric<T>);
@@ -101,6 +119,14 @@ namespace mysimulator {
     } else {
       P[LgVVerletUpdateHTIMFunc].ptr[0]=
         _Func(MUpFunc,(_UpdateFuncLgVVerletHTIMAMass<T,VT>));
+      if(P[LgVVerletVelocitySQData].ptr[0]!=NULL) {
+        P[LgVVerletUpdateVSQFunc].ptr[0]=
+          _Func(VUpFunc,(_UpdateFuncLgVVerletVSQAMass<T,VT>));
+        P[LgVVerletUpdateVSQInitFunc].ptr[0]=
+          _Func(IUpFunc,(_UpdateFuncLgVVerletVSQInitAMass<T,VT>));
+        P[LgVVerletUpdateKEFunc].ptr[0]=
+          _Func(KUpFunc,(_UpdateFuncLgVVerletKEnergyAMass<T,VT>));
+      }
       if(FMN==GlobalFriction) {
         P[LgVVerletUpdateRandSizeFunc].ptr[0]=
           _Func(RUpFunc,(_UpdateFuncLgVVerletRSizeAMassGFric<T,VT>));

@@ -25,6 +25,12 @@ namespace mysimulator {
     Error("Improper Content Type!");
   }
 
+  template <typename T,template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
+  void _UpdateLgVVerletVelocitySQ(SysPropagate<T,VT,SCT>& SE) {
+    Error("Improper Content Type!");
+  }
+
 }
 
 #include "system/content/with-egv/interface.h"
@@ -75,6 +81,34 @@ namespace mysimulator {
              P[LgVVerletMass],P[LgVVerletFriction],P[LgVVerletRandSize],i);
   }
 
+  template <typename T,template<typename> class VT>
+  void _UpdateLgVVerletVelocitySQ(SysPropagate<T,VT,SysContentWithEGV>& SE) {
+    assert(IsValid(SE));
+    typedef void (*_UpdFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
+    typedef void (*_IniFunc)(Unique64Bit&);
+    Unique64Bit* P=SE.Param.start;
+    assert(P[LgVVerletVelocitySQ].ptr[0]!=NULL);
+    _UpdFunc updfunc=
+      reinterpret_cast<_UpdFunc>(P[LgVVerletUpdateVSQFunc].ptr[0]);
+    _IniFunc inifunc=
+      reinterpret_cast<_IniFunc>(P[LgVVerletUpdateVSQInitFunc].ptr[0]);
+    inifunc(P[LgVVerletVelocitySQ]);
+    for(unsigned int i=0;i<SE.grpContent.size;++i)
+      updfunc(P[LgVVerletVelocitySQ],SE.grpContent[i].Velocity(),i);
+  }
+
+  template <typename T,template<typename> class VT>
+  void _UpdateLgVVerletKEnergy(SysPropagate<T,VT,SysContentWithEGV>& SE) {
+    assert(IsValid(SE));
+    typedef void (*_UpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
+    Unique64Bit* P=SE.Param.start;
+    assert(P[LgVVerletVelocitySQ].ptr[0]!=NULL);
+    _UpFunc updfunc=
+      reinterpret_cast<_UpFunc>(P[LgVVerletUpdateKEFunc].ptr[0]);
+    updfunc(P[LgVVerletKineticEnergy].value<T>(),P[LgVVerletMass],
+            P[LgVVerletVelocitySQ]);
+  }
+
 }
 
 namespace mysimulator {
@@ -95,6 +129,18 @@ namespace mysimulator {
             template<typename,template<typename>class> class SCT>
   void UpdateLgVVerletRandSize(SysPropagate<T,VT,SCT>& SE) {
     _UpdateLgVVerletRandSize(SE);
+  }
+
+  template <typename T,template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
+  void UpdateLgVVerletVelocitySQ(SysPropagate<T,VT,SCT>& SE) {
+    _UpdateLgVVerletVelocitySQ(SE);
+  }
+
+  template <typename T,template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
+  void UpdateLgVVerletKEnergy(SysPropagate<T,VT,SCT>& SE) {
+    _UpdateLgVVerletKEnergy(SE);
   }
 
 }

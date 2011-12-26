@@ -11,7 +11,13 @@ namespace mysimulator {
     CEVVerletMassData,
     CEVVerletNegHTimeIMass,
     CEVVerletNegHTimeIMassData,
+    CEVVerletVelocitySQ,
+    CEVVerletVelocitySQData,
+    CEVVerletKineticEnergy,
     CEVVerletUpdateHTIMFunc,
+    CEVVerletUpdateVSQFunc,
+    CEVVerletUpdateVSQInitFunc,
+    CEVVerletUpdateKEFunc,
     CEVVerletBfMoveFunc,
     CEVVerletAfMoveFunc,
     NumberParameterConstEVelVerlet
