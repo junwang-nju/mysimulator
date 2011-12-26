@@ -28,6 +28,7 @@ namespace mysimulator {
       typedef Dynamics<Langevin,T,VT,OC>    Type;
       typedef DynamicsBase<T,OC>   ParentType;
 
+      T Temperature;
       Array1D<T> gMass;
       Array1D<T> gFric;
       Array1D<T> gNegHTIM;
@@ -53,10 +54,12 @@ namespace mysimulator {
         release(gFac1); release(gRandS); release(gNegHTIM); release(gFric);
         release(gMass); static_cast<ParentType*>(this)->clearData();
       }
-      bool isvalid() { return static_cast<ParentType*>(this)->isvalid(); }
+      bool isvalid() const {
+        return static_cast<const ParentType*>(this)->isvalid();
+      }
       template <typename IDT,typename PT,typename GT,
                 template<typename,template<typename>class> class SCT>
-      bool ismatch(const System<T,IDT,PT,GT,VT,SCT>& S) {
+      bool ismatch(const System<T,IDT,PT,GT,VT,SCT>& S) const {
         return (S.EvoluteMode==16)||(S.EvoluteMode==18);
       }
 
@@ -68,17 +71,20 @@ namespace mysimulator {
         MassMethodName MMN;
         FrictionMethodName  FMN;
         for(unsigned int i=0;i<S.Propagates.size;++i) {
-          S.Propagates[i].Param[LgVVerletTimeStep].ptr[0]=&(this->TimeStep);
+          Unique64Bit *P;
+          P=S.Propagates[i].Param.start;
+          P[LgVVerletTimeStep].ptr[0]=&(this->TimeStep);
+          P[LgVVerletTemperature].ptr[0]=&Temperature;
           _LinkArray(LgVVerletRandVectorData,vRandV)
-          MMN=S.Propagates[i].Param[LgVVerletMassMode].u[0];
+          MMN=static_cast<MassMethodName>(P[LgVVerletMassMode].u[0]);
           if(MMN==GlobalMass) {
             _LinkElement(LgVVerletMassData,gMass)
             _LinkElement(LgVVerletNegHTIMData,gNegHTIM)
-          } else if(MMN=ArrayMass) {
+          } else if(MMN==ArrayMass) {
             _LinkArray(LgVVerletMassData,vMass)
             _LinkArray(LgVVerletNegHTIMData,vNegHTIM)
           } else Error("Unknown Mass Mode!");
-          FMN=S.Propagates[i].Param[LgVVerletFrictionMode].u[0];
+          FMN=static_cast<FrictionMethodName>(P[LgVVerletFrictionMode].u[0]);
           if((MMN==GlobalMass)&&(FMN=GlobalFriction)) {
             _LinkElement(LgVVerletFrictionData,gFric)
             _LinkElement(LgVVerletRandSizeData,gRandS)

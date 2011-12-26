@@ -31,6 +31,12 @@ namespace mysimulator {
     Error("Improper Content Type!");
   }
 
+  template <typename T,template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
+  void _UpdateLgVVerletKEnergy(SysPropagate<T,VT,SCT>& SE) {
+    Error("Improper Content Type!");
+  }
+
 }
 
 #include "system/content/with-egv/interface.h"
@@ -77,7 +83,7 @@ namespace mysimulator {
       reinterpret_cast<_UpFunc>(P[LgVVerletUpdateRandSizeFunc].ptr[0]);
     T dt=*reinterpret_cast<T*>(P[LgVVerletTimeStep].ptr[0]);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
-      upfunc(dt,P[LgVVerletTemperature].value<T>(),
+      upfunc(dt,*reinterpret_cast<T*>(P[LgVVerletTemperature].ptr[0]),
              P[LgVVerletMass],P[LgVVerletFriction],P[LgVVerletRandSize],i);
   }
 
