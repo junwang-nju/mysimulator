@@ -41,25 +41,19 @@ namespace mysimulator {
 
     assert(P[LgVVerletGaussRNG].ptr[0]!=NULL);
     _CreateArray(LgVVerletRandVector,pv,pgv)
-  COut<<"==============1==========="<<Endl;
     if(MMN==GlobalMass) {
       _CreateElement(LgVVerletMass)
       _CreateElement(LgVVerletNegHTIM)
-  COut<<"==========Q===1==========="<<Endl;
       if(P[LgVVerletVelocitySQData].ptr[0]!=NULL) {
         _CreateElement(LgVVerletVelocitySQ)
       }
-  COut<<"==========Q===2==========="<<Endl;
     } else {
       _CreateArray(LgVVerletMass,pv,pgv)
       _CreateArray(LgVVerletNegHTIM,pv,pgv)
-  COut<<"==========W===1==========="<<Endl;
       if(P[LgVVerletVelocitySQData].ptr[0]!=NULL) {
         _CreateArray(LgVVerletVelocitySQ,pv,pgv)
       }
-  COut<<"==========W===2==========="<<Endl;
     }
-  COut<<"=====A========1==========="<<Endl;
     if((MMN==GlobalMass)&&(FMN==GlobalFriction)) {
       _CreateElement(LgVVerletFriction)
       _CreateElement(LgVVerletRandSize)

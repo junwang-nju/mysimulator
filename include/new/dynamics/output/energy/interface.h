@@ -32,12 +32,14 @@ namespace mysimulator {
         release(S); static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
-        return static_cast<ParentType*>(this)->isvalid()&&IsValid(S);
+        return static_cast<const ParentType*>(this)->isvalid()&&IsValid(S);
       }
 
       virtual void write() {
+        assert(isvalid());
+        (this->OS)<<(this->NowTime());
         GenericEvaluateEnergy(S().Content(),S().Interactions);
-        (this->OS)<<S().Content().EGData.Energy();
+        (this->OS)<<"\t"<<S().Content().EGData.Energy();
         for(unsigned int i=0;i<S().Interactions.size;++i)
           (this->OS)<<"\t"<<S().Interactions[i].EGData().Energy();
         T ke,ske;

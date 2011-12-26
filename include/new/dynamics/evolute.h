@@ -16,9 +16,11 @@ namespace mysimulator {
     assert(IsMatch(D,S));
     unsigned int nout=
       static_cast<unsigned int>(D.RunPeriod/D.Output.TimeBwOutput);
+    D.NowTime=D.StartTime;
     if(D.Output.IsFirstOutput)  { D.Output.write(); D.Output.OS<<Endl; }
     for(unsigned int n=0;n<nout;++n) {
       for(unsigned int i=0;i<D.Output.NumStepsBwOutput;++i) S.evolute();
+      D.updateNowTime(D.Output.TimeBwOutput);
       D.Output.write();
       D.Output.OS<<Endl;
     }

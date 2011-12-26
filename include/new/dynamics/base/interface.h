@@ -17,14 +17,16 @@ namespace mysimulator {
       T RunPeriod;
       T StartTime;
       unsigned int NumSteps;
+      T NowTime;
       OutputChannel Output;
 
       DynamicsBase() : TimeStep(0), RunPeriod(0), StartTime(0), NumSteps(0),
-                       Output() {}
+                       NowTime(0), Output() {}
       ~DynamicsBase() { clearData(); }
 
       void clearData() {
-        TimeStep=0; RunPeriod=0; StartTime=0; NumSteps=0; release(Output);
+        TimeStep=0; RunPeriod=0; StartTime=0; NumSteps=0; NowTime=0;
+        release(Output);
       }
       bool isvalid() const {
         return (TimeStep>RelativeDelta<T>())&&IsValid(Output);
@@ -36,6 +38,9 @@ namespace mysimulator {
       }
 
       void updateRunPeriod() { RunPeriod=NumSteps*TimeStep; }
+
+      void updateNowTime(const T& delta) { NowTime+=delta; }
+      void updateNowTime(const unsigned int& n) { NowTime+=n*TimeStep; }
 
     private:
 

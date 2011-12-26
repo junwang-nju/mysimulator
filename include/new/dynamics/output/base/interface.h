@@ -2,6 +2,8 @@
 #ifndef _Dynamics_Output_Base_Interface_H_
 #define _Dynamics_Output_Base_Interface_H_
 
+#include "object/refer.h"
+
 namespace mysimulator {
 
   template <typename OutputStreamType,typename T>
@@ -15,13 +17,18 @@ namespace mysimulator {
       T TimeBwOutput;
       unsigned int NumStepsBwOutput;
       bool IsFirstOutput;
+      Object<T> NowTime;
 
       DynOutputBase() : OS(), TimeBwOutput(0), NumStepsBwOutput(0),
-                        IsFirstOutput(true) {}
+                        IsFirstOutput(true), NowTime() {}
       ~DynOutputBase() { clearData(); }
 
-      void clearData() { release(OS); TimeBwOutput=0; NumStepsBwOutput=0; }
-      bool isvalid() const { return IsValid(OS)&&(NumStepsBwOutput>0); }
+      void clearData() {
+        release(NowTime); release(OS); TimeBwOutput=0; NumStepsBwOutput=0;
+      }
+      bool isvalid() const {
+        return IsValid(OS)&&(NumStepsBwOutput>0)&&IsValid(NowTime);
+      }
 
       virtual void write() = 0;
 
@@ -31,6 +38,7 @@ namespace mysimulator {
       void updateTimeBwOutput(const T& dt) {
         TimeBwOutput=dt*NumStepsBwOutput;
       }
+      void setNowTime(const T& time) { refer(NowTime,time); }
 
     private:
 
