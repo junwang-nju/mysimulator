@@ -10,6 +10,7 @@ namespace mysimulator {
     SysMinimizerLineRegular,
     SysConstEVelVerlet,
     SysLangevinVelVerlet,
+    SysBerendsenVelVerlet,
     NumberSystemPropagateMethods,
     SysPropagateUnassigned
   };
