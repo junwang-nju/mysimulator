@@ -35,7 +35,7 @@ namespace mysimulator {
 
       void clearData() {
         CutRadius=0; InteractionCutRadius=0; BufferRadius=0; UpdateTime=0;
-        release(tmpVec);
+        CutRadiusSQ=0;  release(tmpVec);
       }
       bool isvalid() const {
         return IsValid(tmpVec)&&(CutRadius>RelativeDelta<T>());
@@ -45,6 +45,13 @@ namespace mysimulator {
       _RENEW(Array1DContent<Array1D<int> >,Array1DContent<Array1D<T> >)
       _RENEW(Array2DContent<int>,Array2DContent<T>)
       _RENEW(Array2DContent<int>,Array1DContent<Array1D<T> >)
+
+      void setCutRadius(const T& ICutRadius, const T& BRadius) {
+        InteractionCutRadius=ICutRadius;
+        BufferRadius=BRadius;
+        CutRadius=InteractionCutRadius+BufferRadius;
+        CutRadiusSQ=CutRadius*CutRadius;
+      }
 
     private:
 
