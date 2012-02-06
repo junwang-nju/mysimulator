@@ -63,7 +63,6 @@ namespace mysimulator {
     _DeleteFunc(UpdateFac)
     _DeleteFunc(UpdateRandSize)
     _DeleteFunc(UpdateVSQ)
-    _DeleteFunc(UpdateVSQInit)
     _DeleteFunc(UpdateKE)
     _DeleteFunc(BfMove)
     _DeleteFunc(AfMove)

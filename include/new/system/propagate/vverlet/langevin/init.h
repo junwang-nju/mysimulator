@@ -69,8 +69,7 @@ namespace mysimulator {
                             Unique64Bit&,Unique64Bit&);
     typedef void (*MUpFunc)(const T&,const Unique64Bit&,Unique64Bit&);
     typedef void (*RUpFunc)(const T&,const T&,const Unique64Bit&,
-                            const Unique64Bit&,Unique64Bit&,
-                            const unsigned int&);
+                            const Unique64Bit&,Unique64Bit&);
     typedef void (*VUpFunc)(Unique64Bit&,
                             const Array1DContent<SysContentWithEGV<T,VT> >&);
     typedef void (*KUpFunc)(T&,const Unique64Bit&,const Unique64Bit&);

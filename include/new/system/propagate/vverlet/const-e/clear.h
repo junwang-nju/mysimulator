@@ -49,7 +49,6 @@ namespace mysimulator {
     _DeleteFunc(UpdateHTIM)
     _DeleteFunc(UpdateVSQ)
     _DeleteFunc(UpdateKE)
-    _DeleteFunc(UpdateVSQInit)
     _DeleteFunc(BfMove)
     _DeleteFunc(AfMove)
   }

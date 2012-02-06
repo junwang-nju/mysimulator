@@ -32,15 +32,15 @@ namespace mysimulator {
   void _UpdateFuncCEVVerletVSQGMass(
       Unique64Bit& VSQ, const Array1DContent<SysContentWithEGV<T,VT> > & gC) {
     _VALUE(VSQ)=0;
-    for(unsigned int i=0;i<gC.size;++i) _VALUE(VSQ)+=normSQ(gC.Velocity());
+    for(unsigned int i=0;i<gC.size;++i) _VALUE(VSQ)+=normSQ(gC[i].Velocity());
   }
 
   template <typename T, template<typename> class VT>
   void _UpdateFuncCEVVerletVSQAMass(
       Unique64Bit& VSQ, const Array1DContent<SysContentWithEGV<T,VT> > & gC) {
     for(unsigned int i=0;i<gC.size;++i) {
-      copy(_ARRAY(VSQ)[i],gC.Velocity());
-      scale(_ARRAY(VSQ)[i],gC.Velocity());
+      copy(_ARRAY(VSQ)[i],gC[i].Velocity());
+      scale(_ARRAY(VSQ)[i],gC[i].Velocity());
     }
   }
 
