@@ -52,7 +52,7 @@ namespace mysimulator {
     typedef void (*_UpFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
     typedef void (*_IUpFunc)(Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
-    assert(P[CEVVerletVelocitySQ].ptr[0]!=NULL);
+    assert(P[PtrCEVVerletVelocitySQ].ptr[0]!=NULL);
     _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FunCEVVerletUpdateVSQ].ptr[0]);
     _IUpFunc inifunc=
       reinterpret_cast<_IUpFunc>(P[FunCEVVerletUpdateVSQInit].ptr[0]);

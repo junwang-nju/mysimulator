@@ -22,26 +22,27 @@ namespace mysimulator {
       typedef DynOutputBase<OST,T>    ParentType;
 
       Object<System<T,IDT,PT,GT,VT,SCT> >   S;
-      Array1D<T> gVelocitySQ;
-      VT<T> vVelocitySQ;
+      VT<T> VelocitySQ;
 
-      DynOutputEnergy() : ParentType(), S() {}
+      DynOutputEnergy() : ParentType(), S(), VelocitySQ() {}
       ~DynOutputEnergy() { clearData(); }
 
       void clearData() {
-        release(S); static_cast<ParentType*>(this)->clearData();
+        release(VelocitySQ);  release(S);
+        static_cast<ParentType*>(this)->clearData();
       }
       bool isvalid() const {
-        return static_cast<const ParentType*>(this)->isvalid()&&IsValid(S);
+        return static_cast<const ParentType*>(this)->isvalid()&&IsValid(S)&&
+               IsValid(VelocitySQ);
       }
 
       virtual void write() {
         assert(isvalid());
         (this->OS)<<(this->NowTime());
         GenericEvaluateEnergy(S().Content(),S().Interactions);
-        (this->OS)<<"\t"<<S().Content().EGData.Energy();
         for(unsigned int i=0;i<S().Interactions.size;++i)
           (this->OS)<<"\t"<<S().Interactions[i].EGData().Energy();
+        (this->OS)<<"\t"<<S().Content().EGData.Energy();
         T ke,ske;
         ske=0;
         for(unsigned int i=0;i<S().Propagates.size;++i) {

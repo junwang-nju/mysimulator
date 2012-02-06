@@ -30,7 +30,7 @@ namespace mysimulator {
   template <typename T, template<typename> class VT>
   void _UpdateFuncCEVVerletVSQGMass(
       Unique64Bit& VSQ, const VT<T>& Vel, const unsigned int&) {
-    _VALUE(VSQ)+=dot(VeL,Vel);
+    _VALUE(VSQ)+=dot(Vel,Vel);
   }
 
   template <typename T, template<typename> class VT>

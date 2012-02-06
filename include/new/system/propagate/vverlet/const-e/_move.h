@@ -11,7 +11,7 @@
 namespace mysimulator {
 
   template <typename T, template<typename> class VT>
-  void _BfMoveFuncCEVVerletGlobalMass(
+  void _BfMoveFuncCEVVerletGMass(
       VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
       const unsigned int&) {
     assert(IsValid(X)&&IsValid(V)&&IsValid(G));
@@ -20,7 +20,7 @@ namespace mysimulator {
   }
 
   template <typename T, template<typename> class VT>
-  void _BfMoveFuncCEVVerletArrayMass(
+  void _BfMoveFuncCEVVerletAMass(
       VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
       const unsigned int& n) {
     assert(IsValid(X)&&IsValid(V)&&IsValid(G));
@@ -29,14 +29,14 @@ namespace mysimulator {
   }
 
   template <typename T, template<typename> class VT>
-  void _AfMoveFuncCEVVerletGlobalMass(
+  void _AfMoveFuncCEVVerletGMass(
       VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const unsigned int&) {
     assert(IsValid(V)&&IsValid(G));
     shift(V,_VALUE(nhtim),G);
   }
 
   template <typename T, template<typename> class VT>
-  void _AfMoveFuncCEVVerletArrayMass(
+  void _AfMoveFuncCEVVerletAMass(
       VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const unsigned int& n) {
     typedef Array1D<VT<T> >   AVT;
     assert(IsValid(V)&&IsValid(G));

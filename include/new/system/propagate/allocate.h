@@ -74,9 +74,9 @@ namespace mysimulator {
         SE.evfunc[CEVVerletBeforeG]=MoveCEVVerletBeforeG<T,VT,SCT>;
         SE.evfunc[CEVVerletAfterG]=MoveCEVVerletAfterG<T,VT,SCT>;
         allocate(SE.updfunc,NumberUpdateConstEVelVerlet);
-        SE.updfunc[CEVVerletHTIMCalc]=UpdateCEVVerletHTIM<T,VT,SCT>;
-        SE.updfunc[CEVVerletVSQCalc]=UpdateCEVVerletVelocitySQ<T,VT,SCT>;
-        SE.updfunc[CEVVerletKECalc]=UpdateCEVVerletKEnergy<T,VT,SCT>;
+        SE.updfunc[CalcCEVVerletHTIM]=UpdateCEVVerletHTIM<T,VT,SCT>;
+        SE.updfunc[CalcCEVVerletVSQ]=UpdateCEVVerletVelocitySQ<T,VT,SCT>;
+        SE.updfunc[CalcCEVVerletKE]=UpdateCEVVerletKEnergy<T,VT,SCT>;
         allocate(SE.Param,NumberParameterConstEVelVerlet);
         break;
       case SysLangevinVelVerlet:

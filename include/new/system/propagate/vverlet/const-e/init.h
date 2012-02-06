@@ -9,10 +9,9 @@
 #include "system/propagate/vverlet/const-e/_move.h"
 #include "array/1d/allocate.h"
 
-#define RMode  CEVVerlet
-#define PName(U)  Ptr##RMode##U
-#define DName(U)  Dat##RMode##U
-#define FName(U)  Fun##RMode##U
+#define PName(U)      PtrCEVVerlet##U
+#define DName(U)      DatCEVVerlet##U
+#define FName(U)      FunCEVVerlet##U
 
 #define _CreateElement(U) \
   P[PName(U)].ptr[0]=reinterpret_cast<void*>(&(P[DName(U)].value<T>()));
@@ -47,7 +46,7 @@ namespace mysimulator {
     VT<T> *pv=NULL;
     Array1D<VT<T> >* pgv=NULL;
     MassMethodName MMN=
-      static_cast<MassMethodName>(P[CEVVerletMassMode].u[0]);
+      static_cast<MassMethodName>(P[ModCEVVerletMass].u[0]);
     switch(MMN) {
       case GlobalMass:
         _CreateElement(Mass)
@@ -88,7 +87,6 @@ namespace mysimulator {
 #undef FName
 #undef DName
 #undef PName
-#undef RMode
 
 #endif
 

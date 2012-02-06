@@ -7,16 +7,20 @@
 #include "system/propagate/vverlet/const-e/parameter-name.h"
 #include "intrinsic-type/release.h"
 
-#define _DeleteElement(name) \
-  P[name].ptr[0]=NULL;
+#define PName(U)  PtrCEVVerlet##U
+#define FName(U)  FunCEVVerlet##U
 
-#define _DeleteArray(name,p) \
-  if(P[name].ptr[0]!=NULL) {\
-    p=reinterpret_cast<Array1D<VT<T> >*>(P[name].ptr[0]);\
+#define _DeleteElement(U) P[PName(U)].ptr[0]=NULL;
+
+#define _DeleteArray(U) \
+  if(P[PName(U)].ptr[0]!=NULL) {\
+    p=reinterpret_cast<Array1D<VT<T> >*>(P[PName(U)].ptr[0]);\
     release(*p);\
     delete_pointer(p);\
-    P[name].ptr[0]=NULL;\
+    P[PName(U)].ptr[0]=NULL;\
   }
+
+#define _DeleteFunc(U) P[FName(U)].ptr[0]=NULL;
 
 namespace mysimulator {
 
@@ -26,33 +30,38 @@ namespace mysimulator {
     Array1D<VT<T> >* p=NULL;
     Unique64Bit* P=SE.Param.start;
     MassMethodName MMN=
-      static_cast<MassMethodName>(P[CEVVerletMassMode].u[0]);
+      static_cast<MassMethodName>(P[ModCEVVerletMass].u[0]);
     switch(MMN) {
       case GlobalMass:
-        _DeleteElement(CEVVerletMass)
-        _DeleteElement(CEVVerletNegHTimeIMass)
-        _DeleteElement(CEVVerletVelocitySQ)
+        _DeleteElement(Mass)
+        _DeleteElement(NegHTIM)
+        _DeleteElement(VelocitySQ)
         break;
       case ArrayMass:
-        _DeleteArray(CEVVerletNegHTimeIMass,p)
-        _DeleteArray(CEVVerletMass,p)
-        _DeleteArray(CEVVerletVelocitySQ,p)
+        _DeleteArray(NegHTIM)
+        _DeleteArray(Mass)
+        _DeleteArray(VelocitySQ)
         break;
       default:
         Error("Unknown Method related to Mass!");
     }
-    _DeleteArray(CEVVerletVelocitySQ,p)
-    P[CEVVerletUpdateHTIMFunc].ptr[0]=NULL;
-    P[CEVVerletUpdateVSQFunc].ptr[0]=NULL;
-    P[CEVVerletUpdateKEFunc].ptr[0]=NULL;
-    P[CEVVerletBfMoveFunc].ptr[0]=NULL;
-    P[CEVVerletAfMoveFunc].ptr[0]=NULL;
+    _DeleteFunc(UpdateHTIM)
+    _DeleteFunc(UpdateVSQ)
+    _DeleteFunc(UpdateKE)
+    _DeleteFunc(UpdateVSQInit)
+    _DeleteFunc(BfMove)
+    _DeleteFunc(AfMove)
   }
 
 }
 
+#undef _DeleteFunc
 #undef _DeleteArray
 #undef _DeleteElement
+
+#undef FName
+#undef PName
+#undef RMode
 
 #endif
 

@@ -9,13 +9,12 @@
 #include "unique/64bit/copy.h"
 #include "array/1d/allocate.h"
 
-#define _LinkElement(name,obj) \
-  if(obj.size<S.Propagates.size) allocate(obj,S.Propagates.size);\
-  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&(obj[i]));
+#define PName(U)    PtrCEVVerlet##U
+#define DName(U)    DatCEVVerlet##U
 
-#define _LinkArray(name,obj) \
+#define _LinkArray(U,obj) \
   if(!IsSameSize(obj,S.Content().X())) imprint(obj,S.Content().X());\
-  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&obj);
+  S.Propagates[i].Param[DName(U)].ptr[0]=reinterpret_cast<void*>(&obj);
 
 namespace mysimulator {
 
@@ -27,19 +26,15 @@ namespace mysimulator {
       typedef Dynamics<MicroCanonical,T,VT,OC>   Type;
       typedef DynamicsBase<T,OC>   ParentType;
 
-      Array1D<T> gMass;
-      Array1D<T> gNegHTIM;
-      VT<T> vMass;
-      VT<T> vNegHTIM;
+      VT<T> Mass;
+      VT<T> NegHTIM;
 
-      Dynamics() : ParentType(),
-                   gMass(), gNegHTIM(), vMass(), vNegHTIM() {}
+      Dynamics() : ParentType(), Mass(), NegHTIM() {}
       ~Dynamics() { clearData(); }
 
       void clearData() {
         static_cast<ParentType*>(this)->clearData();
-        release(vMass); release(vNegHTIM);
-        release(gMass); release(gNegHTIM);
+        release(Mass); release(NegHTIM);
       }
       bool isvalid() const {
         return static_cast<const ParentType*>(this)->isvalid();
@@ -51,15 +46,13 @@ namespace mysimulator {
         assert(ismatch(S));
         bindOutput(*this,S);
         for(unsigned int i=0;i<S.Propagates.size;++i) {
-          S.Propagates[i].Param[CEVVerletTimeStep].ptr[0]=&(this->TimeStep);
-          switch(S.Propagates[i].Param[CEVVerletMassMode].u[0]) {
+          S.Propagates[i].Param[PName(TimeStep)].ptr[0]=&(this->TimeStep);
+          switch(S.Propagates[i].Param[ModCEVVerletMass].u[0]) {
             case GlobalMass:
-              _LinkElement(CEVVerletMassData,gMass)
-              _LinkElement(CEVVerletNegHTimeIMassData,gNegHTIM)
               break;
-            case ArrayMass: // assume various propagates share same mass
-              _LinkArray(CEVVerletMassData,vMass)
-              _LinkArray(CEVVerletNegHTimeIMassData,vNegHTIM)
+            case ArrayMass:
+              _LinkArray(Mass,Mass)
+              _LinkArray(NegHTIM,NegHTIM)
               break;
             default:
               Error("Unknown Mass Mode!");
@@ -88,7 +81,9 @@ namespace mysimulator {
 }
 
 #undef _LinkArray
-#undef _LinkElement
+
+#undef DName
+#undef PName
 
 #endif
 
