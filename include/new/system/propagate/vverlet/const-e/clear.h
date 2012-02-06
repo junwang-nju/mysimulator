@@ -29,6 +29,7 @@ namespace mysimulator {
   void ClearCEVVerlet(SysPropagate<T,VT,SCT>& SE) {
     Array1D<VT<T> >* p=NULL;
     Unique64Bit* P=SE.Param.start;
+    _DeleteElement(TimeStep)
     MassMethodName MMN=
       static_cast<MassMethodName>(P[ModCEVVerletMass].u[0]);
     switch(MMN) {

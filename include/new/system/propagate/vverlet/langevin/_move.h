@@ -5,6 +5,9 @@
 #include "unique/64bit/interface.h"
 #include "array/1d/interface.h"
 
+#define _VALUE(name) (*reinterpret_cast<T*>(name.ptr[0]))
+#define _CARRAY(name) (*reinterpret_cast<const Array1D<VT<T> >*>(name.ptr[0]))
+
 namespace mysimulator {
 
   template <typename T, template<typename> class VT>
@@ -13,9 +16,9 @@ namespace mysimulator {
       const Unique64Bit& fac, const VT<T>& rv, const Unique64Bit& rsize,
       const unsigned int&) {
     assert(IsValid(X)&&IsValid(G)&&IsValid(V));
-    scale(V,fac.value<T>());
-    shift(V,nhtim.value<T>(),G);
-    shift(V,rsize.value<T>(),rv);
+    scale(V,_VALUE(fac));
+    shift(V,_VALUE(nhtim),G);
+    shift(V,_VALUE(rsize),rv);
     shift(X,dt,V);
   }
 
@@ -24,11 +27,10 @@ namespace mysimulator {
       VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
       const Unique64Bit& fac, const VT<T>& rv, const Unique64Bit& rsize,
       const unsigned int& n) {
-    typedef Array1D<VT<T> >   AVT;
     assert(IsValid(X)&&IsValid(G)&&IsValid(V));
-    scale(V,(*reinterpret_cast<const AVT*>(fac.ptr[0]))[n]);
-    shift(V,(*reinterpret_cast<const AVT*>(nhtim.ptr[0]))[n],G);
-    shift(V,(*reinterpret_cast<const AVT*>(rsize.ptr[0]))[n],rv);
+    scale(V,_CARRAY(fac)[n]);
+    shift(V,_CARRAY(nhtim)[n],G);
+    shift(V,_CARRAY(rsize)[n],rv);
     shift(X,dt,V);
   }
 
@@ -37,11 +39,10 @@ namespace mysimulator {
       VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
       const Unique64Bit& fac, const VT<T>& rv, const Unique64Bit& rsize,
       const unsigned int& n) {
-    typedef Array1D<VT<T> >   AVT;
     assert(IsValid(X)&&IsValid(G)&&IsValid(V));
-    scale(V,(*reinterpret_cast<const AVT*>(fac.ptr[0]))[n]);
-    shift(V,nhtim.value<T>(),G);
-    shift(V,(*reinterpret_cast<const AVT*>(rsize.ptr[0]))[n],rv);
+    scale(V,_CARRAY(fac)[n]);
+    shift(V,_VALUE(nhtim),G);
+    shift(V,_CARRAY(rsize)[n],rv);
     shift(X,dt,V);
   }
 
@@ -58,31 +59,29 @@ namespace mysimulator {
       VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const Unique64Bit& fac,
       const VT<T>& rv, const Unique64Bit& rsize, const unsigned int&) {
     assert(IsValid(V)&&IsValid(G));
-    shift(V,rsize.value<T>(),rv);
-    shift(V,nhtim.value<T>(),G);
-    scale(V,fac.value<T>());
+    shift(V,_VALUE(rsize),rv);
+    shift(V,_VALUE(nhtim),G);
+    scale(V,_VALUE(fac));
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncLgVVerletAMassGFric(
       VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const Unique64Bit& fac,
       const VT<T>& rv, const Unique64Bit& rsize, const unsigned int& n) {
-    typedef Array1D<VT<T> >   AVT;
     assert(IsValid(V)&&IsValid(G));
-    shift(V,(*reinterpret_cast<const AVT*>(rsize.ptr[0]))[n],rv);
-    shift(V,(*reinterpret_cast<const AVT*>(nhtim.ptr[0]))[n],G);
-    scale(V,(*reinterpret_cast<const AVT*>(fac.ptr[0]))[n]);
+    shift(V,_CARRAY(rsize)[n],rv);
+    shift(V,_CARRAY(nhtim)[n],G);
+    scale(V,_CARRAY(fac)[n]);
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncLgVVerletGMassAFric(
       VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const Unique64Bit& fac,
       const VT<T>& rv, const Unique64Bit& rsize, const unsigned int& n) {
-    typedef Array1D<VT<T> >   AVT;
     assert(IsValid(V)&&IsValid(G));
-    shift(V,(*reinterpret_cast<const AVT*>(rsize.ptr[0]))[n],rv);
-    shift(V,nhtim.value<T>(),G);
-    scale(V,(*reinterpret_cast<const AVT*>(fac.ptr[0]))[n]);
+    shift(V,_CARRAY(rsize)[n],rv);
+    shift(V,_VALUE(nhtim),G);
+    scale(V,_CARRAY(fac)[n]);
   }
 
   template <typename T, template<typename> class VT>
@@ -93,6 +92,9 @@ namespace mysimulator {
   }
 
 }
+
+#undef _CARRAY
+#undef _VALUE
 
 #endif
 

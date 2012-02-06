@@ -51,9 +51,11 @@ namespace mysimulator {
 
 #include "dynamics/langevin/specification.h"
 
-#define _OLinkArray(name,obj) \
+#define DName(U)      DatLgVVerlet##U
+
+#define _LinkArray(U,obj) \
   if(!IsSameSize(obj,S.Content().X()))  imprint(obj,S.Content().X());\
-  S.Propagates[i].Param[name].ptr[0]=reinterpret_cast<void*>(&(obj));
+  S.Propagates[i].Param[DName(U)].ptr[0]=reinterpret_cast<void*>(&(obj));
 
 namespace mysimulator {
 
@@ -67,11 +69,11 @@ namespace mysimulator {
     assert(IsMatch(D,S));
     refer(D.Output.S,S);
     for(unsigned int i=0;i<S.Propagates.size;++i) {
-      switch(S.Propagates[i].Param[LgVVerletMassMode].u[0]) {
+      switch(S.Propagates[i].Param[ModLgVVerletMass].u[0]) {
         case GlobalMass:
           break;
         case ArrayMass:
-          _OLinkArray(LgVVerletVelocitySQData,D.Output.vVelocitySQ)
+          _LinkArray(VelocitySQ,D.Output.VelocitySQ)
           break;
         default:
           Error("Unknown Mass Mode!");
@@ -88,7 +90,9 @@ namespace mysimulator {
 
 }
 
-#undef _OLinkArray
+#undef _LinkArray
+
+#undef DName
 
 #endif
 

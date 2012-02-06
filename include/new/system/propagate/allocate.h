@@ -86,11 +86,11 @@ namespace mysimulator {
         SE.evfunc[LgVVerletBeforeG]=MoveLgVVerletBeforeG<T,VT,SCT>;
         SE.evfunc[LgVVerletAfterG]=MoveLgVVerletAfterG<T,VT,SCT>;
         allocate(SE.updfunc,NumberUpdateLangevinVelVerlet);
-        SE.updfunc[LgVVerletNegHTIMCalc]=UpdateLgVVerletNegHTIM<T,VT,SCT>;
-        SE.updfunc[LgVVerletRandSizeCalc]=UpdateLgVVerletRandSize<T,VT,SCT>;
-        SE.updfunc[LgVVerletFacCalc]=UpdateLgVVerletFac<T,VT,SCT>;
-        SE.updfunc[LgVVerletVSQCalc]=UpdateLgVVerletVelocitySQ<T,VT,SCT>;
-        SE.updfunc[LgVVerletKECalc]=UpdateLgVVerletKEnergy<T,VT,SCT>;
+        SE.updfunc[CalcLgVVerletNegHTIM]=UpdateLgVVerletNegHTIM<T,VT,SCT>;
+        SE.updfunc[CalcLgVVerletRandSize]=UpdateLgVVerletRandSize<T,VT,SCT>;
+        SE.updfunc[CalcLgVVerletFac]=UpdateLgVVerletFac<T,VT,SCT>;
+        SE.updfunc[CalcLgVVerletVSQ]=UpdateLgVVerletVelocitySQ<T,VT,SCT>;
+        SE.updfunc[CalcLgVVerletKE]=UpdateLgVVerletKEnergy<T,VT,SCT>;
         allocate(SE.Param,NumberParameterLangevinVelVerlet);
         break;
       default:

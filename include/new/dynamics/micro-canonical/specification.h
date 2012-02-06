@@ -14,7 +14,7 @@
 
 #define _LinkArray(U,obj) \
   if(!IsSameSize(obj,S.Content().X())) imprint(obj,S.Content().X());\
-  S.Propagates[i].Param[DName(U)].ptr[0]=reinterpret_cast<void*>(&obj);
+  S.Propagates[i].Param[DName(U)].ptr[0]=reinterpret_cast<void*>(&(obj));
 
 namespace mysimulator {
 

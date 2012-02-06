@@ -9,16 +9,20 @@
 #include "intrinsic-type/release.h"
 #include "intrinsic-type/valid.h"
 
-#define _DeleteElement(name) \
-  P[name].ptr[0]=NULL;
+#define PName(U)    PtrLgVVerlet##U
+#define FName(U)    FunLgVVerlet##U
 
-#define _DeleteArray(name,p) \
-  if(P[name].ptr[0]!=NULL) {\
-    p=reinterpret_cast<Array1D<VT<T> >*>(P[name].ptr[0]);\
+#define _DeleteElement(U)   P[PName(U)].ptr[0]=NULL;
+
+#define _DeleteArray(U) \
+  if(P[PName(U)].ptr[0]!=NULL) {\
+    p=reinterpret_cast<Array1D<VT<T> >*>(P[PName(U)].ptr[0]);\
     release(*p);\
     delete_pointer(p);\
-    P[name].ptr[0]=NULL;\
+    P[PName(U)].ptr[0]=NULL;\
   }
+
+#define _DeleteFunc(U)   P[FName(U)].ptr[0]=NULL;
 
 namespace mysimulator {
   
@@ -27,41 +31,42 @@ namespace mysimulator {
   void ClearLgVVerlet(SysPropagate<T,VT,SCT>& SE) {
     Array1D<VT<T> > *p=NULL;
     Unique64Bit* P=SE.Param.start;
-    _DeleteArray(LgVVerletRandVector,p)
+    _DeleteElement(TimeStep)
+    _DeleteElement(Temperature)
+    _DeleteArray(RandVector)
     MassMethodName MMN=
-      static_cast<MassMethodName>(P[LgVVerletMassMode].u[0]);
+      static_cast<MassMethodName>(P[ModLgVVerletMass].u[0]);
     FrictionMethodName FMN=
-      static_cast<FrictionMethodName>(P[LgVVerletFrictionMode].u[0]);
+      static_cast<FrictionMethodName>(P[ModLgVVerletFriction].u[0]);
+    assert((MMN!=UnknownMassFormat)&&(FMN!=UnknownFrictionFormat));
     if(MMN==GlobalMass) {
-      _DeleteElement(LgVVerletMass)
-      _DeleteElement(LgVVerletNegHTIM)
-      _DeleteElement(LgVVerletVelocitySQ)
-    } else if(MMN==ArrayMass) {
-      _DeleteArray(LgVVerletMass,p)
-      _DeleteArray(LgVVerletNegHTIM,p)
-      _DeleteArray(LgVVerletVelocitySQ,p)
-    } else Error("Unknown Mass Mode!");
-    if((MMN==GlobalMass)&&(FMN==GlobalFriction)) {
-      _DeleteElement(LgVVerletFriction)
-      _DeleteElement(LgVVerletRandSize)
-      _DeleteElement(LgVVerletFac1)
-      _DeleteElement(LgVVerletFac2)
-      _DeleteElement(LgVVerletVelocitySQ);
+      _DeleteElement(Mass)
+      _DeleteElement(NegHTIM)
+      _DeleteElement(VelocitySQ)
     } else {
-      _DeleteArray(LgVVerletFriction,p)
-      _DeleteArray(LgVVerletRandSize,p)
-      _DeleteArray(LgVVerletFac1,p)
-      _DeleteArray(LgVVerletFac2,p)
-      _DeleteArray(LgVVerletVelocitySQ,p)
+      _DeleteArray(Mass)
+      _DeleteArray(NegHTIM)
+      _DeleteArray(VelocitySQ)
     }
-    P[LgVVerletUpdateHTIMFunc].ptr[0]=NULL;
-    P[LgVVerletUpdateFacFunc].ptr[0]=NULL;
-    P[LgVVerletUpdateRandSizeFunc].ptr[0]=NULL;
-    P[LgVVerletUpdateVSQFunc].ptr[0]=NULL;
-    P[LgVVerletUpdateVSQInitFunc].ptr[0]=NULL;
-    P[LgVVerletUpdateKEFunc].ptr[0]=NULL;
-    P[LgVVerletBfMoveFunc].ptr[0]=NULL;
-    P[LgVVerletAfMoveFunc].ptr[0]=NULL;
+    if(FMN==GlobalFriction) { _DeleteElement(Friction) }
+    else { _DeleteArray(Friction) }
+    if((MMN==GlobalMass)&&(FMN==GlobalFriction)) {
+      _DeleteElement(RandSize)
+      _DeleteElement(Fac1)
+      _DeleteElement(Fac2)
+    } else {
+      _DeleteArray(RandSize)
+      _DeleteArray(Fac1)
+      _DeleteArray(Fac2)
+    }
+    _DeleteFunc(UpdateHTIM)
+    _DeleteFunc(UpdateFac)
+    _DeleteFunc(UpdateRandSize)
+    _DeleteFunc(UpdateVSQ)
+    _DeleteFunc(UpdateVSQInit)
+    _DeleteFunc(UpdateKE)
+    _DeleteFunc(BfMove)
+    _DeleteFunc(AfMove)
   }
 
 }

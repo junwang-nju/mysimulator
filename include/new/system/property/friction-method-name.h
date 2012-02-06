@@ -6,7 +6,8 @@ namespace mysimulator {
 
   enum FrictionMethodName {
     GlobalFriction,
-    ArrayFriction
+    ArrayFriction,
+    UnknownFrictionFormat
   };
 
 }
