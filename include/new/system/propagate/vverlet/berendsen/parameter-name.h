@@ -22,10 +22,9 @@ namespace mysimulator {
     BsVVerletKineticEnergy,
     BsVVerletDualKineticEnergy,
     BsVVerletUpdateNegHTIMFunc,
-    BsVVerletUpdateFacFunc,
     BsVVerletUpdateVSQFunc,
     BsVVerletUpdateVSQInitFunc,
-    BsVVerletUpdateKEFunc,
+    BsVVerletUpdateDKEFunc,
     BsVVerletBfMoveFunc,
     BsVVerletAfMoveFunc,
     NumberParameterBerendsenVelVerlet

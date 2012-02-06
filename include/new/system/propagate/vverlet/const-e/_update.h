@@ -11,7 +11,8 @@ namespace mysimulator {
   void _UpdateFuncCEVVerletHTIMGlobaleMass(
       const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM,
       const unsigned int&) {
-    negHTIM.value<T>()=-0.5*dt/Mass.value<T>();
+    *reinterpret_cast<T*>(negHTIM.ptr[0])=
+      -0.5*dt/(*reinterpret_cast<T*>(Mass.ptr[0]));
   }
 
   template <typename T, template<typename> class VT>
@@ -55,7 +56,8 @@ namespace mysimulator {
   template <typename T>
   void _UpdateFuncCEVVerletKEnergyGlobalMass(
       T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
-    KE=0.5*Mass.value<T>()*VelSQ.value<T>();
+    KE=0.5*(*reinterpret_cast<T*>(Mass.ptr[0]))*
+           (*reinterpret_cast<T*>(VelSQ.ptr[0]));
   }
 
   template <typename T, template<typename> class VT>
