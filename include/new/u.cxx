@@ -126,6 +126,7 @@ int main() {
   S.Propagates[0].update(CalcLgVVerletNegHTIM);
   S.Propagates[0].update(CalcLgVVerletFac);
   S.Propagates[0].update(CalcLgVVerletRandSize);
+  S.Propagates[0].update(CalcLgVVerletKE);
   allocate(DynL.Output.OS);
   copy(DynL.Output.OS(),COut);
   DynL.Output.BaseData().TimeBwOutput=0.002;

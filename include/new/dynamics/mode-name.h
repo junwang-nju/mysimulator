@@ -6,7 +6,8 @@ namespace mysimulator {
 
   enum DynamicsModeName {
     MicroCanonicalVVerlet,
-    LangevinVVerlet
+    LangevinVVerlet,
+    BerendsenVVerlet
   };
 
 }

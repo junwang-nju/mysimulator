@@ -38,7 +38,7 @@ namespace mysimulator {
       template <typename IDT,typename PT, typename GT,
                 template<typename,template<typename>class> class SCT>
       bool ismatch(const System<T,IDT,PT,GT,VT,SCT>& S) const {
-        return ((S.EvoluteMode==16)||(S.EvoluteMode==18));
+        return (S.EvoluteMode==16)||(S.EvoluteMode==18);
       }
 
     private:

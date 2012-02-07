@@ -17,6 +17,7 @@ namespace mysimulator {
 
 #include "dynamics/micro-canonical/vverlet/bind-specification.h"
 #include "dynamics/canonical/langevin/vverlet/bind-specification.h"
+#include "dynamics/canonical/berendsen/vverlet/bind-specification.h"
 
 #endif
 

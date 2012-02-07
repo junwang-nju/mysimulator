@@ -55,6 +55,7 @@ namespace mysimulator {
 
 #include "dynamics/micro-canonical/vverlet/specification.h"
 #include "dynamics/canonical/langevin/vverlet/specification.h"
+#include "dynamics/canonical/berendsen/vverlet/specification.h"
 
 #endif
 

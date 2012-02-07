@@ -84,51 +84,59 @@ int main() {
   for(unsigned int i=3;i<6;++i) allocate(S.Interactions[0].Func[i],LJ612,2);
   SetWorkFunc(S.Interactions[0],ArrayInteraction);
 
-  allocate(S.Propagates[0],SysConstEVelVerlet,1);
+  allocate(S.Propagates[0],SysBerendsenVelVerlet,1);
   S.Propagates[0].MerIDRange[0].u[0]=0;
   S.Propagates[0].MerIDRange[0].u[1]=3;
   S.Propagates[0].buildGroupContent(S.Content());
 
   S.build();
 
-  S.Propagates[0].Param[ModCEVVerletMass].u[0]=ArrayMass;
+  S.Propagates[0].Param[ModLgVVerletMass].u[0]=ArrayMass;
+  S.Propagates[0].Param[ModLgVVerletFriction].u[0]=ArrayFriction;
 
   allocate(GR);
   GR.init(23293);
+  S.Propagates[0].Param[DatLgVVerletGaussRNG].ptr[0]=reinterpret_cast<void*>(&GR);
 
-  Dynamics<MicroCanonicalVVerlet,double,Array2D,
+  Dynamics<BerendsenVVerlet,double,Array2D,
            DynamicsOutputEnergy<FileOutput,double,Array1D<IDType>,
                                 Array1D<ParamType>,FreeSpace,Array2D,
                                 SysContentWithEGV> >
-  DynMC;
+  DynB;
 
-  allocate(DynMC.Output.BaseData);
-  bind(DynMC,S);
+  allocate(DynB.Output.BaseData);
+  bind(DynB,S);
 
   COut.precision(12);
   copy(S.Content().X(),X);
+  allocate(GR);
+  GR.init(23293);
   fillArray(GR,S.Content().Velocity());
   GenericEvaluate(S.Content(),S.Interactions);
-  COut<<S.Content().EGData.Energy()<<Endl;
 
-  DynMC.BaseData.TimeStep=0.001;
-  DynMC.BaseData.NumSteps=10000;
-  DynMC.BaseData.StartTime=0.;
-  DynMC.updateRunPeriod();
-  fill(DynMC.BaseData.Mass,1.);
-  S.Propagates[0].update(CalcCEVVerletHTIM);
-  S.Propagates[0].update(CalcCEVVerletKE);
-  allocate(DynMC.Output.OS);
-  copy(DynMC.Output.OS(),COut);
-  DynMC.Output.BaseData().TimeBwOutput=0.002;
-  DynMC.Output.BaseData().NumStepsBwOutput=2;
-  DynMC.Output.IsFirstOutput=true;
-  DynMC.Output.IsTerminated=true;
-  DynMC.Output.BaseData().setNowTime(DynMC.BaseData.NowTime);
+  DynB.BaseData.TimeStep=0.001;
+  DynB.CanonicalData.Temperature=0.5;
+  DynB.BaseData.NumSteps=10000;
+  DynB.BaseData.StartTime=0.;
+  DynB.updateRunPeriod();
+  fill(DynB.BaseData.Mass,1.);
+  DynB.CanonicalBerendsenBaseData.RelaxTime=0.01;
+  S.Propagates[0].update(CalcBsVVerletDOF);
+  S.Propagates[0].update(CalcBsVVerletNegHTIM);
+  S.Propagates[0].update(CalcBsVVerletFac);
+  S.Propagates[0].update(CalcBsVVerletKE);
 
-  evolute(DynMC,S);
+  allocate(DynB.Output.OS);
+  copy(DynB.Output.OS(),COut);
+  DynB.Output.BaseData().TimeBwOutput=0.002;
+  DynB.Output.BaseData().NumStepsBwOutput=2;
+  DynB.Output.IsFirstOutput=true;
+  DynB.Output.IsTerminated=true;
+  DynB.Output.BaseData().setNowTime(DynB.BaseData.NowTime);
 
-  unbind(DynMC,S);
+  evolute(DynB,S);
+
+  unbind(DynB,S);
 
   return 0;
 }

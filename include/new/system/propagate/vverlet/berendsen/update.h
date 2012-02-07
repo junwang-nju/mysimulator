@@ -177,6 +177,8 @@ namespace mysimulator {
   template <typename T, template<typename> class VT,
             template<typename,template<typename>class> class SCT>
   void UpdateBsVVerletKEnergy(SysPropagate<T,VT,SCT>& SE) {
+    UpdateBsVVerletVSQ(SE);
+    UpdateBsVVerletDualKEnergy(SE);
     UpdateBsVVerletKEnergySimple(SE);
   }
 
