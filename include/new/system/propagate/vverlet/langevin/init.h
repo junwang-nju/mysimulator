@@ -82,7 +82,8 @@ namespace mysimulator {
     if(MMN==GlobalMass) {
       _AssignFunc(UpdateHTIM,MUpFunc,_UpdateFuncLgVVerletHTIMGMass<T>)
       _AssignFunc(UpdateVSQ,VUpFunc,(_UpdateFuncLgVVerletVSQGMass<T,VT>))
-      _AssignFunc(UpdateKE,KUpFunc,_UpdateFuncLgVVerletKEnergyGMass<T>)
+      _AssignFunc(UpdateKESimple,KUpFunc,
+                  _UpdateFuncLgVVerletKEnergySimpleGMass<T>)
       if(FMN==GlobalFriction) {
         _AssignFunc(UpdateRandSize,RUpFunc,
                     _UpdateFuncLgVVerletRSizeGMassGFric<T>)
@@ -100,7 +101,8 @@ namespace mysimulator {
       _AssignFunc(UpdateHTIM,MUpFunc,(_UpdateFuncLgVVerletHTIMAMass<T,VT>))
       if(P[DName(VelocitySQ)].ptr[0]!=NULL) {
         _AssignFunc(UpdateVSQ,VUpFunc,(_UpdateFuncLgVVerletVSQAMass<T,VT>))
-        _AssignFunc(UpdateKE,KUpFunc,(_UpdateFuncLgVVerletKEnergyAMass<T,VT>))
+        _AssignFunc(UpdateKESimple,KUpFunc,
+                    (_UpdateFuncLgVVerletKEnergySimpleAMass<T,VT>))
       }
       if(FMN==GlobalFriction) {
         _AssignFunc(UpdateRandSize,RUpFunc,

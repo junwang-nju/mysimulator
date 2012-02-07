@@ -149,15 +149,15 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void _UpdateFuncLgVVerletKEnergyGMass(
+  void _UpdateFuncLgVVerletKEnergySimpleGMass(
       T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
-    _UpdateFuncCEVVerletKEnergyGMass<T>(KE,Mass,VelSQ);
+    _UpdateFuncCEVVerletKEnergySimpleGMass<T>(KE,Mass,VelSQ);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncLgVVerletKEnergyAMass(
+  void _UpdateFuncLgVVerletKEnergySimpleAMass(
       T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
-    _UpdateFuncCEVVerletKEnergyAMass<T,VT>(KE,Mass,VelSQ);
+    _UpdateFuncCEVVerletKEnergySimpleAMass<T,VT>(KE,Mass,VelSQ);
   }
 
 }

@@ -83,6 +83,8 @@ namespace mysimulator {
         allocate(SE.updfunc,NumberUpdateConstEVelVerlet);
         SE.updfunc[CalcCEVVerletHTIM]=UpdateCEVVerletHTIM<T,VT,SCT>;
         SE.updfunc[CalcCEVVerletVSQ]=UpdateCEVVerletVelocitySQ<T,VT,SCT>;
+        SE.updfunc[CalcCEVVerletKESimple]=
+          UpdateCEVVerletKEnergySimple<T,VT,SCT>;
         SE.updfunc[CalcCEVVerletKE]=UpdateCEVVerletKEnergy<T,VT,SCT>;
         allocate(SE.Param,NumberParameterConstEVelVerlet);
         break;
@@ -97,6 +99,8 @@ namespace mysimulator {
         SE.updfunc[CalcLgVVerletRandSize]=UpdateLgVVerletRandSize<T,VT,SCT>;
         SE.updfunc[CalcLgVVerletFac]=UpdateLgVVerletFac<T,VT,SCT>;
         SE.updfunc[CalcLgVVerletVSQ]=UpdateLgVVerletVelocitySQ<T,VT,SCT>;
+        SE.updfunc[CalcLgVVerletKESimple]=
+          UpdateLgVVerletKEnergySimple<T,VT,SCT>;
         SE.updfunc[CalcLgVVerletKE]=UpdateLgVVerletKEnergy<T,VT,SCT>;
         allocate(SE.Param,NumberParameterLangevinVelVerlet);
         break;
@@ -112,6 +116,8 @@ namespace mysimulator {
         SE.updfunc[CalcBsVVerletDOF]=UpdateBsVVerletDOF<T,VT,SCT>;
         SE.updfunc[CalcBsVVerletVSQ]=UpdateBsVVerletVSQ<T,VT,SCT>;
         SE.updfunc[CalcBsVVerletDualKE]=UpdateBsVVerletDualKEnergy<T,VT,SCT>;
+        SE.updfunc[CalcBsVVerletKESimple]=
+          UpdateBsVVerletKEnergySimple<T,VT,SCT>;
         SE.updfunc[CalcBsVVerletKE]=UpdateBsVVerletKEnergy<T,VT,SCT>;
         allocate(SE.Param,NumberParameterBerendsenVelVerlet);
         break;

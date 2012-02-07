@@ -21,7 +21,7 @@ namespace mysimulator {
 
   template <typename T, template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  void _UpdateCEVVerletKEnergy(SysPropagate<T,VT,SCT>& SE) {
+  void _UpdateCEVVerletKEnergySimple(SysPropagate<T,VT,SCT>& SE) {
     Error("Improper Content Type!");
   }
 
@@ -61,7 +61,7 @@ namespace mysimulator {
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateCEVVerletKEnergy(SysPropagate<T,VT,SysContentWithEGV>& SE) {
+  void _UpdateCEVVerletKEnergySimple(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
     typedef void (*_UpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
@@ -96,8 +96,15 @@ namespace mysimulator {
 
   template <typename T, template<typename> class VT,
             template<typename,template<typename>class> class SCT>
+  void UpdateCEVVerletKEnergySimple(SysPropagate<T,VT,SCT>& SE) {
+    _UpdateCEVVerletKEnergySimple(SE);
+  }
+
+  template <typename T, template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
   void UpdateCEVVerletKEnergy(SysPropagate<T,VT,SCT>& SE) {
-    _UpdateCEVVerletKEnergy(SE);
+    UpdateCEVVerletVelocitySQ(SE);
+    UpdateCEVVerletKEnergySimple(SE);
   }
 
 }

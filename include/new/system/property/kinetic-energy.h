@@ -8,8 +8,8 @@
 #include "system/propagate/vverlet/langevin/update-name.h"
 #include "system/propagate/vverlet/langevin/parameter-name.h"
 
-#define CName(U,Cond)  Calc##Cond##VVerlet##U
-#define VName(U,Cond)  Val##Cond##VVerlet##U
+#define CName(Cond)  Calc##Cond##VVerletKE
+#define VName(Cond)  Val##Cond##VVerletKineticEnergy
 
 namespace mysimulator {
 
@@ -19,14 +19,16 @@ namespace mysimulator {
     T ke=0;
     switch(SE.Method) {
       case SysConstEVelVerlet:
-        SE.update(CName(VSQ,CE));
-        SE.update(CName(KE,CE));
-        copy(ke,SE.Param[VName(KineticEnergy,CE)]);
+        SE.update(CName(CE));
+        copy(ke,SE.Param[VName(CE)]);
         break;
       case SysLangevinVelVerlet:
-        SE.update(CName(VSQ,Lg));
-        SE.update(CName(KE,Lg));
-        copy(ke,SE.Param[VName(KineticEnergy,Lg)]);
+        SE.update(CName(Lg));
+        copy(ke,SE.Param[VName(Lg)]);
+        break;
+      case SysBerendsenVelVerlet:
+        SE.update(CName(Bs));
+        copy(ke,SE.Param[VName(Bs)]);
         break;
       default:
         Error("This Type of Propagator Has No Kinetic Energy!");

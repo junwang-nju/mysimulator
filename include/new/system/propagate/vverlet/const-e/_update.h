@@ -46,13 +46,13 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void _UpdateFuncCEVVerletKEnergyGMass(
+  void _UpdateFuncCEVVerletKEnergySimpleGMass(
       T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
     KE=0.5*_VALUE(Mass)*_VALUE(VelSQ);
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateFuncCEVVerletKEnergyAMass(
+  void _UpdateFuncCEVVerletKEnergySimpleAMass(
       T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
     KE=0;
     for(unsigned int i=0;i<_ARRAY(VelSQ).size;++i)

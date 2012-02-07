@@ -10,7 +10,7 @@ namespace mysimulator {
     CalcBsVVerletFac,
     CalcBsVVerletVSQ,
     CalcBsVVerletDualKE,
-    CalcBsVVerletKE,
+    CalcBsVVerletKESimple,
     NumberUpdateBerendsenVelVerlet
   };
 

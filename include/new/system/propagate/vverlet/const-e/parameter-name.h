@@ -16,7 +16,7 @@ namespace mysimulator {
     ValCEVVerletKineticEnergy,
     FunCEVVerletUpdateHTIM,
     FunCEVVerletUpdateVSQ,
-    FunCEVVerletUpdateKE,
+    FunCEVVerletUpdateKESimple,
     FunCEVVerletBfMove,
     FunCEVVerletAfMove,
     NumberParameterConstEVelVerlet

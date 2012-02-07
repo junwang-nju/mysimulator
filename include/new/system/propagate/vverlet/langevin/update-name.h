@@ -9,6 +9,7 @@ namespace mysimulator {
     CalcLgVVerletRandSize,
     CalcLgVVerletNegHTIM,
     CalcLgVVerletVSQ,
+    CalcLgVVerletKESimple,
     CalcLgVVerletKE,
     NumberUpdateLangevinVelVerlet
   };

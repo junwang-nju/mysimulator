@@ -31,7 +31,7 @@ namespace mysimulator {
     FunLgVVerletUpdateRandSize,
     FunLgVVerletUpdateFac,
     FunLgVVerletUpdateVSQ,
-    FunLgVVerletUpdateKE,
+    FunLgVVerletUpdateKESimple,
   	FunLgVVerletBfMove,
   	FunLgVVerletAfMove,
   	NumberParameterLangevinVelVerlet

@@ -55,7 +55,8 @@ namespace mysimulator {
         _AssignFunc(AfMove,AMvFunc,(_AfMoveFuncCEVVerletGMass<T,VT>))
         _CreateElement(VelocitySQ)
         _AssignFunc(UpdateVSQ,UpVFunc,(_UpdateFuncCEVVerletVSQGMass<T,VT>))
-        _AssignFunc(UpdateKE,UpKFunc,_UpdateFuncCEVVerletKEnergyGMass<T>)
+        _AssignFunc(UpdateKESimple,UpKFunc,
+                    _UpdateFuncCEVVerletKEnergySimpleGMass<T>)
         break;
       case ArrayMass:
         _CreateArray(Mass)
@@ -63,7 +64,8 @@ namespace mysimulator {
         if(P[DatCEVVerletVelocitySQ].ptr[0]!=NULL) {
           _CreateArray(VelocitySQ)
           _AssignFunc(UpdateVSQ,UpVFunc,(_UpdateFuncCEVVerletVSQAMass<T,VT>))
-          _AssignFunc(UpdateKE,UpKFunc,(_UpdateFuncCEVVerletKEnergyAMass<T,VT>))
+          _AssignFunc(UpdateKESimple,UpKFunc,
+                      (_UpdateFuncCEVVerletKEnergySimpleAMass<T,VT>))
         }
         _AssignFunc(UpdateHTIM,UpFunc,(_UpdateFuncCEVVerletHTIMAMass<T,VT>))
         _AssignFunc(BfMove,BMvFunc,(_BfMoveFuncCEVVerletAMass<T,VT>))

@@ -88,7 +88,7 @@ namespace mysimulator {
   }
 
   template <typename T, template<typename> class VT>
-  void _UpdateBsVVerletKEnergy(SysPropagate<T,VT,SysContentWithEGV>& SE) {
+  void _UpdateBsVVerletKEnergySimple(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
     Unique64Bit *P=SE.Param.start;
     assert(_UPRM(VelocitySQ).ptr[0]!=NULL);
@@ -170,8 +170,14 @@ namespace mysimulator {
 
   template <typename T, template<typename> class VT,
             template<typename,template<typename>class> class SCT>
+  void UpdateBsVVerletKEnergySimple(SysPropagate<T,VT,SCT>& SE) {
+    _UpdateBsVVerletKEnergySimple(SE);
+  }
+
+  template <typename T, template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
   void UpdateBsVVerletKEnergy(SysPropagate<T,VT,SCT>& SE) {
-    _UpdateBsVVerletKEnergy(SE);
+    UpdateBsVVerletKEnergySimple(SE);
   }
 
 }
