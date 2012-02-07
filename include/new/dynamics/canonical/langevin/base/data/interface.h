@@ -9,7 +9,7 @@ namespace mysimulator {
 
     public:
 
-      DynamicsCanonicalLangevinBaseData<T,VT>   Type;
+      typedef DynamicsCanonicalLangevinBaseData<T,VT,RNGType>   Type;
 
       VT<T> Friction;
       VT<T> RandSize;

@@ -18,7 +18,7 @@ namespace mysimulator {
                                 D.Output.BaseData().TimeBwOutput);
     D.BaseData.NowTime=D.BaseData.StartTime;
     if(D.Output.IsFirstOutput) D.Output.write();
-    for(unsigned int i=0;i<nout;++i) {
+    for(unsigned int i=0;i<=nout;++i) {
       for(unsigned int k=0;k<D.Output.BaseData().NumStepsBwOutput;++k)
         S.evolute();
       D.BaseData.updateNowTime(D.Output.BaseData().TimeBwOutput);

@@ -1,6 +1,7 @@
 
 #include "dynamics/evolute.h"
-#include "dynamics/output/energy/bind.h"
+#include "dynamics/bind.h"
+#include "dynamics/output/energy/link.h"
 #include "io/output/file/copy.h"
 
 #include "system/content/with-egv/allocate.h"
@@ -93,40 +94,49 @@ int main() {
   S.Propagates[0].Param[ModLgVVerletMass].u[0]=ArrayMass;
   S.Propagates[0].Param[ModLgVVerletFriction].u[0]=ArrayFriction;
 
+  /*
   allocate(GR);
   GR.init(23293);
   S.Propagates[0].Param[DatLgVVerletGaussRNG].ptr[0]=reinterpret_cast<void*>(&GR);
+  */
 
-  Dynamics<Langevin,double,Array2D,
-           DynOutputEnergy<FileOutput,double,Array1D<IDType>,Array1D<ParamType>,
-                           FreeSpace,Array2D,SysContentWithEGV> >
+  Dynamics<LangevinVVerlet,double,Array2D,
+           DynamicsOutputEnergy<FileOutput,double,Array1D<IDType>,
+                                Array1D<ParamType>,FreeSpace,Array2D,
+                                SysContentWithEGV> >
   DynL;
-  DynL.bind(S);
+
+  allocate(DynL.Output.BaseData);
+  bind(DynL,S);
 
   COut.precision(12);
   copy(S.Content().X(),X);
-  fillArray(GR,S.Content().Velocity());
+  allocate(DynL.CanonicalLangevinBaseData.rng);
+  DynL.CanonicalLangevinBaseData.rng.init(23293);
+  fillArray(DynL.CanonicalLangevinBaseData.rng,S.Content().Velocity());
   GenericEvaluate(S.Content(),S.Interactions);
 
-  DynL.TimeStep=0.001;
-  DynL.Temperature=0.5;
-  DynL.NumSteps=10000;
-  DynL.StartTime=0.;
+  DynL.BaseData.TimeStep=0.001;
+  DynL.CanonicalData.Temperature=0.5;
+  DynL.BaseData.NumSteps=10000;
+  DynL.BaseData.StartTime=0.;
   DynL.updateRunPeriod();
-  fill(DynL.Mass,1.);
-  fill(DynL.Fric,10.);
+  fill(DynL.BaseData.Mass,1.);
+  fill(DynL.CanonicalLangevinBaseData.Friction,10.);
   S.Propagates[0].update(CalcLgVVerletNegHTIM);
   S.Propagates[0].update(CalcLgVVerletFac);
   S.Propagates[0].update(CalcLgVVerletRandSize);
-  copy(DynL.Output.OS,COut);
-  DynL.Output.TimeBwOutput=0.002;
-  DynL.Output.NumStepsBwOutput=2;
+  allocate(DynL.Output.OS);
+  copy(DynL.Output.OS(),COut);
+  DynL.Output.BaseData().TimeBwOutput=0.002;
+  DynL.Output.BaseData().NumStepsBwOutput=2;
   DynL.Output.IsFirstOutput=true;
-  DynL.Output.setNowTime(DynL.NowTime);
+  DynL.Output.IsTerminated=true;
+  DynL.Output.BaseData().setNowTime(DynL.BaseData.NowTime);
 
   evolute(DynL,S);
 
-  DynL.unbind(S);
+  unbind(DynL,S);
 
   return 0;
 }

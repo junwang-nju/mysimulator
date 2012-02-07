@@ -8,13 +8,14 @@
 
 namespace mysimulator {
 
-  template <typename T,template<typename> class VT,typename OChannel>
-  struct Dynamics<MicroCanonicalVVerlet,T,VT,OChannel>
+  template <typename T,template<typename> class VT,typename OChannel,
+            typename RNGType>
+  struct Dynamics<MicroCanonicalVVerlet,T,VT,OChannel,RNGType>
       : public DynamicsBase<T,VT,OChannel> {
 
     public:
 
-      typedef Dynamics<MicroCanonicalVVerlet,T,VT,OChannel> Type;
+      typedef Dynamics<MicroCanonicalVVerlet,T,VT,OChannel,RNGType> Type;
       typedef DynamicsBase<T,VT,OChannel>   ParentType;
 
       DynamicsVVerletData<T,VT> VVerletData;

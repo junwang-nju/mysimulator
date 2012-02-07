@@ -16,8 +16,19 @@ namespace mysimulator {
       typedef DynamicsCanonicalLangevinBase<T,VT,OCT,RT>  Type;
       typedef DynamicsCanonicalBase<T,VT,OCT>   ParentType;
 
-      DynamicsCanonicalLangevinBase() {}
+      DynamicsCanonicalLangevinBaseData<T,VT,RT> CanonicalLangevinBaseData;
+
+      DynamicsCanonicalLangevinBase() : CanonicalLangevinBaseData() {}
       ~DynamicsCanonicalLangevinBase() { clearData(); }
+
+      void clearData() {
+        release(CanonicalLangevinBaseData);
+        static_cast<ParentType*>(this)->clearData();
+      }
+      bool isvalid() const {
+        return static_cast<const ParentType*>(this)->isvalid()&&
+               IsValid(CanonicalLangevinBaseData);
+      }
 
     private:
 
