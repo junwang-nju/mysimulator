@@ -33,7 +33,8 @@ namespace mysimulator {
 #define FName(U)    FunCEVVerlet##U
 #define VName(U)    ValCEVVerlet##U
 
-#define _PVALUE(U)   (*reinterpret_cast<T*>(P[PName(U)].ptr[0]))
+#define _UPRM(U)     P[PName(U)]
+#define _PVALUE(U)   (*reinterpret_cast<T*>(_UPRM(U).ptr[0]))
 #define _VVALUE(U)   (P[VName(U)].value<T>())
 
 namespace mysimulator {
@@ -45,7 +46,7 @@ namespace mysimulator {
     void (*_UpFunc)(const T&,const Unique64Bit&,Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
     _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateHTIM)].ptr[0]);
-    updfunc(_PVALUE(TimeStep),P[PName(Mass)],P[PName(NegHTIM)]);
+    updfunc(_PVALUE(TimeStep),_UPRM(Mass),_UPRM(NegHTIM));
   }
 
   template <typename T, template<typename> class VT>
@@ -54,9 +55,9 @@ namespace mysimulator {
     typedef void (*_UpFunc)(Unique64Bit&,
                             const Array1DContent<SysContentWithEGV<T,VT> >&);
     Unique64Bit* P=SE.Param.start;
-    assert(P[PName(VelocitySQ)].ptr[0]!=NULL);
+    assert(_UPRM(VelocitySQ).ptr[0]!=NULL);
     _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateVSQ)].ptr[0]);
-    updfunc(P[PName(VelocitySQ)],SE.grpContent);
+    updfunc(_UPRM(VelocitySQ),SE.grpContent);
   }
 
   template <typename T, template<typename> class VT>
@@ -64,15 +65,16 @@ namespace mysimulator {
     assert(IsValid(SE));
     typedef void (*_UpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
-    assert(P[PName(VelocitySQ)].ptr[0]!=NULL);
+    assert(_UPRM(VelocitySQ).ptr[0]!=NULL);
     _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateKE)].ptr[0]);
-    updfunc(_VVALUE(KineticEnergy),P[PName(Mass)],P[PName(VelocitySQ)]);
+    updfunc(_VVALUE(KineticEnergy),_UPRM(Mass),_UPRM(VelocitySQ));
   }
 
 }
 
-#undef _PVALUE
 #undef _VVALUE
+#undef _PVALUE
+#undef _UPRM
 
 #undef VName
 #undef FName

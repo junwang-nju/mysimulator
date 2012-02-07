@@ -37,10 +37,10 @@ namespace mysimulator {
     typedef void (*UpVFunc)(Unique64Bit&,
                             const Array1DContent<SysContentWithEGV<T,VT> >&);
     typedef void (*UpKFunc)(T&,const Unique64Bit&,const Unique64Bit&);
-    typedef void (*BMvFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,const Unique64Bit&,
-                            const unsigned int&);
-    typedef void (*AMvFunc)(VT<T>&,VT<T>&,const Unique64Bit&,
-                            const unsigned int&);
+    typedef void (*BMvFunc)(Array1DContent<SysContentWithEGV<T,VT> >&,
+                            const T&,const Unique64Bit&);
+    typedef void (*AMvFunc)(Array1DContent<SysContentWithEGV<T,VT> >&,
+                            const Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
     VT<T> *pv=NULL;
     Array1D<VT<T> >* pgv=NULL;

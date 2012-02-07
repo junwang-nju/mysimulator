@@ -21,10 +21,11 @@ namespace mysimulator {
   template <typename T, template<typename> class VT>
   void _UpdateFuncCEVVerletHTIMAMass(
       const T& dt, const Unique64Bit& Mass, Unique64Bit& negHTIM) {
+    T hdt=-0.5*dt;
     for(unsigned int i=0;i<_ARRAY(Mass).size;++i) {
       copy(_ARRAY(negHTIM)[i],_CARRAY(Mass)[i]);
       inverse(_ARRAY(negHTIM)[i]);
-      scale(_ARRAY(negHTIM)[i],-dt*0.5);
+      scale(_ARRAY(negHTIM)[i],hdt);
     }
   }
 
@@ -55,7 +56,8 @@ namespace mysimulator {
       T& KE, const Unique64Bit& Mass, const Unique64Bit& VelSQ) {
     KE=0;
     for(unsigned int i=0;i<_ARRAY(VelSQ).size;++i)
-      KE+=0.5*dot(_ARRAY(Mass)[i],_ARRAY(VelSQ)[i]);
+      KE+=dot(_ARRAY(Mass)[i],_ARRAY(VelSQ)[i]);
+    KE*=0.5;
   }
 
 }

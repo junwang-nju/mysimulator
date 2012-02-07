@@ -12,83 +12,95 @@ namespace mysimulator {
 
   template <typename T, template<typename> class VT>
   void _BfMoveFuncLgVVerletGMassGFric(
-      VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
-      const Unique64Bit& fac, const VT<T>& rv, const Unique64Bit& rsize,
-      const unsigned int&) {
-    assert(IsValid(X)&&IsValid(G)&&IsValid(V));
-    scale(V,_VALUE(fac));
-    shift(V,_VALUE(nhtim),G);
-    shift(V,_VALUE(rsize),rv);
-    shift(X,dt,V);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const T& dt,
+      const Unique64Bit& nhtim,  const Unique64Bit& fac,
+      const Unique64Bit& rv, const Unique64Bit& rsize) {
+    assert(IsValid(gC));
+    for(unsigned int i=0;i<gC.size;++i) {
+      scale(gC[i].Velocity(),_VALUE(fac));
+      shift(gC[i].Velocity(),_VALUE(nhtim),gC[i].EGData.Gradient());
+      shift(gC[i].Velocity(),_VALUE(rsize),_CARRAY(rv)[i]);
+      shift(gC[i].X(),dt,gC[i].Velocity());
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _BfMoveFuncLgVVerletAMassGFric(
-      VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
-      const Unique64Bit& fac, const VT<T>& rv, const Unique64Bit& rsize,
-      const unsigned int& n) {
-    assert(IsValid(X)&&IsValid(G)&&IsValid(V));
-    scale(V,_CARRAY(fac)[n]);
-    shift(V,_CARRAY(nhtim)[n],G);
-    shift(V,_CARRAY(rsize)[n],rv);
-    shift(X,dt,V);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const T& dt,
+      const Unique64Bit& nhtim,  const Unique64Bit& fac,
+      const Unique64Bit& rv, const Unique64Bit& rsize) {
+    assert(IsValid(gC));
+    for(unsigned int i=0;i<gC.size;++i) {
+      scale(gC[i].Velocity(),_CARRAY(fac)[i]);
+      shift(gC[i].Velocity(),_CARRAY(nhtim)[i],gC[i].EGData.Gradient());
+      shift(gC[i].Velocity(),_CARRAY(rsize)[i],_CARRAY(rv)[i]);
+      shift(gC[i].X(),dt,gC[i].Velocity());
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _BfMoveFuncLgVVerletGMassAFric(
-      VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
-      const Unique64Bit& fac, const VT<T>& rv, const Unique64Bit& rsize,
-      const unsigned int& n) {
-    assert(IsValid(X)&&IsValid(G)&&IsValid(V));
-    scale(V,_CARRAY(fac)[n]);
-    shift(V,_VALUE(nhtim),G);
-    shift(V,_CARRAY(rsize)[n],rv);
-    shift(X,dt,V);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const T& dt,
+      const Unique64Bit& nhtim,  const Unique64Bit& fac,
+      const Unique64Bit& rv, const Unique64Bit& rsize) {
+    assert(IsValid(gC));
+    for(unsigned int i=0;i<gC.size;++i) {
+      scale(gC[i].Velocity(),_CARRAY(fac)[i]);
+      shift(gC[i].Velocity(),_VALUE(nhtim),gC[i].EGData.Gradient());
+      shift(gC[i].Velocity(),_CARRAY(rsize)[i],_CARRAY(rv)[i]);
+      shift(gC[i].X(),dt,gC[i].Velocity());
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _BfMoveFuncLgVVerletAMassAFric(
-      VT<T>& X, VT<T>& V, VT<T>& G, const T& dt, const Unique64Bit& nhtim,
-      const Unique64Bit& fac, const VT<T>& rv, const Unique64Bit& rsize,
-      const unsigned int& n) {
-    _BfMoveFuncLgVVerletAMassGFric(X,V,G,dt,nhtim,fac,rv,rsize,n);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const T& dt,
+      const Unique64Bit& nhtim,  const Unique64Bit& fac,
+      const Unique64Bit& rv, const Unique64Bit& rsize) {
+    _BfMoveFuncLgVVerletAMassGFric(gC,dt,nhtim,fac,rv,rsize);
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncLgVVerletGMassGFric(
-      VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const Unique64Bit& fac,
-      const VT<T>& rv, const Unique64Bit& rsize, const unsigned int&) {
-    assert(IsValid(V)&&IsValid(G));
-    shift(V,_VALUE(rsize),rv);
-    shift(V,_VALUE(nhtim),G);
-    scale(V,_VALUE(fac));
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const Unique64Bit& nhtim,
+      const Unique64Bit& fac, const Unique64Bit& rv, const Unique64Bit& rsize) {
+    assert(IsValid(gC));
+    for(unsigned int i=0;i<gC.size;++i) {
+      shift(gC[i].Velocity(),_VALUE(rsize),_CARRAY(rv)[i]);
+      shift(gC[i].Velocity(),_VALUE(nhtim),gC[i].EGData.Gradient());
+      scale(gC[i].Velocity(),_VALUE(fac));
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncLgVVerletAMassGFric(
-      VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const Unique64Bit& fac,
-      const VT<T>& rv, const Unique64Bit& rsize, const unsigned int& n) {
-    assert(IsValid(V)&&IsValid(G));
-    shift(V,_CARRAY(rsize)[n],rv);
-    shift(V,_CARRAY(nhtim)[n],G);
-    scale(V,_CARRAY(fac)[n]);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const Unique64Bit& nhtim,
+      const Unique64Bit& fac, const Unique64Bit& rv, const Unique64Bit& rsize) {
+    assert(IsValid(gC));
+    for(unsigned int i=0;i<gC.size;++i) {
+      shift(gC[i].Velocity(),_CARRAY(rsize)[i],_CARRAY(rv)[i]);
+      shift(gC[i].Velocity(),_CARRAY(nhtim)[i],gC[i].EGData.Gradient());
+      scale(gC[i].Velocity(),_CARRAY(fac)[i]);
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncLgVVerletGMassAFric(
-      VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const Unique64Bit& fac,
-      const VT<T>& rv, const Unique64Bit& rsize, const unsigned int& n) {
-    assert(IsValid(V)&&IsValid(G));
-    shift(V,_CARRAY(rsize)[n],rv);
-    shift(V,_VALUE(nhtim),G);
-    scale(V,_CARRAY(fac)[n]);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const Unique64Bit& nhtim,
+      const Unique64Bit& fac, const Unique64Bit& rv, const Unique64Bit& rsize) {
+    assert(IsValid(gC));
+    for(unsigned int i=0;i<gC.size;++i) {
+      shift(gC[i].Velocity(),_CARRAY(rsize)[i],_CARRAY(rv)[i]);
+      shift(gC[i].Velocity(),_VALUE(nhtim),gC[i].EGData.Gradient());
+      scale(gC[i].Velocity(),_CARRAY(fac)[i]);
+    }
   }
 
   template <typename T, template<typename> class VT>
   void _AfMoveFuncLgVVerletAMassAFric(
-      VT<T>& V, VT<T>& G, const Unique64Bit& nhtim, const Unique64Bit& fac,
-      const VT<T>& rv, const Unique64Bit& rsize, const unsigned int& n) {
-    _AfMoveFuncLgVVerletAMassGFric(V,G,nhtim,fac,rv,rsize,n);
+      Array1DContent<SysContentWithEGV<T,VT> >& gC, const Unique64Bit& nhtim,
+      const Unique64Bit& fac, const Unique64Bit& rv, const Unique64Bit& rsize) {
+    _AfMoveFuncLgVVerletAMassGFric(gC,nhtim,fac,rv,rsize);
   }
 
 }

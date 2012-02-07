@@ -73,12 +73,12 @@ namespace mysimulator {
     typedef void (*VUpFunc)(Unique64Bit&,
                             const Array1DContent<SysContentWithEGV<T,VT> >&);
     typedef void (*KUpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
-    typedef void (*BMvFunc)(VT<T>&,VT<T>&,VT<T>&,const T&,const Unique64Bit&,
-                            const Unique64Bit&,const VT<T>&,const Unique64Bit&,
-                            const unsigned int&);
-    typedef void (*AMvFunc)(VT<T>&,VT<T>&,const Unique64Bit&,const Unique64Bit&,
-                            const VT<T>&,const Unique64Bit&,
-                            const unsigned int&);
+    typedef void (*BMvFunc)(Array1DContent<SysContentWithEGV<T,VT> >&,
+                            const T&,const Unique64Bit&,const Unique64Bit&,
+                            const Unique64Bit&,const Unique64Bit&);
+    typedef void (*AMvFunc)(Array1DContent<SysContentWithEGV<T,VT> >&,
+                            const Unique64Bit&,const Unique64Bit&,
+                            const Unique64Bit&,const Unique64Bit&);
     if(MMN==GlobalMass) {
       _AssignFunc(UpdateHTIM,MUpFunc,_UpdateFuncLgVVerletHTIMGMass<T>)
       _AssignFunc(UpdateVSQ,VUpFunc,(_UpdateFuncLgVVerletVSQGMass<T,VT>))
