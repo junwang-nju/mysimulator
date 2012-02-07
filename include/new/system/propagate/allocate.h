@@ -101,7 +101,7 @@ namespace mysimulator {
         allocate(SE.Param,NumberParameterLangevinVelVerlet);
         break;
       case SysBerendsenVelVerlet:
-        SE.inifunc=InitBsVVerlet<T,VT,SCT>;
+        SE.initfunc=InitBsVVerlet<T,VT,SCT>;
         SE.clrfunc=ClearBsVVerlet<T,VT,SCT>;
         allocate(SE.evfunc,NumberMoveBerendsenVelVerlet);
         SE.evfunc[BsVVerletBeforeG]=MoveBsVVerletBeforeG<T,VT,SCT>;

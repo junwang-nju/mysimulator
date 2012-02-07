@@ -70,7 +70,11 @@ namespace mysimulator {
 
 }
 
+#undef _DeleteFunc
 #undef _DeleteArray
 #undef _DeleteElement
+
+#undef FName
+#undef PName
 
 #endif

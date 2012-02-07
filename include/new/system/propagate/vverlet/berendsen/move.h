@@ -41,13 +41,12 @@ namespace mysimulator {
                             const T&,const Unique64Bit&);
     Unique64Bit *P=SE.Param.start;
     _MvFunc mvfunc=reinterpret_cast<_MvFunc>(P[FName(BfMove)].ptr[0]);
-    T dt=_PVALUE(TimeStep);
     T fac;
     fac=_VVALUE(VFacA1)+_VVALUE(VFacA2)/_VVALUE(DualKineticEnergy);
     fac=sqroot(fac);
     for(unsigned int i=0;i<SE.grpContent.size;++i)
       scale(SE.grpContent[i].Velocity(),fac);
-    mvfunc(SE.grpContent,_PVALUE(TimeStep),_UPRM(NegHTIM),i);
+    mvfunc(SE.grpContent,_PVALUE(TimeStep),_UPRM(NegHTIM));
   }
 
 }
@@ -63,7 +62,7 @@ namespace mysimulator {
                             const Unique64Bit&);
     Unique64Bit *P=SE.Param.start;
     _MvFunc mvfunc=reinterpret_cast<_MvFunc>(P[FName(AfMove)].ptr[0]);
-    mvfunc(SE.grpContent,_UPRM(NegHTIM),i);
+    mvfunc(SE.grpContent,_UPRM(NegHTIM));
     SE.update(CalcBsVVerletVSQ);
     SE.update(CalcBsVVerletDualKE);
     T fac;

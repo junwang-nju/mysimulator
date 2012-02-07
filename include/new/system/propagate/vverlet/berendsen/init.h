@@ -33,7 +33,7 @@ namespace mysimulator {
   template <typename T, template<typename> class VT,
             template<typename,template<typename>class> class SCT>
   void InitBsVVerlet(SysPropagate<T,VT,SCT>& SE) {
-    typedef void (*UpMFunc)(const T&,const Unique64Bit&,const Unique64Bit&);
+    typedef void (*UpMFunc)(const T&,const Unique64Bit&,Unique64Bit&);
     typedef void (*UpVFunc)(Unique64Bit&,
                             const Array1DContent<SysContentWithEGV<T,VT> >&);
     typedef void (*UpKFunc)(const Unique64Bit&,const Unique64Bit&,T&);

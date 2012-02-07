@@ -69,7 +69,8 @@ namespace mysimulator {
   template <typename T, template<typename> class VT>
   void _UpdateBsVVerletVSQ(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
-    typedef void (*_UpFunc)(Unique64Bit&,const VT<T>&,const unsigned int&);
+    typedef void (*_UpFunc)(Unique64Bit&,
+                            const Array1DContent<SysContentWithEGV<T,VT> >&);
     Unique64Bit *P=SE.Param.start;
     assert(_UPRM(VelocitySQ).ptr[0]!=NULL);
     _UpFunc upfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateVSQ)].ptr[0]);
@@ -89,6 +90,7 @@ namespace mysimulator {
   template <typename T, template<typename> class VT>
   void _UpdateBsVVerletKEnergy(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
+    Unique64Bit *P=SE.Param.start;
     assert(_UPRM(VelocitySQ).ptr[0]!=NULL);
     _VVALUE(KineticEnergy)=0.5*_VVALUE(DualKineticEnergy);
   }
@@ -96,6 +98,7 @@ namespace mysimulator {
   template <typename T, template<typename> class VT>
   void _UpdateBsVVerletFac(SysPropagate<T,VT,SysContentWithEGV>& SE) {
     assert(IsValid(SE));
+    Unique64Bit *P=SE.Param.start;
     T q=0.5*_PVALUE(TimeStep)/_PVALUE(RelaxTime);
     _VVALUE(VFacA1)=1-q;
     _VVALUE(VFacA2)=q*_PVALUE(Temperature)*_VVALUE(DOF);
@@ -105,7 +108,7 @@ namespace mysimulator {
   }
 
   template <typename T, template<typename,template<typename>class> class SCT>
-  void _UpdateBsVVerletDOF(SysContentWithEGV<T,Array1D,SCT>& SE) {
+  void _UpdateBsVVerletDOF(SysPropagate<T,Array1D,SCT>& SE) {
     assert(IsValid(SE));
     Unique64Bit *P=SE.Param.start;
     unsigned int n=0;
@@ -114,7 +117,7 @@ namespace mysimulator {
   }
 
   template <typename T, template<typename,template<typename>class> class SCT>
-  void _UpdateBsVVerletDOF(SysContentWithEGV<T,Array1D,SCT>& SE) {
+  void _UpdateBsVVerletDOF(SysPropagate<T,Array2D,SCT>& SE) {
     assert(IsValid(SE));
     Unique64Bit *P=SE.Param.start;
     unsigned int n=0;

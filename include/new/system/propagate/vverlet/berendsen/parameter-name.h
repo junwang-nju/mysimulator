@@ -22,7 +22,7 @@ namespace mysimulator {
     ValBsVVerletVFacB2,
     ValBsVVerletKineticEnergy,
     ValBsVVerletDualKineticEnergy,
-    FunBsVVerletUpdateNegHTIM,
+    FunBsVVerletUpdateHTIM,
     FunBsVVerletUpdateVSQ,
     FunBsVVerletUpdateDKE,
     FunBsVVerletBfMove,
