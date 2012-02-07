@@ -107,17 +107,20 @@ int main() {
   GenericEvaluate(S.Content(),S.Interactions);
   COut<<S.Content().EGData.Energy()<<Endl;
 
-  DynMC.TimeStep=0.001;
-  DynMC.NumSteps=10000;
-  DynMC.StartTime=0.;
+  DynMC.BaseData.TimeStep=0.001;
+  DynMC.BaseData.NumSteps=10000;
+  DynMC.BaseData.StartTime=0.;
   DynMC.updateRunPeriod();
-  fill(DynMC.Mass,1.);
+  fill(DynMC.BaseData.Mass,1.);
   S.Propagates[0].update(CalcCEVVerletHTIM);
-  copy(DynMC.Output.OS,COut);
-  DynMC.Output.TimeBwOutput=0.002;
-  DynMC.Output.NumStepsBwOutput=2;
+  allocate(DynMC.Output.OS);
+  copy(DynMC.Output.OS(),COut);
+  allocate(DynMC.Output.BaseData);
+  DynMC.Output.BaseData().TimeBwOutput=0.002;
+  DynMC.Output.BaseData().NumStepsBwOutput=2;
   DynMC.Output.IsFirstOutput=true;
-  DynMC.Output.setNowTime(DynMC.NowTime);
+  DynMC.Output.IsTerminated=true;
+  DynMC.Output.BaseData().setNowTime(DynMC.NowTime);
 
   evolute(DynMC,S);
 

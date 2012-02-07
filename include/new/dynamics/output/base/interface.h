@@ -2,7 +2,7 @@
 #ifndef _Dynamics_Output_Base_Interface_H_
 #define _Dynamics_Output_Base_Interface_H_
 
-#include "object/refer.h"
+#include "dynamics/output/base/data/interface.h"
 
 namespace mysimulator {
 
@@ -13,34 +13,22 @@ namespace mysimulator {
 
       typedef DynamicsOutputBase<OStreamType,T>   Type;
 
-      OStreamType OS;
-      T TimeBwOutput;
-      unsigned int NumStepsBwOutput;
+      Object<DynamicsOutputBaseData<T> >  BaseData;
+      Object<OStreamType> OS;
       bool IsFirstOutput;
       bool IsTerminated;
-      Object<T> NowTime;
 
-      DynamicsOutputBase() : OS(), TimeBwOutput(0), NumStepsBwOutput(0),
-                             IsFirstOutput(false), IsTerminated(false),
-                             NowTime() {}
+      DynamicsOutputBase() : BaseData(), OS(), IsFirstOutput(false),
+                             IsTerminated(false) {}
       ~DynamicsOutputBase() { clearData(); }
 
       void clearData() {
-        release(NowTime); release(OS); TimeBwOutput=0; NumStepsBwOutput=0;
         IsFirstOutput=false; IsTerminated=false;
+        release(BaseData); release(OS);
       }
-      bool isvalid() const {
-        return IsValid(OS)&&(NumStepsBwOutput>0)&&IsValid(NowTime);
-      }
+      bool isvalid() const { return IsValid(OS)&&IsValid(BaseData); }
 
       virtual void write() = 0;
-
-      void updateNumStepsBwOutput(const T& dt) {
-        NumStepsBwOutput=static_cast<unsigned int>(TimeBwOutput/dt+0.5);
-        updateTimeBwOutput(dt);
-      }
-      void updateTimeBwOutput(const T& dt) { TimeBwOutput=dt*NumStepsBwOutput; }
-      void setNowTime(const T& time) { refer(NowTime,time); }
 
     private:
 
