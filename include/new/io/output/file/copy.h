@@ -9,6 +9,7 @@ namespace mysimulator {
 
   void copy(FileOutput& F, const FileOutput& cF) {
     assert(IsValid(cF));
+    release(F);
     typedef FileOutput::ParentType  Type;
     copy(static_cast<Type&>(F),static_cast<const Type&>(cF));
     F.fptr=cF.fptr;

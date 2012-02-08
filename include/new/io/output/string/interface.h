@@ -69,22 +69,26 @@ namespace mysimulator {
         return *this;
       }
 
-      Type& write(const bool& b) { return _write("%d",b?1:0); }
-      Type& write(const char& c) { return _write("%c",c); }
-      Type& write(const unsigned char& uc) { return _write("%c",uc); }
-      Type& write(const short& s) { return _write("%hd",s); }
-      Type& write(const unsigned short& us) { return _write("%hu",us); }
-      Type& write(const int& i) { return _write("%d",i); }
-      Type& write(const unsigned int& u) { return _write("%u",u); }
-      Type& write(const long& i) { return _write("%d",i); }
-      Type& write(const unsigned long& u) { return _write("%u",u); }
-      Type& write(const long long& l) { return _write("%lld",l); }
-      Type& write(const unsigned long long& u) { return _write("%llu",u); }
-      Type& write(const float& f) { return _write(FloatPat,f); }
-      Type& write(const double& d) { return _write(DoublePat,d); }
-      Type& write(const long double& ld) { return _write(LongDoublePat,ld); }
-      Type& write(const void* const& ptr) { return _write("%p",ptr); }
-      Type& write(const char* const& s) { return _write("%s",s); }
+      virtual Type& write(const bool& b) { return _write("%d",b?1:0); }
+      virtual Type& write(const char& c) { return _write("%c",c); }
+      virtual Type& write(const unsigned char& uc) { return _write("%c",uc); }
+      virtual Type& write(const short& s) { return _write("%hd",s); }
+      virtual Type& write(const unsigned short& us) { return _write("%hu",us); }
+      virtual Type& write(const int& i) { return _write("%d",i); }
+      virtual Type& write(const unsigned int& u) { return _write("%u",u); }
+      virtual Type& write(const long& i) { return _write("%d",i); }
+      virtual Type& write(const unsigned long& u) { return _write("%u",u); }
+      virtual Type& write(const long long& l) { return _write("%lld",l); }
+      virtual Type& write(const unsigned long long& u) {
+        return _write("%llu",u);
+      }
+      virtual Type& write(const float& f) { return _write(FloatPat,f); }
+      virtual Type& write(const double& d) { return _write(DoublePat,d); }
+      virtual Type& write(const long double& ld) {
+        return _write(LongDoublePat,ld);
+      }
+      virtual Type& write(const void* const& ptr) { return _write("%p",ptr); }
+      virtual Type& write(const char* const& s) { return _write("%s",s); }
 
     private:
 
@@ -96,7 +100,7 @@ namespace mysimulator {
         assert(IsValid(buffer));
         buffer[buffer.size-1]='\0';
         WriteLocation=0;
-        Capacity=buffer.size;
+        Capacity=buffer.size-1;
       }
 
   };
