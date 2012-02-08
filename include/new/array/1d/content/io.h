@@ -15,7 +15,6 @@ namespace mysimulator {
     return O;
   }
 
-  template <typename T>
   OutputBase& operator<<(OutputBase& O, const Array1DContent<char>& A) {
     assert(IsValid(O)&&IsValid(A));
     for(int i=A.first;i<=A.last;++i)  O<<A[i];

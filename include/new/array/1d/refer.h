@@ -43,4 +43,32 @@ namespace mysimulator {
 
 #undef _REFER_BASIC
 
+#include "io/error.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  void refer(Array1D<T>& A, const Array1D<T>& cA, const int& partb,
+             const int& parte, const int& newb) {
+    Error("Cannot Refer Const Array!");
+  }
+
+  template <typename T>
+  void refer(Array1D<T>& A, const Array1D<T>& cA, const int& partb,
+             const int& parte) {
+    Error("Cannot Refer Const Array!");
+  }
+
+  template <typename T>
+  void refer(Array1D<T>& A, const Array1D<T>& cA) {
+    Error("Cannot Refer Const Array!");
+  }
+
+  template <typename T>
+  void refer(Array1D<T>& A, const Array1D<T>& cA, const unsigned int& n) {
+    Error("Cannot Refer Const Array!");
+  }
+
+}
+
 #endif
