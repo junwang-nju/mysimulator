@@ -22,7 +22,7 @@ namespace mysimulator {
       StringInput() : buffer(), ReadLocation(0), Capacity(0) {}
       StringInput(const unsigned int& n)
         : ParentType(), buffer(), ReadLocation(0), Capacity(0) { open(n); }
-      StringInput(const Array1D<char>& bf)
+      StringInput(Array1D<char>& bf)
         : ParentType(), buffer(), ReadLocation(0), Capacity(0) { open(bf); }
       ~StringInput() { clearData(); }
 
@@ -36,7 +36,7 @@ namespace mysimulator {
       }
 
       void open(const unsigned int& n) { allocate(buffer,n); _init(); }
-      void open(const Array1D<char>& bf) { refer(buffer,bf); _init(); }
+      void open(Array1D<char>& bf) { refer(buffer,bf); _init(); }
       void close() { clearData(); }
 
       template <typename T>
@@ -79,8 +79,36 @@ namespace mysimulator {
         return *this;
       }
 
-      virtual Type& read(char& c) { return _read("%c",c); }
-      virtual Type& read(unsigned char& uc) { return _read("%c",uc); }
+      virtual Type& read(bool& b) {
+        int i; _read("%d",i); if(!IsFailed(*this)) b=(i==0?false:true);
+        return *this;
+      }
+      virtual Type& read(char& c) {
+        assert(isvalid());
+        if(Capacity>0) {
+          _read_part(buffer.start+ReadLocation,1,"%c",c);
+          ++ReadLocation;
+          --Capacity;
+        } else {
+          fprintf(stderr,"Buffer Exhausted in StringInput!");
+          this->set(FailBit);
+        }
+        return *this;
+      }
+      virtual Type& read(unsigned char& uc) {
+        assert(isvalid());
+        if(Capacity>0) {
+          _read_part(buffer.start+ReadLocation,1,"%c",uc);
+          ++ReadLocation;
+          --Capacity;
+        } else {
+          fprintf(stderr,"Buffer Exhausted in StringInput!");
+          this->set(FailBit);
+        }
+        return *this;
+      }
+      virtual Type& read(short& s) { return _read("%hd",s); }
+      virtual Type& read(unsigned short& us) { return _read("%hu",us); }
       virtual Type& read(int& i) { return _read("%d",i); }
       virtual Type& read(unsigned int& u) { return _read("%u",u); }
       virtual Type& read(long& l) { return _read("%d",l); }
@@ -91,7 +119,7 @@ namespace mysimulator {
       virtual Type& read(double& d) { return _read("%lf",d); }
       virtual Type& read(long double& ld) { return _read("%Lf",ld); }
       virtual Type& read(void*& ptr) { return _read("%p",ptr); }
-      virtual Type& read(char* str) {
+      virtual Type& read(char* const& str) {
         assert(isvalid());
         char* inf=buffer.start+ReadLocation;
         unsigned int n=0;

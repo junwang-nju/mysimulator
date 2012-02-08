@@ -48,7 +48,7 @@ namespace mysimulator {
         if(n!=1)  set(FailBit);
         return *this;
       }
-      Type& read(bool& b) {
+      virtual Type& read(bool& b) {
         int i; _read("%d",i); if(!IsFailed(*this))  b=(i==0?false:true);
         return *this;
       }
