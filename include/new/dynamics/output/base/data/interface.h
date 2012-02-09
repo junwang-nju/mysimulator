@@ -7,6 +7,9 @@ namespace mysimulator {
   struct DynamicsOutputBaseData {
   };
 
+  void release(DynamicsOutputBaseData& D) { D.clearDdata(); }
+  bool IsValid(const DynamicsOutputBaseData& D) { return D.isvalid(); }
+
 }
 
 #endif
