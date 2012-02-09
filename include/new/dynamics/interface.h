@@ -7,30 +7,25 @@
 
 namespace mysimulator {
 
-  template <DynamicsModeName DMN, typename T,template<typename> class VecType,
-            typename OutputChannel>
+  template <DynamicsModeName DN,typename T,template<typename> class VT,
+            typename OChannel>
   struct Dynamics {
 
     public:
 
-      typedef Dynamics<DMN,T,VecType,OutputChannel>   Type;
+      typedef Dynamics<DN,T,VT,OChannel>  Type;
 
-      Dynamics() {}
+      bool BindFlag;
+
+      Dynamics() : BindFlag(false) { Error("This Dynamics Not Available!"); }
       ~Dynamics() { clearData(); }
 
       void clearData() {}
       bool isvalid() const { return false; }
+
       template <typename IDT,typename PT,typename GT,
                 template<typename,template<typename>class> class SCT>
-      bool ismatch(const System<T,IDT,PT,GT,VecType,SCT>& S) const {
-        return false;
-      }
-
-      template <typename IDType,typename ParamType,typename GeomType,
-                template<typename,template<typename>class> class SysContentType>
-      void evolute(System<T,IDType,ParamType,GeomType,VecType,SysContentType>&){
-        Error("No Dynamics are Available!");
-      }
+      bool ismatch(const System<T,IDT,PT,GT,VT,SCT>& S) const { return false; }
 
     private:
 
@@ -39,23 +34,23 @@ namespace mysimulator {
 
   };
 
-  template <DynamicsModeName DMN,typename T,template<typename> class VT,
-            typename OC>
-  void release(Dynamics<DMN,T,VT,OC>& D) { D.clearData(); }
+  template <DynamicsModeName DN,typename T,template<typename> class VT,
+            typename OCT>
+  void release(Dynamics<DN,T,VT,OCT>& D) { D.clearData(); }
 
-  template <DynamicsModeName DMN,typename T,template<typename> class VT,
-            typename OC>
-  bool IsValid(const Dynamics<DMN,T,VT,OC>& D) { return D.isvalid(); }
+  template <DynamicsModeName DN,typename T,template<typename> class VT,
+            typename OCT>
+  bool IsValid(const Dynamics<DN,T,VT,OCT>& D) { return D.isvalid(); }
 
-  template <DynamicsModeName DMN,typename T,template<typename> class VT,
-            typename OC,typename IDT,typename PT,typename GT,
+  template <DynamicsModeName DN,typename T,template<typename> class VT,
+            typename OCT,typename IDT,typename PT,typename GT,
             template<typename,template<typename>class> class SCT>
-  bool IsMatch(const Dynamics<DMN,T,VT,OC>& D,
+  bool IsMatch(const Dynamics<DN,T,VT,OCT>& D,
                const System<T,IDT,PT,GT,VT,SCT>& S) { return D.ismatch(S); }
 
 }
 
-#include "dynamics/micro-canonical/specification.h"
+#include "dynamics/micro-canonical/vverlet/specification.h"
 
 #endif
 

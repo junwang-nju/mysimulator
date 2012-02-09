@@ -3,23 +3,22 @@
 #define _Dynamics_Evolute_H_
 
 #include "dynamics/interface.h"
-#include "dynamics/output/base/interface.h"
 
 namespace mysimulator {
 
-  template <DynamicsModeName DMN, typename T,typename IDT,typename PT,
-            typename GT,template<typename> class VT,
-            template<typename,template<typename>class> class SCT,
-            typename OC>
-  void evolute(Dynamics<DMN,T,VT,OC>& D, System<T,IDT,PT,GT,VT,SCT>& S) {
+  template <DynamicsModeName DN,typename T,typename IDT,typename PT,
+            typename GT,typename OCT,template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
+  void evolute(Dynamics<DN,T,VT,OCT>& D, System<T,IDT,PT,GT,VT,SCT>& S) {
     assert(IsValid(D)&&IsValid(S));
     assert(IsMatch(D,S));
-    unsigned int nout=
-      static_cast<unsigned int>(D.RunPeriod/D.Output.TimeBwOutput);
+    assert(D.BindFlag);
+    unsigned int nout;
+    nout=static_cast<unsigned int>(D.RunPeriod/D.Output.TimeBwOutput);
     D.NowTime=D.StartTime;
-    if(D.Output.IsFirstOutput)  { D.Output.write(); D.Output.OS<<Endl; }
-    for(unsigned int n=0;n<nout;++n) {
-      for(unsigned int i=0;i<D.Output.NumStepsBwOutput;++i) S.evolute();
+    if(D.Output.IsFirstOutput) { D.Output.write(); D.Output.OS<<Endl; }
+    for(unsigned int i=0;i<nout;++i) {
+      for(unsigned int k=0;k<D.Output.NumStepsBwOutput;++k) S.evolute();
       D.updateNowTime(D.Output.TimeBwOutput);
       D.Output.write();
       D.Output.OS<<Endl;

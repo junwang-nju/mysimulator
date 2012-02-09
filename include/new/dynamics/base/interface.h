@@ -2,45 +2,34 @@
 #ifndef _Dynamics_Base_Interface_H_
 #define _Dynamics_Base_Interface_H_
 
-#include "intrinsic-type/constant.h"
+#include "dynamics/base/data/interface.h"
 
 namespace mysimulator {
 
-  template <typename T, typename OutputChannel>
+  template <typename T, template<typename> class VT, typename OChannel>
   struct DynamicsBase {
 
     public:
+      
+      typedef DynamicsBase<T,VT,OChannel>    Type;
 
-      typedef DynamicsBase<T,OutputChannel>   Type;
+      DynamicsBaseData BaseData;
+      OChannel  Output;
+      bool BindFlag;
 
-      T TimeStep;
-      T RunPeriod;
-      T StartTime;
-      unsigned int NumSteps;
-      T NowTime;
-      OutputChannel Output;
-
-      DynamicsBase() : TimeStep(0), RunPeriod(0), StartTime(0), NumSteps(0),
-                       NowTime(0), Output() {}
+      DynamicsBase() : BaseData(), Output(), BindFlag(false) {}
       ~DynamicsBase() { clearData(); }
 
       void clearData() {
-        TimeStep=0; RunPeriod=0; StartTime=0; NumSteps=0; NowTime=0;
-        release(Output);
+        assert(!BindFlag);
+        release(Output); release(BaseData);
       }
-      bool isvalid() const {
-        return (TimeStep>RelativeDelta<T>())&&IsValid(Output);
-      }
+      bool isvalid() const { return IsValid(BaseData)&&IsValid(Output); }
 
-      void updateNumSteps() {
-        NumSteps=static_cast<unsigned int>(RunPeriod/TimeStep+0.5);
-        updateRunPeriod();
-      }
-
-      void updateRunPeriod() { RunPeriod=NumSteps*TimeStep; }
-
-      void updateNowTime(const T& delta) { NowTime+=delta; }
-      void updateNowTime(const unsigned int& n) { NowTime+=n*TimeStep; }
+      void updateNumSteps() { BaseData.updateNumSteps(); }
+      void updateRunPeriod() { BaseData.updateRunPeriod(); }
+      void updateNowTime(const T& delta) { BaseData.updateNowTime(delta); }
+      void updateNowTime(const unsigned int& n) { BaseData.updateNowTime(n); }
 
     private:
 
@@ -49,11 +38,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T, typename OC>
-  void release(DynamicsBase<T,OC>& D) { D.clearData(); }
+  template <typename T, template<typename> class VT, typename OCT>
+  void release(DynamicsBase<T,VT,OCT>& D) { D.clearData(); }
 
-  template <typename T, typename OC>
-  bool IsValid(const DynamicsBase<T,OC>& D) { return D.isvalid(); }
+  template <typename T, template<typename> class VT, typename OCT>
+  bool IsValid(const DynamicsBase<T,VT,OCT>& D) { return D.isvalid(); }
 
 }
 

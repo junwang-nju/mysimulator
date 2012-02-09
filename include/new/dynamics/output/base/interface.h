@@ -6,25 +6,28 @@
 
 namespace mysimulator {
 
-  template <typename OutputStreamType,typename T>
-  struct DynOutputBase {
+  template <typename OStreamType, typename T>
+  struct DynamicsOutputBase {
 
     public:
 
-      typedef DynOutputBase<OutputStreamType,T>   Type;
+      typedef DynamicsOutputBase<OStreamType,T>   Type;
 
-      OutputStreamType OS;
+      OStreamType OS;
       T TimeBwOutput;
       unsigned int NumStepsBwOutput;
       bool IsFirstOutput;
+      bool IsTerminated;
       Object<T> NowTime;
 
-      DynOutputBase() : OS(), TimeBwOutput(0), NumStepsBwOutput(0),
-                        IsFirstOutput(true), NowTime() {}
-      ~DynOutputBase() { clearData(); }
+      DynamicsOutputBase() : OS(), TimeBwOutput(0), NumStepsBwOutput(0),
+                             IsFirstOutput(false), IsTerminated(false),
+                             NowTime() {}
+      ~DynamicsOutputBase() { clearData(); }
 
       void clearData() {
         release(NowTime); release(OS); TimeBwOutput=0; NumStepsBwOutput=0;
+        IsFirstOutput=false; IsTerminated=false;
       }
       bool isvalid() const {
         return IsValid(OS)&&(NumStepsBwOutput>0)&&IsValid(NowTime);
@@ -34,24 +37,23 @@ namespace mysimulator {
 
       void updateNumStepsBwOutput(const T& dt) {
         NumStepsBwOutput=static_cast<unsigned int>(TimeBwOutput/dt+0.5);
+        updateTimeBwOutput(dt);
       }
-      void updateTimeBwOutput(const T& dt) {
-        TimeBwOutput=dt*NumStepsBwOutput;
-      }
+      void updateTimeBwOutput(const T& dt) { TimeBwOutput=dt*NumStepsBwOutput; }
       void setNowTime(const T& time) { refer(NowTime,time); }
 
     private:
 
-      DynOutputBase(const Type&) {}
+      DynamicsOutputBase(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };
 
-  template <typename OST,typename T>
-  void release(DynOutputBase<OST,T>& O) { O.clearData(); }
+  template <typename OST, typename T>
+  void release(DynamicsOutputBase<OST,T>& O) { O.clearData(); }
 
-  template <typename OST,typename T>
-  bool IsValid(const DynOutputBase<OST,T>& O) { return O.isvalid(); }
+  template <typename OST, typename T>
+  bool IsValid(DynamicsOutputBase<OST,T>& O) { return O.isvalid(); }
 
 }
 
