@@ -13,7 +13,7 @@ namespace mysimulator {
             template<typename,template<typename>class> class SCT>
   void bind(Dynamics<MicroCanonicalVVerlet,T,VT,OCT>& D,
             System<T,IDT,PT,GT,VT,SCT>& S) {
-    assert(IsValid(D)&&IsValid(S));
+    assert(IsValid(S));
     assert(!D.BindFlag);
     typedef typename Dynamics<MicroCanonicalVVerlet,T,VT,OCT>::ParentType Type;
     link(static_cast<Type&>(D),S);
@@ -30,7 +30,7 @@ namespace mysimulator {
     assert(IsValid(D)&&IsValid(S));
     assert(D.BindFlag);
     S.clear();
-    B.BindFlag=false;
+    D.BindFlag=false;
   }
 
 }

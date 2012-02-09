@@ -17,7 +17,7 @@ namespace mysimulator {
       typedef Dynamics<MicroCanonicalVVerlet,T,VT,OChannel> Type;
       typedef DynamicsBase<T,VT,OChannel>   ParentType;
 
-      DynamicsVVerletData VVerletData;
+      DynamicsVVerletData<T,VT> VVerletData;
 
       Dynamics() : ParentType(), VVerletData() {}
       ~Dynamics() { clearData(); }
@@ -32,8 +32,8 @@ namespace mysimulator {
       }
       template <typename IDT,typename PT,typename GT,
                 template<typename,template<typename>class> class SCT>
-      bool ismatch(const System<T,IDT,PT,GT,VT,SCT>& S) {
-        return (S.EvoluteMode==8)&&(S.EvoluteMode==10);
+      bool ismatch(const System<T,IDT,PT,GT,VT,SCT>& S) const {
+        return (S.EvoluteMode==8)||(S.EvoluteMode==10);
       }
 
     private:

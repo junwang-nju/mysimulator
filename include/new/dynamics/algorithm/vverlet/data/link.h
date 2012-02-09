@@ -2,11 +2,14 @@
 #ifndef _Dynamics_Algorithm_VelocityVerlet_Data_Link_H_
 #define _Dynamics_Algorithm_VelocityVerlet_Data_Link_H_
 
-#include "dynamics/vverlet/data/interface.h"
+#include "dynamics/algorithm/vverlet/data/interface.h"
 #include "system/propagate/interface.h"
 #include "system/property/mass-method-name.h"
+#include "system/propagate/vverlet/const-e/parameter-name.h"
+#include "system/propagate/vverlet/langevin/parameter-name.h"
+#include "system/propagate/vverlet/berendsen/parameter-name.h"
 
-#define NAME(W,M,U)   W##VVerlet##M##U
+#define NAME(W,M,U)   W##M##VVerlet##U
 #define DName(M,U)    NAME(Dat,M,U)
 #define MName(M,U)    NAME(Mod,M,U)
 
@@ -15,7 +18,7 @@
   P[DName(M,U)].ptr[0]=reinterpret_cast<void*>(&(obj));
 
 #define _LINK(M,X) \
-  if(P[MName(M,Mass)].ptr[0]==ArrayMass) { _LinkArray(M,NegHTIM,D.NegHTIM,X) }
+  if(P[MName(M,Mass)].u[0]==ArrayMass) { _LinkArray(M,NegHTIM,D.NegHTIM,X) }
 
 namespace mysimulator {
 

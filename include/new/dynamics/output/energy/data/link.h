@@ -26,7 +26,7 @@ namespace mysimulator {
             template<typename,template<typename>class> class SCT>
   void _link(DynamicsOutputEnergyData<T,IDT,PT,GT,VT,SCT>& D,
              SysPropagate<T,VT,SCT>& SE, const VT<T>& X) {
-    assert(IsValid(D)&&IsValid(SE)&&IsValid(X));
+    assert(IsValid(SE)&&IsValid(X));
     Unique64Bit *P=SE.Param.start;
     switch(SE.Method) {
       case SysConstEVelVerlet:
@@ -61,7 +61,7 @@ namespace mysimulator {
             template<typename,template<typename>class> class SCT>
   void link(DynamicsOutputEnergyData<T,IDT,PT,GT,VT,SCT>& D,
             System<T,IDT,PT,GT,VT,SCT>& S) {
-    assert(IsValid(D)&&IsValid(S));
+    assert(IsValid(S));
     refer(D.S,S);
     for(unsigned int i=0;i<S.Propagates.size;++i)
       _link(D,S.Propagates[i],S.Content().X());

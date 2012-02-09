@@ -46,6 +46,12 @@ namespace mysimulator {
 
   };
 
+  template <typename T, template<typename> class VT>
+  void release(DynamicsBaseData<T,VT>& D) { D.clearData(); }
+
+  template <typename T, template<typename> class VT>
+  bool IsValid(const DynamicsBaseData<T,VT>& D) { return D.isvalid(); }
+
 }
 
 #endif

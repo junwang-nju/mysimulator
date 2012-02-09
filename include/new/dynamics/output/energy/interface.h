@@ -48,7 +48,7 @@ namespace mysimulator {
           (this->OS())<<"\t"<<KE;
         }
         (this->OS())<<"\t"<<SumKE;
-        if(IsTerminated)  (this->OS())<<Endl;
+        if(this->IsTerminated)  (this->OS())<<Endl;
       }
 
     private:

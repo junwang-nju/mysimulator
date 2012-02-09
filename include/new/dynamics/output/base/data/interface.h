@@ -2,7 +2,7 @@
 #ifndef _Dynamics_Output_Base_Data_Interface_H_
 #define _Dynamics_Output_Base_Data_Interface_H_
 
-#include "object/interface.h"
+#include "object/refer.h"
 
 namespace mysimulator {
 

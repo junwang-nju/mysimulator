@@ -5,6 +5,9 @@
 #include "dynamics/base/data/interface.h"
 #include "system/propagate/interface.h"
 #include "system/property/mass-method-name.h"
+#include "system/propagate/vverlet/const-e/parameter-name.h"
+#include "system/propagate/vverlet/langevin/parameter-name.h"
+#include "system/propagate/vverlet/berendsen/parameter-name.h"
 
 #define NAME(W,M,U)   W##M##U
 #define PName(M,U)    NAME(Ptr,M,U)
@@ -26,7 +29,7 @@ namespace mysimulator {
             template<typename,template<typename>class> class SCT>
   void _link(DynamicsBaseData<T,VT>& D, SysPropagate<T,VT,SCT>& SE,
              const VT<T>& X) {
-    assert(IsValid(D)&&IsValid(SE)&&IsValid(X));
+    assert(IsValid(SE)&&IsValid(X));
     Unique64Bit *P=SE.Param.start;
     switch(SE.Method) {
       case SysConstEVelVerlet:
@@ -64,7 +67,7 @@ namespace mysimulator {
             template<typename,template<typename>class> class SCT,
             typename DynamicsDataType>
   void link(DynamicsDataType& D, System<T,IDT,PT,GT,VT,SCT>& S) {
-    assert(IsValid(D)&&IsValid(S));
+    assert(IsValid(S));
     for(unsigned int i=0;i<S.Propagates.size;++i)
       _link(D,S.Propagates[i],S.Content().X());
   }

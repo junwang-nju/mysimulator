@@ -4,7 +4,6 @@
 
 #include "dynamics/base/interface.h"
 #include "dynamics/base/data/link.h"
-#include "dyanmics/data-link.h"
 
 namespace mysimulator {
 
@@ -14,7 +13,8 @@ namespace mysimulator {
   void link(DynamicsBase<T,VT,OC>& D, System<T,IDT,PT,GT,VT,SCT>& S) {
     link(D.BaseData,S);
     link(D.Output,S);
-    D.Output.updateNowTime(D.BaseData.NowTime);
+    assert(D.Output.BaseData._isparentvalid());
+    D.Output.BaseData().setNowTime(D.BaseData.NowTime);
   }
 
 }

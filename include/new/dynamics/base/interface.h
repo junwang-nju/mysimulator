@@ -13,7 +13,7 @@ namespace mysimulator {
       
       typedef DynamicsBase<T,VT,OChannel>    Type;
 
-      DynamicsBaseData BaseData;
+      DynamicsBaseData<T,VT> BaseData;
       OChannel  Output;
       bool BindFlag;
 

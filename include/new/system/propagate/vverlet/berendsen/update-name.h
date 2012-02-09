@@ -11,6 +11,7 @@ namespace mysimulator {
     CalcBsVVerletVSQ,
     CalcBsVVerletDualKE,
     CalcBsVVerletKESimple,
+    CalcBsVVerletKE,
     NumberUpdateBerendsenVelVerlet
   };
 

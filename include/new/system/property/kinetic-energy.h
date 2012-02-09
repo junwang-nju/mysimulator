@@ -7,6 +7,8 @@
 #include "system/propagate/vverlet/const-e/parameter-name.h"
 #include "system/propagate/vverlet/langevin/update-name.h"
 #include "system/propagate/vverlet/langevin/parameter-name.h"
+#include "system/propagate/vverlet/berendsen/update-name.h"
+#include "system/propagate/vverlet/berendsen/parameter-name.h"
 
 #define CName(Cond)  Calc##Cond##VVerletKE
 #define VName(Cond)  Val##Cond##VVerletKineticEnergy

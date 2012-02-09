@@ -66,7 +66,7 @@ namespace mysimulator {
     typedef void (*_UpFunc)(T&,const Unique64Bit&,const Unique64Bit&);
     Unique64Bit* P=SE.Param.start;
     assert(_UPRM(VelocitySQ).ptr[0]!=NULL);
-    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateKE)].ptr[0]);
+    _UpFunc updfunc=reinterpret_cast<_UpFunc>(P[FName(UpdateKESimple)].ptr[0]);
     updfunc(_VVALUE(KineticEnergy),_UPRM(Mass),_UPRM(VelocitySQ));
   }
 

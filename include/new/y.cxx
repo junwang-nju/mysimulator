@@ -1,6 +1,7 @@
 
 #include "dynamics/evolute.h"
-#include "dynamics/output/energy/bind.h"
+#include "dynamics/bind.h"
+#include "dynamics/output/energy/link.h"
 #include "io/output/file/copy.h"
 
 #include "system/content/with-egv/allocate.h"
@@ -95,11 +96,14 @@ int main() {
   allocate(GR);
   GR.init(23293);
 
-  Dynamics<MicroCanonical,double,Array2D,
-           DynOutputEnergy<FileOutput,double,Array1D<IDType>,Array1D<ParamType>,
-                           FreeSpace,Array2D,SysContentWithEGV> >
+  Dynamics<MicroCanonicalVVerlet,double,Array2D,
+           DynamicsOutputEnergy<FileOutput,double,Array1D<IDType>,
+                                Array1D<ParamType>,FreeSpace,Array2D,
+                                SysContentWithEGV> >
   DynMC;
-  DynMC.bind(S);
+
+  allocate(DynMC.Output.BaseData);
+  bind(DynMC,S);
 
   COut.precision(12);
   copy(S.Content().X(),X);
@@ -115,16 +119,15 @@ int main() {
   S.Propagates[0].update(CalcCEVVerletHTIM);
   allocate(DynMC.Output.OS);
   copy(DynMC.Output.OS(),COut);
-  allocate(DynMC.Output.BaseData);
   DynMC.Output.BaseData().TimeBwOutput=0.002;
   DynMC.Output.BaseData().NumStepsBwOutput=2;
   DynMC.Output.IsFirstOutput=true;
   DynMC.Output.IsTerminated=true;
-  DynMC.Output.BaseData().setNowTime(DynMC.NowTime);
+  DynMC.Output.BaseData().setNowTime(DynMC.BaseData.NowTime);
 
   evolute(DynMC,S);
 
-  DynMC.unbind(S);
+  unbind(DynMC,S);
 
   return 0;
 }
