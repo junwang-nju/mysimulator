@@ -6,9 +6,9 @@
 #include "system/propagate/interface.h"
 
 #define NAME(W,M,U)   W##M##U
-#define PName(M,U)    Name(Ptr,M,U)
-#define MName(M,U)    Name(Mod,M,U)
-#define DName(M,U)    Name(Dat,M,U)
+#define PName(M,U)    NAME(Ptr,M,U)
+#define MName(M,U)    NAME(Mod,M,U)
+#define DName(M,U)    NAME(Dat,M,U)
 
 #define _LinkElement(M,U,obj)   P[PName(M,U)].ptr[0]=&(obj);
 #define _LinkArray(M,U,obj,X) \

@@ -15,11 +15,15 @@ namespace mysimulator {
 
       DynamicsBaseData BaseData;
       OChannel  Output;
+      bool BindFlag;
 
-      DynamicsBase() : BaseData(), Output() {}
+      DynamicsBase() : BaseData(), Output(), BindFlag(false) {}
       ~DynamicsBase() { clearData(); }
 
-      void clearData() { release(BaseData); release(Output); }
+      void clearData() {
+        assert(!BindFlag);
+        release(Output); release(BaseData);
+      }
       bool isvalid() const { return IsValid(BaseData)&&IsValid(Output); }
 
       void updateNumSteps() { BaseData.updateNumSteps(); }

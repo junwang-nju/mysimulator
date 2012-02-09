@@ -3,7 +3,7 @@
 #define _Dynamics_Interface_H_
 
 #include "dynamics/mode-name.h"
-#include "io/error.h"
+#include "system/interface.h"
 
 namespace mysimulator {
 
@@ -15,7 +15,9 @@ namespace mysimulator {
 
       typedef Dynamics<DN,T,VT,OChannel>  Type;
 
-      Dynamics() { Error("This Dynamics Not Available!"); }
+      bool BindFlag;
+
+      Dynamics() : BindFlag(false) { Error("This Dynamics Not Available!"); }
       ~Dynamics() { clearData(); }
 
       void clearData() {}
@@ -24,12 +26,6 @@ namespace mysimulator {
       template <typename IDT,typename PT,typename GT,
                 template<typename,template<typename>class> class SCT>
       bool ismatch(const System<T,IDT,PT,GT,VT,SCT>& S) const { return false; }
-
-      template <typename IDT,typename PT,typename GT,
-                template<typename,template<typename>class> class SCT>
-      void evolute(System<T,IDT,PT,GT,VT,SCT>&) {
-        Error("No Dynamics to Evolute!");
-      }
 
     private:
 
@@ -53,6 +49,8 @@ namespace mysimulator {
                const System<T,IDT,PT,GT,VT,SCT>& S) { return D.ismatch(S); }
 
 }
+
+#include "dynamics/micro-canonical/vverlet/specification.h"
 
 #endif
 

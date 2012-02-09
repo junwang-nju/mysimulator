@@ -4,6 +4,18 @@
 
 #include "dynamics/vverlet/data/interface.h"
 #include "system/propagate/interface.h"
+#include "system/property/mass-method-name.h"
+
+#define NAME(W,M,U)   W##VVerlet##M##U
+#define DName(M,U)    NAME(Dat,M,U)
+#define MName(M,U)    NAME(Mod,M,U)
+
+#define _LinkArray(M,U,obj,X) \
+  if(!IsSameSize(obj,X))  imprint(obj,X);\
+  P[DName(M,U)].ptr[0]=reinterpret_cast<void*>(&(obj));
+
+#define _LINK(M,X) \
+  if(P[MName(M,Mass)].ptr[0]==ArrayMass) { _LinkArray(M,NegHTIM,D.Mass,X) }
 
 namespace mysimulator {
 
@@ -13,6 +25,40 @@ namespace mysimulator {
              const VT<T>& X) {
     assert(IsValid(D)&&IsValid(SE)&&IsValid(X));
     Unique64Bit *P=SE.Param.start;
+    switch(SE.Method) {
+      case SysConstEVelVerlet:
+        _LINK(CE,X)
+        break;
+      case SysLangevinVelVerlet:
+        _LINK(Lg,X)
+        break;
+      case SysBerendsenVelVerlet:
+        _LINK(Bs,X)
+        break;
+      default:
+        Error("Propagate Method Does Not fit Dynamics!");
+    }
+  }
+
+}
+
+#undef _LINK
+#undef _LinkArray
+#undef MName
+#undef DName
+#undef NAME
+
+#include "system/interface.h"
+
+namespace mysimulator {
+
+  template <typename T, typename IDT, typename PT, typename GT,
+            template<typename> class VT,
+            template<typename,template<typename>class> class SCT>
+  void link(DynamicsVVerletData<T,VT>& D, System<T,IDT,PT,GT,VT,SCT>& S) {
+    assert(IsValid(D)&&IsValid(S));
+    for(unsigned int i=0;i<Propagates.size;++i)
+      _link(D,S.Propagates[i],S.Content().X());
   }
 
 }
