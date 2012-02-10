@@ -4,8 +4,12 @@
 
 #include "object/interface.h"
 #include "pdb/property/atom/position/interface.h"
+#include "pdb/property/atom/name.h"
+#include "array/1d/interface.h"
 
 namespace mysimulator {
+
+  struct PDBResidue;
 
   struct PDBAtom {
 
@@ -15,16 +19,18 @@ namespace mysimulator {
 
       Object<PDBResidue> Residue;
       PDBAtomName AtomType;
+      unsigned int AtomID;
+      double BFactor;
       PDBAtomPosition Position;
       Array1D<PDBAtomPosition>  altPosition;
 
-      PDBAtom() : Residue(), AtomType(UnknownAtom), Position(),
-                  altPosition() {}
+      PDBAtom() : Residue(), AtomType(UnknownAtom), AtomID(0), BFactor(0),
+                  Position(), altPosition() {}
       ~PDBAtom() { clearData(); }
 
       void clearData() {
         release(altPosition); release(Position);  AtomType=UnknownAtom;
-        release(Residue);
+        release(Residue); AtomID=0; BFactor=0;
       }
       bool isvalid() const {
         return IsValid(Residue)&&(AtomType!=UnknownAtom)&&

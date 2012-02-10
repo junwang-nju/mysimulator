@@ -8,6 +8,8 @@ namespace mysimulator {
 
     public:
 
+      typedef PDBAtomPosition Type;
+
       double X,Y,Z;
 
       PDBAtomPosition() : X(0), Y(0), Z(0) {}

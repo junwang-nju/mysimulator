@@ -5,6 +5,7 @@
 namespace mysimulator {
 
   enum PDBAtomName {
+    UnknownAtom
   };
 
 }
