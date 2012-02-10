@@ -14,7 +14,8 @@
 #define MName(M,U)    NAME(Mod,M,U)
 #define DName(M,U)    NAME(Dat,M,U)
 
-#define _LinkElement(M,U,obj)   P[PName(M,U)].ptr[0]=&(obj);
+#define _LinkElement(M,U,obj) \
+  P[PName(M,U)].ptr[0]=reinterpret_cast<void*>(&(obj));
 #define _LinkArray(M,U,obj,X) \
   if(!IsSameSize(obj,X))  imprint(obj,X);\
   P[DName(M,U)].ptr[0]=reinterpret_cast<void*>(&(obj));

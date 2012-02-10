@@ -15,6 +15,7 @@ namespace mysimulator {
             System<T,IDT,PT,GT,VT,SCT>& S) {
     assert(IsValid(S));
     assert(!D.BindFlag);
+    S.clear();
     typedef typename Dynamics<MicroCanonicalVVerlet,T,VT,OCT>::ParentType Type;
     link(static_cast<Type&>(D),S);
     link(D.VVerletData,S);
