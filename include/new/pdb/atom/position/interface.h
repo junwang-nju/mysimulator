@@ -16,7 +16,7 @@ namespace mysimulator {
       ~PDBAtomPosition() { clearData(); }
 
       void clearData() { X=Y=Z=0.; }
-      bool isvalid() const { return *this; }
+      bool isvalid() const { return true; }
 
     private:
 
