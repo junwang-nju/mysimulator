@@ -4,8 +4,11 @@
 
 #include "pdb/property/residue/name.h"
 #include "pdb/property/atom/interface.h"
+#include "array/1d/interface.h"
 
 namespace mysimulator {
+
+  struct PDBAtom;
 
   struct PDBResidue {
 
@@ -17,7 +20,8 @@ namespace mysimulator {
       unsigned int ResidueID;
       Array1D<PDBAtom>  Atoms;
 
-      PDBResidue() : ResidueType(UnknownResidue), ResidueID(0), Atoms() {}
+      PDBResidue()
+        : ResidueType(UnknownResidue), ResidueID(0), Atoms() {}
       ~PDBResidue() { clearData(); }
 
       void clearData() {

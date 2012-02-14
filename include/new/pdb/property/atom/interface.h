@@ -5,6 +5,7 @@
 #include "object/interface.h"
 #include "pdb/property/atom/position/interface.h"
 #include "pdb/property/atom/name.h"
+#include "pdb/property/residue/interface.h"
 #include "array/1d/interface.h"
 
 namespace mysimulator {
@@ -23,18 +24,22 @@ namespace mysimulator {
       double BFactor;
       PDBAtomPosition Position;
       Array1D<PDBAtomPosition>  altPosition;
+      char LocFlag;
+      Array1D<char> altLocFlag;
 
       PDBAtom() : Residue(), AtomType(UnknownAtom), AtomID(0), BFactor(0),
-                  Position(), altPosition() {}
+                  Position(), altPosition(), LocFlag('\0'), altLocFlag() {}
       ~PDBAtom() { clearData(); }
 
       void clearData() {
         release(altPosition); release(Position);  AtomType=UnknownAtom;
-        release(Residue); AtomID=0; BFactor=0;
+        release(Residue); AtomID=0; BFactor=0; LocFlag='\0';
+        release(altLocFlag);
       }
       bool isvalid() const {
         return IsValid(Residue)&&(AtomType!=UnknownAtom)&&
-               IsValid(Position)&&IsValid(altPosition);
+               IsValid(Position)&&IsValid(altPosition)&&(LocFlag!='\0')&&
+               IsValid(altLocFlag);
       }
 
     private:

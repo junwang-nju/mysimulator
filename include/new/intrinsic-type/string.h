@@ -11,6 +11,15 @@ namespace mysimulator {
     return n;
   }
 
+  void SubString(char* sub, const char* src, const unsigned int& begin,
+                 const unsigned int& end) {
+    char* p=const_cast<char*>(src)+begin;
+    char* pend=const_cast<char*>(src)+end+1;
+    char* q=sub;
+    for(;p!=pend;)  *(q++)=*(p++);
+    *q='\0';
+  }
+
 }
 
 #endif
