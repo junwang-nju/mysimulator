@@ -3,6 +3,7 @@
 #define _PDB_Atom_Allocate_H_
 
 #include "pdb/atom/interface.h"
+#include "array/1d/allocate.h"
 
 namespace mysimulator {
 

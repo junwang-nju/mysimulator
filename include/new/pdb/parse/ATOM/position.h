@@ -1,17 +1,16 @@
 
-#ifndef _PDB_Parse_Position_H_
-#define _PDB_Parse_Position_H_
+#ifndef _PDB_Parse_ATOM_Position_H_
+#define _PDB_Parse_ATOM_Position_H_
 
-#include "pdb/parse/file-line-name.h"
+#include "pdb/parse/line-name.h"
 #include "pdb/atom/position/interface.h"
 #include "intrinsic-type/string.h"
 #include <cstdlib>
-#include <cassert>
 
 namespace mysimulator {
 
   void Position(PDBAtomPosition& P, const char* line) {
-    assert(FileLineName(line)==PDBATOM);
+    assert(LineName(line)==PDBATOM);
     char tmstr[10];
     SubString(tmstr,line,30,37);
     P.X=atof(tmstr);

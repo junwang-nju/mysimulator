@@ -1,16 +1,15 @@
 
-#ifndef _PDB_Parse_BFactor_H_
-#define _PDB_Parse_BFactor_H_
+#ifndef _PDB_Parse_ATOM_BFactor_H_
+#define _PDB_Parse_ATOM_BFactor_H_
 
-#include "pdb/parse/file-line-name.h"
+#include "pdb/parse/line-name.h"
 #include "intrinsic-type/string.h"
-#include <cassert>
 #include <cstdlib>
 
 namespace mysimulator {
 
   double BFactor(const char* line) {
-    assert(FileLineName(line)==PDBATOM);
+    assert(LineName(line)==PDBATOM);
     char tmstr[8];
     SubString(tmstr,line,60,65);
     return atof(tmstr);
