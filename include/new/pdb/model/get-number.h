@@ -1,6 +1,6 @@
 
-#ifndef _PDB_Parse_MODEL_number_H_
-#define _PDB_Parse_MODEL_number_H_
+#ifndef _PDB_Model_GetNumber_H_
+#define _PDB_Model_GetNumber_H_
 
 #include "pdb/parse/line-name.h"
 #include "intrinsic-type/string.h"
@@ -14,7 +14,6 @@ namespace mysimulator {
     while(rflag) {
       nl=LineSize(run);
       rflag=(run[nl]!='\0');
-      run[nl]='\0';
       if(LineName(run)==PDBMODEL) ++nmodel;
       run=run+nl+1;
     }
