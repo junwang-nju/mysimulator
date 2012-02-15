@@ -13,7 +13,7 @@ namespace mysimulator {
 
   static const unsigned int
   KeyLibrary4Residue[KeyLibrarySize][KeySize4Residue] = {
-    { 37 }
+    { 37,  45 }
   };
 
   static const PDBResidueName
