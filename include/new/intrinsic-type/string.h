@@ -7,7 +7,7 @@ namespace mysimulator {
   unsigned int LineSize(const char* s) {
     unsigned int n=0;
     char* l=const_cast<char*>(s);
-    while((*(l++))!='\n') ++n;
+    while(((*l)!='\n')&&((*l)!='\0')) { ++n; ++l; }
     return n;
   }
 

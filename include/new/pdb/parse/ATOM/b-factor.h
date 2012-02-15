@@ -15,12 +15,6 @@ namespace mysimulator {
     return atof(tmstr);
   }
 
-}
-
-#include "array/1d/content/interface.h"
-
-namespace mysimulator {
-
   double BFactor(const Array1DContent<char>& line) {
     assert(IsValid(line));
     return BFactor(line.start);

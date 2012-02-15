@@ -16,12 +16,6 @@ namespace mysimulator {
     return String2AtomName(rstr,astr);
   }
 
-}
-
-#include "array/1d/content/interface.h"
-
-namespace mysimulator {
-
   PDBAtomName AtomName4ATOM(const Array1DContent<char>& line) {
     assert(IsValid(line));
     return AtomName4ATOM(line.start);

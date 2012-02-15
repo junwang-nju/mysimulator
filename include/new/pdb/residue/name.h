@@ -5,7 +5,27 @@
 namespace mysimulator {
 
   enum PDBResidueName {
+    Gly=0,
+    NumberResidueNames,
     UnknownResidue
+  };
+
+}
+
+#include "pdb/atom/name.h"
+
+namespace mysimulator {
+
+  enum PDBResidueAtomRange {
+    GlyStart=GlyCA,
+    GlyEnd=GlyHA3
+  };
+
+  static const PDBResidueAtomRange ResidueStart[NumberResidueNames]= {
+    GlyAStart
+  };
+  static const PDBResidueAtomRange ResidueEnd[NumberResidueNames]= {
+    GlyEnd
   };
 
 }

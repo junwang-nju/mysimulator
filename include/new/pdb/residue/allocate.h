@@ -11,7 +11,7 @@ namespace mysimulator {
     assert(PRN!=UnknownResidue);
     release(R);
     R.Name=PRN;
-    //allocate based on PRN type
+    allocate(R.Atom,ResidueStart[PRN],ResidueEnd[PRN]);
   }
 
 }

@@ -15,12 +15,6 @@ namespace mysimulator {
     return String2ResidueName(tmstr);
   }
 
-}
-
-#include "array/1d/content/interface.h"
-
-namespace mysimulator {
-
   PDBResidueName ResidueName4ATOM(const Array1DContent<char>& line) {
     assert(IsValid(line));
     return ResidueName4ATOM(line.start);

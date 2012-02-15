@@ -11,12 +11,6 @@ namespace mysimulator {
     return static_cast<unsigned int>(line[21]);
   }
 
-}
-
-#include "array/1d/content/interface.h"
-
-namespace mysimulator {
-
   unsigned int ChainTag4ATOM(const Array1DContent<char>& line) {
     assert(IsValid(line));
     return ChainTag4ATOM(line.start);

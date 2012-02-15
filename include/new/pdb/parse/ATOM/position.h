@@ -20,12 +20,6 @@ namespace mysimulator {
     P.Z=atof(tmstr);
   }
 
-}
-
-#include "array/1d/content/interface.h"
-
-namespace mysimulator {
-
   void Position(PDBAtomPosition& P, const Array1DContent<char>& line) {
     assert(IsValid(line));
     Position(P,line.start);

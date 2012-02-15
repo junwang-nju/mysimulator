@@ -5,6 +5,13 @@
 namespace mysimulator {
 
   enum PDBAtomName {
+    GlyCA=0,
+    GlyN,
+    GlyC,
+    GlyO,
+    GlyH,
+    GlyHA2,
+    GlyHA3,
     UnknownAtom
   };
 

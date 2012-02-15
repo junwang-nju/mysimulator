@@ -11,12 +11,6 @@ namespace mysimulator {
     return (line[16]!=' ')&&(line[16]!='A');
   }
 
-}
-
-#include "array/1d/content/interface.h"
-
-namespace mysimulator {
-
   bool AltLocationFlag4ATOM(const Array1DContent<char>& line) {
     assert(IsValid(line));
     return AltLocationFlag4ATOM(line.start);
