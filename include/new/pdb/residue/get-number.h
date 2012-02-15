@@ -24,7 +24,7 @@ namespace mysimulator {
       }
       else if(PLN==PDBTER) { NRes[nmol]=nres; ++nmol; nres=0; }
       else if(PLN==PDBENDMDL) rflag=false;
-      run=run+nl+1;
+      run+=nl+1;
     }
   }
 

@@ -10,10 +10,9 @@ namespace mysimulator {
 
   PDBAtomName AtomName4ATOM(const char* line) {
     assert(LineName(line)==PDBATOM);
-    char rstr[5],astr[6];
-    SubString(rstr,line,17,19);
+    char astr[6];
     SubString(astr,line,12,15);
-    return String2AtomName(rstr,astr);
+    return String2AtomName(astr);
   }
 
   PDBAtomName AtomName4ATOM(const Array1DContent<char>& line) {
