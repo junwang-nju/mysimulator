@@ -5,7 +5,26 @@
 namespace mysimulator {
 
   enum PDBResidueName {
-    Gly=0,
+    Ala=0,
+    Arg,
+    Asn,
+    Asp,
+    Cys,
+    Gln,
+    Glu,
+    Gly,
+    His,
+    Ile,
+    Leu,
+    Lys,
+    Met,
+    Phe,
+    Pro,
+    Ser,
+    Thr,
+    Trp,
+    Tyr,
+    Val,
     NumberResidueNames,
     UnknownResidue
   };
