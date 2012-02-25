@@ -11,10 +11,12 @@ namespace mysimulator {
 
     public:
 
+      typedef PDBObject   Type;
+
       char Code[5];
       Array1D<PDBModel> Model;
 
-      PDBObject() : Code("    "), Model() {}
+      PDBObject() : Code(), Model() { strncpy(Code,"    ",5); }
       ~PDBObject() { clearData(); }
 
       void clearData() { strncpy(Code,"    ",5); release(Model); }
