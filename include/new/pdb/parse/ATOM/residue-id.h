@@ -7,14 +7,14 @@
 
 namespace mysimulator {
 
-  unsigned int ResidueID4ATOM(const char* line) {
+  int ResidueID4ATOM(const char* line) {
     assert(LineName(line)==PDBATOM);
     char tmstr[6];
     SubString(tmstr,line,22,25);
     return atoi(tmstr);
   }
 
-  unsigned int ResidueID4ATOM(const Array1DContent<char>& line) {
+  int ResidueID4ATOM(const Array1DContent<char>& line) {
     assert(IsValid(line));
     return ResidueID4ATOM(line.start);
   }

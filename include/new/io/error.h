@@ -10,12 +10,23 @@ namespace mysimulator {
   template <typename T> void Warn(const T& msg) { CErr<<msg<<Endl; }
 
   template <typename T1, typename T2>
-  void Warn(const T1& msg1, const T2& msg2) { CErr<msg1<" "<<msg2<<Endl; }
+  void Warn(const T1& msg1, const T2& msg2) { CErr<<msg1<<" "<<msg2<<Endl; }
+
+  template <typename T1, typename T2, typename T3>
+  void Warn(const T1& msg1, const T2& msg2, const T3& msg3) {
+    CErr<<msg1<<" "<<msg2<<" "<<msg3<<Endl;
+  }
 
   template <typename T> void Error(const T& msg) { Warn(msg); exit(1); }
 
   template <typename T1, typename T2>
   void Error(const T1& msg1, const T2& msg2) { Warn(msg1,msg2); exit(1); }
+
+  template <typename T1, typename T2, typename T3>
+  void Error(const T1& msg1, const T2& msg2, const T3& msg3) {
+    Warn(msg1,msg2,msg3);
+    exit(1);
+  }
 
 }
 

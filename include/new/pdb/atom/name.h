@@ -89,6 +89,7 @@ namespace mysimulator {
     AtomHH2,
     AtomHH21,
     AtomHH22,
+    AtomHXT,
     NumberAtomNames,
     UnknownAtom
   };

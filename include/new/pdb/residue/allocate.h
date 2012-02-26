@@ -4,14 +4,13 @@
 
 #include "pdb/residue/interface.h"
 #include "array/1d/allocate.h"
-#include "array/1d/fill.h"
 
 namespace mysimulator {
 
   void allocate(PDBResidue& R) {
     release(R);
     allocate(R.Atom,NumberAtomNames);
-    fill(R.Atom,NULL);
+    for(unsigned int i=0;i<NumberAtomNames;++i) R.Atom[i]=NULL;
   }
 
 }
