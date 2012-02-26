@@ -94,6 +94,8 @@ namespace mysimulator {
     UnknownAtom
   };
 
+  bool IsHeavyAtom(const PDBAtomName& PAN) { return PAN<NumberHeavyAtomNames; }
+
 }
 
 #endif

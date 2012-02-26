@@ -52,9 +52,9 @@ namespace mysimulator {
     while(!IsFailed(FI))  FI>>buffer[n++];
     FI.close();
 
-    strncpy(O.Code,code,4);
     n=NumberModels(buffer);
     allocate(O,n);
+    strncpy(O.Code,code,4);
     n=NumberMolecules(buffer);
     for(unsigned int i=0;i<O.Model.size;++i)  allocate(O.Model[i],n);
     allocate(nRes,n);
