@@ -118,8 +118,8 @@ namespace mysimulator {
 
 }
 
-#undef _COPY
 #undef _COPYBOOL
+#undef _COPY
 
 #endif
 

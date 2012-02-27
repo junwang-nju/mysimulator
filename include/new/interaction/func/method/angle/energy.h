@@ -4,6 +4,7 @@
 
 #include "unique/64bit/interface.h"
 #include "distance/calc.h"
+#include "intrinsic-type/square-root.h"
 
 namespace mysimulator {
 

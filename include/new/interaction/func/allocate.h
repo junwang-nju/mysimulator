@@ -39,12 +39,15 @@
 
 #include "interaction/func/method/pairwise/energy.h"
 #include "interaction/func/method/angle/energy.h"
+#include "interaction/func/method/dihedral/energy.h"
 
 #include "interaction/func/method/pairwise/gradient.h"
 #include "interaction/func/method/angle/gradient.h"
+#include "interaction/func/method/dihedral/gradient.h"
 
 #include "interaction/func/method/pairwise/both.h"
 #include "interaction/func/method/angle/both.h"
+#include "interaction/func/method/dihedral/both.h"
 
 namespace mysimulator {
 
