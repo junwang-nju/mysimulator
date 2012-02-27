@@ -14,6 +14,7 @@ namespace mysimulator {
     CoreLJ612,
     Coulomb,
     distCoulomb,
+    AngleHarmonic,
     InteractionNumberFuncs,
     UnknownInteractionFunc
   };

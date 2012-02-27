@@ -4,41 +4,47 @@
 
 #include "interaction/func/interface.h"
 
-#include "interaction/func/impl/harmonic/func.h"
-#include "interaction/func/impl/lj612/func.h"
-#include "interaction/func/impl/lj612cut/func.h"
-#include "interaction/func/impl/lj1012/func.h"
-#include "interaction/func/impl/lj1012cut/func.h"
-#include "interaction/func/impl/core12/func.h"
-#include "interaction/func/impl/corelj612/func.h"
-#include "interaction/func/impl/coulomb/func.h"
-#include "interaction/func/impl/dist-coulomb/func.h"
+#include "interaction/func/impl/pairwise/harmonic/func.h"
+#include "interaction/func/impl/pairwise/lj612/func.h"
+#include "interaction/func/impl/pairwise/lj612cut/func.h"
+#include "interaction/func/impl/pairwise/lj1012/func.h"
+#include "interaction/func/impl/pairwise/lj1012cut/func.h"
+#include "interaction/func/impl/pairwise/core12/func.h"
+#include "interaction/func/impl/pairwise/corelj612/func.h"
+#include "interaction/func/impl/pairwise/coulomb/func.h"
+#include "interaction/func/impl/pairwise/dist-coulomb/func.h"
+#include "interaction/func/impl/angle/harmonic/func.h"
 
-#include "interaction/func/impl/harmonic/diff.h"
-#include "interaction/func/impl/lj612/diff.h"
-#include "interaction/func/impl/lj612cut/diff.h"
-#include "interaction/func/impl/lj1012/diff.h"
-#include "interaction/func/impl/lj1012cut/diff.h"
-#include "interaction/func/impl/core12/diff.h"
-#include "interaction/func/impl/corelj612/diff.h"
-#include "interaction/func/impl/coulomb/diff.h"
-#include "interaction/func/impl/dist-coulomb/diff.h"
+#include "interaction/func/impl/pairwise/harmonic/diff.h"
+#include "interaction/func/impl/pairwise/lj612/diff.h"
+#include "interaction/func/impl/pairwise/lj612cut/diff.h"
+#include "interaction/func/impl/pairwise/lj1012/diff.h"
+#include "interaction/func/impl/pairwise/lj1012cut/diff.h"
+#include "interaction/func/impl/pairwise/core12/diff.h"
+#include "interaction/func/impl/pairwise/corelj612/diff.h"
+#include "interaction/func/impl/pairwise/coulomb/diff.h"
+#include "interaction/func/impl/pairwise/dist-coulomb/diff.h"
+#include "interaction/func/impl/angle/harmonic/diff.h"
 
-#include "interaction/func/impl/harmonic/both.h"
-#include "interaction/func/impl/lj612/both.h"
-#include "interaction/func/impl/lj612cut/both.h"
-#include "interaction/func/impl/lj1012/both.h"
-#include "interaction/func/impl/lj1012cut/both.h"
-#include "interaction/func/impl/core12/both.h"
-#include "interaction/func/impl/corelj612/both.h"
-#include "interaction/func/impl/coulomb/both.h"
-#include "interaction/func/impl/dist-coulomb/both.h"
+#include "interaction/func/impl/pairwise/harmonic/both.h"
+#include "interaction/func/impl/pairwise/lj612/both.h"
+#include "interaction/func/impl/pairwise/lj612cut/both.h"
+#include "interaction/func/impl/pairwise/lj1012/both.h"
+#include "interaction/func/impl/pairwise/lj1012cut/both.h"
+#include "interaction/func/impl/pairwise/core12/both.h"
+#include "interaction/func/impl/pairwise/corelj612/both.h"
+#include "interaction/func/impl/pairwise/coulomb/both.h"
+#include "interaction/func/impl/pairwise/dist-coulomb/both.h"
+#include "interaction/func/impl/angle/harmonic/both.h"
 
 #include "interaction/func/method/pairwise/energy.h"
+#include "interaction/func/method/angle/energy.h"
 
 #include "interaction/func/method/pairwise/gradient.h"
+#include "interaction/func/method/angle/gradient.h"
 
 #include "interaction/func/method/pairwise/both.h"
+#include "interaction/func/method/angle/both.h"
 
 namespace mysimulator {
 
@@ -129,6 +135,14 @@ namespace mysimulator {
         F.BMethod=BFuncMethodPairwise<GeomType,T>;
         allocate(F.tmvec,1U,dim);
         break;
+      case AngleHarmonic:
+        F.EFunc=FuncAngleHarmonic<T>;
+        F.GFunc=DiffAngleHarmonic<T>;
+        F.BFunc=BothAngleHarmonic<T>;
+        F.EMethod=EFuncMethodAngle<GeomType,T>;
+        F.GMethod=GFuncMethodAngle<GeomType,T>;
+        F.BMethod=BFuncMethodAngle<GeomType,T>;
+        allocate(F.tmvec,4U,dim);
       default:
         Error("Unknown Interaction Function Name!");
     }
