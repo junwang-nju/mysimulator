@@ -4,13 +4,13 @@
 
 #include <cmath>
 
-#define _SQROOT(type) type sqroot(const type& d)
+#define _SQROOT(type,func) type sqroot(const type& d) { return func(d); }
 
 namespace mysimulator {
 
-  _SQROOT(long double) { return sqrtl(d); }
-  _SQROOT(double) { return sqrt(d); }
-  _SQROOT(float) { return sqrtf(d); }
+  _SQROOT(long double,sqrtl)
+  _SQROOT(double,sqrt)
+  _SQROOT(float,sqrtf)
 
 }
 

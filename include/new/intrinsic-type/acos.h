@@ -4,15 +4,17 @@
 
 #include <cmath>
 
-#define _ACOS(type) type arcCos(const type& d)
+#define _ACOS(type,func) type arcCos(const type& d) { return func(d); }
 
 namespace mysimulator {
 
-  _ACOS(double) { return acos(d); }
-  _ACOS(float) { return acos(d); }
-  _ACOS(long double) { return acosl(d); }
+  _ACOS(double,acos)
+  _ACOS(float,acosf)
+  _ACOS(long double,acosl)
 
 }
+
+#undef _ACOS
 
 #endif
 
