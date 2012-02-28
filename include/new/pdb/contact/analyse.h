@@ -36,10 +36,9 @@ namespace mysimulator {
         w=0;
         for(unsigned int i=0;i<MolSize;++i)
         for(unsigned int k=0;k<Mol[i].Residue.size;++k) {
-          for(unsigned int j=0;j<MolSize;++j)
+          for(unsigned int j=i;j<MolSize;++j)
           for(unsigned int l=0;l<Mol[j].Residue.size;++l) {
             if((k>=l)&&(i==j))  continue;
-            if(i>j) continue;
             if(DistanceSQ(Mol[i].Residue[k].Atom[AtomCA]->Loc,
                           Mol[j].Residue[l].Atom[AtomCA]->Loc)<thsq) {
               id[w][0]=i; id[w][1]=k; id[w][2]=j; id[w][3]=l;

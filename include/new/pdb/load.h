@@ -17,6 +17,7 @@
 #include "pdb/parse/ATOM/b-factor.h"
 #include "pdb/parse/ATOM/position.h"
 #include "io/input/file/interface.h"
+#include "array/2d/allocate.h"
 #include "array/1d/allocate.h"
 #include "array/1d/fill.h"
 
@@ -112,6 +113,16 @@ namespace mysimulator {
     for(unsigned int k=0;k<O.Model[i].Molecule[j].Residue.size;++k)
       set(O.Model[i].Molecule[j].Residue[k],
           GuessName(O.Model[i].Molecule[j].Residue[k].Atom));
+
+    Array1D<unsigned int> sz;
+    allocate(sz,O.Model[0].Molecule.size);
+    for(unsigned int i=0;i<sz.size;++i)
+      sz[i]=O.Model[0].Molecule[i].Residue.size;
+    allocate(O.SequentialIdx,sz);
+    O.NResidues=0;
+    for(unsigned int i=0;i<sz.size;++i)
+    for(unsigned int j=0;j<sz[i];++j)
+      O.SequentialIdx[i][j]=(O.NResidues++);
 
     release(buffer);
     delete_array(fname);
