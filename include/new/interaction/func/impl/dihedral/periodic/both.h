@@ -12,7 +12,7 @@ namespace mysimulator {
   void BothDihedralPeriodic(const T& dih,const Unique64Bit* P,T& func,T& diff) {
     func=diff=0.;
     T theta;
-    Unique64Bit* Q=const_cast<Unique64Bit*>(P);
+    Unique64Bit* Q=const_cast<Unique64Bit*>(P)+DihPeriodicFuncParamShift;
     for(unsigned int i=0;i<P[DihPeriodicNumFuncs].value<unsigned int>();++i) {
       theta=dih+Q[DihPeriodicFuncPhase].value<T>();
       theta*=Q[DihPeriodicFuncFrequence].value<unsigned int>();

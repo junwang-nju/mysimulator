@@ -17,6 +17,7 @@ namespace mysimulator {
       const GeomType& Geo, T& Energy, Array1DContent<T>* Grad,
       Array1DContent<T>* tmvec,
       void (*bfunc)(const T&,const Unique64Bit*,T&,T&)) {
+    assert(IsValid(tmvec));
     unsigned int I=idx[0], J=idx[1], K=idx[2], L=idx[3];
     T dsqij,dsqjk,dsqkl,nr3,nr4;
     T csDih,sgnDih,dih;

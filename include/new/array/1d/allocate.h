@@ -32,14 +32,14 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T1, typename T2>
-  void _imprint_structure(Array1D<T1>& v, const Array1D<T2>& cv) {
+  void _imprint_structure(Array1D<T1>& v, const Array1DContent<T2>& cv) {
     assert(IsValid(cv));
     release(v);
     allocate(v,cv.size);
   }
 
   template <typename T>
-  void imprint(Array1D<T>& v, const Array1D<T>& cv) {
+  void imprint(Array1D<T>& v, const Array1DContent<T>& cv) {
     _imprint_structure(v,cv);
     T* p=v.start;
     T* q=const_cast<T*>(cv.start);

@@ -4,6 +4,7 @@
 
 #include "pdb/model/interface.h"
 #include "array/1d/interface.h"
+#include "array/2d/interface.h"
 #include <cstring>
 
 namespace mysimulator {

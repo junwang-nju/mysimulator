@@ -39,9 +39,9 @@ namespace mysimulator {
 
   template <typename T>
   void BuildParameterDihedralPeriodic(Array1DContent<Unique64Bit>& prm) {
-    assert(prm.size>DihPeriodicNumParameters);
+    assert(prm.size>=DihPeriodicNumParameters);
     _SetSizeDihPeriodicNumParameter(prm.start);
-    assert(prm.size>prm[DihPeriodicNumParameters].value<unsigned int>());
+    assert(prm.size>=prm[DihPeriodicNumParameters].value<unsigned int>());
     _BuildParameterDihedralPeriodic<T>(prm.start);
   }
 

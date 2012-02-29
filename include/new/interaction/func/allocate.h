@@ -157,6 +157,7 @@ namespace mysimulator {
         F.EMethod=EFuncMethodDihedral<GeomType,T>;
         F.GMethod=GFuncMethodDihedral<GeomType,T>;
         F.BMethod=BFuncMethodDihedral<GeomType,T>;
+        allocate(F.tmvec,6U,dim);
         break;
       default:
         Error("Unknown Interaction Function Name!");
