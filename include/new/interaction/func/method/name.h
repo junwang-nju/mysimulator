@@ -6,11 +6,13 @@ namespace mysimulator {
 
   enum InteractionFuncMethodName {
     PairwiseMethod,
+    AngleMethod,
     InteractionFuncNumberMethods
   };
 
   static const int InteractionMethodNumberIndices[]={
-    2
+    2,
+    3
   };
 
 }
