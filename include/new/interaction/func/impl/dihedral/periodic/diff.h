@@ -12,10 +12,10 @@ namespace mysimulator {
     diff=0.;
     Unique64Bit *Q=const_cast<Unique64Bit*>(P)+DihPeriodicFuncParamShift;
     T theta;
-    for(unsigned int i=0;i<P[DihPeriodicNumFuncs].u;++i) {
+    for(unsigned int i=0;i<P[DihPeriodicNumFuncs].value<unsigned int>();++i) {
       theta=dih+Q[DihPeriodicFuncPhase].value<T>();
       diff-=Q[DihPeriodicFuncStrengthFrequence].value<T>()*
-            Sine(Q[DihPeriodicFuncFrequence].u*theta);
+            Sine(Q[DihPeriodicFuncFrequence].value<unsigned int>()*theta);
       Q+=DihPeriodicFuncNumberParameters;
     }
   }

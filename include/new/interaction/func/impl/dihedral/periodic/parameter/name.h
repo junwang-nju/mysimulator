@@ -16,7 +16,7 @@ namespace mysimulator {
     DihPeriodicFuncPhase,
     DihPeriodicFuncStrengthFrequence,
     DihPeriodicFuncNumberParameters
-  }
+  };
 
 }
 

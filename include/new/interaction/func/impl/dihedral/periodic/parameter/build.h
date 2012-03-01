@@ -7,19 +7,20 @@
 
 namespace mysimulator {
 
-  void _SetSizeDihPeriodicNumParameter(Unique64Bit* P) {
-    prm[DihPeriodicNumParameters].u=
+  void _SetSizeDihPeriodicNumParameter(Unique64Bit* prm) {
+    prm[DihPeriodicNumParameters].value<unsigned int>()=
       DihPeriodicFuncParamShift+
-      prm[DihPeriodicNumFuncs].u*DihPeriodicFuncNumberParameters;
+      prm[DihPeriodicNumFuncs].value<unsigned int>()*
+      DihPeriodicFuncNumberParameters;
   }
 
   template <typename T>
   void _BuildParameterDihedralPeriodic(Unique64Bit* prm) {
     unsigned int I=DihPeriodicFuncParamShift;
-    for(unsigned int i=0;i<prm[DihPeriodicNumFuncs].u;++i) {
+    for(unsigned int i=0;i<prm[DihPeriodicNumFuncs].value<unsigned int>();++i) {
       copy(prm[I+DihPeriodicFuncStrengthFrequence],
            prm[I+DihPeriodicFuncStrength].value<T>()*
-           prm[I+DihPeriodicFuncFrequence].u);
+           prm[I+DihPeriodicFuncFrequence].value<unsigned int>());
       I+=DihPeriodicFuncNumberParameters;
     }
   }
@@ -40,7 +41,7 @@ namespace mysimulator {
   void BuildParameterDihedralPeriodic(Array1DContent<Unique64Bit>& prm) {
     assert(prm.size>DihPeriodicNumParameters);
     _SetSizeDihPeriodicNumParameter(prm.start);
-    assert(prm.size>prm[DihPeriodicNumParameters].u);
+    assert(prm.size>prm[DihPeriodicNumParameters].value<unsigned int>());
     _BuildParameterDihedralPeriodic<T>(prm.start);
   }
 

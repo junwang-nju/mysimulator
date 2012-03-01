@@ -14,6 +14,7 @@
 #include "interaction/func/impl/pairwise/coulomb/func.h"
 #include "interaction/func/impl/pairwise/dist-coulomb/func.h"
 #include "interaction/func/impl/angle/harmonic/func.h"
+#include "interaction/func/impl/dihedral/periodic/func.h"
 
 #include "interaction/func/impl/pairwise/harmonic/diff.h"
 #include "interaction/func/impl/pairwise/lj612/diff.h"
@@ -25,6 +26,7 @@
 #include "interaction/func/impl/pairwise/coulomb/diff.h"
 #include "interaction/func/impl/pairwise/dist-coulomb/diff.h"
 #include "interaction/func/impl/angle/harmonic/diff.h"
+#include "interaction/func/impl/dihedral/periodic/diff.h"
 
 #include "interaction/func/impl/pairwise/harmonic/both.h"
 #include "interaction/func/impl/pairwise/lj612/both.h"
@@ -36,6 +38,7 @@
 #include "interaction/func/impl/pairwise/coulomb/both.h"
 #include "interaction/func/impl/pairwise/dist-coulomb/both.h"
 #include "interaction/func/impl/angle/harmonic/both.h"
+#include "interaction/func/impl/dihedral/periodic/both.h"
 
 #include "interaction/func/method/pairwise/energy.h"
 #include "interaction/func/method/angle/energy.h"
@@ -146,6 +149,15 @@ namespace mysimulator {
         F.GMethod=GFuncMethodAngle<GeomType,T>;
         F.BMethod=BFuncMethodAngle<GeomType,T>;
         allocate(F.tmvec,4U,dim);
+        break;
+      case DihedralPeriodic:
+        F.EFunc=FuncDihedralPeriodic<T>;
+        F.GFunc=DiffDihedralPeriodic<T>;
+        F.BFunc=BothDihedralPeriodic<T>;
+        F.EMethod=EFuncMethodDihedral<GeomType,T>;
+        F.GMethod=GFuncMethodDihedral<GeomType,T>;
+        F.BMethod=BFuncMethodDihedral<GeomType,T>;
+        break;
       default:
         Error("Unknown Interaction Function Name!");
     }

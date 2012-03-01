@@ -15,6 +15,7 @@ namespace mysimulator {
     Coulomb,
     distCoulomb,
     AngleHarmonic,
+    DihedralPeriodic,
     InteractionNumberFuncs,
     UnknownInteractionFunc
   };

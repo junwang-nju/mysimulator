@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#define _COS(type,func) type Cosine(const Type& d) { return func(d); }
+#define _COS(type,func) type Cosine(const type& d) { return func(d); }
 
 namespace mysimulator {
 
