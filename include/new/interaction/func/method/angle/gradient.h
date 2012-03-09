@@ -17,7 +17,7 @@ namespace mysimulator {
     unsigned int I=idx[0], J=idx[1], K=idx[2];
     T dsqij, dsqjk, dsqki, dij, djk, nri, nrk;
     dsqij=DistanceSQ(tmvec[0],X[I],X[J],Geo);
-    dsqjk=DistanceSQ(tmvec[1],X[J],X[K],Geo);
+    dsqjk=DistanceSQ(tmvec[1],X[K],X[J],Geo);
     dsqki=DistanceSQ(tmvec[2],X[K],X[I],Geo);
     T csAngle=(dsqij+dsqjk-dsqki)*0.5, snAngle;
     copy(tmvec[2],tmvec[1]);

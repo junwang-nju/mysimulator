@@ -220,6 +220,7 @@ int main() {
   COut.precision(12);
   copy(S.Content().X(),X);
   fillArray(GR,S.Content().Velocity());
+  scale(S.Content().Velocity(),3.);
   GenericEvaluate(S.Content(),S.Interactions);
   COut<<S.Content().EGData.Energy()<<Endl;
 
@@ -235,7 +236,10 @@ int main() {
   DynMC.Output.BaseData().TimeBwOutput=0.002;
   DynMC.Output.BaseData().NumStepsBwOutput=2;
   DynMC.Output.IsFirstOutput=true;
+  DynMC.Output.IsTerminated=true;
   DynMC.Output.BaseData().setNowTime(DynMC.BaseData.NowTime);
+
+  evolute(DynMC,S);
 
   unbind(DynMC,S);
 
