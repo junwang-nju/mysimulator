@@ -165,11 +165,11 @@ int main() {
     BuildParameterDihedralPeriodic<double>(Param[g]);
   }
   for(unsigned int i=g;i<Param.size;++i) {
-    allocate(Param[i],LJ612NumberParameters);
+    allocate(Param[i],LJ1012NumberParameters);
     dist=Distance(tmvec[0],X[mID[i][0]],X[mID[i][1]],FS);
-    Param[i][LJ612EqRadius].d=dist;
-    Param[i][LJ612EqEnergyDepth].d=1.;
-    BuildParameterLJ612<double>(Param[i]);
+    Param[i][LJ1012EqRadius].d=dist;
+    Param[i][LJ1012EqEnergyDepth].d=1.;
+    BuildParameterLJ1012<double>(Param[i]);
   }
 
   allocate(S.Content);
@@ -193,7 +193,7 @@ int main() {
   for(unsigned int i=0;i<N-3;++i,++g)
     allocate(S.Interactions[0].Func[g],DihedralPeriodic,3);
   for(unsigned int i=g;i<mID.size;++i)
-    allocate(S.Interactions[0].Func[i],LJ612,3);
+    allocate(S.Interactions[0].Func[i],LJ1012,3);
   SetWorkFunc(S.Interactions[0],ArrayInteraction);
 
   allocate(S.Propagates[0],SysLangevinVelVerlet,1);
@@ -228,22 +228,51 @@ int main() {
   //COut<<S.Content().EGData.Energy()<<Endl;
 
   DynL.BaseData.TimeStep=0.001;
-  DynL.CanonicalData.Temperature=1.1;
-  DynL.BaseData.NumSteps=10000000;
+  DynL.CanonicalData.Temperature=1.0;
+  DynL.BaseData.NumSteps=1000;
   DynL.BaseData.StartTime=0.;
   DynL.updateRunPeriod();
   fill(DynL.BaseData.Mass,1.);
-  fill(DynL.CanonicalLangevinBaseData.Friction,10.);
+  fill(DynL.CanonicalLangevinBaseData.Friction,0.5);
   S.Propagates[0].update(CalcLgVVerletNegHTIM);
   S.Propagates[0].update(CalcLgVVerletFac);
   S.Propagates[0].update(CalcLgVVerletRandSize);
   S.Propagates[0].update(CalcLgVVerletKE);
+
   allocate(DynL.Output.OS);
   copy(DynL.Output.OS(),COut);
-  DynL.Output.BaseData().TimeBwOutput=0.01;
-  DynL.Output.BaseData().NumStepsBwOutput=10;
+  DynL.Output.BaseData().TimeBwOutput=0.1;
+  DynL.Output.BaseData().NumStepsBwOutput=100;
   DynL.Output.IsFirstOutput=true;
   DynL.Output.IsTerminated=true;
+  DynL.Output.BaseData().setNowTime(DynL.BaseData.NowTime);
+
+  evolute(DynL,S);
+
+  DynL.CanonicalData.Temperature=1.15;
+  DynL.BaseData.NumSteps=2000000-1000;
+  DynL.BaseData.StartTime=1.;
+  DynL.updateRunPeriod();
+  fill(DynL.BaseData.Mass,1.);
+  fill(DynL.CanonicalLangevinBaseData.Friction,0.5);
+  S.Propagates[0].update(CalcLgVVerletNegHTIM);
+  S.Propagates[0].update(CalcLgVVerletFac);
+  S.Propagates[0].update(CalcLgVVerletRandSize);
+  S.Propagates[0].update(CalcLgVVerletKE);
+  DynL.Output.BaseData().setNowTime(DynL.BaseData.NowTime);
+
+  evolute(DynL,S);
+
+  DynL.CanonicalData.Temperature=0.95;
+  DynL.BaseData.NumSteps=20000000;
+  DynL.BaseData.StartTime=2000.;
+  DynL.updateRunPeriod();
+  fill(DynL.BaseData.Mass,1.);
+  fill(DynL.CanonicalLangevinBaseData.Friction,0.5);
+  S.Propagates[0].update(CalcLgVVerletNegHTIM);
+  S.Propagates[0].update(CalcLgVVerletFac);
+  S.Propagates[0].update(CalcLgVVerletRandSize);
+  S.Propagates[0].update(CalcLgVVerletKE);
   DynL.Output.BaseData().setNowTime(DynL.BaseData.NowTime);
 
   evolute(DynL,S);

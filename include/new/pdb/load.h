@@ -72,6 +72,7 @@ namespace mysimulator {
     nmd=0;
     nml=-1;
     pMolTag=0xFFFFFFFF;
+    nres=-1;
     while(rflag) {
       n=LineSize(run);
       rflag=(run[n]!='\0');
