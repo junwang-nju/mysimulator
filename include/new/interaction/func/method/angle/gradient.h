@@ -30,6 +30,12 @@ namespace mysimulator {
     snAngle=sqroot(1.-csAngle*csAngle);
     nri=djk*snAngle;
     nrk=dij*snAngle;
+    if(nri<=1e-8) {
+      COut<<"============="<<Endl;
+      COut<<nri<<Endl;
+      COut<<csAngle<<"\t"<<snAngle<<Endl;
+      COut<<djk<<Endl;
+    }
     assert(nri>1e-8);
     assert(nrk>1e-8);
     scale(tmvec[2],1./nri);

@@ -48,6 +48,15 @@ namespace mysimulator {
           (this->OS())<<"\t"<<KE;
         }
         (this->OS())<<"\t"<<SumKE;
+        double EE;
+        EE=0;
+        for(unsigned int i=189;i<EnergyData.S().Interactions[0].Func.size;++i)
+          Calc(EnergyData.S().Interactions[0].Func[i],
+               EnergyData.S().Content().X(),
+               EnergyData.S().Interactions[0].ID()[i],
+               EnergyData.S().Interactions[0].Param()[i],
+               EnergyData.S().Interactions[0].Geom(),EE);
+        (this->OS())<<"\t"<<EE;
         if(this->IsTerminated)  (this->OS())<<Endl;
       }
 
