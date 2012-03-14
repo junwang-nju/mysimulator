@@ -39,6 +39,8 @@ namespace mysimulator {
   static const double dTwo=2.;
   static const double dHalf=0.5;
 
+  static const long double ldOne=1.;
+
   static const double DRelDelta=1.1107651257113993e-16;
   static const double DSqrtRelDelta=1.0539284253265965e-8;
   static const double Gold=0.618033988749894848205;
@@ -73,6 +75,7 @@ namespace mysimulator {
     return static_cast<T>(cOne);
   }
 
+  template <> const long double& ValueOne<long double>() { return ldOne; }
   template <> const double& ValueOne<double>() { return dOne; }
   template <> const float& ValueOne<float>() { return fOne; }
 

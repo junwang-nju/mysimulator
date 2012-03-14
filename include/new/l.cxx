@@ -146,7 +146,7 @@ int main() {
     allocate(Param[g],AngleHarmonicNumberParameters);
     ang=arcCos(cosAngle(X[mID[g][0]],X[mID[g][1]],X[mID[g][2]],FS));
     Param[g][AngHarmonicEqAngle].d=ang;
-    Param[g][AngHarmonicStrength].d=80.;
+    Param[g][AngHarmonicStrength].d=20.;
     BuildParameterAngleHarmonic<double>(Param[g]);
   }
   for(unsigned int i=0;i<N-3;++i,++g) {
@@ -228,7 +228,7 @@ int main() {
   //COut<<S.Content().EGData.Energy()<<Endl;
 
   DynL.BaseData.TimeStep=0.001;
-  DynL.CanonicalData.Temperature=1.1;
+  DynL.CanonicalData.Temperature=1.05;
   DynL.BaseData.NumSteps=100000000;
   DynL.BaseData.StartTime=0.;
   DynL.updateRunPeriod();
@@ -241,8 +241,8 @@ int main() {
 
   allocate(DynL.Output.OS);
   copy(DynL.Output.OS(),COut);
-  DynL.Output.BaseData().TimeBwOutput=10;
-  DynL.Output.BaseData().NumStepsBwOutput=10000;
+  DynL.Output.BaseData().TimeBwOutput=1;
+  DynL.Output.BaseData().NumStepsBwOutput=1000;
   DynL.Output.IsFirstOutput=true;
   DynL.Output.IsTerminated=true;
   DynL.Output.BaseData().setNowTime(DynL.BaseData.NowTime);
