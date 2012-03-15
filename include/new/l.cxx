@@ -100,21 +100,24 @@ int main() {
 
   allocate(FS,3);
 
-  allocate(mID,N-1+N-2+N-3+nc);
+  unsigned int g,u;
+  allocate(mID,((N-1)*N)/2);
   for(unsigned int i=0;i<N-1;++i)   allocate(mID[i],2);
   for(unsigned int i=0;i<N-2;++i)   allocate(mID[i+N-1],3);
   for(unsigned int i=0;i<N-3;++i)   allocate(mID[i+N-1+N-2],4);
-  for(unsigned int i=0;i<nc;++i)    allocate(mID[i+N-1+N-2+N-3],2);
-  for(unsigned int i=0;i<N-1;++i) {
-    mID[i][0]=i;  mID[i][1]=i+1;
+  for(unsigned int i=0;i<(N*(N-1))/2-3*N+6;++i)
+                                    allocate(mID[i+N-1+N-2+N-3],2);
+  g=0;
+  for(unsigned int i=0;i<N-1;++i,++g) {
+    mID[g][0]=i;  mID[g][1]=i+1;
   }
-  for(unsigned int i=0,j=N-1;i<N-2;++i,++j) {
-    mID[j][0]=i;  mID[j][1]=i+1;  mID[j][2]=i+2;
+  for(unsigned int i=0;i<N-2;++i,++g) {
+    mID[g][0]=i;  mID[g][1]=i+1;  mID[g][2]=i+2;
   }
-  for(unsigned int i=0,j=N-1+N-2;i<N-3;++i,++j) {
-    mID[j][0]=i;  mID[j][1]=i+1;  mID[j][2]=i+2;  mID[j][3]=i+3;
+  for(unsigned int i=0;i<N-3;++i,++g) {
+    mID[g][0]=i;  mID[g][1]=i+1;  mID[g][2]=i+2;  mID[g][3]=i+3;
   }
-  nc=N-1+N-2+N-3;
+  u=g;
   for(unsigned int i=0;i<n;i++) {
     l1=ID[i][0];    r1=ID[i][1];
     l2=ID[i][2];    r2=ID[i][3];
@@ -122,14 +125,25 @@ int main() {
     m2=IDMap[l2][r2];
     if((l1==l2)&&(r1+4>r2)) {}
     else {
-      mID[nc][0]=m1;    mID[nc][1]=m2;
-      ++nc;
+      mID[g][0]=m1;    mID[g][1]=m2;
+      ++g;
+    }
+  }
+  bool cflag;
+  for(int i=0;i<(int)N;++i)
+  for(int j=i+4;j<(int)N;++j) {
+    cflag=true;
+    for(unsigned int k=0;k<nc;++k) {
+      if((i==mID[k+u][0])&&(j==mID[k+u][1]))  { cflag=false; break; }
+    }
+    if(cflag) {
+      mID[g][0]=i;    mID[g][1]=j;
+      ++g;
     }
   }
 
   release(size);
 
-  unsigned int g,u;
   double dist,ang,dih;
   Array2D<double> tmvec;
   allocate(tmvec,6,3);
@@ -164,12 +178,18 @@ int main() {
     Param[g][u+DihPeriodicFuncPhase].d=M_PI-dih;
     BuildParameterDihedralPeriodic<double>(Param[g]);
   }
+  for(unsigned int i=0;i<nc;++i,++g) {
+    allocate(Param[g],LJ1012NumberParameters);
+    dist=Distance(tmvec[0],X[mID[g][0]],X[mID[g][1]],FS);
+    Param[g][LJ1012EqRadius].d=dist;
+    Param[g][LJ1012EqEnergyDepth].d=1.;
+    BuildParameterLJ1012<double>(Param[g]);
+  }
   for(unsigned int i=g;i<Param.size;++i) {
-    allocate(Param[i],LJ1012NumberParameters);
-    dist=Distance(tmvec[0],X[mID[i][0]],X[mID[i][1]],FS);
-    Param[i][LJ1012EqRadius].d=dist;
-    Param[i][LJ1012EqEnergyDepth].d=1.;
-    BuildParameterLJ1012<double>(Param[i]);
+    allocate(Param[i],CoreLJ612NumberParameters);
+    Param[i][CoreLJ612Radius].d=4.0;
+    Param[i][CoreLJ612EnergyDepth].d=1.;
+    BuildParameterCoreLJ612<double>(Param[i]);
   }
 
   allocate(S.Content);
@@ -192,8 +212,10 @@ int main() {
     allocate(S.Interactions[0].Func[g],AngleHarmonic,3);
   for(unsigned int i=0;i<N-3;++i,++g)
     allocate(S.Interactions[0].Func[g],DihedralPeriodic,3);
+  for(unsigned int i=0;i<nc;++i,++g)
+    allocate(S.Interactions[0].Func[g],LJ1012,3);
   for(unsigned int i=g;i<mID.size;++i)
-    allocate(S.Interactions[0].Func[i],LJ1012,3);
+    allocate(S.Interactions[0].Func[i],CoreLJ612,3);
   SetWorkFunc(S.Interactions[0],ArrayInteraction);
 
   allocate(S.Propagates[0],SysLangevinVelVerlet,1);
