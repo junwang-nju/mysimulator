@@ -228,7 +228,7 @@ int main() {
   //COut<<S.Content().EGData.Energy()<<Endl;
 
   DynL.BaseData.TimeStep=0.001;
-  DynL.CanonicalData.Temperature=1.05;
+  DynL.CanonicalData.Temperature=1.07;
   DynL.BaseData.NumSteps=100000000;
   DynL.BaseData.StartTime=0.;
   DynL.updateRunPeriod();
