@@ -4,44 +4,43 @@
 
 #include "interaction/func/impl/pairwise/lj612cut/parameter/name.h"
 #include "unique/64bit/copy.h"
-#include "intrinsic-type/square.h"
 
 namespace mysimulator {
 
   template <typename T>
   void BuildParameterLJ612Cut(Unique64Bit* prm) {
-    T r0rc,r0rc6,r06,rc6;
-    r06=prm[LJ612CutEqRadius].value<T>();
-    rc6=prm[LJ612CutCutR].value<T>();
-    r0rc=r06/rc6;
-    r06*=square(r06);   r06*=r06;
-    rc6*=rc6;
-    copy(prm[LJ612CutCutRSQ],rc6);
-    rc6*=square(rc6);
-    r0rc6=r06/rc6;
-    T r0rc7=r0rc6*r0rc;
-    copy(prm[LJ612CutRealSigma6],r06*(1-r0rc7)/(1-r0rc6*r0rc7));
-    T sgrc6=prm[LJ612CutRealSigma6].value<T>()/rc6;
-    T sgrc12=sgrc6*sgrc6;
-    copy(prm[LJ612CutVc],sgrc12-sgrc6-sgrc6);
-    T tmd;
-    tmd=(sgrc6-sgrc12)/prm[LJ612CutCutR].value<T>();
-    tmd+=tmd+tmd;
-    tmd+=tmd;
-    copy(prm[LJ612CutKc],tmd+tmd);
-    T sgr06=sgrc6/r0rc6;
-    T e;
-    e=sgr06*(sgr06-2.);
-    e-=prm[LJ612CutVc].value<T>();
-    e-=prm[LJ612CutKc].value<T>()*(prm[LJ612CutEqRadius].value<T>()-
-       prm[LJ612CutCutR].value<T>());
-    e=-prm[LJ612CutEqEnergyDepth].value<T>()/e;
-    copy(prm[LJ612CutRealStrength],e);
-    prm[LJ612CutVc].value<T>()*=e;
-    prm[LJ612CutKc].value<T>()*=e;
-    tmd=e+e+e;
-    tmd+=tmd;
-    copy(prm[LJ612CutTwlfRealStrength],tmd+tmd);
+    T R0RC,R0RC6,R06,RC6,R0RC7;
+    R06=prm[LJ612CutEqRadius].value<T>();
+    RC6=prm[LJ612CutCutR].value<T>();
+    R0RC=R06/RC6;
+    R06*=R06*R06;    R06*=R06;
+    RC6*=RC6;
+    copy(prm[LJ612CutCutRSQ],C06);
+    RC6*=RC6*RC6;
+    R0RC6=R06/RC6;
+    R0RC7=R0RC6*R0RC;
+
+    T Sigma6=R06*(1-R0RC7)/(1-R0RC6*R0RC7);
+
+    T SGRC6,SGRC12;
+    SGRC6=Sigma6/RC6;
+    SGRC12=SGRC6*SGRC6;
+
+    T VC=SGRC12-SGRC6*2;
+    T KC=(SGRC6-SGRC12)/prm[LJ612CutCutR].value<T>()*12;
+
+    T SGR06,E;
+    SGR06=Sigma6/R06;
+    E=SGR06*(SGR06-2.);
+    E-=VC;
+    E-=KC*(prm[LJ612CutEqRadius].value<T>()-prm[LJ612CutCutR].value<T>());
+    E=-prm[LJ612CutEqEnergyDepth].value<T>()/E;
+    copy(prm[LJ612CutFactorA],E*Sigma6*Sigma6);
+    copy(prm[LJ612CutFactorB],E*Sigma6*2);
+    copy(prm[LJ612CutDiffFactorA],E*Sigma6*Sigma6*12);
+    copy(prm[LJ612CutDiffFactorB],E*Sigma6*12);
+    copy(prm[LJ612CutVc],VC*E);
+    copy(prm[LJ612CutKc],KC*E);
   }
 
 }

@@ -15,7 +15,8 @@ namespace mysimulator {
     if(dsq<P[LJ612CutCutRSQ].value<T>()) {
       LJ612Update4Both(dsq,P,buffer);
       buffer[LJ612CutDistance]=sqroot(dsq);
-      buffer[LJ612CutIvDistance]=1./buffer[LJ612CutDistance];
+      buffer[LJ612CutIvDistance]=buffer[LJ612CutDistance]
+                                *buffer[LJ612CutIvDistanceSQ];
     }
   }
 
