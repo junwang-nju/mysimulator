@@ -13,7 +13,7 @@ namespace mysimulator {
   void GFuncMethodAngle(
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, Array1DContent<T>* Grad, Array1DContent<T>* tmvec,
-      void (*dfunc)(const T&,const Unique64Bit*,T&)) {
+      void (*dfunc)(const T*,const Unique64Bit*,T*)) {
     unsigned int I=idx[0], J=idx[1], K=idx[2];
     T dsqij, dsqjk, dsqki, dij, djk, nri, nrk;
     dsqij=DistanceSQ(tmvec[0],X[I],X[J],Geo);
@@ -35,7 +35,7 @@ namespace mysimulator {
     scale(tmvec[2],1./nri);
     scale(tmvec[3],1./nrk);
     T ef, efi, efk;
-    dfunc(csAngle,P,ef);
+    dfunc(&csAngle,P,&ef);
     efi=-ef/dij;
     efk=-ef/djk;
     shift(Grad[I],+efi,tmvec[2]);

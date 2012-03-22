@@ -12,11 +12,11 @@ namespace mysimulator {
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* Grad,
       Array1DContent<T>* tmvec,
-      void (*bfunc)(const T&,const Unique64Bit*,T&,T&)) {
+      void (*bfunc)(const T*,const Unique64Bit*,T*,T*)) {
     unsigned int I=idx[0], J=idx[1];
     T dsq=DistanceSQ(tmvec[0],X[I],X[J],Geo);
     T ee,ef;
-    bfunc(dsq,P,ee,ef);
+    bfunc(&dsq,P,&ee,&ef);
     Energy+=ee;
     shift(Grad[I],+ef,tmvec[0]);
     shift(Grad[J],-ef,tmvec[0]);

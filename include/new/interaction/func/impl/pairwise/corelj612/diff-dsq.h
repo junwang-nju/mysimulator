@@ -10,7 +10,7 @@ namespace mysimulator {
   template <typename T>
   void DiffCoreLJ612DistSQ(const T* dsq, const Unique64Bit* P, T* diff) {
     if((*dsq)>P[CoreLJ612RadiusSQ].value<T>()) *diff=0.;
-    else DiffLJ612(dsq,P,diff);
+    else DiffLJ612DistSQ(dsq,P,diff);
   }
 
 }

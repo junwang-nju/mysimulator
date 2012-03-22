@@ -14,7 +14,7 @@ namespace mysimulator {
   void EFuncMethodDihedral(
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* tmvec,
-      void (*efunc)(const T&,const Unique64Bit*,T&)) {
+      void (*efunc)(const T*,const Unique64Bit*,T*)) {
     unsigned int I=idx[0], J=idx[1], K=idx[2], L=idx[3];
     T nr3,nr4;
     T csDih,sgnDih,dih;
@@ -34,7 +34,7 @@ namespace mysimulator {
     sgnDih=(dot(tmvec[1],tmvec[5])>0?1:-1);
     dih=arcCos(csDih)*sgnDih;
     T ee;
-    efunc(dih,P,ee);
+    efunc(&dih,P,&ee);
     Energy+=ee;
   }
 

@@ -11,7 +11,7 @@ namespace mysimulator {
   void BothCoreLJ612DistSQ(const T* dsq, const Unique64Bit* P, T* fc, T* df) {
     if((*dsq)>P[CoreLJ612RadiusSQ].value<T>())   (*fc)=(*df)=0.;
     else {
-      BothLJ612(dsq,P,fc,df);
+      BothLJ612DistSQ(dsq,P,fc,df);
       (*fc)+=P[CoreLJ612EnergyDepth].value<T>();
     }
   }

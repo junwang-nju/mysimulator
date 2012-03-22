@@ -15,9 +15,9 @@ namespace mysimulator {
 
       typedef InteractionFunc<GeomType,T>   Type;
 
-      typedef void (*EFuncType)(const T&,const Unique64Bit*,T&);
-      typedef void (*GFuncType)(const T&,const Unique64Bit*,T&);
-      typedef void (*BFuncType)(const T&,const Unique64Bit*,T&,T&);
+      typedef void (*EFuncType)(const T*,const Unique64Bit*,T*);
+      typedef void (*GFuncType)(const T*,const Unique64Bit*,T*);
+      typedef void (*BFuncType)(const T*,const Unique64Bit*,T*,T*);
       typedef void (*EMethodType)(const Array1DContent<T>*,const int*,
           const Unique64Bit*,const GeomType&,T&,Array1DContent<T>*,EFuncType);
       typedef void (*GMethodType)(const Array1DContent<T>*,const int*,

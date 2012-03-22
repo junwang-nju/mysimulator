@@ -13,8 +13,8 @@ namespace mysimulator {
     T dangle=angle-P[AngHarmonicEqAngle].value<T>();
     T f;
     f=P[AngHarmonicStrength].value<T>()*dangle;
-    *diff=f+f;
-    *func=f*dangle;
+    *df=f+f;
+    *fc=f*dangle;
   }
 
 }

@@ -10,7 +10,7 @@ namespace mysimulator {
   void BothDistCoulombDistSQ(const T* dsq,const Unique64Bit* P,T* fc,T* df) {
     T ivd2=1./(*dsq);
     *fc=P[dCoulombStrength].value<T>()*ivd2;
-    *df=(*func)*(ivd2+ivd2);
+    *df=(*fc)*(ivd2+ivd2);
   }
 
 }

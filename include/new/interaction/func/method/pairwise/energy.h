@@ -11,10 +11,10 @@ namespace mysimulator {
   void EFuncMethodPairwise(
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* tmvec,
-      void (*efunc)(const T&,const Unique64Bit*,T&)) {
+      void (*efunc)(const T*,const Unique64Bit*,T*)) {
     T dsq=DistanceSQ(tmvec[0],X[idx[0]],X[idx[1]],Geo);
     T ee;
-    efunc(dsq,P,ee);
+    efunc(&dsq,P,&ee);
     Energy+=ee;
   }
 

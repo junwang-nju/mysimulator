@@ -12,7 +12,7 @@ namespace mysimulator {
   void EFuncMethodAngle(
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* tmvec,
-      void (*efunc)(const T&,const Unique64Bit*,T&)) {
+      void (*efunc)(const T*,const Unique64Bit*,T*)) {
     unsigned int I=idx[0], J=idx[1], K=idx[2];
     T dsqij,dsqjk,dsqki;
     dsqij=DistanceSQ(tmvec[0],X[I],X[J],Geo);
@@ -20,7 +20,7 @@ namespace mysimulator {
     dsqki=DistanceSQ(tmvec[2],X[K],X[I],Geo);
     T csAngle=(dsqij+dsqjk-dsqki)/sqroot(dsqij*dsqjk)*0.5;
     T ee;
-    efunc(csAngle,P,ee);
+    efunc(&csAngle,P,&ee);
     Energy+=ee;
   }
 

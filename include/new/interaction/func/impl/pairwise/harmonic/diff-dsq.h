@@ -10,7 +10,7 @@ namespace mysimulator {
   template <typename T>
   void DiffHarmonicDistSQ(const T* dsq, const Unique64Bit* P, T* diff) {
     T d=sqroot(*dsq);
-    DiffHarmonicDist(&d,P,func);
+    DiffHarmonicDist(&d,P,diff);
   }
 
 }

@@ -16,7 +16,7 @@ namespace mysimulator {
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* Grad,
       Array1DContent<T>* tmvec,
-      void (*bfunc)(const T&,const Unique64Bit*,T&,T&)) {
+      void (*bfunc)(const T*,const Unique64Bit*,T*,T*)) {
     assert(IsValid(tmvec));
     unsigned int I=idx[0], J=idx[1], K=idx[2], L=idx[3];
     T dsqij,dsqjk,dsqkl,nr3,nr4;
@@ -38,7 +38,7 @@ namespace mysimulator {
     cross(tmvec[5],tmvec[3],tmvec[4]);
     sgnDih=(dot(tmvec[1],tmvec[5])>0?1:-1);
     dih=arcCos(csDih)*sgnDih;
-    bfunc(dih,P,ee,ef);
+    bfunc(&dih,P,&ee,&ef);
     Energy+=ee;
     ivdsqjk=1./dsqjk;
     dotab=dot(tmvec[0],tmvec[1]);

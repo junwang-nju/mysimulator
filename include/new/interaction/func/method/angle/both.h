@@ -14,7 +14,7 @@ namespace mysimulator {
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* Grad,
       Array1DContent<T>* tmvec,
-      void (*bfunc)(const T&,const Unique64Bit*,T&,T&)) {
+      void (*bfunc)(const T*,const Unique64Bit*,T*,T*)) {
     assert(IsValid(tmvec));
     unsigned int I=idx[0], J=idx[1], K=idx[2];
     T dsqij, dsqjk, dsqki, dij, djk, nri, nrk;
@@ -37,7 +37,7 @@ namespace mysimulator {
     scale(tmvec[2],1./nri);
     scale(tmvec[3],1./nrk);
     T ee,ef,efi,efk;
-    bfunc(csAngle,P,ee,ef);
+    bfunc(&csAngle,P,&ee,&ef);
     Energy+=ee;
     efi=-ef/dij;
     efk=-ef/djk;
