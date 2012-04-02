@@ -1,6 +1,6 @@
 
-#ifndef _Interaction_Func_Implement_Pairwise_LJ612_Func_DistSSQ_H_
-#define _Interaction_Func_Implement_Pairwise_LJ612_Func_DistSSQ_H_
+#ifndef _Interaction_Func_Implement_Pairwise_LJ612_Func_DistSQ_H_
+#define _Interaction_Func_Implement_Pairwise_LJ612_Func_DistSQ_H_
 
 #include "interaction/func/impl/pairwise/lj612/parameter/name.h"
 
