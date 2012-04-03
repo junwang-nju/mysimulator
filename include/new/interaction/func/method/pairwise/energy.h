@@ -4,6 +4,7 @@
 
 #include "unique/64bit/interface.h"
 #include "distance/calc.h"
+#include "interaction/func/impl/common/parameter/name.h"
 
 namespace mysimulator {
 
@@ -12,7 +13,10 @@ namespace mysimulator {
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* tmvec,
       void (*efunc)(const T*,const Unique64Bit*,T*)) {
-    T dsq=DistanceSQ(tmvec[0],X[idx[0]],X[idx[1]],Geo);
+    T* buffer=reinterpret_cast<T*>(P[InteractionBuffer].ptr[0]);
+    T dsq;
+    if(buffer==NULL) dsq=DistanceSQ(tmvec[0],X[idx[0]],X[idx[1]],Geo);
+    else dsq=*buffer;
     T ee;
     efunc(&dsq,P,&ee);
     Energy+=ee;

@@ -191,6 +191,8 @@ int main() {
     Param[i][CoreLJ612EnergyDepth].d=1.;
     BuildParameterCoreLJ612<double>(Param[i]);
   }
+  for(unsigned int i=0;i<Param.size;++i)
+    Param[i][InteractionBuffer].ptr[0]=NULL;
 
   allocate(S.Content);
   allocate(S.Interactions,1);

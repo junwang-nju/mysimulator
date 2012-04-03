@@ -2,10 +2,12 @@
 #ifndef _Interaction_Func_Implement_Pairwise_LJ1012Cut_Parameter_Name_H_
 #define _Interaction_Func_Implement_Pairwise_LJ1012Cut_Parameter_Name_H_
 
+#include "interaction/func/impl/common/parameter/name.h"
+
 namespace mysimulator {
 
   enum LJ1012CutParameterName {
-    LJ1012CutEqRadius=0,
+    LJ1012CutEqRadius=InteractionCommonNumberParameters,
     LJ1012CutEqEnergyDepth,
     LJ1012CutCutR,
     LJ1012CutCutRSQ,
