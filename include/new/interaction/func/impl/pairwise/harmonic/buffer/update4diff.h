@@ -7,8 +7,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void HarmonicBufferUpdate4Diff(const T& dsq, T* buffer) {
-    HarmonicBufferUpdate4Func(dsq,buffer);
+  void HarmonicBufferUpdate4Diff(const T& dsq,const Unique64Bit* P,T* buffer) {
+    HarmonicBufferUpdate4Func(dsq,P,buffer);
     buffer[HarmonicIvLength]=1./buffer[HarmonicLength];
   }
 

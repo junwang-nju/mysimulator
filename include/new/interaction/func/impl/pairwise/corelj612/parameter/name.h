@@ -9,9 +9,11 @@ namespace mysimulator {
   enum CoreLJ612ParameterName {
     CoreLJ612Radius           =LJ612EqRadius,
     CoreLJ612EnergyDepth      =LJ612EqEnergyDepth,
-    CoreLJ612RadiusSQ         =LJ612EqRadiusSQ,
-    CoreLJ612TwlfEnergyDepth  =LJ612TwlfEnergyDepth,
-    CoreLJ612NumberParameters =LJ612NumberParameters
+    CoreLJ612FactorA          =LJ612FactorA,
+    CoreLJ612FactorB          =LJ612FactorB,
+    CoreLJ612DiffFactorA      =LJ612DiffFactorA,
+    CoreLJ612RadiusSQ         =LJ612NumberParameters,
+    CoreLJ612NumberParameters
   };
 
 }

@@ -4,11 +4,12 @@
 
 #include "intrinsic-type/square-root.h"
 #include "interaction/func/impl/pairwise/harmonic/buffer/name.h"
+#include "interaction/func/impl/pairwise/harmonic/parameter/name.h"
 
 namespace mysimulator {
 
   template <typename T>
-  void HarmonicBufferUpdate4Func(const T& dsq, T* buffer) {
+  void HarmonicBufferUpdate4Func(const T& dsq, const Unique64Bit*, T* buffer) {
     buffer[HarmonicLength]=sqroot(dsq);
   }
 
