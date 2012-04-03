@@ -11,14 +11,18 @@ namespace mysimulator {
   template <typename GeomType, typename T>
   void EFuncMethodPairwise(
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
-      const GeomType& Geo, T& Energy, Array1DContent<T>* tmvec,
+      const GeomType& Geo, T& Energy, void (*ufunc)(const T&,T*),
       void (*efunc)(const T*,const Unique64Bit*,T*)) {
     T* buffer=reinterpret_cast<T*>(P[InteractionBuffer].ptr[0]);
+    Array1D<T>* tmvec=
+      reinterpret_cast<Array1D<T>*>(P[InteractionArrayBuffer].ptr[0]);
     T dsq;
-    if(buffer==NULL) dsq=DistanceSQ(tmvec[0],X[idx[0]],X[idx[1]],Geo);
-    else dsq=*buffer;
+    if(P[InteractionBufferFlag].u[0]==0) {
+      dsq=DistanceSQ(tmvec[0],X[idx[0]],X[idx[1]],Geo);
+      ufunc(dsq,buffer);
+    }
     T ee;
-    efunc(&dsq,P,&ee);
+    efunc(buffer,P,&ee);
     Energy+=ee;
   }
 

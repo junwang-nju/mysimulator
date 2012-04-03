@@ -12,19 +12,20 @@ namespace mysimulator {
   void BFuncMethodPairwise(
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, T& Energy, Array1DContent<T>* Grad,
-      Array1DContent<T>* tmvec,
+      void (*ufunc)(const T&,T*),
       void (*bfunc)(const T*,const Unique64Bit*,T*,T*)) {
     assert(IsValid(tmvec));
     T* buffer=reinterpret_cast<T*>(P[InteractionBuffer].ptr[0]);
+    Array1D<T>* tmvec=
+      reinterpret_cast<Array1D<T>*>(P[InteractionArrayBuffer].ptr[0]);
     unsigned int I=idx[0], J=idx[1];
     T dsq;
-    if(buffer==NULL)  dsq=DistanceSQ(tmvec[0],X[I],X[J],Geo);
-    else {
-      dsq=*buffer;
-      _copy(tmvec[0].start,buffer+1,tmvec[0].size);
+    if(P[InteractionBufferFlag].u[0]==0)  {
+      dsq=DistanceSQ(tmvec[0],X[I],X[J],Geo);
+      ufunc(dsq,buffer);
     }
     T ee,ef;
-    bfunc(&dsq,P,&ee,&ef);
+    bfunc(buffer,P,&ee,&ef);
     Energy+=ee;
     shift(Grad[I],+ef,tmvec[0]);
     shift(Grad[J],-ef,tmvec[0]);

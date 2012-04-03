@@ -6,6 +6,8 @@ namespace mysimulator {
 
   enum InteractionCommonParameterName {
     InteractionBuffer=0,
+    InteractionArrayBuffer,
+    InteractionBufferFlag,
     InteractionCommonNumberParameters
   };
 
