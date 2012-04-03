@@ -12,6 +12,7 @@ namespace mysimulator {
     T tmd=buf[LJ612IvDistance6];
     *func=tmd*(P[LJ612FactorA].value<T>()*tmd-P[LJ612FactorB].value<T>());
     *diff=tmd*(P[LJ612DiffFactorB].value<T>()-P[LJ612DiffFactorA].value()*tmd)
+             *buf[LJ612IvDistanceSQ];
   }
 
 }

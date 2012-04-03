@@ -2,15 +2,17 @@
 #ifndef _Interaction_Func_Implement_Pairwise_LJ1012_Parameter_Name_H_
 #define _Interaction_Func_Implement_Pairwise_LJ1012_Parameter_Name_H_
 
-#include "interaction/func/impl/common/parameter/name.h"
+#include "interaction/func/impl/pairwise/common/parameter/name.h"
 
 namespace mysimulator {
 
   enum LJ1012ParameterName {
-    LJ1012EqRadius=InteractionCommonNumberParameters,
+    LJ1012EqRadius=PairwiseCommonNumberParameters,
     LJ1012EqEnergyDepth,
-    LJ1012EqRadiusSQ,
-    LJ1012SixtyEqEnergyDepth,
+    LJ1012FactorA,
+    LJ1012FactorB,
+    LJ1012DiffFactorA,
+    LJ1012DiffFactorB,
     LJ1012NumberParameters
   };
 
