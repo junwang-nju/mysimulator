@@ -5,8 +5,6 @@
 #include "unique/64bit/interface.h"
 #include "distance/calc.h"
 #include "array/1d/cross.h"
-#include "array/1d/scale.h"
-#include "intrinsic-type/acos.h"
 #include "interaction/func/impl/common/parameter/name.h"
 
 namespace mysimulator {
@@ -21,28 +19,23 @@ namespace mysimulator {
     T* buffer=reinterpret_cast<T*>(P[InteractionBuffer].ptr[0]);
     Array<T>* tmvec=
       reinterpret_cast<Array1D<T>*>(P[InteractionArrayBuffer].ptr[0]);
-    if(buffer==NULL) {
+    if(P[InteractionBufferFlag].u[0]==0) {
       unsigned int I=idx[0], J=idx[1], K=idx[2], L=idx[3];
-      T nr3,nr4;
-      T csDih,sgnDih;
+      T dt[4];
       DisplacementCalc(tmvec[0],X[J],X[I],Geo);
       DisplacementCalc(tmvec[1],X[K],X[J],Geo);
       DisplacementCalc(tmvec[2],X[L],X[K],Geo);
       cross(tmvec[3],tmvec[0],tmvec[1]);
       cross(tmvec[4],tmvec[1],tmvec[2]);
-      nr3=norm(tmvec[3]);
-      nr4=norm(tmvec[4]);
-      assert(nr3>1e-8);
-      assert(nr4>1e-8);
-      scale(tmvec[3],1./nr3);
-      scale(tmvec[4],1./nr4);
-      csDih=dot(tmvec[3],tmvec[4]);
       cross(tmvec[5],tmvec[3],tmvec[4]);
-      sgnDih=(dot(tmvec[1],tmvec[5])>0?1:-1);
-      dih=arcCos(csDih)*sgnDih;
-    } else dih=*buffer;
+      dt[0]=dot(tmvec[3],tmvec[3]);
+      dt[1]=dot(tmvec[4],tmvec[4]);
+      dt[2]=dot(tmvec[3],tmvec[4]);
+      dt[3]=dot(tmvec[1],tmvec[5]);
+      ufunc(dt,P,buffer);
+    }
     T ee;
-    efunc(&dih,P,&ee);
+    efunc(buffer,P,&ee);
     Energy+=ee;
   }
 
