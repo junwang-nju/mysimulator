@@ -24,7 +24,7 @@ namespace mysimulator {
     if(P[InteractionBufferFlag].u[0]==0) {
       dsq[0]=DistanceSQ(tmvec[0],X[I],X[J],Geo);
       dsq[1]=DistanceSQ(tmvec[1],X[K],X[J],Geo);
-      dsq[2]=DistanceSQ(tmvec[2],X[K],X[I],Geo);
+      dsq[2]=dot(tmvec[0],tmvec[1]);
       ufunc(dsq,P,buffer);
     }
     copy(tmvec[2],tmvec[1]);

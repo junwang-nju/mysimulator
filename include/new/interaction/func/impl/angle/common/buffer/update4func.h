@@ -10,7 +10,7 @@ namespace mysimulator {
 
   template <typename T>
   void AngleCommonUpdate4Func(const T* dsq, const Unique64Bit*,T* buffer) {
-    buffer[AngleCosine]=(dsq[0]+dsq[1]-dsq[2])*0.5/sqroot(dsq[0]*dsq[1]);
+    buffer[AngleCosine]=dsq[2]/sqroot(dsq[0]*dsq[1]);
   }
 
 }

@@ -12,7 +12,7 @@ namespace mysimulator {
     T tmda=1./dsq[0];
     T tmdb=1./dsq[1];
     T tmd=sqroot(tmda*tmdb);
-    T tmd1=tmd*(dsq[0]+dsq[1]-dsq[2])*0.5;
+    T tmd1=tmd*dsq[2];
     T tmd2=1./sqroot(1-tmd1*tmd1);
     T tmd3=tmd1*tmd2;
     buffer[AngleCosine]=tmd1;

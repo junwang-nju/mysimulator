@@ -22,7 +22,8 @@ namespace mysimulator {
       T dsq[3];
       dsq[0]=DistanceSQ(tmvec[0],X[I],X[J],Geo);
       dsq[1]=DistanceSQ(tmvec[1],X[J],X[K],Geo);
-      dsq[2]=DistanceSQ(tmvec[2],X[K],X[I],Geo);
+      dsq[2]=dot(tmvec[0],tmvec[1]);
+      //dsq[2]=DistanceSQ(tmvec[2],X[K],X[I],Geo);
       ufunc(dsq,P,buffer);
     }
     T ee;
