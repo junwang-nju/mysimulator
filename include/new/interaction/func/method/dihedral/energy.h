@@ -14,11 +14,13 @@ namespace mysimulator {
   template <typename GeomType, typename T>
   void EFuncMethodDihedral(
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
-      const GeomType& Geo, T& Energy, Array1DContent<T>* tmvec,
+      const GeomType& Geo, T& Energy,
+      void (*ufunc)(const T*,const Unique64Bit*,T*),
       void (*efunc)(const T*,const Unique64Bit*,T*)) {
     assert(IsValid(tmvec));
     T* buffer=reinterpret_cast<T*>(P[InteractionBuffer].ptr[0]);
-    T dih;
+    Array<T>* tmvec=
+      reinterpret_cast<Array1D<T>*>(P[InteractionArrayBuffer].ptr[0]);
     if(buffer==NULL) {
       unsigned int I=idx[0], J=idx[1], K=idx[2], L=idx[3];
       T nr3,nr4;
