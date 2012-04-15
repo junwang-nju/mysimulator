@@ -8,8 +8,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void Core12Update4Diff(const T& dsq,const Unique64Bit*,T* buffer) {
-    T tmd=1./dsq;
+  void Core12Update4Diff(const T* dsq,const Unique64Bit*,T* buffer) {
+    T tmd=1./(*dsq);
     buffer[Core12IvDistSQ]=tmd;
     tmd*=tmd;
     buffer[Core12IvDist12]=tmd*tmd*tmd;

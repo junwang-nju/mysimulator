@@ -8,8 +8,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void LJ1012Update4Func(const T& dsq, const Unique64Bit*, T* buffer) {
-    T tmd=1./dsq;
+  void LJ1012Update4Func(const T* dsq, const Unique64Bit*, T* buffer) {
+    T tmd=1./(*dsq);
     buffer[LJ1012IvDistanceSQ]=tmd;
     T tmd1=tmd*tmd;
     tmd1*=tmd1;

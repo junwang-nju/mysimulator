@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void Core12Update4Both(const T& dsq,const Unique64Bit* P,T* buffer) {
+  void Core12Update4Both(const T* dsq,const Unique64Bit* P,T* buffer) {
     Core12Update4Diff(dsq,P,buff);
   }
 

@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void HarmonicBufferUpdate4Both(const T& dsq,const Unique64Bit* P,T* buffer) {
+  void HarmonicBufferUpdate4Both(const T* dsq,const Unique64Bit* P,T* buffer) {
     HarmonicBufferUpdate4Diff(dsq,P,buffer);
   }
 

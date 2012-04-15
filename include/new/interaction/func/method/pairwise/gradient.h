@@ -12,7 +12,7 @@ namespace mysimulator {
   void GFuncMethodPairwise(
       const Array1DContent<T>* X, const int* idx, const Unique64Bit* P,
       const GeomType& Geo, Array1DContent<T>* Grad,
-      void (*ufunc)(const T&,const Unique64Bit*,T*),
+      void (*ufunc)(const T*,const Unique64Bit*,T*),
       void (*dfunc)(const T*,const Unique64Bit*,T*)) {
     assert(IsValid(tmvec));
     T* buffer=reinterpret_cast<T*>(P[InteractionBuffer].ptr[0]);
@@ -22,7 +22,7 @@ namespace mysimulator {
     T dsq;
     if(P[InteractionBufferFlag].u[0]==0) {
       dsq=DistanceSQ(tmvec[0],X[I],X[J],Geo);
-      ufunc(dsq,P,buffer);
+      ufunc(&dsq,P,buffer);
     }
     T ef;
     dfunc(buffer,P,&ef);

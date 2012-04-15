@@ -10,9 +10,9 @@
 namespace mysimulator {
 
   template <typename T>
-  void LJ1012CutUpdate4Diff(const T& dsq,const Unique64Bit* P,T* buffer) {
-    buffer[LJ1012CutDistanceSQ]=dsq;
-    if(dsq<P[LJ1012CutCutRSQ].value<T>()) {
+  void LJ1012CutUpdate4Diff(const T* dsq,const Unique64Bit* P,T* buffer) {
+    buffer[LJ1012CutDistanceSQ]=*dsq;
+    if(*dsq<P[LJ1012CutCutRSQ].value<T>()) {
       LJ1012Update4Diff(dsq,P,buffer);
       buffer[LJ1012CutIvDistance]=sqroot(buffer[LJ1012CutIvDistanceSQ]);
     }

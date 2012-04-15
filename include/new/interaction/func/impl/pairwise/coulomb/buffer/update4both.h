@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void CoulombUpdate4Both(const T& dsq, const Unique64Bit* P,T* buffer) {
+  void CoulombUpdate4Both(const T* dsq, const Unique64Bit* P,T* buffer) {
     CoulombUpdate4Diff(dsq,P,buffer);
   }
 

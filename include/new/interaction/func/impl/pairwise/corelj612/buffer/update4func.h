@@ -9,9 +9,9 @@
 namespace mysimulator {
 
   template <typename T>
-  void CoreLJ612Update4Func(const T& dsq,const Unique64Bit* P,T* buffer) {
-    buffer[CoreLJ612DistanceSQ]=dsq;
-    if(dsq<P[CoreLJ612RadiusSQ].value<T>())
+  void CoreLJ612Update4Func(const T* dsq,const Unique64Bit* P,T* buffer) {
+    buffer[CoreLJ612DistanceSQ]=(*dsq);
+    if(*dsq<P[CoreLJ612RadiusSQ].value<T>())
       LJ612Update4Func(dsq,P,buffer);
   }
 

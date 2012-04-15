@@ -9,8 +9,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void CoulombUpdate4Diff(const T& dsq, const Unique64Bit*, T* buffer) {
-    T tmd=1./dsq;
+  void CoulombUpdate4Diff(const T* dsq, const Unique64Bit*, T* buffer) {
+    T tmd=1./(*dsq);
     buffer[CoulombIvDistanceSQ]=tmd;
     buffer[CoulombIvDistance]=sqroot(tmd);
   }

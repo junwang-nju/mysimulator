@@ -10,11 +10,11 @@
 namespace mysimulator {
 
   template <typename T>
-  void LJ1012CutUpdate4Func(const T& dsq,const Unique64Bit* P,T* buffer) {
-    buffer[LJ1012CutDistanceSQ]=dsq;
-    if(dsq<P[LJ1012CutCutRSQ].value<T>()) {
+  void LJ1012CutUpdate4Func(const T* dsq,const Unique64Bit* P,T* buffer) {
+    buffer[LJ1012CutDistanceSQ]=(*dsq);
+    if((*dsq)<P[LJ1012CutCutRSQ].value<T>()) {
       LJ1012Update4Func(dsq,P,buffer);
-      buffer[LJ1012CutDistance]=sqroot(dsq);
+      buffer[LJ1012CutDistance]=sqroot(*dsq);
     }
   }
 

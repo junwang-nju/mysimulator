@@ -9,8 +9,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void HarmonicBufferUpdate4Func(const T& dsq, const Unique64Bit*, T* buffer) {
-    buffer[HarmonicLength]=sqroot(dsq);
+  void HarmonicBufferUpdate4Func(const T* dsq, const Unique64Bit*, T* buffer) {
+    buffer[HarmonicLength]=sqroot(*dsq);
   }
 
 }

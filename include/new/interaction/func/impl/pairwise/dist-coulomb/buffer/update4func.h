@@ -8,8 +8,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void DistCoulombUpdate4Func(const T& dsq, const Unique64Bit*, T* buffer) {
-    buffer[DistCoulombIvDistanceSQ]=1./dsq;
+  void DistCoulombUpdate4Func(const T* dsq, const Unique64Bit*, T* buffer) {
+    buffer[DistCoulombIvDistanceSQ]=1./(*dsq);
   }
 
 }

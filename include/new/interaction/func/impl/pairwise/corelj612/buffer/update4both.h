@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void CoreLJ612Update4Both(const T& dsq,const Unique64Bit* P,T* buffer) {
+  void CoreLJ612Update4Both(const T* dsq,const Unique64Bit* P,T* buffer) {
     CoreLJ612Update4Diff(dsq,P,buffer);
   }
 
