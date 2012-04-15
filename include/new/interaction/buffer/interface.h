@@ -14,19 +14,21 @@ namespace mysimulator {
     public:
 
       typedef InteractionBuffer<T>    Type;
-      typedef (*P2PFuncType)(const T*,const Unique64Bit*,T*);
-      typedef (*GetPreFuncType)(const int*);
+      typedef (*P2PFuncType)(const T*,const Unique64Bit*,T*,bool&);
+      typedef (*GetPreFuncType)(Type*,const int*,T*);
 
       Array1D<T>      pre;
       Array1D<T>      post;
       Array2D<T>      tmvec;
       Array1D<int>    inf;
+      bool            postUpdate;
       P2PFuncType     P2PFunc,P2PDiff,P2PBoth;
       GetPreFuncType  GetPreFunc,GetPreDiff,GetPreBoth;
 
       InteractionBuffer()
-        : pre(), post(), tmvec(), inf(), P2PFunc(NULL), P2PDiff(NULL),
-          P2PBoth(NULL), GetPreFunc(NULL), GetPreDiff(NULL), GetPreBoth(NULL) {}
+        : pre(), post(), tmvec(), inf(), postUpdate(true), P2PFunc(NULL),
+          P2PDiff(NULL), P2PBoth(NULL), GetPreFunc(NULL), GetPreDiff(NULL),
+          GetPreBoth(NULL) {}
       ~InteractionBuffer() { clearData(); }
 
       bool isvalid() const {
@@ -35,9 +37,11 @@ namespace mysimulator {
       }
       void clearData() {
         release(inf); release(tmvec); release(post); release(pre);
-        P2PFunc=NULL; P2PDiff=NULL; P2PBoth=NULL;
+        postUpdate=true; P2PFunc=NULL; P2PDiff=NULL; P2PBoth=NULL;
         GetPreFunc=NULL; GetPreDiff=NULL; GetPreBoth=NULL;
       }
+
+      void clearFlag() { postUpdate=true; }
 
     private:
 
