@@ -5,6 +5,7 @@
 #include "distance/calc.h"
 #include "interaction/buffer/interface.h"
 #include "interaction/func/impl/angle/common/buffer/pre-name.h"
+#include "interaction/func/impl/angle/common/buffer/vec-name.h"
 
 namespace mysimulator {
 
@@ -16,10 +17,13 @@ namespace mysimulator {
     if(Buf.postUpdate) {
       if(IsValid(Buf.inf)) Buf.GetPreFunc(&Buf,Buf.inf.start,Buf.pre.start);
       else {
-        Buf.pre[AngleEdgeASQ]=DistanceSQ(Buf.tmvec[0],X[I],X[J],Geo);
-        Buf.pre[AngleEdgeBSQ]=DistanceSQ(Buf.tmvec[1],X[K],X[J],Geo);
+        Buf.pre[AngleEdgeASQ]
+          =DistanceSQ(Buf.tmvec[AngleBondVecIJ],X[I],X[J],Geo);
+        Buf.pre[AngleEdgeBSQ]
+          =DistanceSQ(Buf.tmvec[AngleBondVecKJ],X[K],X[J],Geo);
       }
-      Buf.pre[AngleDotAB]=dot(Buf.tmvec[0],Buf.tmvec[1]);
+      Buf.pre[AngleDotAB]
+        =dot(Buf.tmvec[AngleBondVecIJ],Buf.tmvec[AngleBondVecKJ]);
       Buf.P2PFunc(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
     }
     T ee;

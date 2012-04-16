@@ -5,6 +5,7 @@
 #include "distance/calc.h"
 #include "interaction/buffer/interface.h"
 #include "interaction/func/impl/pairwise/common/buffer/pre-name.h"
+#include "interaction/func/impl/pairwise/common/buffer/vec-name.h"
 
 namespace mysimulator {
 
@@ -17,7 +18,7 @@ namespace mysimulator {
       if(IsValid(Buf.inf))  Buf.GetPreFunc(&Buf,Buf.inf.start,Buf.pre.start);
       else
         Buf.pre[PairwiseDistanceSQ]=
-          DistanceSQ(Buf.tmvec[0],X[idx[0]],X[idx[1]],Geo);
+          DistanceSQ(Buf.tmvec[PairwiseBondVecIJ],X[idx[0]],X[idx[1]],Geo);
       Buf.P2PFunc(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
     }
     T ee;

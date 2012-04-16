@@ -5,6 +5,7 @@
 #include "distance/calc.h"
 #include "interaction/buffer/interface.h"
 #include "interaction/func/impl/pairwise/common/buffer/pre-name.h"
+#include "interaction/func/impl/pairwise/common/buffer/vec-name.h"
 
 namespace mysimulator {
 
@@ -16,16 +17,16 @@ namespace mysimulator {
       void (*bfunc)(const T*,const Unique64Bit*,T*,T*)) {
     unsigned int I=idx[0], J=idx[1];
     if(Buf.postUpdate) {
-      DisplacementCalc(Buf.tmvec[0],X[I],X[J],Geo);
+      DisplacementCalc(Buf.tmvec[PairwiseBondVecIJ],X[I],X[J],Geo);
       if(IsValid(Buf.inf)) Buf.GetPreBoth(&Buf,Buf.inf.start,Buf.pre.start);
-      else Buf.pre[PairwiseDistanceSQ]=normSQ(Buf.tmvec[0]);
+      else Buf.pre[PairwiseDistanceSQ]=normSQ(Buf.tmvec[PairwiseBondVecIJ]);
       Buf.P2PBoth(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
     }
     T ee,ef;
     bfunc(Buf.post.start,P,&ee,&ef);
     Energy+=ee;
-    shift(Grad[I],+ef,Buf.tmvec[0]);
-    shift(Grad[J],-ef,Buf.tmvec[0]);
+    shift(Grad[I],+ef,Buf.tmvec[PairwiseBondVecIJ]);
+    shift(Grad[J],-ef,Buf.tmvec[PairwiseBondVecIJ]);
   }
 
 }

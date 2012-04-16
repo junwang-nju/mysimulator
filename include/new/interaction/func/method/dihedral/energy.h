@@ -6,6 +6,7 @@
 #include "array/1d/cross.h"
 #include "interaction/buffer/interface.h"
 #include "interaction/func/impl/dihedral/common/buffer/pre-name.h"
+#include "interaction/func/impl/dihedral/common/buffer/vec-name.h"
 
 namespace mysimulator {
 
@@ -16,19 +17,24 @@ namespace mysimulator {
       void (*efunc)(const T*,const Unique64Bit*,T*)) {
     if(Buf.postUpdate) {
       unsigned int I=idx[0], J=idx[1], K=idx[2], L=idx[3];
-      DisplacementCalc(Buf.tmvec[0],X[J],X[I],Geo);
-      DisplacementCalc(Buf.tmvec[1],X[K],X[J],Geo);
-      DisplacementCalc(Buf.tmvec[2],X[L],X[K],Geo);
-      cross(Buf.tmvec[3],Buf.tmvec[0],Buf.tmvec[1]);
-      cross(Buf.tmvec[4],Buf.tmvec[1],Buf.tmvec[2]);
-      cross(Buf.tmvec[5],Buf.tmvec[3],Buf.tmvec[4]);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecJI],X[J],X[I],Geo);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecKJ],X[K],X[J],Geo);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecLK],X[L],X[K],Geo);
+      cross(Buf.tmvec[DihedralNormVecA],Buf.tmvec[DihedralBondVecJI],
+                                        Buf.tmvec[DihedralBondVecKJ]);
+      cross(Buf.tmvec[DihedralNormVecB],Buf.tmvec[DihedralBondVecKJ],
+                                        Buf.tmvec[DihedralBondVecLK]);
+      cross(Buf.tmvec[DihedralCrossNormVec],Buf.tmvec[DihedralNormVecA],
+                                            Buf.tmvec[DihedralNormVecB]);
       if(IsValid(Buf.inf)) Buf.GetPreFunc(&Buf,Buf.inf.start,Buf.pre.start);
       else {
-        Buf.pre[DihedralIvNormASQ]=1./normSQ(Buf.tmvec[3]);
-        Buf.pre[DihedralIvNomrBSQ]=1./normSQ(Buf.tmvec[4]);
+        Buf.pre[DihedralIvNormASQ]=1./normSQ(Buf.tmvec[DihedralNormVecA]);
+        Buf.pre[DihedralIvNomrBSQ]=1./normSQ(Buf.tmvec[DihedralNormVecB]);
       }
-      Buf.pre[DihedralDotNormAB]=dot(Buf.tmvec[3],Buf.tmvec[4]);
-      Buf.pre[DihedralCrossNormAB]=dot(Buf.tmvec[1],Buf.tmvec[5]);
+      Buf.pre[DihedralDotNormAB]
+        =dot(Buf.tmvec[DihedralNormVecA],Buf.tmvec[DihedralNormVecB]);
+      Buf.pre[DihedralCrossNormAB]
+        =dot(Buf.tmvec[DihedralBondVecKJ],Buf.tmvec[DihedralCrossNormVec]);
       Buf.P2PFunc(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
     }
     T ee;
