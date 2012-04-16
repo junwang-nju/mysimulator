@@ -2,37 +2,25 @@
 #ifndef _Interaction_Func_Implement_Dihedral_Common_Buffer_GetPre4Diff_H_
 #define _Interaction_Func_Implement_Dihedral_Common_Buffer_GetPre4Diff_H_
 
-#include "interaction/buffer/interface.h"
-#include "interaction/func/impl/dihedral/common/buffer/pre-name.h"
+#include "interaction/func/impl/dihedral/common/buffer/getpre-4func.h"
 #include "interaction/func/impl/angle/common/buffer/pre-name.h"
-#include "interaction/func/impl/angle/common/buffer/post-name.h"
 #include "interaction/func/impl/pairwise/common/buffer/pre-name.h"
-#include "interaction/func/impl/dihedral/common/buffer/vec-name.h"
 
 namespace mysimulator {
 
   template <typename T>
   void DihedralCommonGetPre4Diff(
       InteractionBuffer<T>* Buf,const int* inf,T* pre) {
+    DihedralCommonGetPre4Func(Buf,inf,pre);
     InteractionBuffer<T>* rBuf;
-    assert(inf[0]<0)
-    rBuf=Buf+inf[0];
-    pre[DihedralIvNormASQ]=
-      (rBuf->postUpdate?1./normSQ(Buf->tmvec[DihedralNormVecA]):
-                        square(rBuf->post[AngleIvRabSin]));
-    assert(inf[1]<0)
-    rBuf=Buf+inf[1];
-    pre[DihedralIvNormBSQ]=
-      (rBuf->postUpdate?1./normSQ(Buf->tmvec[DihedralNormVecB]):
-                        square(rBuf->post[AngleIvRabSin]));
-    assert(inf[2]<0);
-    rBuf=Buf+inf[2];
+    assert(inf[DihedralAxisInf]<0);
+    rBuf=Buf+inf[DihedralAxisInf];
     pre[DihedralAxisSQ]=rBuf->pre[PairwiseDistanceSQ];
-    assert(inf[3]<0);
-    rBuf=Buf+inf[3];
+    assert(inf[DihedralDotABInf]<0);
+    rBuf=Buf+inf[DihedralDotABInf];
     pre[DihedralDotBondAB]=-(rBuf->pre[AngleDotAB]);
-    assert(inf[4]<0);
-    rBuf=Buf+inf[4];
+    assert(inf[DihedralDotBCInf]<0);
+    rBuf=Buf+inf[DihedralDotBCInf];
     pre[DihedralDotBondBC]=-(rBuf->pre[AngleDotAB]);
   }
 

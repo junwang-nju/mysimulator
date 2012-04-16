@@ -5,6 +5,7 @@
 #include "interaction/buffer/interface.h"
 #include "interaction/func/impl/dihedral/common/buffer/pre-name.h"
 #include "interaction/func/impl/dihedral/common/buffer/vec-name.h"
+#include "interaction/func/impl/dihedral/common/buffer/inf-name.h"
 #include "interaction/func/impl/angle/common/buffer/post-name.h"
 #include "intrinsic-type/square.h"
 #include "array/1d/content/norm.h"
@@ -15,13 +16,13 @@ namespace mysimulator {
   void DihedralCommonGetPre4Func(
       InteractionBuffer<T>* Buf,const int* inf,T* pre) {
     InteractionBuffer<T>* rBuf;
-    assert(inf[0]<0)
-    rBuf=Buf+inf[0];
+    assert(inf[DihedralNormAInf]<0)
+    rBuf=Buf+inf[DihedralNormAInf];
     pre[DihedralIvNormASQ]=
       (rBuf->postUpdate?1./normSQ(Buf->tmvec[DihedralNormVecA]):
                         square(rBuf->post[AngleIvRabSin]));
-    assert(inf[1]<0)
-    rBuf=Buf+inf[1];
+    assert(inf[DihedralNormBInf]<0)
+    rBuf=Buf+inf[DihedralNormBInf];
     pre[DihedralIvNormBSQ]=
       (rBuf->postUpdate?1./normSQ(Buf->tmvec[DihedralNormVecB]):
                         square(rBuf->post[AngleIvRabSin]));
