@@ -2,12 +2,10 @@
 #ifndef _Interaction_Func_Implement_Dihedral_Periodic_Parameter_Name_H_
 #define _Interaction_Func_Implement_Dihedral_Periodic_Parameter_Name_H_
 
-#include "interaction/func/impl/dihedral/common/parameter/name.h"
-
 namespace mysimulator {
 
   enum DihedralPeriodicParameterName {
-    DihedralPeriodicNumFuncs=DihedralCommonNumberParameters,
+    DihedralPeriodicNumFuncs=0,
     DihedralPeriodicNumParameters,
     DihedralPeriodicFuncParamShift,
   };

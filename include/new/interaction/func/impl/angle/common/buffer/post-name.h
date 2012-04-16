@@ -6,7 +6,6 @@ namespace mysimulator {
 
   enum AngleCommonBufferPostName {
     AngleCosine=0,
-    AngleSine,
     AngleIvRabSin,
     AngleIvRaSQCtg,
     AngleIvRbSQCtg,

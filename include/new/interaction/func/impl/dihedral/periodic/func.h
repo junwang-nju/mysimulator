@@ -2,17 +2,17 @@
 #ifndef _Interaction_Func_Implement_Dihedral_Periodic_Func_H_
 #define _Interaction_Func_Implement_Dihedral_Periodic_Func_H_
 
-#include "interaction/func/impl/dihedral/periodic/parameter/name.h""
-#include "interaction/func/impl/dihedral/periodic/buffer/name.h""
+#include "interaction/func/impl/dihedral/periodic/parameter/name.h"
+#include "interaction/func/impl/dihedral/periodic/buffer/post-name.h"
 #include "intrinsic-type/cos.h"
 
 namespace mysimulator {
 
   template <typename T>
-  void FuncDihedralPeriodic(const T* buf, const Unique64Bit* P, T* func) {
+  void FuncDihedralPeriodic(const T* post, const Unique64Bit* P, T* func) {
     T fc=0;
     Unique64Bit *Q=const_cast<Unique64Bit*>(P)+DihedralPeriodicFuncParamShift;
-    T dih=buf[DihedralValue];
+    T dih=post[DihedralValue];
     T theta;
     for(unsigned int i=0;i<P[DihedralPeriodicNumFuncs].value<unsigned int>();
         ++i) {

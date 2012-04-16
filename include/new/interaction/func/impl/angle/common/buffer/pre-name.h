@@ -4,11 +4,11 @@
 
 namespace mysimulator {
 
-  enum AngleCommonPreName {
+  enum AngleCommonBufferPreName {
     AngleEdgeASQ=0,
     AngleEdgeBSQ,
     AngleDotAB,
-    AngleCommonPreSize
+    AngleCommonBufferPreSize
   };
 
 }
