@@ -23,9 +23,9 @@ namespace mysimulator {
     unsigned int I=idx[0], J=idx[1], K=idx[2], L=idx[3];
     if(P[InteractionBufferFlag].u[0]==0) {
       T dt[7];
-      DistanceSQ(tmvec[0],X[J],X[I],Geo);
+      DisplacementCalc(tmvec[0],X[J],X[I],Geo);
       dt[4]=DistanceSQ(tmvec[1],X[K],X[J],Geo);
-      DistanceSQ(tmvec[2],X[L],X[K],Geo);
+      DisplacementCalc(tmvec[2],X[L],X[K],Geo);
       cross(tmvec[3],tmvec[0],tmvec[1]);
       cross(tmvec[4],tmvec[1],tmvec[2]);
       dt[0]=dot(tmvec[3],tmvec[3]);
