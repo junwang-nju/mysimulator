@@ -10,8 +10,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void HarmonicBufferPre2Post4Diff(const T* pre,const Unique64Bit*,T* post,
-                                   bool& flag) {
+  void HarmonicPre2Post4Diff(const T* pre,const Unique64Bit*,T* post,
+                             bool& flag) {
     post[HarmonicIvLength]=1./sqroot(pre[PairwiseDistanceSQ]);
     flag=true;
   }
