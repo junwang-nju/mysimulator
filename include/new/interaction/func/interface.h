@@ -3,8 +3,8 @@
 #define _Interaction_Func_Interface_H_
 
 #include "unique/64bit/interface.h"
-#include "array/2d/interface.h"
 #include "interaction/func/name.h"
+#include "interaction/buffer/interface.h"
 
 namespace mysimulator {
 
@@ -19,16 +19,16 @@ namespace mysimulator {
       typedef void (*GFuncType)(const T*,const Unique64Bit*,T*);
       typedef void (*BFuncType)(const T*,const Unique64Bit*,T*,T*);
       typedef void (*EMethodType)(const Array1DContent<T>*,const int*,
-          const Unique64Bit*,const GeomType&,T&,Array1DContent<T>*,EFuncType);
+          const Unique64Bit*,const GeomType&,T&,InteractionBuffer<T>&,
+          EFuncType);
       typedef void (*GMethodType)(const Array1DContent<T>*,const int*,
           const Unique64Bit*,const GeomType&,Array1DContent<T>*,
-          Array1DContent<T>*,GFuncType);
+          InteractionBuffer<T>&,GFuncType);
       typedef void (*BMethodType)(const Array1DContent<T>*,const int*,
           const Unique64Bit*,const GeomType&,T&,Array1DContent<T>*,
-          Array1DContent<T>*,BFuncType);
+          InteractionBuffer<T>&,BFuncType);
 
       InteractionFuncName tag;
-      Array2D<T> tmvec;
       EFuncType EFunc;
       GFuncType GFunc;
       BFuncType BFunc;
@@ -36,14 +36,13 @@ namespace mysimulator {
       GMethodType GMethod;
       BMethodType BMethod;
 
-      InteractionFunc() : tag(UnknownInteractionFunc), tmvec(),
+      InteractionFunc() : tag(UnknownInteractionFunc),
                           EFunc(NULL), GFunc(NULL), BFunc(NULL),
                           EMethod(NULL), GMethod(NULL), BMethod(NULL) {}
       ~InteractionFunc() { clearData(); }
 
       void clearData() {
         tag=UnknownInteractionFunc;
-        release(tmvec);
         EFunc=NULL;   GFunc=NULL;   BFunc=NULL;
         EMethod=NULL; GMethod=NULL; BMethod=NULL;
       }
@@ -53,25 +52,26 @@ namespace mysimulator {
       }
 
       void Energy(
-          const Array1DContent<T>* X, const int* id,
-          const Unique64Bit* P, const GeomType& Geo, T& E) {
+          const Array1DContent<T>* X, const int* id, const Unique64Bit* P,
+          const GeomType& Geo, T& E, InteractionBuffer<T>& Buf) {
         assert(IsValid(EMethod));
-        EMethod(X,id,P,Geo,E,tmvec.infra.start,EFunc);
+        EMethod(X,id,P,Geo,E,Buf,EFunc);
       }
 
       void Gradient(
-          const Array1DContent<T>* X, const int* id,
-          const Unique64Bit* P, const GeomType& Geo, Array1DContent<T>* Grad) {
+          const Array1DContent<T>* X, const int* id, const Unique64Bit* P,
+          const GeomType& Geo, Array1DContent<T>* Grad,
+          InteractionBuffer<T>& Buf) {
         assert(IsValid(GMethod));
-        GMethod(X,id,P,Geo,Grad,tmvec.infra.start,GFunc);
+        GMethod(X,id,P,Geo,Grad,Buf,GFunc);
       }
 
       void Both(
-          const Array1DContent<T>* X, const int* id,
-          const Unique64Bit* P, const GeomType& Geo, T& E,
-          Array1DContent<T>* Grad) {
+          const Array1DContent<T>* X, const int* id, const Unique64Bit* P,
+          const GeomType& Geo, T& E, Array1DContent<T>* Grad,
+          InteractionBuffer<T>& Buf) {
         assert(IsValid(BMethod));
-        BMethod(X,id,P,Geo,E,Grad,tmvec.infra.start,BFunc);
+        BMethod(X,id,P,Geo,E,Grad,Buf,BFunc);
       }
 
     private:
