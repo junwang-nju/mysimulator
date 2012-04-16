@@ -4,6 +4,7 @@
 
 #include "distance/calc.h"
 #include "interaction/buffer/interface.h"
+#include "interaction/func/impl/pairwise/common/buffer/pre-name.h"
 
 namespace mysimulator {
 
@@ -17,7 +18,7 @@ namespace mysimulator {
     if(Buf.postUpdate) {
       DisplacementCalc(Buf.tmvec[0],X[I],X[J],Geo);
       if(IsValid(Buf.inf)) Buf.GetPreBoth(&Buf,Buf.inf.start,Buf.pre.start);
-      else Buf.pre[0]=normSQ(Buf.tmvec[0]);
+      else Buf.pre[PairwiseDistanceSQ]=normSQ(Buf.tmvec[0]);
       Buf.P2PBoth(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
     }
     T ee,ef;

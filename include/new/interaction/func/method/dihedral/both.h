@@ -5,7 +5,8 @@
 #include "distance/calc.h"
 #include "array/1d/cross.h"
 #include "interaction/buffer/interface.h"
-#include "interaction/func/impl/dihedral/common/buffer/name.h"
+#include "interaction/func/impl/dihedral/common/buffer/post-name.h"
+#include "interaction/func/impl/dihedral/common/buffer/pre-name.h"
 
 namespace mysimulator {
 
@@ -25,14 +26,14 @@ namespace mysimulator {
       cross(Buf.tmvec[5],Buf.tmvec[3],Buf.tmvec[4]);
       if(IsValid(Buf.inf)) Buf.GetPreBoth(&Buf,Buf.inf.start,Buf.pre.start);
       else {
-        Buf.pre[0]=1./normSQ(Buf.tmvec[3]);
-        Buf.pre[1]=1./normSQ(Buf.tmvec[4]);
-        Buf.pre[4]=normSQ(Buf.tmvec[1]);
-        Buf.pre[5]=dot(Buf.tmvec[0],Buf.tmvec[1]);
-        Buf.pre[6]=dot(Buf.tmvec[1],Buf.tmvec[2]);
+        Buf.pre[DihedralIvNormASQ]=1./normSQ(Buf.tmvec[3]);
+        Buf.pre[DihedralIvNormBSQ]=1./normSQ(Buf.tmvec[4]);
+        Buf.pre[DihedralAxisSQ]=normSQ(Buf.tmvec[1]);
+        Buf.pre[DihedralDotBondAB]=dot(Buf.tmvec[0],Buf.tmvec[1]);
+        Buf.pre[DihedralDotBondBC]=dot(Buf.tmvec[1],Buf.tmvec[2]);
       }
-      Buf.pre[2]=dot(Buf.tmvec[3],Buf.tmvec[4]);
-      Buf.pre[3]=dot(Buf.tmvec[1],Buf.tmvec[5]);
+      Buf.pre[DihedralDotNormAB]=dot(Buf.tmvec[3],Buf.tmvec[4]);
+      Buf.pre[DihedralCrossNormAB]=dot(Buf.tmvec[1],Buf.tmvec[5]);
       Buf.P2PBoth(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
     }
     T ee,ef;

@@ -5,7 +5,8 @@
 #include "distance/calc.h"
 #include "array/1d/content/scale.h"
 #include "interaction/buffer/interface.h"
-#include "interaction/func/impl/angle/common/buffer/name.h"
+#include "interaction/func/impl/angle/common/buffer/post-name.h"
+#include "interaction/func/impl/angle/common/buffer/pre-name.h"
 
 namespace mysimulator {
 
@@ -20,10 +21,10 @@ namespace mysimulator {
       DisplacementCalc(Buf.tmvec[1],X[K],X[J],Geo);
       if(IsValid(Buf.inf))  Buf.GetPreDiff(&Buf,Buf.inf.start,Buf.pre.start);
       else {
-        Buf.pre[0]=normSQ(Buf.tmvec[0]);
-        Buf.pre[1]=normSQ(Buf.tmvec[1]);
+        Buf.pre[AngleEdgeASQ]=normSQ(Buf.tmvec[0]);
+        Buf.pre[AngleEdgeBSQ]=normSQ(Buf.tmvec[1]);
       }
-      Buf.pre[2]=dot(Buf.tmvec[0],tmvec[1]);
+      Buf.pre[AngleDotAB]=dot(Buf.tmvec[0],tmvec[1]);
       Buf.P2PDiff(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
       copy(Buf.tmvec[2],Buf.tmvec[1]);
       scale(Buf.tmvec[2],Buf.post[AngleIvRabSin]);
