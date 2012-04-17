@@ -10,10 +10,12 @@
 namespace mysimulator {
 
   template <typename T>
-  void AngleCommonGetPre4Func(InteractionBuffer<T>* Buf,const int* inf,T* pre) {
-    assert((inf[AngleEdgeAInf]<0)&&(inf[AngleEdgeBInf]<0));
-    pre[AngleEdgeASQ]=(Buf+inf[0])->pre[PairwiseDistanceSQ];
-    pre[AngleEdgeBSQ]=(Buf+inf[1])->pre[PairwiseDistanceSQ];
+  void AngleCommonGetPre4Func(InteractionBuffer<T>* Buf) {
+    assert(IsValid(Buf->inf));
+    assert(Buf->inf[AngleEdgeAInf]!=NULL);
+    Buf->pre[AngleEdgeASQ]=Buf->inf[AngleEdgeASQ]->pre[PairwiseDistanceSQ];
+    assert(Buf->inf[AngleEdgeBInf]!=NULL);
+    Buf->pre[AngleEdgeBSQ]=Buf->inf[AngleEdgeBSQ]->pre[PairwiseDistanceSQ];
   }
 
 }

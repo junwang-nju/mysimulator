@@ -9,19 +9,19 @@
 namespace mysimulator {
 
   template <typename T>
-  void DihedralCommonGetPre4Diff(
-      InteractionBuffer<T>* Buf,const int* inf,T* pre) {
-    DihedralCommonGetPre4Func(Buf,inf,pre);
+  void DihedralCommonGetPre4Diff(InteractionBuffer<T>* Buf) {
+    assert(IsValid(Buf->inf));
+    DihedralCommonGetPre4Func(Buf);
     InteractionBuffer<T>* rBuf;
-    assert(inf[DihedralAxisInf]<0);
-    rBuf=Buf+inf[DihedralAxisInf];
-    pre[DihedralAxisSQ]=rBuf->pre[PairwiseDistanceSQ];
-    assert(inf[DihedralDotABInf]<0);
-    rBuf=Buf+inf[DihedralDotABInf];
-    pre[DihedralDotBondAB]=-(rBuf->pre[AngleDotAB]);
-    assert(inf[DihedralDotBCInf]<0);
-    rBuf=Buf+inf[DihedralDotBCInf];
-    pre[DihedralDotBondBC]=-(rBuf->pre[AngleDotAB]);
+    rBuf=Buf->inf[DihedralAxisInf];
+    assert(rBuf!=NULL);
+    Buf->pre[DihedralAxisSQ]=rBuf->pre[PairwiseDistanceSQ];
+    rBuf=Buf->inf[DihedralDotABInf];
+    assert(rBuf!=NULL);
+    Buf->pre[DihedralDotBondAB]=-(rBuf->pre[AngleDotAB]);
+    rBuf=Buf->inf[DihedralDotBCInf];
+    assert(rBuf!=NULL);
+    Buf->pre[DihedralDotBondBC]=-(rBuf->pre[AngleDotAB]);
   }
 
 }

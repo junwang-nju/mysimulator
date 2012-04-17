@@ -7,9 +7,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void DihedralCommonGetPre4Both(
-      InteractionBuffer<T>* Buf,const int* inf,T* pre) {
-    DihedralCommonGetPre4Diff(Buf,inf,pre);
+  void DihedralCommonGetPre4Both(InteractionBuffer<T>* Buf) {
+    DihedralCommonGetPre4Diff(Buf);
   }
 
 }

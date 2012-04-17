@@ -15,12 +15,12 @@ namespace mysimulator {
 
       typedef InteractionBuffer<T>    Type;
       typedef void (*P2PFuncType)(const T*,const Unique64Bit*,T*,bool&);
-      typedef void (*GetPreFuncType)(Type*,const int*,T*);
+      typedef void (*GetPreFuncType)(Type*);
 
       Array1D<T>      pre;
       Array1D<T>      post;
       Array2D<T>      tmvec;
-      Array1D<int>    inf;
+      Array1D<Type*>  inf;
       bool            postUpdate;
       P2PFuncType     P2PFunc,P2PDiff,P2PBoth;
       GetPreFuncType  GetPreFunc,GetPreDiff,GetPreBoth;

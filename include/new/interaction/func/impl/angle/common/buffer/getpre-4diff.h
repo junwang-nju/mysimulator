@@ -7,8 +7,8 @@
 namespace mysimulator {
 
   template <typename T>
-  void AngleCommonGetPre4Diff(InteractionBuffer<T>* Buf,const int* inf,T* pre) {
-    AngleCommonGetPre4Func(Buf,inf,pre);
+  void AngleCommonGetPre4Diff(InteractionBuffer<T>* Buf) {
+    AngleCommonGetPre4Func(Buf);
   }
 
 }

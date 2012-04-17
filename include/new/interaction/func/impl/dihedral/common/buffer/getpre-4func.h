@@ -13,17 +13,17 @@
 namespace mysimulator {
 
   template <typename T>
-  void DihedralCommonGetPre4Func(
-      InteractionBuffer<T>* Buf,const int* inf,T* pre) {
+  void DihedralCommonGetPre4Func(InteractionBuffer<T>* Buf) {
+    assert(IsValid(Buf->inf));
     InteractionBuffer<T>* rBuf;
-    assert(inf[DihedralNormAInf]<0);
-    rBuf=Buf+inf[DihedralNormAInf];
-    pre[DihedralIvNormASQ]=
+    rBuf=Buf->inf[DihedralNormAInf];
+    assert(rBuf!=NULL);
+    Buf->pre[DihedralIvNormASQ]=
       (rBuf->postUpdate?1./normSQ(Buf->tmvec[DihedralNormVecA]):
                         square(rBuf->post[AngleIvRabSin]));
-    assert(inf[DihedralNormBInf]<0);
-    rBuf=Buf+inf[DihedralNormBInf];
-    pre[DihedralIvNormBSQ]=
+    rBuf=Buf->inf[DihedralNormBInf];
+    assert(rBuf!=NULL);
+    Buf->pre[DihedralIvNormBSQ]=
       (rBuf->postUpdate?1./normSQ(Buf->tmvec[DihedralNormVecB]):
                         square(rBuf->post[AngleIvRabSin]));
   }
