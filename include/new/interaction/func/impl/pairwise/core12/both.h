@@ -8,9 +8,9 @@
 namespace mysimulator {
 
   template <typename T>
-  void BothCore12(const T* buf,const Unique64Bit* P,T* func,T* diff) {
-    FuncCore12(buff,P,func);
-    DiffCore12(buff,P.diff);
+  void BothCore12(const T* post,const Unique64Bit* P,T* func,T* diff) {
+    FuncCore12(post,P,func);
+    DiffCore12(post,P.diff);
   }
 
 }

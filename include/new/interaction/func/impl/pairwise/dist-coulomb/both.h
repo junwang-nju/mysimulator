@@ -7,9 +7,9 @@
 namespace mysimulator {
 
   template <typename T>
-  void BothDistCoulomb(const T* buf,const Unique64Bit* P,T* func,T* diff) {
-    FuncDistCoulomb(buf,P,func);
-    *diff=(*func)*2*buf[DistCoulombIvDistanceSQ];
+  void BothDistCoulomb(const T* post,const Unique64Bit* P,T* func,T* diff) {
+    FuncDistCoulomb(post,P,func);
+    *diff=(*func)*2*post[DistCoulombIvDistanceSQ];
   }
 
 }
