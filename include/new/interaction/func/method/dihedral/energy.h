@@ -24,7 +24,7 @@ namespace mysimulator {
       if(IsValid(Buf.inf)) Buf.GetPreFunc(&Buf,Buf.inf.start,Buf.pre.start);
       else {
         Buf.pre[0]=1./normSQ(Buf.tmvec[3]);
-        Buf.pre[0]=1./normSQ(Buf.tmvec[3]);
+        Buf.pre[1]=1./normSQ(Buf.tmvec[4]);
       }
       Buf.pre[2]=dot(Buf.tmvec[3],Buf.tmvec[4]);
       Buf.pre[3]=dot(Buf.tmvec[1],Buf.tmvec[5]);

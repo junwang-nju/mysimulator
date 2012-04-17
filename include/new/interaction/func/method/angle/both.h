@@ -23,8 +23,8 @@ namespace mysimulator {
       else {
         Buf.pre[0]=normSQ(Buf.tmvec[0]);
         Buf.pre[1]=normSQ(Buf.tmvec[1]);
-        Buf.pre[2]=dot(Buf.tmvec[0],Buf.tmvec[1]);
       }
+      Buf.pre[2]=dot(Buf.tmvec[0],Buf.tmvec[1]);
       Buf.P2PBoth(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
       copy(Buf.tmvec[2],Buf.tmvec[1]);
       scale(Buf.tmvec[2],Buf.post[AngleIvRabSin]);

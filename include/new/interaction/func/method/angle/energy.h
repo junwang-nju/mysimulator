@@ -17,8 +17,8 @@ namespace mysimulator {
       else {
         Buf.pre[0]=DistanceSQ(Buf.tmvec[0],X[I],X[J],Geo);
         Buf.pre[1]=DistanceSQ(Buf.tmvec[1],X[K],X[J],Geo);
-        Buf.pre[2]=dot(Buf.tmvec[0],Buf.tmvec[1]);
       }
+      Buf.pre[2]=dot(Buf.tmvec[0],Buf.tmvec[1]);
       Buf.P2PFunc(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
     }
     T ee;
