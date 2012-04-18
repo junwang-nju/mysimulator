@@ -20,7 +20,7 @@ namespace mysimulator {
       T*              pre;
       T*              post;
       T**             tmvec;
-      Type*           inf;
+      Type**          inf;
       bool            postUpdate;
       P2PFuncType     P2PFunc,  P2PDiff,  P2PBoth;
       GetPreFuncType  GPreFunc, GPreDiff, GPreBoth;
@@ -39,7 +39,7 @@ namespace mysimulator {
       void clearData() {
         GPreBoth=NULL;    GPreDiff=NULL;    GPreFunc=NULL;
         P2PBoth=NULL;     P2PDiff=NULL;     P2PFunc=NULL;
-        postUpdate=true;  release(inf);     release(tmvec);
+        postUpdate=true;  release(inf);     release2d(tmvec);
         release(post);    release(pre);     dim=0;
       }
 

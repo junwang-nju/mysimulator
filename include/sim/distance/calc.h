@@ -1,5 +1,5 @@
 
-#define _Distance_Calc_H_
+#ifndef _Distance_Calc_H_
 #define _Distance_Calc_H_
 
 #include "distance/displacement-2-distance.h"

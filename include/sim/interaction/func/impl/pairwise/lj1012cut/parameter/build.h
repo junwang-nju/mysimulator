@@ -3,7 +3,7 @@
 #define _Interaction_Func_Implement_Pairwise_LJ1012Cut_Paramete_Build_H_
 
 #include "interaction/func/impl/pairwise/lj1012cut/parameter/name.h"
-#include "unique/64bit/copy.h"
+#include "unique/64bit/interface.h"
 
 namespace mysimulator {
 
@@ -15,7 +15,7 @@ namespace mysimulator {
     R0RC=R02/RC2;
     R02*=R02;
     RC2*=RC2;
-    copy(prm[LJ1012CutCutRSQ],RC2);
+    prm[LJ1012CutCutRSQ].value<T>()=RC2;
     R0RC2=R02/RC2;
     R0RC10=R0RC2*R0RC2;
     R0RC10*=R0RC10;
@@ -45,25 +45,13 @@ namespace mysimulator {
     Sigma10*=Sigma10;
     Sigma10*=Sigma2;
     Sigma10*=E;
-    copy(prm[LJ1012CutFactorA],Sigma10*Sigma2*5);
-    copy(prm[LJ1012CutFactorB],Sigma10*6);
+    prm[LJ1012CutFactorA].value<T>()=Sigma10*Sigma2*5;
+    prm[LJ1012CutFactorB].value<T>()=Sigma10*6;
     Sigma10*=60;
-    copy(prm[LJ1012CutDiffFactorA],Sigma10*Sigma2);
-    copy(prm[LJ1012CutDiffFactorB],Sigma10);
-    copy(prm[LJ1012CutVc],VC*E);
-    copy(prm[LJ1012CutKc],KC*E);
-  }
-
-}
-
-#include "array/1d/content/interface.h"
-
-namespace mysimulator {
-
-  template <typename T>
-  void BuildParameterLJ1012Cut(Array1DContent<Unique64Bit>& prm) {
-    assert(prm.size>LJ1012CutNumberParameter);
-    BuildParameterLJ1012Cut<T>(prm.start);
+    prm[LJ1012CutDiffFactorA].value<T>()=Sigma10*Sigma2;
+    prm[LJ1012CutDiffFactorB].value<T>()=Sigma10;
+    prm[LJ1012CutVc].value<T>()=VC*E;
+    prm[LJ1012CutKc].value<T>()=KC*E;
   }
 
 }

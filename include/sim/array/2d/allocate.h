@@ -30,5 +30,22 @@ namespace mysimulator {
 
 }
 
+#include "array/1d/release.h"
+#include "array/1d/fill.h"
+
+namespace mysimulator {
+
+  // assuming n is larger than 30
+  template <typename T>
+  T** allocate(unsigned int n, unsigned int dim) {
+    unsigned int *sz=allocate<unsigned int>(n);
+    BLASFill(sz,dim,n);
+    T** tp=allocate<T>(sz);
+    release(sz);
+    return tp;
+  }
+
+}
+
 #endif
 

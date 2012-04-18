@@ -10,7 +10,7 @@ namespace mysimulator {
   }
 
   template <typename T1, typename T2>
-  void Shift(T1* p, const T2* q, unsigned int n) {
+  void Shift(T1* p, T2* const& q, unsigned int n) {
     for(unsigned int i=0;i<n;++i) p[i]+=q[i];
   }
 
@@ -20,15 +20,15 @@ namespace mysimulator {
   }
 
   template <typename T1, typename T2, typename T3>
-  void Shift(T1* p, const T2& d, const T3* q, unsigned int n) {
+  void Shift(T1* p, const T2& d, T3* const& q, unsigned int n) {
     for(unsigned int i=0;i<n;++i) p[i]+=d*q[i];
   }
 
   template <typename T1, typename T2, typename T3>
-  void Shift(T1* p, const T2* q, const T3& d, unsigned int n) { Shift(p,d,q); }
+  void Shift(T1* p, T2* const& q, const T3& d, unsigned int n) { Shift(p,d,q); }
 
   template <typename T1, typename T2, typename T3>
-  void Shift(T1* p, const T2* q1, const T2* q2, unsigned int n) {
+  void Shift(T1* p, T2* const& q1, T3* const& q2, unsigned int n) {
     for(unsigned int i=0;i<n;++i) p[i]+=q1[i]*q2[i];
   }
 

@@ -60,6 +60,12 @@ namespace mysimulator {
 
   };
 
+}
+
+#include <cstdlib>
+
+namespace mysimulator {
+
   template <typename T>
   const typename BLAS<T>::CopyType BLAS<T>::Copy=NULL;
   template <> const typename BLAS<double>::CopyType BLAS<double>::Copy=dcopy_;

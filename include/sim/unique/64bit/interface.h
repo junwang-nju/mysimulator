@@ -26,11 +26,11 @@ namespace mysimulator {
       unsigned long       ul;
       unsigned long       ulv[2];
       short               s;
-      short               sv[4]
+      short               sv[4];
       unsigned short      us;
       unsigned short      usv[4];
       char                c;
-      char                cv[8]
+      char                cv[8];
       unsigned char       uc;
       unsigned char       ucv[8];
       void*               ptr;
@@ -47,12 +47,12 @@ namespace mysimulator {
 
       template <typename T>
       T& value() {
-        sprintf("Unknown Type T!");
+        fprintf(stderr,"Unknown Type T!");
         return static_cast<T&>(ull);
       }
       template <typename T>
       const T& value() const {
-        sprintf("Unknown Type T!");
+        fprintf(stderr,"Unknown Type T!");
         return static_cast<const T&>(ull);
       }
 

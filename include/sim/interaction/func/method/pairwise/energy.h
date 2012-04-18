@@ -21,6 +21,7 @@ namespace mysimulator {
         unsigned int I=id[0],J=id[1];
         Buf.pre[PairwiseDistanceSQ]=
           DistanceSQ(Buf.tmvec[PairwiseBondVecIJ],X[I],X[J],Geo,Buf.dim);
+      }
       Buf.Pre2PostFunc(P);
     }
     T ee;

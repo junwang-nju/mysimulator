@@ -9,7 +9,7 @@ namespace mysimulator {
   template <typename T>
   void DistCoulombPre2Post4Diff(const T* pre, const Unique64Bit* P, T* post,
                                 bool& flag) {
-    DistCoulombOre2Post4func(pre,P,post,flag);
+    DistCoulombPre2Post4Func(pre,P,post,flag);
   }
 
 }

@@ -13,7 +13,7 @@
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  _DotType(T1,T2) Dot(const T1* p, const T1* q, unsigned int n) {
+  _DotType(T1,T2) Dot(const T1* p, const T2* q, unsigned int n) {
     _DotType(T1,T2) sum=0;
     for(unsigned int i=0;i<n;++i) sum+=p[i]*q[i];
     return sum;

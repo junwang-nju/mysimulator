@@ -8,7 +8,7 @@ namespace mysimulator {
 
   template <typename T>
   void refer(T*& dest, const T* orig) {
-    release(dest);
+    assert(dest==NULL);
     dest=const_cast<T*>(orig);
     ++referFlag(dest);
   }

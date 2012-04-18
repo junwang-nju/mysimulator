@@ -10,7 +10,7 @@ namespace mysimulator {
   }
 
   template <typename T1, typename T2>
-  void Scale(T1* p, const T2* q,unsigned int n) {
+  void Scale(T1* p, T2* const& q,unsigned int n) {
     for(unsigned int i=0;i<n;++i) p[i]*=q[i];
   }
 

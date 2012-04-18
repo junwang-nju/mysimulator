@@ -2,6 +2,7 @@
 #ifndef _Displacement_Direct_Calc_H_
 #define _Displacement_Direct_Calc_H_
 
+#include "array/1d/size.h"
 #include "array/1d/copy.h"
 #include "array/1d/shift.h"
 

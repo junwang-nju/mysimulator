@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void release(T**& ptr) {
+  void release2d(T**& ptr) {
     if(ptr==NULL) return;
     if(referFlag(ptr)==0) {
       release(*ptr);
