@@ -28,5 +28,7 @@ namespace mysimulator {
 
 }
 
+#include "displacement/free/calc.h"
+
 #endif
 

@@ -11,7 +11,6 @@ namespace mysimulator {
   //assuming n is small
   template <typename T1, typename T2, typename T3>
   void DisplacementCalcDirect(T1* p, const T2* q, const T3* r, unsigned int n) {
-    assert((n<=size(p))&&(n<=size(q))&&(n<=size(r)));
     Copy(p,q,n);
     Shift(p,-1.,r,n);
   }

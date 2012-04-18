@@ -6,6 +6,7 @@
 #include "interaction/buffer/interface.h"
 #include "interaction/func/impl/pairwise/common/buffer/pre-name.h"
 #include "interaction/func/impl/pairwise/common/buffer/vec-name.h"
+#include <iostream>
 
 namespace mysimulator {
 
@@ -16,16 +17,23 @@ namespace mysimulator {
       const GeomType& Geo,T& Energy, InteractionBuffer<T>& Buf,
       void (*efunc)(const T*,const Unique64Bit*,T*)) {
     if(Buf.postUpdate) {
-      if(Buf.inf==NULL) Buf.GetPreFunc();
+      std::cout<<"====0======="<<std::endl;
+      if(Buf.inf!=NULL) Buf.GetPreFunc();
       else {
         unsigned int I=id[0],J=id[1];
+      std::cout<<"====1======="<<std::endl;
         Buf.pre[PairwiseDistanceSQ]=
           DistanceSQ(Buf.tmvec[PairwiseBondVecIJ],X[I],X[J],Geo,Buf.dim);
+      std::cout<<"====2======="<<std::endl;
       }
+      std::cout<<"====3======="<<std::endl;
       Buf.Pre2PostFunc(P);
+      std::cout<<"====4======="<<std::endl;
     }
     T ee;
+      std::cout<<"====5======="<<std::endl;
     efunc(Buf.post,P,&ee);
+      std::cout<<"====6======="<<std::endl;
     Energy+=ee;
   }
 

@@ -53,22 +53,22 @@ namespace mysimulator {
       }
 
       void Energy(
-          T** const X, const int* id, const Unique64Bit* P,
+          T** const X, const unsigned int* id, const Unique64Bit* P,
           const GeomType& Geo, T& E, InteractionBuffer<T>& Buf) const {
         assert(EMethod!=NULL);
         EMethod(X,id,P,Geo,E,Buf,EFunc);
       }
 
       void Gradient(
-          T** const X, const int* id, const Unique64Bit* P, const GeomType& Geo,
-          T** G, InteractionBuffer<T>& Buf) const {
+          T** const X, const unsigned int* id, const Unique64Bit* P,
+          const GeomType& Geo,T** G, InteractionBuffer<T>& Buf) const {
         assert(GMethod!=NULL);
         GMethod(X,id,P,Geo,G,Buf,GFunc);
       }
 
       void Both(
-          T** const X, const int* id, const Unique64Bit* P, const GeomType& Geo,
-          T& E, T** G, InteractionBuffer<T>& Buf) const {
+          T** const X, const unsigned int* id, const Unique64Bit* P,
+          const GeomType& Geo,T& E, T** G, InteractionBuffer<T>& Buf) const {
         assert(BMethod!=NULL);
         BMethod(X,id,P,Geo,E,G,Buf,BFunc);
       }
