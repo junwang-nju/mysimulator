@@ -2,7 +2,6 @@
 #ifndef _Array_1D_Dot_H_
 #define _Array_1D_Dot_H_
 
-#include "array/1d/size.h"
 #include "intrinsic-type/reflection/dual.h"
 
 #ifndef _DotType
@@ -14,9 +13,7 @@
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  _DotType(T1,T2) Dot(const T1* p, const T1* q) {
-    unsigned int n=size(p);
-    assert(n==size(q));
+  _DotType(T1,T2) Dot(const T1* p, const T1* q, unsigned int n) {
     _DotType(T1,T2) sum=0;
     for(unsigned int i=0;i<n;++i) sum+=p[i]*q[i];
     return sum;
@@ -32,17 +29,15 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  double Dot(const double* p, const double* q) {
-    long n=size(p),one=1;
-    assert(static_cast<unsigned int>(n)==size(q));
-    return BLAS<double>::Dot(&n,const_cast<double*>(p),&one,
+  double BLASDot(const double* p, const double* q, unsigned int n) {
+    long m=n,one=1;
+    return BLAS<double>::Dot(&m,const_cast<double*>(p),&one,
                                 const_cast<double*>(q),&one);
   }
 
-  float Dot(const float* p, const float* q) {
-    long n=size(p),one=1;
-    assert(static_cast<unsigned int>(n)==size(q));
-    return BLAS<float>::Dot(&n,const_cast<float*>(p),&one,
+  float BLASDot(const float* p, const float* q, unsigned int n) {
+    long m=n,one=1;
+    return BLAS<float>::Dot(&m,const_cast<float*>(p),&one,
                                const_cast<float*>(q),&one);
   }
 

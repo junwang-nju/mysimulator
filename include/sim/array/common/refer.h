@@ -1,9 +1,8 @@
 
-#ifndef _Array_1D_Refer_H_
-#define _Array_1D_Refer_H_
+#ifndef _Array_Common_Refer_H_
+#define _Array_Common_Refer_H_
 
-#include "array/1d/release.h"
-#include "array/1d/refer-flag.h"
+#include "array/common/refer-flag.h"
 
 namespace mysimulator {
 

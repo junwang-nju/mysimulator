@@ -10,17 +10,8 @@ namespace mysimulator {
     tm=p;   p=q;    q=tm;
   }
 
-}
-
-#include "array/1d/size.h"
-#include <cassert>
-
-namespace mysimulator {
-
   template <typename T>
-  void Swap(T* p, T* q) {
-    unsigned int n=size(p);
-    assert(n==size(q));
+  void Swap(T* p, T* q, unsigned int n) {
     T tm;
     for(unsigned int i=0;i<n;++i) { tm=p[i];  p[i]=q[i];  q[i]=tm; }
   }
@@ -31,17 +22,15 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  void Swap(double* p, double* q) {
-    long n=size(p),one=1;
-    assert(static_cast<unsigned int>(n)==size(q));
-    BLAS<double>::Swap(&n,const_cast<double*>(p),&one,
+  void BLASSwap(double* p, double* q, unsigned int n) {
+    long m=n,one=1;
+    BLAS<double>::Swap(&m,const_cast<double*>(p),&one,
                           const_cast<double*>(q),&one);
   }
 
-  void Swap(float* p, float* q) {
-    long n=size(p),one=1;
-    assert(static_cast<unsigned int>(n)==size(q));
-    BLAS<float>::Swap(&n,const_cast<float*>(p),&one,
+  void BLASSwap(float* p, float* q, unsigned int n) {
+    long m=n,one=1;
+    BLAS<float>::Swap(&m,const_cast<float*>(p),&one,
                          const_cast<float*>(q),&one);
   }
 

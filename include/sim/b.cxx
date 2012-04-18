@@ -1,7 +1,7 @@
 
 #include "array/1d/allocate.h"
 #include "array/1d/release.h"
-#include "array/1d/refer.h"
+#include "array/common/refer.h"
 #include "array/1d/compare.h"
 #include "array/1d/copy.h"
 #include "array/1d/fill.h"

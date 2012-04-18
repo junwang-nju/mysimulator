@@ -2,15 +2,10 @@
 #ifndef _Array_1D_Copy_H_
 #define _Array_1D_Copy_H_
 
-#include "array/1d/size.h"
-#include <cassert>
-
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  void Copy(T1* p, const T2* q) {
-    unsigned int n=size(p);
-    assert(n==size(q));
+  void Copy(T1* p, const T2* q, unsigned int n) {
     for(unsigned int i=0;i<n;++i) p[i]=q[i];
   }
 
@@ -20,38 +15,40 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  void Copy(double* p, const double* q) {
-    long n=size(p), one=1;
-    assert(static_cast<unsigned int>(n)==size(q));
-    BLAS<double>::Copy(&n,const_cast<double*>(q),&one,p,&one);
+  void BLASCopy(double* p, const double* q, unsigned int n) {
+    long m=n, one=1;
+    BLAS<double>::Copy(&m,const_cast<double*>(q),&one,p,&one);
   }
 
-  void Copy(float* p, const float* q) {
-    long n=size(p), one=1;
-    assert(static_cast<unsigned int>(n)==size(q));
-    BLAS<float>::Copy(&n,const_cast<float*>(q),&one,p,&one);
+  void BLASCopy(float* p, const float* q, unsigned int n) {
+    long m=n, one=1;
+    BLAS<float>::Copy(&m,const_cast<float*>(q),&one,p,&one);
   }
 
-  void Copy(long double* p, const long double* q) {
+}
+
+#include <cassert>
+
+namespace mysimulator {
+
+  void BLASCopy(long double* p, const long double* q, unsigned int n) {
     assert(sizeof(long double)==3*sizeof(double));
-    long n=size(p), three=3;
-    assert(static_cast<unsigned int>(n)==size(q));
+    long m=n, three=3;
     double *rp=reinterpret_cast<double*>(p);
     double *rq=reinterpret_cast<double*>(const_cast<long double*>(q));
-    BLAS<double>::Copy(&n,rq,&three,rp,&three);
-    BLAS<double>::Copy(&n,rq+1,&three,rp+1,&three);
-    BLAS<double>::Copy(&n,rq+2,&three,rp+2,&three);
+    BLAS<double>::Copy(&m,rq,&three,rp,&three);
+    BLAS<double>::Copy(&m,rq+1,&three,rp+1,&three);
+    BLAS<double>::Copy(&m,rq+2,&three,rp+2,&three);
   }
 
 }
 
 #ifndef _COPY_EqType
 #define _COPY_EqType(type,Etype) \
-  void Copy(type* p, const type* q) { \
+  void BLASCopy(type* p, const type* q, unsigned int n) { \
     assert(sizeof(type)==sizeof(Etype)); \
-    long n=size(p), one=1; \
-    assert(static_cast<unsigned int>(n)==size(q)); \
-    BLAS<Etype>::Copy(&n,reinterpret_cast<Etype*>(const_cast<type*>(q)),&one,\
+    long m=n, one=1; \
+    BLAS<Etype>::Copy(&m,reinterpret_cast<Etype*>(const_cast<type*>(q)),&one,\
                          reinterpret_cast<Etype*>(p),&one); \
   }
 #else
@@ -75,29 +72,14 @@ namespace mysimulator {
 
 #include <cstring>
 
-#ifndef _COPY_ShortType
-#define _COPY_ShortType(type) \
-  void Copy(type* p, const type* q) { \
-    unsigned int n=size(p); \
-    assert(n==size(q)); \
-    memcpy(p,q,n*sizeof(type)); \
-  }
-#else
-#error "Duplication Definition for Macro _COPY_ShortType"
-#endif
-
 namespace mysimulator {
 
-  _COPY_ShortType(short)
-  _COPY_ShortType(unsigned short)
-  _COPY_ShortType(char)
-  _COPY_ShortType(unsigned char)
+  template <typename T>
+  void MemCopy(T* p, const T* q, unsigned int n) {
+    memcpy(p,q,n*sizeof(T));
+  }
 
 }
-
-#ifdef _COPY_ShortType
-#undef _COPY_ShortType
-#endif
 
 #endif
 

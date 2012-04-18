@@ -2,7 +2,7 @@
 #ifndef _Array_1D_Size_H_
 #define _Array_1D_Size_H_
 
-#include "array/common/shape-parameter.h"
+#include "array/common/shape.h"
 #include <cstdlib>
 
 namespace mysimulator {
@@ -11,7 +11,7 @@ namespace mysimulator {
   unsigned int size(const T* ptr) {
     if(ptr==NULL)   return 0;
     const char* cptr=reinterpret_cast<const char*>(ptr);
-    return *reinterpret_cast<const unsigned int*>(cptr-ArrayShapeBackSizeShift);
+    return *reinterpret_cast<const unsigned int*>(cptr-ArrayBackSizeShift);
   }
 
 }

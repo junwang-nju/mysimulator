@@ -3,25 +3,28 @@
 #define _Array_2D_Allocate_H_
 
 #include "array/1d/sum.h"
+#include "array/1d/size.h"
+#include "array/1d/allocate.h"
 
 namespace mysimulator {
 
   template <typename T>
   T** allocate(const unsigned int* sz) {
-    char *p=NULL,*pd=NULL;
+    char *p=NULL;
+    T *pd=NULL;
     unsigned int n=size(sz);
-    pd=new char[n*ArrayShapeShift+Sum(sz)*sizeof(T)];
-    p=new char[ArrayShapeShift+n*sizeof(T*)];
-    *reinterpret_cast<unsigned int*>(p+ArrayShapeSizeShift)=n;
-    *reinterpret_cast<unsigned int*>(p)=0;
-    T** tp=reinterpret_cast<T**>(p+ArrayShapeShift);
-    for(unsigned int i=0;i<n;++i) {
-      *reinterpret_cast<unsigned int*>(pd+ArrayShapeSizeShift)=sz[i];
-      *reinterpret_cast<unsigned int*>(pd)=0;
-      pd+=ArrayShapeShift;
-      tp[i]=reinterpret_cast<T*>(pd);
-      pd+=sz[i]*sizeof(T);
+    unsigned int gn=Sum(sz,n);
+    pd=allocate<T>(gn);
+    p=new char[ArrayShift+n*sizeof(unsigned int)+n*sizeof(T*)];
+    for(int i=n-1;i>=0;--i) {
+      *reinterpret_cast<unsigned int*>(p)=sz[i];
+      p+=sizeof(unsigned int);
     }
+    *reinterpret_cast<unsigned int*>(p+ArraySizeShift)=n;
+    *reinterpret_cast<unsigned int*>(p)=0;
+    T** tp=reinterpret_cast<T**>(p+ArrayShift);
+    tp[0]=pd;
+    for(unsigned int i=0;i<n-1;++i) tp[i+1]=tp[i]+sz[i];
     return tp;
   }
 
