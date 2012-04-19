@@ -2,7 +2,8 @@
 #ifndef _Interaction_Func_Implement_Pairwise_LJ612Cut_Buffer_P2P4Func_H_
 #define _Interaction_Func_Implement_Pairwise_LJ612Cut_Buffer_P2P4Func_H_
 
-#include "interaction/func/impl/pairwise/lj612cut/buffer/name.h"
+#include "interaction/func/impl/pairwise/lj612cut/buffer/post-name.h"
+#include "interaction/func/impl/pairwise/common/buffer/pre-name.h"
 #include "interaction/func/impl/pairwise/lj612cut/parameter/name.h"
 #include "interaction/func/impl/pairwise/lj612/buffer/p2p-4func.h"
 #include "intrinsic-type/square-root.h"

@@ -11,7 +11,7 @@ namespace mysimulator {
     T tmd=square(prm[CoreLJ612Radius].value<T>());
     copy(prm[CoreLJ612RadiusSQ],tmd);
     T tmd1=tmd*tmd*tmd;
-    tmd=tmd1*prm[CoreLJ612EqEnergyDepth].value<T>();
+    tmd=tmd1*prm[CoreLJ612EnergyDepth].value<T>();
     copy(prm[CoreLJ612FactorA],tmd*tmd1);
     copy(prm[CoreLJ612FactorB],tmd+tmd);
     tmd*=12;

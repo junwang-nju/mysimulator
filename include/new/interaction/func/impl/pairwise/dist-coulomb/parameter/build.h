@@ -11,7 +11,7 @@ namespace mysimulator {
   void BuildParameterDistCoulomb(Unique64Bit* prm) {
     copy(prm[DistCoulombStrength],prm[DistCoulombChargeA].value<T>()*
                                prm[DistCoulombChargeB].value<T>()*
-                               prm[iDistCoulombDielectricFac].value<T>());
+                               prm[DistCoulombDielectricFac].value<T>());
     copy(prm[DistCoulombDualStrength],2*prm[DistCoulombStrength].value<T>());
   }
 

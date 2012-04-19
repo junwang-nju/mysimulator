@@ -11,7 +11,7 @@ namespace mysimulator {
   template <typename T>
   void DistCoulombPre2Post4Func(const T* pre, const Unique64Bit*, T* post,
                                 bool& flag) {
-    post[DistCoulombIvDistanceSQ]=1./pre[PairwisrDistanceSQ];
+    post[DistCoulombIvDistanceSQ]=1./pre[PairwiseDistanceSQ];
     flag=false;
   }
 

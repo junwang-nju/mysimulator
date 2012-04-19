@@ -15,7 +15,7 @@ namespace mysimulator {
     R0RC=R06/RC6;
     R06*=R06*R06;    R06*=R06;
     RC6*=RC6;
-    copy(prm[LJ612CutCutRSQ],C06);
+    copy(prm[LJ612CutCutRSQ],RC6);
     RC6*=RC6*RC6;
     R0RC6=R06/RC6;
     R0RC7=R0RC6*R0RC;

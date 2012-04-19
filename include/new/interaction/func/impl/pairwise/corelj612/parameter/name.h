@@ -12,6 +12,7 @@ namespace mysimulator {
     CoreLJ612FactorA          = LJ612FactorA,
     CoreLJ612FactorB          = LJ612FactorB,
     CoreLJ612DiffFactorA      = LJ612DiffFactorA,
+    CoreLJ612DiffFactorB      = LJ612DiffFactorB,
     CoreLJ612RadiusSQ         = LJ612NumberParameters,
     CoreLJ612NumberParameters
   };

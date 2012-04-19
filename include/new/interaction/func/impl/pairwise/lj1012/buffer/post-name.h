@@ -6,7 +6,7 @@
 
 namespace mysimulator {
 
-  namespace LJ1012BufferPostName {
+  enum LJ1012BufferPostName {
     LJ1012IvDistanceSQ=PairwiseCommonBufferPostSize,
     LJ1012IvDistance10,
     LJ1012BufferPostSize

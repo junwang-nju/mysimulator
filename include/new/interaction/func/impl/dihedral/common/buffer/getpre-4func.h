@@ -16,12 +16,12 @@ namespace mysimulator {
   void DihedralCommonGetPre4Func(
       InteractionBuffer<T>* Buf,const int* inf,T* pre) {
     InteractionBuffer<T>* rBuf;
-    assert(inf[DihedralNormAInf]<0)
+    assert(inf[DihedralNormAInf]<0);
     rBuf=Buf+inf[DihedralNormAInf];
     pre[DihedralIvNormASQ]=
       (rBuf->postUpdate?1./normSQ(Buf->tmvec[DihedralNormVecA]):
                         square(rBuf->post[AngleIvRabSin]));
-    assert(inf[DihedralNormBInf]<0)
+    assert(inf[DihedralNormBInf]<0);
     rBuf=Buf+inf[DihedralNormBInf];
     pre[DihedralIvNormBSQ]=
       (rBuf->postUpdate?1./normSQ(Buf->tmvec[DihedralNormVecB]):

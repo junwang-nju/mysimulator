@@ -4,7 +4,7 @@
 
 #include "interaction/func/impl/dihedral/common/buffer/getpre-4diff.h"
 
-namespace mysimultor {
+namespace mysimulator {
 
   template <typename T>
   void DihedralCommonGetPre4Both(
