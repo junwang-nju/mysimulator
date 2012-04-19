@@ -4,207 +4,177 @@
 
 #include "interaction/func/interface.h"
 #include "array/1d/interface.h"
-#include "array/3d/interface.h"
+#include "array/2d/content/interface.h"
 
-#define _CALCE_DCL  T& Energy
-#define _CALCG_DCL  Array1DContent<T>* Grad
-#define _CALCB_DCL  _CALCE_DCL,_CALCG_DCL
+#define _CALCE_DCL        T& Energy
+#define _CALCG_DCL        Array1DContent<T>* Grad
+#define _CALCB_DCL        _CALCE_DCL,_CALCG_DCL
 
-#define _CALCE_FUNC   Energy
-#define _CALCG_FUNC   Gradient
-#define _CALCB_FUNC   Both
+#define _CALCE_FUNC       Energy
+#define _CALCG_FUNC       Gradient
+#define _CALCB_FUNC       Both
 
-#define _CALCE_VAR  Energy
-#define _CALCG_VAR  Grad
-#define _CALCB_VAR  Energy,Grad
+#define _CALCE_VAR        Energy
+#define _CALCG_VAR        Grad
+#define _CALCB_VAR        Energy,Grad
 
-#define _Single(DT)     Array1DContent<DT>
-#define _Set(DT)        Array2DContent<DT>
-#define _IArray(DT)     Array1DContent<Array1DContent<DT> >
-#define _Array(DT)      Array1DContent<Array1D<DT> >
-#define _Pile(DT)       Array3DContent<DT>
+#define _Single(DT)       DT
+#define _Array(DT)        Array1DContent< DT >
+#define _RArray(DT)       Array1D< DT >
+#define _List(DT)         Array2DContent<DT >
+#define _RList(DT)        Array2D< DT >
+#define _VList(DT)        Array1DContent<Array1DContent< DT > >
+#define _VarVList(DT)     Array1DContent<Array1D< DT > >
 
-#define _SingleForce(GEO,DT)  InteractionFunc<GEO,DT>
-#define _ArrayForce(GEO,DT)   Array1DContent<InteractionFunc<GEO,DT> >
+#define _Low_Array(DT)    _Single(DT)
+#define _Low_RArray(DT)   _Single(DT)
+#define _Low_List(DT)     _Array(DT)
+#define _Low_RList(DT)    _Array(DT)
+#define _Low_VList(DT)    _Array(DT)
+#define _Low_VarVList(DT) _Array(DT)
 
-#define _IArray_Line    Array1DContent
-#define _Array_Line     Array1D
-
-#define _Head(Method,typeIF,typeID,typePrm) \
-  template <typename T, typename GeomType>\
-  void Calc(typeIF(GeomType,T)& F, const Array1DContent<T>* X,\
-            const typeID(int)& id, const typePrm(Unique64Bit)& P,\
-            const GeomType& Geo, Method##_DCL)
-
-#define _Single_Single_Single(Method) \
-  _Head(Method,_SingleForce,_Single,_Single) {\
-    assert(IsValid(F));\
-    F.Method##_FUNC(X,id.start,P.start,Geo,Method##_VAR);\
-  }
-
-namespace mysimulator {
-
-  _Single_Single_Single(_CALCE)
-  _Single_Single_Single(_CALCG)
-  _Single_Single_Single(_CALCB)
-
-}
-
-#undef _Single_Single_Single
-
-#define _Single_Array_Single(Method,AType) \
-  _Head(Method,_SingleForce,AType,_Single) {\
-    typedef AType##_Line<int> Type;\
-    Type* p=const_cast<Type*>(id.start);\
-    Type* e=p+id.size;\
-    for(;p!=e;) Calc(F,X,*(p++),P,Geo,Method##_VAR);\
-  }
-
-#define _Single_Single_Array(Method,AType) \
-  _Head(Method,_SingleForce,_Single,AType) {\
-    typedef AType##_Line<Unique64Bit> Type;\
-    Type* p=const_cast<Type*>(P.start);\
-    Type* e=p+P.size;\
-    for(;p!=e;) Calc(F,X,id,*(p++),Geo,Method##_VAR);\
-  }
-
-#define _Single_Array_Array(Method,AType1,AType2) \
-  _Head(Method,_SingleForce,AType1,AType2) {\
-    unsigned int n=(id.size<P.size?id.size:P.size);\
-    typedef AType1##_Line<int>   TypeID;\
-    typedef AType2##_Line<Unique64Bit> TypePrm;\
-    TypeID* p=const_cast<TypeID*>(id.start);\
-    TypeID* e=p+n;\
-    TypePrm* q=const_cast<TypePrm*>(P.start);\
-    for(;p!=e;) Calc(F,X,*(p++),*(q++),Geo,Method##_VAR);\
-  }
-
-#define _Array_Single_Array(Method,AType) \
-  _Head(Method,_ArrayForce,_Single,AType) {\
-    unsigned int n=(F.size<P.size?F.size:P.size);\
-    typedef InteractionFunc<GeomType,T>   TypeIF;\
-    typedef AType##_Line<Unique64Bit>   TypePrm;\
-    TypeIF* p=const_cast<TypeIF*>(F.start);\
-    TypeIF* e=p+n;\
-    TypePrm* q=const_cast<TypePrm*>(P.start);\
-    for(;p!=e;) Calc(*(p++),X,id,*(q++),Geo,Method##_VAR);\
-  }
-
-#define _Array_Array_Array(Method,AType1,AType2) \
-  _Head(Method,_ArrayForce,AType1,AType2) {\
-    unsigned int n;\
-    n=(F.size<id.size?F.size:id.size);\
-    n=(n<P.size?n:P.size);\
-    typedef InteractionFunc<GeomType,T>   TypeIF;\
-    typedef AType1##_Line<int> TypeID;\
-    typedef AType2##_Line<Unique64Bit>   TypePrm;\
-    TypeIF* p=const_cast<TypeIF*>(F.start);\
-    TypeIF* e=p+n;\
-    TypeID* q=const_cast<TypeID*>(id.start);\
-    TypePrm* r=const_cast<TypePrm*>(P.start);\
-    for(;p!=e;) Calc(*(p++),X,*(q++),*(r++),Geo,Method##_VAR);\
-  }
-
-#define _CALC1(CalcMethod,AType) \
-  CalcMethod(_CALCE,AType)\
-  CalcMethod(_CALCG,AType)\
-  CalcMethod(_CALCB,AType)
-
-#define _CALC2(CalcMethod,AType1,AType2) \
-  CalcMethod(_CALCE,AType1,AType2)\
-  CalcMethod(_CALCG,AType1,AType2)\
-  CalcMethod(_CALCB,AType1,AType2)
-
-namespace mysimulator {
-
-  _CALC1(_Single_Array_Single,_Array)
-  _CALC1(_Single_Array_Single,_IArray)
-
-  _CALC1(_Single_Single_Array,_Array)
-  _CALC1(_Single_Single_Array,_IArray)
-
-  _CALC2(_Single_Array_Array,_Array,_Array)
-  _CALC2(_Single_Array_Array,_IArray,_Array)
-  _CALC2(_Single_Array_Array,_Array,_IArray)
-  _CALC2(_Single_Array_Array,_IArray,_IArray)
-
-  _CALC1(_Array_Single_Array,_Array)
-  _CALC1(_Array_Single_Array,_IArray)
-
-  _CALC2(_Array_Array_Array,_Array,_Array)
-  _CALC2(_Array_Array_Array,_IArray,_Array)
-  _CALC2(_Array_Array_Array,_Array,_IArray)
-  _CALC2(_Array_Array_Array,_IArray,_IArray)
-
-}
-
-#undef _CALC2
-#undef _CALC1
-
-#undef _Array_Array_Array
-#undef _Array_Single_Array
-
-#undef _Single_Array_Array
-#undef _Single_Single_Array
-#undef _Single_Array_Single
-
-#undef _Array_Line
-#undef _IArray_Line
-
-#undef _Head
+#define _Force(GEO,DT)  InteractionFunc<GEO,DT>
 
 #define _Head(Method,typeID,typePrm) \
-  template <typename IFType, typename IDType, typename PrmType, typename GeomType,\
-            typename T>\
-  void Calc(IFType& F, const Array1DContent<T>* X, const typeID(IDType)& id,\
-            const typePrm(PrmType)& P, const GeomType& Geo, Method##_DCL)
+  template <typename T, typename GeomType> \
+  void Calc(const _Force(GeomType,T)& F, const Array1DContent<T>* X, \
+            const typeID(int)& id, const typePrm(Unique64Bit)& P, \
+            _Low##typeID(InteractionBuffer<T>)& Buf, const GeomType& Geo, \
+            Method##_DCL)
 
-#define _Single_Set_Single(Method) \
-  _Head(Method,_Set,_Single) { Calc(F,X,id.infra,P,Geo,Method##_VAR); }
-
-#define _Single_Single_Set(Method) \
-  _Head(Method,_Single,_Set) { Calc(F,X,id,P.infra,Geo,Method##_VAR); }
-
-#define _Single_Set_Set(Method) \
-  _Head(Method,_Set,_Set) { Calc(F,X,id.infra,P.infra,Geo,Method##_VAR); }
-
-#define _Single_Pile_Single(Method) \
-  _Head(Method,_Pile,_Single) { Calc(F,X,id.infra,P,Geo,Method##_VAR); }
-
-#define _Single_Single_Pile(Method) \
-  _Head(Method,_Single,_Pile) { Calc(F,X,id,P.infra,Geo,Method##_VAR); }
-
-#define _Single_Pile_Pile(Method) \
-  _Head(Method,_Pile,_Pile) { Calc(F,X,id.infra,P.infra,Geo,Method##_VAR); }
-
-#define _CALC(CalcMethod) \
-  CalcMethod(_CALCE)\
-  CalcMethod(_CALCG)\
+#define _RunCalc(CalcMethod) \
+  CalcMethod(_CALCE) \
+  CalcMethod(_CALCG) \
   CalcMethod(_CALCB)
+
+#define _RunCalcVar(CalcMethod,DType) \
+  CalcMethod(_CALCE,DType) \
+  CalcMethod(_CALCG,DType) \
+  CalcMethod(_CALCB,DType)
+
+#define _RunCalcVar2(CalcMethod,DTypeA,DTypeB) \
+  CalcMethod(_CALCE,DTypeA,DTypeB) \
+  CalcMethod(_CALCG,DTypeA,DTypeB) \
+  CalcMethod(_CALCB,DTypeA,DTypeB)
+
+#define _Array_Array(Method) \
+  _Head(Method,_Array,_Array) { \
+    assert(IsValid(F)); \
+    F.Method##_FUNC(X,id.start,P.start,Geo,Method##_VAR,Buf); \
+  }
 
 namespace mysimulator {
 
-  _CALC(_Single_Set_Single)
-  _CALC(_Single_Single_Set)
-  _CALC(_Single_Set_Set)
-
-  _CALC(_Single_Pile_Single)
-  _CALC(_Single_Single_Pile)
-  _CALC(_Single_Pile_Pile)
+  _RunCalc(_Array_Array)
 
 }
 
-#undef _CALC
+#undef _Array_Array
 
-#undef _Single_Pile_Pile
-#undef _Single_Single_Pile
-#undef _Single_Pile_Single
+#define _List_Array(Method) \
+  _Head(Method,_List,_Array) { \
+    Calc(F,X,id.infra,P,Buf,Geo,Method##_VAR); \
+  }
 
-#undef _Single_Set_Set
-#undef _Single_Single_Set
-#undef _Single_Set_Single
+#define _VList_Array(Method,VListType) \
+  _Head(Method,VListType,_Array) { \
+    assert(id.size==Buf.size); \
+    for(unsigned int i=0;i<id.size;++i) \
+      Calc(F,X,id[i],P,Buf[i],Geo,Method##_VAR); \
+  }
+
+namespace mysimulator {
+
+  _RunCalc(_List_Array)
+  _RunCalcVar(_VList_Array,_VList)
+  _RunCalcVar(_VList_Array,_VarVList)
+
+}
+
+#undef _VList_Array
+#undef _List_Array
+
+#define _List_List(Method) \
+  _Head(Method,_List,_List) { \
+    Calc(F,X,id.infra,P.infra,Buf,Method##_VAR); \
+  }
+
+#define _VList_List(Method,VListType) \
+  _Head(Method,VListType,_List) { \
+    Calc(F,X,id,P.infra,Buf,Method##_VAR); \
+  }
+
+#define _List_VList(Method,VListType) \
+  _Head(Method,_List,VListType) { \
+    Calc(F,X,id.infra,P,Buf,Method##_VAR); \
+  }
+
+#define _VList_VList(Method,VListTypeA,VListTypeB) \
+  _Head(Method,VListTypeA,VListTypeB) { \
+    assert((id.size==P.size)&&(id.size==Buf.size)); \
+    for(unsigned int i=0;i<id.size;++i) \
+      Calc(F,X,id[i],P[i],Buf[i],Method##_VAR); \
+  }
+
+namespace mysimulator {
+
+  _RunCalc(_List_List)
+  _RunCalcVar(_List_VList,_VList)
+  _RunCalcVar(_List_VList,_VarVList)
+  _RunCalcVar(_VList_List,_VList)
+  _RunCalcVar(_VList_List,_VarVList)
+  _RunCalcVar2(_VList_VList,_VList,_VList)
+  _RunCalcVar2(_VList_VList,_VList,_VarVList)
+  _RunCalcVar2(_VList_VList,_VarVList,_VList)
+  _RunCalcVar2(_VList_VList,_VarVList,_VarVList)
+
+}
+
+#undef _VList_VList
+#undef _List_VList
+#undef _VList_List
+#undef _List_List
+
+#define _ArrayForce_General(Method) \
+  template <typename T,typename GeomType,typename IDType,typename ParamType,\
+            typename BufferType> \
+  void Calc(const _Array(_Force(GeomType,T))& F, const Array1DContent<T>* X, \
+            const IDType& id, const ParamType& P, BufferType& Buf, \
+            const GeomType& Geo, Method##_DCL) { \
+    assert((F.size==id.size)&&(F.size==P.size)&&(F.size==Buf.size)); \
+    for(unsigned int i=0;i<F.size;++i) \
+      Calc(F[i],X,id[i],P[i],Buf[i],Geo,Method##_VAR); \
+  }
+
+namespace mysimulator {
+
+  _RunCalc(_ArrayForce_General)
+
+}
+
+#undef _ArrayForce_General
+
+#undef _RunCalcVar2
+#undef _RunCalcVar
+#undef _RunCalc
 
 #undef _Head
+#undef _Force
+
+#undef _Low_VarVList
+#undef _Low_VList
+#undef _Low_RList
+#undef _Low_List
+#undef _Low_RArray
+#undef _Low_Array
+
+#undef _VarVList
+#undef _VList
+#undef _RList
+#undef _List
+#undef _RArray
+#undef _Array
+#undef _Single
 
 #undef _CALCB_VAR
 #undef _CALCG_VAR
@@ -220,152 +190,63 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T>
-  Array1DContent<T>* _CalcWrap(const _Set(T)& C) { return C.infra.start; }
-
-  template <typename T>
-  Array1DContent<T>* _CalcWrap(const _Array(T)& C) { return C.start; }
-
-  template <typename T>
-  Array1DContent<T>* _CalcWrap(const Array1DContent<T>* const& C) {
-    return const_cast<Array1DContent<T>*>(C); }
-
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const _Set(T)& X, const IDType& id, const PrmType& P,
-            const GeomType& Geo, T& Energy) {
-    Calc(F,X.infra.start,id,P,Geo,Energy);
+  template <typename IFType, typename IDType, typename ParamType,
+            typename BufferType, typename T, typename GeomType>
+  void Calc(const IFType& F, const Array2DContent<T>& X, const IDType& id,
+            const ParamType& P, BufferType& Buf, const GeomType& Geo,
+            T& Energy) {
+    Calc(F,X.infra.start,id,P,Buf,Geo,Energy);
   }
 
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const _Array(T)& X, const IDType& id, const PrmType& P,
-            const GeomType& Geo, T& Energy) {
-    Calc(F,X.start,id,P,Geo,Energy);
+  template <typename IFType, typename IDType, typename ParamType,
+            typename BufferType, typename T, typename GeomType>
+  void Calc(const IFType& F, const Array2DContent<T>& X, const IDType& id,
+            const ParamType& P, BufferType& Buf, const GeomType& Geo,
+            Array2DContent<T>& Grad) {
+    Calc(F,X.infra.start,id,P,Buf,Geo,Grad.infra.start);
   }
 
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const _Set(T)& X, const IDType& id, const PrmType& P,
-            const GeomType& Geo, Array1DContent<T>* Grad) {
-    Calc(F,X.infra.start,id,P,Geo,Grad);
+  template <typename IFType, typename IDType, typename ParamType,
+            typename BufferType, typename T, typename GeomType>
+  void Calc(const IFType& F, const Array2DContent<T>& X, const IDType& id,
+            const ParamType& P, BufferType& Buf, const GeomType& Geo,
+            Array1DContent<T>* Grad) {
+    Calc(F,X.infra.start,id,P,Buf,Geo,Grad);
   }
 
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const _Array(T)& X, const IDType& id, const PrmType& P,
-            const GeomType& Geo, Array1DContent<T>* Grad) {
-    Calc(F,X.start,id,P,Geo,Grad);
+  template <typename IFType, typename IDType, typename ParamType,
+            typename BufferType, typename T, typename GeomType>
+  void Calc(const IFType& F, const Array1DContent<T>* X, const IDType& id,
+            const ParamType& P, BufferType& Buf, const GeomType& Geo,
+            Array2DContent<T>& Grad) {
+    Calc(F,X,id,P,Buf,Geo,Grad.infra.start);
   }
 
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const Array1DContent<T>* X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, _Set(T)& Grad) {
-    Calc(F,X,id,P,Geo,Grad.infra.start);
+  template <typename IFType, typename IDType, typename ParamType,
+            typename BufferType, typename T, typename GeomType>
+  void Calc(const IFType& F, const Array2DContent<T>& X, const IDType& id,
+            const ParamType& P, BufferType& Buf, const GeomType& Geo,
+            T& Energy, Array2DContent<T>& Grad) {
+    Calc(F,X.infra.start,id,P,Buf,Geo,Energy,Grad.infra.start);
   }
 
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const _Set(T)& X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, _Set(T)& Grad) {
-    Calc(F,X.infra.start,id,P,Geo,Grad.infra.start);
+  template <typename IFType, typename IDType, typename ParamType,
+            typename BufferType, typename T, typename GeomType>
+  void Calc(const IFType& F, const Array2DContent<T>& X, const IDType& id,
+            const ParamType& P, BufferType& Buf, const GeomType& Geo,
+            T& Energy, Array1DContent<T>* Grad) {
+    Calc(F,X.infra.start,id,P,Buf,Geo,Energy,Grad);
   }
 
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const _Array(T)& X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, _Set(T)& Grad) {
-    Calc(F,X.start,id,P,Geo,Grad.infra.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const Array1DContent<T>* X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, _Array(T)& Grad) {
-    Calc(F,X,id,P,Geo,Grad.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const _Set(T)& X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, _Array(T)& Grad) {
-    Calc(F,X.infra.start,id,P,Geo,Grad.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-            typename GeomType, typename T>
-  void Calc(IFType& F, const _Array(T)& X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, _Array(T)& Grad) {
-    Calc(F,X.start,id,P,Geo,Grad.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-           typename GeomType, typename T>
-  void Calc(IFType& F, const _Set(T)& X, const IDType& id, const PrmType& P,
-            const GeomType& Geo, T& Energy, Array1DContent<T>* Grad) {
-    Calc(F,X.infra.start,id,P,Geo,Energy,Grad);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-           typename GeomType, typename T>
-  void Calc(IFType& F, const _Array(T)& X, const IDType& id, const PrmType& P,
-            const GeomType& Geo, T& Energy, Array1DContent<T>* Grad) {
-    Calc(F,X.start,id,P,Geo,Energy,Grad);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-           typename GeomType, typename T>
-  void Calc(IFType& F, const Array1DContent<T>* X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, T& Energy, _Set(T)& Grad) {
-    Calc(F,X,id,P,Geo,Energy,Grad.infra.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-           typename GeomType, typename T>
-  void Calc(IFType& F, const _Set(T)& X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, T& Energy, _Set(T)& Grad) {
-    Calc(F,X.infra.start,id,P,Geo,Energy,Grad.infra.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-           typename GeomType, typename T>
-  void Calc(IFType& F, const _Array(T)& X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, T& Energy, _Set(T)& Grad) {
-    Calc(F,X.start,id,P,Geo,Energy,Grad.infra.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-           typename GeomType, typename T>
-  void Calc(IFType& F, const Array1DContent<T>* X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, T& Energy, _Array(T)& Grad) {
-    Calc(F,X,id,P,Geo,Energy,Grad.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-           typename GeomType, typename T>
-  void Calc(IFType& F, const _Set(T)& X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, T& Energy, _Array(T)& Grad) {
-    Calc(F,X.infra.start,id,P,Geo,Energy,Grad.start);
-  }
-
-  template <typename IFType, typename IDType, typename PrmType,
-           typename GeomType, typename T>
-  void Calc(IFType& F, const _Array(T)& X, const IDType& id,
-            const PrmType& P, const GeomType& Geo, T& Energy, _Array(T)& Grad) {
-    Calc(F,X.start,id,P,Geo,Energy,Grad.start);
+  template <typename IFType, typename IDType, typename ParamType,
+            typename BufferType, typename T, typename GeomType>
+  void Calc(const IFType& F, const Array1DContent<T>* X, const IDType& id,
+            const ParamType& P, BufferType& Buf, const GeomType& Geo,
+            T& Energy, Array2DContent<T>& Grad) {
+    Calc(F,X,id,P,Buf,Geo,Energy,Grad.infra.start);
   }
 
 }
-
-#undef _ArrayForce
-#undef _SingleForce
-
-#undef _Pile
-#undef _Array
-#undef _IArray
-#undef _Set
-#undef _Single
 
 #endif
 

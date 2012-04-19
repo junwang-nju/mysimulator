@@ -53,7 +53,7 @@ namespace mysimulator {
 
       void Energy(
           const Array1DContent<T>* X, const int* id, const Unique64Bit* P,
-          const GeomType& Geo, T& E, InteractionBuffer<T>& Buf) {
+          const GeomType& Geo, T& E, InteractionBuffer<T>& Buf) const {
         assert(IsValid(EMethod));
         EMethod(X,id,P,Geo,E,Buf,EFunc);
       }
@@ -61,7 +61,7 @@ namespace mysimulator {
       void Gradient(
           const Array1DContent<T>* X, const int* id, const Unique64Bit* P,
           const GeomType& Geo, Array1DContent<T>* Grad,
-          InteractionBuffer<T>& Buf) {
+          InteractionBuffer<T>& Buf) const {
         assert(IsValid(GMethod));
         GMethod(X,id,P,Geo,Grad,Buf,GFunc);
       }
@@ -69,7 +69,7 @@ namespace mysimulator {
       void Both(
           const Array1DContent<T>* X, const int* id, const Unique64Bit* P,
           const GeomType& Geo, T& E, Array1DContent<T>* Grad,
-          InteractionBuffer<T>& Buf) {
+          InteractionBuffer<T>& Buf) const {
         assert(IsValid(BMethod));
         BMethod(X,id,P,Geo,E,Grad,Buf,BFunc);
       }
