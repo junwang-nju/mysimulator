@@ -8,9 +8,10 @@ namespace mysimulator {
 
   template <typename T>
   unsigned int linesize(T** const p, const unsigned int n) {
-    assert(n<=size(p));
+    unsigned int m=size(p);
+    assert(n<m);
     char* cptr=reinterpret_cast<char*>(const_cast<T**>(p))-ArrayShift;
-    return *(reinterpret_cast<unsigned int*>(cptr)-n-1);
+    return *(reinterpret_cast<unsigned int*>(cptr)-m+n);
   }
 
 }

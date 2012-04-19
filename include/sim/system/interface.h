@@ -8,7 +8,7 @@
 
 #ifndef _TemplateType_
 #define _TemplateType_ \
-  T,IDType,ParamType,GeomType,BufferType,DataType,ContentType
+  T,IDType,ParamType,GeomType,BufferType,ContentType
 #else
 #error "Duplicate Definition for _TemplateType_"
 #endif
@@ -16,25 +16,24 @@
 namespace mysimulator {
 
   template <typename T,typename IDType,typename ParamType,typename GeomType,
-            typename BufferType, typename DataType,
-            template<typename,typename> class ContentType>
+            typename BufferType,template<typename> class ContentType>
   struct System {
 
     public:
 
       typedef System<_TemplateType_>  Type;
       typedef SystemInteraction<_TemplateType_> InteractionType;
-      typedef SystemPropagator<T,DataType,ContentType>  PropagatorType;
+      typedef SystemPropagator<T,ContentType>  PropagatorType;
       typedef (*EvoluteFuncType)(
-          ContentType<DataType>&,InteractionType*,PropagatorType*,
+          ContentType<T>&,InteractionType*,PropagatorType*,
           const unsigned int**);
 
       unsigned int EvoluteMode;
-      ContentType<T,DataType>*  Content;
-      InteractionType*          Interactions;
-      PropagatorType*           Propagators;
-      unsigned int**            GroupMap;
-      EvoluteFuncType           EvFunc;
+      ContentType<T>*       Content;
+      InteractionType*      Interactions;
+      PropagatorType*       Propagators;
+      unsigned int**        GroupMap;
+      EvoluteFuncType       EvFunc;
 
       System() : EvoluteMode(0), Content(NULL), Interactions(NULL),
                  Propagators(NULL), GroupMap(NULL), EvFunc(NULL) {}
@@ -76,11 +75,11 @@ namespace mysimulator {
   };
 
   template <typename T,typename IDT,typename PT,typename GT,typename BT,
-            typename DT,template<typename,typename> class CT>
+            template<typename> class CT>
   bool IsValid(const System<T,IDT,PT,GT,BT,DT,CT>& S) { return S.isvalid(); }
 
   template <typename T,typename IDT,typename PT,typename GT,typename BT,
-            typename DT,template<typename,typename> class CT>
+            template<typename> class CT>
   void release(System<T,IDT,PT,GT,BT,DT,CT>& S) { S.clearData(); }
 
 }

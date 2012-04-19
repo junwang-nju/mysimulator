@@ -1,4 +1,5 @@
 
+#include "array/2d/imprint.h"
 #include "array/2d/allocate.h"
 #include "array/2d/release.h"
 #include "array/common/refer.h"

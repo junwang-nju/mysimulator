@@ -2,11 +2,13 @@
 #ifndef _Array_1D_Copy_H_
 #define _Array_1D_Copy_H_
 
+#include "intrinsic-type/copy.h"
+
 namespace mysimulator {
 
   template <typename T1,typename T2>
   void Copy(T1* p, const T2* q, unsigned int n) {
-    for(unsigned int i=0;i<n;++i) p[i]=q[i];
+    for(unsigned int i=0;i<n;++i) copy(p[i],q[i]);
   }
 
 }

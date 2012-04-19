@@ -2,33 +2,21 @@
 #ifndef _System_Interaction_Interface_H_
 #define _System_Interaction_Interface_H_
 
-#include "interaction/func/interface.h"
-
-#ifndef _WorkParam
-#define _WorkParam \
-  const InteractionFunc<GeomType,T>*,const DataType,const IDType&,\
-  const ParamType,BufferType,const GeomType&
-#else
-#error "Duplicate Definition for _WorkParam
-#endif
+#include "interaction/calc.h"
+#include "array/1d/release.h"
 
 namespace mysimulator {
 
   template <typename T,typename IDType,typename ParamType,typename GeomType,
-            typename BufferType,typename DataType,
-            template<typename,typename> class ContentType>
+            typename BufferType,template<typename> class ContentType>
   struct SystemInteraction {
 
     public:
 
       typedef
-        SystemInteraction<T,IDType,ParamType,GeomType,BufferType,DataType,
-                          ContentType>
+        SystemInteraction<T,IDType,ParamType,GeomType,BufferType,ContentType>
         Type;
-      typedef typename ContentType<T,DataType>::EGDataType  EGDataType;
-      typedef void (*EWorkType)(_WorkParam,T&);
-      typedef void (*GWorkType)(_WorkParam,DataType);
-      typedef void (*BWorkType)(_WorkParam,T&,DataType);
+      typedef typename ContentType<T>::EGDataType  EGDataType;
 
       InteractionFunc<GeomType,T>*    Func;
       IDType                          ID;
@@ -36,24 +24,28 @@ namespace mysimulator {
       BufferType                      Buffer;
       GeomType                        Geom;
       EGDataType                      EGData;
-      EWorkType                       WorkE;
-      GWorkType                       WorkG;
-      BWorkType                       WorkB;
 
       SystemInteraction()
-        : Func(NULL), ID(NULL), Param(NULL), Buffer(NULL), Geom(), EGData(),
-          WorkE(NULL), WorkG(NULL), WorkB(NULL) {}
+        : Func(NULL), ID(NULL), Param(NULL), Buffer(NULL), Geom(), EGData() {}
       ~SystemInteraction() { clearData(); }
 
       void clearData() {
-        WorkB=NULL; WorkG=NULL; WorkE=NULL;
         release(EGData); release(Geom); release(Buffer); release(Param);
         release(ID);  release(Func);
       }
       bool isvalid() const {
         return (Func!=NULL)&&(ID!=NULL)&&(Param!=NULL)&&(Buffer!=NULL)&&
-               IsValid(Geom)&&IsValid(EGData)&&
-               (WorkE!=NULL)&&(WorkG!=NULL)&&(WorkB!=NULL);
+               IsValid(Geom)&&IsValid(EGData);
+      }
+
+      void WorkE(const T** X, T& Energy) {
+        Calc(Func,X,ID,Param,Buffer,Geom,Energy);
+      }
+      void WorkG(const T** X, T** Grad) {
+        Calc(Func,X,ID,Param,Buffer,Geom,Grad);
+      }
+      void WorkB(const T** X, T& Energy, T** Grad) {
+        Calc(Func,X,ID,Param,Buffer,Geom,Energy,Grad);
       }
 
     private:
@@ -64,19 +56,19 @@ namespace mysimulator {
   };
 
   template <typename T,typename IDT,typename PT,typename GT,typename BT,
-            typename DT,template<typename,typename> class CT>
-  void release(SystemInteraction<T,IDT,PT,GT,BT,DT,CT>& I) { I.clearData(); }
+            template<typename> class CT>
+  void release(SystemInteraction<T,IDT,PT,GT,BT,CT>& I) { I.clearData(); }
 
   template <typename T,typename IDT,typename PT,typename GT,typename BT,
-            typename DT,template<typename,typename> class CT>
-  bool IsValid(const SystemInteraction<T,IDT,PT,GT,BT,DT,CT>& I) {
+            template<typename> class CT>
+  bool IsValid(const SystemInteraction<T,IDT,PT,GT,BT,CT>& I) {
     return I.isvalid();
   }
 
 }
 
-#ifdef _WorkParam
-#undef _WorkParam
+#ifdef _WorkParam_
+#undef _WorkParam_
 #endif
 
 #endif

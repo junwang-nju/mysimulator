@@ -7,14 +7,14 @@
 
 namespace mysimulator {
 
-  template <typename T,typename DataType>
-  struct SystemContentWithG : public SystemContentBase<DataType> {
+  template <typename T>
+  struct SystemContentWithG : public SystemContentBase<T> {
 
     public:
 
-      typedef SystemContentWithG<T,DataType>  Type;
-      typedef SystemContentBase<DataType>     ParentType;
-      typedef SystemContentDataG<DataType>    EGDataType;
+      typedef SystemContentWithG<T>     Type;
+      typedef SystemContentBase<T>      ParentType;
+      typedef SystemContentDataG<T>     EGDataType;
 
       EGDataType  EGData;
 
@@ -37,11 +37,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T,typename DT>
-  void release(SystemContentWithG<T,DT>& C) { C.clearData(); }
+  template <typename T>
+  void release(SystemContentWithG<T>& C) { C.clearData(); }
 
-  template <typename T,typename DT>
-  bool IsValid(const SystemContentWithG<T,DT>& C) { return C.isvalid(); }
+  template <typename T>
+  bool IsValid(const SystemContentWithG<T>& C) { return C.isvalid(); }
 
 }
 

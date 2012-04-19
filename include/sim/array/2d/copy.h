@@ -8,8 +8,8 @@
 
 namespace mysimulator {
 
-  template <typename T>
-  void Copy(T** p, T** const q) {
+  template <typename T1, typename T2>
+  void Copy(T1** p, T2** const q) {
     assert(IsSameStructure(p,q));
     Copy(*p,*q,size(*p));
   }

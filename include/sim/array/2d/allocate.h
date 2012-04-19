@@ -16,7 +16,7 @@ namespace mysimulator {
     unsigned int gn=Sum(sz,n);
     pd=allocate<T>(gn);
     p=new char[ArrayShift+n*sizeof(unsigned int)+n*sizeof(T*)];
-    for(int i=n-1;i>=0;--i) {
+    for(unsigned int i=0;i<n;++i) {
       *reinterpret_cast<unsigned int*>(p)=sz[i];
       p+=sizeof(unsigned int);
     }

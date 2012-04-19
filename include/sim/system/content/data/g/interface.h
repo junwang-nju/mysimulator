@@ -2,18 +2,18 @@
 #ifndef _System_Content_Data_G_Interface_H_
 #define _System_Content_Data_G_Interface_H_
 
-#include <cstdlib>
+#include "array/2d/release.h"
 
 namespace mysimulator {
 
-  template <typename DataType>
+  template <typename T>
   struct SystemContentDataG {
 
     public:
 
-      typedef SystemContentDataG<DataType>  Type;
+      typedef SystemContentDataG<T>  Type;
 
-      DataType Gradient;
+      T** Gradient;
 
       SystemContentDataG() : Gradient(NULL) {}
       ~SystemContentDataG() { clearData(); }
@@ -28,11 +28,11 @@ namespace mysimulator {
 
   };
 
-  template <typename DT>
-  void release(SystemContentDataG<DT>& D) { D.clearData(); }
+  template <typename T>
+  void release(SystemContentDataG<T>& D) { D.clearData(); }
 
-  template <typename DT>
-  bool IsValid(const SystemContentDataG<DT>& D) { return D.isvalid(); }
+  template <typename T>
+  bool IsValid(const SystemContentDataG<T>& D) { return D.isvalid(); }
 
 }
 

@@ -2,19 +2,19 @@
 #ifndef _System_Content_Data_EG_Interface_H_
 #define _System_Content_Data_EG_Interface_H_
 
-#include <cstdlib>
+#include "array/2d/release.h"
 
 namespace mysimulator {
 
-  template <typename T, typename DataType>
+  template <typename T>
   struct SystemContentDataEG {
 
     public:
 
-      typedef SystemContentDataEG<T,DataType>   Type;
+      typedef SystemContentDataEG<TType;
 
-      T         *Energy;
-      DataType  Gradient;
+      T*        Energy;
+      T**       Gradient;
       bool      isRefer;
 
       SystemContentDataEG() : Energy(NULL), Gradient(NULL), isRefer(false) {}
@@ -34,11 +34,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T, typename DT>
-  void release(SystemContentDataEG<T,DT>& D) { D.clearData(); }
+  template <typename T>
+  void release(SystemContentDataEG<T>& D) { D.clearData(); }
 
-  template <typename T, typename DT>
-  bool IsValid(const SystemContentDataEG<T,DT>& D) { return D.isvalid(); }
+  template <typename T>
+  bool IsValid(const SystemContentDataEG<T>& D) { return D.isvalid(); }
 
 }
 

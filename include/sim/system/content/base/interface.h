@@ -2,18 +2,18 @@
 #ifndef _System_Content_Base_Interface_H_
 #define _System_Content_Base_Interface_H_
 
-#include "array/1d/release.h"
+#include "array/2d/release.h"
 
 namespace mysimulator {
 
-  template <typename DataType>
+  template <typename T>
   struct SystemContentBase {
 
     public:
       
-      typedef SystemContentBase<DataType>  Type;
+      typedef SystemContentBase<T>  Type;
 
-      DataType X;
+      T** X;
 
       SystemContentBase() : X(NULL) {}
       ~SystemContentBase() { clearData(); }
@@ -28,11 +28,11 @@ namespace mysimulator {
 
   };
 
-  template <typename DT>
-  void release(SystemContentBase<DT>& C) { C.clearData(); }
+  template <typename T>
+  void release(SystemContentBase<T>& C) { C.clearData(); }
 
-  template <typename DT>
-  void IsValid(const SystemContentBase<DT>& C) { return C.isvalid(); }
+  template <typename T>
+  void IsValid(const SystemContentBase<T>& C) { return C.isvalid(); }
 
 }
 

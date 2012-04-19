@@ -6,15 +6,15 @@
 
 namespace mysimulator {
 
-  template <typename T, typename DataType>
-  struct SystemContentWithEGV : public SystemContentWithEG<T,DataType> {
+  template <typename T>
+  struct SystemContentWithEGV : public SystemContentWithEG<T> {
 
     public:
 
-      typedef SystemContentWithEGV<T,DataType>  Type;
-      typedef SystemContentWithEG<T,DataType>   ParentType;
+      typedef SystemContentWithEGV<T>  Type;
+      typedef SystemContentWithEG<T>   ParentType;
 
-      DataType Velocity;
+      T** Velocity;
 
       SystemContentWithEGV() : ParentType(), Velocity(NULL) {}
       ~SystemContentWithEGV() { clearData(); }
@@ -35,11 +35,11 @@ namespace mysimulator {
 
   };
 
-  template <typename T, typename DT>
-  void release(SystemContentWithEGV<T,DT>& C) { C.clearData(); }
+  template <typename T>
+  void release(SystemContentWithEGV<T>& C) { C.clearData(); }
 
-  template <typename T, typename DT>
-  bool IsValid(const SystemContentWithEGV<T,DT>& C) { return C.isvalid(); }
+  template <typename T>
+  bool IsValid(const SystemContentWithEGV<T>& C) { return C.isvalid(); }
 
 }
 
