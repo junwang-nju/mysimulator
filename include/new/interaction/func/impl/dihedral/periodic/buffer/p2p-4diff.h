@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void DuhedralPeriodicPre2Post4Diff(const T* pre,const Unique64Bit* P,T* post,
+  void DihedralPeriodicPre2Post4Diff(const T* pre,const Unique64Bit* P,T* post,
                                      bool& flag) {
     DihedralCommonPre2Post4Diff(pre,P,post,flag);
   }

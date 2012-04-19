@@ -56,7 +56,7 @@ namespace mysimulator {
 
   template <typename GeomType, typename T>
   void allocate(InteractionFunc<GeomType,T>& F,
-                const InteractionFuncName& itag, const unsigned int& dim) {
+                const InteractionFuncName& itag) {
     release(F);
     F.tag=itag;
     switch(itag) {
