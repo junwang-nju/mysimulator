@@ -10,10 +10,10 @@
 
 #define _LoadDirect(PART) \
   template <typename T,typename IDType,typename ParamType,typename GeomType,\
-            template<typename> class VecType,\
+            typename BufferType,template<typename> class VecType,\
             template<typename,template<typename>class> class SysContentType>\
   void load##PART(\
-      SysInteraction<T,IDType,ParamType,GeomType,VecType,SysContentType>& SI,\
+      SysInteraction<T,IDType,ParamType,GeomType,BufferType,VecType,SysContentType>& SI,\
       const PART##Type& i##PART) {\
     assert(IsValid(i##PART));\
     imprint(SI.PART,i##PART);\
@@ -22,10 +22,10 @@
 
 #define _LoadObject(PART) \
   template <typename T,typename IDType,typename ParamType,typename GeomType,\
-            template<typename> class VecType,\
+            typename BufferType,template<typename> class VecType,\
   template<typename,template<typename>class> class SysContentType>\
   void load##PART(\
-      SysInteraction<T,IDType,ParamType,GeomType,VecType,SysContentType>& SI,\
+      SysInteraction<T,IDType,ParamType,GeomType,BufferType,VecType,SysContentType>& SI,\
       const Object<PART##Type>& i##PART) {\
     assert(IsValid(i##PART));\
     load##PART(SI,i##PART());\
@@ -35,12 +35,15 @@
   _LoadDirect(PART) \
   _LoadObject(PART)
 
+#define FuncType  Array1D<InteractionFunc<GeomType,T> >
+
 namespace mysimulator {
 
   _Load(Func)
   _Load(ID)
   _Load(Param)
   _Load(Geom)
+  _Load(Buffer)
 
 }
 

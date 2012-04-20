@@ -17,7 +17,7 @@ namespace mysimulator {
     unsigned int I=idx[0],J=idx[1];
     if(Buf.postUpdate) {
       DisplacementCalc(Buf.tmvec[PairwiseBondVecIJ],X[I],X[J],Geo);
-      if(IsValid(Buf.inf)) Buf.GetPreDiff(&Buf,Buf.inf.start,Buf.pre.start);
+      if(IsValid(Buf.inf)) Buf.GetPreDiff(&Buf);
       else Buf.pre[PairwiseDistanceSQ]=normSQ(Buf.tmvec[PairwiseBondVecIJ]);
       Buf.P2PDiff(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
     }

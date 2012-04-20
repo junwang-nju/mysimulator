@@ -6,25 +6,25 @@
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT1,
             template<typename,template<typename>class> class SCT2>
-  void _EvaluateBoth(SCT1<T,VT>&, SysInteraction<T,IDT,PT,GT,VT,SCT2>&) {
+  void _EvaluateBoth(SCT1<T,VT>&, SysInteraction<T,IDT,PT,GT,BT,VT,SCT2>&) {
     Error("No Energy or Gradient Calculation are available for this System!");
   }
 
 }
 
 #define _EvalBoth(SCType) \
-  template <typename T,typename IDT,typename PT,typename GT,\
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,\
             template<typename> class VT,\
             template<typename,template<typename>class> class SCT>\
   void _EvaluateBoth(SCT<T,VT>& SC,\
-                     SysInteraction<T,IDT,PT,GT,VT,SCType>& SI){\
+                     SysInteraction<T,IDT,PT,GT,BT,VT,SCType>& SI){\
     assert(IsValid(SC)&&IsValid(SI));\
     nullifyBoth(SI.EGData());\
-    SI.WorkB(SI.Func,SC.X(),SI.ID(),SI.Param(),SI.Geom(),\
+    SI.WorkB(SI.Func,SC.X(),SI.ID(),SI.Param(),SI.Buffer(),SI.Geom(),\
              SI.EGData().Energy(),SI.EGData().Gradient());\
   }
 
@@ -46,13 +46,13 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT1,
             template<typename,template<typename>class> class SCT2>
   void GenericEvaluateBoth(
       SCT1<T,VT>& SC,
-      Array1DContent<SysInteraction<T,IDT,PT,GT,VT,SCT2> >& SI) {
+      Array1DContent<SysInteraction<T,IDT,PT,GT,BT,VT,SCT2> >& SI) {
     assert(IsValid(SC)&&IsValid(SI));
     for(unsigned int i=0;i<SI.size;++i) _EvaluateBoth(SC,SI[i]);
     nullifyBoth(SC.EGData);

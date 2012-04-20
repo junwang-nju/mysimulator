@@ -11,12 +11,12 @@
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
   void SysEvoluteModeFPCELgVV(
       SCT<T,VT>& SC,
-      Array1DContent<SysInteraction<T,IDT,PT,GT,VT,SCT> >& SI,
+      Array1DContent<SysInteraction<T,IDT,PT,GT,BT,VT,SCT> >& SI,
       Array1DContent<SysPropagate<T,VT,SCT> >& SE,
       const Array1DContent<Array1D<unsigned int> >& GMap) {
     for(unsigned int i=0;i<GMap[SysConstEVelVerlet].size;++i)

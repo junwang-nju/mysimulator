@@ -11,7 +11,6 @@ namespace mysimulator {
   void copy(InteractionFunc<GeomType,T>& F,
             const InteractionFunc<GeomType,T>& cF) {
     imprint(F,cF);
-    copy(F.tmvec,cF.tmvec);
   }
 
 }

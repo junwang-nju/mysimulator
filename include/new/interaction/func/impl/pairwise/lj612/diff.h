@@ -10,8 +10,9 @@ namespace mysimulator {
   template <typename T>
   void DiffLJ612(const T* post,const Unique64Bit* P,T* diff) {
     T tmd=post[LJ612IvDistance6];
-    *diff=tmd*(P[LJ612DiffFactorB].value<T>()-P[LJ612DiffFactorA].value()*tmd)
-             *post[LJ612IvDistanceSQ];
+    *diff=tmd*post[LJ612IvDistanceSQ]
+         *(P[LJ612DiffFactorB].value<T>()-P[LJ612DiffFactorA].value<T>()*tmd);
+         
   }
 
 }

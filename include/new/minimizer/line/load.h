@@ -7,20 +7,20 @@
 namespace mysimulator {
 
   template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
-            typename GT,template<typename> class VT,
+            typename GT,typename BT,template<typename> class VT,
             template<typename,template<typename>class> class SCT,
             LineMinimizerConditionMethodName LCM>
-  void load(LineMinimizer<LMN,T,IDT,PT,GT,VT,SCT,LCM>& M,
-            System<T,IDT,PT,GT,VT,SCT>& S) {
+  void load(LineMinimizer<LMN,T,IDT,PT,GT,BT,VT,SCT,LCM>& M,
+            System<T,IDT,PT,GT,BT,VT,SCT>& S) {
     Error("This kind of LineMinimizer Cannot be loaded!");
   }
 
   template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
-            typename GT,template<typename> class VT,
+            typename GT,typename BT,template<typename> class VT,
             template<typename,template<typename>class> class SCT,
             LineMinimizerConditionMethodName LCM>
-  void load(LineMinimizer<LMN,T,IDT,PT,GT,VT,SCT,LCM>& M,
-            Object<System<T,IDT,PT,GT,VT,SCT> >& S) {
+  void load(LineMinimizer<LMN,T,IDT,PT,GT,BT,VT,SCT,LCM>& M,
+            Object<System<T,IDT,PT,GT,BT,VT,SCT> >& S) {
     Error("This kind of LineMinimizer Cannot be loaded!");
   }
 

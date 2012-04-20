@@ -54,10 +54,10 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  unsigned int DegreeOfFreedom(const System<T,IDT,PT,GT,VT,SCT>& S) {
+  unsigned int DegreeOfFreedom(const System<T,IDT,PT,GT,BT,VT,SCT>& S) {
     return _DegreeOfFreeDom(S.Propagates);
   }
 

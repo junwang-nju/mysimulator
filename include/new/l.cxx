@@ -159,23 +159,23 @@ int main() {
   for(unsigned int i=0;i<N-2;++i,++g) {
     allocate(Param[g],AngleHarmonicNumberParameters);
     ang=arcCos(cosAngle(X[mID[g][0]],X[mID[g][1]],X[mID[g][2]],FS));
-    Param[g][AngHarmonicEqAngle].d=ang;
-    Param[g][AngHarmonicStrength].d=20.;
+    Param[g][AngleHarmonicEqAngle].d=ang;
+    Param[g][AngleHarmonicStrength].d=20.;
     BuildParameterAngleHarmonic<double>(Param[g]);
   }
   for(unsigned int i=0;i<N-3;++i,++g) {
     allocate(Param[g],
-             DihPeriodicFuncParamShift+2*DihPeriodicFuncNumberParameters);
+             DihedralPeriodicFuncParamShift+2*DihedralPeriodicFuncNumberParameters);
     dih=Dihedral(X[mID[g][0]],X[mID[g][1]],X[mID[g][2]],X[mID[g][3]],FS);
-    Param[g][DihPeriodicNumFuncs].value<unsigned int>()=2U;
-    u=DihPeriodicFuncParamShift;
-    Param[g][u+DihPeriodicFuncFrequence].value<unsigned int>()=1U;
-    Param[g][u+DihPeriodicFuncStrength].d=1.;
-    Param[g][u+DihPeriodicFuncPhase].d=M_PI-dih;
-    u+=DihPeriodicFuncNumberParameters;
-    Param[g][u+DihPeriodicFuncFrequence].value<unsigned int>()=3U;
-    Param[g][u+DihPeriodicFuncStrength].d=0.5;
-    Param[g][u+DihPeriodicFuncPhase].d=M_PI-dih;
+    Param[g][DihedralPeriodicNumFuncs].value<unsigned int>()=2U;
+    u=DihedralPeriodicFuncParamShift;
+    Param[g][u+DihedralPeriodicFuncFrequence].value<unsigned int>()=1U;
+    Param[g][u+DihedralPeriodicFuncStrength].d=1.;
+    Param[g][u+DihedralPeriodicFuncPhase].d=M_PI-dih;
+    u+=DihedralPeriodicFuncNumberParameters;
+    Param[g][u+DihedralPeriodicFuncFrequence].value<unsigned int>()=3U;
+    Param[g][u+DihedralPeriodicFuncStrength].d=0.5;
+    Param[g][u+DihedralPeriodicFuncPhase].d=M_PI-dih;
     BuildParameterDihedralPeriodic<double>(Param[g]);
   }
   for(unsigned int i=0;i<nc;++i,++g) {
@@ -191,8 +191,6 @@ int main() {
     Param[i][CoreLJ612EnergyDepth].d=1.;
     BuildParameterCoreLJ612<double>(Param[i]);
   }
-  for(unsigned int i=0;i<Param.size;++i)
-    Param[i][InteractionBuffer].ptr[0]=NULL;
 
   allocate(S.Content);
   allocate(S.Interactions,1);
@@ -209,15 +207,15 @@ int main() {
   allocate(S.Interactions[0].Func,mID.size);
   g=0;
   for(unsigned int i=0;i<N-1;++i,++g)
-    allocate(S.Interactions[0].Func[g],Harmonic,3);
+    allocate(S.Interactions[0].Func[g],Harmonic);
   for(unsigned int i=0;i<N-2;++i,++g)
-    allocate(S.Interactions[0].Func[g],AngleHarmonic,3);
+    allocate(S.Interactions[0].Func[g],AngleHarmonic);
   for(unsigned int i=0;i<N-3;++i,++g)
-    allocate(S.Interactions[0].Func[g],DihedralPeriodic,3);
+    allocate(S.Interactions[0].Func[g],DihedralPeriodic);
   for(unsigned int i=0;i<nc;++i,++g)
-    allocate(S.Interactions[0].Func[g],LJ1012,3);
+    allocate(S.Interactions[0].Func[g],LJ1012);
   for(unsigned int i=g;i<mID.size;++i)
-    allocate(S.Interactions[0].Func[i],CoreLJ612,3);
+    allocate(S.Interactions[0].Func[i],CoreLJ612);
   SetWorkFunc(S.Interactions[0],ArrayInteraction);
 
   allocate(S.Propagates[0],SysLangevinVelVerlet,1);

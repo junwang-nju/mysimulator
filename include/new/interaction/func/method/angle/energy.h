@@ -15,8 +15,9 @@ namespace mysimulator {
       const GeomType& Geo, T& Energy, InteractionBuffer<T>& Buf,
       void (*efunc)(const T*,const Unique64Bit*,T*)) {
     if(Buf.postUpdate) {
-      if(IsValid(Buf.inf)) Buf.GetPreFunc(&Buf,Buf.inf.start,Buf.pre.start);
+      if(IsValid(Buf.inf)) Buf.GetPreFunc(&Buf);
       else {
+        unsigned int I=idx[0], J=idx[1], K=idx[2];
         Buf.pre[AngleEdgeASQ]
           =DistanceSQ(Buf.tmvec[AngleBondVecIJ],X[I],X[J],Geo);
         Buf.pre[AngleEdgeBSQ]

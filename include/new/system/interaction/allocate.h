@@ -8,9 +8,9 @@
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT>
-  void allocateData(SysInteraction<T,IDT,PT,GT,VT,SysContentWithV>& SI) {}
+  void allocateData(SysInteraction<T,IDT,PT,GT,BT,VT,SysContentWithV>& SI) {}
 
 }
 
@@ -20,16 +20,16 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT>
-  void allocateData(SysInteraction<T,IDT,PT,GT,VT,SysContentWithE>& SI) {
+  void allocateData(SysInteraction<T,IDT,PT,GT,BT,VT,SysContentWithE>& SI) {
     allocate(SI.EGData);
     allocate(SI.EGData());
   }
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT>
-  void allocateData(SysInteraction<T,IDT,PT,GT,VT,SysContentWithEV>& SI) {
+  void allocateData(SysInteraction<T,IDT,PT,GT,BT,VT,SysContentWithEV>& SI) {
     allocate(SI.EGData);
     allocate(SI.EGData());
   }
@@ -45,33 +45,33 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT, typename T1>
-  void allocateData(SysInteraction<T,IDT,PT,GT,VT,SysContentWithG>& SI,
+  void allocateData(SysInteraction<T,IDT,PT,GT,BT,VT,SysContentWithG>& SI,
                     const VT<T1>& X) {
     allocate(SI.EGData);
     allocate(SI.EGData(),X);
   }
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT, typename T1>
-  void allocateData(SysInteraction<T,IDT,PT,GT,VT,SysContentWithGV>& SI,
+  void allocateData(SysInteraction<T,IDT,PT,GT,BT,VT,SysContentWithGV>& SI,
                     const VT<T1>& X) {
     allocate(SI.EGData);
     allocate(SI.EGData(),X);
   }
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT, typename T1>
-  void allocateData(SysInteraction<T,IDT,PT,GT,VT,SysContentWithEG>& SI,
+  void allocateData(SysInteraction<T,IDT,PT,GT,BT,VT,SysContentWithEG>& SI,
                     const VT<T1>& X) {
     allocate(SI.EGData);
     allocate(SI.EGData(),X);
   }
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT, typename T1>
-  void allocateData(SysInteraction<T,IDT,PT,GT,VT,SysContentWithEGV>& SI,
+  void allocateData(SysInteraction<T,IDT,PT,GT,BT,VT,SysContentWithEGV>& SI,
                     const VT<T1>& X) {
     allocate(SI.EGData);
     allocate(SI.EGData(),X);
@@ -81,10 +81,10 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT, typename T1,
             template<typename,template<typename>class> class SCT>
-  void allocateData(SysInteraction<T,IDT,PT,GT,VT,SCT>& SI,
+  void allocateData(SysInteraction<T,IDT,PT,GT,BT,VT,SCT>& SI,
                     const Object<VT<T> >& X) {
     assert(IsValid(X));
     allocateData(SI,X());

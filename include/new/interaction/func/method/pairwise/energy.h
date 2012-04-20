@@ -15,7 +15,7 @@ namespace mysimulator {
       const GeomType& Geo, T& Energy, InteractionBuffer<T>& Buf,
       void (*efunc)(const T*,const Unique64Bit*,T*)) {
     if(Buf.postUpdate) {
-      if(IsValid(Buf.inf))  Buf.GetPreFunc(&Buf,Buf.inf.start,Buf.pre.start);
+      if(IsValid(Buf.inf))  Buf.GetPreFunc(&Buf);
       else
         Buf.pre[PairwiseDistanceSQ]=
           DistanceSQ(Buf.tmvec[PairwiseBondVecIJ],X[idx[0]],X[idx[1]],Geo);

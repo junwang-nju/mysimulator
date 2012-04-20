@@ -9,19 +9,22 @@
 namespace mysimulator {
 
   template <typename T,typename IDType,typename ParamType,typename GeomType,
-            template<typename> class VecType,
+            typename BufferType, template<typename> class VecType,
             template<typename,template<typename>class> class SysContentType>
   struct LineMinimizerCommon
-    : public MinimizerBase<T,IDType,ParamType,GeomType,VecType,SysContentType> {
+    : public MinimizerBase<T,IDType,ParamType,GeomType,BufferType,
+                           VecType,SysContentType> {
 
     public:
 
       typedef
-      LineMinimizerCommon<T,IDType,ParamType,GeomType,VecType,SysContentType>
+      LineMinimizerCommon<T,IDType,ParamType,GeomType,BufferType,
+                          VecType,SysContentType>
       Type;
       typedef MinimizerBase<T,IDType,ParamType,GeomType,VecType,SysContentType>
               ParentType;
-      typedef System<T,IDType,ParamType,GeomType,VecType,SysContentWithEGV>
+      typedef System<T,IDType,ParamType,GeomType,BufferType,
+                     VecType,SysContentWithEGV>
               SysType;
 
       Object<SysType> MemSys;
@@ -69,15 +72,15 @@ namespace mysimulator {
 
   };
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  void release(LineMinimizerCommon<T,IDT,PT,GT,VT,SCT>& M) { M.clearData(); }
+  void release(LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCT>& M) { M.clearData(); }
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  bool IsValid(const LineMinimizerCommon<T,IDT,PT,GT,VT,SCT>& M) {
+  bool IsValid(const LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCT>& M) {
     return M.isvalid();
   }
 
@@ -88,9 +91,9 @@ namespace mysimulator {
   copy(M.MemSys().Content().EGData.Energy(),M.Sys().Content().EGData.Energy());
 
 #define _LoadXE(SCType) \
-  template <typename T,typename IDT,typename PT,typename GT,\
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,\
             template<typename> class VT> \
-  void _load(LineMinimizerCommon<T,IDT,PT,GT,VT,SCType>& M) { \
+  void _load(LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCType>& M) { \
     _LoadOperateXE \
     GenericEvaluateGradient(M.MemSys().Content(),M.MemSys().Interactions);\
     M.GCalcCount++;\
@@ -109,9 +112,9 @@ namespace mysimulator {
 #undef LoadXE
 
 #define _LoadXEG(SCType) \
-  template <typename T,typename IDT,typename PT,typename GT,\
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,\
             template<typename> class VT> \
-  void _load(LineMinimizerCommon<T,IDT,PT,GT,VT,SCType>& M) { \
+  void _load(LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCType>& M) { \
     _LoadOperateXE \
     copy(M.MemSys().Content().EGData.Gradient(),\
          M.Sys().Content().EGData.Gradient()); \
@@ -132,9 +135,9 @@ namespace mysimulator {
   copy(M.Sys().Content().EGData.Energy(),M.MemSys().Content().EGData.Energy());
 
 #define _WriteXE(SCType) \
-  template <typename T,typename IDT,typename PT,typename GT,\
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,\
             template<typename> class VT>\
-  void _write(LineMinimizerCommon<T,IDT,PT,GT,VT,SCType>& M) { \
+  void _write(LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCType>& M) { \
     _WriteOperateXE \
   }
 
@@ -148,9 +151,9 @@ namespace mysimulator {
 #undef _WriteXE
 
 #define _WriteXEG(SCType) \
-  template <typename T,typename IDT,typename PT,typename GT,\
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,\
             template<typename> class VT> \
-  void _write(LineMinimizerCommon<T,IDT,PT,GT,VT,SCType>& M) { \
+  void _write(LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCType>& M) { \
     _WriteOperateXE \
     copy(M.Sys().Content().EGData.Gradient(),\
          M.MemSys().Content().EGData.Gradient()); \

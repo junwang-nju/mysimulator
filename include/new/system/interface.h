@@ -7,21 +7,22 @@
 #include "array/1d/fill.h"
 
 #define _DefEvFunc(name) \
-  evfunc=name<T,IDType,ParamType,GeomType,VecType,SysContentType>;
+  evfunc=name<T,IDType,ParamType,GeomType,BufferType,VecType,SysContentType>;
 
 namespace mysimulator {
 
   template <typename T, typename IDType, typename ParamType, typename GeomType,
-            template<typename> class VecType,
+            typename BufferType,template<typename> class VecType,
             template<typename,template<typename>class> class SysContentType>
   struct System {
 
     public:
 
-      typedef System<T,IDType,ParamType,GeomType,VecType,SysContentType>
-              Type;
+      typedef
+      System<T,IDType,ParamType,GeomType,BufferType,VecType,SysContentType>
+      Type;
       typedef SysContentType<T,VecType>   ContentType;
-      typedef SysInteraction<T,IDType,ParamType,GeomType,VecType,SysContentType>
+      typedef SysInteraction<T,IDType,ParamType,GeomType,BufferType,VecType,SysContentType>
               InteractionType;
       typedef SysPropagate<T,VecType,SysContentType>  PropagateType;
       typedef void (*EvFuncType)(ContentType&,Array1DContent<InteractionType>&,
@@ -131,15 +132,15 @@ namespace mysimulator {
 
   };
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  void release(System<T,IDT,PT,GT,VT,SCT>& S) { S.clearData(); }
+  void release(System<T,IDT,PT,GT,BT,VT,SCT>& S) { S.clearData(); }
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  bool IsValid(const System<T,IDT,PT,GT,VT,SCT>& S) { return S.isvalid(); }
+  bool IsValid(const System<T,IDT,PT,GT,BT,VT,SCT>& S) { return S.isvalid(); }
 
 }
 

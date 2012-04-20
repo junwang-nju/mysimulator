@@ -6,25 +6,25 @@
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT1,
             template<typename,template<typename>class> class SCT2>
-  void _EvaluateGradient(SCT1<T,VT>&, SysInteraction<T,IDT,PT,GT,VT,SCT2>&) {
+  void _EvaluateGradient(SCT1<T,VT>&, SysInteraction<T,IDT,PT,GT,BT,VT,SCT2>&) {
     Error("No Gradient Calculation are available for this System!");
   }
 
 }
 
 #define _EvalGradient(ISCT) \
-  template <typename T,typename IDT,typename PT,typename GT,\
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,\
             template<typename> class VT,\
             template<typename,template<typename>class> class SCT>\
   void _EvaluateGradient(SCT<T,VT>& S,\
-                         SysInteraction<T,IDT,PT,GT,VT,ISCT>& SI){\
+                         SysInteraction<T,IDT,PT,GT,BT,VT,ISCT>& SI){\
     assert(IsValid(S)&&IsValid(SI));\
     nullifyGradient(SI.EGData());\
-    SI.WorkG(SI.Func,S.X(),SI.ID(),SI.Param(),SI.Geom(),\
+    SI.WorkG(SI.Func,S.X(),SI.ID(),SI.Param(),SI.Buffer(),SI.Geom(),\
              SI.EGData().Gradient());\
   }
 
@@ -50,13 +50,13 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT1,
             template<typename,template<typename>class> class SCT2>
   void GenericEvaluateGradient(
       SCT1<T,VT>& SC,
-      Array1DContent<SysInteraction<T,IDT,PT,GT,VT,SCT2> >& SI) {
+      Array1DContent<SysInteraction<T,IDT,PT,GT,BT,VT,SCT2> >& SI) {
     assert(IsValid(SC)&&IsValid(SI));
     for(unsigned int i=0;i<SI.size;++i) _EvaluateGradient(SC,SI[i]);
     nullifyGradient(SC.EGData);

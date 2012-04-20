@@ -20,12 +20,13 @@ namespace mysimulator {
     if(Buf.postUpdate) {
       DisplacementCalc(Buf.tmvec[AngleBondVecIJ],X[I],X[J],Geo);
       DisplacementCalc(Buf.tmvec[AngleBondVecKJ],X[K],X[J],Geo);
-      if(IsValid(Buf.inf))  Buf.GetPreDiff(&Buf,Buf.inf.start,Buf.pre.start);
+      if(IsValid(Buf.inf))  Buf.GetPreDiff(&Buf);
       else {
         Buf.pre[AngleEdgeASQ]=normSQ(Buf.tmvec[AngleBondVecIJ]);
         Buf.pre[AngleEdgeBSQ]=normSQ(Buf.tmvec[AngleBondVecKJ]);
       }
-      Buf.pre[AngleDotAB]=dot(Buf.tmvec[AngleBondVecIJ],tmvec[AngleBondVecKJ]);
+      Buf.pre[AngleDotAB]
+        =dot(Buf.tmvec[AngleBondVecIJ],Buf.tmvec[AngleBondVecKJ]);
       Buf.P2PDiff(Buf.pre.start,P,Buf.post.start,Buf.postUpdate);
       copy(Buf.tmvec[AngleNormVecI],Buf.tmvec[AngleBondVecKJ]);
       scale(Buf.tmvec[AngleNormVecI],Buf.post[AngleIvRabSin]);

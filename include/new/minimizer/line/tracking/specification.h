@@ -10,23 +10,23 @@
 namespace mysimulator {
 
   template <typename T,typename IDType,typename ParamType,typename GeomType,
-            template<typename> class VecType,
+            typename BufferType,template<typename> class VecType,
             template<typename,template<typename>class> class SysContentType,
             LineMinimizerConditionMethodName LCM>
   struct
-  LineMinimizer<TrackingMethod,T,IDType,ParamType,GeomType,VecType,
+  LineMinimizer<TrackingMethod,T,IDType,ParamType,GeomType,BufferType,VecType,
                 SysContentType,LCM>
       : public 
-        LineMinimizerCommon<T,IDType,ParamType,GeomType,VecType,SysContentType>{
+        LineMinimizerCommon<T,IDType,ParamType,GeomType,BufferType,VecType,SysContentType>{
 
     public:
 
       typedef
-      LineMinimizer<TrackingMethod,T,IDType,ParamType,GeomType,VecType,
-                    SysContentType,LCM>
+      LineMinimizer<TrackingMethod,T,IDType,ParamType,GeomType,BufferType,
+                    VecType,SysContentType,LCM>
       Type;
       typedef
-      LineMinimizerCommon<T,IDType,ParamType,GeomType,VecType,SysContentType>
+      LineMinimizerCommon<T,IDType,ParamType,GeomType,BufferType,VecType,SysContentType>
       ParentType;
 
       static const unsigned int DefaultMaxSteps;
@@ -78,12 +78,12 @@ namespace mysimulator {
 
   };
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT,
             LineMinimizerConditionMethodName LCM>
   const unsigned int
-  LineMinimizer<TrackingMethod,T,IDT,PT,GT,VT,SCT,LCM>::DefaultMaxSteps=
+  LineMinimizer<TrackingMethod,T,IDT,PT,GT,BT,VT,SCT,LCM>::DefaultMaxSteps=
       10000;
 
 }

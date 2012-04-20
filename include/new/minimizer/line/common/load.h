@@ -13,10 +13,10 @@
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  void _create_minimizer(LineMinimizerCommon<T,IDT,PT,GT,VT,SCT>& M) {
+  void _create_minimizer(LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCT>& M) {
     allocate(M.MemSys);
     allocate(M.RunSys);
     allocate(M.MemSys().Content);
@@ -93,23 +93,23 @@ namespace mysimulator {
 #define _Load_Min \
   assert(IsValid(S));\
   release(M);\
-  typedef typename LineMinimizerCommon<T,IDT,PT,GT,VT,SCT>::ParentType Type;\
+  typedef typename LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCT>::ParentType Type;\
   load(static_cast<Type&>(M),S);\
   _create_minimizer(M);
 
 namespace mysimulator {
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  void load(LineMinimizerCommon<T,IDT,PT,GT,VT,SCT>& M,
-            System<T,IDT,PT,GT,VT,SCT>& S) { _Load_Min }
+  void load(LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCT>& M,
+            System<T,IDT,PT,GT,BT,VT,SCT>& S) { _Load_Min }
 
-  template <typename T,typename IDT,typename PT,typename GT,
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT>
-  void load(LineMinimizerCommon<T,IDT,PT,GT,VT,SCT>& M,
-            Object<System<T,IDT,PT,GT,VT,SCT> >& S) { _Load_Min }
+  void load(LineMinimizerCommon<T,IDT,PT,GT,BT,VT,SCT>& M,
+            Object<System<T,IDT,PT,GT,BT,VT,SCT> >& S) { _Load_Min }
 
 }
 

@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void BothLJ1012(const T* buf,const Unique64Bit* P,T* func,T* diff) {
+  void BothLJ1012(const T* post,const Unique64Bit* P,T* func,T* diff) {
     T tmd1=post[LJ1012IvDistanceSQ];
     T tmd2=post[LJ1012IvDistance10];
     *func=tmd2*(P[LJ1012FactorA].value<T>()*tmd1-P[LJ1012FactorB].value<T>());

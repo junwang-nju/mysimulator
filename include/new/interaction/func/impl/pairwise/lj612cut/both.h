@@ -14,7 +14,7 @@ namespace mysimulator {
       *func=0;
       *diff=0;
     } else {
-      BothLJ612(post,P,diff);
+      BothLJ612(post,P,func,diff);
       (*func)-=P[LJ612CutVc].value<T>();
       (*func)-=P[LJ612CutKc].value<T>()
               *(post[LJ612CutDistance]-P[LJ612CutCutR].value<T>());

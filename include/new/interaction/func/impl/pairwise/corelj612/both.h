@@ -15,7 +15,7 @@ namespace mysimulator {
       *diff=0;
     } else {
       BothLJ612(post,P,func,diff);
-      *func+=P[CoreLJ612EqEnergyDepth].value<T>();
+      *func+=P[CoreLJ612EnergyDepth].value<T>();
     }
   }
 

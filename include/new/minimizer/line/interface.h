@@ -10,7 +10,7 @@ namespace mysimulator {
 
   template <LineMinimizerMethodName LM,
             typename T,typename IDType,typename ParamType,typename GeomType,
-            template<typename> class VecType,
+            typename BufferType,template<typename> class VecType,
             template<typename,template<typename>class> class SysContentType,
             LineMinimizerConditionMethodName LCM=StrongWolfe>
   struct LineMinimizer {
@@ -18,7 +18,7 @@ namespace mysimulator {
     public:
 
       typedef
-      LineMinimizer<LM,T,IDType,ParamType,GeomType,VecType,SysContentType,LCM>
+      LineMinimizer<LM,T,IDType,ParamType,GeomType,BufferType,VecType,SysContentType,LCM>
       Type;
 
       LineMinimizer() { Error("Unknown Method for Line Minimizer"); }
@@ -35,18 +35,20 @@ namespace mysimulator {
   };
 
   template <LineMinimizerMethodName LM,
-            typename T,typename IDT,typename PT,typename GT,
+            typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT,
             LineMinimizerConditionMethodName LCM>
-  void release(LineMinimizer<LM,T,IDT,PT,GT,VT,SCT,LCM>& M) { M.clearData(); }
+  void release(LineMinimizer<LM,T,IDT,PT,GT,BT,VT,SCT,LCM>& M) {
+    M.clearData();
+  }
 
   template <LineMinimizerMethodName LM,
-            typename T,typename IDT,typename PT,typename GT,
+            typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename> class VT,
             template<typename,template<typename>class> class SCT,
             LineMinimizerConditionMethodName LCM>
-  bool IsValid(const LineMinimizer<LM,T,IDT,PT,GT,VT,SCT,LCM>& M) {
+  bool IsValid(const LineMinimizer<LM,T,IDT,PT,GT,BT,VT,SCT,LCM>& M) {
     return M.isvalid();
   }
 

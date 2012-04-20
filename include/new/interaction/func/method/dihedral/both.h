@@ -28,7 +28,7 @@ namespace mysimulator {
                                         Buf.tmvec[DihedralBondVecLK]);
       cross(Buf.tmvec[DihedralCrossNormVec],Buf.tmvec[DihedralNormVecA],
                                             Buf.tmvec[DihedralNormVecB]);
-      if(IsValid(Buf.inf)) Buf.GetPreBoth(&Buf,Buf.inf.start,Buf.pre.start);
+      if(IsValid(Buf.inf)) Buf.GetPreBoth(&Buf);
       else {
         Buf.pre[DihedralIvNormASQ]=1./normSQ(Buf.tmvec[DihedralNormVecA]);
         Buf.pre[DihedralIvNormBSQ]=1./normSQ(Buf.tmvec[DihedralNormVecB]);
