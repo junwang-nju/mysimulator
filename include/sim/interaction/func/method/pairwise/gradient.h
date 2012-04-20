@@ -6,14 +6,15 @@
 #include "interaction/buffer/interface.h"
 #include "interaction/func/impl/pairwise/common/buffer/pre-name.h"
 #include "interaction/func/impl/pairwise/common/buffer/vec-name.h"
+#include "array/1d/scale-copy.h"
 
 namespace mysimulator {
 
   // assuming dimension is small
   template <typename GeomType, typename T>
   void GMethodPairwise(
-      T** const X,const int* id,const Unique64Bit* P,const GeomType& Geo,
-      T** Grad,InteractionBuffer<T>& Buf,
+      T** const X,const unsigned int* id,const Unique64Bit* P,
+      const GeomType& Geo,T** Grad,InteractionBuffer<T>& Buf,
       void (*dfunc)(const T*,const Unique64Bit*,T*)) {
     unsigned int I=id[0],J=id[1];
     if(Buf.postUpdate) {
@@ -21,11 +22,14 @@ namespace mysimulator {
       if(Buf.inf!=NULL) Buf.GetPreDiff();
       else Buf.pre[PairwiseDistanceSQ]=NormSQ(Buf.tmvec[PairwiseBondVecIJ],
                                               Buf.dim);
+      Buf.Pre2PostDiff(P);
     }
     T ef;
     dfunc(Buf.post,P,&ef);
-    Shift(Grad[I],+ef,Buf.tmvec[PairwiseBondVecIJ],Buf.dim);
-    Shift(Grad[J],-ef,Buf.tmvec[PairwiseBondVecIJ],Buf.dim);
+    ScaleCopy(Buf.tmvec[PairwiseScaledBondVecIJ],
+              Buf.tmvec[PairwiseBondVecIJ],ef,Buf.dim);
+    Shift(Grad[I],Buf.tmvec[PairwiseScaledBondVecIJ],Buf.dim);
+    NegShift(Grad[J],Buf.tmvec[PairwiseScaledBondVecIJ],Buf.dim);
   }
 
 }

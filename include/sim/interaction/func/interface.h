@@ -19,15 +19,15 @@ namespace mysimulator {
       typedef void (*EFuncType)(const T*,const Unique64Bit*,T*);
       typedef void (*GFuncType)(const T*,const Unique64Bit*,T*);
       typedef void (*BFuncType)(const T*,const Unique64Bit*,T*,T*);
-      typedef void (*EMethodType)(T** const,const int*,const Unique64Bit*,
-                                  const GeomType&,T&,InteractionBuffer<T>&,
-                                  EFuncType);
-      typedef void (*GMethodType)(T** const,const int*,const Unique64Bit*,
-                                  const GeomType&,T**,InteractionBuffer<T>&,
-                                  GFuncType);
-      typedef void (*BMethodType)(T** const,const int*,const Unique64Bit*,
-                                  const GeomType&,T&,T**,InteractionBuffer<T>&,
-                                  BFuncType);
+      typedef void (*EMethodType)(T** const,const unsigned int*,
+                                  const Unique64Bit*,const GeomType&,T&,
+                                  InteractionBuffer<T>&,EFuncType);
+      typedef void (*GMethodType)(T** const,const unsigned int*,
+                                  const Unique64Bit*,const GeomType&,T**,
+                                  InteractionBuffer<T>&,GFuncType);
+      typedef void (*BMethodType)(T** const,const unsigned int*,
+                                  const Unique64Bit*,const GeomType&,T&,T**,
+                                  InteractionBuffer<T>&,BFuncType);
 
       InteractionFuncName   tag;
       EFuncType             EFunc;

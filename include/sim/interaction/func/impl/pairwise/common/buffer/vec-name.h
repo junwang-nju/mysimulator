@@ -6,6 +6,7 @@ namespace mysimulator {
 
   enum PairwiseCommonBufferVecName {
     PairwiseBondVecIJ=0,
+    PairwiseScaledBondVecIJ,
     PairwiseCommonBufferNumberVectors
   };
 

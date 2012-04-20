@@ -14,6 +14,11 @@ namespace mysimulator {
     for(unsigned int i=0;i<n;++i) p[i]+=q[i];
   }
 
+  template <typename T1, typename T2>
+  void NegShift(T1* p, const T2* q, unsigned int n) {
+    for(unsigned int i=0;i<n;++i) p[i]-=q[i];
+  }
+
   template <typename T1, typename T2, typename T3>
   void Shift(T1* p, const T2& d, const T3* q, unsigned int n) {
     for(unsigned int i=0;i<n;++i) p[i]+=d*q[i];
