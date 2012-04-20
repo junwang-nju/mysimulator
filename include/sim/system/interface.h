@@ -29,13 +29,13 @@ namespace mysimulator {
           const unsigned int**);
 
       unsigned int EvoluteMode;
-      ContentType<T>*       Content;
+      ContentType<T>        Content;
       InteractionType*      Interactions;
       PropagatorType*       Propagators;
       unsigned int**        GroupMap;
       EvoluteFuncType       EvFunc;
 
-      System() : EvoluteMode(0), Content(NULL), Interactions(NULL),
+      System() : EvoluteMode(0), Content(), Interactions(NULL),
                  Propagators(NULL), GroupMap(NULL), EvFunc(NULL) {}
       ~System() { clearData(); }
 
@@ -44,7 +44,7 @@ namespace mysimulator {
         release(Interactions); release(Content);  EvoluteMode=0;
       }
       bool isvalid() const {
-        return (Content!=NULL)&&(Interactions!=NULL)&&(Propagators!=NULL)&&
+        return IsValid(Content)&&(Interactions!=NULL)&&(Propagators!=NULL)&&
                (GroupMap!=NULL)&&(EvFunc!=NULL)&&(EvoluteMode!=0);
       }
 

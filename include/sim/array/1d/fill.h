@@ -2,11 +2,13 @@
 #ifndef _Array_1D_Fill_H_
 #define _Array_1D_Fill_H_
 
+#include "intrinsic-type/copy.h"
+
 namespace mysimulator {
 
   template <typename T1, typename T2>
   void Fill(T1* p, const T2& d, unsigned int n) {
-    for(unsigned int i=0;i<n;++i) p[i]=d;
+    for(unsigned int i=0;i<n;++i) Copy(p[i],d);
   }
 
 }
@@ -69,6 +71,17 @@ namespace mysimulator {
 #ifdef _FILL_EqType
 #undef _FILL_EqType
 #endif
+
+namespace mysimulator {
+
+  template <typename T1, typename T2>
+  void BLASFill(T1* p, const T2& d, unsigned int n) {
+    T1 rd;
+    Copy(rd,d);
+    BLASFill(p,rd,n);
+  }
+
+}
 
 #include <cstring>
 

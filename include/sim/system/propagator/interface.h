@@ -14,7 +14,7 @@ namespace mysimulator {
     public:
 
       typedef SystemPropagator<T,ContentType>  Type;
-      typedef (*OperationFuncType)(Type&);
+      typedef (*OperationFuncType)(Type&,ContentType<T>&);
 
       SystemPropagatorMethodName  Method;
       Unique64Bit*                MerIDRange;
@@ -42,10 +42,14 @@ namespace mysimulator {
                ((Param!=NULL)||(Method==SystemFixPosition));
       }
 
-      void init() { InitFunc(*this); }
-      void propagate(unsigned int move) { EvFunc[move](*this); }
-      void update(unsigned int update) { UpdFunc[update](*this); }
-      void clear() { ClrFunc(*this); }
+      void init(ContentType<T>& C) { InitFunc(*this,C); }
+      void propagate(ContentType<T>& C,unsigned int move) {
+        EvFunc[move](*this,C);
+      }
+      void update(ContentType<T>& C, unsigned int update) {
+        UpdFunc[update](*this,C);
+      }
+      void clear(ContentType<T>& C) { ClrFunc(*this,C); }
 
     private:
 
