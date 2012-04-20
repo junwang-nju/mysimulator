@@ -6,14 +6,18 @@
 #include "array/1d/size.h"
 #include "array/2d/release.h"
 
+#ifndef _TemplateType_
 #define _TemplateType_ \
   T,IDType,ParamType,GeomType,BufferType,DataType,ContentType
+#else
+#error "Duplicate Definition for _TemplateType_"
+#endif
 
 namespace mysimulator {
 
   template <typename T,typename IDType,typename ParamType,typename GeomType,
             typename BufferType, typename DataType,
-            template<typename> class ContentType>
+            template<typename,typename> class ContentType>
   struct System {
 
     public:
@@ -26,7 +30,7 @@ namespace mysimulator {
           const unsigned int**);
 
       unsigned int EvoluteMode;
-      ContentType<DataType>*    Content;
+      ContentType<T,DataType>*  Content;
       InteractionType*          Interactions;
       PropagatorType*           Propagators;
       unsigned int**            GroupMap;
@@ -72,14 +76,18 @@ namespace mysimulator {
   };
 
   template <typename T,typename IDT,typename PT,typename GT,typename BT,
-            typename DT,template<typename> class CT>
+            typename DT,template<typename,typename> class CT>
   bool IsValid(const System<T,IDT,PT,GT,BT,DT,CT>& S) { return S.isvalid(); }
 
   template <typename T,typename IDT,typename PT,typename GT,typename BT,
-            typename DT,template<typename> class CT>
+            typename DT,template<typename,typename> class CT>
   void release(System<T,IDT,PT,GT,BT,DT,CT>& S) { S.clearData(); }
 
 }
+
+#ifdef _TemplateType_
+#undef _TemplateType_
+#endif
 
 #endif
 

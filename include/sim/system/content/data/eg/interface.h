@@ -14,7 +14,7 @@ namespace mysimulator {
       typedef SystemContentDataEG<T,DataType>   Type;
 
       T         *Energy;
-      DataType  *Gradient;
+      DataType  Gradient;
       bool      isRefer;
 
       SystemContentDataEG() : Energy(NULL), Gradient(NULL), isRefer(false) {}
@@ -22,7 +22,7 @@ namespace mysimulator {
 
       void clearData() {
         if(isRefer) Energy=NULL;  else release(Energy);
-        release(*Gradient); release(Gradient);
+        release(Gradient);
         isRefer=false;
       }
       bool isvalid() const { return (Energy!=NULL)&&(Gradient!=NULL); }

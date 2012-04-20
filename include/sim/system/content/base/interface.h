@@ -13,12 +13,12 @@ namespace mysimulator {
       
       typedef SystemContentBase<DataType>  Type;
 
-      DataType* X;
+      DataType X;
 
       SystemContentBase() : X(NULL) {}
       ~SystemContentBase() { clearData(); }
 
-      void clearData() { release(*X); release(X); }
+      void clearData() { release(X); }
       bool isvalid() const { return X!=NULL; }
 
     private:

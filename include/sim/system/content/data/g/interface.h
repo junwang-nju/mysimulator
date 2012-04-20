@@ -13,12 +13,12 @@ namespace mysimulator {
 
       typedef SystemContentDataG<DataType>  Type;
 
-      DataType* Gradient;
+      DataType Gradient;
 
       SystemContentDataG() : Gradient(NULL) {}
       ~SystemContentDataG() { clearData(); }
 
-      void clearData() { release(*Gradient); release(Gradient); }
+      void clearData() { release(Gradient); }
       bool isvalid() const { return Gradient!=NULL; }
 
     private:
