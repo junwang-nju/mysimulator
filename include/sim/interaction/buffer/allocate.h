@@ -3,7 +3,6 @@
 #define _Interaction_Buffer_Allocate_H_
 
 #include "interaction/buffer/interface.h"
-#include "interaction/func/name.h"
 #include "array/1d/allocate.h"
 #include "array/2d/allocate.h"
 
@@ -22,6 +21,7 @@ namespace mysimulator {
                 unsigned int dim) {
     release(B);
     B.dim=dim;
+    B.tag=itag;
     switch(itag) {
       case Harmonic:
         B.pre=allocate<T>(PairwiseCommonBufferPreSize);

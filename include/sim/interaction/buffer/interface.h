@@ -3,6 +3,7 @@
 #define _Interaction_Buffer_Interface_H_
 
 #include "unique/64bit/interface.h"
+#include "interaction/func/name.h"
 #include "array/2d/release.h"
 
 namespace mysimulator {
@@ -16,31 +17,34 @@ namespace mysimulator {
       typedef void (*P2PFuncType)(const T*,const Unique64Bit*,T*,bool&);
       typedef void (*GetPreFuncType)(Type&);
 
-      unsigned int    dim;
-      T*              pre;
-      T*              post;
-      T**             tmvec;
-      Type**          inf;
-      bool            postUpdate;
-      P2PFuncType     P2PFunc,  P2PDiff,  P2PBoth;
-      GetPreFuncType  GPreFunc, GPreDiff, GPreBoth;
+      unsigned int          dim;
+      InteractionFuncName   tag;
+      T*                    pre;
+      T*                    post;
+      T**                   tmvec;
+      Type**                inf;
+      bool                  postUpdate;
+      P2PFuncType           P2PFunc,  P2PDiff,  P2PBoth;
+      GetPreFuncType        GPreFunc, GPreDiff, GPreBoth;
 
       InteractionBuffer()
-        : dim(0), pre(NULL), post(NULL), tmvec(NULL), inf(NULL),
-          postUpdate(true),
+        : dim(0), tag(UnknownInteactionFunc),
+          pre(NULL), post(NULL), tmvec(NULL), inf(NULL), postUpdate(true),
           P2PFunc(NULL),  P2PDiff(NULL),  P2PBoth(NULL),
           GPreFunc(NULL), GPreDiff(NULL), GPreBoth(NULL) {}
       ~InteractionBuffer() { clearData(); }
 
       bool isvalid() const {
         return (dim>0)&&(pre!=NULL)&&(post!=NULL)&&(tmvec!=NULL)&&
-               (P2PFunc!=NULL)&&(P2PDiff!=NULL)&&(P2PBoth!=NULL);
+               (P2PFunc!=NULL)&&(P2PDiff!=NULL)&&(P2PBoth!=NULL)&&
+               (tag!=UnknownInteactionFunc);
       }
       void clearData() {
         GPreBoth=NULL;    GPreDiff=NULL;    GPreFunc=NULL;
         P2PBoth=NULL;     P2PDiff=NULL;     P2PFunc=NULL;
         postUpdate=true;  release(inf);     release2d(tmvec);
         release(post);    release(pre);     dim=0;
+        tag=UnknownInteactionFunc;
       }
 
       void clearFlag() { postUpdate=true; }

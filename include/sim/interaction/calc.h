@@ -65,7 +65,7 @@
 
 #ifndef _Array_Array
 #define _Array_Array(Method) \
-  _Head(Method,_Array,_Array) { \
+  _HEAD(Method,_Array,_Array) { \
     assert(IsValid(F)); \
     F.Method##_Func(X,id,P,Geo,Method##_VAR,Buf); \
   }
@@ -87,7 +87,7 @@ namespace mysimulator {
 
 #ifndef _List_Array
 #define _List_Array(Method) \
-  _Head(Method,_List,_Array) { \
+  _HEAD(Method,_List,_Array) { \
     unsigned int n=size(id); \
     assert(n==size(Buf)); \
     for(unsigned int i=0;i<n;++i) Calc(F,X,id[i],P,Buf[i],Geo,Method##_VAR); \
@@ -108,7 +108,7 @@ namespace mysimulator {
 
 #ifndef _List_List
 #define _List_List(Method) \
-  _Head(Method,_List,_List) { \
+  _HEAD(Method,_List,_List) { \
     unsigned int n=size(id); \
     assert((n==size(P))&&(n==size(Buf))); \
     for(unsigned int i=0;i<n;++i) Calc(F,X,id[i],P[i],Buf[i],Geo,Method##_VAR);\
@@ -138,7 +138,7 @@ namespace mysimulator {
       Calc(F[i],X,id[i],P[i],Buf[i],Geo,Method##_VAR); \
   }
 #else
-#error "Duplicate Definitions of _ArrayForceCase
+#error "Duplicate Definitions of _ArrayForceCase"
 #endif
 
 namespace mysimulator {
@@ -155,8 +155,8 @@ namespace mysimulator {
 #undef _RunCalc
 #endif
 
-#ifdef _Head
-#undef _Head
+#ifdef _HEAD
+#undef _HEAD
 #endif
 
 #if defined(_Low_List)||defined(_Low_Array)
