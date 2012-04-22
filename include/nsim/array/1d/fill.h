@@ -28,7 +28,7 @@ namespace mysimulator {
   void BlasFill(Array1D<float>& V,const float& d,unsigned int n) {
     assert(n<=V.Size());
     long m=n, one=1, zero=0;
-    BLAS<float>::Copy(&m,const_cast<double*>(&d),&zero,V._data,&one);
+    BLAS<float>::Copy(&m,const_cast<float*>(&d),&zero,V._data,&one);
   }
 
   void BlasFill(Array1D<long double>& V, const long double& d, unsigned int n) {

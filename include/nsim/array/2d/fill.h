@@ -8,18 +8,18 @@
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  void Fill(Array2D<T1>& V1, const T2& d) {
-    Fill(V1._ldata,d,V1._ldata.Size());
+  void Fill(Array2D<T1>& V, const T2& d) {
+    Fill(V._ldata,d,V._ldata.Size());
   }
 
   template <typename T>
   void BlasFill(Array2D<T>& V, const T& d) {
-    BlasFill(V1._ldata,d,V1._ldata.Size());
+    BlasFill(V._ldata,d,V._ldata.Size());
   }
 
   template <typename T>
   void MemFill(Array2D<T>& V, const T& d) {
-    MemFill(V1._ldata,d,V1._ldata.Size());
+    MemFill(V._ldata,d,V._ldata.Size());
   }
 
 }

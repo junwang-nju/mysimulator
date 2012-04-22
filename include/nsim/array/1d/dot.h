@@ -14,7 +14,8 @@
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  _DotType(T1,T2) Dot(const Array1D<T1>& V1,const Array1D<T2>& V2) {
+  _DotType(T1,T2) Dot(const Array1D<T1>& V1,const Array1D<T2>& V2,
+                      unsigned int n) {
     assert((n<=V1.Size())&&(n<=V2.Size()));
     _DotType(T1,T2) sum=0.;
     for(unsigned int i=0;i<n;++i) sum+=V1[i]*V2[i];

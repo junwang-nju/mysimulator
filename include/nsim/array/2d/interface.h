@@ -35,6 +35,13 @@ namespace mysimulator {
         for(unsigned int i=0,m=0;i<sz.Size();m+=sz[i],++i)
           static_cast<ParentType*>(this)->operator[](i).Refer(_ldata,m,sz[i]);
       }
+      void Allocate(unsigned int n1,unsigned int n2) {
+        Clear();
+        static_cast<ParentType*>(this)->Allocate(n1);
+        _ldata.Allocate(n1*n2);
+        for(unsigned int i=0,m=0;i<n1;m+=n2,++i)
+          static_cast<ParentType*>(this)->operator[](i).Refer(_ldata,m,n2);
+      }
       void Refer(Type& V, unsigned int b, unsigned int n) {
         Clear();
         static_cast<ParentType*>(this)->Refer(static_cast<ParentType&>(V),b,n);
