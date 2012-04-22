@@ -59,9 +59,13 @@ namespace mysimulator {
 
       template <typename T>
       T& value() { _NullValueDEF(T); }
+      template <typename T>
+      T*& pointer() { return reinterpret_cast<T*&>(_data.ptr); }
 
       template <typename T>
       const T& value() const { _NullValueDEF(const T); }
+      template <typename T>
+      const T* const& pointer() const { return reinterpret_cast<const T* const&>(_data.ptr); }
 
     private:
 
