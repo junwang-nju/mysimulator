@@ -2,7 +2,7 @@
 #ifndef _Array_2D_Shift_H_
 #define _Array_2D_Shift_H_
 
-#include "array/2d/interfce.h"
+#include "array/2d/interface.h"
 #include "array/1d/shift.h"
 
 namespace mysimulator {
@@ -14,7 +14,7 @@ namespace mysimulator {
 
   template <typename T>
   void BlasShift(Array2D<T>& V, const T& d) {
-    BlasShift(B._ldata,d,V._ldata.Size());
+    BlasShift(V._ldata,d,V._ldata.Size());
   }
 
 }
