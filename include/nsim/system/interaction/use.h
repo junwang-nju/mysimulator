@@ -9,7 +9,7 @@
   template <typename T,typename IDT,typename ParamT,typename GeomT,\
             typename BufferT,template<typename> class CT> \
   void Use##PART(SystemInteraction<T,IDT,ParamT,GeomT,BufferT,CT>& SI,\
-                 const PART##T& i##PART) { SI.PART.Refer(i##PART); }
+                 PART##T& i##PART) { SI.PART.Refer(i##PART); }
 #else
 #error "Duplicate Definition for Macro _USE"
 #endif

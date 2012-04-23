@@ -50,10 +50,11 @@ namespace mysimulator {
 
   template <typename T,typename IDT,typename PT,typename GT,typename BT,
             template<typename>class CT>
-      void Clear(SystemInteraction<T,IDT,PT,GT,BT,CT>& SI) {
-        Clear(SI.EGData); Clear(SI.Geom); Clear(SI.Buffer); Clear(SI.Param);
-        Clear(SI.ID); Clear(SI.Func);
-      }
+  void Clear(SystemInteraction<T,IDT,PT,GT,BT,CT>& SI) {
+    Clear(SI.EGData); Clear(SI.Geom); Clear(SI.Buffer); Clear(SI.Param);
+    Clear(SI.ID); Clear(SI.Func);
+  }
+
 }
 
 #endif
