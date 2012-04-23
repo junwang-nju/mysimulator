@@ -20,18 +20,19 @@ namespace mysimulator {
 
 #include "system/content/with-egv/interface.h"
 
-#if !(defined(FUNC)||defined(PTR))
+#if !(defined(FUNC)||defined(PTR)||defined(SRC))
 #define PTR(U)  VelVerletConstE##Ptr##U
+#define SRC(U)  VelVerletConstE##Src##U
 #define FUNC(U) VelVerletConstE##Func##U
 #else
 #error "Duplicate Definition for Macro PTR,FUNC"
 #endif
 
-#if !(defined(VALUE)||defined(PARAM))
+#if !(defined(SVALUE)||defined(PARAM))
 #define PARAM(U)  P.Param[U]
-#define PVALUE(U) (*Pointer<T>(PARAM(PTR(U))))
+#define SVALUE(U) (*Pointer<T>(PARAM(SRC(U))))
 #else
-#error "Duplicate Definition for Macro PARAM,PVALUE"
+#error "Duplicate Definition for Macro PARAM,SVALUE"
 #endif
 
 namespace mysimulator {
@@ -42,7 +43,7 @@ namespace mysimulator {
       void (*MvFunc)(Array1D<SystemContentWithEGV<T> >&,const T&,
                      const Unique64Bit&);
     MvFunc mvf=reinterpret_cast<MvFunc>(PARAM(FUNC(MoveBefore)).ptr);
-    mvf(P.GrpContent,PVALUE(TimeStep),PARAM(PTR(NegHTIM)));
+    mvf(P.GrpContent,SVALUE(TimeStep),PARAM(PTR(NegHTIM)));
   }
 
   template <typename T>
@@ -55,13 +56,14 @@ namespace mysimulator {
 
 }
 
-#if defined(PVALUE)||defined(PARAM)
-#undef PVALUE
+#if defined(SVALUE)||defined(PARAM)
+#undef SVALUE
 #undef PARAM
 #endif
 
-#if defined(FUNC)||defined(PTR)
+#if defined(FUNC)||defined(PTR)||defined(SRC)
 #undef FUNC
+#undef SRC
 #undef PTR
 #endif
 

@@ -2,7 +2,7 @@
 #ifndef _System_Content_Base_Interface_H_
 #define _System_Content_Base_Interface_H_
 
-#include "array/2d/interface.h"
+#include "array/2d/imprint.h"
 
 namespace mysimulator {
 
@@ -20,6 +20,11 @@ namespace mysimulator {
 
       bool IsValid() const { return X.IsValid(); }
 
+      template <typename T1>
+      void Allocate(const Array2D<T1>& iX) {
+        Clear(*this);
+        ImprintStructure(X,iX);
+      }
       void Refer(const Type& D) { X.Refer(D.X); }
       void Refer(const Type& D,unsigned int b,unsigned int n) {
         X.Refer(D.X,b,n);

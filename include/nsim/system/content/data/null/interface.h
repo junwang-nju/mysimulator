@@ -16,8 +16,8 @@ namespace mysimulator {
 
       bool IsValid() const { return true; }
 
-      void Allocate() { fprintf(stderr,"Not Necessary!\n"); }
-      void Allocate(const Array2D<T>&) { fprintf(stderr,"Not Necessary!\n"); }
+      void Allocate() {}
+      void Allocate(const Array2D<T>&) {}
       void Refer(const Type&) {}
       void Refer(const Type&,unsigned int,unsigned int) {}
 

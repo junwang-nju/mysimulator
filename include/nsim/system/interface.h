@@ -3,13 +3,16 @@
 #define _System_Interface_H_
 
 #include "system/evolute/mode.h"
-#include "array/1d/fill.h"
+#include "dynamics/interface.h"
 
 #define _DefEvFunc(NAME) \
   EvFunc=SystemEvoluteMode##NAME<T,IDType,ParamType,GeomType,ParamType,\
                                  BufferType,ContentType>
 
 namespace mysimulator {
+
+  template <DynamicsModeName DN,typename T,typename GRT>
+  struct Dynamics;
 
   template <typename T,typename IDType,typename ParamType,typename GeomType,
             typename BufferType,template<typename> class ContentType>
@@ -55,9 +58,26 @@ namespace mysimulator {
         assert(IsValid());
         for(unsigned int i=0;i<Propagtors.Size();++i) Propagtors[i]._Clear();
       }
-      void Evolute() {
+      void StepEvolute() {
         assert(IsValid());
         EvFunc(Content,Interactions,Propagtors,GrpMap);
+      }
+      template <DynamicsModeName DN,typename GRT>
+      void Evolute(Dynamics<DN,T,GRT>& D) {
+        assert(IsValid()&&D.IsValid());
+        assert(IsMatch(D,*this));
+        assert(D.BindFlag);
+        typedef void (*EvWriteType)(Type&,Dynamics<DN,T,GRT>&);
+        EvWriteType EvWrite=reinterpret_cast<EvWriteType>(D.WriteFunc.ptr);
+        unsigned int n=
+          static_cast<unsigned int>(D.RunPeriod/D.TimeBwOutput);
+        D.NowTime=D.StartTime;
+        if(D.IsFirstOutput) EvWrite(*this,D);
+        for(unsigned int i=0;i<=n;++i) {
+          for(unsigned int k=0;k<D.NumStepsBwOutput;++k)  StepEvolute();
+          D.UpdateNowTime(D.TimeBwOutput);
+          EvWrite(*this,D);
+        }
       }
 
       void _Build() {

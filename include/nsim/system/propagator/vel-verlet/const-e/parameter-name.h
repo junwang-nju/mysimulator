@@ -6,10 +6,10 @@ namespace mysimulator {
 
   enum VelVerletConstEParameterName {
     VelVerletConstEModMass=0,
-    VelVerletConstEPtrTimeStep,
     VelVerletConstEPtrMass,
     VelVerletConstEPtrNegHTIM,
     VelVerletConstEPtrVelocitySQ,
+    VelVerletConstESrcTimeStep,
     VelVerletConstESrcMass,
     VelVerletConstESrcNegHTIM,
     VelVerletConstESrcVelocitySQ,

@@ -26,21 +26,21 @@ namespace mysimulator {
 
 #include "system/content/with-egv/interface.h"
 
-#if !(defined(VALUE)||defined(FUNC)||defined(PTR))
+#if !(defined(VALUE)||defined(FUNC)||defined(PTR)||defined(SRC))
 #define PTR(U)    VelVerletConstE##Ptr##U
+#define SRC(U)    VelVerletConstE##Src##U
 #define FUNC(U)   VelVerletConstE##Func##U
 #define VALUE(U)  VelVerletConstE##Val##U
 #else
 #error "Duplicate Definition for PTR,FUNC,VALUE"
 #endif
 
-#if !(defined(PARAM)||defined(PVALUE)||defined(VVALUE))
+#if !(defined(PARAM)||defined(SVALUE)||defined(VVALUE))
 #define PARAM(U)  P.Param[U]
-#define PVALUE(U) (*Pointer<T>(PARAM(PTR(U))))
-//#define PVALUE(U) (*reinterpret_cast<T*>(PARAM(PTR(U)).ptr))
+#define SVALUE(U) (*Pointer<T>(PARAM(SRC(U))))
 #define VVALUE(U) Value<T>(PARAM(VALUE(U)))
 #else
-#error "Duplicate Definition for PARAM,PVALUE,VVALUE"
+#error "Duplicate Definition for PARAM,SVALUE,VVALUE"
 #endif
 
 #include "unique/64bit/io.h"
@@ -51,7 +51,7 @@ namespace mysimulator {
   void _UpdateVelVerletConstEHTIM(SystemPropagator<T,SystemContentWithEGV>& P) {
     typedef void (*UpFunc)(const T&,const Unique64Bit&,Unique64Bit&);
     UpFunc F=reinterpret_cast<UpFunc>(PARAM(FUNC(UpdateHTIM)).ptr);
-    F(PVALUE(TimeStep),PARAM(PTR(Mass)),PARAM(PTR(NegHTIM)));
+    F(SVALUE(TimeStep),PARAM(PTR(Mass)),PARAM(PTR(NegHTIM)));
   }
 
   template <typename T>
@@ -72,15 +72,16 @@ namespace mysimulator {
 
 }
 
-#if defined(PARAM)||defined(PVALUE)||defined(VVALUE)
+#if defined(PARAM)||defined(SVALUE)||defined(VVALUE)
 #undef VVALUE
-#undef PVALUE
+#undef SVALUE
 #undef PARAM
 #endif
 
-#if defined(VALUE)||defined(FUNC)||defined(PTR)
+#if defined(VALUE)||defined(FUNC)||defined(PTR)||defined(SRC)
 #undef VALUE
 #undef FUNC
+#undef SRC
 #undef PTR
 #endif
 

@@ -24,7 +24,7 @@ namespace mysimulator {
         Clear(*this);
         Energy.Allocate(1);
       }
-      void Allocate(const Array2D<T>&) { fprintf(stderr,"Not Necessary!\n"); }
+      void Allocate(const Array2D<T>&) { Allocate(); }
       void Refer(const Type& D) { Energy.Refer(D.Energy); }
       void Refer(const Type& D,unsigned int b,unsigned int n) { Refer(D); }
 

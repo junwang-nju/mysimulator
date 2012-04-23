@@ -24,6 +24,11 @@ namespace mysimulator {
                EGData.IsValid();
       }
 
+      template <typename T1>
+      void Allocate(const Array2D<T1>& iX) {
+        static_cast<ParentType*>(this)->Allocate(iX);
+        EGData.Allocate(iX);
+      }
       void Refer(const Type& C) {
         static_cast<ParentType*>(this)->Refer(
             static_cast<const ParentType&>(C));
