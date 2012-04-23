@@ -21,7 +21,7 @@ namespace mysimulator {
       void Clear() { Gradient.Clear(); }
       bool IsValid() const { return Gradient.IsValid(); }
 
-      void Allocate() { fprintf("Not Available!\n"); }
+      void Allocate() { fprintf(stderr,"Not Available!\n"); }
       void Allocate(const Array2D<T>& X) {
         Clear();
         Imprint(Gradient,X);
