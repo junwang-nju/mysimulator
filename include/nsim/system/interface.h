@@ -6,8 +6,8 @@
 #include "dynamics/interface.h"
 
 #define _DefEvFunc(NAME) \
-  EvFunc=SystemEvoluteMode##NAME<T,IDType,ParamType,GeomType,ParamType,\
-                                 BufferType,ContentType>
+  EvFunc=SystemEvoluteMode##NAME<T,IDType,ParamType,GeomType,BufferType,\
+                                 ContentType>
 
 namespace mysimulator {
 
@@ -88,7 +88,8 @@ namespace mysimulator {
         Fill(sz,0U,sz.Size());
         for(unsigned int i=0;i<Propagtors.Size();++i)
           ++sz[Propagtors[i].Method];
-        for(unsigned int i=0;i<Propagtors.Size();++i)
+        GrpMap.Allocate(SystemPropagatorNumberMethods);
+        for(unsigned int i=0;i<SystemPropagatorNumberMethods;++i)
           if(sz[i]>0) { GrpMap[i].Allocate(sz[i]); sz[i]=0; }
         for(unsigned int i=0,k;i<Propagtors.Size();++i) {
           k=Propagtors[i].Method;

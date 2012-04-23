@@ -15,8 +15,8 @@ namespace mysimulator {
       RandomBase() {}
 
       virtual void Init(unsigned int) = 0;
-      virtual const double Double() = 0;
-      virtual const unsigned int UInt() = 0;
+      virtual double Double() = 0;
+      virtual unsigned int UInt() = 0;
 
       void InitWithTime() { Init(static_cast<unsigned int>(time(0))); }
 

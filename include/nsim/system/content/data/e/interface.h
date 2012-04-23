@@ -25,8 +25,8 @@ namespace mysimulator {
         Energy.Allocate(1);
       }
       void Allocate(const Array2D<T>&) { Allocate(); }
-      void Refer(const Type& D) { Energy.Refer(D.Energy); }
-      void Refer(const Type& D,unsigned int b,unsigned int n) { Refer(D); }
+      void Refer(Type& D) { Energy.Refer(D.Energy); }
+      void Refer(Type& D,unsigned int b,unsigned int n) { Refer(D); }
 
     private:
 

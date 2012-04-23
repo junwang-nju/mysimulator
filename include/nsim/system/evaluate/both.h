@@ -25,7 +25,7 @@ namespace mysimulator {
   void _EvalBoth(const CT<T>& C,SystemInteraction<T,IDT,PT,GT,BT,RCT>& SI) { \
     assert(C.IsValid()&&SI.IsValid()); \
     NullifyBoth(SI.EGData); \
-    SI.Calc(C.X,SI.EGData.Gradient); \
+    SI.WorkCalc(C.X,SI.EGData.Energy[0],SI.EGData.Gradient); \
   }
 #else
 #error "Duplicate Definition for Macro _EVAL"

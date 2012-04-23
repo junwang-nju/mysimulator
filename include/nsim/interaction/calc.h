@@ -83,21 +83,21 @@ namespace mysimulator {
             const Array1D<Array1D<T> >& X,const IDT& ID,const PT& P,BT& Buf,
             const GT& Geo, T& E) {
     assert((F.Size()==ID.Size())&&(F.Size()==P.Size())&&(F.Size()==Buf.Size()));
-    for(unsigned int i=0;i<F.Size();++i) Calc(F[i],ID[i],P[i],Buf[i],Geo,E);
+    for(unsigned int i=0;i<F.Size();++i) Calc(F[i],X,ID[i],P[i],Buf[i],Geo,E);
   }
   template <typename T,typename IDT,typename PT,typename GT,typename BT>
   void Calc(const Array1D<InteractionFunc<GT,T> >& F,
             const Array1D<Array1D<T> >& X,const IDT& ID,const PT& P,BT& Buf,
             const GT& Geo, Array1D<Array1D<T> >& G) {
     assert((F.Size()==ID.Size())&&(F.Size()==P.Size())&&(F.Size()==Buf.Size()));
-    for(unsigned int i=0;i<F.Size();++i) Calc(F[i],ID[i],P[i],Buf[i],Geo,G);
+    for(unsigned int i=0;i<F.Size();++i) Calc(F[i],X,ID[i],P[i],Buf[i],Geo,G);
   }
   template <typename T,typename IDT,typename PT,typename GT,typename BT>
   void Calc(const Array1D<InteractionFunc<GT,T> >& F,
             const Array1D<Array1D<T> >& X,const IDT& ID,const PT& P,BT& Buf,
             const GT& Geo, T& E, Array1D<Array1D<T> >& G) {
     assert((F.Size()==ID.Size())&&(F.Size()==P.Size())&&(F.Size()==Buf.Size()));
-    for(unsigned int i=0;i<F.Size();++i) Calc(F[i],ID[i],P[i],Buf[i],Geo,E,G);
+    for(unsigned int i=0;i<F.Size();++i) Calc(F[i],X,ID[i],P[i],Buf[i],Geo,E,G);
   }
 
 }

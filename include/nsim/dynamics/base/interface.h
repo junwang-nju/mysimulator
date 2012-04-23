@@ -11,14 +11,15 @@
 #endif
 
 #ifndef _LINK
-#define _LINK(W) \
-  Pointer<T>(PARAM(W##Src##TimeStep))=&TimeStep; \
-  MassMethodName u=PARAM(W##Mod##Mass).u; \
-  if(u==ArrayMass) { \
-    if(!IsSameStructure(AMass,X)) ImprintStructure(AMass,X); \
-    Pointer<Array2D<T> >(PARAM(W##Src##Mass))=&AMass; \
-  } else if(u==UniqueMass) Pointer<T>(PARAM(W##Src##Mass))=&UMass; \
-  else fprintf(stderr,"Unknowm Mass Method!\n");
+#define _LINK(W) {\
+    Pointer<T>(PARAM(W##Src##TimeStep))=&TimeStep; \
+    MassMethodName u=static_cast<MassMethodName>(PARAM(W##Mod##Mass).u); \
+    if(u==ArrayMass) { \
+      if(!IsSameStructure(AMass,X)) ImprintStructure(AMass,X); \
+      Pointer<Array2D<T> >(PARAM(W##Src##Mass))=&AMass; \
+    } else if(u==UniqueMass) Pointer<T>(PARAM(W##Src##Mass))=&UMass; \
+    else fprintf(stderr,"Unknowm Mass Method!\n"); \
+  }
 #else
 #error "Duplicate Definition for Macro _LINK"
 #endif

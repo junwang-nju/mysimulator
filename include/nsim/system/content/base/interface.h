@@ -25,10 +25,8 @@ namespace mysimulator {
         Clear(*this);
         ImprintStructure(X,iX);
       }
-      void Refer(const Type& D) { X.Refer(D.X); }
-      void Refer(const Type& D,unsigned int b,unsigned int n) {
-        X.Refer(D.X,b,n);
-      }
+      void Refer(Type& D) { X.Refer(D.X); }
+      void Refer(Type& D,unsigned int b,unsigned int n) { X.Refer(D.X,b,n); }
 
     private:
 

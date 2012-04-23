@@ -27,11 +27,11 @@ namespace mysimulator {
         Energy.Allocate(1);
         Imprint(Gradient,X);
       }
-      void Refer(const Type& D) {
+      void Refer(Type& D) {
         Energy.Refer(D.Energy);
         Gradient.Refer(D.Gradient);
       }
-      void Refer(const Type& D,unsigned int b,unsigned int n) {
+      void Refer(Type& D,unsigned int b,unsigned int n) {
         Energy.Refer(D.Energy);
         Gradient.Refer(D.Gradient,b,n);
       }

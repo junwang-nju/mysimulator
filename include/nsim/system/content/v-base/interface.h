@@ -29,14 +29,12 @@ namespace mysimulator {
         static_cast<ParentType*>(this)->Allocate(iX);
         ImprintStructure(Velocity,iX);
       }
-      void Refer(const Type& C) {
-        static_cast<ParentType*>(this)->Refer(
-            static_cast<const ParentType&>(C));
+      void Refer(Type& C) {
+        static_cast<ParentType*>(this)->Refer(static_cast<ParentType&>(C));
         Velocity.Refer(C.Velocity);
       }
-      void Refer(const Type& C,unsigned int b,unsigned int n) {
-        static_cast<ParentType*>(this)->Refer(
-            static_cast<const ParentType&>(C),b,n);
+      void Refer(Type& C,unsigned int b,unsigned int n) {
+        static_cast<ParentType*>(this)->Refer(static_cast<ParentType&>(C),b,n);
         Velocity.Refer(C.Velocity,b,n);
       }
 

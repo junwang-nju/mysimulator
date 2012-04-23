@@ -18,6 +18,7 @@ namespace mysimulator {
     V.Refer(const_cast<Array1D<unsigned int>&>(GrpMap[SystemConstEVelVerlet]));
     for(unsigned int i=0;i<V.Size();++i)
       SP[V[i]]._Propagate(VelVerletConstEBeforeG);
+    for(unsigned int i=0;i<SI.Size();++i) ClearFlag(SI[i].Buffer);
     EvaluateGradient(C,SI);
     for(unsigned int i=0;i<V.Size();++i)
       SP[V[i]]._Propagate(VelVerletConstEAfterG);

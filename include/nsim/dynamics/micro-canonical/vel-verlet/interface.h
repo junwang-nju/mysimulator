@@ -23,7 +23,7 @@ namespace mysimulator {
       ~Dynamics() { Clear(*this); }
 
       bool IsValid() const {
-        return static_cast<const ParentType&>(this)->IsValid()&&
+        return static_cast<const ParentType*>(this)->IsValid()&&
                AltData.IsValid();
       }
 
@@ -66,7 +66,7 @@ namespace mysimulator {
             typename BT,template<typename> class CT>
   bool IsMatch(const Dynamics<MicroCanonicalVelVerlet,T,GRT>& D,
                const System<T,IDT,PT,GT,BT,CT>& S) {
-    return (S.EvoluteMode==8)||(S.EvoluteMode=10);
+    return (S.EvoluteMode==8)||(S.EvoluteMode==10);
   }
 
 }

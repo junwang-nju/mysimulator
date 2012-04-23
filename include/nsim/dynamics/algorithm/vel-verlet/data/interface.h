@@ -11,13 +11,18 @@
 #endif
 
 #ifndef _LINK
-#define _LINK(W) \
-  MassMethodName u=PARAM(W##Mod##Mass).u; \
-  if(u==ArrayMass) { \
-    if(!IsSameStructure(ANegHTIM,X)) ImprintStructure(ANegHTIM,X); \
-    Pointer<Array2D<T> >(PARAM(W##Src##NegHTIM))=&ANegHTIM; \
-  } else if(u==UniqueMass) Pointer<T>(PARAM(W##Src##NegHTIM))=&UNegHTIM; \
-  else fprintf(stderr,"Unknown Mass Methods!\n");
+#define _LINK(W) { \
+    MassMethodName u=static_cast<MassMethodName>(PARAM(W##Mod##Mass).u); \
+    if(u==ArrayMass) { \
+      if(!IsSameStructure(ANegHTIM,X)) ImprintStructure(ANegHTIM,X); \
+      if(!IsSameStructure(AVelSQ,X)) ImprintStructure(AVelSQ,X); \
+      Pointer<Array2D<T> >(PARAM(W##Src##NegHTIM))=&ANegHTIM; \
+      Pointer<Array2D<T> >(PARAM(W##Src##VelocitySQ))=&AVelSQ; \
+    } else if(u==UniqueMass) { \
+      Pointer<T>(PARAM(W##Src##NegHTIM))=&UNegHTIM; \
+      Pointer<T>(PARAM(W##Src##VelocitySQ))=&UVelSQ; \
+    } else fprintf(stderr,"Unknown Mass Methods!\n"); \
+  }
 #else
 #error "Duplicate Definition for Macro _LINK"
 #endif
@@ -32,9 +37,11 @@ namespace mysimulator {
       typedef DynamicsVelVerletData<T>    Type;
 
       T           UNegHTIM;
+      T           UVelSQ;
       Array2D<T>  ANegHTIM;
+      Array2D<T>  AVelSQ;
 
-      DynamicsVelVerletData() : UNegHTIM(0), ANegHTIM() {}
+      DynamicsVelVerletData() : UNegHTIM(0), UVelSQ(0), ANegHTIM(), AVelSQ() {}
       ~DynamicsVelVerletData() { Clear(*this); }
 
       bool IsValid() const { return true; }

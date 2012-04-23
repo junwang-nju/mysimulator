@@ -141,7 +141,6 @@ namespace mysimulator {
         postUpdate=true;
       }
 
-      void ClearFlag() { postUpdate=true; }
       void GetPreFunc() { GPreFunc(*this); }
       void GetPreDiff() { GPreDiff(*this); }
       void GetPreBoth() { GPreBoth(*this); }
@@ -168,6 +167,14 @@ namespace mysimulator {
     Buf.P2PDiff=NULL; Buf.P2PFunc=NULL; Buf.postUpdate=true; Clear(Buf.inf);
     Clear(Buf.tmvec); Clear(Buf.post); Clear(Buf.pre); Buf.dim=0;
     Buf.tag=UnknownInteactionFunc;
+  }
+
+  template <typename T>
+  void ClearFlag(InteractionBuffer<T>& Buf) { Buf.postUpdate=true; }
+
+  template <typename T>
+  void ClearFlag(Array1D<InteractionBuffer<T> >& Buf) {
+    for(unsigned int i=0;i<Buf.Size();++i)  ClearFlag(Buf[i]);
   }
 
 }

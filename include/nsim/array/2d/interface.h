@@ -45,7 +45,7 @@ namespace mysimulator {
         T* ptr=V[b]._data;
         bl=static_cast<unsigned int>(ptr-V[0]._data);
         nl=(b+n<this->_size?static_cast<unsigned int>(V[b+n]._data-ptr):
-                            _ldata._size-bl);
+                            V._ldata._size-bl);
         _ldata.Refer(V._ldata,bl,nl);
       }
       void Refer(Type& V) {

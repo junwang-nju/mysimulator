@@ -25,8 +25,8 @@ namespace mysimulator {
         Clear(*this);
         Imprint(Gradient,X);
       }
-      void Refer(const Type& D) { Gradient.Refer(D.Gradient); }
-      void Refer(const Type& D,unsigned int b,unsigned int n) {
+      void Refer(Type& D) { Gradient.Refer(D.Gradient); }
+      void Refer(Type& D,unsigned int b,unsigned int n) {
         Gradient.Refer(D.Gradient,b,n);
       }
 

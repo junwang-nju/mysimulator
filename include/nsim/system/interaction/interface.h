@@ -35,13 +35,13 @@ namespace mysimulator {
       void AllocateData() { EGData.Allocate(); }
       void AllocateData(const Array2D<T>& X) { EGData.Allocate(X); }
 
-      void Calc(const Array1D<Array1D<T> >& X,T& Energy) {
+      void WorkCalc(const Array1D<Array1D<T> >& X,T& Energy) {
         Calc(Func,X,ID,Param,Buffer,Geom,Energy);
       }
-      void Calc(const Array1D<Array1D<T> >& X,Array1D<Array1D<T> >& Grad) {
+      void WorkCalc(const Array1D<Array1D<T> >& X,Array1D<Array1D<T> >& Grad) {
         Calc(Func,X,ID,Param,Buffer,Geom,Grad);
       }
-      void Calc(const Array1D<Array1D<T> >& X,T& Energy,
+      void WorkCalc(const Array1D<Array1D<T> >& X,T& Energy,
                 Array1D<Array1D<T> >& Grad) {
         Calc(Func,X,ID,Param,Buffer,Geom,Energy,Grad);
       }

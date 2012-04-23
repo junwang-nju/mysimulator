@@ -18,8 +18,8 @@ namespace mysimulator {
 
       void Allocate() {}
       void Allocate(const Array2D<T>&) {}
-      void Refer(const Type&) {}
-      void Refer(const Type&,unsigned int,unsigned int) {}
+      void Refer(Type&) {}
+      void Refer(Type&,unsigned int,unsigned int) {}
 
     private:
 

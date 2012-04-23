@@ -12,10 +12,11 @@ namespace mysimulator {
             template<typename> class CT>
   void SystemEvoluteModeVelVerletConstE(
       CT<T>& C,Array1D<SystemInteraction<T,IDT,PT,GT,BT,CT> >& SI,
-      Array1D<SystemPropagator<T,CT> > SP,
+      Array1D<SystemPropagator<T,CT> >& SP,
       const Array1D<Array1D<unsigned int> >&) {
     for(unsigned int i=0;i<SP.Size();++i)
       SP[i]._Propagate(VelVerletConstEBeforeG);
+    for(unsigned int i=0;i<SI.Size();++i) ClearFlag(SI[i].Buffer);
     EvaluateGradient(C,SI);
     for(unsigned int i=0;i<SP.Size();++i)
       SP[i]._Propagate(VelVerletConstEAfterG);
