@@ -16,14 +16,13 @@ namespace mysimulator {
       Array2D<T>  Gradient;
 
       SystemContentDataG() : Gradient() {}
-      ~SystemContentDataG() { Clear(); }
+      ~SystemContentDataG() { Clear(*this); }
 
-      void Clear() { Gradient.Clear(); }
       bool IsValid() const { return Gradient.IsValid(); }
 
       void Allocate() { fprintf(stderr,"Not Available!\n"); }
       void Allocate(const Array2D<T>& X) {
-        Clear();
+        Clear(*this);
         Imprint(Gradient,X);
       }
       void Refer(const Type& D) { Gradient.Refer(D.Gradient); }
@@ -37,6 +36,9 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T>
+  void Clear(SystemContentDataG<T>& D) { Clear(D.Gradient); }
 
 }
 

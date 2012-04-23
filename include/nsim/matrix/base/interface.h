@@ -21,20 +21,22 @@ namespace mysimulator {
 
       MatrixBase() : ParentType(), NumRows(0), NumColumns(0),
                      StorageName(MatrixStorageUnknown) {}
-      ~MatrixBase() { Clear(); }
+      ~MatrixBase() { Clear(*this); }
 
-      void Clear() {
-        static_cast<ParentType*>(this)->Clear();
-        NumRows=0;
-        NumColumns=0;
-        StorageName=MatrixStorageUnknown;
-      }
       bool IsValid() const {
         return static_cast<const ParentType*>(this)->IsValid()&&
                (NumRows>0)&&(NumColumns>0)&&(StorageName!=MatrixStorageUnknown);
       }
 
   };
+
+  template <typename T>
+  void Clear(MatrixBase<T>& M) {
+    Clear(static_cast<typename MatrixBase<T>::ParentType&>(M));
+    M.NumRows=0;
+    M.NumColumns=0;
+    M.StorageName=MatrixStorageUnknown;
+  }
 
 }
 

@@ -17,33 +17,29 @@ namespace mysimulator {
       Array1D<T> _ldata;
 
       Array2D() : ParentType(), _ldata() {}
-      ~Array2D() { Clear(); }
+      ~Array2D() { Clear(*this); }
 
-      void Clear() {
-        static_cast<ParentType*>(this)->Clear();
-        _ldata.Clear();
-      }
       bool IsValid() const {
         return static_cast<const ParentType*>(this)->IsValid()&&
                _ldata.IsValid();
       }
 
       void Allocate(const Array1D<unsigned int>& sz) {
-        Clear();
+        Clear(*this);
         static_cast<ParentType*>(this)->Allocate(sz.Size());
         _ldata.Allocate(Sum(sz));
         for(unsigned int i=0,m=0;i<sz.Size();m+=sz[i],++i)
           static_cast<ParentType*>(this)->operator[](i).Refer(_ldata,m,sz[i]);
       }
       void Allocate(unsigned int n1,unsigned int n2) {
-        Clear();
+        Clear(*this);
         static_cast<ParentType*>(this)->Allocate(n1);
         _ldata.Allocate(n1*n2);
         for(unsigned int i=0,m=0;i<n1;m+=n2,++i)
           static_cast<ParentType*>(this)->operator[](i).Refer(_ldata,m,n2);
       }
       void Refer(Type& V, unsigned int b, unsigned int n) {
-        Clear();
+        Clear(*this);
         static_cast<ParentType*>(this)->Refer(static_cast<ParentType&>(V),b,n);
         unsigned int bl,nl;
         T* ptr=V[b]._data;
@@ -63,6 +59,12 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T>
+  void Clear(Array2D<T>& V) {
+    Clear(static_cast<typename Array2D<T>::ParentType&>(V));
+    Clear(V._ldata);
+  }
 
 }
 

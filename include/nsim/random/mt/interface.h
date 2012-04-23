@@ -14,9 +14,8 @@ namespace mysimulator {
       typedef MersenneTwister<MMN,Fac>  Type;
 
       MersenneTwister() {}
-      ~MersenneTwister() { Clear(); }
+      ~MersenneTwister() { Clear(*this); }
 
-      void Clear() {}
       bool IsValid() const { return false; }
 
     private:
@@ -25,6 +24,9 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <MTMethodName MMN, unsigned int Fac>
+  void Clear(MersenneTwister<MMN,Fac>& R) {}
 
 }
 

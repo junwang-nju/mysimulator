@@ -19,9 +19,8 @@ namespace mysimulator {
       GetFuncType GetFunc;
 
       MatrixRectangle() : ParentType(), GetFunc(NULL) {}
-      ~MatrixRectangle() { Clear(); }
+      ~MatrixRectangle() { Clear(*this); }
 
-      void Clear() { static_cast<ParentType*>(this)->Clear(); GetFunc=NULL; }
       bool IsValid() const {
         return static_cast<const ParentType*>(this)->IsValid()&&(GetFunc!=NULL);
       }
@@ -51,6 +50,12 @@ namespace mysimulator {
       }
 
   };
+
+  template <typename T>
+  void Clear(MatrixRectangle<T>& M) {
+    Clear(static_cast<typename MatrixRectangle<T>::ParentType&>(M));
+    M.GetFunc=NULL;
+  }
 
 }
 

@@ -55,20 +55,15 @@ namespace mysimulator {
       InteractionFunc()
         : tag(UnknownInteactionFunc), EFunc(NULL), GFunc(NULL), BFunc(NULL),
           EMethod(NULL), GMethod(NULL), BMethod(NULL) {}
-      ~InteractionFunc() { Clear(); }
+      ~InteractionFunc() { Clear(*this); }
 
-      void Clear() {
-        tag=UnknownInteactionFunc;
-        EFunc=NULL; GFunc=NULL; BFunc=NULL; EMethod=NULL; GMethod=NULL;
-        BMethod=NULL;
-      }
       void IsValid() const {
         return (tag!=UnknownInteactionFunc)&&
                ((EMethod!=NULL)||(GMethod!=NULL)||(BMethod!=NULL));
       }
 
       void Allocate(const InteractionFuncName itag) {
-        Clear();
+        Clear(*this);
         tag=itag;
         switch(itag) {
           case Harmonic:
@@ -192,5 +187,15 @@ namespace mysimulator {
 #undef _METHOD_DCL
 #endif
 
+namespace mysimulator {
+
+  template <typename GT,typename T>
+  void Clear(InteractionFunc<GT,T>& F) {
+    F.tag=UnknownInteactionFunc;
+    F.EFunc=NULL; F.GFunc=NULL; F.BFunc=NULL; F.EMethod=NULL; F.GMethod=NULL;
+    F.BMethod=NULL;
+  }
+
+}
 #endif
 

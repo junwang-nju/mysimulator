@@ -17,9 +17,8 @@ namespace mysimulator {
       typedef SystemContentDataE<T>     EGDataType;
 
       SystemContentWithE() : ParentType() {}
-      ~SystemContentWithE() { Clear(); }
+      ~SystemContentWithE() { Clear(*this); }
 
-      void Clear() { static_cast<ParentType*>(this)->Clear(); }
       bool IsValid() const {
         return static_cast<const ParentType*>(this)->IsValid();
       }
@@ -30,6 +29,11 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T>
+  void Clear(SystemContentWithE<T>& C) {
+    Clear(static_cast<typename SystemContentWithE<T>::ParentType&>(C));
+  }
 
 }
 

@@ -17,9 +17,8 @@ namespace mysimulator {
       typedef SystemContentVBase<T,SystemContentWithNull> ParentType;
 
       SystemContentWithV() : ParentType() {}
-      ~SystemContentWithV() { Clear(); }
+      ~SystemContentWithV() { Clear(*this); }
 
-      void Clear() { static_cast<ParentType*>(this)->Clear(); }
       bool IsValid() const {
         return static_cast<const ParentType*>(this)->IsValid();
       }
@@ -30,6 +29,11 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T>
+  void Clear(SystemContentWithV<T>& C) {
+    Clear(static_cast<typename SystemContentWithV<T>::ParentType&>(C));
+  }
 
 }
 

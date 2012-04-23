@@ -39,21 +39,16 @@ namespace mysimulator {
         : dim(0),tag(UnknownInteactionFunc),pre(),post(),tmvec(),inf(),
           postUpdate(true),P2PFunc(NULL),P2PDiff(NULL),P2PBoth(NULL),
           GPreFunc(NULL),GPreDiff(NULL),GPreBoth(NULL) {}
-      ~InteractionBuffer() { Clear(); }
+      ~InteractionBuffer() { Clear(*this); }
 
       bool IsValid() const {
-        return (dim>0)&&pre.Clear()&&post.Clear()&&tmvec.Clear()&&
+        return (dim>0)&&pre.IsValid()&&post.IsValid()&&tmvec.IsValid()&&
                (P2PFunc!=NULL)&&(P2PDiff!=NULL)&&(P2PBoth!=NULL)&&
                (tag!=UnknownInteactionFunc);
       }
-      void Clear() {
-        GPreBoth=NULL; GPreDiff=NULL; GPreFunc=NULL; P2PBoth=NULL; P2PDiff=NULL;
-        P2PFunc=NULL; postUpdate=true; inf.Clear(); tmvec.Clear(); post.Clear();
-        pre.Clear(); dim=0; tag=UnknownInteactionFunc;
-      }
 
       void Allocate(const InteractionFuncName itag,unsigned int d) {
-        Clear();
+        Clear(*this);
         dim=d;
         tag=itag;
         switch(tag) {
@@ -166,6 +161,14 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T>
+  void Clear(InteractionBuffer<T>& Buf) {
+    Buf.GPreBoth=NULL; Buf.GPreDiff=NULL; Buf.GPreFunc=NULL; Buf.P2PBoth=NULL;
+    Buf.P2PDiff=NULL; Buf.P2PFunc=NULL; Buf.postUpdate=true; Clear(Buf.inf);
+    Clear(Buf.tmvec); Clear(Buf.post); Clear(Buf.pre); Buf.dim=0;
+    Buf.tag=UnknownInteactionFunc;
+  }
 
 }
 

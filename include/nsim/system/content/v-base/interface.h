@@ -17,11 +17,8 @@ namespace mysimulator {
       Array2D<T> Velocity;
 
       SystemContentVBase() : ParentType(), Velocity() {}
-      ~SystemContentVBase() { Clear(); }
+      ~SystemContentVBase() { Clear(*this); }
 
-      void Clear() {
-        Velocity.Clear(); static_cast<ParentType*>(this)->Clear();
-      }
       bool IsValid() const {
         return static_cast<const ParentType*>(this)->IsValid()&&
                Velocity.IsValid();
@@ -45,6 +42,11 @@ namespace mysimulator {
 
   };
 
+  template <typename T,template<typename>class EGT>
+  void Clear(SystemContentVBase<T,EGT>& C) {
+    Clear(Velocity);
+    Clear(static_cast<typename SystemContentVBase<T,EGT>::ParentType&>(C));
+  }
 }
 
 #endif

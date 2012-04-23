@@ -17,11 +17,8 @@ namespace mysimulator {
       EGDataType<T>  EGData;
 
       SystemContentEGBase() : ParentType(), EGData() {}
-      ~SystemContentEGBase() { Clear(); }
+      ~SystemContentEGBase() { Clear(*this); }
 
-      void Clear() {
-        EGData.Clear(); static_cast<ParentType*>(this)->Clear();
-      }
       bool IsValid() const {
         return static_cast<const ParentType*>(this)->IsValid()&&
                EGData.IsValid();
@@ -44,6 +41,12 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T,template<typename>class EGT>
+  void Clear(SystemContentEGBase<T,EGT>& C) {
+    Clear(EGData);
+    Clear(static_cast<typename SystemContentEGBase<T,EGT>::ParentType&>(C));
+  }
 
 }
 

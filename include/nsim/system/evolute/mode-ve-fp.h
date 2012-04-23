@@ -21,7 +21,7 @@ namespace mysimulator {
     EvaluateGradient(C,SI);
     for(unsigned int i=0;i<V.Size();++i)
       SP[V[i]]._Propagate(VelVerletConstEAfterG);
-    V.Clear();
+    Clear(V);
   }
 
 }

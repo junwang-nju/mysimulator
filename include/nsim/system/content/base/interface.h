@@ -16,9 +16,8 @@ namespace mysimulator {
       Array2D<T>  X;
 
       SystemContentBase() : X() {}
-      ~SystemContentBase() { Clear(); }
+      ~SystemContentBase() { Clear(*this); }
 
-      void Clear() { X.Clear(); }
       bool IsValid() const { return X.IsValid(); }
 
       void Refer(const Type& D) { X.Refer(D.X); }
@@ -32,6 +31,9 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T>
+  void Clear(SystemContentBase<T>& C) { Clear(C.X); }
 
 }
 

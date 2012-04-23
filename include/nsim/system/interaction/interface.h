@@ -25,12 +25,8 @@ namespace mysimulator {
       EGDataType                              EGData;
 
       SystemInteraction() : Func(),ID(),Param(),Buffer(),Geom(),EGData() {}
-      ~SystemInteraction() { Clear(); }
+      ~SystemInteraction() { Clear(*this); }
 
-      void Clear() {
-        EGData.Clear(); Geom.Clear(); Buffer.Clear(); Param.Clear();
-        ID.Clear(); Func.Clear();
-      }
       bool IsValid() const {
         return Func.IsValid()&&ID.IsValid()&&Param.IsValid()&&
                Buffer.IsValid()&&Geom.IsValid()&&EGData.IsValid();
@@ -52,6 +48,12 @@ namespace mysimulator {
 
   };
 
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
+            template<typename>class CT>
+      void Clear(SystemInteraction<T,IDT,PT,GT,BT,CT>& SI) {
+        Clear(SI.EGData); Clear(SI.Geom); Clear(SI.Buffer); Clear(SI.Param);
+        Clear(SI.ID); Clear(SI.Func);
+      }
 }
 
 #endif

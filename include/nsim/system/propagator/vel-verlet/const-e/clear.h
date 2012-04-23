@@ -20,7 +20,7 @@
   if(P.Param[PTR(U)].ptr!=NULL) { \
     Array1D<Array2D<T> > *p; \
     p=reinterpret_cast<Array1D<Array2D<T> >*>(P.Param[PTR(U)].ptr); \
-    p->Clear(); \
+    Clear(*p); \
     delete p; \
     P.Param[PTR(U)].ptr=NULL; \
   }

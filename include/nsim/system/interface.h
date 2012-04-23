@@ -40,19 +40,8 @@ namespace mysimulator {
 
       System() : EvoluteMode(0), Content(), Interactions(), Propagtors(),
                  GrpMap(), EvFunc(NULL) {}
-      ~System() { Clear(); }
+      ~System() { Clear(*this); }
 
-      void Clear() {
-        EvFunc=NULL;
-        for(unsigned int i=0;i<GrpMap.Size();++i) GrpMap[i].Clear();
-        GrpMap.Clear();
-        for(unsigned int i=0;i<Propagtors.Size();++i) Propagtors[i].Clear();
-        Propagtors.Clear();
-        for(unsigned int i=0;i<Interactions.Size();++i) Interactions[i].Clear();
-        Interactions.Clear();
-        Content.Clear();
-        EvoluteMode=0;
-      }
       bool IsValid() const {
         return (EvoluteMode!=0)&&Content.IsValid()&&Interactions.IsValid()&&
                Propagtors.IsValid()&&GrpMap.IsValid()&&(EvFunc!=NULL);
@@ -86,7 +75,7 @@ namespace mysimulator {
           GrpMap[k][sz[k]]=i;
           ++sz[k];
         }
-        sz.Clear();
+        Clear(sz);
         EvoluteMode=0;
         for(unsigned int i=0;i<GrpMap.Size();++i)
           EvoluteMode+=((GrpMap[i].Size()>0?1:0)<<i);
@@ -116,6 +105,17 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T,typename IDT,typename PT,typename GT,typename BT,
+            template<typename> class CT>
+  void Clear(System<T,IDT,PT,GT,BT,CT>& S) {
+    S.EvFunc=NULL;
+    Clear(S.GrpMap);
+    Clear(S.Propagtors);
+    Clear(S.Interactions);
+    Clear(S.Content);
+    S.EvoluteMode=0;
+  }
 
 }
 

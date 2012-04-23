@@ -13,7 +13,6 @@ namespace mysimulator {
       FreeSpace() {}
       ~FreeSpace() {}
 
-      void Clear() {}
       bool IsValid() const { return true; }
 
       void Allocate(unsigned int) {}
@@ -25,6 +24,8 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  void Clear(FreeSpace&) {}
 
 }
 

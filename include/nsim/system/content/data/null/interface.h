@@ -12,9 +12,8 @@ namespace mysimulator {
       typedef SystemContentDataNull<T>  Type;
 
       SystemContentDataNull() {}
-      ~SystemContentDataNull() { Clear(); }
+      ~SystemContentDataNull() { Clear(*this); }
 
-      void Clear() {}
       bool IsValid() const { return true; }
 
       void Allocate() { fprintf(stderr,"Not Necessary!\n"); }
@@ -28,6 +27,9 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T>
+  void Clear(SystemContentDataNull<T>&) {}
 
 }
 

@@ -31,12 +31,11 @@ namespace mysimulator {
       unsigned int sloc;
 
       MersenneTwister() : ParentType(), s(), sloc(0) { assert(Fac==0); }
-      ~MersenneTwister() { Clear(); }
+      ~MersenneTwister() { Clear(*this); }
 
-      void Clear() { s.Clear(); sloc=0; }
       bool IsValid() const { return s.IsValid(); }
 
-      void Allocate() { Clear(); s.Allocate(N); sloc=0; }
+      void Allocate() { Clear(*this); s.Allocate(N); sloc=0; }
 
       virtual void Init(unsigned int seed) {
         BlasFill(s,0U,N);
@@ -105,15 +104,38 @@ namespace mysimulator {
         return static_cast<double>(i)*(1./4294967295.)+(0.5+0.5/4294967295.);
       }
       double DoubleClose0Open1() {
+        int i=static_cast<int>(UInt());
+        return static_cast<double>(i)*(1./4294967296.)+0.5;
       }
       double DoubleOpen0Open1() {
+        int i=static_cast<int>(UInt());
+        return static_cast<double>(i)*(1./4294967296.)+(0.5+0.5/4294967296.);
       }
       double Double53BitSlow() {
+        unsigned int x,y;
+        x=UInt();
+        y=UInt();
+        return (static_cast<double>(x)*67108864.+static_cast<double>(y))*
+               (1./9007199254740992.);
       }
       long double Double63BitSlow() {
+        unsigned int x,y;
+        x=UInt();
+        y=UInt();
+        return
+          static_cast<long double>(x|static_cast<unsigned long long>(y)<<32)*
+          (1./18446744073709551616.0L);
       }
 
+    private:
+
+      MersenneTwister(const Type&) {}
+      Type& operator=(const Type&) { return *this; }
+
   };
+
+  template <unsigned int Fac>
+  void Clear(MersenneTwister<StandardMT,Fac>& R) { Clear(R.s); R.sloc=0; }
 
 }
 

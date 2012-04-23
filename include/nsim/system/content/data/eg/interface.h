@@ -17,14 +17,13 @@ namespace mysimulator {
       Array2D<T>    Gradient;
 
       SystemContentDataEG() : Energy(), Gradient() {}
-      ~SystemContentDataEG() { Clear(); }
+      ~SystemContentDataEG() { Clear(*this); }
 
-      void Clear() { Energy.Clear(); Gradient.Clear(); }
       bool IsValid() const { return Energy.IsValid()&&Gradient.IsValid(); }
 
       void Allocate() { fprintf(stderr,"Not Available!\n"); }
       void Allocate(const Array2D<T>& X) {
-        Clear();
+        Clear(*this);
         Energy.Allocate(1);
         Imprint(Gradient,X);
       }
@@ -43,6 +42,9 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T>
+  void Clear(SystemContentDataEG<T>& D) { Clear(D.Energy); Clear(D.Gradient); }
 
 }
 

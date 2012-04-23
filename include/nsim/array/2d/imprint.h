@@ -9,7 +9,7 @@ namespace mysimulator {
 
   template <typename T1,typename T2>
   void ImprintStructure(Array2D<T1>& V,const Array2D<T2>& V2) {
-    V.Clear();
+    Clear(V);
     typedef typename Array2D<T1>::ParentType  Type;
     ImprintStructure(static_cast<Type&>(V),static_cast<const Type&>(V2));
     ImprintStructure(V._ldata,V2._ldata);
@@ -19,7 +19,7 @@ namespace mysimulator {
 
   template <typename T>
   void Imprint(Array2D<T>& V,const Array2D<T>& V2) {
-    V.Clear();
+    Clear(V);
     typedef typename Array2D<T>::ParentType  Type;
     ImprintStructure(static_cast<Type&>(V),static_cast<const Type&>(V2));
     Imprint(V._ldata,V2._ldata);

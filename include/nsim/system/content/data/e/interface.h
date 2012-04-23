@@ -16,13 +16,12 @@ namespace mysimulator {
       Array1D<T>  Energy;
 
       SystemContentDataE() : Energy() {}
-      ~SystemContentDataE() { Clear(); }
+      ~SystemContentDataE() { Clear(*this); }
 
-      void Clear() { Energy.Clear(); }
       bool IsValid() const { return Energy.IsValid(); }
 
       void Allocate() {
-        Clear();
+        Clear(*this);
         Energy.Allocate(1);
       }
       void Allocate(const Array2D<T>&) { fprintf(stderr,"Not Necessary!\n"); }
@@ -36,6 +35,8 @@ namespace mysimulator {
 
   };
 
+  template <typename T>
+  void Clear(SystemContentDataE<T>& D) { Clear(D.Energy); }
 }
 
 #endif

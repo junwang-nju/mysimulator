@@ -29,14 +29,8 @@ namespace mysimulator {
       SystemPropagator() : Method(SystemPropagatorUnassigned), IDRange(),
                            GrpContent(), Param(), InitFunc(NULL), ClrFunc(NULL),
                            EvFunc(), UpdFunc() {}
-      ~SystemPropagator() { Clear(); }
+      ~SystemPropagator() { Clear(*this); }
 
-      void Clear() {
-        if(ClrFunc!=NULL)   _Clear();
-        ClrFunc=NULL; UpdFunc.Clear();  EvFunc.Clear(); InitFunc=NULL;
-        Param.Clear(); IDRange.Clear(); GrpContent.Clear();
-        Method=SystemPropagatorUnassigned;
-      }
       bool IsValid() const {
         return (ClrFunc!=NULL)&&(InitFunc!=NULL)&&EvFunc.IsValid()&&
                IDRange.IsValid()&&GrpContent.IsValid()&&
@@ -54,7 +48,7 @@ namespace mysimulator {
 
       void _Build(CType& C) {
         assert(IDRange.IsValid());
-        GrpContent.Clear();
+        Clear(GrpContent);
         GrpContent.Allocate(IDRange.Size());
         for(unsigned int i=0;i<IDRange.Size();++i)
           GrpContent[i].Refer(C,IDRange[i].uv[0],IDRange[i].uv[1]);
@@ -80,24 +74,24 @@ namespace mysimulator {
 
   template <typename T,template<typename> class CT>
   void SystemPropagator<T,CT>::Allocate(SystemPropagatorMethodName PMN) {
-    Clear();
+    Clear(*this);
     Method=PMN;
     switch(PMN) {
       case SystemToBeDetermined:
-        Param.Clear();
+        Clear(Param);
         InitFunc=InitTBD<T,CT>;
         ClrFunc=ClearTBD<T,CT>;
         EvFunc.Allocate(TBDNumberMoves);
         EvFunc[TBDNoMove]=MoveTBDNoMove<T,CT>;
-        UpdFunc.Clear();
+        Clear(UpdFunc);
         break;
       case SystemFixPosition:
-        Param.Clear();
+        Clear(Param);
         InitFunc=InitFixPosition<T,CT>;
         ClrFunc=ClearFixPosition<T,CT>;
         EvFunc.Allocate(FixPositionNumberMoves);
         EvFunc[FixPositionNoMove]=MoveFixPositionNoMove<T,CT>;
-        UpdFunc.Clear();
+        Clear(UpdFunc);
         break;
       case SystemConstEVelVerlet:
         Param.Allocate(VelVerletConstENumberParameters);
@@ -124,6 +118,14 @@ namespace mysimulator {
     Allocate(PMN);
     IDRange.Allocate(n);
     GrpContent.Allocate(n);
+  }
+
+  template <typename T,template<typename> class CT>
+  void Clear(SystemPropagator<T,CT>& SP) {
+    if(SP.ClrFunc!=NULL)   SP._Clear();
+    SP.ClrFunc=NULL; Clear(SP.UpdFunc);  Clear(SP.EvFunc); SP.InitFunc=NULL;
+    Clear(SP.Param); Clear(SP.IDRange); Clear(SP.GrpContent);
+    SP.Method=SystemPropagatorUnassigned;
   }
 
 }

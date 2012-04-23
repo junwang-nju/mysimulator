@@ -6,6 +6,9 @@
 
 namespace mysimulator {
 
+  union Unique64Bit;
+  void Clear(Unique64Bit&);
+
   union Unique64Bit {
 
     public:
@@ -40,9 +43,8 @@ namespace mysimulator {
       Unique64Bit(const unsigned long long& ill) : ull(ill) {}
       Unique64Bit(const double& d)
         : ull(*reinterpret_cast<const unsigned long long*>(&d)) {}
-      ~Unique64Bit() { Clear(); }
+      ~Unique64Bit() { Clear(*this); }
 
-      void Clear() { ull=0; }
       bool IsValid() const { return true; }
 
     private:
@@ -51,6 +53,8 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  void Clear(Unique64Bit& P) { P.ull=0; }
 
 }
 

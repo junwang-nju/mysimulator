@@ -23,26 +23,8 @@ namespace mysimulator {
 
       Array1D() : _data(NULL), _size(0), _refCount(NULL), _partUsed(NULL),
                   _partFlag(false) {}
-      ~Array1D() { Clear(); }
+      ~Array1D() { Clear(*this); }
 
-      void Clear() {
-        if(!IsValid())  return;
-        if(_partFlag) { --(*_refCount);  --(*_partUsed); }
-        else {
-          if(*_partUsed!=0) {
-            fprintf(stderr,"Need to Free Part Content First!\n");
-            exit(0);
-          }
-          if(*_refCount==0) {
-            delete[] _data; delete _refCount; delete _partUsed;
-          } else --(*_refCount);
-        }
-        _partFlag=false;
-        _partUsed=NULL;
-        _refCount=NULL;
-        _size=0;
-        _data=NULL;
-      }
       bool IsValid() const { return _data!=NULL; }
       unsigned int Size() const { return _size; }
 
@@ -53,7 +35,7 @@ namespace mysimulator {
 
       void Allocate(unsigned int n=1) {
         assert(n>0);
-        Clear();
+        Clear(*this);
         _data=new T[n];
         _size=n;
         _refCount=new unsigned int;
@@ -65,7 +47,7 @@ namespace mysimulator {
       void Refer(Type& V, unsigned int b, unsigned int n) {
         assert(V.IsValid());
         assert(b+n<=V.Size());
-        Clear();
+        Clear(*this);
         _data=V._data+b;
         _size=n;
         _refCount=V._refCount;
@@ -82,6 +64,33 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+}
+
+#include "intrinsic-type/clear.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  void Clear(Array1D<T>& V) {
+    if(!V.IsValid())  return;
+    if(V._partFlag) { --(*V._refCount);  --(*V._partUsed); }
+    else {
+      if(*V._partUsed!=0) {
+        fprintf(stderr,"Need to Free Part Content First!\n");
+        exit(0);
+      }
+      if(*V._refCount==0) {
+        for(unsigned int i=0;i<V.Size();++i) Clear(V[i]);
+        delete[] V._data; delete V._refCount; delete V._partUsed;
+      } else --(*V._refCount);
+    }
+    V._partFlag=false;
+    V._partUsed=NULL;
+    V._refCount=NULL;
+    V._size=0;
+    V._data=NULL;
+  }
 
 }
 
