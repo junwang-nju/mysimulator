@@ -73,5 +73,74 @@ namespace mysimulator {
 
 }
 
+#ifndef _NullDef
+#define _NullDef(T) \
+  fprintf(stderr,"Unknown Type!\n"); return static_cast<T&>(U.ull);
+#else
+#error "Duplicate Definition for Macro _NullDef!"
+#endif
+
+namespace mysimulator {
+
+  template <typename T>
+  T& Value(Unique128Bit& U) { _NullDef(T) }
+  template <typename T>
+  const T& Value(const Unique128Bit& U) { _NullDef(const T) }
+
+}
+
+#ifdef _NullDef
+#undef _NullDef
+#endif
+
+#if !(defined(_VarValue)||defined(_CstValue)||defined(_Value))
+#define _VarValue(Type,Val) \
+  template <> \
+  Type& Value<Type>(Unique128Bit& U) { return U.Val; }
+#define _CstValue(Type,Val) \
+  template <> \
+  const Type& Value<Type>(const Unique128Bit& U) { return U.Val; }
+#define _Value(Type,Val) \
+  _VarValue(Type,Val) \
+  _CstValue(Type,Val)
+#else
+#error "Duplicate Definition for Macro _VarValue,_CstValue,_Value"
+#endif
+
+namespace mysimulator {
+
+  _Value(long double,ld)
+  _Value(double,d)
+  _Value(float,f)
+  _Value(unsigned long long,ull)
+  _Value(long long,ll)
+  _Value(unsigned int,u)
+  _Value(int,i)
+  _Value(unsigned long,ul)
+  _Value(long,l)
+  _Value(unsigned short,us)
+  _Value(short,s)
+  _Value(unsigned char,uc)
+  _Value(char,c)
+
+}
+
+#if defined(_VarValue)||defined(_CstValue)||defined(_Value)
+#undef _Value
+#undef _CstValue
+#undef _VarValue
+#endif
+
+namespace mysimulator {
+
+  template <typename T>
+  T*& Pointer(Unique128Bit& U) { return reinterpret_cast<T*&>(U.ptr); }
+  template <typename T>
+  const T* const& Pointer(const Unique128Bit& U) {
+    return reinterpret_cast<const T* const&>(U.ptr);
+  }
+
+}
+
 #endif
 
