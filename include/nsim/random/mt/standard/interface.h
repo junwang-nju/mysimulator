@@ -48,7 +48,7 @@ namespace mysimulator {
         sloc=1;
       }
 
-      void Init(Array1D<unsigned int>& V,unsigned int n) {
+      void Init(const Array1D<unsigned int>& V,unsigned int n) {
         assert(n<=V.Size());
         Init(19650218UL);
         unsigned int i,j,k,r;
