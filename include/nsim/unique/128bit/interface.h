@@ -6,6 +6,8 @@
 #include <emmintrin.h>
 #endif
 
+#include <cstdio>
+
 namespace mysimulator {
 
   union Unique128Bit;
@@ -32,7 +34,7 @@ namespace mysimulator {
       long long           ll;
       long long           llv[2];
       int                 i;
-      int                 i[4];
+      int                 iv[4];
       unsigned int        u;
       unsigned int        uv[4];
       long                l;
@@ -61,6 +63,8 @@ namespace mysimulator {
       ~Unique128Bit() { Clear(*this); }
 
       bool IsValid() const { return true; }
+
+      void Allocate() {}
 
     private:
 
