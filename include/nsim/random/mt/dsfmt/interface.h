@@ -6,6 +6,7 @@
 #include "random/base/interface.h"
 #include "random/mt/dsfmt/module/convert.h"
 #include "random/mt/dsfmt/module/init-func.h"
+#include "unique/128bit/copy.h"
 
 namespace mysimulator {
 
@@ -48,7 +49,7 @@ namespace mysimulator {
 
       bool IsValid() const { return s.IsValid(); }
 
-      void Allocate() { Clear(*this); s.Allocate(NStatus); R.idx=0; }
+      void Allocate() { Clear(*this); s.Allocate(NStatus); idx=0; }
 
       void _InitMask() {
         unsigned long long *p=reinterpret_cast<unsigned long long*>(s._data);
@@ -88,10 +89,10 @@ namespace mysimulator {
         tmp1.si=_mm_loadu_si128(&(Pcv.si));
         tmp.si=_mm_and_si128(tmp.si,tmp1.si);
 #else
-        tmp.ull[0]=s[N].ullv[0]^Fix.ullv[0];
-        tmp.ull[1]=s[N].ullv[1]^Fix.ullv[1];
-        tmp.ull[0]&=Pcv.ullv[0];
-        tmp.ull[1]&=Pcv.ullv[1];
+        tmp.ullv[0]=s[N].ullv[0]^Fix.ullv[0];
+        tmp.ullv[1]=s[N].ullv[1]^Fix.ullv[1];
+        tmp.ullv[0]&=Pcv.ullv[0];
+        tmp.ullv[1]&=Pcv.ullv[1];
 #endif
         unsigned long long inner=tmp.ullv[0]^tmp.ullv[1];
         for(unsigned int i=32;i>0;i>>=1) inner^=(inner>>i);
@@ -104,7 +105,7 @@ namespace mysimulator {
         unsigned int *pend=p+NStatusU32;
         unsigned int r=seed, i=1;
         *p=seed;
-        for(p!=pend) {
+        for(;p!=pend;) {
           r=1812433253UL*(r^(r>>30))+(i++);
           *(p++)=r;
         }
@@ -121,11 +122,11 @@ namespace mysimulator {
         unsigned int i,j,g,r;
         r=_dSFMTInitFuncA(p[0]^p[tmid]^p[NStatusU32m1]);
         p[tmid]+=r;
-        r+=nkey;
+        r+=n;
         p[LagMid%NStatusU32]+=r;
         p[0]=r;
         --count;
-        for(i=0,j=0,g=off;j<nkey;++j,g+=step) {
+        for(i=0,j=0,g=0;j<n;++j,++g) {
           tmid=(i+Mid)%NStatusU32;
           r=_dSFMTInitFuncA(p[i]^p[tmid]^p[(i+NStatusU32m1)%NStatusU32]);
           p[tmid]+=r;
@@ -205,7 +206,7 @@ namespace mysimulator {
           Copy(s[j],V[i]);
           Cv(V[i-N]);
         }
-        for(i=size-N;i<size;++j) CvFunc(V[i]);
+        for(i=n-N;i<n;++j) Cv(V[i]);
         Copy(s[N],lung);
       }
       void _FillArray(Array1D<double>& V,unsigned int n,CvFuncType Cv) {
@@ -238,7 +239,7 @@ namespace mysimulator {
   template <unsigned int Fac>
   void Clear(MersenneTwister<dSFMT,Fac>& R) {
     Clear(R.s);
-    idx=0U;
+    R.idx=0U;
     Clear(static_cast<typename MersenneTwister<dSFMT,Fac>::ParentType&>(R));
   }
 

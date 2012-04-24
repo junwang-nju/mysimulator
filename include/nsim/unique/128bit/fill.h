@@ -215,7 +215,7 @@ namespace mysimulator {
     BLAS<double>::Copy(&m,q,&zero,p,&two);
     float* pf=reinterpret_cast<float*>(p+1);
     float* qf=reinterpret_cast<float*>(q+1);
-    BLAS<float>::Copy(&m,qf,&zero,p,&four);
+    BLAS<float>::Copy(&m,qf,&zero,pf,&four);
   }
 
 }

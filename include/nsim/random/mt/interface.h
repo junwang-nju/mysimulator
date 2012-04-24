@@ -31,6 +31,7 @@ namespace mysimulator {
 }
 
 #include "random/mt/standard/interface.h"
+#include "random/mt/dsfmt/interface.h"
 
 #endif
 
