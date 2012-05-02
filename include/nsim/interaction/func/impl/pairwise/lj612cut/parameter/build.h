@@ -11,12 +11,12 @@ namespace mysimulator {
   template <typename T>
   void BuildParameterLJ612Cut(Array1D<Unique64Bit>& prm) {
     T R0RC,R0RC6,R06,RC6,R0RC7;
-    R06=prm[LJ612CutEqRadius].value<T>();
-    RC6=prm[LJ612CutCutR].value<T>();
+    R06=Value<T>(prm[LJ612CutEqRadius]);
+    RC6=Value<T>(prm[LJ612CutCutR]);
     R0RC=R06/RC6;
     R06*=R06*R06;    R06*=R06;
     RC6*=RC6;
-    prm[LJ612CutCutRSQ].value<T>()=RC6;
+    Value<T>(prm[LJ612CutCutRSQ])=RC6;
     RC6*=RC6*RC6;
     R0RC6=R06/RC6;
     R0RC7=R0RC6*R0RC;
@@ -28,20 +28,20 @@ namespace mysimulator {
     SGRC12=SGRC6*SGRC6;
 
     T VC=SGRC12-SGRC6*2;
-    T KC=(SGRC6-SGRC12)/prm[LJ612CutCutR].value<T>()*12;
+    T KC=(SGRC6-SGRC12)/Value<T>(prm[LJ612CutCutR])*12;
 
     T SGR06,E;
     SGR06=Sigma6/R06;
     E=SGR06*(SGR06-2.);
     E-=VC;
-    E-=KC*(prm[LJ612CutEqRadius].value<T>()-prm[LJ612CutCutR].value<T>());
-    E=-prm[LJ612CutEqEnergyDepth].value<T>()/E;
-    prm[LJ612CutFactorA].value<T>()=E*Sigma6*Sigma6;
-    prm[LJ612CutFactorB].value<T>()=E*Sigma6*2;
-    prm[LJ612CutDiffFactorA].value<T>()=E*Sigma6*Sigma6*12;
-    prm[LJ612CutDiffFactorB].value<T>()=E*Sigma6*12;
-    prm[LJ612CutVc].value<T>()=VC*E;
-    prm[LJ612CutKc].value<T>()=KC*E;
+    E-=KC*(Value<T>(prm[LJ612CutEqRadius])-Value<T>(prm[LJ612CutCutR]));
+    E=-Value<T>(prm[LJ612CutEqEnergyDepth])/E;
+    Value<T>(prm[LJ612CutFactorA])=E*Sigma6*Sigma6;
+    Value<T>(prm[LJ612CutFactorB])=E*Sigma6*2;
+    Value<T>(prm[LJ612CutDiffFactorA])=E*Sigma6*Sigma6*12;
+    Value<T>(prm[LJ612CutDiffFactorB])=E*Sigma6*12;
+    Value<T>(prm[LJ612CutVc])=VC*E;
+    Value<T>(prm[LJ612CutKc])=KC*E;
   }
 
 }

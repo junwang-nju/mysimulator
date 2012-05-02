@@ -4,16 +4,14 @@
 
 #include <cstdio>
 
-#ifndef _NullValueDEF
-#define _NullValueDEF(T) \
-  fprintf(stderr,"Unknown Type T!\n"); return static_cast<T&>(_data.ull)
-#else
-#error "Duplicate Definition for Macro _NullValueDEF"
-#endif
-
 namespace mysimulator {
 
-  union Unique64BitData {
+  union Unique64Bit {
+
+    public:
+
+      typedef Unique64Bit   Type;
+
       double                d;
       float                 f;
       float                 fv[2];
@@ -37,35 +35,15 @@ namespace mysimulator {
       unsigned char         ucv[8];
       void*                 ptr;
       void*                 pv[8];
-  };
 
-  struct Unique64Bit {
-
-    public:
-
-      typedef Unique64Bit   Type;
-
-      Unique64BitData _data;
-
-      Unique64Bit() : _data() { _data.ull=0; }
-      Unique64Bit(const unsigned long long& ill) : _data() { _data.ull=ill; }
-      Unique64Bit(const double& d) : _data() {
-        _data.ull=*reinterpret_cast<const unsigned long long*>(&d);
-      }
+      Unique64Bit() : ull(0) {}
+      Unique64Bit(const unsigned long long& ill) : ull(ill) {}
+      Unique64Bit(const double& d)
+        : ull(*reinterpret_cast<const unsigned long long*>(&d)) {}
       ~Unique64Bit() { Clear(); }
 
-      void Clear() { _data.ull=0; }
+      void Clear() { ull=0; }
       bool IsValid() const { return true; }
-
-      template <typename T>
-      T& value() { _NullValueDEF(T); }
-      template <typename T>
-      T*& pointer() { return reinterpret_cast<T*&>(_data.ptr); }
-
-      template <typename T>
-      const T& value() const { _NullValueDEF(const T); }
-      template <typename T>
-      const T* const& pointer() const { return reinterpret_cast<const T* const&>(_data.ptr); }
 
     private:
 
@@ -76,15 +54,31 @@ namespace mysimulator {
 
 }
 
+#ifndef _NullValueDEF
+#define _NullValueDEF(T) \
+  fprintf(stderr,"Unknown Type T!\n"); return static_cast<T&>(U.ull)
+#else
+#error "Duplicate Definition for Macro _NullValueDEF"
+#endif
+
+namespace mysimulator {
+
+  template <typename T>
+  T& Value(Unique64Bit& U) { _NullValueDEF(T); }
+  template <typename T>
+  const T& Value(const Unique64Bit& U) { _NullValueDEF(const T); }
+
+}
+
 #ifdef _NullValueDEF
 #undef _NullValueDEF
 #endif
 
 #if !(defined(_VarValueDEF)||defined(_ConstValueDEF)||defined(_ValueDEF))
 #define _VarValueDEF(Type,Val) \
-  template<> Type& Unique64Bit::value<Type>() { return _data.Val; }
+  template<> Type& Value<Type>(Unique64Bit& U) { return U.Val; }
 #define _ConstValueDEF(Type,Val) \
-  template<> const Type& Unique64Bit::value<Type>() const { return _data.Val; }
+  template<> const Type& Value<Type>(const Unique64Bit& U) { return U.Val; }
 #define _ValueDEF(Type,Val) \
   _VarValueDEF(Type,Val) \
   _ConstValueDEF(Type,Val)
@@ -114,6 +108,17 @@ namespace mysimulator {
 #undef _ConstValueDEF
 #undef _VarValueDEF
 #endif
+
+namespace mysimulator {
+
+  template <typename T>
+  T*& Pointer(Unique64Bit& U) { return reinterpret_cast<T*&>(U.ptr); }
+  template <typename T>
+  const T* const& Pointer(const Unique64Bit& U) {
+    return reinterpret_cast<const T* const&>(U.ptr);
+  }
+
+}
 
 #endif
 

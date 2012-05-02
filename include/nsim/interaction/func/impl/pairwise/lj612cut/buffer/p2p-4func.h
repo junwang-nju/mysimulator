@@ -16,7 +16,7 @@ namespace mysimulator {
       bool& flag) {
     T tmd=pre[PairwiseDistanceSQ];
     post[LJ612CutDistanceSQ]=tmd;
-    if(tmd<P[LJ612CutCutRSQ].value<T>()) {
+    if(tmd<Value<T>(P[LJ612CutCutRSQ])) {
       post[LJ612CutDistance]=sqroot(tmd);
       LJ612Pre2Post4Func(pre,P,post,flag);
     } else flag=false;

@@ -11,11 +11,13 @@ namespace mysimulator {
 
 }
 
+#include "array/2d/fill.h"
+
 #ifndef _INIT
 #define _INIT(CT) \
   template <typename T> \
   void _InitFixPosition(SystemPropagator<T,CT>& P) { \
-    for(unsigned int i=0;i<GrpContent.Size();++i) \
+    for(unsigned int i=0;i<P.GrpContent.Size();++i) \
       Fill(P.GrpContent[i].Velocity,0.); \
   }
 #else

@@ -11,7 +11,7 @@ namespace mysimulator {
   template <typename T>
   void FuncDistCoulomb(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* func) {
-    *func=P[DistCoulombStrength].value<T>()*post[DistCoulombIvDistanceSQ];
+    *func=Value<T>(P[DistCoulombStrength])*post[DistCoulombIvDistanceSQ];
   }
 
 }

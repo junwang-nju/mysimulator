@@ -10,7 +10,7 @@ namespace mysimulator {
 
   template <typename T>
   void BuildParameterCore12(Array1D<Unique64Bit>& prm) {
-    prm[Core12TwlfEqStrength].value<T>()=12*prm[Core12EqStrength].value<T>();
+    Value<T>(prm[Core12TwlfEqStrength])=12*Value<T>(prm[Core12EqStrength]);
   }
 
 }

@@ -11,8 +11,8 @@ namespace mysimulator {
   template <typename T>
   void DiffCore12(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* diff) {
-    *diff=P[Core12TwlfEqStrength].value<T>()*post[Core12IvDist12]
-                                            *post[Core12IvDistSQ];
+    *diff=Value<T>(P[Core12TwlfEqStrength])*post[Core12IvDist12]
+                                           *post[Core12IvDistSQ];
   }
 
 }

@@ -13,7 +13,7 @@ namespace mysimulator {
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* diff) {
     T tmd=post[LJ612IvDistance6];
     *diff=tmd*post[LJ612IvDistanceSQ]
-         *(P[LJ612DiffFactorB].value<T>()-P[LJ612DiffFactorA].value<T>()*tmd);
+         *(Value<T>(P[LJ612DiffFactorB])-Value<T>(P[LJ612DiffFactorA])*tmd);
          
   }
 

@@ -11,8 +11,8 @@ namespace mysimulator {
   template <typename T>
   void FuncAngleHarmonic(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* func) {
-    T dA=post[AngleValue]-P[AngleHarmonicEqAngle].value<T>();
-    *func=P[AngleHarmonicStrength].value<T>()*dA*dA;
+    T dA=post[AngleValue]-Value<T>(P[AngleHarmonicEqAngle]);
+    *func=Value<T>(P[AngleHarmonicStrength])*dA*dA;
   }
 
 }

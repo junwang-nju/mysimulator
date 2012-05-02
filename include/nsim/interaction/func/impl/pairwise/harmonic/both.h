@@ -11,8 +11,8 @@ namespace mysimulator {
   template <typename T>
   void BothHarmonic(
       const Array1D<T>& post, const Array1D<Unique64Bit>& P, T* func, T* diff) {
-    T Dd=post[HarmonicLength]-P[HarmonicEqLength].value<T>();
-    T tmd=P[HarmonicEqStrength].value<T>()*Dd;
+    T Dd=post[HarmonicLength]-Value<T>(P[HarmonicEqLength]);
+    T tmd=Value<T>(P[HarmonicEqStrength])*Dd;
     *func=tmd*Dd;
     *diff=(tmd+tmd)*post[HarmonicIvLength];
   }

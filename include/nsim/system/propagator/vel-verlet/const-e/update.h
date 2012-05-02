@@ -36,12 +36,14 @@ namespace mysimulator {
 
 #if !(defined(PARAM)||defined(PVALUE)||defined(VVALUE))
 #define PARAM(U)  P.Param[U]
-#define PVALUE(U) (*reinterpret_cast<T*>(PARAM(PTR(U)).ptr))
-#define VVALUE(U) ((P.Param[VALUE(U)]).value<T>())
-//#define VVALUE(U) (PARAM(VALUE(U)).value<T>())
+#define PVALUE(U) (*Pointer<T>(PARAM(PTR(U))))
+//#define PVALUE(U) (*reinterpret_cast<T*>(PARAM(PTR(U)).ptr))
+#define VVALUE(U) Value<T>(PARAM(VALUE(U)))
 #else
 #error "Duplicate Definition for PARAM,PVALUE,VVALUE"
 #endif
+
+#include "unique/64bit/io.h"
 
 namespace mysimulator {
 

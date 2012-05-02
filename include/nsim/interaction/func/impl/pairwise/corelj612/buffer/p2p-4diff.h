@@ -14,7 +14,7 @@ namespace mysimulator {
       bool& flag) {
     T tmd=pre[PairwiseDistanceSQ];
     post[CoreLJ612DistanceSQ]=tmd;
-    if(tmd<P[CoreLJ612RadiusSQ].value<T>()) LJ612Pre2Post4Diff(pre,P,post,flag);
+    if(tmd<Value<T>(P[CoreLJ612RadiusSQ])) LJ612Pre2Post4Diff(pre,P,post,flag);
     else flag=false;
   }
 

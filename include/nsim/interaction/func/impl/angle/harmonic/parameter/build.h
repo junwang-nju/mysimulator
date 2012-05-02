@@ -10,8 +10,8 @@ namespace mysimulator {
 
   template <typename T>
   void BuildParameterAngleHarmonic(Array1D<Unique64Bit>& prm) {
-    prm[AngleHarmonicDualStrength].value<T>()=
-         2*prm[AngleHarmonicStrength].value<T>();
+    Value<T>(prm[AngleHarmonicDualStrength])=
+         2*Value<T>(prm[AngleHarmonicStrength]);
   }
 
 }

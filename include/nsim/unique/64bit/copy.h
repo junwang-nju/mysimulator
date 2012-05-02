@@ -6,15 +6,15 @@
 
 namespace mysimulator {
 
-  void Copy(Unique64Bit& U,const Unique64Bit& U2) { U._data.ull=U2._data.ull; }
+  void Copy(Unique64Bit& U,const Unique64Bit& U2) { U.ull=U2.ull; }
 
 }
 
 #if !(defined(_COPY_V2U)||defined(_COPY_U2V)||defined(_COPY))
 #define _COPY_V2U(T) \
-  void Copy(Unique64Bit& U,const T& Val) { U.value<T>()=Val; }
+  void Copy(Unique64Bit& U,const T& Val) { Value<T>(U)=Val; }
 #define _COPY_U2V(T) \
-  void Copy(T& Val,const Unique64Bit& U) { Val=U.value<T>(); }
+  void Copy(T& Val,const Unique64Bit& U) { Val=Value<T>(U); }
 #define _COPY(T) \
   _COPY_V2U(T) \
   _COPY_U2V(T)
@@ -47,19 +47,13 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  void Copy(Unique64Bit& U,const void* const& p) {
-    U._data.ptr=const_cast<void*>(p); }
-  void Copy(void*& p,const Unique64Bit& U) {
-    p=const_cast<void*>(U._data.ptr); }
+  void Copy(Unique64Bit& U,const void* const& p) { U.ptr=const_cast<void*>(p); }
+  void Copy(void*& p,const Unique64Bit& U) { p=const_cast<void*>(U.ptr); }
 
   template <typename T>
-  void Copy(Unique64Bit& U,const T* const& p) {
-    U._data.ptr=reinterpret_cast<void*>(const_cast<T*>(p));
-  }
+  void Copy(Unique64Bit& U,const T* const& p) {Pointer<T>(U)=const_cast<T*>(p);}
   template <typename T>
-  void Copy(T*& p, const Unique64Bit& U) {
-    p=reinterpret_cast<T*>(const_cast<void*>(U._data.ptr));
-  }
+  void Copy(T*& p, const Unique64Bit& U) { p=const_cast<T*>(Pointer<T>(U)); }
 
 }
 

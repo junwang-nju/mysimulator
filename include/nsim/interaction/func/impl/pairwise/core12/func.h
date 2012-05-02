@@ -11,7 +11,7 @@ namespace mysimulator {
   template <typename T>
   void FuncCore12(
       const Array1D<T>& post, const Array1D<Unique64Bit>& P, T* func) {
-    *func=P[Core12EqStrength].value<T>()*post[Core12IvDist12];
+    *func=Value<T>(P[Core12EqStrength])*post[Core12IvDist12];
   }
 
 }

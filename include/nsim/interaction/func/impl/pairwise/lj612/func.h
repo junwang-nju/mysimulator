@@ -12,7 +12,7 @@ namespace mysimulator {
   void FuncLJ612(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* func) {
     T tmd=post[LJ612IvDistance6];
-    *func=tmd*(P[LJ612FactorA].value<T>()*tmd-P[LJ612FactorB].value<T>());
+    *func=tmd*(Value<T>(P[LJ612FactorA])*tmd-Value<T>(P[LJ612FactorB]));
   }
 
 }

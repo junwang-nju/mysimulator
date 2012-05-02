@@ -28,10 +28,10 @@ namespace mysimulator {
 #endif
 
 #if !(defined(VALUE)||defined(PARAM))
-#define PARAM(U)  P.Param[PTR(U)]
-#define VALUE(U)  (*reinterpret_cast<T*>(PARAM(U).ptr))
+#define PARAM(U)  P.Param[U]
+#define PVALUE(U) (*Pointer<T>(PARAM(PTR(U))))
 #else
-#error "Duplicate Definition for Macro PARAM,VALUE"
+#error "Duplicate Definition for Macro PARAM,PVALUE"
 #endif
 
 namespace mysimulator {
@@ -41,22 +41,22 @@ namespace mysimulator {
     typedef
       void (*MvFunc)(Array1D<SystemContentWithEGV<T> >&,const T&,
                      const Unique64Bit&);
-    MvFunc mvf=reinterpret_cast<MvFunc>(P.Param[FUNC(MoveBefore)].ptr);
-    mvf(P.GrpContent,VALUE(TimeStep),PARAM(NegHTIM));
+    MvFunc mvf=reinterpret_cast<MvFunc>(PARAM(FUNC(MoveBefore)).ptr);
+    mvf(P.GrpContent,PVALUE(TimeStep),PARAM(PTR(NegHTIM)));
   }
 
   template <typename T>
   void _MoveVelVerletConstEAfterG(SystemPropagator<T,SystemContentWithEGV>& P){
     typedef
       void (*MvFunc)(Array1D<SystemContentWithEGV<T> >&,const Unique64Bit&);
-    MvFunc mvf=reinterpret_cast<MvFunc>(P.Param[FUNC(MoveAfter)].ptr);
-    mvf(P.GrpContent,PARAM(NegHTIM));
+    MvFunc mvf=reinterpret_cast<MvFunc>(PARAM(FUNC(MoveAfter)).ptr);
+    mvf(P.GrpContent,PARAM(PTR(NegHTIM)));
   }
 
 }
 
-#if defined(VALUE)||defined(PARAM)
-#undef VALUE
+#if defined(PVALUE)||defined(PARAM)
+#undef PVALUE
 #undef PARAM
 #endif
 

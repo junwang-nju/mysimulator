@@ -11,12 +11,12 @@ namespace mysimulator {
   template <typename T>
   void BothCoreLJ612(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* func,T* diff) {
-    if(post[CoreLJ612DistanceSQ]>P[CoreLJ612RadiusSQ].value<T>()) {
+    if(post[CoreLJ612DistanceSQ]>Value<T>(P[CoreLJ612RadiusSQ])) {
       *func=0;
       *diff=0;
     } else {
       BothLJ612(post,P,func,diff);
-      *func+=P[CoreLJ612EnergyDepth].value<T>();
+      *func+=Value<T>(P[CoreLJ612EnergyDepth]);
     }
   }
 

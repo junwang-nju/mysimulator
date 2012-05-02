@@ -11,12 +11,12 @@ namespace mysimulator {
   template <typename T>
   void FuncLJ1012Cut(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* func) {
-    if(post[LJ1012CutDistanceSQ]>P[LJ1012CutCutRSQ].value<T>()) *func=0;
+    if(post[LJ1012CutDistanceSQ]>Value<T>(P[LJ1012CutCutRSQ])) *func=0;
     else {
       FuncLJ1012(post,P,func);
-      (*func)-=P[LJ1012CutVc].value<T>();
-      (*func)-=P[LJ1012CutKc].value<T>()
-              *(post[LJ1012CutDistance]-P[LJ1012CutCutR].value<T>());
+      (*func)-=Value<T>(P[LJ1012CutVc]);
+      (*func)-=Value<T>(P[LJ1012CutKc])
+              *(post[LJ1012CutDistance]-Value<T>(P[LJ1012CutCutR]));
     }
   }
 

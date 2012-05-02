@@ -12,9 +12,9 @@ namespace mysimulator {
   void BothLJ612(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* func,T* diff) {
     T tmd=post[LJ612IvDistance6];
-    *func=tmd*(P[LJ612FactorA].value<T>()*tmd-P[LJ612FactorB].value<T>());
+    *func=tmd*(Value<T>(P[LJ612FactorA])*tmd-Value<T>(P[LJ612FactorB]));
     *diff=tmd*post[LJ612IvDistanceSQ]
-         *(P[LJ612DiffFactorB].value<T>()-P[LJ612DiffFactorA].value<T>()*tmd);
+         *(Value<T>(P[LJ612DiffFactorB])-Value<T>(P[LJ612DiffFactorA])*tmd);
              
   }
 

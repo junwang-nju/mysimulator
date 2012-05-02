@@ -11,10 +11,10 @@ namespace mysimulator {
   template <typename T>
   void DiffLJ612Cut(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* diff) {
-    if(post[LJ612CutDistanceSQ]>P[LJ612CutCutRSQ].value<T>())  *diff=0;
+    if(post[LJ612CutDistanceSQ]>Value<T>(P[LJ612CutCutRSQ]))  *diff=0;
     else {
       DiffLJ612(post,P,diff);
-      (*diff)-=P[LJ612CutKc].value<T>()*post[LJ612CutIvDistance];
+      (*diff)-=Value<T>(P[LJ612CutKc])*post[LJ612CutIvDistance];
     }
   }
 

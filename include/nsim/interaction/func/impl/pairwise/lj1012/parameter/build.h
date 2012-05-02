@@ -11,14 +11,14 @@ namespace mysimulator {
 
   template <typename T>
   void BuildParameterLJ1012(Array1D<Unique64Bit>& prm) {
-    T tmd=square(prm[LJ1012EqRadius].value<T>());
+    T tmd=square(Value<T>(prm[LJ1012EqRadius]));
     T tmd1=tmd*tmd;
-    T tmd2=tmd1*tmd1*prm[LJ1012EqEnergyDepth].value<T>();
-    prm[LJ1012FactorA].value<T>()=tmd2*tmd1*5;
-    prm[LJ1012FactorB].value<T>()=tmd2*tmd*6;
+    T tmd2=tmd1*tmd1*Value<T>(prm[LJ1012EqEnergyDepth]);
+    Value<T>(prm[LJ1012FactorA])=tmd2*tmd1*5;
+    Value<T>(prm[LJ1012FactorB])=tmd2*tmd*6;
     tmd2*=60;
-    prm[LJ1012DiffFactorA].value<T>()=tmd2*tmd1;
-    prm[LJ1012DiffFactorB].value<T>()=tmd2*tmd;
+    Value<T>(prm[LJ1012DiffFactorA])=tmd2*tmd1;
+    Value<T>(prm[LJ1012DiffFactorB])=tmd2*tmd;
   }
 
 }

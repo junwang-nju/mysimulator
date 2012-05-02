@@ -13,9 +13,9 @@ namespace mysimulator {
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* func,T* diff) {
     T tmd1=post[LJ1012IvDistanceSQ];
     T tmd2=post[LJ1012IvDistance10];
-    *func=tmd2*(P[LJ1012FactorA].value<T>()*tmd1-P[LJ1012FactorB].value<T>());
-    *diff=tmd2*tmd1*(P[LJ1012DiffFactorA].value<T>()*tmd1-
-                     P[LJ1012DiffFactorB].value<T>());
+    *func=tmd2*(Value<T>(P[LJ1012FactorA])*tmd1-Value<T>(P[LJ1012FactorB]));
+    *diff=tmd2*tmd1*(Value<T>(P[LJ1012DiffFactorA])*tmd1-
+                     Value<T>(P[LJ1012DiffFactorB]));
   }
 
 }

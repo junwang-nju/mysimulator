@@ -10,11 +10,11 @@ namespace mysimulator {
 
   template <typename T>
   void BuildParameterDistCoulomb(Array1D<Unique64Bit>& prm) {
-    prm[DistCoulombStrength].value<T>()=
-      prm[DistCoulombChargeA].value<T>()*prm[DistCoulombChargeB].value<T>()*
-      prm[DistCoulombDielectricFac].value<T>();
-    prm[DistCoulombDualStrength].value<T>()=
-      2*prm[DistCoulombStrength].value<T>();
+    Value<T>(prm[DistCoulombStrength])=
+      Value<T>(prm[DistCoulombChargeA])*Value<T>(prm[DistCoulombChargeB])*
+      Value<T>(prm[DistCoulombDielectricFac]);
+    Value<T>(prm[DistCoulombDualStrength])=
+      2*Value<T>(prm[DistCoulombStrength]);
   }
 
 }

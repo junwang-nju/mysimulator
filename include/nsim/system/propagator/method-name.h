@@ -8,7 +8,7 @@ namespace mysimulator {
     SystemToBeDetermined=0,
     SystemFixPosition,
     SystemMinimizerLineRegular,
-    SystemConstEBelVerlet,
+    SystemConstEVelVerlet,
     SystemLangevinVelVerlet,
     SystemBerendsenVelVerlet,
     SystemPropagatorNumberMethods,

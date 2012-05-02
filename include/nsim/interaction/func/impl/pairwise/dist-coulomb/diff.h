@@ -12,7 +12,7 @@ namespace mysimulator {
   template <typename T>
   void DiffDistCoulomb(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* diff) {
-    *diff=P[DistCoulombDualStrength].value<T>()
+    *diff=Value<T>(P[DistCoulombDualStrength])
          *square(post[DistCoulombIvDistanceSQ]);
   }
 

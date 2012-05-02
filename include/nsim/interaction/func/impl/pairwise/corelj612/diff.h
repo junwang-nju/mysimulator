@@ -11,7 +11,7 @@ namespace mysimulator {
   template <typename T>
   void DiffCoreLJ612(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* diff) {
-    if(post[CoreLJ612DistanceSQ]>P[CoreLJ612RadiusSQ].value<T>()) *diff=0;
+    if(post[CoreLJ612DistanceSQ]>Value<T>(P[CoreLJ612RadiusSQ])) *diff=0;
     else DiffLJ612(post,P,diff);
   }
 

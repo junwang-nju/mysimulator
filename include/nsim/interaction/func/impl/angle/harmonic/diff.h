@@ -11,8 +11,8 @@ namespace mysimulator {
   template <typename T>
   void DiffAngleHarmonic(
       const Array1D<T>& post,const Array1D<Unique64Bit>& P,T* diff) {
-    T dA=post[AngleValue]-P[AngleHarmonicEqAngle].value<T>();
-    *diff=P[AngleHarmonicDualStrength].value<T>()*dA;
+    T dA=post[AngleValue]-Value<T>(P[AngleHarmonicEqAngle]);
+    *diff=Value<T>(P[AngleHarmonicDualStrength])*dA;
   }
 
 }
