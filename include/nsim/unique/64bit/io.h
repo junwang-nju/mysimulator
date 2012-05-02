@@ -7,7 +7,7 @@
 
 namespace mysimulator {
 
-  void Write(const Unique64Bit& U) { Write(U.ull); }
+  void Write(const Unique64Bit& U) { Write(U._data.ull); }
 
 }
 

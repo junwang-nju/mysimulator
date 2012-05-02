@@ -6,7 +6,7 @@
 
 namespace mysimulator {
 
-  void Copy(Unique64Bit& U,const Unique64Bit& U2) { U.ull=U2.ull; }
+  void Copy(Unique64Bit& U,const Unique64Bit& U2) { U._data.ull=U2._data.ull; }
 
 }
 
@@ -47,16 +47,18 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  void Copy(Unique64Bit& U,const void* const& p) { U.ptr=const_cast<void*>(p); }
-  void Copy(void*& p,const Unique64Bit& U) { p=const_cast<void*>(U.ptr); }
+  void Copy(Unique64Bit& U,const void* const& p) {
+    U._data.ptr=const_cast<void*>(p); }
+  void Copy(void*& p,const Unique64Bit& U) {
+    p=const_cast<void*>(U._data.ptr); }
 
   template <typename T>
   void Copy(Unique64Bit& U,const T* const& p) {
-    U.ptr=reinterpret_cast<void*>(const_cast<T*>(p));
+    U._data.ptr=reinterpret_cast<void*>(const_cast<T*>(p));
   }
   template <typename T>
   void Copy(T*& p, const Unique64Bit& U) {
-    p=reinterpret_cast<T*>(const_cast<void*>(U.ptr));
+    p=reinterpret_cast<T*>(const_cast<void*>(U._data.ptr));
   }
 
 }

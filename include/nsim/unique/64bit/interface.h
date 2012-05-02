@@ -6,19 +6,14 @@
 
 #ifndef _NullValueDEF
 #define _NullValueDEF(T) \
-  fprintf(stderr,"Unknown Type T!\n"); return static_cast<T&>(ull)
+  fprintf(stderr,"Unknown Type T!\n"); return static_cast<T&>(_data.ull)
 #else
 #error "Duplicate Definition for Macro _NullValueDEF"
 #endif
 
 namespace mysimulator {
 
-  union Unique64Bit {
-
-    public:
-
-      typedef Unique64Bit   Type;
-
+  union Unique64BitData {
       double                d;
       float                 f;
       float                 fv[2];
@@ -42,14 +37,24 @@ namespace mysimulator {
       unsigned char         ucv[8];
       void*                 ptr;
       void*                 pv[8];
+  };
 
-      Unique64Bit() : ull(0) {}
-      Unique64Bit(const unsigned long long& ill) : ull(ill) {}
-      Unique64Bit(const double& d)
-        : ull(*reinterpret_cast<const unsigned long long*>(&d)) {}
+  struct Unique64Bit {
+
+    public:
+
+      typedef Unique64Bit   Type;
+
+      Unique64BitData _data;
+
+      Unique64Bit() : _data() { _data.ull=0; }
+      Unique64Bit(const unsigned long long& ill) : _data() { _data.ull=ill; }
+      Unique64Bit(const double& d) : _data() {
+        _data.ull=*reinterpret_cast<const unsigned long long*>(&d);
+      }
       ~Unique64Bit() { Clear(); }
 
-      void Clear() { ull=0; }
+      void Clear() { _data.ull=0; }
       bool IsValid() const { return true; }
 
       template <typename T>
@@ -73,9 +78,9 @@ namespace mysimulator {
 
 #if !(defined(_VarValueDEF)||defined(_ConstValueDEF)||defined(_ValueDEF))
 #define _VarValueDEF(Type,Val) \
-  template<> Type& Unique64Bit::value<Type>() { return Val; }
+  template<> Type& Unique64Bit::value<Type>() { return _data.Val; }
 #define _ConstValueDEF(Type,Val) \
-  template<> const Type& Unique64Bit::value<Type>() const { return Val; }
+  template<> const Type& Unique64Bit::value<Type>() const { return _data.Val; }
 #define _ValueDEF(Type,Val) \
   _VarValueDEF(Type,Val) \
   _ConstValueDEF(Type,Val)
