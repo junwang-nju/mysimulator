@@ -9,6 +9,11 @@ namespace mysimulator {
 
   template <DynamicsModeName DN,typename T,typename GRNGType>
   struct Dynamics {
+
+    typedef Dynamics<DN,T,GRNGType>   Type;
+
+    bool BindFlag;
+
   };
 
 }
