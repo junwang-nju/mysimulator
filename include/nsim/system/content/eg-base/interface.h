@@ -44,7 +44,7 @@ namespace mysimulator {
 
   template <typename T,template<typename>class EGT>
   void Clear(SystemContentEGBase<T,EGT>& C) {
-    Clear(EGData);
+    Clear(C.EGData);
     Clear(static_cast<typename SystemContentEGBase<T,EGT>::ParentType&>(C));
   }
 

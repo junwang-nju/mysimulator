@@ -44,7 +44,7 @@ namespace mysimulator {
 
   template <typename T,template<typename>class EGT>
   void Clear(SystemContentVBase<T,EGT>& C) {
-    Clear(Velocity);
+    Clear(C.Velocity);
     Clear(static_cast<typename SystemContentVBase<T,EGT>::ParentType&>(C));
   }
 }
