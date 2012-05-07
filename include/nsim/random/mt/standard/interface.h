@@ -137,6 +137,36 @@ namespace mysimulator {
   template <unsigned int Fac>
   void Clear(MersenneTwister<StandardMT,Fac>& R) { Clear(R.s); R.sloc=0; }
 
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<StandardMT,Fac>::N=624;
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<StandardMT,Fac>::M=397;
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<StandardMT,Fac>::dNM=
+    MersenneTwister<StandardMT,Fac>::N-MersenneTwister<StandardMT,Fac>::M;
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<StandardMT,Fac>::NmOne=
+    MersenneTwister<StandardMT,Fac>::N-1;
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<StandardMT,Fac>::MmOne=
+    MersenneTwister<StandardMT,Fac>::M-1;
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<StandardMT,Fac>::Upp=0x80000000UL;
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<StandardMT,Fac>::Low=0x7FFFFFFFUL;
+
+  template <unsigned int Fac>
+  const Unique64Bit MersenneTwister<StandardMT,Fac>::Mag(0x000000009908B0DFULL);
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwister<StandardMT,Fac>::Mask32Bit=0xfFFFFFFFUL;
+
 }
 
 #endif
