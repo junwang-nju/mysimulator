@@ -2,13 +2,12 @@
 #ifndef _Random_BoxMuller_Interface_H_
 #define _Random_BoxMuller_Interface_H_
 
-#include "random/base/interface.h"
-#include "array/1d/interface.h"
+#include "random/mt/interface.h"
 #include <cmath>
 
 namespace mysimulator {
 
-  template <typename UniformRNG>
+  template <typename UniformRNG=MersenneTwister<dSFMT,19937> >
   struct BoxMuller : public RandomBase {
 
     public:

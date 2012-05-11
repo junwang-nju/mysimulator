@@ -118,7 +118,7 @@ namespace mysimulator {
         return (static_cast<double>(x)*67108864.+static_cast<double>(y))*
                (1./9007199254740992.);
       }
-      long double Double63BitSlow() {
+      long double LDouble63BitSlow() {
         unsigned int x,y;
         x=UInt();
         y=UInt();
