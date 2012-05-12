@@ -15,7 +15,7 @@ namespace mysimulator {
 
   template <typename T>
   void AngleCommonGetPre4Func(InteractionBuffer<T>& Buf) {
-    assert(Buf.inf!=NULL);
+    assert(Buf.inf.IsValid());
     assert(Buf.inf[AngleEdgeAInf]!=NULL);
     Buf.pre[AngleEdgeASQ]=Buf.inf[AngleEdgeASQ]->pre[PairwiseDistanceSQ];
     assert(Buf.inf[AngleEdgeBInf]!=NULL);

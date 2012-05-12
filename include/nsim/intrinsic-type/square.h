@@ -3,7 +3,7 @@
 #define _Intrinsic_Type_Square_H_
 
 #define _SQUARE(type) \
-  type square(const type& d) { return d*d; }
+  type Square(const type& d) { return d*d; }
 
 namespace mysimulator {
 

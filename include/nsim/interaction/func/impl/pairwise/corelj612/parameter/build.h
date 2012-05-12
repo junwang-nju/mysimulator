@@ -11,7 +11,7 @@ namespace mysimulator {
 
   template <typename T>
   void BuildParameterCoreLJ612(Array1D<Unique64Bit>& prm) {
-    T tmd=square(Value<T>(prm[CoreLJ612Radius]));
+    T tmd=Square(Value<T>(prm[CoreLJ612Radius]));
     Value<T>(prm[CoreLJ612RadiusSQ])=tmd;
     T tmd1=tmd*tmd*tmd;
     tmd=tmd1*Value<T>(prm[CoreLJ612EnergyDepth]);
