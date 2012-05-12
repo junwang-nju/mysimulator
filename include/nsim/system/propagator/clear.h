@@ -4,6 +4,7 @@
 
 #include "system/propagator/TBD/clear.h"
 #include "system/propagator/fix-position/clear.h"
+#include "system/propagator/minimizer/line/regular/clear.h"
 #include "system/propagator/vel-verlet/const-e/clear.h"
 
 #endif

@@ -6,6 +6,8 @@
 #include "system/evolute/mode-fp.h"
 #include "system/evolute/mode-ve.h"
 #include "system/evolute/mode-ve-fp.h"
+#include "system/evolute/mode-mlr.h"
+#include "system/evolute/mode-mlr-fp.h"
 
 #endif
 

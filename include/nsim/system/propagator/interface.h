@@ -93,6 +93,14 @@ namespace mysimulator {
         EvFunc[FixPositionNoMove]=MoveFixPositionNoMove<T,CT>;
         Clear(UpdFunc);
         break;
+      case SystemMinimizerLineRegular:
+        Param.Allocate(MinimizerLineRegularNumberParameters);
+        InitFunc=InitMinimizerLineRegular<T,CT>;
+        ClrFunc=ClearMinimizerLineRegular<T,CT>;
+        EvFunc.Allocate(MinimizerLineRegularNumberMoves);
+        EvFunc[MinimizerLineRegularShift]=MoveMinimizerLineRegularShift<T,CT>;
+        Clear(UpdFunc);
+        break;
       case SystemConstEVelVerlet:
         Param.Allocate(VelVerletConstENumberParameters);
         InitFunc=InitVelVerletConstE<T,CT>;

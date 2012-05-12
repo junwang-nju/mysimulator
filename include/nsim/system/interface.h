@@ -50,6 +50,16 @@ namespace mysimulator {
                Propagtors.IsValid()&&GrpMap.IsValid()&&(EvFunc!=NULL);
       }
 
+      void Refer(Type& S) {
+        Clear(*this);
+        EvoluteMode=S.EvoluteMode;
+        Content.Refer(S.Content);
+        Interactions.Refer(S.Interactions);
+        Propagtors.Refer(S.Propagtors);
+        GrpMap.Refer(S.GrpMap);
+        EvFunc=S.EvFunc;
+      }
+
       void _Init() {
         assert(IsValid());
         for(unsigned int i=0;i<Propagtors.Size();++i) Propagtors[i]._Init();
@@ -110,6 +120,10 @@ namespace mysimulator {
               break;
             case 2:
               _DefEvFunc(FixPosition);  break;
+            case 4:
+              _DefEvFunc(MinimizerLineRegular); break;
+            case 6:
+              _DefEvFunc(MinimizerLRFP);  break;
             case 8:
               _DefEvFunc(VelVerletConstE);  break;
             case 10:

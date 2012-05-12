@@ -4,6 +4,7 @@
 
 #include "system/propagator/TBD/move.h"
 #include "system/propagator/fix-position/move.h"
+#include "system/propagator/minimizer/line/regular/move.h"
 #include "system/propagator/vel-verlet/const-e/move.h"
 
 #endif
