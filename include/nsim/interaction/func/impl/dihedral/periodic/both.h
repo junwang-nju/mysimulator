@@ -15,13 +15,13 @@ namespace mysimulator {
     T fc=0, df=0;
     T dih=post[DihedralValue];
     T theta;
-    Unique64Bit *Q=const_cast<Unique64Bit*>(P.start)+
+    Unique64Bit *Q=const_cast<Unique64Bit*>(P._data)+
                    DihedralPeriodicFuncParamShift;
     for(unsigned int i=0;i<P[DihedralPeriodicNumFuncs].u;++i) {
-      theta=dih+Q[DihedralPeriodicFuncPhase].value<T>();
+      theta=dih+Value<T>(Q[DihedralPeriodicFuncPhase]);
       theta*=Q[DihedralPeriodicFuncFrequency].u;
-      fc+=Q[DihedralPeriodicFuncStrength].value<T>()*(Cosine(theta)+1.);
-      df+=Q[DihedralPeriodicFuncStrengthFrequency].value<T>()*Sine(theta);
+      fc+=Value<T>(Q[DihedralPeriodicFuncStrength])*(Cosine(theta)+1.);
+      df+=Value<T>(Q[DihedralPeriodicFuncStrengthFrequency])*Sine(theta);
       Q+=DihedralPeriodicFuncNumberParameters;
     }
     *func=fc;

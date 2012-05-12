@@ -12,14 +12,14 @@ namespace mysimulator {
   void FuncDihedralPeriodic(const Array1D<T>& post,
                             const Array1D<Unique64Bit>& P,T* func) {
     T fc=0;
-    Unique64Bit *Q=const_cast<Unique64Bit*>(P.start)+
+    Unique64Bit *Q=const_cast<Unique64Bit*>(P._data)+
                    DihedralPeriodicFuncParamShift;
-    T dih=pos[DihedralValue];
+    T dih=post[DihedralValue];
     T theta;
     for(unsigned int i=0;i<P[DihedralPeriodicNumFuncs].u;++i) {
-      theta=dih+Q[DihedralPeriodicFuncPhase].value<T>();
+      theta=dih+Value<T>(Q[DihedralPeriodicFuncPhase]);
       theta*=Q[DihedralPeriodicFuncFrequency].u;
-      fc+=Q[DihedralPeriodicFuncStrength].value<T>()*(Cosine(theta)+1.);
+      fc+=Value<T>(Q[DihedralPeriodicFuncStrength])*(Cosine(theta)+1.);
       Q+=DihedralPeriodicFuncNumberParameters;
     }
     *func=fc;

@@ -19,9 +19,9 @@ namespace mysimulator {
       void (*bfunc)(const Array1D<T>&,const Array1D<Unique64Bit>&,T*,T*)) {
     unsigned int I=ID[0],J=ID[1],K=ID[2],L=ID[3];
     if(Buf.postUpdate) {
-      DisplacementCalc(Buf.tmvec[DihedralBondVecJI],X[J],X[I],Geo);
-      DisplacementCalc(Buf.tmvec[DihedralBondVecKJ],X[K],X[J],Geo);
-      DisplacementCalc(Buf.tmvec[DihedralBondVecLK],X[L],X[K],Geo);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecJI],X[J],X[I],Geo,Buf.dim);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecKJ],X[K],X[J],Geo,Buf.dim);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecLK],X[L],X[K],Geo,Buf.dim);
       Cross(Buf.tmvec[DihedralNormVecA],
             Buf.tmvec[DihedralBondVecJI],Buf.tmvec[DihedralBondVecKJ]);
       Cross(Buf.tmvec[DihedralNormVecB],
@@ -30,18 +30,23 @@ namespace mysimulator {
             Buf.tmvec[DihedralNormVecA],Buf.tmvec[DihedralNormVecB]);
       if(Buf.inf.IsValid()) Buf.GetPreBoth();
       else {
-        Buf.pre[DihedralIvNormASQ]=1./NormSQ(Buf.tmvec[DihedralNormVecA]);
-        Buf.pre[DihedralIvNormBSQ]=1./NormSQ(Buf.tmvec[DihedralNormVecB]);
-        Buf.pre[DihedralAxisSQ]=NormSQ(Buf.tmvec[DihedralBondVecKJ]);
+        Buf.pre[DihedralIvNormASQ]=
+          1./NormSQ(Buf.tmvec[DihedralNormVecA],Buf.dim);
+        Buf.pre[DihedralIvNormBSQ]=
+          1./NormSQ(Buf.tmvec[DihedralNormVecB],Buf.dim);
+        Buf.pre[DihedralAxisSQ]=NormSQ(Buf.tmvec[DihedralBondVecKJ],Buf.dim);
         Buf.pre[DihedralDotBondAB]=
-          Dot(Buf.tmvec[DihedralBondVecJI],Buf.tmvec[DihedralBondVecKJ]);
+          Dot(Buf.tmvec[DihedralBondVecJI],Buf.tmvec[DihedralBondVecKJ],
+              Buf.dim);
         Buf.pre[DihedralDotBondBC]=
-          Dot(Buf.tmvec[DihedralBondVecKJ],Buf.tmvec[DihedralBondVecLK]);
+          Dot(Buf.tmvec[DihedralBondVecKJ],Buf.tmvec[DihedralBondVecLK],
+              Buf.dim);
       }
       Buf.pre[DihedralDotNormAB]=
-        Dot(Buf.tmvec[DihedralNormVecA],Buf.tmvec[DihedralNormVecB]);
+        Dot(Buf.tmvec[DihedralNormVecA],Buf.tmvec[DihedralNormVecB],Buf.dim);
       Buf.pre[DihedralCrossNormAB]=
-        Dot(Buf.tmvec[DihedralBondVecKJ],Buf.tmvec[DihedralCrossNormVec]);
+        Dot(Buf.tmvec[DihedralBondVecKJ],Buf.tmvec[DihedralCrossNormVec],
+            Buf.dim);
       Buf.Pre2PostBoth(P);
     }
     T ee,ef;
@@ -51,12 +56,12 @@ namespace mysimulator {
     T efj=ef*Buf.post[DihedralFactorJ];
     T efk=ef*Buf.post[DihedralFactorK];
     T efl=ef*Buf.post[DihedralFactorL];
-    Shift(Grad[I],efi,Buf.tmvec[DihedralNormVecA]);
-    Shift(Grad[L],efl,Buf.tmvec[DihedralNormVecB]);
-    Shift(Grad[J],-efi-efj,Buf.tmvec[DihedralNormVecA]);
-    Shift(Grad[J],efk,Buf.tmvec[DihedralNormVecB]);
-    Shift(Grad[K],efj,Buf.tmvec[DihedralNormVecA]);
-    Shift(Grad[K],-efl-efk,Buf.tmvec[DihedralNormVecB]);
+    Shift(Grad[I],efi,Buf.tmvec[DihedralNormVecA],Buf.dim);
+    Shift(Grad[L],efl,Buf.tmvec[DihedralNormVecB],Buf.dim);
+    Shift(Grad[J],-efi-efj,Buf.tmvec[DihedralNormVecA],Buf.dim);
+    Shift(Grad[J],efk,Buf.tmvec[DihedralNormVecB],Buf.dim);
+    Shift(Grad[K],efj,Buf.tmvec[DihedralNormVecA],Buf.dim);
+    Shift(Grad[K],-efl-efk,Buf.tmvec[DihedralNormVecB],Buf.dim);
   }
 
 }

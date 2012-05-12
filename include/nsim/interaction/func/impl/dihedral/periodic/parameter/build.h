@@ -17,8 +17,8 @@ namespace mysimulator {
   void _DihedralPeriodicBuild(Array1D<Unique64Bit>& P) {
     unsigned int Sf=DihedralPeriodicFuncParamShift;
     for(unsigned int i=0;i<P[DihedralPeriodicNumFuncs].u;++i) {
-      P[Sf+DihedralPeriodicFuncStrengthFrequency].value<T>()=
-        P[Sf+DihedralPeriodicFuncStrength].value<T>()*
+      Value<T>(P[Sf+DihedralPeriodicFuncStrengthFrequency])=
+        Value<T>(P[Sf+DihedralPeriodicFuncStrength])*
         P[Sf+DihedralPeriodicFuncFrequency].u;
       Sf+=DihedralPeriodicFuncNumberParameters;
     }
@@ -27,7 +27,7 @@ namespace mysimulator {
   template <typename T>
   void BuildParameterDihedralPeriodic(Array1D<Unique64Bit>& P) {
     _DihedralPeriodicSetSize(P);
-    _DihedralPeriodicBuild(P);
+    _DihedralPeriodicBuild<T>(P);
   }
 
 }

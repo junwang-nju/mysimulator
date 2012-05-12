@@ -18,24 +18,27 @@ namespace mysimulator {
       void (*efunc)(const Array1D<T>&,const Array1D<Unique64Bit>&,T*)) {
     if(Buf.postUpdate) {
       unsigned int I=ID[0],J=ID[1],K=ID[2],L=ID[3];
-      DisplacementCalc(Buf.tmvec[DihedralBondVecJI],X[J],X[I],Geo);
-      DisplacementCalc(Buf.tmvec[DihedralBondVecKJ],X[K],X[J],Geo);
-      DisplacementCalc(Buf.tmvec[DihedralBondVecLK],X[L],X[K],Geo);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecJI],X[J],X[I],Geo,Buf.dim);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecKJ],X[K],X[J],Geo,Buf.dim);
+      DisplacementCalc(Buf.tmvec[DihedralBondVecLK],X[L],X[K],Geo,Buf.dim);
       Cross(Buf.tmvec[DihedralNormVecA],
             Buf.tmvec[DihedralBondVecJI],Buf.tmvec[DihedralBondVecKJ]);
       Cross(Buf.tmvec[DihedralNormVecB],
             Buf.tmvec[DihedralBondVecKJ],Buf.tmvec[DihedralBondVecLK]);
       Cross(Buf.tmvec[DihedralCrossNormVec],
             Buf.tmvec[DihedralNormVecA],Buf.tmvec[DihedralNormVecB]);
-      if(Buf.Inf.IsValid()) Buf.GetPreFunc();
+      if(Buf.inf.IsValid()) Buf.GetPreFunc();
       else {
-        Buf.pre[DihedralIvNormASQ]=1./NormSQ(Buf.tmvec[DihedralNormVecA]);
-        Buf.pre[DihedralIvNormBSQ]=1./NormSQ(Buf.tmvec[DihedralNormVecB]);
+        Buf.pre[DihedralIvNormASQ]=
+          1./NormSQ(Buf.tmvec[DihedralNormVecA],Buf.dim);
+        Buf.pre[DihedralIvNormBSQ]=
+          1./NormSQ(Buf.tmvec[DihedralNormVecB],Buf.dim);
       }
       Buf.pre[DihedralDotNormAB]=
-        dot(Buf.tmvec[DihedralNormVecA],Buf.tmvec[DihedralNormVecB]);
+        Dot(Buf.tmvec[DihedralNormVecA],Buf.tmvec[DihedralNormVecB],Buf.dim);
       Buf.pre[DihedralCrossNormAB]=
-        dot(Buf.tmvec[DihedralBondVecKJ],Buf.tmvec[DihedralCrossNormVec]);
+        Dot(Buf.tmvec[DihedralBondVecKJ],Buf.tmvec[DihedralCrossNormVec],
+            Buf.dim);
       Buf.Pre2PostFunc(P);
     }
     T ee;

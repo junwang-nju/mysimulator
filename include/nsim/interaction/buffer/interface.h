@@ -13,6 +13,10 @@
 #include "interaction/func/impl/angle/buffer-p2p.h"
 #include "interaction/func/impl/angle/buffer-getpre.h"
 
+#include "interaction/func/impl/dihedral/buffer-name.h"
+#include "interaction/func/impl/dihedral/buffer-p2p.h"
+#include "interaction/func/impl/dihedral/buffer-getpre.h"
+
 namespace mysimulator {
 
   template <typename T>
@@ -134,6 +138,12 @@ namespace mysimulator {
             P2PBoth=AngleHarmonicPre2Post4Both<T>;
             break;
           case DihedralPeriodic:
+            pre.Allocate(DihedralCommonBufferPreSize);
+            post.Allocate(DihedralPeriodicBufferPostSize);
+            tmvec.Allocate(DihedralCommonBufferNumberVectors,dim);
+            P2PFunc=DihedralPeriodicPre2Post4Func<T>;
+            P2PDiff=DihedralPeriodicPre2Post4Diff<T>;
+            P2PBoth=DihedralPeriodicPre2Post4Both<T>;
             break;
           default:
             fprintf(stderr,"Unknown Interaction Func Name!\n");

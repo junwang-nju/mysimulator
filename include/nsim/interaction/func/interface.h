@@ -12,6 +12,10 @@
 #include "interaction/func/impl/angle/diff.h"
 #include "interaction/func/impl/angle/both.h"
 
+#include "interaction/func/impl/dihedral/func.h"
+#include "interaction/func/impl/dihedral/diff.h"
+#include "interaction/func/impl/dihedral/both.h"
+
 #include "interaction/func/method/pairwise/energy.h"
 #include "interaction/func/method/pairwise/gradient.h"
 #include "interaction/func/method/pairwise/both.h"
@@ -19,6 +23,10 @@
 #include "interaction/func/method/angle/energy.h"
 #include "interaction/func/method/angle/gradient.h"
 #include "interaction/func/method/angle/both.h"
+
+#include "interaction/func/method/dihedral/energy.h"
+#include "interaction/func/method/dihedral/gradient.h"
+#include "interaction/func/method/dihedral/both.h"
 
 #if !(defined(_FUNC_DCL)||defined(_METHOD_DCL))
 #define _FUNC_DCL const Array1D<T>&,const Array1D<Unique64Bit>&
@@ -147,6 +155,12 @@ namespace mysimulator {
             BMethod=BMethodAngle<GeomType,T>;
             break;
           case DihedralPeriodic:
+            EFunc=FuncDihedralPeriodic<T>;
+            GFunc=DiffDihedralPeriodic<T>;
+            BFunc=BothDihedralPeriodic<T>;
+            EMethod=EMethodDihedral<GeomType,T>;
+            GMethod=GMethodDihedral<GeomType,T>;
+            BMethod=BMethodDihedral<GeomType,T>;
             break;
           default:
             fprintf(stderr,"Unknown Interaction Func Name!\n");

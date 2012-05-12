@@ -6,7 +6,7 @@
 #include "interaction/func/impl/dihedral/common/buffer/pre-name.h"
 #include "interaction/func/impl/dihedral/common/buffer/vec-name.h"
 #include "interaction/func/impl/dihedral/common/buffer/inf-name.h"
-#include "interaction/func/impl/angle/comon/buffer/post-name.h"
+#include "interaction/func/impl/angle/common/buffer/post-name.h"
 #include "intrinsic-type/square.h"
 #include "array/1d/norm.h"
 
