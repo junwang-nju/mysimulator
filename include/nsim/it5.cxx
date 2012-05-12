@@ -84,24 +84,49 @@ int main() {
   MersenneTwister<StandardMT> RNG;
   RNG.Allocate();
   RNG.InitWithTime();
+  Array1D<double> Hist,Den;
+  double avHist,nHist,f;
+  bool mfg;
+  Den.Allocate(2000);
+  Hist.Allocate(2000);
+  Fill(Den,0,2000);
 
   cout.precision(20);
+  f=1.;
   for(unsigned int i=0;i<ExTrue;++i)    Sigma[IDMap[i]]=SigmaUpp[IDMap[i]];
   for(unsigned int i=ExTrue;i<NB;++i)   Sigma[IDMap[i]]=SigmaLow[IDMap[i]];
   PEntr=Entr(ID,Sigma,Mat,DTMP,ITMP,EVal);
-  for(unsigned int nt=0,u,v,w;nt<1000;++nt) {
+  while(f>0.01) {
+  Fill(Hist,0,2000);
+  for(unsigned int nt=0,u,v,w;nt<10000;++nt) {
     u=static_cast<unsigned int>(RNG.Double()*ExTrue);
     v=static_cast<unsigned int>(RNG.Double()*(NB-ExTrue))+ExTrue;
     w=IDMap[u]; IDMap[u]=IDMap[v];  IDMap[v]=w;
     for(unsigned int i=0;i<ExTrue;++i)    Sigma[IDMap[i]]=SigmaUpp[IDMap[i]];
     for(unsigned int i=ExTrue;i<NB;++i)   Sigma[IDMap[i]]=SigmaLow[IDMap[i]];
     TEntr=Entr(ID,Sigma,Mat,DTMP,ITMP,EVal);
-    //cout<<TEntr<<"\t"<<PEntr<<endl; getchar();
-    if(RNG.Double()<exp(TEntr-PEntr)) PEntr=TEntr;
+    if(RNG.Double()<exp(Den[-(int)(PEntr*100)]-Den[-(int)(TEntr*100)]))
+      PEntr=TEntr;
     else {
       w=IDMap[u]; IDMap[u]=IDMap[v];  IDMap[v]=w;
     }
+    Hist[-(int)(PEntr*100)]+=1;
+    Den[-(int)(PEntr*100)]+=f;
   }
+  avHist=0;
+  nHist=0;
+  for(unsigned int i=0;i<2000;++i)  if(Hist[i]>0) { avHist+=Hist[i]; nHist+=1; }
+  avHist/=nHist;
+  avHist*=0.8;
+  mfg=true;
+  for(unsigned int i=0;i<2000;++i)  if(Hist[i]>0)
+    if(Hist[i]<avHist) { mfg=false; break; }
+  if(mfg) f*=0.5;
+  }
+  
+  for(unsigned int i=0;i<2000;++i) if(Den[i]>1) cout<<i<<"\t"<<Den[i]<<endl;
+
+  /*
   SEntr=0;
   for(unsigned int nt=0,u,v,w;nt<10000;++nt) {
     u=static_cast<unsigned int>(RNG.Double()*ExTrue);
@@ -117,57 +142,6 @@ int main() {
     SEntr+=exp(-PEntr);
   }
   cout<<ExTrue<<"\t"<<log(10000.)-log(SEntr)<<endl;
-
-  /*
-  double TEntr[2][2];
-  for(unsigned int i=0;i<2;++i) {
-    Sigma[0]=(i==0?1.1:0.9);
-    for(unsigned int j=0;j<2;++j) {
-      Sigma[1]=(j==0?1.1:0.9);
-      TEntr[i][j]=Entr(ID,Sigma,FG,Mat,DTMP,ITMP,EVal);
-      cout<<TEntr[i][j]<<endl;
-    }
-  }
-  double avEntr=(TEntr[0][0]+TEntr[1][1])*0.5;
-  double SEntr=0,Fi,Fj;
-  for(unsigned int i=0;i<2;++i) {
-    Fi=(i==0?1:-1);
-    for(unsigned int j=0;j<2;++j) {
-      Fj=(j==0?1:-1);
-      SEntr+=Fi*Fj*exp(TEntr[i][j]-avEntr);
-    }
-  }
-  SEntr=log(SEntr)+avEntr;
-  cout<<"Sum: "<<SEntr<<endl;
-  */
-  /*
-  cout.precision(20);
-  double TEntr[2][2][2];
-  for(unsigned int i=0;i<2;++i) {
-    Sigma[0]=(i==0?1.1:0.9);
-    for(unsigned int j=0;j<2;++j) {
-      Sigma[1]=(j==0?1.1:0.9);
-      for(unsigned int k=0;k<2;++k) {
-        Sigma[2]=(k==0?1.1:0.9);
-        TEntr[i][j][k]=Entr(ID,Sigma,FG,Mat,DTMP,ITMP,EVal);
-        cout<<TEntr[i][j][k]<<endl;
-      }
-    }
-  }
-  double avEntr=(TEntr[0][0][0]+TEntr[1][1][1])*0.5;
-  double SEntr=0,Fi,Fj,Fk;
-  for(unsigned int i=0;i<2;++i) {
-    Fi=(i==0?1:-1);
-    for(unsigned int j=0;j<2;++j) {
-      Fj=(j==0?1:-1);
-      for(unsigned int k=0;k<2;++k) {
-        Fk=(k==0?1:-1);
-        SEntr+=Fi*Fj*Fk*exp(TEntr[i][j][k]-avEntr);
-      }
-    }
-  }
-  SEntr=log(SEntr)+avEntr;
-  cout<<"Sum: "<<SEntr<<endl;
   */
 
   return 0;
