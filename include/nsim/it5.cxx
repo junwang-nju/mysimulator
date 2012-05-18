@@ -87,17 +87,17 @@ int main() {
   Array1D<double> Hist,Den;
   double avHist,nHist,f;
   bool mfg;
-  Den.Allocate(2000);
-  Hist.Allocate(2000);
-  Fill(Den,0,2000);
+  Den.Allocate(20000);
+  Hist.Allocate(20000);
+  Fill(Den,0,20000);
 
   cout.precision(20);
   f=1.;
   for(unsigned int i=0;i<ExTrue;++i)    Sigma[IDMap[i]]=SigmaUpp[IDMap[i]];
   for(unsigned int i=ExTrue;i<NB;++i)   Sigma[IDMap[i]]=SigmaLow[IDMap[i]];
   PEntr=Entr(ID,Sigma,Mat,DTMP,ITMP,EVal);
-  while(f>0.01) {
-  Fill(Hist,0,2000);
+  Fill(Hist,0,20000);
+  while(f>1e-3) {
   for(unsigned int nt=0,u,v,w;nt<10000;++nt) {
     u=static_cast<unsigned int>(RNG.Double()*ExTrue);
     v=static_cast<unsigned int>(RNG.Double()*(NB-ExTrue))+ExTrue;
@@ -105,26 +105,43 @@ int main() {
     for(unsigned int i=0;i<ExTrue;++i)    Sigma[IDMap[i]]=SigmaUpp[IDMap[i]];
     for(unsigned int i=ExTrue;i<NB;++i)   Sigma[IDMap[i]]=SigmaLow[IDMap[i]];
     TEntr=Entr(ID,Sigma,Mat,DTMP,ITMP,EVal);
-    if(RNG.Double()<exp(Den[-(int)(PEntr*100)]-Den[-(int)(TEntr*100)]))
+    if(TEntr<-11.13) { Write(TEntr,"\n",IDMap,"\n"); getchar(); }
+    if(RNG.Double()<exp(Den[-(int)(PEntr*1000)]-Den[-(int)(TEntr*1000)]))
       PEntr=TEntr;
     else {
       w=IDMap[u]; IDMap[u]=IDMap[v];  IDMap[v]=w;
     }
-    Hist[-(int)(PEntr*100)]+=1;
-    Den[-(int)(PEntr*100)]+=f;
+    Hist[-(int)(PEntr*1000)]+=1;
+    Den[-(int)(PEntr*1000)]+=f;
   }
   avHist=0;
   nHist=0;
-  for(unsigned int i=0;i<2000;++i)  if(Hist[i]>0) { avHist+=Hist[i]; nHist+=1; }
+  for(unsigned int i=0;i<20000;++i)  if(Hist[i]>0) { avHist+=Hist[i]; nHist+=1; }
   avHist/=nHist;
-  avHist*=0.8;
+  avHist*=0.9;
   mfg=true;
-  for(unsigned int i=0;i<2000;++i)  if(Hist[i]>0)
-    if(Hist[i]<avHist) { mfg=false; break; }
-  if(mfg) f*=0.5;
+  for(unsigned int i=0;i<20000;++i)
+    if(Hist[i]>0)
+      if(Hist[i]<avHist) { mfg=false; break; }
+  if(mfg) { f*=0.5; Fill(Hist,0.,20000); }
   }
+
+  //for(unsigned int i=0;i<2000;++i) if(Hist[i]>0) cout<<i<<"\t"<<Hist[i]<<endl;
   
-  for(unsigned int i=0;i<2000;++i) if(Den[i]>1) cout<<i<<"\t"<<Den[i]<<endl;
+  for(unsigned int i=0;i<20000;++i) if(Den[i]>1) cout<<i<<"\t"<<Den[i]<<endl;
+  TEntr=1e10;
+  for(unsigned int i=0;i<20000;i++)
+    if(Den[i]>1) TEntr=(Den[i]<TEntr?Den[i]:TEntr);
+  cout<<"# "<<TEntr<<endl;
+  SEntr=0;
+  PEntr=0;
+  for(unsigned int i=0;i<20000;++i) {
+    if(Den[i]>1) {
+      SEntr+=exp(Den[i]-TEntr+i*(-0.001));
+      PEntr+=exp(Den[i]-TEntr);
+    }
+  }
+  cout<<"# "<<log(SEntr)-log(PEntr)<<endl;
 
   /*
   SEntr=0;

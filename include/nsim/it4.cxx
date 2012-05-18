@@ -32,9 +32,8 @@ int main() {
 
   unsigned int L;
   unsigned int NB;
-  L=3;
+  L=7;
   NB=(L*(L-1))/2;
-  cout<<L<<"\t";
 
   Array2D<unsigned int> ID;
   Array1D<double> Sigma,SigmaUpp,SigmaLow;
@@ -59,7 +58,7 @@ int main() {
   for(unsigned int i=L-1;i<NB;++i) {
     SigmaUpp[i]=100;    SigmaLow[i]=0.9;
   }
-  SigmaUpp[L-1+L-3]=100;  SigmaLow[L-1+L-3]=0.9;
+  SigmaUpp[L-1+L-3]=1.1;  SigmaLow[L-1+L-3]=0.9;
 
   MatrixRectangle<double> Mat;
   Array1D<double> DTMP;
@@ -73,19 +72,28 @@ int main() {
   Array1D<bool> State;
   State.Allocate(NB);
   Fill(State,true,NB);
-  int NowCB,Fac;
+  int NowCB,Fac,nT,cT;
   double SEntr;
   bool firstFG=true;
+  unsigned int Level=21;
 
   cout.precision(20);
   Fac=1;
   NowCB=NB-1;
   SEntr=0;
+  cT=0;
   while(true) {
-    for(unsigned int i=0;i<NB;++i)
-      Sigma[i]=(State[i]?SigmaUpp[i]:SigmaLow[i]);
-    SEntr+=Fac*exp(Entr(ID,Sigma,FG,Mat,DTMP,ITMP,EVal));
-    if(firstFG) { cout<<log(SEntr)<<"\t"; firstFG=false; }
+    nT=0;
+    for(unsigned int i=0;i<NB;++i)  nT+=(State[i]?1:0);
+    if(nT==Level) {
+      Fac=1;
+      for(unsigned int i=0;i<NB;++i)
+        Sigma[i]=(State[i]?SigmaUpp[i]:SigmaLow[i]);
+      SEntr+=Fac*exp(Entr(ID,Sigma,FG,Mat,DTMP,ITMP,EVal));
+      cT+=1.;
+      //cout<<Entr(ID,Sigma,FG,Mat,DTMP,ITMP,EVal)<<endl;
+      //if(firstFG) { cout<<log(SEntr)<<"\t"; firstFG=false; }
+    }
     while(!State[NowCB]) { --NowCB; if(NowCB<0) break; }
     if(NowCB<0) break;
     State[NowCB]=false;
@@ -94,7 +102,7 @@ int main() {
       ++NowCB; State[NowCB]=true; Fac*=-1;
     }
   }
-  cout<<log(SEntr)<<endl;
+  cout<<Level<<"\t"<<log(SEntr)-log(cT)<<endl;
 
   /*
   double TEntr[2][2];
