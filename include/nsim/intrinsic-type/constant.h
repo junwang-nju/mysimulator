@@ -16,6 +16,9 @@ namespace mysimulator {
   template <> const float RelDelta<float>()  { return FRelDelta; }
   template <> const double RelDelta<double>() { return DRelDelta; }
 
+  static const double Golden=0.618033988749894848205;
+  static const double IvGolden=1.618033988749894848205;
+
 }
 
 #endif

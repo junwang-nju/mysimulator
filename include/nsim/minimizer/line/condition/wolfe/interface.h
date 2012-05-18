@@ -2,7 +2,7 @@
 #ifndef _Minimizer_Line_Condition_Wolfe_Interface_H_
 #define _Minimizer_Line_Condition_Wolfe_Interface_H_
 
-#include "minimizer/line/condition/interface.h"
+#include "minimizer/line/condition/armijo/interface.h"
 
 namespace mysimulator {
 

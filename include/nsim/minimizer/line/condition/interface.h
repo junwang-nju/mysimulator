@@ -15,9 +15,11 @@ namespace mysimulator {
 
   };
 
-#include "minimizer/line/condition/armijo/interface.h"
-
 }
+
+#include "minimizer/line/condition/armijo/interface.h"
+#include "minimizer/line/condition/wolfe/interface.h"
+#include "minimizer/line/condition/strong-wolfe/interface.h"
 
 #endif
 
