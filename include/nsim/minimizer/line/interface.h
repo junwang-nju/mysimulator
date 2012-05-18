@@ -4,6 +4,7 @@
 
 #include "minimizer/line/condition/method-name.h"
 #include "minimizer/line/method-name.h"
+#include <cstdio>
 
 namespace mysimulator {
 
@@ -20,6 +21,10 @@ namespace mysimulator {
       ~LineMinimizer() { Clear(*this); }
 
       bool IsValid() const { return false; }
+
+      void Load(System<T,IDT,PT,GT,BT,CT>&) {
+        fprintf(stderr,"Not Implemented!\n");
+      }
 
     private:
 

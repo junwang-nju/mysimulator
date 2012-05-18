@@ -19,6 +19,11 @@ namespace mysimulator {
   static const double Golden=0.618033988749894848205;
   static const double IvGolden=1.618033988749894848205;
 
+  template <typename T>
+  const T GoldenValue() { fprintf(stderr,"Unknown Type!\n"); return 0; }
+
+  template <> const double GoldenValue<double>() { return Golden; }
+
 }
 
 #endif

@@ -13,7 +13,7 @@ namespace mysimulator {
     unsigned int u;
     bool b;
     tptr=V1._data;      V1._data=V2._data;          V2._data=tptr;
-    u=V1._size;         V1._size=V2._size;          V2_size=u;
+    u=V1._size;         V1._size=V2._size;          V2._size=u;
     uptr=V1._refCount;  V1._refCount=V2._refCount;  V2._refCount=uptr;
     uptr=V1._partUsed;  V1._partUsed=V2._partUsed;  V2._partUsed=uptr;
     b=V1._partFlag;     V1._partFlag=V2._partFlag;  V2._partFlag=b;
@@ -22,6 +22,8 @@ namespace mysimulator {
 }
 
 #include "intrinsic-type/copy.h"
+
+namespace mysimulator {
 
   template <typename T>
   void Swap(Array1D<T>& V1,Array1D<T>& V2, unsigned int n) {

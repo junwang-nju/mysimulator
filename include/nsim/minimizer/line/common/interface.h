@@ -18,8 +18,8 @@ namespace mysimulator {
       typedef MinimizerBase<T,IDT,PT,GT,BT,CT>  ParentType;
       typedef System<T,IDT,PT,GT,BT,SystemContentWithEGV>   SystemType;
 
-      SystemType    MemSys;
-      SystemType    RunSys;
+      SystemType    *MemSys;
+      SystemType    *RunSys;
       T             Step;
       Array2D<T>    LineDirc;
       T             RunProj;
@@ -29,43 +29,49 @@ namespace mysimulator {
       unsigned int  LineSearchCount;
 
       LineMinimizerCommon()
-        : MemSys(),RunSys(),Step(0),LineDirc(),RunProj(0),DecreaseFac(1e-4),
-          CurvatureFac(0.4),GradThreshold(RelDelta<T>()), LineSearchCount(0U) {}
+        : MemSys(NULL),RunSys(NULL),Step(0),LineDirc(),RunProj(0),
+          DecreaseFac(1e-4),CurvatureFac(0.4),GradThreshold(RelDelta<T>()),
+          LineSearchCount(0U) {}
       ~LineMinimizerCommon() { Clear(*this); }
 
       bool IsValid() const {
         return static_cast<const ParentType*>(this)->IsValid()&&
-               RunSys.IsValid()&&MemSys.IsValid()&&LineDirc.IsValid();
+               (RunSys!=NULL)&&RunSys->IsValid()&&(MemSys!=NULL)&&
+               MemSys->IsValid()&&LineDirc.IsValid();
       }
 
       void Load(System<T,IDT,PT,GT,BT,CT>& S) {
         Clear(*this);
         static_cast<ParentType*>(this)->Load(S);
-        static_cast<SystemContentWithEG<T>&>(MemSys.Content).Allocate(
+        MemSys=new SystemType;
+        static_cast<SystemContentWithEG<T>&>(MemSys->Content).Allocate(
             S.Content.X);
-        static_cast<SystemContentWithEG<T>&>(RunSys.Content).Allocate(
+        RunSys=new SystemType;
+        static_cast<SystemContentWithEG<T>&>(RunSys->Content).Allocate(
             S.Content.X);
         Imprint(LineDirc,S.Content.X);
-        MemSys.Content.Velocity.Refer(LineDirc);
-        RunSys.Content.Velocity.Refer(LineDirc);
-        MemSys.Interactions.Allocate(S.Interactions.Size());
-        RunSys.Interactions.Allocate(S.Interactions.Size());
+        MemSys->Content.Velocity.Refer(LineDirc);
+        RunSys->Content.Velocity.Refer(LineDirc);
+        MemSys->Interactions.Allocate(S.Interactions.Size());
+        RunSys->Interactions.Allocate(S.Interactions.Size());
         for(unsigned int i=0;i<S.Interactions.Size();++i) {
-          MemSys.Interactions[i].Func.Refer(this->Sys.Interactions[i].Func);
-          RunSys.Interactions[i].Func.Refer(this->Sys.Interactions[i].Func);
-          MemSys.Interactions[i].ID.Refer(this->Sys.Interactions[i].ID);
-          RunSys.Interactions[i].ID.Refer(this->Sys.Interactions[i].ID);
-          MemSys.Interactions[i].Param.Refer(this->Sys.Interactions[i].Param);
-          RunSys.Interactions[i].Param.Refer(this->Sys.Interactions[i].Param);
-          MemSys.Interactions[i].Buffer.Refer(this->Sys.Interactions[i].Buffer);
-          RunSys.Interactions[i].Buffer.Refer(this->Sys.Interactions[i].Buffer);
-          MemSys.Interactions[i].Geom.Refer(this->Sys.Interactions[i].Geom);
-          RunSys.Interactions[i].Geom.Refer(this->Sys.Interactions[i].Geom);
-          MemSys.Interactions[i].EGData.Allocate(S.Content.X);
-          RunSys.Interactions[i].EGData.Allocate(S.Content.X);
+          MemSys->Interactions[i].Func.Refer(this->Sys.Interactions[i].Func);
+          RunSys->Interactions[i].Func.Refer(this->Sys.Interactions[i].Func);
+          MemSys->Interactions[i].ID.Refer(this->Sys.Interactions[i].ID);
+          RunSys->Interactions[i].ID.Refer(this->Sys.Interactions[i].ID);
+          MemSys->Interactions[i].Param.Refer(this->Sys.Interactions[i].Param);
+          RunSys->Interactions[i].Param.Refer(this->Sys.Interactions[i].Param);
+          MemSys->Interactions[i].Buffer.Refer(
+              this->Sys.Interactions[i].Buffer);
+          RunSys->Interactions[i].Buffer.Refer(
+              this->Sys.Interactions[i].Buffer);
+          MemSys->Interactions[i].Geom.Refer(this->Sys.Interactions[i].Geom);
+          RunSys->Interactions[i].Geom.Refer(this->Sys.Interactions[i].Geom);
+          MemSys->Interactions[i].EGData.Allocate(S.Content.X);
+          RunSys->Interactions[i].EGData.Allocate(S.Content.X);
         }
-        MemSys.Propagtors.Allocate(S.Propagtors.Size());
-        RunSys.Propagtors.Allocate(S.Propagtors.Size());
+        MemSys->Propagtors.Allocate(S.Propagtors.Size());
+        RunSys->Propagtors.Allocate(S.Propagtors.Size());
         for(unsigned int i=0,n;i<S.Propagtors.Size();++i) {
           SystemPropagatorMethodName SPN;
           switch(this->Sys.Propagtors[i].Method) {
@@ -80,42 +86,44 @@ namespace mysimulator {
               fprintf(stderr,"Improper Propagator Method!\n");
               SPN=SystemPropagatorUnassigned;
           }
-          MemSys.Propagators[i].Allocate(SPN);
-          RunSys.Propagators[i].Allocate(SPN);
-          MemSys.Propagators[i].IDRange.Refer(this->Sys.Propagators[i].IDRange);
-          RunSys.Propagators[i].IDRange.Refer(this->Sys.Propagators[i].IDRange);
+          MemSys->Propagators[i].Allocate(SPN);
+          RunSys->Propagators[i].Allocate(SPN);
+          MemSys->Propagators[i].IDRange.Refer(
+              this->Sys.Propagators[i].IDRange);
+          RunSys->Propagators[i].IDRange.Refer(
+              this->Sys.Propagators[i].IDRange);
           n=S.Propagators[i].IDRange.Size();
-          MemSys.Propagators[i].GrpContent.Allocate(n);
-          RunSys.Propagators[i].GrpContent.Allocate(n);
-          MemSys.Propagators[i]._Build(MemSys.Content);
-          RunSys.Propagators[i]._Build(RunSys.Content);
+          MemSys->Propagators[i].GrpContent.Allocate(n);
+          RunSys->Propagators[i].GrpContent.Allocate(n);
+          MemSys->Propagators[i]._Build(MemSys->Content);
+          RunSys->Propagators[i]._Build(RunSys->Content);
           switch(SPN) {
             case SystemFixPosition: break;
             case SystemMinimizerLineRegular:
               Pointer<T>(
-                  MemSys.Propagators[i].Param[MinimizerLineRegularPtrStep])
+                  MemSys->Propagators[i].Param[MinimizerLineRegularPtrStep])
                 =&Step;
               Pointer<T>(
-                  RunSys.Propagators[i].Param[MinimizerLineRegularPtrStep])
+                  RunSys->Propagators[i].Param[MinimizerLineRegularPtrStep])
                 =&Step;
               break;
             default:
               fprintf(stderr,"Improper Propagator Method!\n");
           }
         }
-        MemSys._Build();
-        RunSys._Build();
-        MemSys._Init();
-        RunSys._Init();
+        MemSys->_Build();
+        RunSys->_Build();
+        MemSys->_Init();
+        RunSys->_Init();
       }
 
       T MinimalStep() {
-        assert(IsSameStructure(RunSys.Content.X,RunSys.Content.Velocity));
-        unsigned int n=RunSys.Content.X._ldata.Size();
+        assert(IsSameStructure(RunSys->Content.X,RunSys->Content.Velocity));
+        unsigned int n=RunSys->Content.X._ldata.Size();
         T mstep,tmd,tmd1;
         for(unsigned int i=0;i<n;++i) {
-          tmd=absval(RunSys.Content.X._ldata[i]);
-          tmd1=RunSys.Content.Velocity._ldata[i];
+          tmd=absval(RunSys->Content.X._ldata[i]);
+          tmd1=RunSys->Content.Velocity._ldata[i];
           tmd=(tmd<1?tmd1:tmd1/tmd);
           mstep+=Square(tmd);
         }
@@ -133,8 +141,10 @@ namespace mysimulator {
             template<typename> class CT>
   void Clear(LineMinimizerCommon<T,IDT,PT,GT,BT,CT>& M) {
     typedef typename LineMinimizerCommon<T,IDT,PT,GT,BT,CT>::ParentType Type;
-    Clear(M.MemSys);
-    Clear(M.RunSys);
+    Clear(*(M.MemSys));
+    Clear(*(M.RunSys));
+    delete M.MemSys;
+    delete M.RunSys;
     M.Step=0.;
     Clear(M.LineDirc);
     M.RunProj=0.;
@@ -149,8 +159,8 @@ namespace mysimulator {
 
 #ifndef _LOAD4XE
 #define _LOAD4XE \
-  BlasCopy(M.MemSys.Content.X,M.Sys.Content.X); \
-  Copy(M.MemSys.Content.EGData.Energy[0],M.Sys.Content.EGData.Energy[0]);
+  BlasCopy(M.MemSys->Content.X,M.Sys.Content.X); \
+  Copy(M.MemSys->Content.EGData.Energy[0],M.Sys.Content.EGData.Energy[0]);
 #else
 #error "Duplicate Definition for Macro _LOAD4XE"
 #endif
@@ -160,7 +170,7 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,typename BT> \
   void _Load2Mem(LineMinimizerCommon<T,IDT,PT,GT,BT,CType>& M) { \
     _LOAD4XE \
-    EvaluateGradient(M.MemSys.Content,M.MemSys.Interactions); \
+    EvaluateGradient(M.MemSys->Content,M.MemSys.Interactions); \
     M.GCalcCount++; \
   }
 #else
@@ -184,7 +194,7 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,typename BT> \
   void _Load2Mem(LineMinimizerCommon<T,IDT,PT,GT,BT,CType>& M) { \
     _LOAD4XE \
-    BlasCopy(M.MemSys.Content.EGData.Gradient,M.Sys.Content.EGData.Gradient); \
+    BlasCopy(M.MemSys->Content.EGData.Gradient,M.Sys.Content.EGData.Gradient); \
   }
 #else
 #error "Duplicate Definition for Macro _LOAD"
@@ -207,8 +217,8 @@ namespace mysimulator {
 
 #ifndef _WRITE4XE
 #define _WRITE4XE \
-  BlasCopy(M.Sys.Content.X,M.MemSys.Content.X); \
-  Copy(M.Sys.Content.EGData.Energy[0],M.MemSys.Content.EGData.Energy[0]);
+  BlasCopy(M.Sys.Content.X,M.MemSys->Content.X); \
+  Copy(M.Sys.Content.EGData.Energy[0],M.MemSys->Content.EGData.Energy[0]);
 #else
 #error "Duplicate Definition for Macro _WRITE4XE"
 #endif
@@ -237,7 +247,7 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,typename BT> \
   void _Write2Sys(LineMinimizerCommon<T,IDT,PT,GT,BT,CType>& M) { \
     _WRITE4XE \
-    BlasCopy(M.Sys.Content.EGData.Gradient,M.MemSys.Content.EGData.Gradient); \
+    BlasCopy(M.Sys.Content.EGData.Gradient,M.MemSys->Content.EGData.Gradient); \
   }
 #else
 #error "Duplicate Definition for Macro _WRITE"
