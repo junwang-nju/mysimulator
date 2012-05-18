@@ -13,7 +13,7 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void AppendGrdient(SystemContentDataE<T>&,const SystemContentDataE<T>&) {
+  void AppendGradient(SystemContentDataE<T>&,const SystemContentDataE<T>&) {
     fprintf(stderr,"Not Avaliable!\n");
   }
 

@@ -70,14 +70,14 @@ namespace mysimulator {
           MemSys->Interactions[i].EGData.Allocate(S.Content.X);
           RunSys->Interactions[i].EGData.Allocate(S.Content.X);
         }
-        MemSys->Propagtors.Allocate(S.Propagtors.Size());
-        RunSys->Propagtors.Allocate(S.Propagtors.Size());
-        for(unsigned int i=0,n;i<S.Propagtors.Size();++i) {
+        MemSys->Propagators.Allocate(S.Propagators.Size());
+        RunSys->Propagators.Allocate(S.Propagators.Size());
+        for(unsigned int i=0,n;i<S.Propagators.Size();++i) {
           SystemPropagatorMethodName SPN;
-          switch(this->Sys.Propagtors[i].Method) {
+          switch(this->Sys.Propagators[i].Method) {
             case  SystemFixPosition:
             case SystemMinimizerLineRegular:
-              SPN=this->Sys.Propagtors[i].Method;
+              SPN=this->Sys.Propagators[i].Method;
               break;
             case SystemToBeDetermined:
               SPN=SystemMinimizerLineRegular;
@@ -141,10 +141,16 @@ namespace mysimulator {
             template<typename> class CT>
   void Clear(LineMinimizerCommon<T,IDT,PT,GT,BT,CT>& M) {
     typedef typename LineMinimizerCommon<T,IDT,PT,GT,BT,CT>::ParentType Type;
-    Clear(*(M.MemSys));
-    Clear(*(M.RunSys));
-    delete M.MemSys;
-    delete M.RunSys;
+    if(M.MemSys!=NULL)  {
+      Clear(*(M.MemSys));
+      delete M.MemSys;
+      M.MemSys=NULL;
+    }
+    if(M.RunSys!=NULL) {
+      Clear(*(M.RunSys));
+      delete M.RunSys;
+      M.RunSys=NULL;
+    }
     M.Step=0.;
     Clear(M.LineDirc);
     M.RunProj=0.;

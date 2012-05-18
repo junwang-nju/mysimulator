@@ -15,8 +15,14 @@
 
 namespace mysimulator {
 
+  template <typename T,template<typename> class CT>
+  void __MoveVelVerletConstEBeforeG_UMass(Array1D<CT<T> >&,const T&,
+                                          const Unique64Bit&) {
+    fprintf(stderr,"Not Available!\n");
+  }
+
   template <typename T>
-  void _MoveVelVerletConstEBeforeG_UMass(
+  void __MoveVelVerletConstEBeforeG_UMass(
       Array1D<SystemContentWithEGV<T> >& GC,const T& dt,
       const Unique64Bit& nHTIM) {
     for(unsigned int i=0;i<GC.Size();++i) {
@@ -25,8 +31,20 @@ namespace mysimulator {
     }
   }
 
+  template <typename T,template<typename> class CT>
+  void _MoveVelVerletConstEBeforeG_UMass(
+      Array1D<CT<T> >& GC,const T& dt,const Unique64Bit& nHTIM) {
+    __MoveVelVerletConstEBeforeG_UMass(GC,dt,nHTIM);
+  }
+
+  template <typename T,template<typename> class CT>
+  void __MoveVelVerletConstEBeforeG_AMass(Array1D<CT<T> >&,const T&,
+                                          const Unique64Bit&) {
+    fprintf(stderr,"Not Available!\n");
+  }
+
   template <typename T>
-  void _MoveVelVerletConstEBeforeG_AMass(
+  void __MoveVelVerletConstEBeforeG_AMass(
       Array1D<SystemContentWithEGV<T> >& GC,const T& dt,
       const Unique64Bit& nHTIM) {
     for(unsigned int i=0;i<GC.Size();++i) {
@@ -35,18 +53,46 @@ namespace mysimulator {
     }
   }
 
+  template <typename T,template<typename> class CT>
+  void _MoveVelVerletConstEBeforeG_AMass(
+      Array1D<CT<T> >& GC,const T& dt,const Unique64Bit& nHTIM) {
+    __MoveVelVerletConstEBeforeG_AMass(GC,dt,nHTIM);
+  }
+
+  template <typename T,template<typename> class CT>
+  void __MoveVelVerletConstEAfterG_UMass(Array1D<CT<T> >&,const Unique64Bit&) {
+    fprintf(stderr,"Not Available!\n");
+  }
+
   template <typename T>
-  void _MoveVelVerletConstEAfterG_UMass(
+  void __MoveVelVerletConstEAfterG_UMass(
       Array1D<SystemContentWithEGV<T> >& GC,const Unique64Bit& nHTIM) {
     for(unsigned int i=0;i<GC.Size();++i)
       Shift(GC[i].Velocity,_VALUE(nHTIM),GC[i].EGData.Gradient);
   }
 
+  template <typename T,template<typename> class CT>
+  void _MoveVelVerletConstEAfterG_UMass(
+      Array1D<CT<T> >& GC,const Unique64Bit& nHTIM) {
+    __MoveVelVerletConstEAfterG_UMass(GC,nHTIM);
+  }
+
+  template <typename T,template<typename> class CT>
+  void __MoveVelVerletConstEAfterG_AMass(Array1D<CT<T> >&,const Unique64Bit&) {
+    fprintf(stderr,"Not Available!\n");
+  }
+
   template <typename T>
-  void _MoveVelVerletConstEAfterG_AMass(
+  void __MoveVelVerletConstEAfterG_AMass(
       Array1D<SystemContentWithEGV<T> >& GC,const Unique64Bit& nHTIM) {
     for(unsigned int i=0;i<GC.Size();++i)
       Shift(GC[i].Velocity,_CARRAY(nHTIM)[i],GC[i].EGData.Gradient);
+  }
+
+  template <typename T,template<typename> class CT>
+  void _MoveVelVerletConstEAfterG_AMass(
+      Array1D<CT<T> >& GC,const Unique64Bit& nHTIM) {
+    __MoveVelVerletConstEAfterG_AMass(GC,nHTIM);
   }
 
 }

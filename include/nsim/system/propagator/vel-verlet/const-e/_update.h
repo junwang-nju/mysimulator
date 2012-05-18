@@ -39,18 +39,40 @@ namespace mysimulator {
     }
   }
 
+  template <typename T,template<typename> class CT>
+  void __UpdateVelVerletConstEVSQ_UMass(Unique64Bit&,const Array1D<CT<T> >&) {
+    fprintf(stderr,"Not Available!\n");
+  }
+
   template <typename T>
-  void _UpdateVelVerletConstEVSQ_UMass(
+  void __UpdateVelVerletConstEVSQ_UMass(
       Unique64Bit& VSQ,const Array1D<SystemContentWithEGV<T> >& GC) {
     _VALUE(VSQ)=0;
     for(unsigned int i=0;i<GC.Size();++i) _VALUE(VSQ)+=NormSQ(GC[i].Velocity);
   }
 
+  template <typename T,template<typename> class CT>
+  void _UpdateVelVerletConstEVSQ_UMass(
+      Unique64Bit& VSQ,const Array1D<CT<T> >& GC) {
+    __UpdateVelVerletConstEVSQ_UMass(VSQ,GC);
+  }
+
+  template <typename T,template<typename> class CT>
+  void __UpdateVelVerletConstEVSQ_AMass(Unique64Bit&,const Array1D<CT<T> >&) {
+    fprintf(stderr,"Not Available!\n");
+  }
+
   template <typename T>
-  void _UpdateVelVerletConstEVSQ_AMass(
+  void __UpdateVelVerletConstEVSQ_AMass(
       Unique64Bit& VSQ,const Array1D<SystemContentWithEGV<T> >& GC) {
     for(unsigned int i=0;i<GC.Size();++i)
       BlasScaleCopy(_ARRAY(VSQ)[i],GC[i].Velocity,GC[i].Velocity);
+  }
+
+  template <typename T,template<typename> class CT>
+  void _UpdateVelVerletConstEVSQ_AMass(
+      Unique64Bit& VSQ,const Array1D<CT<T> >& GC) {
+    __UpdateVelVerletConstEVSQ_AMass(VSQ,GC);
   }
 
   template <typename T>

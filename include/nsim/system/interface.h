@@ -37,17 +37,17 @@ namespace mysimulator {
       unsigned int EvoluteMode;
       ContentType<T> Content;
       Array1D<InteractionType>  Interactions;
-      Array1D<PropagatorType>   Propagtors;
+      Array1D<PropagatorType>   Propagators;
       Array1D<Array1D<unsigned int> >     GrpMap;
       EvFuncType                EvFunc;
 
-      System() : EvoluteMode(0), Content(), Interactions(), Propagtors(),
+      System() : EvoluteMode(0), Content(), Interactions(), Propagators(),
                  GrpMap(), EvFunc(NULL) {}
       ~System() { Clear(*this); }
 
       bool IsValid() const {
         return (EvoluteMode!=0)&&Content.IsValid()&&Interactions.IsValid()&&
-               Propagtors.IsValid()&&GrpMap.IsValid()&&(EvFunc!=NULL);
+               Propagators.IsValid()&&GrpMap.IsValid()&&(EvFunc!=NULL);
       }
 
       void Refer(Type& S) {
@@ -55,22 +55,22 @@ namespace mysimulator {
         EvoluteMode=S.EvoluteMode;
         Content.Refer(S.Content);
         Interactions.Refer(S.Interactions);
-        Propagtors.Refer(S.Propagtors);
+        Propagators.Refer(S.Propagators);
         GrpMap.Refer(S.GrpMap);
         EvFunc=S.EvFunc;
       }
 
       void _Init() {
         assert(IsValid());
-        for(unsigned int i=0;i<Propagtors.Size();++i) Propagtors[i]._Init();
+        for(unsigned int i=0;i<Propagators.Size();++i) Propagators[i]._Init();
       }
       void _Clear() {
         assert(IsValid());
-        for(unsigned int i=0;i<Propagtors.Size();++i) Propagtors[i]._Clear();
+        for(unsigned int i=0;i<Propagators.Size();++i) Propagators[i]._Clear();
       }
       void StepEvolute() {
         assert(IsValid());
-        EvFunc(Content,Interactions,Propagtors,GrpMap);
+        EvFunc(Content,Interactions,Propagators,GrpMap);
       }
       template <DynamicsModeName DN,typename GRT>
       void Evolute(Dynamics<DN,T,GRT>& D) {
@@ -91,18 +91,18 @@ namespace mysimulator {
       }
 
       void _Build() {
-        assert(Propagtors.IsValid());
+        assert(Propagators.IsValid());
         GrpMap.Allocate(SystemPropagatorNumberMethods);
         Array1D<unsigned int> sz;
         sz.Allocate(SystemPropagatorNumberMethods);
         Fill(sz,0U,sz.Size());
-        for(unsigned int i=0;i<Propagtors.Size();++i)
-          ++sz[Propagtors[i].Method];
+        for(unsigned int i=0;i<Propagators.Size();++i)
+          ++sz[Propagators[i].Method];
         GrpMap.Allocate(SystemPropagatorNumberMethods);
         for(unsigned int i=0;i<SystemPropagatorNumberMethods;++i)
           if(sz[i]>0) { GrpMap[i].Allocate(sz[i]); sz[i]=0; }
-        for(unsigned int i=0,k;i<Propagtors.Size();++i) {
-          k=Propagtors[i].Method;
+        for(unsigned int i=0,k;i<Propagators.Size();++i) {
+          k=Propagators[i].Method;
           GrpMap[k][sz[k]]=i;
           ++sz[k];
         }
@@ -146,7 +146,7 @@ namespace mysimulator {
   void Clear(System<T,IDT,PT,GT,BT,CT>& S) {
     S.EvFunc=NULL;
     Clear(S.GrpMap);
-    Clear(S.Propagtors);
+    Clear(S.Propagators);
     Clear(S.Interactions);
     Clear(S.Content);
     S.EvoluteMode=0;
