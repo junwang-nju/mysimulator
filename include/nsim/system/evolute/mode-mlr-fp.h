@@ -19,6 +19,7 @@ namespace mysimulator {
         const_cast<Array1D<unsigned int>&>(GrpMap[SystemMinimizerLineRegular]));
     for(unsigned int i=0;i<V.Size();++i)
       SP[V[i]]._Propagate(MinimizerLineRegularShift);
+    for(unsigned int i=0;i<SI.Size();++i) ClearFlag(SI[i].Buffer);
     EvaluateBoth(C,SI);
   }
 

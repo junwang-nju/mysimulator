@@ -16,6 +16,7 @@ namespace mysimulator {
       const Array1D<Array1D<unsigned int> >&) {
     for(unsigned int i=0;i<SP.Size();++i)
       SP[i]._Propagate(MinimizerLineRegularShift);
+    for(unsigned int i=0;i<SI.Size();++i) ClearFlag(SI[i].Buffer);
     EvaluateBoth(C,SI);
   }
 

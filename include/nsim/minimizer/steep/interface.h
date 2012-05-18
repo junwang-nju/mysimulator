@@ -71,6 +71,13 @@ namespace mysimulator {
   template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
             typename GT,typename BT,template<typename> class CT,
             LineMinimizerConditionMethodName LMC>
+  const unsigned int
+  Minimizer<SteepestDescent,LMN,T,IDT,PT,GT,BT,CT,LMC>::DefaultMaxSteps=
+      10000;
+
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,typename BT,template<typename> class CT,
+            LineMinimizerConditionMethodName LMC>
   void Clear(Minimizer<SteepestDescent,LMN,T,IDT,PT,GT,BT,CT,LMC>& M) {
     typedef
     typename Minimizer<SteepestDescent,LMN,T,IDT,PT,GT,BT,CT,LMC>::ParentType

@@ -176,7 +176,7 @@ namespace mysimulator {
   template <typename T,typename IDT,typename PT,typename GT,typename BT> \
   void _Load2Mem(LineMinimizerCommon<T,IDT,PT,GT,BT,CType>& M) { \
     _LOAD4XE \
-    EvaluateGradient(M.MemSys->Content,M.MemSys.Interactions); \
+    EvaluateGradient(M.MemSys->Content,M.MemSys->Interactions); \
     M.GCalcCount++; \
   }
 #else
