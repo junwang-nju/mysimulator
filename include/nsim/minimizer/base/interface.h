@@ -3,6 +3,7 @@
 #define _Minimizer_Base_Interface_H_
 
 #include "system/interface.h"
+#include "system/DOF.h"
 
 namespace mysimulator {
 

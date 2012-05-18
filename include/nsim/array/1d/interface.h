@@ -74,17 +74,14 @@ namespace mysimulator {
   template <typename T>
   void Clear(Array1D<T>& V) {
     if(!V.IsValid())  return;
-    for(unsigned int i=0;i<V.Size();++i) Clear(V[i]);
     if(V._partFlag) { --(*V._refCount);  --(*V._partUsed); }
-    else {
-      if(*V._partUsed!=0) {
-        fprintf(stderr,"Need to Free Part Content First!\n");
-        exit(0);
-      }
-      if(*V._refCount==0) {
-        delete[] V._data; delete V._refCount; delete V._partUsed;
-      } else --(*V._refCount);
-    }
+    else if(*V._refCount==0) {
+      for(unsigned int i=0;i<V.Size();++i) Clear(V[i]);
+      delete[] V._data; delete V._refCount; delete V._partUsed;
+    } else if(*V._refCount==*V._partUsed) {
+      fprintf(stderr,"Need to Free Part Content First!\n");
+      exit(0);
+    } else --(*V._refCount);
     V._partFlag=false;
     V._partUsed=NULL;
     V._refCount=NULL;

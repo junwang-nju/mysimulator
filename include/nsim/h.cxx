@@ -16,8 +16,8 @@ void NWrite(System<double,Array2D<unsigned int>,Array2D<Unique64Bit>,FreeSpace,
   Write(Dyn.NowTime,"\t");
   EvaluateEnergy(S.Content,S.Interactions);
   Write(S.Content.EGData.Energy[0],"\t");
-  S.Propagtors[0]._Update(VelVerletConstECalcKE);
-  Write(S.Propagtors[0].Param[VelVerletConstEValKineticEnergy].d,"\n");
+  S.Propagators[0]._Update(VelVerletConstECalcKE);
+  Write(S.Propagators[0].Param[VelVerletConstEValKineticEnergy].d,"\n");
 }
 
 int main() {
@@ -73,15 +73,15 @@ int main() {
   for(unsigned int i=3;i<6;++i)
     S.Interactions[0].Buffer[i].Allocate(LJ612,2);
 
-  S.Propagtors.Allocate(1);
-  S.Propagtors[0].Allocate(SystemConstEVelVerlet,1);
-  S.Propagtors[0].IDRange[0].uv[0]=0;
-  S.Propagtors[0].IDRange[0].uv[1]=4;
-  S.Propagtors[0]._Build(S.Content);
+  S.Propagators.Allocate(1);
+  S.Propagators[0].Allocate(SystemConstEVelVerlet,1);
+  S.Propagators[0].IDRange[0].uv[0]=0;
+  S.Propagators[0].IDRange[0].uv[1]=4;
+  S.Propagators[0]._Build(S.Content);
 
   S._Build();
 
-  S.Propagtors[0].Param[VelVerletConstEModMass].u=ArrayMass;
+  S.Propagators[0].Param[VelVerletConstEModMass].u=ArrayMass;
 
   Dynamics<MicroCanonicalVelVerlet,double,
            BoxMuller<MersenneTwister<StandardMT> > > Dyn;
@@ -101,8 +101,8 @@ int main() {
   EvaluateGradient(S.Content,S.Interactions);
   Fill(S.Content.Velocity,0.);
   Fill(Dyn.AMass,1.);
-  S.Propagtors[0]._Update(VelVerletConstECalcHTIM);
-  S.Propagtors[0]._Update(VelVerletConstECalcKE);
+  S.Propagators[0]._Update(VelVerletConstECalcHTIM);
+  S.Propagators[0]._Update(VelVerletConstECalcKE);
 
   S.Evolute(Dyn);
 

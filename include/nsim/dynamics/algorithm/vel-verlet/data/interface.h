@@ -62,8 +62,8 @@ namespace mysimulator {
                 template<typename> class CT>
       void Link(System<T,IDT,PT,GT,BT,CT>& S) {
         assert(S.IsValid());
-        for(unsigned int i=0;i<S.Propagtors.Size();++i)
-          _Link(S.Propagtors[i],S.Content.X);
+        for(unsigned int i=0;i<S.Propagators.Size();++i)
+          _Link(S.Propagators[i],S.Content.X);
       }
 
     private:
