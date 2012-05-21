@@ -16,9 +16,9 @@ namespace mysimulator {
       bool& flag) {
     T tmda=1./pre[DihedralIvNormASQ];
     T tmdb=1./pre[DihedralIvNormBSQ];
-    T csDih=pre[DihedralDotNormAB]*sqroot(tmda*tmdb);
+    T csDih=pre[DihedralDotNormAB]*Sqroot(tmda*tmdb);
     post[DihedralValue]=arcCos(csDih)*(pre[DihedralCrossNormAB]>0?1:-1);
-    T tmd=sqroot(pre[DihedralAxisSQ]);
+    T tmd=Sqroot(pre[DihedralAxisSQ]);
     T tmd1=tmd/pre[DihedralAxisSQ];
     post[DihedralFactorI]=-tmd*tmda;
     post[DihedralFactorJ]=-pre[DihedralDotBondAB]*tmda*tmd1;

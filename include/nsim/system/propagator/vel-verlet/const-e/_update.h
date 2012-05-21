@@ -16,7 +16,7 @@
 #define _ARRAY(U) (*reinterpret_cast<Array1D<Array2D<T> >*>(U.ptr))
 #define _CARRAY(U)  (*reinterpret_cast<const Array1D<Array2D<T> >*>(U.ptr))
 #else
-#error "Duplicate Definition for Macro _VALUE,_ARRAY_CARRAY"
+#error "Duplicate Definition for Macro _VALUE,_ARRAY,_CARRAY"
 #endif
 
 namespace mysimulator {

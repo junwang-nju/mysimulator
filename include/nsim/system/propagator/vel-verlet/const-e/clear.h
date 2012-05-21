@@ -34,7 +34,7 @@
 namespace mysimulator {
 
   template <typename T,template<typename> class CT>
-  void ClearVelVerletCE(SystemPropagator<T,CT>& P) {
+  void ClearVelVerletConstE(SystemPropagator<T,CT>& P) {
     MassMethodName MMN=static_cast<MassMethodName>(P.Param[MOD(Mass)].u);
     switch(MMN) {
       case UniqueMass:

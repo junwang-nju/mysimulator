@@ -14,7 +14,7 @@ namespace mysimulator {
   void HarmonicPre2Post4Func(
       const Array1D<T>& pre,const Array1D<Unique64Bit>&,Array1D<T>& post,
       bool& flag) {
-    post[HarmonicLength]=sqroot(pre[PairwiseDistanceSQ]);
+    post[HarmonicLength]=Sqroot(pre[PairwiseDistanceSQ]);
     flag=true;
   }
 

@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#define _SQROOT(type,func) type sqroot(const type& d) { return func(d); }
+#define _SQROOT(type,func) type Sqroot(const type& d) { return func(d); }
 
 namespace mysimulator {
 

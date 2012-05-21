@@ -104,7 +104,7 @@ namespace mysimulator {
       case SystemConstEVelVerlet:
         Param.Allocate(VelVerletConstENumberParameters);
         InitFunc=InitVelVerletConstE<T,CT>;
-        ClrFunc=ClearVelVerletCE<T,CT>;
+        ClrFunc=ClearVelVerletConstE<T,CT>;
         EvFunc.Allocate(VelVerletConstENumberMoves);
         EvFunc[VelVerletConstEBeforeG]=MoveVelVerletConstEBeforeG<T,CT>;
         EvFunc[VelVerletConstEAfterG]=MoveVelVerletConstEAfterG<T,CT>;

@@ -17,7 +17,7 @@ namespace mysimulator {
     buffer[LJ1012CutDistanceSQ]=tmd;
     if(tmd<Value<T>(P[LJ1012CutCutRSQ])) {
       LJ1012Pre2Post4Func(pre,P,buffer,flag);
-      buffer[LJ1012CutDistance]=sqroot(tmd);
+      buffer[LJ1012CutDistance]=Sqroot(tmd);
       flag=true;
     } else flag=false;
   }
