@@ -4,6 +4,7 @@
 
 #include "array/base/interface.h"
 #include "intrinsic-types/abs-value.h"
+#include "type-check/is-numeric.h"
 
 namespace mysimulator {
 
@@ -14,6 +15,7 @@ namespace mysimulator {
 
       typedef ArrayNumeric<T>   Type;
       typedef ArrayBase<T>      ParentType;
+      typedef typename IsNumeric<T>::Type NumericCheck;
 
       ArrayNumeric() : ParentType() {}
       ~ArrayNumeric() { Clear(*this); }
