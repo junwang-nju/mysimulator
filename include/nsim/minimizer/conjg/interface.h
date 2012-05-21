@@ -121,6 +121,18 @@ namespace mysimulator {
   Minimizer<ConjugateGradient,LMN,T,IDT,PT,GT,BT,CT,LMC>::DefaultMaxSteps=
       1000;
 
+  template <LineMinimizerMethodName LMN,typename T,typename IDT,typename PT,
+            typename GT,typename BT,template<typename> class CT,
+            LineMinimizerConditionMethodName LMC>
+  void Clear(Minimizer<ConjugateGradient,LMN,T,IDT,PT,GT,BT,CT,LMC>& M) {
+    Clear(M.OldMinG);
+    M.MaxBeta=0;
+    typedef
+    typename Minimizer<ConjugateGradient,LMN,T,IDT,PT,GT,BT,CT,LMC>::ParentType
+    Type;
+    Clear(static_cast<Type&>(M));
+  }
+
 }
 
 #endif
