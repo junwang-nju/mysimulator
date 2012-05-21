@@ -4,8 +4,6 @@
 
 #include "minimizer/interface.h"
 #include "minimizer/line/interface.h"
-//#include "array/2d/norm.h"
-//#include "array/2d/scale.h"
 
 namespace mysimulator {
 
@@ -41,9 +39,9 @@ namespace mysimulator {
         int fg=0, lfg;
         for(unsigned int nr=0;nr<MaxSteps;++nr) {
           BlasCopy(this->LineDirc,this->MemSys->Content.EGData.Gradient);
-          tmd=Norm(this->LineDirc);
+          tmd=BlasNorm(this->LineDirc);
           if(tmd<this->GradThreshold) { fg=3; break; }
-          Scale(this->LineDirc,-1./tmd);
+          BlasScale(this->LineDirc,-1./tmd);
           this->Proj=-tmd;
           tmd=this->MemSys->Content.EGData.Energy[0];
           lfg=static_cast<ParentType*>(this)->Go();

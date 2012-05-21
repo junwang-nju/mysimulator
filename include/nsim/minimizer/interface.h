@@ -42,6 +42,7 @@ namespace mysimulator {
 }
 
 #include "minimizer/steep/interface.h"
+#include "minimizer/conjg/interface.h"
 
 #endif
 

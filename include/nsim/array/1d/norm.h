@@ -10,7 +10,7 @@ namespace mysimulator {
   T NormSQ(const Array1D<T>& V,unsigned int n) { return Dot(V,V,n); }
 
   template <typename T>
-  T BlasNormSQ(const Array1D<T>& V,unsigned int n) { return BlasDot(V,n); }
+  T BlasNormSQ(const Array1D<T>& V,unsigned int n) { return BlasDot(V,V,n); }
 
 }
 

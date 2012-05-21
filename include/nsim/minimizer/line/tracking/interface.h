@@ -49,7 +49,7 @@ namespace mysimulator {
           this->RunSys->StepEvolute();
           this->GCalcCount++;
           this->RunProj=
-            Dot(this->RunSys->Content.EGData.Gradient,this->LineDirc);
+            BlasDot(this->RunSys->Content.EGData.Gradient,this->LineDirc);
           if(Condition<T,LMC>::Check(this->RunSys->Content.EGData.Energy[0],
                                      this->RunProj,
                                      this->MemSys->Content.EGData.Energy[0],

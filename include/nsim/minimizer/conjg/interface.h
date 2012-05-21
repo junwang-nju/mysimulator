@@ -42,12 +42,62 @@ namespace mysimulator {
         int fg=0, lfg;
         bool isSteep=true, nextMode;;
         T beta=0;
-        T fnorm2,fnorm2;
-        fnorm=Norm(this->MemSys->Content.EGData.Gradient);
+        T fnorm,fnorm2;
+        fnorm=BlasNorm(this->MemSys->Content.EGData.Gradient);
         if(fnorm<this->GradThreshold)   fg=3;
         else {
           fnorm2=fnorm*fnorm;
+          T tmd,tmd2,oldfnorm2=1.,dnorm=0;
+          for(unsigned int nr=0;nr<MaxSteps;++nr) {
+            if(!isSteep) {
+              tmd=BlasDot(this->MemSys->Content.EGData.Gradient,OldMinG);
+              beta=(fnorm2-tmd)/oldfnorm2;
+              isSteep=(absval(beta)>MaxBeta);
+            }
+            if(!isSteep) {
+              tmd=beta*dnorm;
+              BlasScale(this->LineDirc,tmd);
+              BlasShift(this->LineDirc,
+                        -1.,this->MemSys->Content.EGData.Gradient);
+              this->Proj*=tmd;
+              dnorm=sqroot(tmd*tmd+fnorm2-2*this->Proj);
+              this->Proj-=fnorm2;
+              this->Proj/=dnorm;
+              isSteep=((this->Proj>0)||(dnorm<this->GradThreshold));
+            }
+            if(isSteep) {
+              if(fnorm<this->GradThreshold) { fg=4; break; }
+              beta=0.;
+              dnorm=fnorm;
+              BlasCopy(this->LineDirc,this->MemSys->Content.EGData.Gradient);
+              BlasScale(this->LineDirc,-1.);
+              this->Proj=-fnorm;
+            }
+            tmd=1./dnorm;
+            BlasScale(this->LineDirc,tmd);
+            BlasCopy(OldMinG,this->MemSys->Content.EGData.Gradient);
+            tmd=this->MemSys->Content.EGData.Energy[0];
+            lfg=static_cast<ParentType*>(this)->Go();
+            this->LineSearchCount++;
+            nextMode=false;
+            if(lfg==2) {
+              if(isSteep) { fg=1; break; }
+              else { --nr; nextMode=true; }
+            } else if(lfg==0) { fg=5; break; }
+            else {
+              tmd2=this->MemSys->Content.EGData.Energy[0];
+              if(2*absval(tmd-tmd2)<absval(tmd+tmd2)*RelDelta<T>()) {
+                if(isSteep) { fg=2; break; }
+                else { --nr; nextMode=true; }
+              }
+            }
+            isSteep=nextMode;
+            oldfnorm2=fnorm2;
+            fnorm=BlasNorm(this->MemSys->Content.EGData.Gradient);
+            fnorm2=fnorm*fnorm;
+          }
         }
+        _Write2Sys(*this);
         return fg;
       }
 

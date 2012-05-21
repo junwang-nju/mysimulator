@@ -68,7 +68,7 @@ namespace mysimulator {
   void __MoveVelVerletConstEAfterG_UMass(
       Array1D<SystemContentWithEGV<T> >& GC,const Unique64Bit& nHTIM) {
     for(unsigned int i=0;i<GC.Size();++i)
-      Shift(GC[i].Velocity,_VALUE(nHTIM),GC[i].EGData.Gradient);
+      BlasShift(GC[i].Velocity,_VALUE(nHTIM),GC[i].EGData.Gradient);
   }
 
   template <typename T,template<typename> class CT>
@@ -86,7 +86,7 @@ namespace mysimulator {
   void __MoveVelVerletConstEAfterG_AMass(
       Array1D<SystemContentWithEGV<T> >& GC,const Unique64Bit& nHTIM) {
     for(unsigned int i=0;i<GC.Size();++i)
-      Shift(GC[i].Velocity,_CARRAY(nHTIM)[i],GC[i].EGData.Gradient);
+      BlasShift(GC[i].Velocity,_CARRAY(nHTIM)[i],GC[i].EGData.Gradient);
   }
 
   template <typename T,template<typename> class CT>

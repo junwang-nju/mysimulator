@@ -35,7 +35,7 @@ namespace mysimulator {
     for(unsigned int i=0;i<n;++i) {
       Copy(_ARRAY(NegHTIM)[i],_CARRAY(Mass)[i]);
       Inverse(_ARRAY(NegHTIM)[i]);
-      Scale(_ARRAY(NegHTIM)[i],hdt);
+      BlasScale(_ARRAY(NegHTIM)[i],hdt);
     }
   }
 
@@ -48,7 +48,8 @@ namespace mysimulator {
   void __UpdateVelVerletConstEVSQ_UMass(
       Unique64Bit& VSQ,const Array1D<SystemContentWithEGV<T> >& GC) {
     _VALUE(VSQ)=0;
-    for(unsigned int i=0;i<GC.Size();++i) _VALUE(VSQ)+=NormSQ(GC[i].Velocity);
+    for(unsigned int i=0;i<GC.Size();++i)
+      _VALUE(VSQ)+=BlasNormSQ(GC[i].Velocity);
   }
 
   template <typename T,template<typename> class CT>
@@ -86,7 +87,8 @@ namespace mysimulator {
       T& KE,const Unique64Bit& Mass,const Unique64Bit& VelSQ) {
     KE=0;
     unsigned int n=_ARRAY(VelSQ).Size();
-    for(unsigned int i=0;i<n;++i) KE+=Dot(_CARRAY(Mass)[i],_CARRAY(VelSQ)[i]);
+    for(unsigned int i=0;i<n;++i)
+      KE+=BlasDot(_CARRAY(Mass)[i],_CARRAY(VelSQ)[i]);
     KE*=0.5;
   }
 

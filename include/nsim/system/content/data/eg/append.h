@@ -16,7 +16,7 @@ namespace mysimulator {
   template <typename T>
   void AppendGradient(SystemContentDataEG<T>&D,const SystemContentDataEG<T>&E) {
     assert(D.IsValid()&&E.IsValid());
-    Shift(D.Gradient,E.Gradient);
+    BlasShift(D.Gradient,E.Gradient);
   }
 
   template <typename T>
