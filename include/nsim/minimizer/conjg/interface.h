@@ -31,6 +31,12 @@ namespace mysimulator {
                OldMinG.IsValid();
       }
 
+      void Load(System<T,IDT,PT,GT,BT,CT>& S) {
+        static_cast<ParentType*>(this)->Load(S);
+        Imprint(OldMinG,S.Content.X);
+        if(MaxBeta<RelDelta<T>()) SetMaxBeta();
+      }
+
       void SetMaxBeta() { MaxBeta=5.; }
       template <typename T1> void SetMaxBeta(const T1& B) { MaxBeta=B; }
 
