@@ -8,9 +8,17 @@
 namespace mysimulator {
 
   template <typename T>
+  class IsSumableFlag {
+    public: static const bool Flag;
+  };
+
+  template <typename T>
+  const bool IsSumableFlag<T>::Flag=IsNumeric<T>::Flag;
+
+  template <typename T>
   class IsSumable {
     public:
-      typedef typename Check<IsNumeric<T>::Flag>::Type  Type;
+      typedef typename Check<IsSumableFlag<T>::Flag>::Type  Type;
   };
 
 }
