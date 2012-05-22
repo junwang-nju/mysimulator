@@ -10,7 +10,8 @@ namespace mysimulator {
   template <typename T1, typename T2>
   class IsCopyableFlag {  public: static const bool Flag; };
   template <typename T1, typename T2> const bool IsCopyableFlag<T1,T2>::Flag=
-    IsIncluded<T1,T2>::Flag&&IsNumeric<T1>::Flag&&IsNumeric<T2>::Flag;
+    IsIncludedFlag<T1,T2>::Flag&&IsNumericFlag<T1>::Flag&&
+    IsNumericFlag<T2>::Flag;
 
   template <typename T>
   class IsCopyableFlag<T*,T*> { public: static const bool Flag; };
@@ -33,7 +34,16 @@ namespace mysimulator {
   template <typename T>
   class IsCopyableFlag<bool,T> {  public: static const bool Flag; };
   template <typename T> const bool IsCopyableFlag<bool,T>::Flag=
-    IsInteger<T>::Flag;
+    IsIntegerFlag<T>::Flag;
+
+
+  template <typename T> class ArrayData;
+  template <typename T1, typename T2>
+  class IsCopyableFlag<ArrayData<T1>,ArrayData<T2> > {
+    public: static const bool Flag;
+  };
+  template <typename T1, typename T2>
+  const bool IsCopyableFlag<ArrayData<T1>,ArrayData<T2> >::Flag=true;
 
 }
 

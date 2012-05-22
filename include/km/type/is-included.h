@@ -5,16 +5,16 @@
 namespace mysimulator {
 
   template <typename T1, typename T2>
-  class IsIncluded { public: static const bool Flag; };
+  class IsIncludedFlag { public: static const bool Flag; };
 
   template <typename T1, typename T2>
-  const bool IsIncluded<T1,T2>::Flag=false;
+  const bool IsIncludedFlag<T1,T2>::Flag=false;
 
 }
 
 #ifndef _IncDEF_
 #define _IncDEF_(T1,T2) \
-  template <> const bool IsIncluded<T1,T2>::Flag=true;
+  template <> const bool IsIncludedFlag<T1,T2>::Flag=true;
 #else
 #error "Duplicate _IncDEF_"
 #endif
@@ -105,10 +105,22 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  class IsIncluded<T,T> { public: static const bool Flag; };
+  class IsIncludedFlag<T,T> { public: static const bool Flag; };
 
   template <typename T>
-  const bool IsIncluded<T,T>::Flag=true;
+  const bool IsIncludedFlag<T,T>::Flag=true;
+
+}
+
+#include "type/check-object.h"
+
+namespace mysimulator {
+
+  template <typename T1,typename T2>
+  class IsIncluded {
+    public:
+      typedef typename Check<IsIncludedFlag<T1,T2>::Flag>::Type   Type;
+  };
 
 }
 

@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <typename T>
-  const typename DataType<T>::Type& _Sum(const T& v) {
+  typename DataType<T>::Type _Sum(const T& v) {
     typedef typename IsSumable<T>::Type   SumCheck;
     return v;
   }

@@ -5,14 +5,14 @@
 namespace mysimulator {
 
   template <typename T>
-  class IsUnsigned {  public: static const bool Flag; };
+  class IsUnsignedFlag {  public: static const bool Flag; };
 
-  template <typename T> const bool IsUnsigned<T>::Flag=false;
+  template <typename T> const bool IsUnsignedFlag<T>::Flag=false;
 
 }
 
 #ifndef _UnsignDEF_
-#define _UnsignDEF_(T)  template <> const bool IsUnsigned<T>::Flag=true;
+#define _UnsignDEF_(T)  template <> const bool IsUnsignedFlag<T>::Flag=true;
 #else
 #error "Duplicate _UnsignDEF_"
 #endif
@@ -30,6 +30,18 @@ namespace mysimulator {
 #ifdef _UnsignDEF_
 #undef _UnsignDEF_
 #endif
+
+#include "type/check-object.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  class IsUnsigned {
+    public:
+      typedef typename Check<IsUnsignedFlag<T>::Flag>::Type   Type;
+  };
+
+}
 
 #endif
 

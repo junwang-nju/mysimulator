@@ -10,9 +10,16 @@ namespace mysimulator {
   template <typename T1, typename T2>
   class IsFillableFlag {  public: static const bool Flag; };
   template <typename T1, typename T2> const bool IsFillableFlag<T1,T2>::Flag=
-    IsIncluded<T1,T2>::Flag&&IsNumeric<T1>::Flag&&IsNumeric<T2>::Flag;
+    IsIncludedFlag<T1,T2>::Flag&&IsNumericFlag<T1>::Flag&&
+    IsNumericFlag<T2>::Flag;
 
   template <> const bool IsFillableFlag<bool,bool>::Flag=true;
+
+  template <typename T> class ArrayData;
+  template <typename T1, typename T2>
+  class IsFillableFlag<ArrayData<T1>,T2> {  public: static const bool Flag; };
+  template <typename T1, typename T2>
+  const bool IsFillableFlag<ArrayData<T1>,T2>::Flag=true;
 
 }
 

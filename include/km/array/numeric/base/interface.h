@@ -3,9 +3,9 @@
 #define _Array_Numeric_Base_Interface_H_
 
 #include "array/base/interface.h"
-#include "intrinsic-types/abs-value.h"
-#include "type-check/is-numeric.h"
+#include "type/is-numeric.h"
 #include "basic/sum.h"
+#include "basic/abs-sum.h"
 
 namespace mysimulator {
 
@@ -21,19 +21,20 @@ namespace mysimulator {
       ArrayNumeric() : ParentType() {}
       ~ArrayNumeric() { Clear(*this); }
 
-      T Summation() const {
+      typename DataType<ArrayNumeric<T> >::Type Summation() const {
         typedef typename IsSumable<T>::Type   SumCheck;
-        T sum=0;
+        typename DataType<ArrayNumeric<T> >::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;) sum+=_Sum(*(p++));
         return sum;
       }
-      T AbsSummation() const {
-        T sum=0;
+      typename DataType<ArrayNumeric<T> >::Type AbsSummation() const {
+        typename DataType<ArrayNumeric<T> >::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
-        for(;p!=pEnd;) sum+=absval(*(p++));
+        for(;p!=pEnd;) sum+=_AbsSum(*(p++));
         return sum;
       }
+      // not checked
       template <typename T1>
       void Scale(const T1& fac) {
         typedef typename IsNumeric<T1>::Type T1NumericCheck;
@@ -52,7 +53,14 @@ namespace mysimulator {
   void Clear(ArrayNumeric<T>& A) { Clear(static_cast<ArrayBase<T>&>(A)); }
 
   template <typename T>
-  T _Sum(const ArrayNumeric<T>& A) { return A.Summation(); }
+  typename DataType<ArrayNumeric<T> >::Type _Sum(const ArrayNumeric<T>& A) {
+    return A.Summation();
+  }
+
+  template <typename T>
+  typename DataType<ArrayNumeric<T> >::Type _AbsSum(const ArrayNumeric<T>& A) {
+    return A.AbsSummation();
+  }
 
 }
 

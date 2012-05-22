@@ -5,14 +5,14 @@
 namespace mysimulator {
 
   template <typename T>
-  class IsInteger { public: static const bool Flag; };
+  class IsIntegerFlag { public: static const bool Flag; };
 
-  template <typename T> const bool IsInteger<T>::Flag=false;
+  template <typename T> const bool IsIntegerFlag<T>::Flag=false;
 
 }
 
 #ifndef _IntDEF_
-#define _IntDEF_(T) template <> const bool IsInteger<T>::Flag=true;
+#define _IntDEF_(T) template <> const bool IsIntegerFlag<T>::Flag=true;
 #else
 #error "Duplicate _IntDEF_"
 #endif
@@ -35,6 +35,18 @@ namespace mysimulator {
 #ifdef _IntDEF_
 #undef _IntDEF_
 #endif
+
+#include "type/check-object.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  class IsInteger {
+    public:
+      typedef typename Check<IsIntegerFlag<T>::Flag>::Type  Type;
+  };
+
+}
 
 #endif
 

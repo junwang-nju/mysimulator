@@ -24,6 +24,7 @@ namespace mysimulator {
 
       bool IsValid() const { return _data!=NULL; }
       void Allocate(unsigned int n) {
+        if(IsValid()&&(Size()==n))  return;
         Clear(*this);
         if(n==0)  return;
         _data=new T[n];
