@@ -2,8 +2,7 @@
 #ifndef _Basic_Copy_H_
 #define _Basic_Copy_H_
 
-#include "type-check/is-copyable.h"
-#include "type-check/is-intrinsic.h"
+#include "type/is-copyable.h"
 
 namespace mysimulator {
 

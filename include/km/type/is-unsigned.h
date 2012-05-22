@@ -5,9 +5,7 @@
 namespace mysimulator {
 
   template <typename T>
-  class IsUnsigned {
-    public: static const bool Flag;
-  };
+  class IsUnsigned {  public: static const bool Flag; };
 
   template <typename T> const bool IsUnsigned<T>::Flag=false;
 

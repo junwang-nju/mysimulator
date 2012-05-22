@@ -5,15 +5,17 @@
 namespace mysimulator {
 
   template <typename T>
-  class IsInteger {
-    public: static const bool Flag;
-  };
+  class IsInteger { public: static const bool Flag; };
 
   template <typename T> const bool IsInteger<T>::Flag=false;
 
 }
 
+#ifndef _IntDEF_
 #define _IntDEF_(T) template <> const bool IsInteger<T>::Flag=true;
+#else
+#error "Duplicate _IntDEF_"
+#endif
 
 namespace mysimulator {
 

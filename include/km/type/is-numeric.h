@@ -5,12 +5,9 @@
 namespace mysimulator {
 
   template <typename T>
-  class IsNumeric {
-    public: static const bool Flag;
-  };
+  class IsNumeric { public: static const bool Flag; };
 
-  template <typename T>
-  const bool IsNumeric<T>::Flag=false;
+  template <typename T> const bool IsNumeric<T>::Flag=false;
 
 }
 

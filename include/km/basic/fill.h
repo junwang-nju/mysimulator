@@ -2,7 +2,7 @@
 #ifndef _Basic_Fill_H_
 #define _Basic_Fill_H_
 
-#include "type-check/is-fillable.h"
+#include "type/is-fillable.h"
 #include "basic/copy.h"
 
 namespace mysimulator {
