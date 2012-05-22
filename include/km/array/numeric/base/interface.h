@@ -7,12 +7,9 @@
 #include "basic/abs-sum.h"
 #include "basic/scale.h"
 #include "basic/shift.h"
+#include "type/combine.h"
 
 namespace mysimulator {
-
-  template <typename T> class ArrayNumeric;
-  template <typename T>
-  typename DataType<ArrayNumeric<T> >::Type _Dot(const ArrayNumeric<T>&);
 
   template <typename T>
   class ArrayNumeric : public ArrayBase<T> {
@@ -23,7 +20,9 @@ namespace mysimulator {
       typedef ArrayBase<T>      ParentType;
       typedef typename IsNumeric<Type>::Type NumericCheck;
       template <typename T1,typename T2>
-      friend typename DataType<Type>::Type _Dot<T>(const Type&);
+      friend typename CombineType<typename DataType<T1>::Type,
+                                  typename DataType<T2>::Type>::Type
+      _Dot(const ArrayNumeric<T1>&,const ArrayNumeric<T2>&);
 
       ArrayNumeric() : ParentType() {}
       ~ArrayNumeric() { Clear(*this); }

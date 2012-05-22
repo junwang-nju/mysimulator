@@ -5,12 +5,12 @@
 namespace mysimulator {
 
   template <typename T>
-  class _LargerType {};
+  class _LargeType {};
 
 }
 
 #ifndef _LargeDEF_
-#define _LargeDEF_(T,TL) template <> _LargerType<T> { typedef TL Type; };
+#define _LargeDEF_(T,TL) template <> class _LargeType<T> { typedef TL Type; };
 #else
 #error "Duplicate _LargeDEF_"
 #endif
@@ -36,6 +36,41 @@ namespace mysimulator {
 #ifdef _LargeDEF_
 #undef _LargeDEF_
 #endif
+
+#include "type/is-included.h"
+
+namespace mysimulator {
+
+  template <typename T1, typename T2>
+  class _CombineState { public: static const int State; };
+
+  template <typename T1, typename T2>
+  const int _CombineState<T1,T2>::State=
+    (IsIncludedFlag<T1,T2>::Flag?1:
+    (IsIncludedFlag<T2,T1>::Flag?-1:0));
+
+  template <typename T1, typename T2, int State>
+  class _CombineProduce {};
+
+  template <typename T1, typename T2>
+  class _CombineProduce<T1,T2,1> {  public: typedef T1  Type; };
+
+  template <typename T1, typename T2>
+  class _CombineProduce<T1,T2,-1> { public: typedef T2  Type; };
+
+  template <typename T1, typename T2>
+  class _CombineProduce<T1,T2,0> {
+    public: typedef typename _LargeType<T1>::Type Type;
+  };
+
+  template <typename T1, typename T2>
+  class CombineType {
+    public:
+      typedef typename _CombineProduce<T1,T2,_CombineState<T1,T2>::State>::Type
+              Type;
+  };
+
+}
 
 #endif
 
