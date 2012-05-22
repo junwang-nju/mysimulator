@@ -66,7 +66,7 @@ namespace mysimulator {
               BlasShift(this->LineDirc,
                         -1.,this->MemSys->Content.EGData.Gradient);
               this->Proj*=tmd;
-              dnorm=sqroot(tmd*tmd+fnorm2-2*this->Proj);
+              dnorm=Sqroot(tmd*tmd+fnorm2-2*this->Proj);
               this->Proj-=fnorm2;
               this->Proj/=dnorm;
               isSteep=((this->Proj>0)||(dnorm<this->GradThreshold));

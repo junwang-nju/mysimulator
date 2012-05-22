@@ -14,7 +14,7 @@ namespace mysimulator {
   void CoulombPre2Post4Func(
       const Array1D<T>& pre,const Array1D<Unique64Bit>&,Array1D<T>& post,
       bool& flag) {
-    post[CoulombIvDistance]=1./sqroot(pre[PairwiseDistanceSQ]);
+    post[CoulombIvDistance]=1./Sqroot(pre[PairwiseDistanceSQ]);
     flag=true;
   }
 

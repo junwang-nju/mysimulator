@@ -16,10 +16,10 @@ namespace mysimulator {
       bool& flag) {
     T tmda=1./pre[AngleEdgeASQ];
     T tmdb=1./pre[AngleEdgeBSQ];
-    T tmd=sqroot(tmda*tmdb);
+    T tmd=Sqroot(tmda*tmdb);
     T tmd1=tmd*pre[AngleDotAB];
     post[AngleCosine]=tmd1;
-    T tmd2=1./sqroot(1-tmd1*tmd1);
+    T tmd2=1./Sqroot(1-tmd1*tmd1);
     T tmd3=tmd1*tmd2;
     post[AngleIvRabSin]=tmd*tmd2;
     post[AngleIvRaSQCtg]=tmd3*tmda;

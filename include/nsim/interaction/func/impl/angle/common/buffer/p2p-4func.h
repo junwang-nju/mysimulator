@@ -15,7 +15,7 @@ namespace mysimulator {
       const Array1D<T>& pre,const Array1D<Unique64Bit>&,Array1D<T>& post,
       bool& flag) {
     post[AngleCosine]=pre[AngleDotAB]
-                     /sqroot(pre[AngleEdgeASQ]*pre[AngleEdgeBSQ]);
+                     /Sqroot(pre[AngleEdgeASQ]*pre[AngleEdgeBSQ]);
     flag=true;
   }
 

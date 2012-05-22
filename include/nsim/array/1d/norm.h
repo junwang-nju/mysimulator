@@ -19,7 +19,7 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  T Norm(const Array1D<T>& V,unsigned int n) { return sqroot(NormSQ(V,n)); }
+  T Norm(const Array1D<T>& V,unsigned int n) { return Sqroot(NormSQ(V,n)); }
 
   double BlasNorm(const Array1D<double>& V,unsigned int n) {
     long m=n, one=1;

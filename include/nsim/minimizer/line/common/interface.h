@@ -127,7 +127,7 @@ namespace mysimulator {
           tmd=(tmd<1?tmd1:tmd1/tmd);
           mstep+=Square(tmd);
         }
-        return RelDelta<T>()*sqroot(this->DOF/mstep);
+        return RelDelta<T>()*Sqroot(this->DOF/mstep);
       }
 
     private:

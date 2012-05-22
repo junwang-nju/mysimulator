@@ -16,7 +16,7 @@ namespace mysimulator {
       bool& flag) {
     T tmd=1./pre[PairwiseDistanceSQ];
     post[CoulombIvDistanceSQ]=tmd;
-    post[CoulombIvDistance]=sqroot(tmd);
+    post[CoulombIvDistance]=Sqroot(tmd);
     flag=false;
   }
 

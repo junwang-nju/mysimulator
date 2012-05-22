@@ -15,7 +15,7 @@ namespace mysimulator {
       const Array1D<T>& pre,const Array1D<Unique64Bit>&,Array1D<T>& post,
       bool& flag) {
     T csDih=pre[DihedralDotNormAB]/
-            sqroot(pre[DihedralIvNormASQ]*pre[DihedralIvNormBSQ]);
+            Sqroot(pre[DihedralIvNormASQ]*pre[DihedralIvNormBSQ]);
     post[DihedralValue]=arcCos(csDih)*(pre[DihedralCrossNormAB]>0?1:-1);
     flag=true;
   }
