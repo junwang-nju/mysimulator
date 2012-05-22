@@ -8,6 +8,7 @@
 #include "basic/scale.h"
 #include "basic/shift.h"
 #include "type/combine.h"
+#include "type/is-intrinsic.h"
 
 namespace mysimulator {
 

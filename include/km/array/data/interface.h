@@ -4,7 +4,10 @@
 
 #include "basic/fill.h"
 #include "basic/imprint.h"
+#include "type/is-memcopyable.h"
 #include <cstdlib>
+#include <cstring>
+#include <cstring>
 #include <cassert>
 
 namespace mysimulator {
@@ -72,6 +75,14 @@ namespace mysimulator {
         T   *p=_data, *pEnd=p+this->Size();
         for(;p!=pEnd;)  _Fill(*(p++),D);
       }
+
+     void MemCopy(const ArrayData<T>& A) {
+       typedef typename IsMemCopyable<T>::Type  MemCopyCheck;
+       assert(IsValid());
+       assert(A.IsValid());
+       assert(Size()==A.Size());
+       memcpy(Head(),A.Head(),Size()*sizeof(T));
+     }
 
     protected:
 
