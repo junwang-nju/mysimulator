@@ -36,6 +36,80 @@ namespace mysimulator {
   _IncDEF_(long double, unsigned char)
 
   _IncDEF_(double, double)
+  _IncDEF_(double, float)
+  _IncDEF_(double, long long)
+  _IncDEF_(double, unsigned long long)
+  _IncDEF_(double, int)
+  _IncDEF_(double, unsigned int)
+  _IncDEF_(double, long)
+  _IncDEF_(double, unsigned long)
+  _IncDEF_(double, short)
+  _IncDEF_(double, unsigned short)
+  _IncDEF_(double, char)
+  _IncDEF_(double, unsigned char)
+
+  _IncDEF_(float, float)
+  _IncDEF_(float, long long)
+  _IncDEF_(float, unsigned long long)
+  _IncDEF_(float, int)
+  _IncDEF_(float, unsigned int)
+  _IncDEF_(float, long)
+  _IncDEF_(float, unsigned long)
+  _IncDEF_(float, short)
+  _IncDEF_(float, unsigned short)
+  _IncDEF_(float, char)
+  _IncDEF_(float, unsigned char)
+
+  _IncDEF_(long long, long long)
+  _IncDEF_(long long, int)
+  _IncDEF_(long long, unsigned int)
+  _IncDEF_(long long, long)
+  _IncDEF_(long long, unsigned long)
+  _IncDEF_(long long, short)
+  _IncDEF_(long long, unsigned short)
+  _IncDEF_(long long, char)
+  _IncDEF_(long long, unsigned char)
+
+  _IncDEF_(unsigned long long, unsigned long long)
+  _IncDEF_(unsigned long long, unsigned int)
+  _IncDEF_(unsigned long long, unsigned long)
+  _IncDEF_(unsigned long long, unsigned short)
+  _IncDEF_(unsigned long long, unsigned char)
+
+  _IncDEF_(int, int)
+  _IncDEF_(int, long)
+  _IncDEF_(int, short)
+  _IncDEF_(int, unsigned short)
+  _IncDEF_(int, char)
+  _IncDEF_(int, unsigned char)
+
+  _IncDEF_(unsigned int, unsigned int)
+  _IncDEF_(unsigned int, unsigned long)
+  _IncDEF_(unsigned int, unsigned short)
+  _IncDEF_(unsigned int, unsigned char)
+
+  _IncDEF_(long, long)
+  _IncDEF_(long, int)
+  _IncDEF_(long, short)
+  _IncDEF_(long, unsigned short)
+  _IncDEF_(long, char)
+  _IncDEF_(long, unsigned char)
+
+  _IncDEF_(unsigned long, unsigned long)
+  _IncDEF_(unsigned long, unsigned int)
+  _IncDEF_(unsigned long, unsigned short)
+  _IncDEF_(unsigned long, unsigned char)
+
+  _IncDEF_(short, short)
+  _IncDEF_(short, char)
+  _IncDEF_(short, unsigned char)
+
+  _IncDEF_(unsigned short, unsigned short)
+  _IncDEF_(unsigned short, unsigned char)
+
+  _IncDEF_(char, char)
+
+  _IncDEF_(unsigned char, unsigned char)
 
 }
 
