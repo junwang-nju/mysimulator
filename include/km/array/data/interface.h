@@ -2,7 +2,7 @@
 #ifndef _Array_Data_Interface_H_
 #define _Array_Data_Interface_H_
 
-#include "basic/copy.h"
+#include "basic/fill.h"
 #include <cstdlib>
 #include <cassert>
 
@@ -48,7 +48,8 @@ namespace mysimulator {
 
       template <typename T1>
       void Copy(const ArrayData<T1>& D, unsigned int n) {
-        typedef typename IsCopyable<T,T1>::Type CopyCheck;
+        typedef typename IsCopyable<ArrayData<T>,ArrayData<T1> >::Type
+                CopyCheck;
         assert(IsValid());
         assert(D.IsValid());
         assert(n<=Size());
@@ -64,6 +65,7 @@ namespace mysimulator {
       }
       template <typename T1>
       void Fill(const T1& D, unsigned int n) {
+        typedef typename IsFillable<ArrayData<T>,T1>::Type  FillCheck;
         assert(IsValid());
         assert(D.IsValid());
         assert(n<=Size());
@@ -90,7 +92,7 @@ namespace mysimulator {
   };
 
   template <typename T>
-  void Clear(ArrayData<T>& D) {   // Cannot work after Allocate
+  void Clear(ArrayData<T>& D) {
     if(D.IsValid()) {
       if(D._alloc)  delete[] D._data;
       D._data=NULL;

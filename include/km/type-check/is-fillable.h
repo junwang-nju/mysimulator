@@ -116,5 +116,15 @@ namespace mysimulator {
 #undef _FillDEF_
 #endif
 
+namespace mysimulator {
+
+  template <typename T> class ArrayData;
+  template <typename T1,typename T2>
+  class IsFillable<ArrayData<T1>,T2> {
+    public: typedef IsFillable<ArrayData<T1>,T2>  Type;
+  };
+
+}
+
 #endif
 

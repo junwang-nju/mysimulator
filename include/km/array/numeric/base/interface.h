@@ -5,6 +5,7 @@
 #include "array/base/interface.h"
 #include "intrinsic-types/abs-value.h"
 #include "type-check/is-numeric.h"
+#include "basic/sum.h"
 
 namespace mysimulator {
 
@@ -21,9 +22,10 @@ namespace mysimulator {
       ~ArrayNumeric() { Clear(*this); }
 
       T Summation() const {
+        typedef typename IsSumable<T>::Type   SumCheck;
         T sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
-        for(;p!=pEnd;) sum+=*(p++);
+        for(;p!=pEnd;) sum+=_Sum(*(p++));
         return sum;
       }
       T AbsSummation() const {
@@ -48,6 +50,9 @@ namespace mysimulator {
 
   template <typename T>
   void Clear(ArrayNumeric<T>& A) { Clear(static_cast<ArrayBase<T>&>(A)); }
+
+  template <typename T>
+  T _Sum(const ArrayNumeric<T>& A) { return A.Summation(); }
 
 }
 
