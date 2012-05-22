@@ -69,6 +69,9 @@ namespace mysimulator {
     }
   }
 
+  template <typename T1, typename T2>
+  void _Copy(
+
 }
 
 #endif
