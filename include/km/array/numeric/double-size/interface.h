@@ -72,6 +72,32 @@ namespace mysimulator {
   typename DataType<ArrayNumericDoubleSize<T> >::Type
   _AbsSum(const ArrayNumericDoubleSize<T>& A) { return A.AbsSummation(); }
 
+  template <typename T>
+  typename DataType<ArrayNumericDoubleSize<T> >::Type
+  _NormSQ(const ArrayNumericDoubleSize<T>& A) { return A.NormSQ(); }
+
+  template <typename T, typename T1>
+  void _Scale(ArrayNumericDoubleSize<T>& A,const T1& fac) { A.Scale(fac); }
+
+  template <typename T, typename T1>
+  void _Shift(ArrayNumericDoubleSize<T>& A,const T1& fac) { A.Shift(fac); }
+
+  template <typename T, typename T1>
+  void _NegShift(ArrayNumericDoubleSize<T>& A,const T1& d) { A.NegShift(d); }
+
+  template <typename T, typename T1, typename T2>
+  void _Shift(ArrayNumericDoubleSize<T>& A,const ArrayNumericDoubleSize<T1>& B,
+              const T2& d) {  A.Shift(B,d); }
+
+  template <typename T, typename T1, typename T2>
+  void _Shift(ArrayNumericDoubleSize<T>& A,const T1& d,
+              const ArrayNumericDoubleSize<T>& B) { A.Shift(d,B); }
+
+  template <typename T, typename T1, typename T2, typename T3>
+  void _Shift(ArrayNumericDoubleSize<T>& A,const T1& d,
+              const ArrayNumericDoubleSize<T2>& B,
+              const ArrayNumericDoubleSize<T3>& C) { A.Shift(d,B,C); }
+
 }
 
 #endif
