@@ -9,18 +9,25 @@ namespace mysimulator {
 
 }
 
+#ifndef _SumDEF_
 #define _SumDEF_(T) \
   template <> class IsSumable<T> { \
     public: typedef IsSumable<T>  Type; \
   };
+#else
+#error "Duplicate _SumDEF_"
+#endif
 
 namespace mysimulator {
 
+  _SumDEF_(long double)
   _SumDEF_(double)
 
 }
 
+#ifdef _SumDEF_
 #undef _SumDEF_
+#endif
 
 namespace mysimulator {
 
