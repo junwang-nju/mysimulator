@@ -73,6 +73,9 @@ namespace mysimulator {
   template <typename T1, typename T2>
   void _Fill(ArrayBase<T1>& A, const T2& fac) { A.Fill(fac); }
 
+  template <typename T1, typename T2>
+  void _Imprint(ArrayBase<T1>& A, const ArrayBase<T2>& B) { A.Imprint(B); }
+
 }
 
 #endif

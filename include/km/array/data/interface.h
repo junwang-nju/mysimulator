@@ -3,6 +3,7 @@
 #define _Array_Data_Interface_H_
 
 #include "basic/fill.h"
+#include "basic/imprint.h"
 #include <cstdlib>
 #include <cassert>
 
@@ -30,6 +31,12 @@ namespace mysimulator {
         _data=new T[n];
         _size=n;
         SetAllocFlag(true);
+      }
+      void Imprint(const ArrayData<T>& A) {
+        Allocate(A.Size());
+        T *p=Head(), *pEnd=p+Size();
+        T *q=A.Head();
+        for(;p!=pEnd;)  _Imprint(*(p++),*(q++));
       }
       void Refer(Type& A,unsigned int b,unsigned int n) {
         assert(b+n<=A.Size());
@@ -90,6 +97,9 @@ namespace mysimulator {
       D._size=0;
     }
   }
+
+  template <typename T>
+  void _Imprint(ArrayData<T>& A, const ArrayData<T>& B) { A.Imprint(B); }
 
   template <typename T, typename T1>
   void _Copy(ArrayData<T>& A, const ArrayData<T1>& cA) { A.Copy(cA); }

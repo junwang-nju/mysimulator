@@ -173,6 +173,9 @@ namespace mysimulator {
   void _Fill(ArrayNumeric<T1>& A, const T2& fac) { A.Fill(fac); }
 
   template <typename T>
+  void _Imprint(ArrayNumeric<T>& A, const ArrayNumeric<T>& B) { A.Imprint(B); }
+
+  template <typename T>
   typename DataType<ArrayNumeric<T> >::Type _Sum(const ArrayNumeric<T>& A) {
     return A.Summation();
   }
