@@ -276,6 +276,11 @@ namespace mysimulator {
   void _Imprint(ArrayNumeric<T>& A, const ArrayNumeric<T>& B) { A.Imprint(B); }
 
   template <typename T>
+  void _SwapContent(ArrayNumeric<T>& A, ArrayNumeric<T>& B) {
+    _SwapContent(static_cast<Array<T>&>(A),static_cast<Array<T>&>(B));
+  }
+
+  template <typename T>
   typename DataType<ArrayNumeric<T> >::Type _Sum(const ArrayNumeric<T>& A) {
     return A.Summation();
   }

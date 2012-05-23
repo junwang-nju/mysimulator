@@ -7,6 +7,8 @@
 
 namespace mysimulator {
 
+  template <typename,template<typename> class> class Array2DBase;
+
   template <typename T>
   class Array: public ArrayData<T> {
 
@@ -16,6 +18,8 @@ namespace mysimulator {
       typedef ArrayData<T>  ParentType;
       template <typename T1> friend void Clear(Array<T1>&);
       template <typename T1> friend void _Swap(Array<T1>&,Array<T1>&);
+      template <typename T1, template <typename> class AF>
+      friend class Array2DBase;
 
       Array() : ParentType(), _status(NULL), _isPart(false) {}
       ~Array() { Clear(*this); }
@@ -73,8 +77,8 @@ namespace mysimulator {
   template <typename T1, typename T2>
   void _Fill(Array<T1>& A, const T2& fac) { A.Fill(fac); }
 
-  template <typename T1, typename T2>
-  void _Imprint(Array<T1>& A, const Array<T2>& B) { A.Imprint(B); }
+  template <typename T>
+  void _Imprint(Array<T>& A, const Array<T>& B) { A.Imprint(B); }
 
   template <typename T>
   void _Swap(Array<T>& A, Array<T>& B) {
@@ -82,6 +86,11 @@ namespace mysimulator {
     _Swap(static_cast<DType&>(A),static_cast<DType&>(B));
     _SwapContent(A._status,B._status);
     _SwapContent(A._isPart,B._isPart);
+  }
+
+  template <typename T>
+  void _SwapContent(Array<T>& A, Array<T>& B) {
+    _SwapContent(static_cast<ArrayData<T>&>(A),static_cast<ArrayData<T>&>(B));
   }
 
 }

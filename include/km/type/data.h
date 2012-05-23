@@ -14,6 +14,13 @@ namespace mysimulator {
       typedef typename DataType<T>::Type  Type;
   };
 
+  template <typename T> class Array2DNumeric;
+  template <typename T>
+  class DataType<Array2DNumeric<T> > {
+    public:
+      typedef typename DataType<T>::Type  Type;
+  };
+
 }
 
 #endif
