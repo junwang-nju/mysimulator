@@ -23,12 +23,12 @@ namespace mysimulator {
   template <typename T>
   const bool IsMemCopyableFlag<ArrayData<T> >::Flag=false;
 
-  template <typename T> class ArrayBase;
+  template <typename T> class Array;
   template <typename T>
-  class IsMemCopyableFlag<ArrayBase<T> > { public: static const bool Flag; };
+  class IsMemCopyableFlag<Array<T> > { public: static const bool Flag; };
 
   template <typename T>
-  const bool IsMemCopyableFlag<ArrayBase<T> >::Flag=false;
+  const bool IsMemCopyableFlag<Array<T> >::Flag=false;
 
   template <typename T> class ArrayNumeric;
   template <typename T>

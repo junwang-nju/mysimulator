@@ -2,7 +2,6 @@
 #ifndef _Interaction_Func_H_
 #define _Interaction_Func_H_
 
-#include "array/interface.h"
 #include "array2d-numeric/interface.h"
 #include "unique/64bit/interface.h"
 #include "interaction-func/name.h"
@@ -17,16 +16,30 @@ namespace mysimulator {
       typedef InteractionFunc<T,GeomType> Type;
       template <typename T1,typename GT>
       friend void Clear(InteractionFunc<T,GT>&);
+      template <typename T1,typename GT>
+      friend class InteractionFunc;
 
-      InteractionFunc() : _dim(0), _tag(UnknownInteractionFunc), _pre(),
+      InteractionFunc() : _tag(UnknownInteractionFunc), _pre(),
                           _post(), _tmvec(), _neighbor(), _update(true) {}
       ~InteractionFunc() { Clear(*this); }
 
       bool IsValid() const {
-        return (_dim>0)&&_pre.IsValid()&&_post.IsValid()&&_tmvec.IsValid()&&
+        return _pre.IsValid()&&_post.IsValid()&&_tmvec.IsValid()&&
                (_tag!=UnknownInteractionFunc);
       }
+      void Imprint(const InteractionFunc<T,GeomType>& F) { Allocate(F._tag); }
+      void ClearFlag { _update=true; }
+      template <typename T1,typename GT>
+      void Copy(const InteractionFunc<T1,GT>& F) {
+        assert(_tag==F._tag);
+        _pre.Copy(F._pre);
+        _post.Copy(F._post);
+        _tmvec.Copy(F._tmvec);
+        _update=F._update;
+      }
 
+      virtual
+      void Allocate(const InteractionFuncName&);
       virtual
       void EMethod(const ArrayNumeric<ArrayNumeric<T> >&,
                    const Array<unsigned int>&,const Array<Unique64Bit>&,
@@ -42,7 +55,6 @@ namespace mysimulator {
 
     protected:
 
-      unsigned int          _dim;
       InteractionFuncName   _tag;
       ArrayNumeric<T>       _pre;
       ArrayNumeric<T>       _post;
@@ -65,7 +77,16 @@ namespace mysimulator {
     Clear(F._post);
     Clear(F._pre);
     F._tag=UnknownInteractionFunc;
-    F._dim=0;
+  }
+
+  template <typename T,typename GT>
+  void _Imprint(InteractionFunc<T,GT>& F, const InteractionFunc<T,GT>& BF) {
+    F.Imprint(BF);
+  }
+
+  template <typename T1,typename T2,typename GT1,typename GT2>
+  void _Copy(InteractionFunc<T1,GT1>& F,const InteractionFunc<T2,GF2>& BF) {
+    F.Copy(BF);
   }
 
 }
