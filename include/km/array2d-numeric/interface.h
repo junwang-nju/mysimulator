@@ -37,6 +37,10 @@ namespace mysimulator {
         assert(this->IsValid());
         return this->_ldata.NormSQ();
       }
+      typename DataType<Type>::Type Norm() const {
+        assert(this->IsValid());
+        return __SqRoot(NormSQ());
+      }
 
       template <typename T1>
       void Scale(const T1& d) {
@@ -161,6 +165,18 @@ namespace mysimulator {
       template <template<typename> class AF1,template<typename> class AF2>
       void BlasShift(const Array2DBase<T,AF1>& A,const Array2DBase<T,AF2>& B) {
         BlasShift(1.,A,B);
+      }
+      T BlasNormSQ() const {
+        assert(this->IsValid());
+        return this->_ldata.BlasNormSQ();
+      }
+      T BlasNorm() const {
+        assert(this->IsValid());
+        return this->_ldata.BlasNorm();
+      }
+      T BlasAbsSum() const {
+        assert(this->IsValid());
+        return this->_ldata.BlasAbsSum();
       }
 
       void Inverse() {

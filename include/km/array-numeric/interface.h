@@ -5,6 +5,7 @@
 #include "array/interface.h"
 #include "basic/sum.h"
 #include "basic/abs-sum.h"
+#include "basic/norm-square.h"
 #include "basic/scale.h"
 #include "basic/shift.h"
 #include "basic/inverse.h"
@@ -51,11 +52,18 @@ namespace mysimulator {
       }
 
       typename DataType<Type>::Type NormSQ() const {
-        typedef typename IsNumeric<ArrayNumeric<T> >::Type NormCheck;
+        typedef typename IsNumeric<ArrayNumeric<T> >::Type NormSQCheck;
         typename DataType<Type>::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;)  sum+=_NormSQ(*(p++));
         return sum;
+      }
+
+      typename DataType<Type>::Type Norm() const {
+        typedef
+        typename IsFloatPoint<typename DataType<ArrayNumeric<T> >::Type>::Type
+        NormCheck;
+        return __SqRoot(NormSQ());
       }
 
       template <typename T1>
@@ -241,6 +249,20 @@ namespace mysimulator {
       }
       void BlasShift(const ArrayData<T>& A,const ArrayData<T>& B) {
         BlasShift(1.,A,B);
+      }
+      T BlasNormSQ() const {
+        typedef typename IsBlasable<T>::Type    BlasCheck;
+        return BlasDot(*this,*this);
+      }
+      T BlasNorm() const {
+        typedef typename IsBlasable<T>::Type    BlasCheck;
+        long m=this->Size(), one=1;
+        return BLAS<T>::Norm(&m,this->Head(),&one);
+      }
+      T BlasAbsSum() const {
+        typedef typename IsBlasable<T>::Type    BlasCheck;
+        long m=this->Size(), one=1;
+        return BLAS<T>::ASum(&m,this->Head(),&one);
       }
 
       void Inverse() {
