@@ -50,17 +50,6 @@ namespace mysimulator {
   const bool IsNumericFlag<ArrayNumeric<T> >::Flag=
     IsNumericFlag<T>::Flag;
 
-  template <typename T> class ArrayNumericDoubleSize;
-
-  template <typename T>
-  class IsNumericFlag<ArrayNumericDoubleSize<T> > {
-    public: static const bool Flag;
-  };
-
-  template <typename T>
-  const bool IsNumericFlag<ArrayNumericDoubleSize<T> >::Flag=
-    IsNumericFlag<T>::Flag;
-
 }
 
 #include "type/check-object.h"

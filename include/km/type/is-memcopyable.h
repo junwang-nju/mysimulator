@@ -23,6 +23,20 @@ namespace mysimulator {
   template <typename T>
   const bool IsMemCopyableFlag<ArrayData<T> >::Flag=false;
 
+  template <typename T> class ArrayBase;
+  template <typename T>
+  class IsMemCopyableFlag<ArrayBase<T> > { public: static const bool Flag; };
+
+  template <typename T>
+  const bool IsMemCopyableFlag<ArrayBase<T> >::Flag=false;
+
+  template <typename T> class ArrayNumeric;
+  template <typename T>
+  class IsMemCopyableFlag<ArrayNumeric<T> > { public: static const bool Flag; };
+
+  template <typename T>
+  const bool IsMemCopyableFlag<ArrayNumeric<T> >::Flag=false;
+
 }
 
 #include "type/check-object.h"

@@ -4,7 +4,9 @@
 
 #include "basic/fill.h"
 #include "basic/imprint.h"
+#include "basic/is-same.h"
 #include "type/is-memcopyable.h"
+#include "type/is-char.h"
 #include <cstdlib>
 #include <cstring>
 #include <cstring>
@@ -22,6 +24,8 @@ namespace mysimulator {
       template <typename T1> friend void _Swap(ArrayData<T1>&,ArrayData<T1>&);
       template <typename T1>
       friend void _SwapContent(ArrayData<T1>&,ArrayData<T1>&);
+      template <typename T1>
+      friend bool IsSame(const ArrayData<T1>&,const ArrayData<T1>&);
 
       ArrayData() : _data(NULL), _size(0), _alloc(false) {}
       ~ArrayData() { Clear(*this); }
@@ -83,6 +87,12 @@ namespace mysimulator {
        assert(Size()==A.Size());
        memcpy(Head(),A.Head(),Size()*sizeof(T));
      }
+     template <typename T1>
+     void MemFill(const T1 c) {
+       typedef typename IsChar<T>::Type   CharCheck1;
+       typedef typename IsChar<T1>::Type  CharCheck2;
+       memset(Head(),c,Size());
+     }
 
     protected:
 
@@ -117,6 +127,44 @@ namespace mysimulator {
 
   template <typename T, typename T1>
   void _Fill_(ArrayData<T>& A, const T1& D) { A.Fill(D); }
+
+  template <typename T1, typename T2>
+  bool IsSameSize(const ArrayData<T1>& A,const ArrayData<T2>& B) {
+    return A.Size()==B.Size();
+  }
+
+  template <typename T>
+  bool IsSame(const ArrayData<T>& A, const ArrayData<T>& B) {
+    if(!IsSameSize(A,B))  return false;
+    if(A.Size()==0)   return true;
+    char *p=reinterpret_cast<char*>(A.Head()),*pEnd=p+A.Size()*sizeof(T);
+    char *q=reinterpret_cast<char*>(B.Head());
+    for(;p!=pEnd;)  if(!IsSame(*(p++),*(q++)))  return false;
+    return true;
+  }
+
+}
+
+#include "basic/swap.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  void _Swap(ArrayData<T>& A, ArrayData<T>& B) {
+    _SwapContent(A._data,B._data);
+    _SwapContent(A._size,B._size);
+    _SwapContent(A._alloc,B._alloc);
+  }
+
+  template <typename T>
+  void _SwapContent(ArrayData<T>& A, ArrayData<T>& B) {
+    assert(A.IsValid());
+    assert(B.IsValid());
+    assert(A.Size()==B.Size());
+    T *p=A.Head(), *pEnd=A.Head()+A.Size();
+    T *q=B.Head();
+    for(;p!=pEnd;)  _SwapContent(*(p++),*(q++));
+  }
 
 }
 
