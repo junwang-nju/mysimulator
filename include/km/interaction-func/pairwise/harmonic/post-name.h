@@ -4,7 +4,7 @@
 
 namespace mysimulator {
 
-  enum PairwiseHarmonicPostName {
+  enum HarmonicPostName {
     HarmonicLength=0,
     HarmonicIvLength,
     HarmonicNumberPost

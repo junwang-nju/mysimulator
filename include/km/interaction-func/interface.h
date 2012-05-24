@@ -17,7 +17,7 @@ namespace mysimulator {
 
       typedef InteractionFunc<T,GeomType> Type;
       template <typename T1,typename GT>
-      friend void Clear(InteractionFunc<T,GT>&);
+      friend void Clear(InteractionFunc<T1,GT>&);
       template <typename T1,typename GT>
       friend class InteractionFunc;
 
@@ -29,8 +29,7 @@ namespace mysimulator {
         return _pre.IsValid()&&_post.IsValid()&&_tmvec.IsValid()&&
                (_tag!=UnknownInteractionFunc);
       }
-      void Imprint(const InteractionFunc<T,GeomType>& F) { Allocate(F._tag); }
-      void ClearFlag { _update=true; }
+      void ClearFlag() { _update=true; }
       template <typename T1,typename GT>
       void Copy(const InteractionFunc<T1,GT>& F) {
         assert(_tag==F._tag);
@@ -41,7 +40,7 @@ namespace mysimulator {
       }
 
       virtual
-      void Allocate(const InteractionFuncName&);
+      void Allocate(unsigned int)=0;
       virtual
       void EMethod(const ArrayNumeric<ArrayNumeric<T> >&,
                    const Array<unsigned int>&,const InteractionParameter<T>*,
@@ -81,13 +80,8 @@ namespace mysimulator {
     F._tag=UnknownInteractionFunc;
   }
 
-  template <typename T,typename GT>
-  void _Imprint(InteractionFunc<T,GT>& F, const InteractionFunc<T,GT>& BF) {
-    F.Imprint(BF);
-  }
-
   template <typename T1,typename T2,typename GT1,typename GT2>
-  void _Copy(InteractionFunc<T1,GT1>& F,const InteractionFunc<T2,GF2>& BF) {
+  void _Copy(InteractionFunc<T1,GT1>& F,const InteractionFunc<T2,GT2>& BF) {
     F.Copy(BF);
   }
 

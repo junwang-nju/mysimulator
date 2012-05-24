@@ -6,7 +6,7 @@
 
 namespace mysimulator {
 
-  template <typename T,typename T2,typename T3>
+  template <typename T,typename T1,typename T2>
   void DisplacementCalcDirect(
       ArrayNumeric<T>& A,const ArrayNumeric<T1>& A1,const ArrayNumeric<T2>& A2){
     A.Copy(A1);

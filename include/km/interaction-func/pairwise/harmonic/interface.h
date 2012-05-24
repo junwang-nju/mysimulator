@@ -4,6 +4,8 @@
 
 #include "interaction-func/pairwise/interface.h"
 #include "interaction-func/pairwise/harmonic/post-name.h"
+#include "interaction-func/pairwise/harmonic/pre-name.h"
+#include "interaction-func/pairwise/harmonic/vec-name.h"
 #include "interaction-parameter/interface.h"
 #include "interaction-parameter/harmonic/name.h"
 
@@ -21,6 +23,14 @@ namespace mysimulator {
       InteractionFuncPairwiseHarmonic() : ParentType() {}
       ~InteractionFuncPairwiseHarmonic() { Clear(*this); }
 
+      virtual void Allocate(unsigned int dim) {
+        Clear(*this);
+        this->_tag=Harmonic;
+        this->_pre.Allocate(PairwiseNumberPre);
+        this->_post.Allocate(HarmonicNumberPost);
+        this->_tmvec.Allocate(HarmonicNumberVec,dim);
+      }
+
     protected:
 
       virtual
@@ -30,7 +40,7 @@ namespace mysimulator {
       }
       virtual
       void GFunc(const InteractionParameter<T>* P,T* Diff) {
-        T Dd=1.-Value<T>((*P)[HarmonicEqLength])*this->_data[HarmonicIvLength];
+        T Dd=1.-Value<T>((*P)[HarmonicEqLength])*this->_post[HarmonicIvLength];
         *Diff=Value<T>((*P)[HarmonicDualEqStrength])*Dd;
       }
       virtual
@@ -53,10 +63,10 @@ namespace mysimulator {
       }
       virtual
       void Pre2Post4B(const InteractionParameter<T>* P) {
-        T tmd=__SqRoot(this->pre[PairwiseDistanceSQ]);
+        T tmd=__SqRoot(this->_pre[PairwiseDistanceSQ]);
         this->_post[HarmonicLength]=tmd;
         this->_post[HarmonicIvLength]=1./tmd;
-        this->update=false;
+        this->_update=false;
       }
 
     private:
@@ -70,6 +80,13 @@ namespace mysimulator {
   void Clear(InteractionFuncPairwiseHarmonic<T,GT>& F) {
     typedef typename InteractionFuncPairwiseHarmonic<T,GT>::ParentType  PType;
     Clear(static_cast<PType&>(F));
+  }
+
+  template <typename T,typename GT>
+  void _Copy(InteractionFuncPairwiseHarmonic<T,GT>& F,
+             const InteractionFuncPairwiseHarmonic<T,GT>& BF) {
+    typedef typename InteractionFuncPairwiseHarmonic<T,GT>::ParentType  PType;
+    static_cast<PType&>(F).Copy(static_cast<const PType&>(BF));
   }
 
 }

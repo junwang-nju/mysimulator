@@ -27,7 +27,7 @@ namespace mysimulator {
                    T& Energy) {
         if(this->_update) {
           unsigned int I=ID[0], J=ID[1];
-          this->pre[PairwiseDistanceSQ]=
+          this->_pre[PairwiseDistanceSQ]=
             DistanceSQ(this->_tmvec[PairwiseBondVecIJ],X[I],X[J],Geo);
           Pre2Post4E(P);
         }
@@ -49,7 +49,7 @@ namespace mysimulator {
         T ef;
         GFunc(P,&ef);
         this->_tmvec[PairwiseScaledBondVecIJ].Copy(
-            this->tmvec[PairwiseBondVecIJ]);
+            this->_tmvec[PairwiseBondVecIJ]);
         this->_tmvec[PairwiseScaledBondVecIJ].Scale(ef);
         Grad[I].Shift(this->_tmvec[PairwiseScaledBondVecIJ]);
         Grad[J].NegShift(this->_tmvec[PairwiseScaledBondVecIJ]);
@@ -66,7 +66,7 @@ namespace mysimulator {
           Pre2Post4B(P);
         }
         T ee,ef;
-        BFunc(P,ee,ef);
+        BFunc(P,&ee,&ef);
         Energy+=ee;
         this->_tmvec[PairwiseScaledBondVecIJ].Copy(
             this->_tmvec[PairwiseBondVecIJ]);
@@ -99,6 +99,13 @@ namespace mysimulator {
   void Clear(InteractionFuncPairwise<T,GT>& F) {
     typedef typename InteractionFuncPairwise<T,GT>::ParentType  PType;
     Clear(static_cast<PType&>(F));
+  }
+
+  template <typename T,typename GT>
+  void _Copy(InteractionFuncPairwise<T,GT>& F,
+             const InteractionFuncPairwise<T,GT>& BF) {
+    typedef typename InteractionFuncPairwise<T,GT>::ParentType  PType;
+    static_cast<PType&>(F).Copy(static_cast<const PType&>(BF));
   }
 
 }

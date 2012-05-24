@@ -6,14 +6,14 @@
 
 namespace mysimulator {
 
-  template <typename T,typename T2,typename T3,typename GeomType>
+  template <typename T,typename T1,typename T2,typename GeomType>
   T DistanceSQ(ArrayNumeric<T>& Dsp,const ArrayNumeric<T1>& X,
                const ArrayNumeric<T2>& Y,const GeomType& Geo) {
     DisplacementCalc(Dsp,X,Y,Geo);
     return Displacement2DistanceSQ(Dsp);
   }
 
-  template <typename T,typename T2,typename T3,typename GeomType>
+  template <typename T,typename T1,typename T2,typename GeomType>
   T Distance(ArrayNumeric<T>& Dsp,const ArrayNumeric<T1>& X,
              const ArrayNumeric<T2>& Y,const GeomType& Geo) {
     DisplacementCalc(Dsp,X,Y,Geo);
