@@ -14,6 +14,7 @@
 #include "type/blas-size.h"
 #include "type/is-blas.h"
 #include "type/is-blas-size.h"
+#include "type/is-numeric-object.h"
 #include "linear-algebra/blas.h"
 
 namespace mysimulator {
@@ -25,7 +26,7 @@ namespace mysimulator {
 
       typedef ArrayNumeric<T>   Type;
       typedef Array<T>      ParentType;
-      typedef typename IsNumeric<Type>::Type NumericCheck;
+      typedef typename IsNumericObject<Type>::Type NumericCheck;
       template <typename T1,typename T2>
       friend typename CombineType<typename DataType<T1>::Type,
                                   typename DataType<T2>::Type>::Type
@@ -35,7 +36,7 @@ namespace mysimulator {
       ~ArrayNumeric() { Clear(*this); }
 
       typename DataType<Type>::Type Summation() const {
-        typedef typename IsNumeric<ArrayNumeric<T> >::Type   SumCheck;
+        typedef typename IsNumericObject<ArrayNumeric<T> >::Type   SumCheck;
         assert(this->IsValid());
         typename DataType<Type>::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
@@ -43,7 +44,7 @@ namespace mysimulator {
         return sum;
       }
       typename DataType<Type>::Type AbsSummation() const {
-        typedef typename IsNumeric<ArrayNumeric<T> >::Type   SumCheck;
+        typedef typename IsNumericObject<ArrayNumeric<T> >::Type   SumCheck;
         assert(this->IsValid());
         typename DataType<Type>::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
@@ -52,7 +53,7 @@ namespace mysimulator {
       }
 
       typename DataType<Type>::Type NormSQ() const {
-        typedef typename IsNumeric<ArrayNumeric<T> >::Type NormSQCheck;
+        typedef typename IsNumericObject<ArrayNumeric<T> >::Type NormSQCheck;
         typename DataType<Type>::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;)  sum+=_NormSQ(*(p++));

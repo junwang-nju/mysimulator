@@ -2,56 +2,19 @@
 #ifndef _Type_IsNumeric_H_
 #define _Type_IsNumeric_H_
 
+#include "type/is-float-point.h"
+#include "type/is-integer.h"
+
 namespace mysimulator {
 
   template <typename T>
   class IsNumericFlag { public: static const bool Flag; };
 
-  template <typename T> const bool IsNumericFlag<T>::Flag=false;
-
-}
-
-#ifndef _NumDEF_
-#define _NumDEF_(T) template <> const bool IsNumericFlag<T>::Flag=true;
-#else
-#error "Duplicate _NumDEF_"
-#endif
-
-namespace mysimulator {
-
-  _NumDEF_(long double)
-  _NumDEF_(double)
-  _NumDEF_(float)
-  _NumDEF_(long long)
-  _NumDEF_(unsigned long long)
-  _NumDEF_(int)
-  _NumDEF_(unsigned int)
-  _NumDEF_(long)
-  _NumDEF_(unsigned long)
-  _NumDEF_(short)
-  _NumDEF_(unsigned short)
-  _NumDEF_(char)
-  _NumDEF_(unsigned char)
+  template <typename T> const bool IsNumericFlag<T>::Flag=
+    IsFloatPointFlag<T>::Flag||IsIntegerFlag<T>::Flag;
 
   union Unique64Bit;
-  _NumDEF_(Unique64Bit)
-
-}
-
-#ifdef _NumDEF_
-#undef _NumDEF_
-#endif
-
-namespace mysimulator {
-
-  template <typename T> class ArrayNumeric;
-
-  template <typename T>
-  class IsNumericFlag<ArrayNumeric<T> > { public: static const bool Flag; };
-
-  template <typename T>
-  const bool IsNumericFlag<ArrayNumeric<T> >::Flag=
-    IsNumericFlag<T>::Flag;
+  template <> const bool IsNumericFlag<Unique64Bit>::Flag=true;
 
 }
 

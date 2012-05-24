@@ -53,14 +53,17 @@ namespace mysimulator {
 namespace mysimulator {
 
   union Unique64Bit;
+
   template <typename T>
   class IsCopyableFlag<Unique64Bit,T> { public: static const bool Flag; };
+
   template <typename T> const bool IsCopyableFlag<Unique64Bit,T>::Flag=
     IsNumericFlag<T>::Flag&&IsIntrinsicFlag<T>::Flag&&
     (sizeof(T)<sizeof(long double));
 
   template <typename T>
   class IsCopyableFlag<T,Unique64Bit> { public: static const bool Flag; };
+
   template <typename T> const bool IsCopyableFlag<T,Unique64Bit>::Flag=
     IsNumericFlag<T>::Flag&&IsIntrinsicFlag<T>::Flag&&
     (sizeof(T)<sizeof(long double));
