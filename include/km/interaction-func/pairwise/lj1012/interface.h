@@ -11,13 +11,18 @@
 
 namespace mysimulator {
 
-  template <typename T,typename GT>
-  class InteractionFuncPairwiseLJ1012 : public InteractionFuncPairwise<T,GT> {
+  template <typename T,typename GT> class InteractionFuncPairwiseLJ1012Cut;
+
+  template <typename T,typename GeomType>
+  class InteractionFuncPairwiseLJ1012
+      : public InteractionFuncPairwise<T,GeomType> {
 
     public:
 
-      typedef InteractionFuncPairwiseLJ1012<T,GT> Type;
-      typedef InteractionFuncPairwise<T,GT>  ParentType;
+      typedef InteractionFuncPairwiseLJ1012<T,GeomType> Type;
+      typedef InteractionFuncPairwise<T,GeomType>  ParentType;
+      template <typename T1,typename GT>
+      friend class InteractionFuncPairwiseLJ1012Cut;
 
       InteractionFuncPairwiseLJ1012() : ParentType() {}
       virtual ~InteractionFuncPairwiseLJ1012() { Clear(*this); }

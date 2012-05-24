@@ -27,7 +27,7 @@ namespace mysimulator {
         this->_tag=CoreLJ612;
         this->_pre.Allocate(CoreLJ612NumberPre);
         this->_post.Allocate(CoreLJ612NumberPost);
-        this->_vec.Allocate(CoreLJ612NumberVec,dim);
+        this->_tmvec.Allocate(CoreLJ612NumberVec,dim);
       }
 
     protected:

@@ -12,6 +12,7 @@
 namespace mysimulator {
 
   template <typename T,typename GT> class InteractionFuncPairwiseLJ612Cut;
+  template <typename T,typename GT> class InteractionFuncPairwiseCoreLJ612;
 
   template <typename T,typename GeomType>
   class InteractionFuncPairwiseLJ612
@@ -23,6 +24,8 @@ namespace mysimulator {
       typedef InteractionFuncPairwise<T,GeomType>   ParentType;
       template <typename T1,typename GT>
       friend class InteractionFuncPairwiseLJ612Cut;
+      template <typename T1,typename GT>
+      friend class InteractionFuncPairwiseCoreLJ612;
 
       InteractionFuncPairwiseLJ612() : ParentType() {}
       virtual ~InteractionFuncPairwiseLJ612() { Clear(*this); }

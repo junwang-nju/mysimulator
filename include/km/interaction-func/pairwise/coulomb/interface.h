@@ -28,7 +28,7 @@ namespace mysimulator {
         this->_tag=Coulomb;
         this->_pre.Allocate(CoulombNumberPre);
         this->_post.Allocate(CoulombNumberPost);
-        this->_post.Allocate(CoulombNumberVec,dim);
+        this->_tmvec.Allocate(CoulombNumberVec,dim);
       }
 
     protected:
