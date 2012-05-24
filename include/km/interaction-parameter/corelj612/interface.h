@@ -24,6 +24,7 @@ namespace mysimulator {
         this->_data.Allocate(CoreLJ612NumberParameter);
       }
       virtual void Build() {
+        assert(this->_data.Size()>=CoreLJ612NumberParameter);
         static_cast<ParentType*>(this)->Build();
         Value<T>(this->_data[CoreLJ612RadiusSQ])=
           _NormSQ(Value<T>(this->_data[CoreLJ612Radius]));

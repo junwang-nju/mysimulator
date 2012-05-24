@@ -23,16 +23,17 @@ namespace mysimulator {
         this->_data.Allocate(LJ612NumberParameter);
       }
       virtual void Build() {
-        assert(this->IsValid());
+        assert(this->_data.Size()>=LJ612NumberParameter);
         T tmd=Value<T>(this->_data[LJ612EqRadius]);
         tmd*=tmd;
         T tmd1=tmd*tmd*tmd;
         tmd=tmd1*Value<T>(this->_data[LJ612EqEnergyDepth]);
-        Value<T>(this->_data[LJ612FactorA])=tmd*tmd1;
-        Value<T>(this->_data[LJ612FactorB])=tmd+tmd;
-        tmd*=12;
-        Value<T>(this->_data[LJ612DiffFactorA])=tmd*tmd1;
-        Value<T>(this->_data[LJ612DiffFactorB])=tmd;
+        T A=tmd*tmd1;
+        T B=tmd+tmd;
+        Value<T>(this->_data[LJ612FactorA])=A;
+        Value<T>(this->_data[LJ612FactorB])=B;
+        Value<T>(this->_data[LJ612DiffFactorA])=12*A;
+        Value<T>(this->_data[LJ612DiffFactorB])=6*B;
       }
 
     private:

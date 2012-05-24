@@ -23,6 +23,7 @@ namespace mysimulator {
         this->_data.Allocate(Core12NumberParameter);
       }
       virtual void Build() {
+        assert(this->_data.Size()>=Core12NumberParameter);
         Value<T>(this->_data[Core12TwlfEqStrength])=
           12*Value<T>(this->_data[Core12EqStrength]);
       }

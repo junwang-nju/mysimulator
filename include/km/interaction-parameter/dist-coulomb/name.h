@@ -7,11 +7,11 @@
 namespace mysimulator {
 
   enum DistDielCoulombParameterName {
-    DistDielCoulombChargeA = CoulombChargeA,
-    DistDielCoulombChargeB = CoulombChargeB,
+    DistDielCoulombChargeA          = CoulombChargeA,
+    DistDielCoulombChargeB          = CoulombChargeB,
     DistDielCoulombDielectricFactor = CoulombDielectric,
-    DistDielCoulombStrength = CoulombStrength,
-    DistDielCoulombDualStrength = CoulombNumberParameter,
+    DistDielCoulombStrength         = CoulombStrength,
+    DistDielCoulombDualStrength     = CoulombNumberParameter,
     DistDielCoulombNumberParameter
   };
 

@@ -22,6 +22,7 @@ namespace mysimulator {
         this->_tag=Coulomb;
         this->_data.Allocate(CoulombNumberParameter); }
       virtual void Build() {
+        assert(this->_data.Size()>=CoulombNumberParameter);
         Value<T>(this->_data[CoulombStrength])=
           Value<T>(this->_data[CoulombChargeA])*
           Value<T>(this->_data[CoulombChargeB])*

@@ -23,7 +23,7 @@ namespace mysimulator {
         this->_data.Allocate(HarmonicNumberParameter);
       }
       virtual void Build() {
-        assert(this->IsValid());
+        assert(this->_data.Size()>=HarmonicNumberParameter);
         Value<T>(this->_data[HarmonicDualEqStrength])=
           2*Value<T>(this->_data[HarmonicEqStrength]);
       }
