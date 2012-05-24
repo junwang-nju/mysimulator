@@ -13,23 +13,6 @@ namespace mysimulator {
   const bool IsShiftableFlag<T1,T2>::Flag=
     IsIncludedFlag<T1,T2>::Flag;
 
-  template <typename T> class ArrayNumeric;
-  template <typename T1, typename T2>
-  class IsShiftableFlag<ArrayNumeric<T1>,T2> {
-    public: static const bool Flag;
-  };
-  template <typename T1, typename T2>
-  const bool IsShiftableFlag<ArrayNumeric<T1>,T2>::Flag=
-    IsShiftableFlag<T1,T2>::Flag;
-
-  template <typename T1, typename T2>
-  class IsShiftableFlag<ArrayNumeric<T1>,ArrayNumeric<T2> > {
-    public: static const bool Flag;
-  };
-  template <typename T1, typename T2>
-  const bool IsShiftableFlag<ArrayNumeric<T1>,ArrayNumeric<T2> >::Flag=
-    IsShiftableFlag<T1,T2>::Flag;
-
   template <typename T1, typename T2>
   class IsNegShiftableFlag { public: static const bool Flag; };
 
@@ -42,8 +25,7 @@ namespace mysimulator {
 
   template <typename T1, typename T2>
   const bool IsNegShiftableFlag<T1,T2>::Flag=
-    IsShiftableFlag<T1,T2>::Flag&&
-    (!IsUnsignedFlag<typename DataType<T1>::Type>::Flag);
+    IsShiftableFlag<T1,T2>::Flag&&(!IsUnsignedFlag<T1>::Flag);
 
   template <typename T1,typename T2,typename T3>
   class IsShiftable3Flag { public: static const bool Flag; };

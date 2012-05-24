@@ -84,7 +84,10 @@ namespace mysimulator {
   template <typename T>
   void _Copy(Unique64Bit& P,const T& v) { P.Copy(v); }
   template <typename T>
-  void _Copy(T& v,const Unique64Bit& P) { v=Value<T>(P); }
+  void _Copy(T& v,const Unique64Bit& P) {
+    typedef typename IsCopyable<T,Unique64Bit>::Type  CopyCheck;
+    v=Value<T>(P);
+  }
   template <typename T>
   void _Fill(Unique64Bit& P,const T& v) { P.Fill(v); }
 

@@ -13,9 +13,6 @@ namespace mysimulator {
   template <typename T> const bool IsNumericFlag<T>::Flag=
     IsFloatPointFlag<T>::Flag||IsIntegerFlag<T>::Flag;
 
-  union Unique64Bit;
-  template <> const bool IsNumericFlag<Unique64Bit>::Flag=true;
-
 }
 
 #include "type/check-object.h"

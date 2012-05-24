@@ -14,6 +14,7 @@ namespace mysimulator {
     public:
 
       typedef InteractionParameter<T>   Type;
+      typedef typename IsNumeric<T>::Type   NumericCheck;
       template <typename T1> friend void Clear(InteractionParameter<T1>&);
 
       InteractionParameter() : _tag(UnknownInteractionFunc), _data() {}

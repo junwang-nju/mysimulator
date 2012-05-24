@@ -32,6 +32,9 @@ namespace mysimulator {
   const bool IsNumericObjectFlag<Array2DNumeric<T> >::Flag=
     IsNumericObjectFlag<T>::Flag;
 
+  union Unique64Bit;
+  template <> const bool IsNumericFlag<Unique64Bit>::Flag=true;
+
 }
 
 #include "type/check-object.h"
@@ -39,7 +42,7 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  class IsNumericObject<T> {
+  class IsNumericObject {
     public:
       typedef typename Check<IsNumericObjectFlag<T>::Flag>::Type Type;
   };

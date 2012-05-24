@@ -15,13 +15,6 @@ namespace mysimulator {
 
   template <> const bool IsFillableFlag<bool,bool>::Flag=true;
 
-  template <typename T> class ArrayData;
-  template <typename T1, typename T2>
-  class IsFillableFlag<ArrayData<T1>,T2> {  public: static const bool Flag; };
-  template <typename T1, typename T2>
-  const bool IsFillableFlag<ArrayData<T1>,T2>::Flag=
-    IsFillableFlag<T1,T2>::Flag;
-
 }
 
 #include "type/is-intrinsic.h"

@@ -16,6 +16,7 @@ namespace mysimulator {
     public:
 
       typedef InteractionFunc<T,GeomType> Type;
+      typedef typename IsNumeric<T>::Type NumericCheck;
       template <typename T1,typename GT>
       friend void Clear(InteractionFunc<T1,GT>&);
       template <typename T1,typename GT>

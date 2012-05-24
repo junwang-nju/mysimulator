@@ -66,8 +66,6 @@ namespace mysimulator {
 
       template <typename T1>
       void Copy(const ArrayData<T1>& D) {
-        typedef typename IsCopyable<ArrayData<T>,ArrayData<T1> >::Type
-                CopyCheck;
         assert(IsValid());
         assert(D.IsValid());
         assert(Size()==D.Size());
@@ -77,7 +75,6 @@ namespace mysimulator {
       }
       template <typename T1>
       void Fill(const T1& D) {
-        typedef typename IsFillable<ArrayData<T>,T1>::Type  FillCheck;
         assert(IsValid());
         T   *p=_data, *pEnd=p+this->Size();
         for(;p!=pEnd;)  _Fill(*(p++),D);

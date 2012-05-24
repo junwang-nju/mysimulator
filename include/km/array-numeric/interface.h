@@ -69,15 +69,12 @@ namespace mysimulator {
 
       template <typename T1>
       void Scale(const T1& fac) {
-        typedef typename IsScalable<ArrayNumeric<T>,T1>::Type   ScaleCheck;
         assert(this->IsValid());
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;)  _Scale(*(p++),fac);
       }
       template <typename T1>
       void Scale(const ArrayNumeric<T1>& fac) {
-        typedef typename IsScalable<ArrayNumeric<T>,ArrayNumeric<T1> >::Type
-                ScaleCheck;
         assert(this->IsValid());
         assert(fac.IsValid());
         assert(this->Size()==fac.Size());
@@ -88,15 +85,12 @@ namespace mysimulator {
 
       template <typename T1>
       void Shift(const T1& fac) {
-        typedef typename IsShiftable<ArrayNumeric<T>,T1>::Type  ShiftCheck;
         assert(this->IsValid());
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;)  _Shift(*(p++),fac);
       }
       template <typename T1>
       void Shift(const ArrayNumeric<T1>& fac) {
-        typedef typename IsShiftable<ArrayNumeric<T>,ArrayNumeric<T1> >::Type
-                ShiftCheck;
         assert(this->IsValid());
         assert(fac.IsValid());
         assert(this->Size()==fac.Size());
@@ -107,15 +101,12 @@ namespace mysimulator {
 
       template <typename T1>
       void NegShift(const T1& fac) {
-        typedef typename IsNegShiftable<ArrayNumeric<T>,T1>::Type NegShiftCheck;
         assert(this->IsValid());
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;)  _NegShift(*(p++),fac);
       }
       template <typename T1>
       void NegShift(const ArrayNumeric<T1>& fac) {
-        typedef typename IsNegShiftable<ArrayNumeric<T>,ArrayNumeric<T1> >::Type
-                NegShiftCheck;
         assert(this->IsValid());
         assert(fac.IsValid());
         assert(this->Size()==fac.Size());
@@ -126,8 +117,6 @@ namespace mysimulator {
 
       template <typename T1,typename T2>
       void Shift(const ArrayNumeric<T1>& A,const T2& d) {
-        typedef typename IsShiftable3<ArrayNumeric<T>,ArrayNumeric<T1>,T2>::Type
-                ShiftCheck;
         assert(this->IsValid());
         assert(A.IsValid());
         assert(this->Size()==A.Size());
@@ -140,9 +129,6 @@ namespace mysimulator {
 
       template <typename T1,typename T2>
       void Shift(const ArrayNumeric<T1>& A, const ArrayNumeric<T2>& B) {
-        typedef typename
-        IsShiftable3<ArrayNumeric<T>,ArrayNumeric<T1>,ArrayNumeric<T2> >::Type
-        ShiftCheck;
         assert(this->IsValid());
         assert(A.IsValid());
         assert(B.IsValid());
@@ -157,9 +143,6 @@ namespace mysimulator {
       template <typename T1,typename T2,typename T3>
       void Shift(const T1& d,
                  const ArrayNumeric<T2>& A,const ArrayNumeric<T3>& B) {
-        typedef typename
-        IsShiftable4<ArrayNumeric<T>,ArrayNumeric<T2>,ArrayNumeric<T3>,T1>::Type
-        ShiftCheck;
         assert(this->IsValid());
         assert(A.IsValid());
         assert(B.IsValid());
@@ -385,8 +368,8 @@ namespace mysimulator {
   typename CombineType<typename DataType<T1>::Type,
                        typename DataType<T2>::Type>::Type
   _Dot(const ArrayNumeric<T1>& A, const ArrayNumeric<T2>& B) {
-    typedef typename IsNumeric<ArrayNumeric<T1> >::Type DotCheck1;
-    typedef typename IsNumeric<ArrayNumeric<T2> >::Type DotCheck2;
+    typedef typename IsNumericObject<ArrayNumeric<T1> >::Type DotCheck1;
+    typedef typename IsNumericObject<ArrayNumeric<T2> >::Type DotCheck2;
     assert(A.IsValid());
     assert(B.IsValid());
     assert(A.Size()==B.Size());

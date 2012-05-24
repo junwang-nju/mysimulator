@@ -47,8 +47,8 @@ namespace mysimulator {
         assert(this->IsValid());
         this->_ldata.Scale(d);
       }
-      template <typename T1, template<typename> class AF>
-      void Scale(const Array2DBase<T1,AF>& A) {
+      template <typename T1>
+      void Scale(const Array2DNumeric<T1>& A) {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(IsSameSize(*this,A));
@@ -59,8 +59,8 @@ namespace mysimulator {
         assert(this->IsValid());
         this->_ldata.Shift(d);
       }
-      template <typename T1, template<typename> class AF>
-      void Shift(Array2DBase<T1,AF>& A) {
+      template <typename T1>
+      void Shift(Array2DNumeric<T1>& A) {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(IsSameSize(*this,A));
@@ -84,7 +84,7 @@ namespace mysimulator {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(IsSameSize(*this,A));
-        this->_ldata.Scale(A._ldata,d);
+        this->_ldata.Shift(A._ldata,d);
       }
       template <typename T1,typename T2,template<typename>class AF>
       void Shift(const T1& d,const Array2DBase<T2,AF>& A) { Shift(A,d); }
@@ -96,7 +96,7 @@ namespace mysimulator {
         assert(B.IsValid());
         assert(IsSameSize(*this,A));
         assert(IsSameSize(*this,B));
-        this->_ldata.Scale(A._ldata,B._ldata);
+        this->_ldata.Shift(A._ldata,B._ldata);
       }
       template <typename T1,typename T2,typename T3,
                 template<typename>class AF1,template<typename>class AF2>
@@ -107,7 +107,7 @@ namespace mysimulator {
         assert(B.IsValid());
         assert(IsSameSize(*this,A));
         assert(IsSameSize(*this,B));
-        this->_ldata.Scale(d,A._ldata,B._ldata);
+        this->_ldata.Shift(d,A._ldata,B._ldata);
       }
 
       template <template<typename> class AF>

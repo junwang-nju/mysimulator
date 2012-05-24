@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <typename T>
-  typename DataType<T>::Type _NormSQ(const T& v) {
+  T _NormSQ(const T& v) {
     typedef typename IsNumeric<T>::Type NormSQCheck;
     return v*v;
   }
