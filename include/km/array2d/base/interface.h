@@ -98,6 +98,15 @@ namespace mysimulator {
         for(unsigned int i=0,m=0;i<A.Size();m+=A[i].Size(),++i)
           this->operator[](i).Refer(_ldata,m,A[i].Size());
       }
+      template <typename T1,template<typename> class AF>
+      void ImprintStructure(Array2DBase<T1,AF>& A) {
+        assert(A.IsValid());
+        Clear(*this);
+        static_cast<ParentType*>(this)->Allocate(A.Size());
+        _ldata.Allocate(A._ldata.Size());
+        for(unsigned int i=0,m=0;i<A.Size();m+=A[i].Size(),++i)
+          this->operator[](i).Refer(_ldata,m,A[i].Size());
+      }
 
     protected:
 

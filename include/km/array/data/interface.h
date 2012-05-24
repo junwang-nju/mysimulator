@@ -46,6 +46,8 @@ namespace mysimulator {
         T *q=A.Head();
         for(;p!=pEnd;)  _Imprint(*(p++),*(q++));
       }
+      template <typename T1>
+      void ImprintStructure(const ArrayData<T1>& A) { Allocate(A.Size()); }
       void Refer(Type& A,unsigned int b,unsigned int n) {
         assert(b+n<=A.Size());
         Clear(*this);
