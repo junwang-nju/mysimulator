@@ -8,6 +8,8 @@
 
 namespace mysimulator {
 
+  template <typename T> class InteractionParameter;
+
   template <typename T,typename GeomType>
   class InteractionFunc {
 
@@ -42,15 +44,15 @@ namespace mysimulator {
       void Allocate(const InteractionFuncName&);
       virtual
       void EMethod(const ArrayNumeric<ArrayNumeric<T> >&,
-                   const Array<unsigned int>&,const Array<Unique64Bit>&,
+                   const Array<unsigned int>&,const InteractionParameter<T>*,
                    const GeomType&,T&)=0;
       virtual
       void GMethod(const ArrayNumeric<ArrayNumeric<T> >&,
-                   const Array<unsigned int>&,const Array<Unique64Bit>&,
+          const Array<unsigned int>&,const InteractionParameter<T>*,
                    const GeomType&,ArrayNumeric<ArrayNumeric<T> >&)=0;
       virtual
       void BMethod(const ArrayNumeric<ArrayNumeric<T> >&,
-                   const Array<unsigned int>&,const Array<Unique64Bit>&,
+          const Array<unsigned int>&,const InteractionParameter<T>*,
                    const GeomType&,T&,ArrayNumeric<ArrayNumeric<T> >&)=0;
 
     protected:

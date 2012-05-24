@@ -4,6 +4,8 @@
 
 #include "interaction-func/pairwise/interface.h"
 #include "interaction-func/pairwise/harmonic/post-name.h"
+#include "interaction-parameter/interface.h"
+#include "interaction-parameter/harmonic/name.h"
 
 namespace mysimulator {
 
@@ -22,10 +24,39 @@ namespace mysimulator {
     protected:
 
       virtual
-      void EFunc(const ArrayNumeric<T>& Post,const Array<Unique64Bit>& P,
-                 T* Func) {
-        T Dd=Post[HarmonicLength]-Value<T>(P[HarmonicEqLength]);
-        *Func=Value<T>(P[HarmonicEqStrength])*Dd*Dd;
+      void EFunc(const InteractionParameter<T>* P,T* Func) {
+        T Dd=this->_post[HarmonicLength]-Value<T>((*P)[HarmonicEqLength]);
+        *Func=Value<T>((*P)[HarmonicEqStrength])*Dd*Dd;
+      }
+      virtual
+      void GFunc(const InteractionParameter<T>* P,T* Diff) {
+        T Dd=1.-Value<T>((*P)[HarmonicEqLength])*this->_data[HarmonicIvLength];
+        *Diff=Value<T>((*P)[HarmonicDualEqStrength])*Dd;
+      }
+      virtual
+      void BFunc(const InteractionParameter<T>* P,T* Func,T* Diff) {
+        T Dd=this->_post[HarmonicLength]-Value<T>((*P)[HarmonicEqLength]);
+        T tmd=Value<T>((*P)[HarmonicEqStrength])*Dd;
+        *Func=tmd*Dd;
+        *Diff=(tmd+tmd)*this->_post[HarmonicIvLength];
+      }
+      virtual
+      void Pre2Post4E(const InteractionParameter<T>* P) {
+        this->_post[HarmonicLength]=__SqRoot(this->_pre[PairwiseDistanceSQ]);
+        this->_update=true;
+      }
+      virtual
+      void Pre2Post4G(const InteractionParameter<T>* P) {
+        this->_post[HarmonicIvLength]=
+          1./__SqRoot(this->_pre[PairwiseDistanceSQ]);
+        this->_update=true;
+      }
+      virtual
+      void Pre2Post4B(const InteractionParameter<T>* P) {
+        T tmd=__SqRoot(this->pre[PairwiseDistanceSQ]);
+        this->_post[HarmonicLength]=tmd;
+        this->_post[HarmonicIvLength]=1./tmd;
+        this->update=false;
       }
 
     private:

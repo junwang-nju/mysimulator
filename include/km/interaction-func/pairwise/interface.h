@@ -23,7 +23,7 @@ namespace mysimulator {
       virtual
       void EMethod(const ArrayNumeric<ArrayNumeric<T> >& X,
                    const Array<unsigned int>& ID,
-                   const Array<Unique64Bit>& P,const GeomType& Geo,
+                   const InteractionParameter<T>* P,const GeomType& Geo,
                    T& Energy) {
         if(this->_update) {
           unsigned int I=ID[0], J=ID[1];
@@ -32,13 +32,13 @@ namespace mysimulator {
           Pre2Post4E(P);
         }
         T ee;
-        EFunc(this->_post,P,&ee);
+        EFunc(P,&ee);
         Energy+=ee;
       }
       virtual
       void GMethod(const ArrayNumeric<ArrayNumeric<T> >& X,
                    const Array<unsigned int>& ID,
-                   const Array<Unique64Bit>& P,const GeomType& Geo,
+                   const InteractionParameter<T>* P,const GeomType& Geo,
                    ArrayNumeric<ArrayNumeric<T> >& Grad) {
         unsigned int I=ID[0], J=ID[1];
         if(this->_update) {
@@ -47,7 +47,7 @@ namespace mysimulator {
           Pre2Post4G(P);
         }
         T ef;
-        GFunc(this->_post,P,&ef);
+        GFunc(P,&ef);
         this->_tmvec[PairwiseScaledBondVecIJ].Copy(
             this->tmvec[PairwiseBondVecIJ]);
         this->_tmvec[PairwiseScaledBondVecIJ].Scale(ef);
@@ -57,7 +57,7 @@ namespace mysimulator {
       virtual
       void BMethod(const ArrayNumeric<ArrayNumeric<T> >& X,
                    const Array<unsigned int>& ID,
-                   const Array<Unique64Bit>& P,const GeomType& Geo,
+                   const InteractionParameter<T>* P,const GeomType& Geo,
                    T& Energy,ArrayNumeric<ArrayNumeric<T> >& Grad) {
         unsigned int I=ID[0], J=ID[1];
         if(this->_update) {
@@ -66,7 +66,7 @@ namespace mysimulator {
           Pre2Post4B(P);
         }
         T ee,ef;
-        BFunc(this->_post,P,ee,ef);
+        BFunc(P,ee,ef);
         Energy+=ee;
         this->_tmvec[PairwiseScaledBondVecIJ].Copy(
             this->_tmvec[PairwiseBondVecIJ]);
@@ -78,15 +78,15 @@ namespace mysimulator {
     protected:
 
       virtual
-      void EFunc(const ArrayNumeric<T>&,const Array<Unique64Bit>&,T*)=0;
+      void EFunc(const InteractionParameter<T>*,T*)=0;
       virtual
-      void GFunc(const ArrayNumeric<T>&,const Array<Unique64Bit>&,T*)=0;
+      void GFunc(const InteractionParameter<T>*,T*)=0;
       virtual
-      void BFunc(const ArrayNumeric<T>&,const Array<Unique64Bit>&,T*,T*)=0;
+      void BFunc(const InteractionParameter<T>*,T*,T*)=0;
 
-      virtual void Pre2Post4E(const Array<Unique64Bit>&)=0;
-      virtual void Pre2Post4G(const Array<Unique64Bit>&)=0;
-      virtual void Pre2Post4B(const Array<Unique64Bit>&)=0;
+      virtual void Pre2Post4E(const InteractionParameter<T>*)=0;
+      virtual void Pre2Post4G(const InteractionParameter<T>*)=0;
+      virtual void Pre2Post4B(const InteractionParameter<T>*)=0;
 
     private:
 
