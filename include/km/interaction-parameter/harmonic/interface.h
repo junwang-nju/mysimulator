@@ -45,7 +45,7 @@ namespace mysimulator {
   void _Copy(InteractionParameterHarmonic<T>& P,
              const InteractionParameterHarmonic<T>& BP) {
     typedef typename InteractionParameterHarmonic<T>::ParentType  PType;
-    static_cast<PType&>(P).Copy(static_cast<const PType&>(BP));
+    _Copy(static_cast<PType&>(P),static_cast<const PType&>(BP));
   }
 
 }

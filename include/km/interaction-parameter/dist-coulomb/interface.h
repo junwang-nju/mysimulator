@@ -43,6 +43,13 @@ namespace mysimulator {
     Clear(static_cast<PType&>(P));
   }
 
+  template <typename T>
+  void _Copy(InteractionParameterDistDielCoulomb<T>& P,
+             const InteractionParameterDistDielCoulomb<T>& BP) {
+    typedef typename InteractionParameterDistDielCoulomb<T>::ParentType PType;
+    _Copy(static_cast<PType&>(P),static_cast<const PType&>(BP));
+  }
+
 }
 
 #endif

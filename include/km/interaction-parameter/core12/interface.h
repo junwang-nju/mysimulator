@@ -45,7 +45,7 @@ namespace mysimulator {
   void _Copy(InteractionParameterCore12<T>& P,
              const InteractionParameterCore12<T>& BP) {
     typedef typename InteractionParameterCore12<T>::ParentType  PType;
-    static_cast<PType&>(P).Copy(static_cast<const PType&>(BP);
+    _Copy(static_cast<PType&>(P),static_cast<const PType&>(BP));
   }
 
 }

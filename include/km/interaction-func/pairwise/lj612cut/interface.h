@@ -23,6 +23,7 @@ namespace mysimulator {
       ~InteractionFuncPairwiseLJ612Cut() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
+        Clear(*this);
         this->_tag=LJ612Cut;
         this->_pre.Allocate(LJ612CutNumberPre);
         this->_post.Allocate(LJ612CutNumberPost);
