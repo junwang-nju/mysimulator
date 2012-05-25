@@ -127,7 +127,7 @@ namespace mysimulator {
         for(unsigned int i=0;i<n;++i) {
           _PtrArray_(RandSize)[i].BlasCopy(_PtrArray_(Friction));
           _PtrArray_(RandSize)[i].BlasScale(
-              _SrcValue_(TimeStep)*_SrcValue_(Temperature)*_PtrValue_(Mass));
+              -2*_PtrValue_(NegHTIM)*_SrcValue_(Temperature));
           _PtrArray_(RandSize)[i].SqRoot();
         }
       }

@@ -96,9 +96,9 @@ namespace mysimulator {
       }
       virtual void Update6() {
         assert(this->_param.IsValid());
-        T d=-_PtrValue_(NegHTIM)*_PtrValue_(Friction);
-        _PtrValue_(FacBf)=1.-d;
-        _PtrValue_(FacAf)=1./(1.+d);
+        T d=_PtrValue_(NegHTIM)*_PtrValue_(Friction);
+        _PtrValue_(FacBf)=1.+d;
+        _PtrValue_(FacAf)=1./(1.-d);
       }
 
       virtual void Evolute1() {
