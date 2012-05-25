@@ -7,7 +7,7 @@
 
 namespace mysimulator {
 
-  template <typename T,template<typename> PropagatorWithMass>
+  template <typename T,template<typename> class PropagatorWithMass>
   class StepPropagatorVelVerletConstE : public PropagatorWithMass<T> {
 
     public:
@@ -33,9 +33,9 @@ namespace mysimulator {
 
   };
 
-  template <typename T,template<typename> PM>
+  template <typename T,template<typename> class PM>
   void Clear(StepPropagatorVelVerletConstE<T,PM>& P) {
-    typedef StepPropagatorVelVerletConstE<T,PM>::ParentType PType;
+    typedef typename StepPropagatorVelVerletConstE<T,PM>::ParentType PType;
     Clear(static_cast<PType&>(P));
   }
 

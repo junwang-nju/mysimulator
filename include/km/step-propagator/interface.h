@@ -97,6 +97,10 @@ namespace mysimulator {
 
 #include "step-propagator/vel-verlet/const-e/unique-mass/interface.h"
 #include "step-propagator/vel-verlet/const-e/array-mass/interface.h"
+#include "step-propagator/vel-verlet/langevin/unique-mass/unique-friction/interface.h"
+#include "step-propagator/vel-verlet/langevin/unique-mass/array-friction/interface.h"
+#include "step-propagator/vel-verlet/langevin/array-mass/unique-friction/interface.h"
+#include "step-propagator/vel-verlet/langevin/array-mass/array-friction/interface.h"
 #include "step-propagator/property-name.h"
 #include <cstdarg>
 

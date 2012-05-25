@@ -25,7 +25,7 @@ namespace mysimulator {
       StepPropagatorVelVerletLangevin_UMass(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
-  }
+  };
 
   template <typename T>
   void Clear(StepPropagatorVelVerletLangevin_UMass<T>& P) {

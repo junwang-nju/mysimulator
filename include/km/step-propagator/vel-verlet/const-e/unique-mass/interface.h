@@ -36,7 +36,7 @@
 #endif
 
 #ifndef _SrcValue_
-#define _SrcValue_(U)         _Value_(Ptr,U)
+#define _SrcValue_(U)         _Value_(Src,U)
 #else
 #error "Duplicate _SrcValue_"
 #endif

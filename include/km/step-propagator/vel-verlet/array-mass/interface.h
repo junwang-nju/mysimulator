@@ -62,7 +62,7 @@
 #ifndef _Src2Ptr_Array_
 #define _Src2Ptr_Array_(U) \
   if(_PointerArray_(Src,U)!=NULL) { \
-    _PointerArray_(Ptr,U)=new AType; \
+    _PointerArray_(Ptr,U)=new AAType; \
     this->_Introduce(_PtrArray_(U),_SrcArray_(U)); \
   }
 #else
@@ -73,14 +73,14 @@
 #define _PtrClean_(U) \
   if(_PointerArray_(Ptr,U)!=NULL) { \
     delete _PointerArray_(Ptr,U); \
-    _PointerArray_(U)=NULL; \
+    _PointerArray_(Ptr,U)=NULL; \
   }
 #else
 #error "Duplicate _PtrClean_"
 #endif
 
 #ifndef _SrcValue_
-#define _SrcValue_(U)         _Value_(Ptr,U)
+#define _SrcValue_(U)         _Value_(Src,U)
 #else
 #error "Duplicate _SrcValue_"
 #endif
@@ -155,7 +155,7 @@ namespace mysimulator {
   template <typename T>
   void Clear(StepPropagatorVelVerlet_AMass<T>& P) {
     typedef typename StepPropagatorVelVerlet_AMass<T>::ParentType PType;
-    Clear(static_cast<ParentType&>(P));
+    Clear(static_cast<PType&>(P));
   }
 
 }

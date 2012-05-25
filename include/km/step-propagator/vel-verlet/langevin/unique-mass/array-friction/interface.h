@@ -5,7 +5,7 @@
 #include "step-propagator/vel-verlet/langevin/unique-mass/interface.h"
 
 #ifndef _NAME_
-#define _NAME_(DT,U)          VelVerlet_##DT##U
+#define _NAME_(DT,U)          VelVerletLangevin_##DT##U
 #else
 #error "Duplicate _NAME_"
 #endif
@@ -61,7 +61,7 @@
 #ifndef _Src2Ptr_Array_
 #define _Src2Ptr_Array_(U) \
   if(_PointerArray_(Src,U)!=NULL) { \
-    _PointerArray_(Ptr,U)=new AType; \
+    _PointerArray_(Ptr,U)=new AAType; \
     this->_Introduce(_PtrArray_(U),_SrcArray_(U)); \
   }
 #else
@@ -72,7 +72,7 @@
 #define _PtrClean_(U) \
   if(_PointerArray_(Ptr,U)!=NULL) { \
     delete _PointerArray_(Ptr,U); \
-    _PointerArray_(U)=NULL; \
+    _PointerArray_(Ptr,U)=NULL; \
   }
 #else
 #error "Duplicate _PtrClean_"
@@ -85,7 +85,7 @@
 #endif
 
 #ifndef _SrcValue_
-#define _SrcValue_(U)         _Value_(Ptr,U)
+#define _SrcValue_(U)         _Value_(Src,U)
 #else
 #error "Duplicate _SrcValue_"
 #endif

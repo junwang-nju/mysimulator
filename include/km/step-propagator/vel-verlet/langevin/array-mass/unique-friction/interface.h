@@ -5,7 +5,7 @@
 #include "step-propagator/vel-verlet/langevin/array-mass/interface.h"
 
 #ifndef _NAME_
-#define _NAME_(DT,U)          VelVerlet_##DT##U
+#define _NAME_(DT,U)          VelVerletLangevin_##DT##U
 #else
 #error "Duplicate _NAME_"
 #endif
@@ -59,7 +59,7 @@
 #endif
 
 #ifndef _SrcValue_
-#define _SrcValue_(U)         _Value_(Ptr,U)
+#define _SrcValue_(U)         _Value_(Src,U)
 #else
 #error "Duplicate _SrcValue_"
 #endif
@@ -74,6 +74,8 @@ namespace mysimulator {
 
       typedef StepPropagatorVelVerletLangevin_AMassUFric<T> Type;
       typedef StepPropagatorVelVerletLangevin_AMass<T>  ParentType;
+      typedef Array2DNumeric<T>   AType;
+      typedef Array<AType>    AAType;
 
       StepPropagatorVelVerletLangevin_AMassUFric() : ParentType() {}
       ~StepPropagatorVelVerletLangevin_AMassUFric() { Clear(*this); }

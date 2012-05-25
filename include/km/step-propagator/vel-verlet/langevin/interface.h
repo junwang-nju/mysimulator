@@ -6,7 +6,7 @@
 #include "step-propagator/vel-verlet/langevin/parameter-name.h"
 
 #ifndef _NAME_
-#define _NAME_(DT,U)          VelVerlet_##DT##U
+#define _NAME_(DT,U)          VelVerletLangevin_##DT##U
 #else
 #error "Duplicate _NAME_"
 #endif
@@ -50,7 +50,7 @@
 #ifndef _Src2Ptr_Array_
 #define _Src2Ptr_Array_(U) \
   if(_PointerArray_(Src,U)!=NULL) { \
-    _PointerArray_(Ptr,U)=new AType; \
+    _PointerArray_(Ptr,U)=new AAType; \
     this->_Introduce(_PtrArray_(U),_SrcArray_(U)); \
   }
 #else
@@ -61,7 +61,7 @@
 #define _PtrClean_(U) \
   if(_PointerArray_(Ptr,U)!=NULL) { \
     delete _PointerArray_(Ptr,U); \
-    _PointerArray_(U)=NULL; \
+    _PointerArray_(Ptr,U)=NULL; \
   }
 #else
 #error "Duplicate _PtrClean_"
@@ -104,7 +104,7 @@ namespace mysimulator {
 
   template <typename T,template<typename> class PM>
   void Clear(StepPropagatorVelVerletLangevin<T,PM>& P) {
-    typedef StepPropagatorVelVerletLangevin<T,PM>::ParentType PType;
+    typedef typename StepPropagatorVelVerletLangevin<T,PM>::ParentType PType;
     Clear(static_cast<PType&>(P));
   }
 

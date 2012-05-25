@@ -6,7 +6,7 @@
 #include "step-propagator/vel-verlet/array-mass/interface.h"
 
 #ifndef _NAME_
-#define _NAME_(DT,U)          VelVerlet_##DT##U
+#define _NAME_(DT,U)          VelVerletConstE_##DT##U
 #else
 #error "Duplicate _NAME_"
 #endif
@@ -48,7 +48,7 @@
 #endif
 
 #ifndef _SrcValue_
-#define _SrcValue_(U)         _Value_(Ptr,U)
+#define _SrcValue_(U)         _Value_(Src,U)
 #else
 #error "Duplicate _SrcValue_"
 #endif
