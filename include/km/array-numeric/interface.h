@@ -31,6 +31,8 @@ namespace mysimulator {
       friend typename CombineType<typename DataType<T1>::Type,
                                   typename DataType<T2>::Type>::Type
       _Dot(const ArrayNumeric<T1>&,const ArrayNumeric<T2>&);
+      template <typename T1>
+      friend T1 BlasDot(const ArrayNumeric<T1>&,const ArrayNumeric<T1>&);
 
       ArrayNumeric() : ParentType() {}
       ~ArrayNumeric() { Clear(*this); }
@@ -184,7 +186,7 @@ namespace mysimulator {
         long m=this->Size(), one=1;
         BLAS<T>::Scale(&m,&v,this->Head(),&one);
       }
-      void BlasScale(ArrayData<T>& A) {
+      void BlasScale(const ArrayNumeric<T>& A) {
         typedef typename IsBlasable<T>::Type    BlasCheck;
         assert(this->IsValid());
         assert(A.IsValid());
@@ -203,7 +205,7 @@ namespace mysimulator {
         BLAS<T>::Shift(&m,&vone,&v,&zero,this->Head(),&one);
       }
       template <typename T1>
-      void BlasShift(const T1& d,const ArrayData<T>& A) {
+      void BlasShift(const T1& d,const ArrayNumeric<T>& A) {
         typedef typename IsBlasable<T>::Type    BlasCheck;
         typedef typename IsIncluded<T,T1>::Type TypeCheck;
         assert(this->IsValid());
@@ -214,10 +216,11 @@ namespace mysimulator {
         BLAS<T>::Shift(&m,&v,A.Head(),&one,this->Head(),&one);
       }
       template <typename T1>
-      void BlasShift(const ArrayData<T>& A,const T1& d) { BlasShift(d,A); }
-      void BlasShift(const ArrayData<T>& A) { BlasShift(1.,A); }
+      void BlasShift(const ArrayNumeric<T>& A,const T1& d) { BlasShift(d,A); }
+      void BlasShift(const ArrayNumeric<T>& A) { BlasShift(1.,A); }
       template <typename T1>
-      void BlasShift(const T1& d,const ArrayData<T>& A,const ArrayData<T>& B) {
+      void BlasShift(const T1& d,const ArrayNumeric<T>& A,
+                     const ArrayNumeric<T>& B) {
         typedef typename IsBlasable<T>::Type    BlasCheck;
         typedef typename IsIncluded<T,T1>::Type TypeCheck;
         assert(this->IsValid());
@@ -231,7 +234,7 @@ namespace mysimulator {
         BLAS<T>::SbMv(F,&m,&zero,&v,A.Head(),&one,B.Head(),&one,&vone,
                       this->Head(),&one);
       }
-      void BlasShift(const ArrayData<T>& A,const ArrayData<T>& B) {
+      void BlasShift(const ArrayNumeric<T>& A,const ArrayNumeric<T>& B) {
         BlasShift(1.,A,B);
       }
       T BlasNormSQ() const {

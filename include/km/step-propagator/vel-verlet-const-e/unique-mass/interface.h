@@ -85,7 +85,7 @@ namespace mysimulator {
         assert(this->_G.IsValid());
         assert(this->_V.IsValid());
         assert(this->_G.Size()==this->_V.Size());
-        for(unsigned int i=0;i<this->V.Size();++i)
+        for(unsigned int i=0;i<this->_V.Size();++i)
           this->_V[i].BlasShift(this->_G[i],_PtrValue_(NegHTIM));
       }
 

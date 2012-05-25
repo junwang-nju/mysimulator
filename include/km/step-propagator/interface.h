@@ -63,8 +63,6 @@ namespace mysimulator {
       Array<Array2DNumeric<T> > _V;
       Array<ArrayNumeric<T> >   _E;
 
-    private:
-
       template <template<typename> class AType>
       void _Introduce(Array<AType<T> >& A,AType<T>& IA) {
         assert(_range.IsValid());
@@ -74,6 +72,8 @@ namespace mysimulator {
         for(unsigned int i=0;i<_range.Size();++i)
           A[i].Refer(IA,_range[i][0],_range[i][1]);
       }
+
+    private:
 
       StepPropagator(const Type&) {}
       Type& operator=(const Type&) { return *this; }
@@ -95,6 +95,7 @@ namespace mysimulator {
 
 #include "step-propagator/vel-verlet-const-e/unique-mass/interface.h"
 #include "step-propagator/vel-verlet-const-e/array-mass/interface.h"
+#include "step-propagator/property-name.h"
 #include <cstdarg>
 
 namespace mysimulator {
@@ -102,18 +103,23 @@ namespace mysimulator {
   template <typename T>
   void Introduce(StepPropagator<T>*& P, StepPropagatorName SPN,...) {
     if(P!=NULL) { delete P; P=NULL; }
-    unsigned int MassF;
+    MassPropertyName  MassFlag;
     va_list vl;
     va_start(vl,SPN);
     switch(SPN) {
       case VelVerletConstE:
-        MassF=va_arg(vl,unsigned int);
-        if(MassF==0)  P=new StepPropagatorVelVerletConstE_UMass<T>;
-        else if(MassF==1) P=new StepPropagatorVelVerletConstE_AMass<T>;
+        MassFlag=static_cast<MassPropertyName>(va_arg(vl,unsigned int));
+        if(MassFlag==UniqueMass)
+          P=new StepPropagatorVelVerletConstE_UMass<T>;
+        else if(MassFlag==ArrayMass)
+          P=new StepPropagatorVelVerletConstE_AMass<T>;
+        P->Allocate();
+        break;
       default:
         fprintf(stderr,"Unknown StepPropagator Name!\n");
     }
     va_end(vl);
+    if(P==NULL) fprintf(stderr,"Improper Property Name!\n");
   }
 
 }

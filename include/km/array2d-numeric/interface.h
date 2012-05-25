@@ -110,8 +110,7 @@ namespace mysimulator {
         this->_ldata.Shift(d,A._ldata,B._ldata);
       }
 
-      template <template<typename> class AF>
-      void BlasCopy(const Array2DBase<T,AF>& A) {
+      void BlasCopy(const Array2DNumeric<T>& A) {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(IsSameSize(*this,A));
@@ -126,8 +125,7 @@ namespace mysimulator {
         assert(this->IsValid());
         this->_ldata.BlasScale(d);
       }
-      template <template<typename> class AF>
-      void BlasScale(const Array2DBase<T,AF>& A) {
+      void BlasScale(const Array2DNumeric<T>& A) {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(IsSameSize(*this,A));
@@ -138,23 +136,21 @@ namespace mysimulator {
         assert(this->IsValid());
         this->_ldata.BlasShift(d);
       }
-      template <typename T1,template<typename> class AF>
-      void BlasShift(const T1& d,const Array2DBase<T,AF>& A) {
+      template <typename T1>
+      void BlasShift(const T1& d,const Array2DNumeric<T>& A) {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(IsSameSize(*this,A));
         this->_ldata.BlasShift(d,A._ldata);
       }
-      template <typename T1,template<typename> class AF>
-      void BlasShift(const Array2DBase<T,AF>& A,const T1& d) {
+      template <typename T1>
+      void BlasShift(const Array2DNumeric<T>& A,const T1& d) {
         BlasShift(d,A);
       }
-      template <template<typename> class AF>
-      void BlasShift(const Array2DBase<T,AF>& A) { BlasShift(1.,A); }
-      template <typename T1,template<typename> class AF1,
-                template<typename> class AF2>
-      void BlasShift(const T1& d,const Array2DBase<T,AF1>& A,
-                     const Array2DBase<T,AF2>& B) {
+      void BlasShift(const Array2DNumeric<T>& A) { BlasShift(1.,A); }
+      template <typename T1>
+      void BlasShift(const T1& d,const Array2DNumeric<T>& A,
+                     const Array2DNumeric<T>& B) {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(B.IsValid());
@@ -162,8 +158,7 @@ namespace mysimulator {
         assert(IsSameSize(*this,B));
         this->_ldata.BlasShift(d,A._ldata,B._ldata);
       }
-      template <template<typename> class AF1,template<typename> class AF2>
-      void BlasShift(const Array2DBase<T,AF1>& A,const Array2DBase<T,AF2>& B) {
+      void BlasShift(const Array2DNumeric<T>& A,const Array2DNumeric<T>& B) {
         BlasShift(1.,A,B);
       }
       T BlasNormSQ() const {

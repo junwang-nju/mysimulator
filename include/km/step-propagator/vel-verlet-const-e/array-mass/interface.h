@@ -6,7 +6,7 @@
 
 #ifndef _PtrArray_
 #define _PtrArray_(U) \
-  Pointer<Array2DNumeric<T> >(this->_param[VelVerletConstE_Ptr##U])
+  Pointer<Array<Array2DNumeric<T> > >(this->_param[VelVerletConstE_Ptr##U])
 #else
 #error "Duplicate _PtrArray_"
 #endif
@@ -74,8 +74,8 @@ namespace mysimulator {
         }
         if(_PtrArray_(VelocitySQ)!=NULL) {
           Clear(*_PtrArray_(VelocitySQ));
-          delete *_PtrArray_(VelocitySQ);
-          _PtrArray_(VelocitySQ);
+          delete _PtrArray_(VelocitySQ);
+          _PtrArray_(VelocitySQ)=NULL;
         }
       }
       virtual void Update1() {  // HTIM
