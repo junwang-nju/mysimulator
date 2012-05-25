@@ -3,7 +3,7 @@
 #define _Step_Propagator_Binder_Interface_H_
 
 #include "step-propagator/interface.h"
-#include "system-interaction/interface.h"
+#include "grouped-interaction/interface.h"
 
 namespace mysimulator {
 
@@ -27,7 +27,7 @@ namespace mysimulator {
       }
 
       virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,
-                           SystemInteraction<T,GeomType>& I,
+                           GroupedInteraction<T,GeomType>& I,
                            Array<StepPropagator<T>*>& Props)=0;
 
     private:

@@ -18,7 +18,8 @@ namespace mysimulator {
       ~StepPropagatorVelVerletBinder() { Clear(*this); }
 
       virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,
-                           SystemInteraction<T,GT>& I,
+                           ArrayNumeric<ArrayNumeric<T> >& G,
+                           GroupedInteraction<T,GT>& I,
                            Array<StepPropagator<T>*>& Props) {
         // assuming X,G have been connected with Props
         assert(X.IsValid());
@@ -28,7 +29,7 @@ namespace mysimulator {
           assert(Props[i]!=NULL);
           Props[i]->Evolute1();
         }
-        I.CalcG(X);
+        I.Calc(X,G);
         for(unsigned int i=0;i<Props.Size();++i) {
           assert(Props[i]!=NULL);
           Props[i]->Evolute2();
