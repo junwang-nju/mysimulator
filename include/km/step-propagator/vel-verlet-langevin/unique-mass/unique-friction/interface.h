@@ -127,7 +127,7 @@ namespace mysimulator {
 #undef _PtrValue_
 #endif
 
-#ifdef 
+#ifdef _Src2Ptr_
 #undef _Src2Ptr_
 #endif
 
