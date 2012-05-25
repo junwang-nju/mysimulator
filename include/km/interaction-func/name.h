@@ -20,6 +20,20 @@ namespace mysimulator {
     UnknownInteractionFunc
   };
 
+  static unsigned int InteractionFuncIDSize[] = {
+    2,    //  Harmonic
+    2,    //  LJ612,
+    2,    //  LJ1012,
+    2,    //  LJ612Cut,
+    2,    //  LJ1012Cut,
+    2,    //  Core12,
+    2,    //  CoreLJ612,
+    2,    //  Coulomb,
+    2,    //  DistDielCoulomb,
+    3,    //  AngleHarmonic,
+    4     //  DihedralPeriodic,
+  };
+
 }
 
 #endif
