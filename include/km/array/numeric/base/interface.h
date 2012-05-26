@@ -32,6 +32,12 @@ namespace mysimulator {
         for(;p!=pEnd;) sum+=absval(*(p++));
         return sum;
       }
+      template <typename T1>
+      void Scale(const T1& fac) {
+        typedef typename IsNumeric<T1>::Type T1NumericCheck;
+        T *p=this->Head(), *pEnd=p+this->Size();
+        for(;p!=pEnd;)  *(p++)*=fac;
+      }
 
     private:
 

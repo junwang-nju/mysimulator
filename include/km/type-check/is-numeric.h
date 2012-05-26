@@ -9,8 +9,8 @@ namespace mysimulator {
 
 }
 
-#ifndef _NumDEF
-#define _NumDEF(T) \
+#ifndef _NumDEF_
+#define _NumDEF_(T) \
   template <> class IsNumeric<T> { public: typedef IsNumeric<T> Type; };
 #else
 #error "Duplicate _NumDEF"
@@ -18,25 +18,37 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  _NumDEF(long double)
-  _NumDEF(double)
-  _NumDEF(float)
-  _NumDEF(long long)
-  _NumDEF(unsigned long long)
-  _NumDEF(int)
-  _NumDEF(unsigned int)
-  _NumDEF(long)
-  _NumDEF(unsigned long)
-  _NumDEF(short)
-  _NumDEF(unsigned short)
-  _NumDEF(char)
-  _NumDEF(unsigned char)
+  _NumDEF_(long double)
+  _NumDEF_(double)
+  _NumDEF_(float)
+  _NumDEF_(long long)
+  _NumDEF_(unsigned long long)
+  _NumDEF_(int)
+  _NumDEF_(unsigned int)
+  _NumDEF_(long)
+  _NumDEF_(unsigned long)
+  _NumDEF_(short)
+  _NumDEF_(unsigned short)
+  _NumDEF_(char)
+  _NumDEF_(unsigned char)
 
 }
 
-#ifdef _NumDEF
-#undef _NumDEF
+#ifdef _NumDEF_
+#undef _NumDEF_
 #endif
+
+namespace mysimulator {
+
+  template <typename T> class ArrayNumeric;
+
+  template <typename T>
+  class IsNumeric<ArrayNumeric<T> > {
+    public:
+      typedef typename IsNumeric<T>::Type   Type;
+  };
+
+}
 
 #endif
 
