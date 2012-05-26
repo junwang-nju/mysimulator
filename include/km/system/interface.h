@@ -15,23 +15,23 @@ namespace mysimulator {
       template <typename T1,typename GT>
       friend void Clear(System<T1,GT>&);
 
-      System() : _X(), _G(), _V(), _E(), _F() {}
+      System() : _X(), _G(), _V(), _E(), _F(), _GF() {}
       ~System() { Clear(*this); }
 
-      bool IsValid() const { return _X.IsValid()&&_F.IsValid(); }
+      bool IsValid() const { return _X.IsValid()&&_F.IsValid()&&_GF.IsValid(); }
 
-      void AllocateDynVariable(unsigned int n, unsigned int dim) {
+      void AllocateXVGE(unsigned int n, unsigned int dim) {
         Clear(_X);
         _X.Allocate(n,dim);
         _CreateGVE();
       }
-      void AllocateDynVariable(const Array<unsigned int>& sz) {
+      void AllocateXVGE(const Array<unsigned int>& sz) {
         Clear(_X);
         _X.Allocate(sz);
         _CreateGVE();
       }
       template <typename T1,template<typename> class AF>
-      void ImprintDynVariable(const Array2DBase<T1,AF>& A) {
+      void ImprintXVGE(const Array2DBase<T1,AF>& A) {
         Clear(_X);
         _X.ImprintStructure(A);
         _CreateGVE();
@@ -45,7 +45,9 @@ namespace mysimulator {
       void AssignNumberInteractionGroup(unsigned int n) { _GF.Allocate(n); }
 
       Array2DNumeric<T>& Location() { assert(_X.IsValid()); return _X; }
+      Array2DNumeric<T>& Gradient() { assert(_G.IsValid()); return _G; }
       Array2DNumeric<T>& Velocity() { assert(_V.IsValid()); return _V; }
+      T& Energy() { assert(_E.IsValid()); return _E[0]; }
       SystemInteraction<T,GeomType>& Interaction(unsigned int n) {
         assert(_F.IsValid());
         return _F[n];
@@ -73,6 +75,25 @@ namespace mysimulator {
       InteractionGroup(unsigned int n) const {
         assert(_GF.IsValid());
         return _GF[n];
+      }
+
+      void UpdateE(unsigned int n) {
+        assert(_X.IsValid());
+        assert(_G.IsValid());
+        assert(_GF.IsValid());
+        _GF[n].Calc(_X,_E);
+      }
+      void UpdateG(unsigned int n) {
+        assert(_X.IsValid());
+        assert(_G.IsValid());
+        assert(_GF.IsValid());
+        _GF[n].Calc(_X,_G);
+      }
+      void UpdateB(unsigned int n) {
+        assert(_X.IsValid());
+        assert(_G.IsValid());
+        assert(_GF.IsValid());
+        _GF[n].Calc(_X,_E,_G);
       }
 
     protected:

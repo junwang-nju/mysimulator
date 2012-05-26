@@ -125,8 +125,8 @@ namespace mysimulator {
         this->ProduceRandVector();
         const unsigned int n=this->_X.Size();
         for(unsigned int i=0;i<n;++i) {
-          this->_V[i].BlasScale(_PtrArray_(FacBf));
-          this->_V[i].BlasShift(this->_G[i],_PtrArray_(NegHTIM));
+          this->_V[i].BlasScale(_PtrArray_(FacBf)[i]);
+          this->_V[i].BlasShift(this->_G[i],_PtrArray_(NegHTIM)[i]);
           this->_V[i].BlasShift(_PtrArray_(RandVector)[i],
                                 _PtrArray_(RandSize)[i]);
           this->_X[i].BlasShift(this->_V[i],_SrcValue_(TimeStep));
@@ -142,8 +142,8 @@ namespace mysimulator {
         for(unsigned int i=0;i<n;++i) {
           this->_V[i].BlasShift(_PtrArray_(RandVector)[i],
                                 _PtrArray_(RandSize)[i]);
-          this->_V[i].BlasShift(this->_G[i],_PtrArray_(NegHTIM));
-          this->_V[i].BlasScale(_PtrArray_(FacAf));
+          this->_V[i].BlasShift(this->_G[i],_PtrArray_(NegHTIM)[i]);
+          this->_V[i].BlasScale(_PtrArray_(FacAf)[i]);
         }
       }
 

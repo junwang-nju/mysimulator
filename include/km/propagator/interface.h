@@ -6,6 +6,7 @@
 #include "propagator/parameter-name.h"
 #include "random/box-muller/interface.h"
 #include "random/mt-standard/interface.h"
+#include "system/interface.h"
 
 #ifndef _NAME_
 #define _NAME_(U) Propagator##U
@@ -77,7 +78,7 @@ namespace mysimulator {
       Propagator()
         : _massFlag(UnknownMassProperty), _fricFlag(UnknownFrictionProperty),
           _param(), _props(), _bind() {}
-      ~Propagator() { Clear(*this); }
+      virtual ~Propagator() { Clear(*this); }
 
       bool IsValid() const { return _props.IsValid()&&_bind.IsValid(); }
 
@@ -166,7 +167,7 @@ namespace mysimulator {
         return _props[m][n];
       }
 
-      //virtual void Evolute(System<T,GT>&)=0;
+      virtual void Evolute(System<T,GT>&)=0;
 
     protected:
 

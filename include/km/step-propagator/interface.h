@@ -120,10 +120,10 @@ namespace mysimulator {
           P=new StepPropagatorVelVerletConstE_UMass<T>;
         else if(MassFlag==ArrayMass)
           P=new StepPropagatorVelVerletConstE_AMass<T>;
-        P->Allocate();
         break;
       case VelVerletLangevin:
         MassFlag=static_cast<MassPropertyName>(va_arg(vl,unsigned int));
+        FricFlag=UnknownFrictionProperty;
         FricFlag=static_cast<FrictionPropertyName>(va_arg(vl,unsigned int));
         if(MassFlag==UniqueMass) {
           if(FricFlag==UniqueFriction)
@@ -136,13 +136,13 @@ namespace mysimulator {
           else if(FricFlag==ArrayFriction)
             P=new StepPropagatorVelVerletLangevin_AMassAFric<T>;
         }
-        P->Allocate();
         break;
       default:
         fprintf(stderr,"Unknown StepPropagator Name!\n");
     }
+    if(P==NULL) { fprintf(stderr,"Improper Property Name!\n"); return; }
+    P->Allocate();
     va_end(vl);
-    if(P==NULL) fprintf(stderr,"Improper Property Name!\n");
   }
 
 }

@@ -125,7 +125,7 @@ namespace mysimulator {
         assert(this->_param.IsValid());
         const unsigned int n=_PtrArray_(Friction).Size();
         for(unsigned int i=0;i<n;++i) {
-          _PtrArray_(RandSize)[i].BlasCopy(_PtrArray_(Friction));
+          _PtrArray_(RandSize)[i].BlasCopy(_PtrArray_(Friction)[i]);
           _PtrArray_(RandSize)[i].BlasScale(
               -2*_PtrValue_(NegHTIM)*_SrcValue_(Temperature));
           _PtrArray_(RandSize)[i].SqRoot();
@@ -137,7 +137,7 @@ namespace mysimulator {
         for(unsigned int i=0;i<n;++i) {
           _PtrArray_(FacBf)[i].BlasCopy(_PtrArray_(Friction)[i]);
           _PtrArray_(FacBf)[i].BlasScale(_PtrValue_(NegHTIM));
-          _PtrArray_(FacAf)[i].BlasCopy(_PtrArray_(FacBf));
+          _PtrArray_(FacAf)[i].BlasCopy(_PtrArray_(FacBf)[i]);
           _PtrArray_(FacBf)[i].BlasShift(1);
           _PtrArray_(FacAf)[i].BlasScale(-1);
           _PtrArray_(FacAf)[i].BlasShift(1);
@@ -155,7 +155,7 @@ namespace mysimulator {
         this->ProduceRandVector();
         const unsigned int n=this->_X.Size();
         for(unsigned int i=0;i<n;++i) {
-          this->_V[i].BlasScale(_PtrArray_(FacBf));
+          this->_V[i].BlasScale(_PtrArray_(FacBf)[i]);
           this->_V[i].BlasShift(this->_G[i],_PtrValue_(NegHTIM));
           this->_V[i].BlasShift(_PtrArray_(RandVector)[i],
                                 _PtrArray_(RandSize)[i]);
@@ -173,7 +173,7 @@ namespace mysimulator {
           this->_V[i].BlasShift(_PtrArray_(RandVector)[i],
                                 _PtrArray_(RandSize)[i]);
           this->_V[i].BlasShift(this->_G[i],_PtrValue_(NegHTIM));
-          this->_V[i].BlasScale(_PtrArray_(FacAf));
+          this->_V[i].BlasScale(_PtrArray_(FacAf)[i]);
         }
       }
 
