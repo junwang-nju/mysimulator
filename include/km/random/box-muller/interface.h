@@ -2,29 +2,30 @@
 #ifndef _Random_BoxMuller_Interface_H_
 #define _Random_BoxMuller_Interface_H_
 
-#include "array/data/interface.h"
+#include "random/interface.h"
 #include <cmath>
 
 namespace mysimulator {
 
   template <typename UniformRNG>
-  class BoxMuller {
+  class BoxMuller : public Random {
 
     public:
 
       typedef BoxMuller<UniformRNG>   Type;
+      typedef Random  ParentType;
       template <typename UG> friend void Clear(BoxMuller<UG>&);
 
       BoxMuller() : urng(),rX(0),rY(0),rR(0),isSecond(false) {}
-      ~BoxMuller() { Clear(*this); }
+      virtual ~BoxMuller() { Clear(*this); }
 
-      bool IsValid() const { return urng.IsValid(); }
-      void Allocate() { urng.Allocate(); isSecond=false; }
-      void Init(unsigned int seed) { urng.Init(seed); isSecond=false; }
-      void Init(const ArrayData<unsigned int>& A) {
+      virtual bool IsValid() const { return urng.IsValid(); }
+      virtual void Allocate() { urng.Allocate(); isSecond=false; }
+      virtual void Init(unsigned int seed) { urng.Init(seed); isSecond=false; }
+      virtual void Init(const ArrayData<unsigned int>& A) {
         urng.Init(A); isSecond=false;
       }
-      double Double() {
+      virtual double Double() {
         double d;
         if(isSecond)  s=sY*sR;
         else {
@@ -39,7 +40,7 @@ namespace mysimulator {
         isSecond=!isSecond;
         return d;
       }
-      unsigned int UInt() {
+      virtual unsigned int UInt() {
         fprintf(stderr,"Box-Muller Does Not Produce Unsigned Int!");
         return 0;
       }

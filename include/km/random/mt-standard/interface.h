@@ -2,16 +2,17 @@
 #ifndef _Random_MT_Standard_Interface_H_
 #define _Random_MT_Standard_Interface_H_
 
+#include "random/interface.h"
 #include "unique/64bit/interface.h"
-#include "array/data/interface.h"
 
 namespace mysimulator {
 
-  class MersenneTwisterStandard {
+  class MersenneTwisterStandard : public Random {
 
     public:
 
       typedef MersenneTwisterStandard  Type;
+      typedef Random  ParentType;
       friend void Clear(MersenneTwisterStandard&);
 
       static const unsigned int N;
@@ -31,12 +32,12 @@ namespace mysimulator {
       static const double dHalfUInt32M1;
 
       MersenneTwisterStandard() : s(), sloc(0) {}
-      ~MersenneTwisterStandard() { Clear(*this); }
+      virtual ~MersenneTwisterStandard() { Clear(*this); }
 
-      bool IsValid() const { return s.IsValid(); }
-      void Allocate() { if(!IsValid()) s.Allocate(N); sloc=0; }
+      virtual bool IsValid() const { return s.IsValid(); }
+      virtual void Allocate() { if(!IsValid()) s.Allocate(N); sloc=0; }
 
-      void Init(unsigned int seed) {
+      virtual void Init(unsigned int seed) {
         s[0]=seed;
         unsigned int r=s[0]&Mask32;
         for(sloc=1;sloc<N;) {
@@ -45,7 +46,7 @@ namespace mysimulator {
         }
         sloc=1;
       }
-      void Init(const ArrayData<unsigned int>& v) {
+      virtual void Init(const ArrayData<unsigned int>& v) {
         Init(19650218UL);
         unsigned int i,j,k,r;
         i=1;  j=0;  k=(v.Size()<N?N:v.Size());
@@ -65,7 +66,7 @@ namespace mysimulator {
         sloc=1;
       }
 
-      unsigned int UInt() {
+      virtual unsigned int UInt() {
         unsigned int u;
         if(sloc>=N) {
           unsigned int k;
@@ -88,7 +89,7 @@ namespace mysimulator {
         u^=(u>>18);
         return u;
       }
-      double Double() {
+      virtual double Double() {
         long x=(UInt()>>5);
         long y=(UInt()>>6);
         return (x*67108864.+y)*dDouble53;
