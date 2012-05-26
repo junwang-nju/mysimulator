@@ -34,7 +34,12 @@ namespace mysimulator {
         assert(_Param[n]!=NULL);
         return (*_Param[n])[l];
       }
-      ArrayNumeric<unsigned int>& Index(unsigned int n) {
+      void ParameterBuild(unsigned int n) {
+        assert(_Param.IsValid());
+        assert(_Param[n]!=NULL);
+        _Param[n]->Build();
+      }
+      Array<unsigned int>& Index(unsigned int n) {
         assert(_ID.IsValid());
         return _ID[n];
       }
@@ -47,7 +52,7 @@ namespace mysimulator {
         assert(_Param[n]!=NULL);
         return (*_Param[n])[l];
       }
-      const ArrayNumeric<unsigned int>& Index(unsigned int n) const {
+      const Array<unsigned int>& Index(unsigned int n) const {
         assert(_ID.IsValid());
         return _ID[n];
       }

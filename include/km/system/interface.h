@@ -42,7 +42,11 @@ namespace mysimulator {
         _F.Allocate(FN.Size());
         for(unsigned int i=0;i<_F.Size();++i) _F[i].Allocate(FN[i],dim);
       }
-      void AssignNumberInteractionGroup(unsigned int n) { _GF.Allocate(n); }
+      void AssignNumberInteractionGroup(unsigned int n) {
+        assert(_F.IsValid());
+        _GF.Allocate(n);
+        for(unsigned int i=0;i<n;++i) _GF[i].Introduce(_F);
+      }
 
       Array2DNumeric<T>& Location() { assert(_X.IsValid()); return _X; }
       Array2DNumeric<T>& Gradient() { assert(_G.IsValid()); return _G; }
@@ -81,7 +85,7 @@ namespace mysimulator {
         assert(_X.IsValid());
         assert(_G.IsValid());
         assert(_GF.IsValid());
-        _GF[n].Calc(_X,_E);
+        _GF[n].Calc(_X,_E[0]);
       }
       void UpdateG(unsigned int n) {
         assert(_X.IsValid());
@@ -93,7 +97,7 @@ namespace mysimulator {
         assert(_X.IsValid());
         assert(_G.IsValid());
         assert(_GF.IsValid());
-        _GF[n].Calc(_X,_E,_G);
+        _GF[n].Calc(_X,_E[0],_G);
       }
 
     protected:
