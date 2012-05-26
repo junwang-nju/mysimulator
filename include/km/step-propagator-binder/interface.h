@@ -15,7 +15,7 @@ namespace mysimulator {
       typedef StepPropagatorBinder<T,GeomType>  Type;
 
       StepPropagatorBinder() {}
-      ~StepPropagatorBinder() { Clear(*this); }
+      virtual ~StepPropagatorBinder() { Clear(*this); }
 
       bool IsWorkable(const Array<StepPropagator<T>*>& Props) {
         assert(Props.IsValid());
@@ -27,6 +27,7 @@ namespace mysimulator {
       }
 
       virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,
+                           ArrayNumeric<ArrayNumeric<T> >& G,
                            GroupedInteraction<T,GeomType>& I,
                            Array<StepPropagator<T>*>& Props)=0;
 
@@ -41,6 +42,21 @@ namespace mysimulator {
 
   template <typename T,typename GT>
   void Clear(StepPropagatorBinder<T,GT>&) {}
+
+}
+
+#include "step-propagator-binder/vel-verlet/interface.h"
+
+namespace mysimulator {
+
+  template <typename T,typename GT>
+  void Introduce(StepPropagatorBinder<T,GT>* B,
+                 const Array<StepPropagator<T>*>& Ps) {
+    if(B!=NULL) { delete B; B=NULL; }
+    static StepPropagatorVelVerletBinder<T,GT> VVerlet;
+    if(VVerlet.IsWorkable(Ps))  B=new StepPropagatorVelVerletBinder<T,GT>;
+    else fprintf(stderr,"Not Binder Available!\n");
+  }
 
 }
 

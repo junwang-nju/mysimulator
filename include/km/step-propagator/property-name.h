@@ -6,12 +6,14 @@ namespace mysimulator {
 
   enum MassPropertyName {
     UniqueMass=0,
-    ArrayMass
+    ArrayMass,
+    UnknownMassProperty
   };
 
   enum FrictionPropertyName {
     UniqueFriction=0,
-    ArrayFriction
+    ArrayFriction,
+    UnknownFrictionProperty
   };
 
 }

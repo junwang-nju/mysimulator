@@ -15,7 +15,7 @@ namespace mysimulator {
       typedef StepPropagatorBinder<T,GT>  ParentType;
 
       StepPropagatorVelVerletBinder() : ParentType() {}
-      ~StepPropagatorVelVerletBinder() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletBinder() { Clear(*this); }
 
       virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,
                            ArrayNumeric<ArrayNumeric<T> >& G,

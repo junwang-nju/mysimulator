@@ -108,6 +108,7 @@ namespace mysimulator {
         assert(this->_V.IsValid());
         assert(this->_X.Size()==this->_V.Size());
         assert(this->_X.Size()==this->_G.Size());
+        this->ProduceRandVector();
         const unsigned int n=this->_X.Size();
         for(unsigned int i=0;i<n;++i) {
           this->_V[i].BlasScale(_PtrValue_(FacBf));
@@ -121,6 +122,7 @@ namespace mysimulator {
         assert(this->_G.IsValid());
         assert(this->_V.IsValid());
         assert(this->_V.Size()==this->_G.Size());
+        this->ProduceRandVector();
         const unsigned int n=this->_V.Size();
         for(unsigned int i=0;i<n;++i) {
           this->_V[i].BlasShift(_PtrArray_(RandVector)[i],_PtrValue_(RandSize));

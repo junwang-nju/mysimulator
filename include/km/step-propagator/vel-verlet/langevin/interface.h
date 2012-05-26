@@ -4,6 +4,8 @@
 
 #include "step-propagator/name.h"
 #include "step-propagator/vel-verlet/langevin/parameter-name.h"
+#include "random/base.h"
+#include <cassert>
 
 #ifndef _NAME_
 #define _NAME_(DT,U)          VelVerletLangevin_##DT##U
@@ -67,6 +69,12 @@
 #error "Duplicate _PtrClean_"
 #endif
 
+#ifndef _PointerRNG_
+#define _PointerRNG_  Pointer<Random>(_PARAM_(GaussRNG))
+#else
+#error "Duplicate _PointerRNG_"
+#endif
+
 namespace mysimulator {
 
   template <typename T,template<typename> class PropagatorWithMass>
@@ -93,6 +101,13 @@ namespace mysimulator {
       virtual void Clean() {
         static_cast<ParentType*>(this)->Clean();
         _PtrClean_(RandVector)
+      }
+
+      void ProduceRandVector() {
+        assert(this->_param.IsValid());
+        const unsigned int n=_PtrArray_(RandVector).Size();
+        for(unsigned int i=0;i<n;++i)
+          _PointerRNG_->Produce(_PtrArray_(RandVector)[i]);
       }
 
     private:

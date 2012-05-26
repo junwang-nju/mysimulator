@@ -110,6 +110,7 @@ namespace mysimulator {
   void Introduce(StepPropagator<T>*& P, StepPropagatorName SPN,...) {
     if(P!=NULL) { delete P; P=NULL; }
     MassPropertyName  MassFlag;
+    FrictionPropertyName  FricFlag;
     va_list vl;
     va_start(vl,SPN);
     switch(SPN) {
@@ -119,6 +120,22 @@ namespace mysimulator {
           P=new StepPropagatorVelVerletConstE_UMass<T>;
         else if(MassFlag==ArrayMass)
           P=new StepPropagatorVelVerletConstE_AMass<T>;
+        P->Allocate();
+        break;
+      case VelVerletLangevin:
+        MassFlag=static_cast<MassPropertyName>(va_arg(vl,unsigned int));
+        FricFlag=static_cast<FrictionPropertyName>(va_arg(vl,unsigned int));
+        if(MassFlag==UniqueMass) {
+          if(FricFlag==UniqueFriction)
+            P=new StepPropagatorVelVerletLangevin_UMassUFric<T>;
+          else if(FricFlag==ArrayFriction)
+            P=new StepPropagatorVelVerletLangevin_UMassAFric<T>;
+        } else if(MassFlag==ArrayMass) {
+          if(FricFlag==UniqueFriction)
+            P=new StepPropagatorVelVerletLangevin_AMassUFric<T>;
+          else if(FricFlag==ArrayFriction)
+            P=new StepPropagatorVelVerletLangevin_AMassAFric<T>;
+        }
         P->Allocate();
         break;
       default:
