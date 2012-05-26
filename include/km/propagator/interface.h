@@ -19,10 +19,10 @@
 #error "Duplicate _PARAM_"
 #endif
 
-#ifndef _Pointer_
-#define _Pointer_(U)  Pointer<T>(_PARAM_(U))
+#ifndef _Value_
+#define _Value_(U)  Value<T>(_PARAM_(U))
 #else
-#error "Duplicate _Pointer_"
+#error "Duplicate _Value_"
 #endif
 
 #ifndef _PointerArray_
@@ -31,22 +31,34 @@
 #error "Duplicate _PointerArray_"
 #endif
 
-#ifndef _Alloc_
-#define _Alloc_(U) if(_Pointer_(U)==NULL)  _Pointer_(U)=new T;
-#else
-#error "Duplicate _Alloc_"
-#endif
-
 #ifndef _AllocArray_
 #define _AllocArray_(U) if(_PointerArray_(U)==NULL) _PointerArray_(U)=new AType;
 #else
 #error "Duplicate _AllocArray_"
 #endif
 
-#ifndef _CpySrc_
-#define _CpySrc_(PT,U) Copy(_props[i][j]->_param[PT##_Src##U],_PARAM_(U));
+#ifndef _LoadSrc_
+#define _LoadSrc_(PT,U) \
+  Pointer<T>(_props[i][j]->_param[PT##_Src##U])=&_Value_(U);
 #else
-#error "Duplicate _CpySrc_"
+#error "Duplicate _LoadSrc_"
+#endif
+
+#ifndef _LoadSrcArray_
+#define _LoadSrcArray_(PT,U) \
+  _AllocArray_(U) \
+  Pointer<AType>(_props[i][j]->_param[PT##_Src##U])=_PointerArray_(U);
+#else
+#error "Duplicate _LoadSrcArray_"
+#endif
+
+#ifndef _ClearArray_
+#define _ClearArray_(U) \
+  if(_PointerArray_(U)!=NULL) { \
+    delete _PointerArray_(U); _PointerArray_(U)=NULL; \
+  }
+#else
+#error "Duplicate _ClearArray_"
 #endif
 
 namespace mysimulator {
@@ -91,60 +103,47 @@ namespace mysimulator {
         for(unsigned int j=0;j<_props[i].Size();++j) {
           switch(_props[i][j]->_tag) {
             case VelVerletConstE:
-              _Alloc_(TimeStep)
-              _CpySrc_(VelVerletConstE,TimeStep)
+              _LoadSrc_(VelVerletConstE,TimeStep)
               if(_massFlag==UniqueMass) {
-                _Alloc_(Mass)
-                _Alloc_(NegHTIM)
-                _Alloc_(VelocitySQ)
+                _LoadSrc_(VelVerletConstE,Mass)
+                _LoadSrc_(VelVerletConstE,NegHTIM)
+                _LoadSrc_(VelVerletConstE,VelocitySQ)
               } else if(_massFlag==ArrayMass) {
-                _AllocArray_(Mass)
-                _AllocArray_(NegHTIM)
-                _AllocArray_(VelocitySQ)
+                _LoadSrcArray_(VelVerletConstE,VelocitySQ)
+                _LoadSrcArray_(VelVerletConstE,NegHTIM)
+                _LoadSrcArray_(VelVerletConstE,VelocitySQ)
               }
-              _CpySrc_(VelVerletConstE,Mass)
-              _CpySrc_(VelVerletConstE,NegHTIM)
-              _CpySrc_(VelVerletConstE,VelocitySQ)
               break;
             case VelVerletLangevin:
-              _Alloc_(TimeStep)
-              _Alloc_(Temperature)
-              _AllocArray_(RandVector)
+              _LoadSrc_(VelVerletLangevin,TimeStep)
+              _LoadSrc_(VelVerletLangevin,Temperature)
+              _LoadSrcArray_(VelVerletLangevin,RandVector)
               if(Pointer<GRNG>(_PARAM_(GaussRNG))==NULL)
                 Pointer<GRNG>(_PARAM_(GaussRNG))=new GRNG;
+              Pointer<GRNG>(_props[i][j]._param[VelVerletLangevin_SrcGaussRNG])=
+                Pointer<GRNG>(_PARAM_(GaussRNG));
               if(_massFlag==UniqueMass) {
-                _Alloc_(Mass)
-                _Alloc_(NegHTIM)
-                _Alloc_(VelocitySQ)
+                _LoadSrc_(VelVerletLangevin,Mass)
+                _LoadSrc_(VelVerletLangevin,NegHTIM)
+                _LoadSrc_(VelVerletLangevin,VelocitySQ)
               } else if(_massFlag==ArrayMass) {
-                _AllocArray_(Mass)
-                _AllocArray_(NegHTIM)
-                _AllocArray_(VelocitySQ)
+                _LoadSrcArray_(VelVerletLangevin,Mass)
+                _LoadSrcArray_(VelVerletLangevin,NegHTIM)
+                _LoadSrcArray_(VelVerletLangevin,VelocitySQ)
               }
               if(_fricFlag==UniqueFriction)
-                _Alloc_(Friction)
+                _LoadSrc_(VelVerletLangevin,Friction)
               else if(_fricFlag==ArrayFriction)
-                _AllocArray_(Friction)
+                _LoadSrcArray_(VelVerletLangevin,Friction)
               if((_massFlag==UniqueMass)&&(_fricFlag==UniqueFriction)) {
-                _Alloc_(RandSize)
-                _Alloc_(FacBf)
-                _Alloc_(FacAf)
+                _LoadSrc_(RandSize)
+                _LoadSrc_(FacBf)
+                _LoadSrc_(FacAf)
               } else if((_massFlag==ArrayMass)||(_fricFlag==ArrayFriction)) {
-                _AllocArray_(RandSize)
-                _AllocArray_(FacBf)
-                _AllocArray_(FacAf)
+                _LoadSrcArray_(RandSize)
+                _LoadSrcArray_(FacBf)
+                _LoadSrcArray_(FacAf)
               }
-              _CpySrc_(VelVerletLangevin,TimeStep)
-              _CpySrc_(VelVerletLangevin,Temperature)
-              _CpySrc_(VelVerletLangevin,RandVector)
-              _CpySrc_(VelVerletLangevin,GaussRNG)
-              _CpySrc_(VelVerletLangevin,Mass)
-              _CpySrc_(VelVerletLangevin,NegHTIM)
-              _CpySrc_(VelVerletLangevin,VelocitySQ)
-              _CpySrc_(VelVerletLangevin,Friction)
-              _CpySrc_(VelVerletLangevin,RandSize)
-              _CpySrc_(VelVerletLangevin,FacBf)
-              _CpySrc_(VelVerletLangevin,FacAf)
               break;
             default:
               fprintf(stderr,"Unknown StepPropagator Name!\n");
@@ -177,8 +176,6 @@ namespace mysimulator {
       Array<Array<StepPropagator<T>*> >   _props;
       Array<StepPropagatorBinder<T,GT>*>  _bind;
 
-    private:
-
       void _ClearStepPropagator() {
         for(unsigned int i=0;i<_props.Size();++i)
         for(unsigned int j=0;j<_props[i].Size();++j)
@@ -189,7 +186,22 @@ namespace mysimulator {
           if(_bind[i]!=NULL)  { delete _bind[i]; _bind[i]=NULL; }
       }
       void _ClearParam() {
+        _ClearArray_(RandVector)
+        if(_massFlag=ArrayMass) {
+          _ClearArray_(Mass)
+          _ClearArray_(NegHTIM)
+          _ClearArray_(VelocitySQ)
+        }
+        if(_fricFlag==ArrayFriction)  _ClearArray_(Friction)
+        if((_massFlag==ArrayMass)||(_fricFlag==ArrayFriction)) {
+          _ClearArray_(RandSize)
+          _ClearArray_(FacBf)
+          _ClearArray_(FacAf)
+        }
       }
+
+    private:
+
       void _IntroduceStep(StepPropagator<T>*& P,const StepPropagatorName PN) {
         switch(PN) {
           case VelVerletConstE: Introduce(P,PN,_massFlag);  break;
@@ -206,7 +218,7 @@ namespace mysimulator {
 
   template <typename T,typename GT,typename GRNG>
   void Clear(Propagator<T,GT,GRNG>& P) {
-    ///////// _param not processed!!!!
+    P._ClearParam();
     P._massFlag=UnknownMassProperty;
     P._fricFlag=UnknownFrictionProperty;
     P._ClearBinder();
@@ -217,26 +229,31 @@ namespace mysimulator {
 
 }
 
-#ifdef _CpySrc_
-#undef _CpySrc_
+#ifdef _ClearArray_
+#undef _ClearArray_
+#endif
+
+#ifdef _LoadSrcArray_
+#undef _LoadSrcArray_
+#endif
+
+#ifdef _LoadSrc_
+#undef _LoadSrc_
 #endif
 
 #ifdef _AllocArray_
 #undef _AllocArray_
 #endif
 
-#ifdef _Alloc_
-#undef _Alloc_
-#endif
-
 #ifdef _PointerArray_
 #undef _PointerArray_
 #endif
 
-#ifdef _Pointer_
-#undef _Pointer_
+#ifdef _Value_
+#undef _Value_
 #endif
 
+#ifdef _PARAM_
 #undef _PARAM_
 #endif
 

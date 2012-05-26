@@ -4,7 +4,7 @@
 
 #include "step-propagator/name.h"
 #include "step-propagator/vel-verlet/langevin/parameter-name.h"
-#include "random/base.h"
+#include "random/interface.h"
 #include <cassert>
 
 #ifndef _NAME_
@@ -70,7 +70,7 @@
 #endif
 
 #ifndef _PointerRNG_
-#define _PointerRNG_  Pointer<Random>(_PARAM_(GaussRNG))
+#define _PointerRNG_  Pointer<Random>(_PARAM_(Src,GaussRNG))
 #else
 #error "Duplicate _PointerRNG_"
 #endif
