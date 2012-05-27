@@ -39,7 +39,7 @@ int main() {
   P->SetOutputTime(0.001);
 
   Value<double>(P->Parameter(PropagatorMass))=1.;
-  P->Steps(0,0)->Update();
+  P->Update();
 
   System<double,FreeSpace> S;
 
@@ -79,7 +79,7 @@ int main() {
   S.InteractionGroup(0).WorkID(1)=1;
 
   S.UpdateB(0);
-  cout<<S.Energy()<<endl;
+  //cout<<S.Energy()<<endl;
 
   P->Steps(0,0)->AllocateRange(1);
   P->Steps(0,0)->Range(0)[0]=0;

@@ -192,6 +192,12 @@ namespace mysimulator {
         }
         _Value_(KineticEnergy)=ke;
       }
+      void Update() {
+        assert(_props.IsValid());
+        for(unsigned int i=0;i<_props.Size();++i)
+        for(unsigned int j=0;j<_props[i].Size();++j)
+          _props[i][j]->Update();
+      }
 
       void SetOutputTime(const T& ot) {
         assert(_out!=NULL);
