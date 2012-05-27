@@ -19,7 +19,7 @@ namespace mysimulator {
       template <typename T1,typename GT,typename GR> friend class Propagator;
 
       StepPropagator() : _tag(UnassignedStepPropagator), _range(), _param(),
-                         _X(), _G(), _V(), _E() {}
+                         _X(), _G(), _V() {}
       virtual ~StepPropagator() { Clear(*this); }
 
       bool IsValid() const {
@@ -55,7 +55,6 @@ namespace mysimulator {
       void IntroduceX(Array2DNumeric<T>& X) { _Introduce(_X,X); }
       void IntroduceG(Array2DNumeric<T>& G) { _Introduce(_G,G); }
       void IntroduceV(Array2DNumeric<T>& V) { _Introduce(_V,V); }
-      void IntroduceV(ArrayNumeric<T>& V) { _Introduce(_V,V); }
 
     protected:
 
@@ -65,7 +64,6 @@ namespace mysimulator {
       Array<Array2DNumeric<T> > _X;
       Array<Array2DNumeric<T> > _G;
       Array<Array2DNumeric<T> > _V;
-      Array<ArrayNumeric<T> >   _E;
 
       template <template<typename> class AType>
       void _Introduce(Array<AType<T> >& A,AType<T>& IA) {
@@ -86,7 +84,6 @@ namespace mysimulator {
 
   template <typename T>
   void Clear(StepPropagator<T>& P) {
-    Clear(P._E);
     Clear(P._V);
     Clear(P._G);
     Clear(P._X);

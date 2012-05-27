@@ -50,7 +50,7 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T,typename GT>
-  void Introduce(StepPropagatorBinder<T,GT>* B,
+  void Introduce(StepPropagatorBinder<T,GT>*& B,
                  const Array<StepPropagator<T>*>& Ps) {
     if(B!=NULL) { delete B; B=NULL; }
     static StepPropagatorVelVerletBinder<T,GT> VVerlet;

@@ -24,23 +24,31 @@ namespace mysimulator {
         Clear(_X);
         _X.Allocate(n,dim);
         _CreateGVE();
+        if(_F.IsValid())
+          for(unsigned int i=0;i<_F.Size();++i) _F[i].ImprintGE(_X);
       }
       void AllocateXVGE(const Array<unsigned int>& sz) {
         Clear(_X);
         _X.Allocate(sz);
         _CreateGVE();
+        if(_F.IsValid())
+          for(unsigned int i=0;i<_F.Size();++i) _F[i].ImprintGE(_X);
       }
       template <typename T1,template<typename> class AF>
       void ImprintXVGE(const Array2DBase<T1,AF>& A) {
         Clear(_X);
         _X.ImprintStructure(A);
         _CreateGVE();
+        if(_F.IsValid())
+          for(unsigned int i=0;i<_F.Size();++i) _F[i].ImprintGE(_X);
       }
       void AllocateInteraction(const Array<Array<InteractionFuncName> >& FN,
                                unsigned int dim) {
         Clear(_F);
         _F.Allocate(FN.Size());
         for(unsigned int i=0;i<_F.Size();++i) _F[i].Allocate(FN[i],dim);
+        if(_X.IsValid())
+          for(unsigned int i=0;i<_F.Size();++i) _F[i].ImprintGE(_X);
       }
       void AssignNumberInteractionGroup(unsigned int n) {
         assert(_F.IsValid());
@@ -71,6 +79,9 @@ namespace mysimulator {
         assert(_V.IsValid()); return _V;
       }
       const T& Energy() const { assert(_E.IsValid()); return _E[0]; }
+      const ArrayNumeric<T>& EnergyStorage() const {
+        assert(_E.IsValid()); return _E;
+      }
       const SystemInteraction<T,GeomType>& Interaction(unsigned int n) const {
         assert(_F.IsValid());
         return _F[n];

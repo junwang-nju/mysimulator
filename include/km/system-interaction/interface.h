@@ -78,6 +78,11 @@ namespace mysimulator {
         }
         _Geom.Allocate(dim);
       }
+      template <typename T1,template<typename> class AF>
+      void ImprintGE(const Array2DBase<T1,AF>& A) {
+        _G.ImprintStructure(A);
+        _E.Allocate(1);
+      }
 
       void CalcE(const ArrayNumeric<ArrayNumeric<T> >& X) {
         assert(IsValid()&&_E.IsValid());
@@ -100,7 +105,7 @@ namespace mysimulator {
         assert(_Func.Size()==_ID.Size());
         assert(_Func.Size()==_Param.Size());
         _E[0]=0;
-        BlasFill(_G,0);
+        _G.BlasFill(0);
         for(unsigned int i=0;i<_Func.Size();++i)
           _Func[i]->BMethod(X,_ID[i],_Param[i],_Geom,_E[0],_G);
       }

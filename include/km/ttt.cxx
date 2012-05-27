@@ -25,7 +25,7 @@ int main() {
   Propagator<double,FreeSpace>* P=new PropagatorRegular<double,FreeSpace>;
 
   P->SetMassFlag(UniqueMass);
-  P->SetFrictionFlag(UniqueFriction);
+  P->SetFrictionFlag(UnknownFrictionProperty);
   P->Output()=new OutTest;
 
   Array2D<StepPropagatorName>   SPN;
@@ -35,6 +35,10 @@ int main() {
 
   P->InitNowTime(0);
   P->SetTime(0.001,10.);
+  P->SetOutputTime(0.001);
+
+  Value<double>(P->Parameter(PropagatorMass))=1.;
+  P->Steps(0,0)->Update1();
 
   System<double,FreeSpace> S;
 
@@ -72,6 +76,16 @@ int main() {
   S.InteractionGroup(0).Allocate(2);
   S.InteractionGroup(0).WorkID(0)=0;
   S.InteractionGroup(0).WorkID(1)=1;
+
+  S.UpdateB(0);
+  cout<<S.Energy()<<endl;
+
+  P->Steps(0,0)->AllocateRange(1);
+  P->Steps(0,0)->Range(0)[0]=0;
+  P->Steps(0,0)->Range(0)[1]=4;
+  P->IntroduceSystem(S);
+
+  P->Evolute(S);
 
   return 0;
 }

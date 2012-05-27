@@ -90,7 +90,7 @@ namespace mysimulator {
         _ldata.MemFill(c);
       }
       template <template<typename> class AF>
-      void Imprint(Array2DBase<T,AF>& A) {
+      void Imprint(const Array2DBase<T,AF>& A) {
         assert(A.IsValid());
         Clear(*this);
         static_cast<ParentType*>(this)->Allocate(A.Size());
@@ -99,7 +99,7 @@ namespace mysimulator {
           this->operator[](i).Refer(_ldata,m,A[i].Size());
       }
       template <typename T1,template<typename> class AF>
-      void ImprintStructure(Array2DBase<T1,AF>& A) {
+      void ImprintStructure(const Array2DBase<T1,AF>& A) {
         assert(A.IsValid());
         Clear(*this);
         static_cast<ParentType*>(this)->Allocate(A.Size());

@@ -169,6 +169,11 @@ namespace mysimulator {
         return _props[m][n];
       }
 
+      Unique64Bit& Parameter(PropagatorParameterName n) { return _param[n]; }
+      const Unique64Bit& Parameter(PropagatorParameterName n) const {
+        return _param[n];
+      }
+
       void InitNowTime(const T& nt=0) { _now=nt; _nnow=0; }
       void SetTime(const T& dt,const T& tt) {
         _Value_(TimeStep)=dt;
@@ -199,7 +204,8 @@ namespace mysimulator {
         _nout=_nstep/n;
       }
 
-      virtual void Evolute(System<T,GT>&)=0;
+      virtual void IntroduceSystem(System<T,GT>&) = 0;
+      virtual void Evolute(System<T,GT>&) = 0;
 
     protected:
 
