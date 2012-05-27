@@ -23,6 +23,7 @@ namespace mysimulator {
                            Array<StepPropagator<T>*>& Props) {
         // assuming X,G have been connected with Props
         assert(X.IsValid());
+        assert(G.IsValid());
         assert(I.IsValid());
         assert(Props.IsValid());
         for(unsigned int i=0;i<Props.Size();++i) {

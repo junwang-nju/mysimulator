@@ -1,9 +1,9 @@
 
-#ifndef _Step_Propagator_VelVerlet_Langevin_AMass_Interface_H_
-#define _Step_Propagator_VelVerlet_Langevin_AMass_Interface_H_
+#ifndef _Step_Propagator_Dynamics_VelVerlet_Langevin_AMass_Interface_H_
+#define _Step_Propagator_Dynamics_VelVerlet_Langevin_AMass_Interface_H_
 
-#include "step-propagator/vel-verlet/langevin/interface.h"
-#include "step-propagator/vel-verlet/array-mass/interface.h"
+#include "step-propagator/dynamics/vel-verlet/langevin/interface.h"
+#include "step-propagator/dynamics/vel-verlet/array-mass/interface.h"
 
 #ifndef _NAME_
 #define _NAME_(DT,U)          VelVerletLangevin_##DT##U

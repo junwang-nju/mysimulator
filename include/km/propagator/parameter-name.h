@@ -6,6 +6,7 @@ namespace mysimulator {
 
   enum PropagatorParameterName {
     PropagatorTimeStep=0,
+    PropagatorKineticEnergy,
     PropagatorMass,
     PropagatorNegHTIM,
     PropagatorVelocitySQ,

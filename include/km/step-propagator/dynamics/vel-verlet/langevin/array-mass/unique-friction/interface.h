@@ -1,8 +1,8 @@
 
-#ifndef _Step_Propagator_VelVerlet_Langevin_AMass_AFric_Interface_H_
-#define _Step_Propagator_VelVerlet_Langevin_AMass_AFric_Interface_H_
+#ifndef _Step_Propagator_Dynamics_VelVerlet_Langevin_AMass_UFric_Interface_H_
+#define _Step_Propagator_Dynamics_VelVerlet_Langevin_AMass_UFric_Interface_H_
 
-#include "step-propagator/vel-verlet/langevin/array-mass/interface.h"
+#include "step-propagator/dynamics/vel-verlet/langevin/array-mass/interface.h"
 
 #ifndef _NAME_
 #define _NAME_(DT,U)          VelVerletLangevin_##DT##U
@@ -28,16 +28,16 @@
 #error "Duplicate _Value_"
 #endif
 
+#ifndef _Src2Ptr_Pointer_
+#define _Src2Ptr_Pointer_(U)  _Pointer_(Ptr,U)=_Pointer_(Src,U);
+#else
+#error "Duplicate _Src2Ptr_Pointer_"
+#endif
+
 #ifndef _TypePtr_
 #define _TypePtr_             AAType
 #else
 #error "Duplicate _TypePtr_"
-#endif
-
-#ifndef _TypeSrc_
-#define _TypeSrc_             AType
-#else
-#error "Duplicate _TypeSrc_"
 #endif
 
 #ifndef _PointerArray_
@@ -52,30 +52,10 @@
 #error "Duplicate _PtrArray_"
 #endif
 
-#ifndef _SrcArray_
-#define _SrcArray_(U)         (*_PointerArray_(Src,U))
+#ifndef _PtrValue_
+#define _PtrValue_(U)         _Value_(Ptr,U)
 #else
-#error "Duplicate _SrcArray_"
-#endif
-
-#ifndef _Src2Ptr_Array_
-#define _Src2Ptr_Array_(U) \
-  if(_PointerArray_(Src,U)!=NULL) { \
-    _PointerArray_(Ptr,U)=new AAType; \
-    this->_Introduce(_PtrArray_(U),_SrcArray_(U)); \
-  }
-#else
-#error "Duplicate _Src2Ptr_Array_"
-#endif
-
-#ifndef _PtrClean_
-#define _PtrClean_(U) \
-  if(_PointerArray_(Ptr,U)!=NULL) { \
-    delete _PointerArray_(Ptr,U); \
-    _PointerArray_(Ptr,U)=NULL; \
-  }
-#else
-#error "Duplicate _PtrClean_"
+#error "Duplicate _PtrValue_"
 #endif
 
 #ifndef _SrcValue_
@@ -87,35 +67,31 @@
 namespace mysimulator {
 
   template <typename T>
-  class StepPropagatorVelVerletLangevin_AMassAFric
+  class StepPropagatorVelVerletLangevin_AMassUFric
       : public StepPropagatorVelVerletLangevin_AMass<T> {
 
     public:
 
-      typedef StepPropagatorVelVerletLangevin_AMassAFric<T> Type;
-      typedef StepPropagatorVelVerletLangevin_AMass<T> ParentType;
+      typedef StepPropagatorVelVerletLangevin_AMassUFric<T> Type;
+      typedef StepPropagatorVelVerletLangevin_AMass<T>  ParentType;
       typedef Array2DNumeric<T>   AType;
       typedef Array<AType>    AAType;
 
-      StepPropagatorVelVerletLangevin_AMassAFric() : ParentType() {}
-      virtual ~StepPropagatorVelVerletLangevin_AMassAFric() { Clear(*this); }
+      StepPropagatorVelVerletLangevin_AMassUFric() : ParentType() {}
+      virtual ~StepPropagatorVelVerletLangevin_AMassUFric() { Clear(*this); }
 
       virtual void Init() {
         static_cast<ParentType*>(this)->Init();
-        _Src2Ptr_Array_(Friction)
-      }
-      virtual void Clean() {
-        static_cast<ParentType*>(this)->Clean();
-        _PtrClean_(Friction)
+        _Src2Ptr_Pointer_(Friction)
       }
 
-      virtual void Update5() {
+      virtual void Update5() {  // RandSize
         assert(this->_param.IsValid());
         const unsigned int n=_PtrArray_(Mass).Size();
         for(unsigned int i=0;i<n;++i) {
           _PtrArray_(RandSize)[i].BlasCopy(_PtrArray_(NegHTIM)[i]);
-          _PtrArray_(RandSize)[i].BlasScale(-2*_SrcValue_(Temperature));
-          _PtrArray_(RandSize)[i].BlasScale(_PtrArray_(Friction)[i]);
+          _PtrArray_(RandSize)[i].BlasScale(
+              -2*_SrcValue_(Temperature)*_PtrValue_(Friction));
           _PtrArray_(RandSize)[i].SqRoot();
         }
       }
@@ -124,7 +100,7 @@ namespace mysimulator {
         const unsigned int n=_PtrArray_(Mass).Size();
         for(unsigned int i=0;i<n;++i) {
           _PtrArray_(FacBf)[i].BlasCopy(_PtrArray_(NegHTIM)[i]);
-          _PtrArray_(FacBf)[i].BlasScale(_PtrArray_(Friction)[i]);
+          _PtrArray_(FacBf)[i].BlasScale(_PtrValue_(Friction));
           _PtrArray_(FacAf)[i].BlasCopy(_PtrArray_(FacBf)[i]);
           _PtrArray_(FacBf)[i].BlasShift(1);
           _PtrArray_(FacAf)[i].BlasScale(-1);
@@ -135,14 +111,14 @@ namespace mysimulator {
 
     private:
 
-      StepPropagatorVelVerletLangevin_AMassAFric(const Type&) {}
+      StepPropagatorVelVerletLangevin_AMassUFric(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };
 
   template <typename T>
-  void Clear(StepPropagatorVelVerletLangevin_AMassAFric<T>& P) {
-    typedef typename StepPropagatorVelVerletLangevin_AMassAFric<T>::ParentType
+  void Clear(StepPropagatorVelVerletLangevin_AMassUFric<T>& P) {
+    typedef typename StepPropagatorVelVerletLangevin_AMassUFric<T>::ParentType
             PType;
     Clear(static_cast<PType&>(P));
   }
@@ -153,16 +129,8 @@ namespace mysimulator {
 #undef _SrcValue_
 #endif
 
-#ifdef _PtrClean_
-#undef _PtrClean_
-#endif
-
-#ifdef _Src2Ptr_Array_
-#undef _Src2Ptr_Array_
-#endif
-
-#ifdef _SrcArray_
-#undef _SrcArray_
+#ifdef _PtrValue_
+#undef _PtrValue_
 #endif
 
 #ifdef _PtrArray_
@@ -173,12 +141,12 @@ namespace mysimulator {
 #undef _PointerArray_
 #endif
 
-#ifdef _TypeSrc_
-#undef _TypeSrc_
-#endif
-
 #ifdef _TypePtr_
 #undef _TypePtr_
+#endif
+
+#ifdef _Src2Ptr_Pointer_
+#undef _Src2Ptr_Pointer_
 #endif
 
 #ifdef _Value_

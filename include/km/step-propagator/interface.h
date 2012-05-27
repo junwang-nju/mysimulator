@@ -16,7 +16,6 @@ namespace mysimulator {
 
       typedef StepPropagator<T>   Type;
       template <typename T1> friend void Clear(StepPropagator<T1>&);
-      template <typename T1,typename GT,typename GR> friend class Propagator;
 
       StepPropagator() : _tag(UnassignedStepPropagator), _range(), _param(),
                          _X(), _G(), _V() {}
@@ -27,20 +26,21 @@ namespace mysimulator {
                _param.IsValid()&&_X.IsValid();
       }
 
-      virtual void Allocate()=0;
-      virtual void Init()=0;
-      virtual void Clean()=0;
-      virtual void Update()=0;
-      virtual void Update1()=0;
-      virtual void Update2()=0;
-      virtual void Update3()=0;
-      virtual void Update4()=0;
-      virtual void Update5()=0;
-      virtual void Update6()=0;
-      virtual void Evolute1()=0;
-      virtual void Evolute2()=0;
-      virtual void Evolute3()=0;
-      virtual void Evolute4()=0;
+      virtual bool IsDynamics() const = 0;
+      virtual void Allocate()         = 0;
+      virtual void Init()             = 0;
+      virtual void Clean()            = 0;
+      virtual void Update()           = 0;
+      virtual void Update1()          = 0;
+      virtual void Update2()          = 0;
+      virtual void Update3()          = 0;
+      virtual void Update4()          = 0;
+      virtual void Update5()          = 0;
+      virtual void Update6()          = 0;
+      virtual void Evolute1()         = 0;
+      virtual void Evolute2()         = 0;
+      virtual void Evolute3()         = 0;
+      virtual void Evolute4()         = 0;
 
       void AllocateRange(unsigned int n) { _range.Allocate(n,2); }
 
@@ -53,6 +53,9 @@ namespace mysimulator {
         assert(_range.IsValid());
         return _range[n];
       }
+      Unique64Bit& Parameter(unsigned int n) { return _param[n]; }
+      const Unique64Bit& Parameter(unsigned int n) const { return _param[n]; }
+
       void IntroduceX(Array2DNumeric<T>& X) { _Introduce(_X,X); }
       void IntroduceG(Array2DNumeric<T>& G) { _Introduce(_G,G); }
       void IntroduceV(Array2DNumeric<T>& V) { _Introduce(_V,V); }
@@ -95,12 +98,12 @@ namespace mysimulator {
 
 }
 
-#include "step-propagator/vel-verlet/const-e/unique-mass/interface.h"
-#include "step-propagator/vel-verlet/const-e/array-mass/interface.h"
-#include "step-propagator/vel-verlet/langevin/unique-mass/unique-friction/interface.h"
-#include "step-propagator/vel-verlet/langevin/unique-mass/array-friction/interface.h"
-#include "step-propagator/vel-verlet/langevin/array-mass/unique-friction/interface.h"
-#include "step-propagator/vel-verlet/langevin/array-mass/array-friction/interface.h"
+#include "step-propagator/dynamics/vel-verlet/const-e/unique-mass/interface.h"
+#include "step-propagator/dynamics/vel-verlet/const-e/array-mass/interface.h"
+#include "step-propagator/dynamics/vel-verlet/langevin/unique-mass/unique-friction/interface.h"
+#include "step-propagator/dynamics/vel-verlet/langevin/unique-mass/array-friction/interface.h"
+#include "step-propagator/dynamics/vel-verlet/langevin/array-mass/unique-friction/interface.h"
+#include "step-propagator/dynamics/vel-verlet/langevin/array-mass/array-friction/interface.h"
 #include "step-propagator/property-name.h"
 #include <cstdarg>
 

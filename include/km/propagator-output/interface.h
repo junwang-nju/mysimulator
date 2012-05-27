@@ -16,30 +16,34 @@ namespace mysimulator {
       template <typename T1,typename GT1,typename GR1>
       friend void Clear(PropagatorOutput<T1,GT1,GR1>&);
 
-      PropagatorOutput() : _OutInterval(0), _OutNumberStep(0) {}
+      PropagatorOutput() : _ostep(0), _onstep(0), _nostep(0) {}
       virtual ~PropagatorOutput() { Clear(*this); }
 
-      bool IsValid() const { return _OutNumberStep!=0; }
+      bool IsValid() const { return _onstep!=0; }
 
-      void SetTime(const T& ot,const T& dt) {
-        _OutNumberStep=static_cast<unsigned int>(ot/dt);
-        if(_OutNumberStep==0) _OutNumberStep=1;
-        _OutInterval=_OutNumberStep*dt;
+      void SetTime(const T& ot,const T& dt, unsigned int tn) {
+        _onstep=static_cast<unsigned int>(ot/dt+0.5);
+        if(_onstep==0) _onstep=1;
+        _ostep=_onstep*dt;
+        _nostep=tn/_onstep;
       }
-      void SetTime(unsigned int n,const T& dt) {
-        _OutNumberStep=n;
-        _OutInterval=_OutNumberStep*dt;
+      void SetTime(unsigned int n,const T& dt, unsigned int tn) {
+        _onstep=n;
+        _ostep=_onstep*dt;
+        _nostep=tn/_onstep;
       }
 
-      const T& OutputInterval() const { return _OutInterval; }
-      const unsigned int& OutputNumberStep() const { return _OutNumberStep; }
+      const T& OutputInterval() const { return _ostep; }
+      const unsigned int& OutputNumberStep() const { return _onstep; }
+      const unsigned int& NumberOutput() const { return _nostep; }
 
       virtual void Write(const T&,System<T,GT>&,Propagator<T,GT,GR>*) = 0;
 
     protected:
 
-      T _OutInterval;
-      unsigned int _OutNumberStep;
+      T _ostep;
+      unsigned int _onstep;
+      unsigned int _nostep;
 
     private:
 
@@ -50,8 +54,9 @@ namespace mysimulator {
 
   template <typename T,typename GT,typename GR>
   void Clear(PropagatorOutput<T,GT,GR>& P) {
-    P._OutInterval=0;
-    P._OutNumberStep=0;
+    P._ostep=0;
+    P._onstep=0;
+    P._nostep=0;
   }
 
 }

@@ -17,6 +17,8 @@ namespace mysimulator {
       StepPropagatorDynamics() : ParentType() {}
       virtual ~StepPropagatorDynamics() { Clear(*this); }
 
+      virtual bool IsDynamics() const { return true; }
+
     private:
 
       StepPropagatorDynamics(const Type&) {}

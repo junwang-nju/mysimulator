@@ -28,23 +28,24 @@ namespace mysimulator {
       }
 
       virtual void Evolute(System<T,GT>& S) {
-        this->_out->Write(this->_now,S,this);
-        for(unsigned int i=0;i<this->_nout;++i) {
+        this->_out->Write(this->_time.NowTime(),S,this);
+        for(unsigned int i=0;i<this->_out->NumberOutput();++i) {
           for(unsigned int k=0;k<this->_out->OutputNumberStep();++k) {
             this->_bind[0]->Evolute(S.Location(),S.Gradient(),
                                     S.InteractionGroup(0),this->_props[0]);
           }
-          this->_now+=this->_out->OutputInterval();
-          this->_nnow+=this->_out->OutputNumberStep();
-          this->_out->Write(this->_now,S,this);
+          this->_time.IncNowTime(this->_out->OutputInterval(),
+                                 this->_out->OutputNumberStep());
+          this->_out->Write(this->_time.NowTime(),S,this);
         }
-        if(this->_nnow<this->_nstep) {
-          for(unsigned int i=this->_nnow;i<this->_nstep;++i)
+        if(this->_time.NowStep()<this->_time.TotalStep()) {
+          for(unsigned int i=this->_time.NowTime();
+                           i<this->_time.TotalStep();++i)
             this->_bind[0]->Evolute(S.Location(),S.Gradient(),
                                     S.InteractionGroup(0),this->_props[0]);
-          this->_now=this->_alltime;
-          this->_nnow=this->_nstep;
-          this->_out->Write(this->_now,S,this);
+          this->_time.SetNowTime(this->_time.TotalPeriod(),
+                                 this->_time.TotalStep());
+          this->_out->Write(this->_time.NowTime(),S,this);
         }
       }
 

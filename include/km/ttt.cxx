@@ -15,7 +15,7 @@ namespace mysimulator {
                          Propagator<double,FreeSpace,
                                     BoxMuller<MersenneTwisterStandard> >* P) {
         S.UpdateE(0);
-        P->Steps(0,0)->Update4();
+        P->UpdateKineticEnergy();
         std::cout<<now<<"\t"<<S.Energy()<<"\t"<<P->KineticEnergy()<<endl;
       }
   };
@@ -34,12 +34,12 @@ int main() {
   SPN[0][0]=VelVerletConstE;
   P->Allocate(SPN);
 
-  P->InitNowTime(0);
-  P->SetTime(0.001,10.);
+  P->Time().InitNowTime(0);
+  P->Time().SetTime(0.001,10.);
   P->SetOutputTime(0.001);
 
   Value<double>(P->Parameter(PropagatorMass))=1.;
-  P->Steps(0,0)->Update1();
+  P->Steps(0,0)->Update();
 
   System<double,FreeSpace> S;
 

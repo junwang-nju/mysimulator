@@ -107,6 +107,10 @@ namespace mysimulator {
         this->Update1(); this->Update5(); this->Update6();
       }
 
+      virtual void Update4() {
+        this->Update2(); this->Update3();
+      }
+
       void ProduceRandVector() {
         assert(this->_param.IsValid());
         const unsigned int n=_PtrArray_(RandVector).Size();
