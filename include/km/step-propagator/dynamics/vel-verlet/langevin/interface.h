@@ -106,10 +106,7 @@ namespace mysimulator {
       virtual void Update() {
         this->Update1(); this->Update5(); this->Update6();
       }
-
-      virtual void Update4() {
-        this->Update2(); this->Update3();
-      }
+      virtual void Update7() { fprintf(stderr,"Not Implemented!\n"); }
 
       void ProduceRandVector() {
         assert(this->_param.IsValid());

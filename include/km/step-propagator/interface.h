@@ -26,21 +26,23 @@ namespace mysimulator {
                _param.IsValid()&&_X.IsValid();
       }
 
-      virtual bool IsDynamics() const = 0;
-      virtual void Allocate()         = 0;
-      virtual void Init()             = 0;
-      virtual void Clean()            = 0;
-      virtual void Update()           = 0;
-      virtual void Update1()          = 0;
-      virtual void Update2()          = 0;
-      virtual void Update3()          = 0;
-      virtual void Update4()          = 0;
-      virtual void Update5()          = 0;
-      virtual void Update6()          = 0;
-      virtual void Evolute1()         = 0;
-      virtual void Evolute2()         = 0;
-      virtual void Evolute3()         = 0;
-      virtual void Evolute4()         = 0;
+      virtual bool IsDynamics() const   = 0;
+      virtual bool IsMinimizer() const  = 0;
+      virtual void Allocate()           = 0;
+      virtual void Init()               = 0;
+      virtual void Clean()              = 0;
+      virtual void Update()             = 0;
+      virtual void Update1()            = 0;
+      virtual void Update2()            = 0;
+      virtual void Update3()            = 0;
+      virtual void Update4()            = 0;
+      virtual void Update5()            = 0;
+      virtual void Update6()            = 0;
+      virtual void Update7()            = 0;
+      virtual void Evolute1()           = 0;
+      virtual void Evolute2()           = 0;
+      virtual void Evolute3()           = 0;
+      virtual void Evolute4()           = 0;
 
       void AllocateRange(unsigned int n) { _range.Allocate(n,2); }
 
@@ -98,12 +100,15 @@ namespace mysimulator {
 
 }
 
+#include "step-propagator/generic/fix-position/interface.h"
 #include "step-propagator/dynamics/vel-verlet/const-e/unique-mass/interface.h"
 #include "step-propagator/dynamics/vel-verlet/const-e/array-mass/interface.h"
 #include "step-propagator/dynamics/vel-verlet/langevin/unique-mass/unique-friction/interface.h"
 #include "step-propagator/dynamics/vel-verlet/langevin/unique-mass/array-friction/interface.h"
 #include "step-propagator/dynamics/vel-verlet/langevin/array-mass/unique-friction/interface.h"
 #include "step-propagator/dynamics/vel-verlet/langevin/array-mass/array-friction/interface.h"
+#include "step-propagator/dynamics/vel-verlet/berendsen/unique-mass/interface.h"
+#include "step-propagator/dynamics/vel-verlet/berendsen/array-mass/interface.h"
 #include "step-propagator/property-name.h"
 #include <cstdarg>
 
@@ -139,6 +144,15 @@ namespace mysimulator {
           else if(FricFlag==ArrayFriction)
             P=new StepPropagatorVelVerletLangevin_AMassAFric<T>;
         }
+        break;
+      case VelVerletBerendsen:
+        MassFlag=static_cast<MassPropertyName>(va_arg(vl,unsigned int));
+        if(MassFlag==UniqueMass)
+          P=new StepPropagatorVelVerletBerendsen_UMass<T>;
+        else if(MassFlag==ArrayMass)
+          P=new StepPropagatorVelVerletBerendsen_AMass<T>;
+        break;
+      case FixPosition:
         break;
       default:
         fprintf(stderr,"Unknown StepPropagator Name!\n");

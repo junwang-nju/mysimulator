@@ -17,6 +17,8 @@ namespace mysimulator {
       StepPropagatorVelVerlet() : ParentType() {}
       ~StepPropagatorVelVerlet() { Clear(*this); }
 
+      virtual void Update4() { this->Update2(); this->Update3(); }
+
       virtual void Evolute3() { fprintf(stderr,"Not Implemented!\n"); }
       virtual void Evolute4() { fprintf(stderr,"Not Implemented!\n"); }
 

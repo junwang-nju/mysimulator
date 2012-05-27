@@ -45,6 +45,8 @@ namespace mysimulator {
         switch(SPN) {
           case VelVerletConstE:
           case VelVerletLangevin:
+          case VelVerletBerendsen:
+          case FixPosition:
             fg=true;  break;
           default:
             fg=false; break;

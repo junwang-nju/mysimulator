@@ -18,6 +18,7 @@ namespace mysimulator {
       virtual ~StepPropagatorDynamics() { Clear(*this); }
 
       virtual bool IsDynamics() const { return true; }
+      virtual bool IsMinimizer() const { return false; }
 
     private:
 

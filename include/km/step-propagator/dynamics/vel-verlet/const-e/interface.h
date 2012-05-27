@@ -25,9 +25,9 @@ namespace mysimulator {
 
       virtual void Update() { this->Update1(); }
 
-      virtual void Update4() { this->Update2(); this->Update3(); }
       virtual void Update5() { fprintf(stderr,"Not Implemented!\n"); }
       virtual void Update6() { fprintf(stderr,"Not Implemented!\n"); }
+      virtual void Update7() { fprintf(stderr,"Not Implemented!\n"); }
 
     private:
 

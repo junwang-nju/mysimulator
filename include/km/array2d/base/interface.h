@@ -33,6 +33,8 @@ namespace mysimulator {
         return static_cast<const ParentType*>(this)->IsValid()&&
                _ldata.IsValid();
       }
+      unsigned int NumElements() const { return _ldata.Size(); }
+
       void Allocate(const ArrayNumeric<unsigned int>& sz) {
         Clear(*this);
         static_cast<ParentType*>(this)->Allocate(sz.Size());
