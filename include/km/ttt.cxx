@@ -15,7 +15,8 @@ namespace mysimulator {
                          Propagator<double,FreeSpace,
                                     BoxMuller<MersenneTwisterStandard> >* P) {
         S.UpdateE(0);
-        std::cout<<now<<"\t"<<S.Energy()<<std::endl;
+        P->Steps(0,0)->Update4();
+        std::cout<<now<<"\t"<<S.Energy()<<"\t"<<P->KineticEnergy()<<endl;
       }
   };
 

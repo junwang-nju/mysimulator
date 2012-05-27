@@ -7,6 +7,7 @@
 namespace mysimulator {
 
   enum VelVerletConstEParameterName {
+    VelVerletConstE_ValKineticEnergy  = VelVerlet_ValKineticEnergy,
     VelVerletConstE_PtrMass           = VelVerlet_PtrMass,
     VelVerletConstE_PtrNegHTIM        = VelVerlet_PtrNegHTIM,
     VelVerletConstE_PtrVelocitySQ     = VelVerlet_PtrVelocitySQ,
@@ -14,7 +15,6 @@ namespace mysimulator {
     VelVerletConstE_SrcMass           = VelVerlet_SrcMass,
     VelVerletConstE_SrcNegHTIM        = VelVerlet_SrcNegHTIM,
     VelVerletConstE_SrcVelocitySQ     = VelVerlet_SrcVelocitySQ,
-    VelVerletConstE_ValKineticEnergy  = VelVerlet_ValKineticEnergy,
     VelVerletConstE_NumberParameter   = VelVerlet_NumberParameter
   };
 

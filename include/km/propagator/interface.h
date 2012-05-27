@@ -173,6 +173,13 @@ namespace mysimulator {
       const Unique64Bit& Parameter(PropagatorParameterName n) const {
         return _param[n];
       }
+      const T KineticEnergy() const {
+        T ke=0;
+        for(unsigned int i=0;i<_props.Size();++i)
+        for(unsigned int j=0;j<_props[i].Size();++j)
+          ke+=Value<double>(_props[i][j]->_param[StepPropagator_ValKineticEnergy]);
+        return ke;
+      }
 
       void InitNowTime(const T& nt=0) { _now=nt; _nnow=0; }
       void SetTime(const T& dt,const T& tt) {

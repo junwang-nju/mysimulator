@@ -7,6 +7,7 @@
 namespace mysimulator {
 
   enum VelVerletLangevinParameterName {
+    VelVerletLangevin_ValKineticEnergy  = VelVerlet_ValKineticEnergy,
     VelVerletLangevin_PtrMass           = VelVerlet_PtrMass,
     VelVerletLangevin_PtrNegHTIM        = VelVerlet_PtrNegHTIM,
     VelVerletLangevin_PtrVelocitySQ     = VelVerlet_PtrVelocitySQ,
@@ -14,7 +15,6 @@ namespace mysimulator {
     VelVerletLangevin_SrcMass           = VelVerlet_SrcMass,
     VelVerletLangevin_SrcNegHTIM        = VelVerlet_SrcNegHTIM,
     VelVerletLangevin_SrcVelocitySQ     = VelVerlet_SrcVelocitySQ,
-    VelVerletLangevin_ValKineticEnergy  = VelVerlet_ValKineticEnergy,
     VelVerletLangevin_PtrFriction       = VelVerlet_NumberParameter,
     VelVerletLangevin_PtrRandVector,
     VelVerletLangevin_PtrRandSize,
