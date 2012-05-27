@@ -110,6 +110,7 @@ namespace mysimulator {
 
   _CopyDEF_(unsigned char, unsigned char)
 
+  _CopyDEF_(bool, bool)
   _CopyDEF_(bool, long long)
   _CopyDEF_(bool, unsigned long long)
   _CopyDEF_(bool, int)

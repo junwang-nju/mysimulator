@@ -2,15 +2,14 @@
 #ifndef _Basic_Fill_H_
 #define _Basic_Fill_H_
 
-#include "type-check/is-numeric.h"
+#include "type-check/is-fillable.h"
 #include "basic/copy.h"
 
 namespace mysimulator {
 
   template <typename T1, typename T2>
   void _Fill(T1& a, const T2& b) {
-    typedef typename IsNumeric<T1>::Type  NumericCheck1;
-    typedef typename IsNumeric<T2>::Type  NumericCheck2;
+    typedef typename IsFillable<T1,T2>::Type  FillCheck;
     _Copy(a,b);
   }
 
