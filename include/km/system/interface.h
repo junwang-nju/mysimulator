@@ -29,16 +29,11 @@ namespace mysimulator {
         assert(_Kind.IsValid());
         ArrayNumeric<unsigned int> sz;
         sz.ImprintStructure(_Kind);
-        printf("========  %d\n",sz.Size());
-        printf("========  %d\n",sz.IsValid());
         sz.Fill(dim);
         for(unsigned int i=0;i<sz.Size();++i)
           sz[i]+=MonomerAltDimension[_Kind[i]];
         Clear(_X);
-        printf("========  %d\n",sz.Size());
-        printf("========  %d\n",sz.IsValid());
         _X.Allocate(sz);
-        printf("========  %d\n",sz.Size());
         _CreateGVE();
         if(_F.IsValid())
           for(unsigned int i=0;i<_F.Size();++i) _F[i].ImprintGE(_X);

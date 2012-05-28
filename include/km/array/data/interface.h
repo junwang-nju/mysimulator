@@ -9,7 +9,6 @@
 #include "type/is-char.h"
 #include <cstdlib>
 #include <cstring>
-#include <cstring>
 #include <cassert>
 
 namespace mysimulator {
@@ -29,17 +28,16 @@ namespace mysimulator {
       template <typename T1>  friend class ArrayData;
 
       ArrayData() : _data(NULL), _size(0), _alloc(false) {}
-      ~ArrayData() { Clear(*this); }
+      virtual ~ArrayData() { Clear(*this); }
 
       bool IsValid() const { return _data!=NULL; }
-      void Allocate(unsigned int n) {
+      virtual void Allocate(unsigned int n) {
         if(IsValid()&&(Size()==n))  return;
         Clear(*this);
         if(n==0)  return;
         _data=new T[n];
         _size=n;
         SetAllocFlag(true);
-        printf("===W====  %d\n",IsValid());
       }
       void Imprint(const ArrayData<T>& A) {
         Allocate(A.Size());

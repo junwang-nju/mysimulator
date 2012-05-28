@@ -3,7 +3,6 @@
 #define _Array2D_Base_Interface_
 
 #include "array-numeric/interface.h"
-#include <cstdio>
 
 namespace mysimulator {
 
@@ -31,31 +30,28 @@ namespace mysimulator {
       ~Array2DBase() { Clear(*this); }
 
       bool IsValid() const {
-        return static_cast<const ParentType*>(this)->IsValid()&&
-               _ldata.IsValid();
+        return ParentType::IsValid()&&_ldata.IsValid();
       }
       unsigned int NumElements() const { return _ldata.Size(); }
 
       void Allocate(const ArrayNumeric<unsigned int>& sz) {
         Clear(*this);
-        static_cast<ParentType*>(this)->Allocate(sz.Size());
-        printf("=====A==  %d\n",sz.IsValid());
+        ParentType::Allocate(sz.Size());
         _ldata.Allocate(sz.Summation());
-        printf("=====B==  %d\n",sz.Size());
         for(unsigned int i=0,m=0;i<sz.Size();m+=sz[i],++i)
-          static_cast<ParentType*>(this)->operator[](i).Refer(_ldata,m,sz[i]);
+          ParentType::operator[](i).Refer(_ldata,m,sz[i]);
       }
       void Allocate(unsigned int n1, unsigned int n2) {
         Clear(*this);
-        static_cast<ParentType*>(this)->Allocate(n1);
+        ParentType::Allocate(n1);
         _ldata.Allocate(n1*n2);
         for(unsigned int i=0,m=0;i<n1;m+=n2,++i)
-          static_cast<ParentType*>(this)->operator[](i).Refer(_ldata,m,n2);
+          ParentType::operator[](i).Refer(_ldata,m,n2);
       }
       void Refer(Type& A,unsigned int b, unsigned int n) {
         assert(A.IsValid());
         Clear(*this);
-        static_cast<ParentType*>(this)->Refer(static_cast<ParentType&>(A),b,n);
+        ParentType::Refer(static_cast<ParentType&>(A),b,n);
         unsigned int bl,nl;
         bl=static_cast<unsigned int>(A[b].Head()-A[0].Head());
         nl=(b+n<this->Size()?
@@ -66,7 +62,7 @@ namespace mysimulator {
       void Refer(Type& A) {
         assert(A.IsValid());
         Clear(*this);
-        static_cast<ParentType*>(this)->Refer(static_cast<ParentType&>(A));
+        ParentType::Refer(static_cast<ParentType&>(A));
         _ldata.Refer(A._ldata);
       }
 
@@ -98,7 +94,7 @@ namespace mysimulator {
       void Imprint(const Array2DBase<T,AF>& A) {
         assert(A.IsValid());
         Clear(*this);
-        static_cast<ParentType*>(this)->Allocate(A.Size());
+        ParentType::Allocate(A.Size());
         _ldata.Imprint(A._ldata);
         for(unsigned int i=0,m=0;i<A.Size();m+=A[i].Size(),++i)
           this->operator[](i).Refer(_ldata,m,A[i].Size());
@@ -107,7 +103,7 @@ namespace mysimulator {
       void ImprintStructure(const Array2DBase<T1,AF>& A) {
         assert(A.IsValid());
         Clear(*this);
-        static_cast<ParentType*>(this)->Allocate(A.Size());
+        ParentType::Allocate(A.Size());
         _ldata.Allocate(A._ldata.Size());
         for(unsigned int i=0,m=0;i<A.Size();m+=A[i].Size(),++i)
           this->operator[](i).Refer(_ldata,m,A[i].Size());

@@ -17,13 +17,10 @@ namespace mysimulator {
       PartUsedStatus() : ParentType(), _pcount(0) {}
       ~PartUsedStatus() { Clear(*this); }
 
-      bool IsValid() const {
-        return static_cast<const ParentType*>(this)->IsValid(); }
-      bool Only() const {
-        return static_cast<const ParentType*>(this)->Only()&&(_pcount==0);
-      }
+      bool IsValid() const { return ParentType::IsValid(); }
+      bool Only() const { return ParentType::Only()&&(_pcount==0); }
       bool AllPartUse() const { return IsValid()&&(this->_count==_pcount+1); }
-      void Init() { static_cast<ParentType*>(this)->Init(); _pcount=0; }
+      void Init() { ParentType::Init(); _pcount=0; }
       void IncPart() { Inc(); _pcount++; }
       void DecPart() { Dec(); _pcount--; }
 

@@ -22,14 +22,14 @@ namespace mysimulator {
       friend class Array2DBase;
 
       Array() : ParentType(), _status(NULL), _isPart(false) {}
-      ~Array() { Clear(*this); }
+      virtual ~Array() { Clear(*this); }
 
       bool IsValid() const {
-        return static_cast<const ParentType*>(this)->IsValid()&&(_status!=NULL);
+        return ParentType::IsValid()&&(_status!=NULL);
       }
-      void Allocate(unsigned int n) {
+      virtual void Allocate(unsigned int n) {
         Clear(*this);
-        static_cast<ParentType*>(this)->Allocate(n);
+        ParentType::Allocate(n);
         _status=new PartUsedStatus;
         _status->Init();
         _isPart=false;
@@ -37,7 +37,7 @@ namespace mysimulator {
       void Refer(Type& A, unsigned int b, unsigned int n) {
         assert(A.IsValid());
         Clear(*this);
-        static_cast<ParentType*>(this)->Refer(static_cast<ParentType&>(A),b,n);
+        ParentType::Refer(static_cast<ParentType&>(A),b,n);
         _status=A._status;
         _isPart=(A._isPart||(b>0)||(n<A.Size())?true:false);
         if(_isPart) _status->IncPart();
