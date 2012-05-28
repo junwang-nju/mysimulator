@@ -63,6 +63,10 @@ namespace mysimulator {
         assert(P.IsValid());
         _LoadPointer_(T,Step)
       }
+      virtual const T KineticEnergy() const {
+        fprintf(stderr,"Not Available!\n");
+        return 0;
+      }
 
     private:
 

@@ -30,10 +30,9 @@ namespace mysimulator {
       virtual void Evolute(System<T,GT>& S) {
         this->_out->Write(this->_time.NowTime(),S,this);
         for(unsigned int i=0;i<this->_out->NumberOutput();++i) {
-          for(unsigned int k=0;k<this->_out->OutputNumberStep();++k) {
+          for(unsigned int k=0;k<this->_out->OutputNumberStep();++k)
             this->_bind[0]->Evolute(S.Location(),S.Gradient(),
                                     S.InteractionGroup(0),this->_props[0]);
-          }
           this->_time.IncNowTime(this->_out->OutputInterval(),
                                  this->_out->OutputNumberStep());
           this->_out->Write(this->_time.NowTime(),S,this);

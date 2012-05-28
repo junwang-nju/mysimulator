@@ -3,6 +3,7 @@
 #define _Step_Propagator_Dynamics_Interface_H_
 
 #include "step-propagator/interface.h"
+#include "step-propagator/dynamics/parameter-name.h"
 
 namespace mysimulator {
 
@@ -19,6 +20,9 @@ namespace mysimulator {
 
       virtual bool IsDynamics() const { return true; }
       virtual bool IsMinimizer() const { return false; }
+      virtual const T KineticEnergy() const {
+        return Value<T>(this->_param[Dynamics_ValKineticEnergy]);
+      }
 
     private:
 

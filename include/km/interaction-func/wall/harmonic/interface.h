@@ -71,7 +71,7 @@ namespace mysimulator {
   template <typename T,typename GT>
   void Clear(InteractionFuncWallHarmonic<T,GT>& F) {
     typedef typename InteractionFuncWallHarmonic<T,GT>::ParentType  PType;
-    Clear(static_cast<ParentType&>(F));
+    Clear(static_cast<PType&>(F));
   }
 
 }

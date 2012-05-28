@@ -143,7 +143,7 @@ namespace mysimulator {
         for(unsigned int j=0;j<_props[i].Size();++j) {
           assert(_props[i][j]->IsDynamics());
           _props[i][j]->Update4();
-          ke+=Value<double>(_props[i][j]->Parameter(Dynamics_ValKineticEnergy));
+          ke+=Value<double>(_props[i][j]->KineticEnergy());
         }
         _Value_(KineticEnergy)=ke;
       }
@@ -222,6 +222,7 @@ namespace mysimulator {
         switch(PN) {
           case VelVerletConstE: Introduce(P,PN,_massFlag);  break;
           case VelVerletLangevin: Introduce(P,PN,_massFlag,_fricFlag); break;
+          case FixPosition: Introduce(P,PN);  break;
           default:
             fprintf(stderr,"Unknown StepPropagator Name!\n");
         }

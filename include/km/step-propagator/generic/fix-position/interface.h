@@ -36,6 +36,7 @@ namespace mysimulator {
       virtual void Evolute3() {}
       virtual void Evolute4() {}
       virtual void Load(Array<Unique64Bit>&) {}
+      virtual const T KineticEnergy() const { return 0; }
 
     private:
 

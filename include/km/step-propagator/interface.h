@@ -44,6 +44,7 @@ namespace mysimulator {
       virtual void Evolute3()           = 0;
       virtual void Evolute4()           = 0;
       virtual void Load(Array<Unique64Bit>&) = 0;
+      virtual const T KineticEnergy() const = 0;
 
       void AllocateRange(unsigned int n) { _range.Allocate(n,2); }
 
@@ -154,6 +155,7 @@ namespace mysimulator {
           P=new StepPropagatorVelVerletBerendsen_AMass<T>;
         break;
       case FixPosition:
+        P=new StepPropagatorFixPosition<T>;
         break;
       case MinimizerLine:
         P=new StepPropagatorMinimizerShiftLine<T>;

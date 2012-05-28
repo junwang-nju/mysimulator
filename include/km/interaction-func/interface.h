@@ -97,6 +97,7 @@ namespace mysimulator {
 #include "interaction-func/pairwise/lj1012cut/interface.h"
 #include "interaction-func/pairwise/lj612/interface.h"
 #include "interaction-func/pairwise/lj612cut/interface.h"
+#include "interaction-func/wall/harmonic/interface.h"
 
 namespace mysimulator {
 
@@ -123,6 +124,8 @@ namespace mysimulator {
         P=new InteractionFuncPairwiseLJ612<T,GT>; break;
       case LJ612Cut:
         P=new InteractionFuncPairwiseLJ612Cut<T,GT>;  break;
+      case WallHarmonic:
+        P=new InteractionFuncWallHarmonic<T,GT>;  break;
       case UnknownInteractionFunc:
       default:
         fprintf(stderr,"Unknown Interaction!\n");

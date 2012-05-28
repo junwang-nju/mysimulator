@@ -11,7 +11,7 @@ namespace mysimulator {
 
   template <typename T,typename GeomType,
             template<typename,typename> class PairFunc>
-  class InteractionFuncWall : public PIF<T,GeomType> {
+  class InteractionFuncWall : public PairFunc<T,GeomType> {
 
     public:
 
@@ -52,7 +52,7 @@ namespace mysimulator {
         unsigned int I=ID[0], J=ID[1];
         if(this->_update) {
           this->_pre[WallDistance]=Distace2Wall(X[I],X[J],Geo);
-          this->Pre2Post2G(P);
+          this->Pre2Post4G(P);
         }
         T ef;
         this->GFunc(P,&ef);
@@ -94,9 +94,9 @@ namespace mysimulator {
 
   };
 
-  template <typename T,typename GT>
-  void Clear(InteractionFuncWall<T,GT>& F) {
-    typedef typename InteractionFuncWall<T,GT>::ParentType  PType;
+  template <typename T,typename GT,template<typename,typename> class PF>
+  void Clear(InteractionFuncWall<T,GT,PF>& F) {
+    typedef typename InteractionFuncWall<T,GT,PF>::ParentType  PType;
     Clear(static_cast<PType&>(F));
   }
 

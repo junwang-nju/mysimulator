@@ -30,7 +30,7 @@ namespace mysimulator {
       template <typename T1,typename T2>
       friend typename CombineType<typename DataType<T1>::Type,
                                   typename DataType<T2>::Type>::Type
-      _Dot(const ArrayNumeric<T1>&,const ArrayNumeric<T2>&);
+      _DotN(const ArrayNumeric<T1>&,const ArrayNumeric<T2>&,unsigned int);
       template <typename T1>
       friend T1 BlasDot(const ArrayNumeric<T1>&,const ArrayNumeric<T1>&);
 
