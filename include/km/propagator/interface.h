@@ -2,9 +2,11 @@
 #ifndef _Propagator_Interface_H_
 #define _Propagator_Interface_H_
 
+#include "propagator/name.h"
 #include "step-propagator-binder/interface.h"
 #include "propagator-time/interface.h"
 #include "propagator-output/interface.h"
+#include "system/interface.h"
 
 namespace mysimulator {
 
@@ -17,13 +19,32 @@ namespace mysimulator {
       template <typename T1,typename GT1> friend Clear(Propagator<T1,GT1>&);
 
       Propagator()
-        : _props(), _bind(NULL), _param(), _time(NULL), _output(NULL) {}
+        : _tag(UnknownPropagator), _props(), _bind(NULL), _param(),
+          _time(NULL), _output(NULL) {}
       virtual ~Propagator() { Clear(*this); }
 
-      virtual void Allocate(const Array<StepPropagatorName>& PN) = 0;
+      bool IsValid() const {
+        return (_tag!=UnknownPropagator)&&_props.IsValid()&&(_bind!=NULL)&&
+               _param.IsValid()&&(_time!=NULL)&&(_output!=NULL);
+      }
+
+      StepPropagator<T>* Step(unsigned int n) { return _props[n]; }
+      Unique64Bit& Parameter(unsigned int n) { return _param[n]; }
+
+      const StepPropagator<T>* Step(unsigned int n) const { return _props[n]; }
+      const Unique64Bit& Parameter(unsigned int n) const { return _param[n]; }
+      const PropagatorTime<T>* Time() const { return _time; }
+
+      virtual void SetTime1(const T&,...) = 0;
+      virtual void SetTime2(const T&,...) = 0;
+
+      virtual void Allocate(const Array<StepPropagatorName>& PN,...) = 0;
+      virtual void IntroduceSystem(System<T,GT>&) = 0;
+      virtual void Evolute(System<T,GT>&) = 0;
 
     protected:
 
+      PropagatorName                _tag;
       Array<StepPropagator<T>*>     _props;
       StepPropagatorBinder<T,GT>*   _bind;
       Array<Unique64Bit>            _param;
@@ -50,6 +71,7 @@ namespace mysimulator {
 
   template <typename T,typename GT>
   void Clear(Propagator<T,GT>& P) {
+    P._tag=UnknownPropagator;
     P._ClearContent();
     Clear(P._props);
     Clear(P._param);
