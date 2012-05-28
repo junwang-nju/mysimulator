@@ -58,19 +58,23 @@ namespace mysimulator {
       void IntroduceSystem(System<T,GT>& S) {
         assert(S.Location().IsValid());
         for(unsigned int i=0;i<_props.Size();++i)
-          _props[i].IntroduceX(S.Location());
+          _props[i]->IntroduceX(S.Location());
         if(S.Gradient().IsValid())
           for(unsigned int i=0;i<_props.Size();++i)
-            _props[i].IntroduceG(S.Gradient());
+            _props[i]->IntroduceG(S.Gradient());
         if(S.Velocity().IsValid())
           for(unsigned int i=0;i<_props.Size();++i)
-            _props[i].IntroduceV(S.Velocity());
+            _props[i]->IntroduceV(S.Velocity());
       }
       void DetachSystem() {
-        for(unsigned int i=0;i<_props.Size();++i) _props.Detach();
+        for(unsigned int i=0;i<_props.Size();++i) _props[i]->Detach();
       }
       template <typename OT>
-      void AllocateOutput() { _output=new OT; _output->Allocate(); }
+      void AllocateOutput() {
+        if(_output!=NULL) { delete _output; _output=NULL; }
+        _output=new OT;
+        _output->Allocate();
+      }
       void UpdateTime(unsigned int n) { assert(_time!=NULL); _time->Update(n); }
       void Update() {
         assert(_props.IsValid());
