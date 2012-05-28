@@ -16,7 +16,7 @@ namespace mysimulator {
     public:
 
       typedef Propagator<T,GT>    Type;
-      template <typename T1,typename GT1> friend Clear(Propagator<T1,GT1>&);
+      template <typename T1,typename G1> friend void Clear(Propagator<T1,G1>&);
 
       Propagator()
         : _tag(UnknownPropagator), _props(), _bind(NULL), _param(),
@@ -27,6 +27,7 @@ namespace mysimulator {
         return (_tag!=UnknownPropagator)&&_props.IsValid()&&(_bind!=NULL)&&
                _param.IsValid()&&(_time!=NULL)&&(_output!=NULL);
       }
+      const PropagatorName Name() const { return _tag; }
 
       StepPropagator<T>* Step(unsigned int n) { return _props[n]; }
       Unique64Bit& Parameter(unsigned int n) { return _param[n]; }
@@ -63,14 +64,14 @@ namespace mysimulator {
             _props[i].IntroduceG(S.Gradient());
         if(S.Velocity().IsValid())
           for(unsigned int i=0;i<_props.Size();++i)
-            _props[j].IntroduceV(S.Velocity());
+            _props[i].IntroduceV(S.Velocity());
       }
       void DetachSystem() {
         for(unsigned int i=0;i<_props.Size();++i) _props.Detach();
       }
       template <typename OT>
       void AllocateOutput() { _output=new OT; _output->Allocate(); }
-      void UpdateTime() { assert(_time!=NULL); _time->Update(); }
+      void UpdateTime(unsigned int n) { assert(_time!=NULL); _time->Update(n); }
       void Update() {
         assert(_props.IsValid());
         for(unsigned int i=0;i<_props.Size();++i) _props[i]->Update();
@@ -78,6 +79,9 @@ namespace mysimulator {
 
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) = 0;
       virtual void Evolute(System<T,GT>&) = 0;
+
+      virtual const T KineticEnergy() const = 0;
+      virtual void UpdateKineticEnergy() = 0;
 
     protected:
 
@@ -112,6 +116,24 @@ namespace mysimulator {
     P._ClearContent();
     Clear(P._props);
     Clear(P._param);
+  }
+
+}
+
+#include "propagator/molecular-dynamics/interface.h"
+
+namespace mysimulator {
+
+  template <typename T,typename GT>
+  void Introduce(Propagator<T,GT>*& P, PropagatorName PN) {
+    if(P!=NULL) { delete P; P=NULL; }
+    switch(PN) {
+      case MolecularDynamics:
+        P=new PropagatorMD<T,GT>;
+        break;
+      default:
+        fprintf(stderr,"Unknown Propagator!\n");
+    }
   }
 
 }

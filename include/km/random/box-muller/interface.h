@@ -64,7 +64,7 @@ namespace mysimulator {
   template <typename UG>
   void Clear(BoxMuller<UG>& R) {
     Clear(R.urng); R.isSecond=false;
-    typedef typename BoxMuller<UniformRNG>::ParentType PType;
+    typedef typename BoxMuller<UG>::ParentType PType;
     Clear(static_cast<PType&>(R));
   }
 

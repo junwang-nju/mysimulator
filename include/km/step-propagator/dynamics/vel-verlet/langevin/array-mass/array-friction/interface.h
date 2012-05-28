@@ -3,6 +3,7 @@
 #define _Step_Propagator_Dynamics_VelVerlet_Langevin_AMass_AFric_Interface_H_
 
 #include "step-propagator/dynamics/vel-verlet/langevin/array-mass/interface.h"
+#include "propagator/molecular-dynamics/parameter-name.h"
 
 #ifndef _NAME_
 #define _NAME_(DT,U)          VelVerletLangevin_##DT##U
