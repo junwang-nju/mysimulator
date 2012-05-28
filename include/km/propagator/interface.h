@@ -30,16 +30,53 @@ namespace mysimulator {
 
       StepPropagator<T>* Step(unsigned int n) { return _props[n]; }
       Unique64Bit& Parameter(unsigned int n) { return _param[n]; }
-      PropagatorTime<T>*& Time() { return _time; }
-      PropagatorOutput<T,GT>*& Output() { return _output; }
+      T& Time(unsigned int n) {
+        assert(_time!=NULL);
+        assert(_time->IsTProperty(n));
+        return Value<T>(_time->Parameter(n));
+      }
+      unsigned int& IntTime(unsigned int n) {
+        assert(_time!=NULL);
+        assert(_time->IsUIntProperty(n));
+        return Value<unsigned int>(_time->Parameter(n));
+      }
 
       const StepPropagator<T>* Step(unsigned int n) const { return _props[n]; }
       const Unique64Bit& Parameter(unsigned int n) const { return _param[n]; }
-      const PropagatorTime<T>* const& Time() const { return _time; }
-      const PropagatorOutput<T,GT>* const& Output() const{ return _output; }
+      const T& Time(unsigned int n) const {
+        assert(_time!=NULL);
+        assert(_time->IsTProperty(n));
+        return Value<T>(_time->Parameter(n));
+      }
+      const unsigned int& IntTime(unsigned int n) const {
+        assert(_time!=NULL);
+        assert(_time->IsUIntProperty(n));
+        return Value<unsigned int>(_time->Parameter(n));
+      }
+
+      void IntroduceSystem(System<T,GT>& S) {
+        assert(S.Location().IsValid());
+        for(unsigned int i=0;i<_props.Size();++i)
+          _props[i].IntroduceX(S.Location());
+        if(S.Gradient().IsValid())
+          for(unsigned int i=0;i<_props.Size();++i)
+            _props[i].IntroduceG(S.Gradient());
+        if(S.Velocity().IsValid())
+          for(unsigned int i=0;i<_props.Size();++i)
+            _props[j].IntroduceV(S.Velocity());
+      }
+      void DetachSystem() {
+        for(unsigned int i=0;i<_props.Size();++i) _props.Detach();
+      }
+      template <typename OT>
+      void AllocateOutput() { _output=new OT; _output->Allocate(); }
+      void UpdateTime() { assert(_time!=NULL); _time->Update(); }
+      void Update() {
+        assert(_props.IsValid());
+        for(unsigned int i=0;i<_props.Size();++i) _props[i]->Update();
+      }
 
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) = 0;
-      virtual void IntroduceSystem(System<T,GT>&) = 0;
       virtual void Evolute(System<T,GT>&) = 0;
 
     protected:

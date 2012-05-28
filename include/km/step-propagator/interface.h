@@ -63,6 +63,7 @@ namespace mysimulator {
       void IntroduceX(Array2DNumeric<T>& X) { _Introduce(_X,X); }
       void IntroduceG(Array2DNumeric<T>& G) { _Introduce(_G,G); }
       void IntroduceV(Array2DNumeric<T>& V) { _Introduce(_V,V); }
+      void Detach() { Clear(_X);  Clear(_G);  Clear(_V); }
 
     protected:
 

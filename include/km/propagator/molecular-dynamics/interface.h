@@ -38,14 +38,14 @@ namespace mysimulator {
           _massFlag=static_cast<MassPropertyName>(va_arg(vl,unsigned int));
         if(fg&2)
           _fricFlag=static_cast<FrictionPropertyName>(va_arg(vl,unsigned int));
-        _props.Allocate(PN.Size());
-        for(unsigned int i=0;i<PN.Size();++i) _IntroduceStep(_props[i],PN[i]);
-        _bind=NULL;
-        Introduce(_bind,_props);
+        this->_props.Allocate(PN.Size());
+        for(unsigned int i=0;i<PN.Size();++i)
+          _IntroduceStep(this->_props[i],PN[i]);
+        this->_bind=NULL;
+        Introduce(this->_bind,this->_props);
         this->_param.Allocate(PropagatorMD_NumberParameter);
-        this->_time=new PropagatorMDTime;
-        this->_time->Allocate();
-        _Pointer_(T,TimeStep)=const_cast<T*>(&(_time->TimeStep()));
+        Introduce(this->_time,MolecularDynamics);
+        _Pointer_(T,TimeStep)=const_cast<T*>(&(this->Time(MDTime_TimeStep)));
         _Pointer_(Random,GaussRNG)=NULL;
         if(fg&4) {
           RandomName RN1=static_cast<RandomName>(va_arg(vl,unsigned int));
@@ -68,18 +68,33 @@ namespace mysimulator {
               fprintf(stderr,"Unknown Gaussian RNG!\n");
           }
         }
-        for(unsigned int i=0;i<_props.Size();++i) {
-          _props[i]->_Load(_param);
-          _props[i]->_Init();
+        for(unsigned int i=0;i<this->_props.Size();++i) {
+          this->_props[i]->_Load(this->_param);
+          this->_props[i]->_Init();
         }
         va_end(vl);
       }
 
-      virtual void IntroduceSystem(System<T,GT>& S) {
-        for(unsigned int i=0;i<this->_props.Size();++i) {
-          this->_props[i]->IntroduceX(S.Location());
-          this->_props[i]->IntroduceG(S.Gradient());
-          this->_props[i]->IntroduceV(S.Velocity());
+      virtual void Evolute(System<T,GT>& S) {
+        this->_output->Write(this->Time(MDTime_NowTime),S,this);
+        unsigned int no=this->IntTime(MDTime_NumberOutput);
+        unsigned int dno=this->IntTime(MDTime_NumberStepBwOutput);
+        T dOT=this->Time(MDTime_OutputInterval);
+        for(unsigned int i=0;i<no;++i) {
+          for(unsigned int k=0;k<dno;++k)
+            this->_bind-Evolute(S.Location(),S.Gradient(),
+                                S.InteractionGroup(0),this->_props);
+          this->_time->IncNowTime(dOT,dno);
+          this->_output->Write(this->Time(MDTime_NowTime),S,this);
+        }
+        unsigned int nt=this->_time->NowStep();
+        unsigned int tt=this->_time->NumberStep();
+        if(nt<tt) {
+          for(unsigned int i=nt;i<tt;++i)
+            this->_bind-Evolute(S.Location(),S.Gradient(),
+                                S.InteractionGroup(0),this->_props);
+          this->_time->SetNowTime(this->_time->TotalPeriod(),tt);
+          this->_output->Write(this->Time(MDTime_NowTime),S,this);
         }
       }
 
