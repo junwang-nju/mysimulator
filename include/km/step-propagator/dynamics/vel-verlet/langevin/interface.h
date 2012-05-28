@@ -75,6 +75,32 @@
 #error "Duplicate _PointerRNG_"
 #endif
 
+#ifndef _SrcPointer_
+#define _SrcPointer_(RT,U)    Pointer<RT>(_PARAM_(Src,U))
+#else
+#error "Duplicate _SrcPointer_"
+#endif
+
+#ifndef _PPARAM_
+#define _PPARAM_(U)           P[Propagator##U]
+#else
+#error "Duplicate _PPARAM_"
+#endif
+
+#ifndef _PPointer_
+#define _PPointer_(RT,U)       Pointer<RT>(_PPARAM_(U))
+#else
+#error "Duplicate _PPointer_"
+#endif
+
+#ifndef _LoadPointer_
+#define _LoadPointer_(RT,U)  \
+  if(_PPointer_(RT,U)==NULL)  _PPointer_(RT,U)=new RT; \
+  _SrcPointer_(RT,U)=_PPointer_(RT,U);
+#else
+#error "Duplicate _LoadPointer_"
+#endif
+
 namespace mysimulator {
 
   template <typename T,template<typename> class PropagatorWithMass>
@@ -95,11 +121,11 @@ namespace mysimulator {
         this->_param.Allocate(VelVerletLangevin_NumberParameter);
       }
       virtual void Init() {
-        static_cast<ParentType*>(this)->Init();
+        ParentType::Init();
         _Src2Ptr_Array_(RandVector)
       }
       virtual void Clean() {
-        static_cast<ParentType*>(this)->Clean();
+        ParentType::Clean();
         _PtrClean_(RandVector)
       }
 
@@ -107,6 +133,14 @@ namespace mysimulator {
         this->Update1(); this->Update5(); this->Update6();
       }
       virtual void Update7() { fprintf(stderr,"Not Implemented!\n"); }
+
+      virtual void Load(Array<Unique64Bit>& P) {
+        ParentType::Load(P);
+        _LoadPointer_(T,Temperature)
+        assert(_PPointer_(Random,GaussRNG)!=NULL);
+        _SrcPointer_(Random,GaussRNG)=_PPointer_(Random,GaussRNG);
+        _LoadPointer_(AType,RandVector)
+      }
 
       void ProduceRandVector() {
         assert(this->_param.IsValid());
@@ -129,6 +163,22 @@ namespace mysimulator {
   }
 
 }
+
+#ifdef _LoadPointer_
+#undef _LoadPointer_
+#endif
+
+#ifdef _PPointer_
+#undef _PPointer_
+#endif
+
+#ifdef _PPARAM_
+#undef _PPARAM_
+#endif
+
+#ifdef _SrcPointer_
+#undef _SrcPointer_
+#endif
 
 #ifdef _PtrClean_
 #undef _PtrClean_

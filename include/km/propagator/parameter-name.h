@@ -17,6 +17,8 @@ namespace mysimulator {
     PropagatorRandSize,
     PropagatorFacBf,
     PropagatorFacAf,
+    PropagatorRelaxTime,
+    PropagatorStep,
     PropagatorNumberParameter
   };
 

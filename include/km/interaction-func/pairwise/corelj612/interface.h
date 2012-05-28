@@ -38,7 +38,7 @@ namespace mysimulator {
         if(this->_post[CoreLJ612DistanceSQ]>Value<T>((*P)[CoreLJ612RadiusSQ]))
           *Func=0;
         else {
-          static_cast<ParentType*>(this)->EFunc(P,Func);
+          ParentType::EFunc(P,Func);
           (*Func)+=Value<T>((*P)[CoreLJ612EnergyDepth]);
         }
       }
@@ -48,7 +48,7 @@ namespace mysimulator {
         if(this->_post[CoreLJ612DistanceSQ]>Value<T>((*P)[CoreLJ612RadiusSQ]))
           *Diff=0;
         else
-          static_cast<ParentType*>(this)->GFunc(P,Diff);
+          ParentType::GFunc(P,Diff);
       }
       virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
         assert(this->IsValid());
@@ -57,7 +57,7 @@ namespace mysimulator {
           *Func=0;
           *Diff=0;
         } else {
-          static_cast<ParentType*>(this)->BFunc(P,Func,Diff);
+          ParentType::BFunc(P,Func,Diff);
           (*Func)+=Value<T>((*P)[CoreLJ612EnergyDepth]);
         }
       }
@@ -68,7 +68,7 @@ namespace mysimulator {
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[CoreLJ612DistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[CoreLJ612RadiusSQ]))
-          static_cast<ParentType*>(this)->Pre2Post4E(P);
+          ParentType::Pre2Post4E(P);
         else
           this->_update=false;
       }
@@ -78,7 +78,7 @@ namespace mysimulator {
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[CoreLJ612DistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[CoreLJ612RadiusSQ]))
-          static_cast<ParentType*>(this)->Pre2Post4G(P);
+          ParentType::Pre2Post4G(P);
         else
           this->_update=false;
       }

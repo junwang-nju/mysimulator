@@ -35,6 +35,7 @@ namespace mysimulator {
       virtual void Evolute2() {}
       virtual void Evolute3() {}
       virtual void Evolute4() {}
+      virtual void Load(Array<Unique64Bit>&) {}
 
     private:
 

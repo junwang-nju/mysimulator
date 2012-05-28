@@ -43,6 +43,7 @@ namespace mysimulator {
       virtual void Evolute2()           = 0;
       virtual void Evolute3()           = 0;
       virtual void Evolute4()           = 0;
+      virtual void Load(Array<Unique64Bit>&) = 0;
 
       void AllocateRange(unsigned int n) { _range.Allocate(n,2); }
 
@@ -109,8 +110,8 @@ namespace mysimulator {
 #include "step-propagator/dynamics/vel-verlet/langevin/array-mass/array-friction/interface.h"
 #include "step-propagator/dynamics/vel-verlet/berendsen/unique-mass/interface.h"
 #include "step-propagator/dynamics/vel-verlet/berendsen/array-mass/interface.h"
+#include "step-propagator/minimizer-shift/line/interface.h"
 #include "step-propagator/property-name.h"
-#include <cstdarg>
 
 namespace mysimulator {
 
@@ -153,6 +154,9 @@ namespace mysimulator {
           P=new StepPropagatorVelVerletBerendsen_AMass<T>;
         break;
       case FixPosition:
+        break;
+      case MinimizerLine:
+        P=new StepPropagatorMinimizerShiftLine<T>;
         break;
       default:
         fprintf(stderr,"Unknown StepPropagator Name!\n");

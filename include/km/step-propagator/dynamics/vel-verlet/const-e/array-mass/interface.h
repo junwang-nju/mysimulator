@@ -35,6 +35,12 @@
 #error "Duplicate _TypePtr_"
 #endif
 
+#ifndef _TypeSrc_
+#define _TypeSrc_             AType
+#else
+#error "Duplicate _TypeSrc_"
+#endif
+
 #ifndef _PointerArray_
 #define _PointerArray_(DT,U)  Pointer<_Type##DT##_>(_PARAM_(DT,U))
 #else
@@ -120,6 +126,8 @@ namespace mysimulator {
 #ifdef _PointerArray_
 #undef _PointerArray_
 #endif
+
+#undef _TypeSrc_
 
 #ifdef _TypePtr_
 #undef _TypePtr_

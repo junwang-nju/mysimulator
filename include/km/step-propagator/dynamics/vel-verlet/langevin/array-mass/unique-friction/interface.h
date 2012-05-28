@@ -64,6 +64,32 @@
 #error "Duplicate _SrcValue_"
 #endif
 
+#ifndef _SrcPointer_
+#define _SrcPointer_(RT,U)    Pointer<RT>(_PARAM_(Src,U))
+#else
+#error "Duplicate _SrcPointer_"
+#endif
+
+#ifndef _PPARAM_
+#define _PPARAM_(U)           P[Propagator##U]
+#else
+#error "Duplicate _PPARAM_"
+#endif
+
+#ifndef _PPointer_
+#define _PPointer_(RT,U)       Pointer<RT>(_PPARAM_(U))
+#else
+#error "Duplicate _PPointer_"
+#endif
+
+#ifndef _LoadPointer_
+#define _LoadPointer_(RT,U)  \
+  if(_PPointer_(RT,U)==NULL)  _PPointer_(RT,U)=new RT; \
+  _SrcPointer_(RT,U)=_PPointer_(RT,U);
+#else
+#error "Duplicate _LoadPointer_"
+#endif
+
 namespace mysimulator {
 
   template <typename T>
@@ -81,7 +107,7 @@ namespace mysimulator {
       virtual ~StepPropagatorVelVerletLangevin_AMassUFric() { Clear(*this); }
 
       virtual void Init() {
-        static_cast<ParentType*>(this)->Init();
+        ParentType::Init();
         _Src2Ptr_Pointer_(Friction)
       }
 
@@ -109,6 +135,11 @@ namespace mysimulator {
         }
       }
 
+      virtual void Load(Array<Unique64Bit>& P) {
+        ParentType::Load(P);
+        _LoadPointer_(T,Friction)
+      }
+
     private:
 
       StepPropagatorVelVerletLangevin_AMassUFric(const Type&) {}
@@ -124,6 +155,22 @@ namespace mysimulator {
   }
 
 }
+
+#ifdef _LoadPointer_
+#undef _LoadPointer_
+#endif
+
+#ifdef _PPointer_
+#undef _PPointer_
+#endif
+
+#ifdef _PPARAM_
+#undef _PPARAM_
+#endif
+
+#ifdef _SrcPointer_
+#undef _SrcPointer_
+#endif
 
 #ifdef _SrcValue_
 #undef _SrcValue_

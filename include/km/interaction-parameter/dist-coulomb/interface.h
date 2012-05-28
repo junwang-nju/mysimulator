@@ -25,7 +25,7 @@ namespace mysimulator {
       }
       virtual void Build() {
         assert(this->_data.Size()>=DistDielCoulombNumberParameter);
-        static_cast<ParentType*>(this)->Build();
+        ParentType::Build();
         Value<T>(this->_data[DistDielCoulombDualStrength])=
           2*Value<T>(this->_data[DistDielCoulombStrength]);
       }

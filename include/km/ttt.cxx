@@ -38,7 +38,7 @@ int main() {
   P->Time().SetTime(0.001,10.);
   P->SetOutputTime(0.001);
 
-  Value<double>(P->Parameter(PropagatorMass))=1.;
+  *Pointer<double>(P->Parameter(PropagatorMass))=1.;
   P->Update();
 
   System<double,FreeSpace> S;

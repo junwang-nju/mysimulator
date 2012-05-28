@@ -38,7 +38,7 @@ namespace mysimulator {
         if(this->_post[LJ1012CutDistanceSQ]>Value<T>((*P)[LJ1012CutCutRSQ]))
           *Func=0;
         else {
-          static_cast<ParentType*>(this)->EFunc(P,Func);
+          ParentType::EFunc(P,Func);
           (*Func)-=Value<T>((*P)[LJ1012CutVc]);
           (*Func)-=Value<T>((*P)[LJ1012CutKc])*
                    (this->_post[LJ1012CutDistance]-
@@ -51,7 +51,7 @@ namespace mysimulator {
         if(this->_post[LJ1012CutDistanceSQ]>Value<T>((*P)[LJ1012CutCutRSQ]))
           *Diff=0;
         else {
-          static_cast<ParentType*>(this)->GFunc(P,Diff);
+          ParentType::GFunc(P,Diff);
           (*Diff)-=Value<T>((*P)[LJ1012CutKc])*this->_post[LJ1012CutIvDistance];
         }
       }
@@ -62,7 +62,7 @@ namespace mysimulator {
           *Func=0;
           *Diff=0;
         } else {
-          static_cast<ParentType*>(this)->BFunc(P,Func,Diff);
+          ParentType::BFunc(P,Func,Diff);
           (*Func)-=Value<T>((*P)[LJ1012CutVc]);
           (*Func)-=Value<T>((*P)[LJ1012CutKc])*
                    (this->_post[LJ1012CutDistance]-
@@ -77,7 +77,7 @@ namespace mysimulator {
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ1012CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ1012CutCutRSQ])) {
-          static_cast<ParentType*>(this)->Pre2Post4E(P);
+          ParentType::Pre2Post4E(P);
           this->_post[LJ1012CutDistance]=__SqRoot(tmd);
           this->_update=true;
         } else this->_update=false;
@@ -88,7 +88,7 @@ namespace mysimulator {
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ1012CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ1012CutCutRSQ])) {
-          static_cast<ParentType*>(this)->Pre2Post4G(P);
+          ParentType::Pre2Post4G(P);
           this->_post[LJ1012CutIvDistance]=
             __SqRoot(this->_post[LJ1012CutIvDistanceSQ]);
           this->_update=true;
@@ -100,7 +100,7 @@ namespace mysimulator {
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ1012CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ1012CutCutRSQ])) {
-          static_cast<ParentType*>(this)->Pre2Post4B(P);
+          ParentType::Pre2Post4B(P);
           this->_post[LJ1012CutDistance]=__SqRoot(tmd);
           this->_post[LJ1012CutIvDistance]=this->_post[LJ1012CutIvDistanceSQ]*
                                            this->_post[LJ1012CutDistance];

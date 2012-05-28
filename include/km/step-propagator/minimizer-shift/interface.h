@@ -1,11 +1,12 @@
 
-#ifndef _Step_Propagator_Dynamics_VelVerlet_Interface_H_
-#define _Step_Propagator_Dynamics_VelVerlet_Interface_H_
+#ifndef _Step_Propagator_MinimizerShift_Interface_H_
+#define _Step_Propagator_MinimizerShift_Interface_H_
 
-#include "step-propagator/dynamics/interface.h"
+#include "step-propagator/interface.h"
+#include "step-propagator/minimizer-shift/parameter-name.h"
 
 #ifndef _NAME_
-#define _NAME_(DT,U)          VelVerlet_##DT##U
+#define _NAME_(DT,U)          MinimizerShift_##DT##U
 #else
 #error "Duplicate _NAME_"
 #endif
@@ -45,36 +46,34 @@
 namespace mysimulator {
 
   template <typename T>
-  class StepPropagatorVelVerlet : public StepPropagatorDynamics<T> {
+  class StepPropagatorMinimizerShift : public StepPropagator<T> {
 
     public:
 
-      typedef StepPropagatorVelVerlet<T>  Type;
-      typedef StepPropagatorDynamics<T>   ParentType;
+      typedef StepPropagatorMinimizerShift<T>    Type;
+      typedef StepPropagator<T>   ParentType;
 
-      StepPropagatorVelVerlet() : ParentType() {}
-      ~StepPropagatorVelVerlet() { Clear(*this); }
+      StepPropagatorMinimizerShift() : ParentType() {}
+      virtual ~StepPropagatorMinimizerShift() { Clear(*this); }
 
-      virtual void Update4() { this->Update2(); this->Update3(); }
-
-      virtual void Evolute3() { fprintf(stderr,"Not Implemented!\n"); }
-      virtual void Evolute4() { fprintf(stderr,"Not Implemented!\n"); }
+      virtual bool IsDynamics() const { return false; }
+      virtual bool IsMinimizer() const { return true; }
 
       virtual void Load(Array<Unique64Bit>& P) {
         assert(P.IsValid());
-        _LoadPointer_(T,TimeStep)
+        _LoadPointer_(T,Step)
       }
 
     private:
 
-      StepPropagatorVelVerlet(const Type&) {}
+      StepPropagatorMinimizerShift(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };
 
   template <typename T>
-  void Clear(StepPropagatorVelVerlet<T>& P) {
-    typedef typename StepPropagatorVelVerlet<T>::ParentType PType;
+  void Clear(StepPropagatorMinimizerShift<T>& P) {
+    typedef typename StepPropagatorMinimizerShift<T>::ParentType  PType;
     Clear(static_cast<PType&>(P));
   }
 
