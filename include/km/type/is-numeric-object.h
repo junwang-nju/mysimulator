@@ -33,7 +33,10 @@ namespace mysimulator {
     IsNumericObjectFlag<T>::Flag;
 
   union Unique64Bit;
-  template <> const bool IsNumericFlag<Unique64Bit>::Flag=true;
+  template <> const bool IsNumericObjectFlag<Unique64Bit>::Flag=true;
+
+  union Unique128Bit;
+  template <> const bool IsNumericObjectFlag<Unique128Bit>::Flag=true;
 
 }
 
