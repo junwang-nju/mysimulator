@@ -60,6 +60,7 @@ namespace mysimulator {
         T c2pj=_VALUE_(T,CurvatureFac)*this->Proj;
         unsigned int state=0;
         this->_backupX.BlasCopy(S.Location());
+        this->_backupG.BlasCopy(S.Gradient());
         T _backupE=S.Energy();
         T _backupPrj=this->Proj;
         for(unsigned int i=0;i<_VALUE_(unsigned int,MaxStep);++i) {
@@ -69,7 +70,6 @@ namespace mysimulator {
           this->Proj=BlasDot(S.Gradient(),S.Velocity());
           if(this->_Condition->Check(S.Energy(),this->Proj,_backupE,
                                      c1pj,c2pj,rstep)) {
-            this->Move=rstep;
             state=1;
             break;
           }
@@ -78,12 +78,14 @@ namespace mysimulator {
           rstep+=_PointerVALUE_(T,Step);
           if(AbsVal(_PointerVALUE_(T,Step))<mstep) { state=2; break; }
         }
-        if(state!=0)
-          if(S.Energy()>_backupE) {
-            S.Location().BlasCopy(this->_backupX);
-            S.Energy()=_backupE;
-            this->Proj=_backupPrj;
-          }
+        this->Move=rstep;
+        if(S.Energy()>_backupE) {
+          S.Location().BlasCopy(this->_backupX);
+          S.Gradient().BlasCopy(this->_backupG);
+          S.Energy()=_backupE;
+          this->Proj=_backupPrj;
+          this->Move=0.;
+        }
         return state;
       }
 

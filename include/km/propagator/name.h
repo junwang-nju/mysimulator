@@ -8,6 +8,7 @@ namespace mysimulator {
     MolecularDynamics = 0,
     SteepestDescentMinimizer,
     ConjugateGradientMinimizer,
+    LBFGSMinimizer,
     NumberPropagator,
     UnknownPropagator
   };

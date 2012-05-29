@@ -130,6 +130,7 @@ namespace mysimulator {
 #include "propagator/molecular-dynamics/interface.h"
 #include "propagator/minimizer/steep/interface.h"
 #include "propagator/minimizer/conjg/interface.h"
+#include "propagator/minimizer/lbfgs/interface.h"
 #include "propagator/minimizer-line/name.h"
 
 namespace mysimulator {
@@ -158,6 +159,15 @@ namespace mysimulator {
         switch(LN) {
           case TrackingLineMinimizer:
             P=new PropagatorConjugateGradientMinimizer<T,GT>; break;
+          default:
+            fprintf(stderr,"Unknown Line Minimizer Name!\n");
+        }
+        break;
+      case LBFGSMinimizer:
+        LN=static_cast<PropagatorLineMinimizerName>(va_arg(vl,unsigned int));
+        switch(LN) {
+          case TrackingLineMinimizer:
+            P=new PropagatorLBFGSMinimizer<T,GT>; break;
           default:
             fprintf(stderr,"Unknown Line Minimizer Name!\n");
         }
