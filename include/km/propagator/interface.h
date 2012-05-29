@@ -23,7 +23,7 @@ namespace mysimulator {
           _time(NULL), _output(NULL) {}
       virtual ~Propagator() { Clear(*this); }
 
-      bool IsValid() const {
+      virtual bool IsValid() const {
         return (_tag!=UnknownPropagator)&&_props.IsValid()&&(_bind!=NULL)&&
                _param.IsValid()&&(_time!=NULL)&&(_output!=NULL);
       }

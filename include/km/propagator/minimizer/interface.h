@@ -43,6 +43,12 @@ namespace mysimulator {
         if(!this->_param.IsValid())  return;
         _ClearPointer_(T,Step)
       }
+      void _UpdateDOF() {
+        assert(this->_props.IsValid());
+        DOF=0;
+        const unsigned int n=this->_props.Size();
+        for(unsigned int i=0;i<n;++i) DOF+=this->_props[i]->DegreeFreedom();
+      }
 
     private:
 

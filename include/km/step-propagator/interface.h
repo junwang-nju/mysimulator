@@ -45,6 +45,13 @@ namespace mysimulator {
       virtual void Evolute4()           = 0;
       virtual void Load(Array<Unique64Bit>&) = 0;
       virtual const T KineticEnergy() const = 0;
+      virtual unsigned int DegreeFreedom() const {
+        assert(_X.IsValid());
+        const unsigned int n=_X.Size();
+        unsigned int dof=0;
+        for(unsigned int i=0;i<n;++i) dof+=_X[i].NumElements();
+        return dof;
+      }
 
       void AllocateRange(unsigned int n) { _range.Allocate(n,2); }
 

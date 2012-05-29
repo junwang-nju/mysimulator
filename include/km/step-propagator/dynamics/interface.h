@@ -21,6 +21,7 @@ namespace mysimulator {
       virtual bool IsDynamics() const { return true; }
       virtual bool IsMinimizer() const { return false; }
       virtual const T KineticEnergy() const {
+        assert(this->_param.IsValid());
         return Value<T>(this->_param[Dynamics_ValKineticEnergy]);
       }
 

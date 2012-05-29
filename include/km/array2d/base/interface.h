@@ -25,6 +25,10 @@ namespace mysimulator {
       friend void _SwapContent(Array2DBase<T,AF1>&,Array2DBase<T,AF2>&);
       template <typename T1,template<typename> class AF1>
       friend class Array2DBase;
+      template <typename T1,
+                template<typename>class AF1,template<typename>class AF2>
+      friend T MinimalStep(const Array2DBase<T1,AF1>&,
+                           const Array2DBase<T1,AF2>&);
 
       Array2DBase() : ParentType(), _ldata() {}
       ~Array2DBase() { Clear(*this); }
