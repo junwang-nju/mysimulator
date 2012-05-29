@@ -1,5 +1,5 @@
 
-#include "propagator/minimizer/conjg/interface.h"
+#include "propagator/interface.h"
 #include "boundary/free/interface.h"
 using namespace mysimulator;
 
@@ -52,7 +52,7 @@ int main() {
   cout.precision(20);
 
   Propagator<double,FreeSpace>* P=NULL;
-  P=new PropagatorConjugateGradientMinimizer<double,FreeSpace>;
+  Introduce(P,ConjugateGradientMinimizer,TrackingLineMinimizer);
 
   Array<StepPropagatorName> SPN;
   SPN.Allocate(1);

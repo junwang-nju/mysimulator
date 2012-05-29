@@ -128,8 +128,8 @@ namespace mysimulator {
 }
 
 #include "propagator/molecular-dynamics/interface.h"
-//#include "propagator/minimizer/steep/interface.h"
-//#include "propagator/minimizer/conjg/interface.h"
+#include "propagator/minimizer/steep/interface.h"
+#include "propagator/minimizer/conjg/interface.h"
 #include "propagator/minimizer-line/name.h"
 
 namespace mysimulator {
@@ -144,12 +144,11 @@ namespace mysimulator {
       case MolecularDynamics:
         P=new PropagatorMD<T,GT>;
         break;
-        /*
       case SteepestDescentMinimizer:
         LN=static_cast<PropagatorLineMinimizerName>(va_arg(vl,unsigned int));
         switch(LN) {
           case TrackingLineMinimizer:
-            P=new PropagatorSteepestDescentMinimizer<T,GT>;
+            P=new PropagatorSteepestDescentMinimizer<T,GT>; break;
           default:
             fprintf(stderr,"Unknown Line Minimizer Name!\n");
         }
@@ -158,12 +157,11 @@ namespace mysimulator {
         LN=static_cast<PropagatorLineMinimizerName>(va_arg(vl,unsigned int));
         switch(LN) {
           case TrackingLineMinimizer:
-            P=new PropagatorConjugateGradientMinimizer<T,GT>;
+            P=new PropagatorConjugateGradientMinimizer<T,GT>; break;
           default:
             fprintf(stderr,"Unknown Line Minimizer Name!\n");
         }
         break;
-        */
       default:
         fprintf(stderr,"Unknown Propagator!\n");
     }

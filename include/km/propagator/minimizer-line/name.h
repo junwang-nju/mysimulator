@@ -5,7 +5,7 @@
 namespace mysimulator {
 
   enum PropagatorLineMinimizerName {
-    TrackingLineMinimizer
+    TrackingLineMinimizer=0
   };
 
 }

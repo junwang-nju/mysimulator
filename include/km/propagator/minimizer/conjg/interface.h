@@ -47,8 +47,8 @@ namespace mysimulator {
           Value<T>(this->_param[ConjgMinimizer_MaxBeta])=5.;
       }
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
-        this->_tag=ConjugateGradientMinimizer;
         ParentType::Allocate(PN);
+        this->_tag=ConjugateGradientMinimizer;
         this->_param.Allocate(ConjgMinimizer_NumberParameter);
         ParentType::BuildLine();
       }

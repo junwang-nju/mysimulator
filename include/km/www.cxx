@@ -1,5 +1,5 @@
 
-#include "propagator/minimizer/steep/interface.h"
+#include "propagator/interface.h"
 #include "boundary/free/interface.h"
 using namespace mysimulator;
 
@@ -53,7 +53,6 @@ int main() {
 
   Propagator<double,FreeSpace>* P=NULL;
   Introduce(P,SteepestDescentMinimizer,TrackingLineMinimizer);
-  //P=new PropagatorSteepestDescentMinimizer<double,FreeSpace>;
 
   Array<StepPropagatorName> SPN;
   SPN.Allocate(1);
