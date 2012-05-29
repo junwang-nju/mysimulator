@@ -32,6 +32,9 @@
 
 namespace mysimulator {
 
+  template <typename T,typename GT> class PropagatorMD;
+  template <typename T,typename GT> void Clear(PropagatorMD<T,GT>&);
+
   template <typename T,typename GT>
   class PropagatorMD : public Propagator<T,GT> {
 
@@ -40,8 +43,7 @@ namespace mysimulator {
       typedef PropagatorMD<T,GT>  Type;
       typedef Propagator<T,GT>    ParentType;
       typedef Array2DNumeric<T>   AType;
-      template <typename T1,typename GT1>
-      friend void Clear(PropagatorMD<T1,GT1>&);
+      friend void Clear<T,GT>(PropagatorMD<T,GT>&);
 
       PropagatorMD() : ParentType(), _massFlag(UnknownMassProperty),
                        _fricFlag(UnknownFrictionProperty) {}

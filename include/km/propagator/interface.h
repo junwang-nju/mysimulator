@@ -10,13 +10,16 @@
 
 namespace mysimulator {
 
+  template <typename T,typename GT> class Propagator;
+  template <typename T,typename GT> void Clear(Propagator<T,GT>&);
+
   template <typename T,typename GT>
   class Propagator {
 
     public:
 
       typedef Propagator<T,GT>    Type;
-      template <typename T1,typename G1> friend void Clear(Propagator<T1,G1>&);
+      friend void Clear<T,GT>(Propagator<T,GT>&);
 
       Propagator()
         : _tag(UnknownPropagator), _props(), _bind(NULL), _param(),

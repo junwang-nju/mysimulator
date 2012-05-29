@@ -7,14 +7,16 @@
 
 namespace mysimulator {
 
+  template <typename T,typename GT> class System;
+  template <typename T,typename GT> void Clear(System<T,GT>&);
+
   template <typename T,typename GeomType>
   class System {
 
     public:
 
       typedef System<T,GeomType> Type;
-      template <typename T1,typename GT>
-      friend void Clear(System<T1,GT>&);
+      friend void Clear<T,GeomType>(System<T,GeomType>&);
 
       System() : _Kind(),_X(), _G(), _V(), _E(), _F(), _GF() {}
       ~System() { Clear(*this); }

@@ -9,6 +9,8 @@ namespace mysimulator {
   template <typename T,template<typename>class AF> class Array2DBase;
   template <typename T,template<typename>class AF>
   void Clear(Array2DBase<T,AF>&);
+  template <typename T,template<typename>class AF>
+  bool IsSame(const Array2DBase<T,AF>&,const Array2DBase<T,AF>&);
 
   template <typename T,template<typename> class ArrayFormat>
   class Array2DBase : public ArrayFormat<ArrayFormat<T> > {
@@ -18,6 +20,8 @@ namespace mysimulator {
       typedef Array2DBase<T,ArrayFormat>  Type;
       typedef ArrayFormat<ArrayFormat<T> >  ParentType;
       friend void Clear<T,ArrayFormat>(Array2DBase<T,ArrayFormat>&);
+      friend bool IsSame<T,ArrayFormat>(const Array2DBase<T,ArrayFormat>&,
+                                        const Array2DBase<T,ArrayFormat>&);
       template <typename T1,template<typename> class AF>
       friend class Array2DBase;
 
@@ -159,15 +163,12 @@ namespace mysimulator {
     return true;
   }
 
-  template <typename T,template<typename>class AF1,template<typename>class AF2>
-  bool IsSame(const Array2DBase<T,AF1>& A,const Array2DBase<T,AF2>& B) {
+  template <typename T,template<typename> class AF>
+  bool IsSame(const Array2DBase<T,AF>& A, const Array2DBase<T,AF>& B) {
     if(!IsSameSize(A,B))  return false;
-    return IsSame(A.Data(),B.Data());
+    return IsSame(A._ldata,B._ldata);
   }
 
-  template <typename T,template<typename>class AF1,template<typename>class AF2>
-  T AAA(const Array2DBase<T,AF1>& A,const Array2DBase<T,AF2>& B,
-        const unsigned int n) {}
 
 }
 

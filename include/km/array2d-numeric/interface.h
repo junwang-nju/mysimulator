@@ -6,6 +6,11 @@
 
 namespace mysimulator {
 
+  template <typename T> class Array2DNumeric;
+  template <typename T> void Clear(Array2DNumeric<T>&);
+  template <typename T> T BlasDot(const Array2DNumeric<T>&,
+                                  const Array2DNumeric<T>&);
+
   template <typename T>
   class Array2DNumeric : public Array2DBase<T,ArrayNumeric> {
 
@@ -13,14 +18,9 @@ namespace mysimulator {
 
       typedef Array2DNumeric<T>   Type;
       typedef Array2DBase<T,ArrayNumeric> ParentType;
-      template <typename T1>
-      friend void Clear(Array2DNumeric<T>&);
-      template <typename T1,typename T2>
-      friend typename CombineType<typename DataType<T1>::Type,
-                                  typename DataType<T2>::Type>::Type
-      _Dot(const Array2DNumeric<T1>&,const Array2DNumeric<T2>&);
-      template <typename T1>
-      friend T1 BlasDot(const Array2DNumeric<T1>&,const Array2DNumeric<T1>&);
+      friend void Clear<T>(Array2DNumeric<T>&);
+      friend T BlasDot<T>(const Array2DNumeric<T>&,const Array2DNumeric<T>&);
+      template <typename T1> friend class Array2DNumeric;
 
       Array2DNumeric() : ParentType() {}
       ~Array2DNumeric() { Clear(*this); }
@@ -183,6 +183,16 @@ namespace mysimulator {
         this->_ldata.SqRoot();
       }
 
+      template <typename T1>
+      typename CombineType<typename DataType<T>::Type,
+                           typename DataType<T1>::Type>::Type
+      __Dot(const Array2DNumeric<T1>& B) const {
+        assert(this->IsValid());
+        assert(B.IsValid());
+        assert(IsSameSize(*this,B));
+        return _Dot<T,T1>(this->_ldata,B._ldata);
+      }
+
     private:
 
       Array2DNumeric(const Type&) {}
@@ -197,9 +207,11 @@ namespace mysimulator {
 
   template <typename T>
   bool IsSame(const Array2DNumeric<T>& A, const Array2DNumeric<T>& B) {
-    typedef typename Array2DNumeric<T>::ParentType  PType;
-    return IsSame<T,ArrayNumeric,ArrayNumeric>(static_cast<const PType&>(A),
-                                               static_cast<const PType&>(B));
+    //typedef typename Array2DNumeric<T>::ParentType  PType;
+    //return IsSame<ArrayNumeric,ArrayNumeric>(static_cast<const PType&>(A),
+    //                                         static_cast<const PType&>(B));
+    return IsSame(static_cast<const Array2DBase<T,ArrayNumeric>&>(A),
+                  static_cast<const Array2DBase<T,ArrayNumeric>&>(B));
   }
 
   template <typename T1,typename T2>
@@ -223,7 +235,7 @@ namespace mysimulator {
   template <typename T> class Array2D;
 
   template <typename T>
-  void IsSame(const Array2DNumeric<T>& A, const Array2D<T>& B) {
+  bool IsSame(const Array2DNumeric<T>& A, const Array2D<T>& B) {
     return IsSame(static_cast<const Array2DBase<T,ArrayNumeric>&>(A),
                   static_cast<const Array2DBase<T,Array>&>(B));
   }
@@ -244,10 +256,7 @@ namespace mysimulator {
   typename CombineType<typename DataType<T1>::Type,
                        typename DataType<T2>::Type>::Type
   _Dot(const Array2DNumeric<T1>& A,const Array2DNumeric<T2>& B) {
-    assert(A.IsValid());
-    assert(B.IsValid());
-    assert(IsSameSize(A,B));
-    return _Dot(A._ldata,B._ldata);
+    return A.__Dot(B);
   }
 
   template <typename T>

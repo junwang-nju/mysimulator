@@ -8,6 +8,9 @@
 
 namespace mysimulator {
 
+  template <typename T> class InteractionParameter;
+  template <typename T> void Clear(InteractionParameter<T>&);
+
   template <typename T>
   class InteractionParameter {
 
@@ -15,7 +18,7 @@ namespace mysimulator {
 
       typedef InteractionParameter<T>   Type;
       typedef typename IsNumeric<T>::Type   NumericCheck;
-      template <typename T1> friend void Clear(InteractionParameter<T1>&);
+      friend void Clear<T>(InteractionParameter<T>&);
 
       InteractionParameter() : _tag(UnknownInteractionFunc), _data() {}
       virtual ~InteractionParameter() { Clear(*this); }

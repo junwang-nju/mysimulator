@@ -6,14 +6,16 @@
 
 namespace mysimulator {
 
+  template <typename T,typename GT> class GroupedInteraction;
+  template <typename T,typename GT> void Clear(GroupedInteraction<T,GT>&);
+
   template <typename T,typename GT>
   class GroupedInteraction {
 
     public:
 
       typedef GroupedInteraction<T,GT>    Type;
-      template <typename T1,typename GT1>
-      friend void Clear(GroupedInteraction<T1,GT1>&);
+      friend void Clear<T,GT>(GroupedInteraction<T,GT>&);
 
       GroupedInteraction() : _ISet(), _id() {}
       ~GroupedInteraction() { Clear(*this); }

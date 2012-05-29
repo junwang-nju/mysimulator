@@ -8,13 +8,16 @@
 
 namespace mysimulator {
 
+  template <typename T> class PropagatorTime;
+  template <typename T> void Clear(PropagatorTime<T>&);
+
   template <typename T>
   class PropagatorTime {
 
     public:
 
       typedef PropagatorTime<T>   Type;
-      template <typename T1> friend void Clear(PropagatorTime<T1>&);
+      friend void Clear<T>(PropagatorTime<T>&);
 
       PropagatorTime() : _tag(UnknownPropagator), _param() {}
       virtual ~PropagatorTime() { Clear(*this); }

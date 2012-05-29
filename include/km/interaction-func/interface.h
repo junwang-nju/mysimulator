@@ -10,6 +10,9 @@ namespace mysimulator {
 
   template <typename T> class InteractionParameter;
 
+  template <typename T,typename GT> class InteractionFunc;
+  template <typename T,typename GT> void Clear(InteractionFunc<T,GT>&);
+
   template <typename T,typename GeomType>
   class InteractionFunc {
 
@@ -17,10 +20,8 @@ namespace mysimulator {
 
       typedef InteractionFunc<T,GeomType> Type;
       typedef typename IsNumeric<T>::Type NumericCheck;
-      template <typename T1,typename GT>
-      friend void Clear(InteractionFunc<T1,GT>&);
-      template <typename T1,typename GT>
-      friend class InteractionFunc;
+      friend void Clear<T,GeomType>(InteractionFunc<T,GeomType>&);
+      template <typename T1,typename GT> friend class InteractionFunc;
 
       InteractionFunc() : _tag(UnknownInteractionFunc), _pre(),
                           _post(), _tmvec(), _neighbor(), _update(true) {}

@@ -6,13 +6,16 @@
 
 namespace mysimulator {
 
+  template <typename T> class LineMinimizerCondition;
+  template <typename T> void Clear(LineMinimizerCondition<T>&);
+
   template <typename T>
   class LineMinimizerCondition {
 
     public:
 
       typedef LineMinimizerCondition<T> Type;
-      template <typename T1> friend void Clear(LineMinimizerCondition<T1>&);
+      friend void Clear<T>(LineMinimizerCondition<T>&);
 
       LineMinimizerCondition() : _tag(UnknownCondition) {}
       virtual ~LineMinimizerCondition() { Clear(*this); }

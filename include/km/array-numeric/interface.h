@@ -10,6 +10,7 @@
 #include "basic/shift.h"
 #include "basic/inverse.h"
 #include "basic/square-root.h"
+#include "basic/dot.h"
 #include "type/combine.h"
 #include "type/blas-size.h"
 #include "type/is-blas.h"
@@ -30,11 +31,8 @@ namespace mysimulator {
       typedef ArrayNumeric<T>   Type;
       typedef Array<T>      ParentType;
       typedef typename IsNumericObject<Type>::Type NumericCheck;
-      template <typename T1,typename T2>
-      friend typename CombineType<typename DataType<T1>::Type,
-                                  typename DataType<T2>::Type>::Type
-      _DotN(const ArrayNumeric<T1>&,const ArrayNumeric<T2>&,unsigned int);
       friend T BlasDot<T>(const ArrayNumeric<T>&,const ArrayNumeric<T>&);
+      template <typename T1> friend class ArrayNumeric;
 
       ArrayNumeric() : ParentType() {}
       ~ArrayNumeric() { Clear(*this); }
@@ -266,6 +264,23 @@ namespace mysimulator {
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;)  _SqRoot(*(p++));
       }
+      template <typename T1>
+      typename CombineType<typename DataType<T>::Type,
+                           typename DataType<T1>::Type>::Type
+      __DotN(const ArrayNumeric<T1>& A,unsigned int n) const {
+        typedef typename IsNumericObject<ArrayNumeric<T> >::Type  DotCheck;
+        typedef typename IsNumericObject<ArrayNumeric<T1> >::Type DotCheck1;
+        assert(this->IsValid());
+        assert(A.IsValid());
+        assert(this->Size()>=n);
+        assert(A.Size()>=n);
+        typename CombineType<typename DataType<T>::Type,
+                             typename DataType<T1>::Type>::Type sum=0;
+        T *p=this->Head(), *pEnd=p+n;
+        T1 *q=A.Head();
+        for(;p!=pEnd;)  sum+=_Dot(*(p++),*(q++));
+        return sum;
+      }
 
     private:
 
@@ -369,28 +384,11 @@ namespace mysimulator {
   template <typename T>
   void _SqRoot(ArrayNumeric<T>& A) { A.SqRoot(); }
 
-}
-
-#include "basic/dot.h"
-
-namespace mysimulator {
-
   template <typename T1,typename T2>
   typename CombineType<typename DataType<T1>::Type,
                        typename DataType<T2>::Type>::Type
   _DotN(const ArrayNumeric<T1>& A, const ArrayNumeric<T2>& B, unsigned int n) {
-    typedef typename IsNumericObject<ArrayNumeric<T1> >::Type DotCheck1;
-    typedef typename IsNumericObject<ArrayNumeric<T2> >::Type DotCheck2;
-    assert(A.IsValid());
-    assert(B.IsValid());
-    assert(A.Size()>=n);
-    assert(B.Size()>=n);
-    typename CombineType<typename DataType<T1>::Type,
-                         typename DataType<T2>::Type>::Type sum=0;
-    T1 *p=A.Head(), *pEnd=p+n;
-    T2 *q=B.Head();
-    for(;p!=pEnd;)  sum+=_Dot(*(p++),*(q++));
-    return sum;
+    return A.__DotN(B,n);
   }
 
   template <typename T1,typename T2>

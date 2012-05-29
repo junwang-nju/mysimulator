@@ -32,6 +32,9 @@
 
 namespace mysimulator {
 
+  template <typename T,typename GT> class PropagatorBaseMinimizer;
+  template <typename T,typename GT> void Clear(PropagatorBaseMinimizer<T,GT>&);
+
   template <typename T,typename GT>
   class PropagatorBaseMinimizer : public Propagator<T,GT> {
 
@@ -39,8 +42,7 @@ namespace mysimulator {
 
       typedef PropagatorBaseMinimizer<T,GT>   Type;
       typedef Propagator<T,GT>  ParentType;
-      template <typename T1,typename GT1>
-      friend void Clear(PropagatorBaseMinimizer<T1,GT1>&);
+      friend void Clear<T,GT>(PropagatorBaseMinimizer<T,GT>&);
 
       PropagatorBaseMinimizer() : ParentType(), Proj(0), Move(0), DOF(0) {}
       virtual ~PropagatorBaseMinimizer() { Clear(*this); }

@@ -7,6 +7,9 @@
 
 namespace mysimulator {
 
+  template <typename UG> class BoxMuller;
+  template <typename UG> void Clear(BoxMuller<UG>&);
+
   template <typename UniformRNG>
   class BoxMuller : public Random {
 
@@ -14,7 +17,7 @@ namespace mysimulator {
 
       typedef BoxMuller<UniformRNG>   Type;
       typedef Random  ParentType;
-      template <typename UG> friend void Clear(BoxMuller<UG>&);
+      friend void Clear<UniformRNG>(BoxMuller<UniformRNG>&);
 
       BoxMuller() : urng(),rX(0),rY(0),rR(0),isSecond(false) {}
       virtual ~BoxMuller() { Clear(*this); }

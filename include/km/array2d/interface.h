@@ -55,12 +55,6 @@ namespace mysimulator {
 
   template <typename T> class Array2DNumeric;
 
-  template <typename T>
-  void IsSame(const Array2D<T>& A, const Array2DNumeric<T>& B) {
-    return IsSame(static_cast<Array2DBase<T,Array>&>(A),
-                  static_cast<Array2DBase<T,ArrayNumeric>&>(B));
-  }
-
   template <typename T1,typename T2>
   void _Copy(Array2D<T1>& A,const Array2DNumeric<T2>& B) { A.Copy(B); }
 

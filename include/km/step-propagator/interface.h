@@ -9,13 +9,16 @@
 
 namespace mysimulator {
 
+  template <typename T> class StepPropagator;
+  template <typename T> void Clear(StepPropagator<T>&);
+
   template <typename T>
   class StepPropagator {
 
     public:
 
       typedef StepPropagator<T>   Type;
-      template <typename T1> friend void Clear(StepPropagator<T1>&);
+      friend void Clear<T>(StepPropagator<T>&);
 
       StepPropagator() : _tag(UnassignedStepPropagator), _range(), _param(),
                          _X(), _G(), _V() {}
