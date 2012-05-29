@@ -17,18 +17,8 @@ namespace mysimulator {
       typedef ArrayFormat<ArrayFormat<T> >  ParentType;
       template <typename T1,template<typename> class AF>
       friend void Clear(Array2DBase<T1,AF>&);
-      template <typename T1,
-                template<typename>class AF1,template<typename>class AF2>
-      friend bool IsSame(const Array2DBase<T1,AF1>&,const Array2DBase<T1,AF2>&);
-      template <typename T1,
-                template<typename>class AF1,template<typename>class AF2>
-      friend void _SwapContent(Array2DBase<T,AF1>&,Array2DBase<T,AF2>&);
       template <typename T1,template<typename> class AF1>
       friend class Array2DBase;
-      template <typename T1,
-                template<typename>class AF1,template<typename>class AF2>
-      friend T1 MinimalStep(const Array2DBase<T1,AF1>&,
-                            const Array2DBase<T1,AF2>&,const unsigned int);
 
       Array2DBase() : ParentType(), _ldata() {}
       ~Array2DBase() { Clear(*this); }
@@ -37,6 +27,7 @@ namespace mysimulator {
         return ParentType::IsValid()&&_ldata.IsValid();
       }
       unsigned int NumElements() const { return _ldata.Size(); }
+      const ArrayFormat<T>& Data() const { return _ldata; }
 
       void Allocate(const ArrayNumeric<unsigned int>& sz) {
         Clear(*this);
@@ -113,6 +104,14 @@ namespace mysimulator {
           this->operator[](i).Refer(_ldata,m,A[i].Size());
       }
 
+      template <template<typename> class AF2>
+      void __Swap(Array2DBase<T,AF2>& A) {
+          assert(IsValid());
+          assert(A.IsValid());
+          assert(IsSameSize(*this,A));
+          _SwapContent(_ldata,A._ldata);
+      }
+
     protected:
 
       ArrayFormat<T>  _ldata;
@@ -144,10 +143,7 @@ namespace mysimulator {
   template <typename T,
            template<typename> class AF1,template<typename> class AF2>
   void _SwapContent(Array2DBase<T,AF1>& A,Array2DBase<T,AF2>& B) {
-    assert(A.IsValid());
-    assert(B.IsValid());
-    assert(IsSameSize(A,B));
-    _SwapContent(A._ldata,B._ldata);
+    A.__Swap(B);
   }
 
   template <typename T1,template<typename> class AF1,
@@ -165,8 +161,12 @@ namespace mysimulator {
   template <typename T,template<typename>class AF1,template<typename>class AF2>
   bool IsSame(const Array2DBase<T,AF1>& A,const Array2DBase<T,AF2>& B) {
     if(!IsSameSize(A,B))  return false;
-    return IsSame(A._ldata,B._ldata);
+    return IsSame(A.Data(),B.Data());
   }
+
+  template <typename T,template<typename>class AF1,template<typename>class AF2>
+  T AAA(const Array2DBase<T,AF1>& A,const Array2DBase<T,AF2>& B,
+        const unsigned int n) {}
 
 }
 

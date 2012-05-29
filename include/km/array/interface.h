@@ -71,6 +71,12 @@ namespace mysimulator {
     }
   }
 
+  template <typename T>
+  bool IsSame(const Array<T>& A, const Array<T>& B) {
+    typedef typename Array<T>::ParentType PType;
+    return IsSame(static_cast<const PType&>(A),static_cast<const PType&>(B));
+  }
+
   template <typename T1, typename T2>
   void _Copy(Array<T1>& A1, const Array<T2>& A2) { A1.Copy(A2); }
 

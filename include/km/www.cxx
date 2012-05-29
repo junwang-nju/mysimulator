@@ -34,6 +34,7 @@ int main() {
   Propagator<double,FreeSpace>* P=NULL;
   P=new PropagatorTrackingLineMinimizer<double,FreeSpace>;
 
+  _SwapContent(S.Location(),S.Velocity());
   return 0;
 }
 

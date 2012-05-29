@@ -196,9 +196,10 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void IsSame(const Array2DNumeric<T>& A, const Array2DNumeric<T>& B) {
-    return IsSame(static_cast<Array2DBase<T,ArrayNumeric>&>(A),
-                  static_cast<Array2DBase<T,ArrayNumeric>&>(B));
+  bool IsSame(const Array2DNumeric<T>& A, const Array2DNumeric<T>& B) {
+    typedef typename Array2DNumeric<T>::ParentType  PType;
+    return IsSame<T,ArrayNumeric,ArrayNumeric>(static_cast<const PType&>(A),
+                                               static_cast<const PType&>(B));
   }
 
   template <typename T1,typename T2>
@@ -214,16 +215,17 @@ namespace mysimulator {
 
   template <typename T>
   void _SwapContent(Array2DNumeric<T>& A,Array2DNumeric<T>& B) {
-    _SwapContent(static_cast<Array2DBase<T,ArrayNumeric>&>(A),
-                 static_cast<Array2DBase<T,ArrayNumeric>&>(B));
+    typedef typename Array2DNumeric<T>::ParentType  PType;
+    _SwapContent<T,ArrayNumeric,ArrayNumeric>(static_cast<PType&>(A),
+                                              static_cast<PType&>(B));
   }
 
   template <typename T> class Array2D;
 
   template <typename T>
   void IsSame(const Array2DNumeric<T>& A, const Array2D<T>& B) {
-    return IsSame(static_cast<Array2DBase<T,ArrayNumeric>&>(A),
-                  static_cast<Array2DBase<T,Array>&>(B));
+    return IsSame(static_cast<const Array2DBase<T,ArrayNumeric>&>(A),
+                  static_cast<const Array2DBase<T,Array>&>(B));
   }
 
   template <typename T1,typename T2>

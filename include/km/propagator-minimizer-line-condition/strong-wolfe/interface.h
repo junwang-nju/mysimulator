@@ -7,7 +7,8 @@
 namespace mysimulator {
 
   template <typename T>
-  class LineMinimizerConditionStrongWolfe : LineMinimizerConditionWolfe<T> {
+  class LineMinimizerConditionStrongWolfe
+      : public LineMinimizerConditionWolfe<T> {
 
     public:
 

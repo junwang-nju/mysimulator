@@ -275,6 +275,12 @@ namespace mysimulator {
   template <typename T>
   void Clear(ArrayNumeric<T>& A) { Clear(static_cast<Array<T>&>(A)); }
 
+  template <typename T>
+  bool IsSame(const ArrayNumeric<T>& A, const ArrayNumeric<T>& B) {
+    typedef typename ArrayNumeric<T>::ParentType PType;
+    return IsSame(static_cast<const PType&>(A),static_cast<const PType&>(B));
+  }
+
   template <typename T1, typename T2>
   void _Copy(ArrayNumeric<T1>& A1,const ArrayNumeric<T2>& A2) { A1.Copy(A2); }
 
