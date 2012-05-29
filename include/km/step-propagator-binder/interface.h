@@ -46,6 +46,7 @@ namespace mysimulator {
 }
 
 #include "step-propagator-binder/vel-verlet/interface.h"
+#include "step-propagator-binder/minimizer-shift/interface.h"
 
 namespace mysimulator {
 
@@ -54,7 +55,10 @@ namespace mysimulator {
                  const Array<StepPropagator<T>*>& Ps) {
     if(B!=NULL) { delete B; B=NULL; }
     static StepPropagatorVelVerletBinder<T,GT> VVerlet;
+    static StepPropagatorMinimizerShiftBinder<T,GT> MShift;
     if(VVerlet.IsWorkable(Ps))  B=new StepPropagatorVelVerletBinder<T,GT>;
+    else if(MShift.IsWorkable(Ps))
+      B=new StepPropagatorMinimizerShiftBinder<T,GT>;
     else fprintf(stderr,"Not Binder Available!\n");
   }
 

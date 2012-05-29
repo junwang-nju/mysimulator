@@ -23,7 +23,7 @@ namespace mysimulator {
         assert(Props.IsValid());
         for(unsigned int i=0;i<Props.Size();++i) {
           assert(Props[i]!=NULL);
-          Props[i].Evolute1();
+          Props[i]->Evolute1();
         }
         I.ClearFlag();
         I.Calc(X,E,G);
@@ -35,7 +35,7 @@ namespace mysimulator {
         bool fg;
         switch(SPN) {
           case FixPosition:
-          case MinimizerLine:
+          case MinimizerShiftLine:
             fg=true;    break;
           default:
             fg=false;   break;
