@@ -35,6 +35,8 @@ namespace mysimulator {
   _IncDEF_(long double, char)
   _IncDEF_(long double, unsigned char)
 
+  _IncDEF_(double, double)
+
 }
 
 #ifdef _IncDEF_
