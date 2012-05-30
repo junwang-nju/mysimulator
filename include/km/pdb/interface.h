@@ -3,6 +3,7 @@
 #define _PDB_Interface_H_
 
 #include "array2d/interface.h"
+#include "pdb-model/interface.h"
 #include <cstring>
 
 namespace mysimulator {
@@ -23,9 +24,15 @@ namespace mysimulator {
         return (strncpy(_code,"    ",4)!=0)&&(_nres>0)&&
                _model.IsValid()&&_seqIdx.IsValid();
       }
+
+      PDBModel& Model(unsigned int i) {
+        assert(_model.IsValid()); return _model[i];
+      }
       const char* Code() const { return _code; }
       const unsigned int NumberResidue() const { return _nres; }
-      const PDBModel& Model(unsigned int i) { return _model[i]; }
+      const PDBModel& Model(unsigned int i) const {
+        assert(_model.IsValid()); return _model[i];
+      }
       const unsigned int Index(unsigned int i,unsigned int j) const {
         assert(_seqIdx.IsValid());
         return _seqIdx[i][j];

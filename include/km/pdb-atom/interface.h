@@ -4,6 +4,7 @@
 
 #include "pdb-atom-position/interface.h"
 #include "array/interface.h"
+#include "pdb-atom/name.h"
 
 namespace mysimulator {
 
@@ -14,20 +15,50 @@ namespace mysimulator {
       typedef PDBAtom   Type;
       friend void Clear(PDBAtom&);
 
-      PDBAtom() : _location(), _altLocation(), _bfactor(0), _altBFactor() {}
+      PDBAtom() : _tag(UnknownAtom), _loc(), _altLoc(), _bfac(0), _altBFac() {}
       ~PDBAtom() { Clear(*this); }
 
       bool IsValid() const { return _location.IsValid(); }
 
-      const PDBAtomPosition& Location() const { return _location; }
-      const double BFactor() const { return _bfactor; }
+      void Allocate(PDBAtomName PAN, unsigned int n=1) {
+        Clear(*this);
+        _tag=PAN;
+        unsigned int m=n-1;
+        if(m>0)   {
+          _altLoc.Allocate(m);
+          _altBFac.Allocate(m);
+        }
+      }
+
+      const PDBAtomName Name() const { return _tag; }
+      PDBAtomPosition& Location() { return _loc; }
+      double& BFactor() { return _bfac; }
+      PDBAtomPosition& AltLocation(unsigned int i) {
+        assert(_altLoc.IsValid());
+        return _altLoc[i];
+      }
+      double& ALtBFactor(unsigned int i) {
+        assert(_altBFac.IsValid());
+        return _altBFac[i];
+      }
+      const PDBAtomPosition& Location() const { return _loc; }
+      const double& BFactor() const { return _bfac; }
+      const PDBAtomPosition& AltLocation(unsigned int i) const {
+        assert(_altLoc.IsValid());
+        return _altLoc[i];
+      }
+      const double& ALtBFactor(unsigned int i) const {
+        assert(_altBFac.IsValid());
+        return _altBFac[i];
+      }
 
     protected:
 
-      PDBAtomPosition _location;
-      Array<PDBAtomPosition> _altLocation;
-      double _bfactor;
-      Array<double> _altBFactor;
+      PDBAtomName _tag;
+      PDBAtomPosition _loc;
+      Array<PDBAtomPosition> _altLoc;
+      double _bfac;
+      Array<double> _altBFac;
 
     private:
 
@@ -37,10 +68,11 @@ namespace mysimulator {
   };
 
   void Clear(PDBAtom& A) {
-    Clear(A._location);
-    Clear(A._altLocation);
-    A._bfactor=0;
-    Clear(A._altBFactor);
+    _tag=UnknownAtom;
+    Clear(A._loc);
+    Clear(A._altLoc);
+    A._bfac=0;
+    Clear(A._altBFac);
   }
 
 }

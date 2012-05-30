@@ -31,6 +31,8 @@ namespace mysimulator {
       const double& Y() const { return _Y; }
       const double& Z() const { return _Z; }
 
+      void Allocate() { Clear(*this); }
+
     protected:
 
       double _X,_Y,_Z;
