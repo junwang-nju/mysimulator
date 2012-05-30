@@ -20,14 +20,9 @@ namespace mysimulator {
 
       bool IsValid() const { return _loc.IsValid(); }
 
-      void Allocate(PDBAtomName PAN, unsigned int n=1) {
+      void Allocate(PDBAtomName PAN) {
         Clear(*this);
         _tag=PAN;
-        unsigned int m=n-1;
-        if(m>0)   {
-          _altLoc.Allocate(m);
-          _altBFac.Allocate(m);
-        }
       }
 
       const PDBAtomName Name() const { return _tag; }
