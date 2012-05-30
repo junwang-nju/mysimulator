@@ -10,6 +10,7 @@ namespace mysimulator {
     VelVerletConstE,
     VelVerletLangevin,
     VelVerletBerendsen,
+    ConstVelocity,
     NumberStepPropagator,
     UnassignedStepPropagator
   };

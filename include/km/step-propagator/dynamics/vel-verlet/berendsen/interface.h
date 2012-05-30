@@ -79,7 +79,7 @@ namespace mysimulator {
       typedef PropagatorWithMass<T>   ParentType;
 
       StepPropagatorVelVerletBerendsen() : ParentType() {}
-      ~StepPropagatorVelVerletBerendsen() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletBerendsen() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=VelVerletBerendsen;

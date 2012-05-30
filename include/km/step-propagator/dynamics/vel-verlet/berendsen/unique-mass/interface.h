@@ -56,7 +56,7 @@ namespace mysimulator {
       ParentType;
 
       StepPropagatorVelVerletBerendsen_UMass() : ParentType() {}
-      ~StepPropagatorVelVerletBerendsen_UMass() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletBerendsen_UMass() { Clear(*this); }
 
       virtual void Update7() {
         assert(this->_param.IsValid());

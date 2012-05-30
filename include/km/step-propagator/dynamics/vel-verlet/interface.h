@@ -54,7 +54,7 @@ namespace mysimulator {
       typedef StepPropagatorDynamics<T>   ParentType;
 
       StepPropagatorVelVerlet() : ParentType() {}
-      ~StepPropagatorVelVerlet() { Clear(*this); }
+      virtual ~StepPropagatorVelVerlet() { Clear(*this); }
 
       virtual void Update4() { this->Update2(); this->Update3(); }
 

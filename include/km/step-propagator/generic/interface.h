@@ -15,7 +15,7 @@ namespace mysimulator {
       typedef StepPropagator<T>     ParentType;
 
       StepPropagatorGeneric() : ParentType() {}
-      ~StepPropagatorGeneric() { Clear(*this); }
+      virtual ~StepPropagatorGeneric() { Clear(*this); }
 
       virtual bool IsDynamics() const { return true; }
       virtual bool IsMinimizer() const { return true; }

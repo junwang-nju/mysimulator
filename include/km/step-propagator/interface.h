@@ -123,6 +123,7 @@ namespace mysimulator {
 #include "step-propagator/dynamics/vel-verlet/berendsen/unique-mass/interface.h"
 #include "step-propagator/dynamics/vel-verlet/berendsen/array-mass/interface.h"
 #include "step-propagator/minimizer-shift/line/interface.h"
+#include "step-propagator/dynamics/manual-move/const-v/interface.h"
 #include "step-propagator/property-name.h"
 
 namespace mysimulator {
@@ -170,6 +171,9 @@ namespace mysimulator {
         break;
       case MinimizerShiftLine:
         P=new StepPropagatorMinimizerShiftLine<T>;
+        break;
+      case ConstVelocity:
+        P=new StepPropagatorManualConstV<T>;
         break;
       default:
         fprintf(stderr,"Unknown StepPropagator Name!\n");

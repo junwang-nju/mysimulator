@@ -57,7 +57,7 @@ namespace mysimulator {
       typedef Array<AType>      AAType;
 
       StepPropagatorVelVerletBerendsen_AMass() : ParentType() {}
-      ~StepPropagatorVelVerletBerendsen_AMass() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletBerendsen_AMass() { Clear(*this); }
 
       virtual void Update7() {
         assert(this->_param.IsValid());

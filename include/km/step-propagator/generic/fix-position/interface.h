@@ -15,7 +15,7 @@ namespace mysimulator {
       typedef StepPropagatorGeneric<T>  ParentType;
 
       StepPropagatorFixPosition() : ParentType() {}
-      ~StepPropagatorFixPosition() { Clear(*this); }
+      virtual ~StepPropagatorFixPosition() { Clear(*this); }
 
       virtual void Allocate() { this->_tag=FixPosition; }
       virtual void Init() {
