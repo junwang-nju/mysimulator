@@ -30,5 +30,23 @@ namespace mysimulator {
 
 }
 
+#include "pdb-atom-position/interface.h"
+
+namespace mysimulator {
+
+  double DistanceSQ(const PDBAtomPosition& P1,const PDBAtomPosition& P2) {
+    double X,Y,Z;
+    X=P1.X()-P2.X();
+    Y=P1.Y()-P2.Y();
+    Z=P1.Z()-P2.Z();
+    return X*X+Y*Y+Z*Z;
+  }
+
+  double Distance(const PDBAtomPosition& P1,const PDBAtomPosition& P2) {
+    return __SqRoot(Distance(P1,P2));
+  }
+
+}
+
 #endif
 
