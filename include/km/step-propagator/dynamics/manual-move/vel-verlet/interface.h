@@ -48,7 +48,7 @@
 #error "Duplicate _PPARAM_"
 #endif
 
-#define _PPointer_
+#ifndef _PPointer_
 #define _PPointer_(RT,U)  Pointer<RT>(_PPARAM_(U))
 #else
 #error "Duplicate _PPointer_"
