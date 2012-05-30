@@ -47,6 +47,7 @@ namespace mysimulator {
           case VelVerletLangevin:
           case VelVerletBerendsen:
           case FixPosition:
+          case VelVerletConstVelocity:
             fg=true;  break;
           default:
             fg=false; break;
