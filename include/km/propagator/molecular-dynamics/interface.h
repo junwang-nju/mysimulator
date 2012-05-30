@@ -195,6 +195,7 @@ namespace mysimulator {
               fg|=7;
               break;
             case FixPosition:
+            case VelVerletConstVelocity:
               break;
             default:
               fprintf(stderr,"Improper StepPropagator\n");
@@ -209,6 +210,7 @@ namespace mysimulator {
           case VelVerletLangevin:
             Introduce(P,PN,_massFlag,_fricFlag);  break;
           case FixPosition:
+          case VelVerletConstVelocity:
             Introduce(P,PN);  break;
           default:
             fprintf(stderr,"StepPropagator Not Suitable for MD!\n");
