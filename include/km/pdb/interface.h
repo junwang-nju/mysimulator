@@ -14,6 +14,7 @@ namespace mysimulator {
 
       typedef PDBObject   Type;
       friend void Clear(PDBObject&);
+      friend class PDBFile;
 
       PDBObject() : _code(), _nres(0), _model(), _seqIdx() {
         strncpy(_code,"    ",5);
@@ -24,6 +25,7 @@ namespace mysimulator {
         return (strncpy(_code,"    ",4)!=0)&&(_nres>0)&&
                _model.IsValid()&&_seqIdx.IsValid();
       }
+      void Allocate(unsigned int n) { _model.Allocate(n); }
 
       PDBModel& Model(unsigned int i) {
         assert(_model.IsValid()); return _model[i];
