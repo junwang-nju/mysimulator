@@ -23,6 +23,8 @@ namespace mysimulator {
    *
    * This is the default form. when input type T is not specialized (such as
    * ArrayNumeric), just give out the original type T as data type.
+   *
+   * @tparam T the input type
    */
   template <typename T>
   class DataType {
@@ -36,6 +38,8 @@ namespace mysimulator {
    *
    * Using intrisic type trait to get basic data type of the ArrayNumeric
    * object. This enables to design specific operations for certain type.
+   *
+   * @tparam T the input type
    */
   template <typename T>
   class DataType<ArrayNumeric<T> > {
@@ -53,6 +57,8 @@ namespace mysimulator {
    *
    * Using intrisic type trait to get basic data type of the Array2DNumeric
    * object. This enables to design specific operations for certain type.
+   *
+   * @tparam T the input type
    */
   template <typename T>
   class DataType<Array2DNumeric<T> > {
