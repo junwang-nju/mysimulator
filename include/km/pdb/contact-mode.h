@@ -5,13 +5,9 @@
 namespace mysimulator {
 
   enum PDBContactAnalysisMode {
-    BaseCAlpha,
-    BaseHeavyAtoms
-  };
-
-  enum PDBContactSourceMode {
-    UseFirstModel,
-    UseAverage
+    BaseCAlpha=0,
+    BaseHeavyAtoms,
+    SheaDef   // 1. Shea 2. Kaya & Chan, (NCS1) JMB 2003
   };
 
 }

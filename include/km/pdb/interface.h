@@ -5,6 +5,7 @@
 #include "array2d/interface.h"
 #include "pdb-model/interface.h"
 #include "pdb/contact-mode.h"
+#include "pdb/source-mode.h"
 #include "distance/calc.h"
 #include <cstring>
 
@@ -50,13 +51,38 @@ namespace mysimulator {
 
       const unsigned int NumberModel() const { return _model.Size(); }
 
-      template <PDBContactAnalysisMode AM,PDBContactSourceMode SM>
+      template <PDBSourceMode SM,typename T>
+      unsigned int ProduceCAlpha(Array2DNumeric<T>& X) {
+        if(SM==UseFirstModel) return _ProduceCAlpha_FirstModel(X);
+        else {
+          fprintf(stderr,"Improper Source Mode!\n");
+          return 0;
+        }
+      }
+
+      template <typename T>
+      unsigned int _ProduceCAlpha_FirstModel(Array2DNumeric<T>& X) {
+        const unsigned int NMol=Model(0).NumberMolecule();
+        if(X.Size()!=NumberResidue()) {
+          Clear(X);
+          X.Allocate(NumberResidue(),3);
+        }
+        for(unsigned int i=0,n=0;i<NMol;++i)
+        for(unsigned int j=0;j<Model(0).Molecule(i).NumberResidue();++j,++n) {
+          X[n][0]=Model(0).Residue(i,j).Atom(AtomCA).Location().X();
+          X[n][1]=Model(0).Residue(i,j).Atom(AtomCA).Location().Y();
+          X[n][2]=Model(0).Residue(i,j).Atom(AtomCA).Location().Z();
+        }
+        return NMol;
+      }
+
+      template <PDBContactAnalysisMode AM,PDBSourceMode SM>
       unsigned int ProduceContact(const double&,Array2D<unsigned int>&) {
         fprintf(stderr,"Not Available!\n");
         return 0;
       }
 
-      template <PDBContactAnalysisMode AM,PDBContactSourceMode SM>
+      template <PDBContactAnalysisMode AM,PDBSourceMode SM>
       unsigned int ProduceContact(Array2D<unsigned int>&) {
         fprintf(stderr,"Not Available!\n");
         return 0;
@@ -99,8 +125,10 @@ namespace mysimulator {
                     Model(0).Residue(j,l).Atom(AtomCA).Location())<THSQ)
         ++nc;
     }
-    Clear(CM);
-    CM.Allocate(nc,4);
+    if(CM.Size()!=nc) {
+      Clear(CM);
+      CM.Allocate(nc,4);
+    }
     nc=0;
     for(unsigned int i=0;i<NMol;++i)
     for(unsigned int k=0;k<Model(0).Molecule(i).NumberResidue();++k)
@@ -139,12 +167,15 @@ namespace mysimulator {
                         Model(0).Residue(j,l).Atom(AN2).Location())<THSQ) {
             ++nc;
             m=Model(0).Residue(i,k).NumberAtom()+1;
+            break;
           }
         }
       }
     }
-    Clear(CM);
-    CM.Allocate(nc,4);
+    if(CM.Size()!=nc) {
+      Clear(CM);
+      CM.Allocate(nc,4);
+    }
     nc=0;
     for(unsigned int i=0;i<NMol;++i)
     for(unsigned int k=0;k<Model(0).Molecule(i).NumberResidue();++k)
@@ -163,6 +194,7 @@ namespace mysimulator {
             CM[nc][2]=j;  CM[nc][3]=l;
             ++nc;
             m=Model(0).Residue(i,k).NumberAtom()+1;
+            break;
           }
         }
       }
@@ -178,7 +210,78 @@ namespace mysimulator {
   template <>
   unsigned int PDBObject::ProduceContact<BaseHeavyAtoms,UseFirstModel>(
       Array2D<unsigned int>& CM) {
-    return ProduceContact<BaseCAlpha,UseFirstModel>(5.0,CM);
+    return ProduceContact<BaseHeavyAtoms,UseFirstModel>(4.5,CM);
+  }
+  template <>
+  unsigned int PDBObject::ProduceContact<SheaDef,UseFirstModel>(
+      Array2D<unsigned int>& CM) {
+    const unsigned int NMol=Model(0).NumberMolecule();
+    PDBAtomName AN1,AN2;
+    unsigned int nc=0;
+    for(unsigned int i=0;i<NMol;++i)
+    for(unsigned int k=0;k<Model(0).Molecule(i).NumberResidue();++k)
+    for(unsigned int j=i;j<NMol;++j)
+    for(unsigned int l=0;l<Model(0).Molecule(j).NumberResidue();++l) {
+      if((i==j)&&(k>=l))  continue;
+      if(DistanceSQ(Model(0).Residue(i,k).Atom(AtomCA).Location(),
+                    Model(0).Residue(j,l).Atom(AtomCA).Location())<64.0) {
+        ++nc;
+        continue;
+      }
+      for(unsigned int m=0;m<Model(0).Residue(i,k).NumberAtom();++m) {
+        AN1=Model(0).Residue(i,k).AtomName(m);
+        if(!IsHeavyAtom(AN1))   continue;
+        if(IsMainChain(AN1))    continue;
+        for(unsigned int n=0;n<Model(0).Residue(j,l).NumberAtom();++n) {
+          AN2=Model(0).Residue(j,l).AtomName(n);
+          if(!IsHeavyAtom(AN2))   continue;
+          if(IsMainChain(AN2))    continue;
+          if(DistanceSQ(Model(0).Residue(i,k).Atom(AN1).Location(),
+                        Model(0).Residue(j,l).Atom(AN2).Location())<16.0) {
+            ++nc;
+            m=Model(0).Residue(i,k).NumberAtom()+1;
+            break;
+          }
+        }
+      }
+    }
+    if(CM.Size()!=nc) {
+      Clear(CM);
+      CM.Allocate(nc,4);
+    }
+    nc=0;
+    for(unsigned int i=0;i<NMol;++i)
+    for(unsigned int k=0;k<Model(0).Molecule(i).NumberResidue();++k)
+    for(unsigned int j=i;j<NMol;++j)
+    for(unsigned int l=0;l<Model(0).Molecule(j).NumberResidue();++l) {
+      if((i==j)&&(k>=l))  continue;
+      if(DistanceSQ(Model(0).Residue(i,k).Atom(AtomCA).Location(),
+                    Model(0).Residue(j,l).Atom(AtomCA).Location())<64.0) {
+        CM[nc][0]=i;  CM[nc][1]=k;
+        CM[nc][2]=j;  CM[nc][3]=l;
+        ++nc;
+        continue;
+      }
+      for(unsigned int m=0;m<Model(0).Residue(i,k).NumberAtom();++m) {
+        AN1=Model(0).Residue(i,k).AtomName(m);
+        if(!IsHeavyAtom(AN1))   continue;
+        if(IsMainChain(AN1))    continue;
+        for(unsigned int n=0;n<Model(0).Residue(j,l).NumberAtom();++n) {
+          AN2=Model(0).Residue(j,l).AtomName(n);
+          if(!IsHeavyAtom(AN2))   continue;
+          if(IsMainChain(AN2))    continue;
+          if(DistanceSQ(Model(0).Residue(i,k).Atom(AN1).Location(),
+                        Model(0).Residue(j,l).Atom(AN2).Location())<16.0) {
+            CM[nc][0]=i;  CM[nc][1]=k;
+            CM[nc][2]=j;  CM[nc][3]=l;
+            ++nc;
+            m=Model(0).Residue(i,k).NumberAtom()+1;
+            break;
+          }
+        }
+      }
+    }
+    return nc;
   }
 
 }

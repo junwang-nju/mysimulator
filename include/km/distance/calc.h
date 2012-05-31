@@ -43,7 +43,7 @@ namespace mysimulator {
   }
 
   double Distance(const PDBAtomPosition& P1,const PDBAtomPosition& P2) {
-    return __SqRoot(Distance(P1,P2));
+    return __SqRoot(DistanceSQ(P1,P2));
   }
 
 }

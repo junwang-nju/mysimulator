@@ -95,6 +95,27 @@ namespace mysimulator {
   };
 
   bool IsHeavyAtom(const PDBAtomName& PAN) { return PAN<NumberHeavyAtomNames; }
+  bool IsMainChain(const PDBAtomName& PAN) {
+    bool fg;
+    switch(PAN) {
+      case AtomCA:
+      case AtomN:
+      case AtomC:
+      case AtomO:
+      case AtomOXT:
+      case AtomH:
+      case AtomH1:
+      case AtomH2:
+      case AtomH3:
+      case AtomHA:
+      case AtomHA2:
+      case AtomHA3:
+        fg=true;  break;
+      default:
+        fg=false;
+    }
+    return fg;
+  }
 
 }
 
