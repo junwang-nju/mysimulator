@@ -21,7 +21,7 @@ namespace mysimulator {
    * @class PartUsedStatus
    * @brief Object recording partial access to storage
    *
-   * This is a child class of UsedStatus. One more counter is introduce to
+   * This is a child class of UsedStatus. One more counter is introduced to
    * record the number of references to part of storage. This is a special
    * use of storage since we cannot get the information of storage from child
    * information. Therefore, this object is implemented after the UsedStatus
@@ -31,8 +31,11 @@ namespace mysimulator {
 
     public:
 
+      /** @brief normalized name of this class */
       typedef PartUsedStatus  Type;
+      /** @brief normalized name of the parent class of this name */
       typedef UsedStatus      ParentType;
+
       friend void Clear(PartUsedStatus&);
 
       /** @brief default initiator
@@ -57,9 +60,25 @@ namespace mysimulator {
        * that that for partial use with 1 for the case with all partial use.
        */
       bool AllPartUse() const { return IsValid()&&(this->_count==_pcount+1); }
+      /** @brief init operation
+       *
+       * init parent class and init the local count (set it as zero).
+       */
       void Init() { ParentType::Init(); _pcount=0; }
-      void IncPart() { Inc(); _pcount++; }
-      void DecPart() { Dec(); _pcount--; }
+      /** @brief increment of counters
+       *
+       * increase the counts in parent and local by just add one.
+       * @note counts are unsigned int. so they cannot be larger than
+       *       the type requirement. boundary is checked with assert.
+       */
+      void IncPart() { Inc(); assert(_pcount<0xFFFFFFFFU); _pcount++; }
+      /** @brief decrement of counts
+       *
+       * decrease the counts in parent and local by just minus one.
+       * @note counts are unsigned int. boundary of count is checked
+       * with assert.
+       */
+      void DecPart() { Dec(); assert(_pcount>=1); _pcount--; }
 
     protected:
 
@@ -75,6 +94,12 @@ namespace mysimulator {
 
   };
 
+  /** @brief Clear the contect of PartUsedStatus object
+   *
+   * Just clear the parent class and reset the local count.
+   *
+   * @param S the PartUsedStatus object to be cleaned up
+   */
   void Clear(PartUsedStatus& S) {
     typedef PartUsedStatus::ParentType  PType;
     Clear(static_cast<PType&>(S));
