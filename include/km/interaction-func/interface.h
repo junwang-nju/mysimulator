@@ -139,6 +139,7 @@ namespace mysimulator {
       case AngleHarmonic:
         P=new InteractionFuncAngleHarmonic<T,GT>; break;
       case DihedralPeriodic:
+      case DihedralPeriodic2P:
         P=new InteractionFuncDihedralPeriodic<T,GT>;  break;
       case UnknownInteractionFunc:
       default:

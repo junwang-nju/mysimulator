@@ -11,7 +11,7 @@ namespace mysimulator {
   template <typename T> class InteractionParameter;
   template <typename T> void Clear(InteractionParameter<T>&);
   template <typename T>
-  void Introduce(InteractionParameter<T>*&,const InteractionFuncName&,...);
+  void Introduce(InteractionParameter<T>*&,const InteractionFuncName&);
 
   template <typename T>
   class InteractionParameter {
@@ -21,8 +21,7 @@ namespace mysimulator {
       typedef InteractionParameter<T>   Type;
       typedef typename IsNumeric<T>::Type   NumericCheck;
       friend void Clear<T>(InteractionParameter<T>&);
-      friend void Introduce<T>(InteractionParameter<T>*&,
-                               const InteractionFuncName&,...);
+      friend void Introduce<T>(InteractionParameter<T>*&,const InteractionFuncName&);
 
       InteractionParameter() : _tag(UnknownInteractionFunc), _data() {}
       virtual ~InteractionParameter() { Clear(*this); }
@@ -74,11 +73,8 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  void Introduce(InteractionParameter<T>*& P,const InteractionFuncName& FN,
-                 ...) {
+  void Introduce(InteractionParameter<T>*& P,const InteractionFuncName& FN) {
     if(P!=NULL) { delete P; P=NULL; }
-    va_list vl;
-    va_start(vl,FN);
     switch(FN) {
       case Harmonic:
       case WallHarmonic:
@@ -103,17 +99,18 @@ namespace mysimulator {
       case AngleHarmonic:
         P=new InteractionParameterAngleHarmonic<T>; break;
       case DihedralPeriodic:
+        fprintf(stderr,"Need to Indicate the Number of Periods in InteractionFuncName!\n");
+        break;
+      case DihedralPeriodic2P:
         P=new InteractionParameterDihedralPeriodic<T>;
         P->_data.Allocate(DihedralPeriodicShift);
-        Value<unsigned int>(P->_data[DihedralPeriodicNumberUnit])=
-          va_arg(vl,unsigned int);
+        Value<unsigned int>(P->_data[DihedralPeriodicNumberUnit])=2U;
         break;
       case UnknownInteractionFunc:
       default:
         fprintf(stderr,"Unknown Interaction!\n");
     }
     if(P!=NULL)   P->Allocate();
-    va_end(vl);
   }
 
 }

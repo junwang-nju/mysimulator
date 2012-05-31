@@ -16,10 +16,11 @@ namespace mysimulator {
     DistDielCoulomb,
     AngleHarmonic,
     DihedralPeriodic,
+    DihedralPeriodic2P,
     WallHarmonic,
     WallCore12,
     InteractionNumberFuncs,
-    UnknownInteractionFunc
+    UnknownInteractionFunc,
   };
 
   static unsigned int InteractionFuncIDSize[] = {
@@ -33,7 +34,8 @@ namespace mysimulator {
     2,    //  Coulomb,
     2,    //  DistDielCoulomb,
     3,    //  AngleHarmonic,
-    4,    //  DihedralPeriodic,
+    0,    //  DihedralPeriodic
+    4,    //  DihedralPeriodic2P,
     2,    //  WallHarmonic
     2     //  WallCore12
   };
