@@ -65,16 +65,12 @@ namespace mysimulator {
         Copy(D,Size());
       }
       template <typename T1>
-      void Fill(const T1& D, unsigned int n) {
+      void Fill(const T1& D) {
         typedef typename IsFillable<ArrayData<T>,T1>::Type  FillCheck;
         assert(IsValid());
-        assert(D.IsValid());
-        assert(n<=Size());
-        T   *p=_data, *pEnd=p+n;
+        T   *p=_data, *pEnd=p+this->Size();
         for(;p!=pEnd;)  _Fill(*(p++),D);
       }
-      template <typename T1>
-      void Fill(const T1& D) {  Fill(D,Size()); }
 
     protected:
 
@@ -108,9 +104,6 @@ namespace mysimulator {
 
   template <typename T, typename T1>
   void _Copy(ArrayData<T>& A, const ArrayData<T>& cA) { A.Copy(cA); }
-
-  template <typename T, typename T1>
-  void _Fill(ArrayData<T>& A, const T1& D, unsigned int n) { A.Fill(D,n); }
 
   template <typename T, typename T1>
   void _Fill_(ArrayData<T>& A, const T1& D) { A.Fill(D); }

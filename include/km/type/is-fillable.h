@@ -22,15 +22,6 @@ namespace mysimulator {
   const bool IsFillableFlag<ArrayData<T1>,T2>::Flag=
     IsFillableFlag<T1,T2>::Flag;
 
-  template <typename T> class ArrayNumeric;
-  template <typename T1, typename T2>
-  class IsFillableFlag<ArrayNumeric<T1>,T2> {
-    public: static const bool Flag;
-  };
-  template <typename T1, typename T2>
-  const bool IsFillableFlag<ArrayNumeric<T1>,T2>::Flag=
-    IsFillableFlag<T1,T2>::Flag;
-
 }
 
 #include "type/check-object.h"

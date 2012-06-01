@@ -98,6 +98,17 @@ namespace mysimulator {
   template <typename T>
   void Clear(ArrayNumeric<T>& A) { Clear(static_cast<ArrayBase<T>&>(A)); }
 
+  template <typename T1, typename T2>
+  void _Copy(ArrayNumeric<T1>& A1,const ArrayNumeric<T2>& A2) { A1.Copy(A2); }
+
+  template <typename T1, typename T2>
+  void _Copy(ArrayNumeric<T1>& A1,const ArrayNumeric<T2>& A2,unsigned int n) {
+    A1.Copy(A2,n);
+  }
+
+  template <typename T1, typename T2>
+  void _Fill(ArrayNumeric<T1>& A, const T2& fac) { A.Fill(fac); }
+
   template <typename T>
   typename DataType<ArrayNumeric<T> >::Type _Sum(const ArrayNumeric<T>& A) {
     return A.Summation();
