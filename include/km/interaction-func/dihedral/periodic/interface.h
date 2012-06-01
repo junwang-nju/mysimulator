@@ -40,6 +40,7 @@ namespace mysimulator {
         T theta;
         const unsigned int n=
           Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
+        (*Func)=0;
         for(unsigned int i=0;i<n;++i) {
           theta=dih-Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);
@@ -53,6 +54,7 @@ namespace mysimulator {
         T theta;
         const unsigned int n=
           Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
+        (*Diff)=0;
         for(unsigned int i=0;i<n;++i) {
           theta=dih-Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);
@@ -66,6 +68,8 @@ namespace mysimulator {
         T theta;
         const unsigned int n=
           Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
+        (*Func)=0;
+        (*Diff)=0;
         for(unsigned int i=0;i<n;++i) {
           theta=dih-Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);
