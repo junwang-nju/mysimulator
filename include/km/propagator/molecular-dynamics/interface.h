@@ -65,6 +65,7 @@ namespace mysimulator {
         if(fg&2)
           _fricFlag=static_cast<FrictionPropertyName>(va_arg(vl,unsigned int));
         this->_props.Allocate(PN.Size());
+        for(unsigned int i=0;i<PN.Size();++i) this->_props[i]=NULL;
         for(unsigned int i=0;i<PN.Size();++i)
           _IntroduceStep(this->_props[i],PN[i]);
         this->_bind=NULL;
