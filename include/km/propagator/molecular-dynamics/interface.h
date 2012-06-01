@@ -98,7 +98,7 @@ namespace mysimulator {
         }
         for(unsigned int i=0;i<this->_props.Size();++i) {
           this->_props[i]->Load(this->_param);
-          this->_props[i]->Init();
+          //this->_props[i]->Init();
         }
         va_end(vl);
       }
@@ -144,6 +144,24 @@ namespace mysimulator {
           ke+=Value<double>(this->_props[i]->KineticEnergy());
         }
         Value<T>(this->Parameter(PropagatorMD_KineticEnergy))=ke;
+      }
+
+      virtual void IntroduceSystem(System<T,GT>& S) {
+        ParentType::IntroduceSystem(S);
+        if(_Pointer_(AType,RandVector)!=NULL)
+          _Pointer_(AType,RandVector)->Imprint(S.Location());
+        if(_massFlag==ArrayMass) {
+          _Pointer_(AType,Mass)->Imprint(S.Location());
+          _Pointer_(AType,NegHTIM)->Imprint(S.Location());
+          _Pointer_(AType,VelocitySQ)->Imprint(S.Location());
+        }
+        if(_fricFlag==ArrayFriction)
+          _Pointer_(AType,Friction)->Imprint(S.Location());
+        if((_massFlag==ArrayMass)||(_fricFlag==ArrayFriction)) {
+          _Pointer_(AType,RandSize)->Imprint(S.Location());
+          _Pointer_(AType,FacBf)->Imprint(S.Location());
+          _Pointer_(AType,FacAf)->Imprint(S.Location());
+        }
       }
 
     protected:

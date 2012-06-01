@@ -48,6 +48,7 @@ int main() {
   PO.ProduceCAlpha<UseFirstModel>(S.Location());
   S.Velocity().Fill(0);
 
+  /*
   BoxMuller<MersenneTwisterDSFMT<19937> > RNG;
   RNG.Allocate();
   RNG.InitWithTime();
@@ -55,6 +56,7 @@ int main() {
   for(unsigned int i=0;i<S.Velocity().Size();++i)
   for(unsigned int k=0;k<S.Velocity()[i].Size();++k)
     S.Velocity()[i][k]=RNG.Double();
+  */
 
   Array2D<unsigned int> CM;
   const unsigned int NP=PO.ProduceContact<SheaDef,UseFirstModel>(CM);
@@ -181,15 +183,15 @@ int main() {
 
   Array<StepPropagatorName>   SPN;
   SPN.Allocate(1);
-  SPN[0]=VelVerletConstE;
-  P->Allocate(SPN,UniqueMass);
+  SPN[0]=VelVerletLangevin;
+  P->Allocate(SPN,UniqueMass,UniqueFriction,BoxMullerRNG,MTDSFMTRNG,19937);
   P->AllocateOutput<MyOut>();
 
   P->Time(MDTime_NowTime)=0;
   P->IntTime(MDTime_NowStep)=0;
   P->Time(MDTime_TimeStep)=0.0001;
   P->Time(MDTime_TotalPeriod)=10.;
-  P->Time(MDTime_OutputInterval)=0.001;
+  P->Time(MDTime_OutputInterval)=0.0001;
   P->UpdateTime(Step_Total_OInterval);
 
   P->Step(0)->AllocateRange(1);
@@ -199,6 +201,7 @@ int main() {
   P->Init();
 
   *Pointer<double>(P->Parameter(PropagatorMD_Mass))=1.;
+  *Pointer<double>(P->Parameter(PropagatorMD_Temperature))=0.5;
   P->Update();
 
   P->Evolute(S);

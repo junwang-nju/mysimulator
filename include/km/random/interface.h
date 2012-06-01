@@ -61,6 +61,7 @@ namespace mysimulator {
 }
 
 #include "random/mt-standard/interface.h"
+#include "random/mt-dsfmt/interface.h"
 #include "random/box-muller/interface.h"
 #include <cstdarg>
 
@@ -68,16 +69,31 @@ namespace mysimulator {
 
   void Introduce(Random*& R, RandomName RN, ...) {
     if(R!=NULL) { delete R; R=NULL; }
+    unsigned int fac;
     va_list vl;
     va_start(vl,RN);
     RandomName RN1;
     switch(RN) {
       case MTStandardRNG: R=new MersenneTwisterStandard;  break;
+      case MTDSFMTRNG:
+        fac=va_arg(vl,unsigned int);
+        switch(fac) {
+          case 19937: R=new MersenneTwisterDSFMT<19937>;  break;
+          default:
+            fprintf(stderr,"Unknown Factor for MersenneTwisterDSFMT!\n");
+        }
+        break;
       case BoxMullerRNG:
         RN1=static_cast<RandomName>(va_arg(vl,unsigned int));
         switch(RN1) {
-          case MTStandardRNG:
-            R=new BoxMuller<MersenneTwisterStandard>;
+          case MTStandardRNG: R=new BoxMuller<MersenneTwisterStandard>; break;
+          case MTDSFMTRNG:
+            fac=va_arg(vl,unsigned int);
+            switch(fac) {
+              case 19937: R=new BoxMuller<MersenneTwisterDSFMT<19937> >; break;
+              default:
+                fprintf(stderr,"Unknown Factor for MersenneTwisterDSFMT!\n");
+            }
             break;
           default:
             fprintf(stderr,"Unknown Uniform RNG!\n");
@@ -86,7 +102,10 @@ namespace mysimulator {
       default:
         fprintf(stderr,"Unknown RNG!\n");
     }
-    if(R!=NULL) R->Allocate();
+    if(R!=NULL) {
+      R->Allocate();
+      R->InitWithTime();
+    }
   }
 
 }

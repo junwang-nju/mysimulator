@@ -58,6 +58,11 @@ namespace mysimulator {
         return Value<unsigned int>(_time->Parameter(n));
       }
 
+      void Init() {
+        for(unsigned int i=0;i<this->_props.Size();++i)
+          this->_props[i]->Init();
+      }
+
       virtual void IntroduceSystem(System<T,GT>& S) {
         assert(S.Location().IsValid());
         for(unsigned int i=0;i<_props.Size();++i)
