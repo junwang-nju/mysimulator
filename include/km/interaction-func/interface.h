@@ -45,6 +45,10 @@ namespace mysimulator {
         _update=F._update;
       }
 
+      virtual void SetNeighbor(InteractionFunc<T,GeomType>* PF1=NULL,...) {
+        fprintf(stderr,"No Neighbors Available!\n");
+      }
+      void ClearNeighbor() { Clear(_neighbor); }
       virtual
       void Allocate(unsigned int)=0;
       virtual

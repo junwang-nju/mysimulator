@@ -168,6 +168,18 @@ namespace mysimulator {
         Grad[K].Shift(-efl-efk,_VEC_(NormVecB));
       }
 
+      virtual void SetNeighbor(InteractionFunc<T,GeomType>* PF1,...) {
+        this->_neighbor.Allocate(DihedralNumberNeighbor);
+        this->_neighbor[DihedralNeighbor4NormA]=PF1;
+        va_list vl;
+        va_start(vl,PF1);
+        this->_neighbor[DihedralNeighbor4NormB]=va_arg(vl,Type*);
+        this->_neighbor[DihedralNeighbor4Axis]=va_arg(vl,Type*);
+        this->_neighbor[DihedralNeighbor4DotAB]=va_arg(vl,Type*);
+        this->_neighbor[DihedralNeighbor4DotBC]=va_arg(vl,Type*);
+        va_end(vl);
+      }
+
     protected:
 
       virtual void EFunc(const InteractionParameter<T>*,T*) = 0;

@@ -140,6 +140,15 @@ namespace mysimulator {
         Grad[J].NegShift(this->_tmvec[AngleScaledNormVecK]);
       }
 
+      virtual void SetNeighbor(InteractionFunc<T,GeomType>* PF1,...) {
+        this->_neighbor.Allocate(AngleNumberNeighbor);
+        this->_neighbor[AngleNeighbor4EdgeA]=PF1;
+        va_list vl;
+        va_start(vl,PF1);
+        this->_neighbor[AngleNeighbor4EdgeB]=va_arg(vl,Type*);
+        va_end(vl);
+      }
+
     protected:
 
       virtual void EFunc(const InteractionParameter<T>*,T*) = 0;
