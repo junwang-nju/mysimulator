@@ -8,20 +8,16 @@
 
 namespace mysimulator {
 
-  template <typename T> class ArrayData;
-  template <typename T> void Clear(ArrayData<T>&);
-  template <typename T> void _Swap(ArrayData<T>&,ArrayData<T>&);
-  template <typename T> void _SwapContent(ArrayData<T>&,ArrayData<T>&);
-
   template <typename T>
   class ArrayData {
 
     public:
 
       typedef ArrayData<T>  Type;
-      friend void Clear<T>(Type&);
-      friend void _Swap<T>(Type&,Type&);
-      friend void _SwapContent<T>(Type&,Type&);
+      template <typename T1> friend void Clear(ArrayData<T1>&);
+      template <typename T1> friend void _Swap(ArrayData<T1>&,ArrayData<T1>&);
+      template <typename T1>
+      friend void _SwapContent(ArrayData<T1>&,ArrayData<T1>&);
 
       ArrayData() : _data(NULL), _size(0), _alloc(false) {}
       ~ArrayData() { Clear(*this); }

@@ -10,6 +10,10 @@
 
 namespace mysimulator {
 
+  template <typename T> class ArrayNumeric;
+  template <typename T>
+  typename DataType<ArrayNumeric<T> >::Type _Dot(const ArrayNumeric<T>&);
+
   template <typename T>
   class ArrayNumeric : public ArrayBase<T> {
 
@@ -17,31 +21,33 @@ namespace mysimulator {
 
       typedef ArrayNumeric<T>   Type;
       typedef ArrayBase<T>      ParentType;
-      typedef typename IsNumeric<T>::Type NumericCheck;
+      typedef typename IsNumeric<Type>::Type NumericCheck;
+      template <typename T1,typename T2>
+      friend typename DataType<Type>::Type _Dot<T>(const Type&);
 
       ArrayNumeric() : ParentType() {}
       ~ArrayNumeric() { Clear(*this); }
 
-      typename DataType<ArrayNumeric<T> >::Type Summation() const {
+      typename DataType<Type>::Type Summation() const {
         typedef typename IsNumeric<ArrayNumeric<T> >::Type   SumCheck;
         assert(this->IsValid());
-        typename DataType<ArrayNumeric<T> >::Type sum=0;
+        typename DataType<Type>::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;) sum+=_Sum(*(p++));
         return sum;
       }
-      typename DataType<ArrayNumeric<T> >::Type AbsSummation() const {
+      typename DataType<Type>::Type AbsSummation() const {
         typedef typename IsNumeric<ArrayNumeric<T> >::Type   SumCheck;
         assert(this->IsValid());
-        typename DataType<ArrayNumeric<T> >::Type sum=0;
+        typename DataType<Type>::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;) sum+=_AbsSum(*(p++));
         return sum;
       }
 
-      typename DataType<ArrayNumeric<T> >::Type NormSQ() const {
+      typename DataType<Type>::Type NormSQ() const {
         typedef typename IsNumeric<ArrayNumeric<T> >::Type NormCheck;
-        typename DataType<ArrayNumeric<T> >::Type sum=0;
+        typename DataType<Type>::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;)  sum+=_NormSQ(*(p++));
         return sum;
