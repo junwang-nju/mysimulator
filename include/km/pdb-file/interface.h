@@ -188,7 +188,7 @@ namespace mysimulator {
         return nmol;
       }
       void LoadMoleculeTag(PDBObject& M) {
-        unsigned int nl,nMol,nTag;
+        unsigned int nl,nMol,nTag=0;
         PDBRecordName PRN;
         nl=0;
         nMol=0;

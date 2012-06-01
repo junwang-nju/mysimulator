@@ -14,6 +14,7 @@
 namespace mysimulator {
 
   template <typename T> class ArrayData;
+  template <unsigned int Fac> class MersenneTwisterDSFMT;
   template <typename T> void Clear(ArrayData<T>&);
   template <typename T> void _Swap(ArrayData<T>&,ArrayData<T>&);
   template <typename T> void _SwapContent(ArrayData<T>&,ArrayData<T>&);

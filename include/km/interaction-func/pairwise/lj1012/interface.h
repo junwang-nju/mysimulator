@@ -49,8 +49,7 @@ namespace mysimulator {
         assert(P!=NULL);
         T tmd=this->_post[LJ1012IvDistanceSQ];
         *Diff=this->_post[LJ1012IvDistance10]*tmd*
-              (Value<T>((*P)[LJ1012DiffFactorA])*tmd-
-               Value<T>((*P)[LJ1012DiffFactorB]));
+              (Value<T>((*P)[LJ1012DiffFactorB])-Value<T>((*P)[LJ1012DiffFactorA])*tmd);
       }
       virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
         assert(this->IsValid());
@@ -59,8 +58,8 @@ namespace mysimulator {
         T tmd2=this->_post[LJ1012IvDistance10];
         *Func=tmd2*(Value<T>((*P)[LJ1012FactorA])*tmd1-
                     Value<T>((*P)[LJ1012FactorB]));
-        *Diff=tmd2*tmd1*(Value<T>((*P)[LJ1012DiffFactorA])*tmd1-
-                         Value<T>((*P)[LJ1012DiffFactorB]));
+        *Diff=tmd2*tmd1*(Value<T>((*P)[LJ1012DiffFactorB])-
+                         Value<T>((*P)[LJ1012DiffFactorA])*tmd1);
       }
 
       void Pre2Post4E(const InteractionParameter<T>* P) {

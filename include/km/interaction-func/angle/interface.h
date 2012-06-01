@@ -86,9 +86,9 @@ namespace mysimulator {
         T ef;
         GFunc(P,&ef);
         this->_tmvec[AngleScaledNormVecI].Copy(this->_tmvec[AngleNormVecI]);
-        this->_tmvec[AngleScaledNormVecI].Scale(ef);
+        this->_tmvec[AngleScaledNormVecI].Scale(-ef);
         this->_tmvec[AngleScaledNormVecK].Copy(this->_tmvec[AngleNormVecK]);
-        this->_tmvec[AngleScaledNormVecK].Scale(ef);
+        this->_tmvec[AngleScaledNormVecK].Scale(-ef);
         Grad[I].Shift(this->_tmvec[AngleScaledNormVecI]);
         Grad[J].NegShift(this->_tmvec[AngleScaledNormVecI]);
         Grad[K].Shift(this->_tmvec[AngleScaledNormVecK]);
@@ -131,9 +131,9 @@ namespace mysimulator {
         BFunc(P,&ee,&ef);
         Energy+=ee;
         this->_tmvec[AngleScaledNormVecI].Copy(this->_tmvec[AngleNormVecI]);
-        this->_tmvec[AngleScaledNormVecI].Scale(ef);
+        this->_tmvec[AngleScaledNormVecI].Scale(-ef);
         this->_tmvec[AngleScaledNormVecK].Copy(this->_tmvec[AngleNormVecK]);
-        this->_tmvec[AngleScaledNormVecK].Scale(ef);
+        this->_tmvec[AngleScaledNormVecK].Scale(-ef);
         Grad[I].Shift(this->_tmvec[AngleScaledNormVecI]);
         Grad[J].NegShift(this->_tmvec[AngleScaledNormVecI]);
         Grad[K].Shift(this->_tmvec[AngleScaledNormVecK]);

@@ -123,7 +123,7 @@ namespace mysimulator {
             this->_bind->Evolute(S.Location(),S.Energy(),S.Gradient(),
                                  S.InteractionGroup(0),this->_props);
           this->Time(MDTime_NowTime)=this->Time(MDTime_TotalPeriod);
-          this->Time(MDTime_NowStep)=tt;
+          this->IntTime(MDTime_NowStep)=tt;
           this->_output->Write(this->Time(MDTime_NowTime),S,this);
         }
         return 1;
