@@ -37,7 +37,7 @@ namespace mysimulator {
         for(unsigned int i=0;i<nu;++i) {
           Value<T>(this->_data[sf+DihedralPeriodicStrFreq])=
             Value<T>(this->_data[sf+DihedralPeriodicStrength])*
-            Value<T>(this->_data[sf+DihedralPeriodicFrequency]);
+            Value<unsigned int>(this->_data[sf+DihedralPeriodicFrequency]);
           sf+=DihedralPeriodicUnitNumberParameter;
         }
       }

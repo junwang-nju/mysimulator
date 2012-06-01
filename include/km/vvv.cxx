@@ -20,8 +20,8 @@ namespace mysimulator {
         S.UpdateE(0);
         P->UpdateKineticEnergy();
         std::cout<<now<<"\t"<<S.Energy()<<"\t"<<P->KineticEnergy();
-        std::cout<<"\t"<<S.Energy()+P->KineticEnergy();
-        for(unsigned int i=0;i<5;++i) std::cout<<"\t"<<S.Interaction(i).Energy();
+        for(unsigned int i=0;i<5;++i)
+          std::cout<<"\t"<<S.Interaction(i).Energy();
         cout<<endl;
       }
   };
@@ -50,8 +50,8 @@ int main() {
 
   BoxMuller<MersenneTwisterDSFMT<19937> > RNG;
   RNG.Allocate();
-  //RNG.InitWithTime();
-  RNG.Init(2789243);
+  RNG.InitWithTime();
+  //RNG.Init(2789243);
   for(unsigned int i=0;i<S.Velocity().Size();++i)
   for(unsigned int k=0;k<S.Velocity()[i].Size();++k)
     S.Velocity()[i][k]=RNG.Double();
@@ -189,7 +189,7 @@ int main() {
   P->IntTime(MDTime_NowStep)=0;
   P->Time(MDTime_TimeStep)=0.0001;
   P->Time(MDTime_TotalPeriod)=10.;
-  P->Time(MDTime_OutputInterval)=0.0001;
+  P->Time(MDTime_OutputInterval)=0.001;
   P->UpdateTime(Step_Total_OInterval);
 
   *Pointer<double>(P->Parameter(PropagatorMD_Mass))=1.;
