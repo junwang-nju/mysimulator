@@ -10,8 +10,8 @@
 namespace mysimulator {
 
   template <typename T>
-  T AngleValue(const ArrayNumeric<T>& A1,const ArrayNumeric<T>& A2,
-               const ArrayNumeric<T>& A3) {
+  T Angle(const ArrayNumeric<T>& A1,const ArrayNumeric<T>& A2,
+          const ArrayNumeric<T>& A3) {
     assert(A1.Size()==3);
     assert(A2.Size()==3);
     assert(A3.Size()==3);

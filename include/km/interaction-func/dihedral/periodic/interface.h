@@ -29,7 +29,7 @@ namespace mysimulator {
         this->_pre.Allocate(DihedralPeriodicNumberPre);
         this->_post.Allocate(DihedralPeriodicNumberPost);
         this->_tmvec.Allocate(DihedralPeriodicNumberVec,dim);
-        this->_neighbor.Allocate(DihedralPeriodicNumberNeighbor);
+        //this->_neighbor.Allocate(DihedralPeriodicNumberNeighbor);
       }
 
     protected:
@@ -41,9 +41,9 @@ namespace mysimulator {
         const unsigned int n=
           Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
         for(unsigned int i=0;i<n;++i) {
-          theta=dih+Value<T>(Q[DihedralPeriodicPhase]);
+          theta=dih-Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);
-          (*Func)+=Value<T>(Q[DihedralPeriodicStrength])*(_Cos(theta)+1.);
+          (*Func)+=Value<T>(Q[DihedralPeriodicStrength])*(1.-_Cos(theta));
           Q+=DihedralPeriodicUnitNumberParameter;
         }
       }
@@ -54,9 +54,9 @@ namespace mysimulator {
         const unsigned int n=
           Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
         for(unsigned int i=0;i<n;++i) {
-          theta=dih+Value<T>(Q[DihedralPeriodicPhase]);
+          theta=dih-Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);
-          (*Diff)-=Value<T>(Q[DihedralPeriodicStrFreq])*_Sin(theta);
+          (*Diff)+=Value<T>(Q[DihedralPeriodicStrFreq])*_Sin(theta);
           Q+=DihedralPeriodicUnitNumberParameter;
         }
       }
@@ -67,10 +67,10 @@ namespace mysimulator {
         const unsigned int n=
           Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
         for(unsigned int i=0;i<n;++i) {
-          theta=dih+Value<T>(Q[DihedralPeriodicPhase]);
+          theta=dih-Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);
-          (*Func)+=Value<T>(Q[DihedralPeriodicStrength])*(_Cos(theta)+1.);
-          (*Diff)-=Value<T>(Q[DihedralPeriodicStrFreq])*_Sin(theta);
+          (*Func)+=Value<T>(Q[DihedralPeriodicStrength])*(1.-_Cos(theta));
+          (*Diff)+=Value<T>(Q[DihedralPeriodicStrFreq])*_Sin(theta);
           Q+=DihedralPeriodicUnitNumberParameter;
         }
       }

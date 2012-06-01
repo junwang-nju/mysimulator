@@ -28,7 +28,7 @@ namespace mysimulator {
         this->_pre.Allocate(AngleHarmonicNumberPre);
         this->_post.Allocate(AngleHarmonicNumberPost);
         this->_tmvec.Allocate(AngleHarmonicNumberVec,dim);
-        this->_neighbor.Allocate(AngleHarmonicNumberNeighbor);
+        //this->_neighbor.Allocate(AngleHarmonicNumberNeighbor);
       }
 
     protected:
