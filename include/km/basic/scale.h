@@ -9,7 +9,7 @@ namespace mysimulator {
   template <typename T1, typename T2>
   void _Scale(T1& a, const T2& b) {
     typedef typename IsScalable<T1,T2>::Type  ScaleCheck;
-    a*=b;
+    a*=static_cast<T1>(b);
   }
 
 }

@@ -5,15 +5,15 @@
 namespace mysimulator {
 
   template <typename T1, typename T2>
-  class IsTypeSameFlag { public: static const bool Status; };
+  class IsTypeSameFlag { public: static const bool Flag; };
 
   template <typename T1, typename T2>
-  const bool IsTypeSameFlag<T1,T2>::Status=false;
+  const bool IsTypeSameFlag<T1,T2>::Flag=false;
 
   template <typename T>
-  class IsTypeSameFlag<T,T> { public: static const bool Status; };
+  class IsTypeSameFlag<T,T> { public: static const bool Flag; };
   template <typename T>
-  const bool IsTypeSameFlag<T,T>::Status=true;
+  const bool IsTypeSameFlag<T,T>::Flag=true;
 
 }
 

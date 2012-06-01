@@ -23,7 +23,7 @@ namespace mysimulator {
       ~ArrayNumeric() { Clear(*this); }
 
       typename DataType<ArrayNumeric<T> >::Type Summation() const {
-        typedef typename IsSumable<ArrayNumeric<T> >::Type   SumCheck;
+        typedef typename IsNumeric<ArrayNumeric<T> >::Type   SumCheck;
         assert(this->IsValid());
         typename DataType<ArrayNumeric<T> >::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
@@ -31,13 +31,22 @@ namespace mysimulator {
         return sum;
       }
       typename DataType<ArrayNumeric<T> >::Type AbsSummation() const {
-        typedef typename IsSumable<ArrayNumeric<T> >::Type   SumCheck;
+        typedef typename IsNumeric<ArrayNumeric<T> >::Type   SumCheck;
         assert(this->IsValid());
         typename DataType<ArrayNumeric<T> >::Type sum=0;
         T *p=this->Head(), *pEnd=p+this->Size();
         for(;p!=pEnd;) sum+=_AbsSum(*(p++));
         return sum;
       }
+
+      typename DataType<ArrayNumeric<T> >::Type NormSQ() const {
+        typedef typename IsNumeric<ArrayNumeric<T> >::Type NormCheck;
+        typename DataType<ArrayNumeric<T> >::Type sum=0;
+        T *p=this->Head(), *pEnd=p+this->Size();
+        for(;p!=pEnd;)  sum+=_NormSQ(*(p++));
+        return sum;
+      }
+
       template <typename T1>
       void Scale(const T1& fac) {
         typedef typename IsScalable<ArrayNumeric<T>,T1>::Type   ScaleCheck;
@@ -166,6 +175,11 @@ namespace mysimulator {
   template <typename T>
   typename DataType<ArrayNumeric<T> >::Type _AbsSum(const ArrayNumeric<T>& A) {
     return A.AbsSummation();
+  }
+
+  template <typename T>
+  typename DataType<ArrayNumeric<T> >::Type _NormSQ(const ArrayNumeric<T>& A) {
+    return A.NormSQ();
   }
 
   template <typename T, typename T1>

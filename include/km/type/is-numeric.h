@@ -39,6 +39,19 @@ namespace mysimulator {
 #undef _NumDEF_
 #endif
 
+namespace mysimulator {
+
+  template <typename T> class ArrayNumeric;
+
+  template <typename T>
+  class IsNumericFlag<ArrayNumeric<T> > { public: static const bool Flag; };
+
+  template <typename T>
+  const bool IsNumericFlag<ArrayNumeric<T> >::Flag=
+    IsNumericFlag<T>::Flag;
+
+}
+
 #include "type/check-object.h"
 
 namespace mysimulator {

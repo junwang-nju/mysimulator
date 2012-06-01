@@ -10,6 +10,8 @@ namespace mysimulator {
 
   template <typename T> class ArrayData;
   template <typename T> void Clear(ArrayData<T>&);
+  template <typename T> void _Swap(ArrayData<T>&,ArrayData<T>&);
+  template <typename T> void _SwapContent(ArrayData<T>&,ArrayData<T>&);
 
   template <typename T>
   class ArrayData {
@@ -18,6 +20,8 @@ namespace mysimulator {
 
       typedef ArrayData<T>  Type;
       friend void Clear<T>(Type&);
+      friend void _Swap<T>(Type&,Type&);
+      friend void _SwapContent<T>(Type&,Type&);
 
       ArrayData() : _data(NULL), _size(0), _alloc(false) {}
       ~ArrayData() { Clear(*this); }
