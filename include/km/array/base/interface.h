@@ -73,11 +73,6 @@ namespace mysimulator {
   void _Copy(ArrayBase<T1>& A1, const ArrayBase<T2>& A2) { A1.Copy(A2); }
 
   template <typename T1, typename T2>
-  void _Copy(ArrayBase<T1>& A1, const ArrayBase<T2>& A2, unsigned int n) {
-    A1.Copy(A2,n);
-  }
-
-  template <typename T1, typename T2>
   void _Fill(ArrayBase<T1>& A, const T2& fac) { A.Fill(fac); }
 
 }

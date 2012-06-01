@@ -48,21 +48,15 @@ namespace mysimulator {
       T& operator[](unsigned int n) { assert(n<_size); return *(_data+n); }
 
       template <typename T1>
-      void Copy(const ArrayData<T1>& D, unsigned int n) {
+      void Copy(const ArrayData<T1>& D) {
         typedef typename IsCopyable<ArrayData<T>,ArrayData<T1> >::Type
                 CopyCheck;
         assert(IsValid());
         assert(D.IsValid());
-        assert(n<=Size());
-        assert(n<=D.Size());
-        T   *p=_data, *pEnd=p+n;
+        assert(Size()==D.Size());
+        T   *p=_data, *pEnd=p+Size();
         T1  *q=D._data;
         for(;p!=pEnd;)  _Copy(*(p++),*(q++));
-      }
-      template <typename T1>
-      void Copy(const ArrayData<T1>& D) {
-        assert(Size()==D.Size());
-        Copy(D,Size());
       }
       template <typename T1>
       void Fill(const T1& D) {
@@ -98,12 +92,7 @@ namespace mysimulator {
   }
 
   template <typename T, typename T1>
-  void _Copy(ArrayData<T>& A, const ArrayData<T>& cA, unsigned int  n) {
-    A.Copy(cA,n);
-  }
-
-  template <typename T, typename T1>
-  void _Copy(ArrayData<T>& A, const ArrayData<T>& cA) { A.Copy(cA); }
+  void _Copy(ArrayData<T>& A, const ArrayData<T1>& cA) { A.Copy(cA); }
 
   template <typename T, typename T1>
   void _Fill_(ArrayData<T>& A, const T1& D) { A.Fill(D); }
