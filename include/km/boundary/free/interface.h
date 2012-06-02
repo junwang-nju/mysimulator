@@ -1,4 +1,11 @@
 
+/**
+ * @file boundary/free/interface.h
+ * @brief boundary condition representing free space
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Boundary_Free_Interface_H_
 #define _Boundary_Free_Interface_H_
 

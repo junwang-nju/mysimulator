@@ -1,4 +1,11 @@
 
+/**
+ * @file unique/128bit/interface.h
+ * @brief the object with 128 bits and various data formats
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Unique_128Bit_Interface_H_
 #define _Unique_128Bit_Interface_H_
 

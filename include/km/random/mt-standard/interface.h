@@ -1,4 +1,11 @@
 
+/**
+ * @file random/mt-standard/interface.h
+ * @brief random number generator with standard MersenneTwister method
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Random_MT_Standard_Interface_H_
 #define _Random_MT_Standard_Interface_H_
 

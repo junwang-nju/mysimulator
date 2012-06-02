@@ -1,4 +1,11 @@
 
+/**
+ * @file random/xSFMT-work-func.h
+ * @brief some internal functions used in SFMT and dSFMT generator
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Random_xSFMT_WorkFunc_H_
 #define _Random_xSFMT_WorkFunc_H_
 

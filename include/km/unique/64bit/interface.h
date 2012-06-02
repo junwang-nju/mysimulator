@@ -1,4 +1,11 @@
 
+/**
+ * @file unique/64bit/interface.h
+ * @brief the object with 64 bits and various data formats
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Unique_64Bit_Interface_H_
 #define _Unique_64Bit_Interface_H_
 

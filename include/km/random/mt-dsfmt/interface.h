@@ -1,4 +1,11 @@
 
+/**
+ * @file random/mt-dsfmt/interface.h
+ * @brief random number generator with dSFMT method
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Random_MT_DSFMT_Interface_H_
 #define _Random_MT_DSFMT_Interface_H_
 

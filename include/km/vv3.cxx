@@ -1,4 +1,11 @@
 
+/**
+ * @file vv3.cxx
+ * @brief const-E MD with neighbor list
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #include "propagator/interface.h"
 #include "pdb-file/interface.h"
 #include "basic/angle-calc.h"

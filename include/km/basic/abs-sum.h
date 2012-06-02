@@ -1,4 +1,11 @@
 
+/**
+ * @file basic/abs-sum.h
+ * @brief calculate summation of absolute value for basic data
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_Sum_Of_Absolute_H_
 #define _Basic_Sum_Of_Absolute_H_
 

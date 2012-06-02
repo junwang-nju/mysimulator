@@ -1,4 +1,11 @@
 
+/**
+ * @file random/box-muller/interface.h
+ * @brief random number generator with Box-Muller method
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Random_BoxMuller_Interface_H_
 #define _Random_BoxMuller_Interface_H_
 

@@ -1,4 +1,11 @@
 
+/**
+ * @file linear-algebra/blas.h
+ * @brief BLAS module and c++ interface 
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _LinearAlgebra_BLAS_H_
 #define _LinearAlgebra_BLAS_H_
 

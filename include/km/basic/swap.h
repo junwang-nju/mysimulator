@@ -1,4 +1,11 @@
 
+/**
+ * @file basic/swap.h
+ * @brief swap contents of two basic-type data
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_Swap_H_
 #define _Basic_Swap_H_
 
