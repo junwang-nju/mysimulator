@@ -134,6 +134,7 @@ namespace mysimulator {
 }
 
 #include "propagator/molecular-dynamics/interface.h"
+#include "propagator/neighbor-list-molecular-dynamics/interface.h"
 #include "propagator/minimizer/steep/interface.h"
 #include "propagator/minimizer/conjg/interface.h"
 #include "propagator/minimizer/lbfgs/interface.h"
@@ -150,6 +151,9 @@ namespace mysimulator {
     switch(PN) {
       case MolecularDynamics:
         P=new PropagatorMD<T,GT>;
+        break;
+      case MolecularDynamicsWithNeighborList:
+        P=new PropagatorMDWithNL<T,GT>;
         break;
       case SteepestDescentMinimizer:
         LN=static_cast<PropagatorLineMinimizerName>(va_arg(vl,unsigned int));

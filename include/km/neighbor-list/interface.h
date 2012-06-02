@@ -70,6 +70,11 @@ namespace mysimulator {
         assert(_ParamPool[n]!=NULL);
         return (*_ParamPool[n])[l];
       }
+      void ParameterBuild(unsigned int n) {
+        assert(_ParamPool.IsValid());
+        assert(_ParamPool[n]!=NULL);
+        _ParamPool[n]->Build();
+      }
 
       void SetRadius(const T& CR, const T& SR) {
         _CutR=CR;
@@ -133,7 +138,7 @@ namespace mysimulator {
           }
         return check;
       }
-      bool _Check(const Array2DNumeric<T>& X) const {
+      bool _Check(const Array2DNumeric<T>& X) {
         assert(IsSameSize(X,_XSnapshot));
         bool check=false;
         const unsigned int n=X.Size();
@@ -174,7 +179,7 @@ namespace mysimulator {
 
   template <typename T,typename GT>
   void Clear(NeighborList<T,GT>& L) {
-    Clear(L._RunInteraction->_ID);
+    if(L._RunInteraction!=NULL) Clear(L._RunInteraction->_ID);
     L._RunInteraction=NULL;
     Clear(L._XSnapshot);
     Clear(L._Dsp);

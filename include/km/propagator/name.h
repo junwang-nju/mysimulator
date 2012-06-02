@@ -6,6 +6,7 @@ namespace mysimulator {
 
   enum PropagatorName {
     MolecularDynamics = 0,
+    MolecularDynamicsWithNeighborList,
     SteepestDescentMinimizer,
     ConjugateGradientMinimizer,
     LBFGSMinimizer,

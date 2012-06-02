@@ -106,7 +106,7 @@ namespace mysimulator {
         va_end(vl);
       }
 
-      virtual void StepEvolute(SYstem<T,GT>& S) {
+      virtual void StepEvolute(System<T,GT>& S) {
         this->_bind->Evolute(S.Location(),S.Energy(),S.Gradient(),
                              S.InteractionGroup(0),this->_props);
       }

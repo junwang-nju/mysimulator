@@ -26,10 +26,13 @@ namespace mysimulator {
         if(Value<unsigned int>(this->_param[SteepMinimizer_MaxStep])==0)
           Value<unsigned int>(this->_param[SteepMinimizer_MaxStep])=10000;
       }
+      virtual void AllocateParameter() {
+        this->_param.Allocate(SteepMinimizer_NumberParameter);
+      }
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
         ParentType::Allocate(PN);
         this->_tag=SteepestDescentMinimizer;
-        this->_param.Allocate(SteepMinimizer_NumberParameter);
+        AllocateParameter();
         this->BuildLine();
       }
       virtual unsigned int Evolute(System<T,GT>& S) {

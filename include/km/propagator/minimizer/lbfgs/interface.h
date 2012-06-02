@@ -63,10 +63,13 @@ namespace mysimulator {
         dX.Allocate(n);
         dG.Allocate(n);
       }
+      virtual void AllocateParameter() {
+        this->_param.Allocate(LBFGSMinimizer_NumberParameter);
+      }
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
         ParentType::Allocate(PN);
         this->_tag=LBFGSMinimizer;
-        this->_param.Allocate(LBFGSMinimizer_NumberParameter);
+        AllocateParameter();
         ParentType::BuildLine();
       }
 

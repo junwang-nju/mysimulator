@@ -46,10 +46,13 @@ namespace mysimulator {
         if(Value<T>(this->_param[ConjgMinimizer_MaxBeta])<1e-8)
           Value<T>(this->_param[ConjgMinimizer_MaxBeta])=5.;
       }
+      virtual void AllocateParameter() {
+        this->_param.Allocate(ConjgMinimizer_NumberParameter);
+      }
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
         ParentType::Allocate(PN);
         this->_tag=ConjugateGradientMinimizer;
-        this->_param.Allocate(ConjgMinimizer_NumberParameter);
+        AllocateParameter();
         ParentType::BuildLine();
       }
       virtual unsigned int Evolute(System<T,GT>& S) {
