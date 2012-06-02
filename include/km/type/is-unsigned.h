@@ -29,7 +29,10 @@ namespace mysimulator {
   template <typename T>
   class IsUnsignedFlag {
     public:
-      /** @brief the static flag indicating if T is unsigned or not */
+      /** @brief the static flag indicating if T is unsigned or not
+       *
+       * true when T is unsigned object, otherwise false
+       */
       static const bool Flag;
   };
 
