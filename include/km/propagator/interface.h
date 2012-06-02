@@ -94,6 +94,7 @@ namespace mysimulator {
 
       virtual const T KineticEnergy() const = 0;
       virtual void UpdateKineticEnergy() = 0;
+      virtual void AllocateParameter() = 0;
 
     protected:
 

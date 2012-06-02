@@ -54,6 +54,9 @@ namespace mysimulator {
                (this->_output!=NULL);
       }
 
+      virtual void AllocateParameter() {
+        this->_param.Allocate(PropagatorMD_NumberParameter);
+      }
       virtual void Allocate(const Array<StepPropagatorName>& PN, ...) {
         Clear(*this);
         this->_tag=MolecularDynamics;
@@ -70,7 +73,7 @@ namespace mysimulator {
           _IntroduceStep(this->_props[i],PN[i]);
         this->_bind=NULL;
         Introduce(this->_bind,this->_props);
-        this->_param.Allocate(PropagatorMD_NumberParameter);
+        AllocateParameter();
         Introduce(this->_time,MolecularDynamics);
         _Pointer_(T,TimeStep)=const_cast<T*>(&(this->Time(MDTime_TimeStep)));
         _Pointer_(Random,GaussRNG)=NULL;
@@ -103,15 +106,18 @@ namespace mysimulator {
         va_end(vl);
       }
 
+      virtual void StepEvolute(SYstem<T,GT>& S) {
+        this->_bind->Evolute(S.Location(),S.Energy(),S.Gradient(),
+                             S.InteractionGroup(0),this->_props);
+      }
+
       virtual unsigned int Evolute(System<T,GT>& S) {
         this->_output->Write(this->Time(MDTime_NowTime),S,this);
         unsigned int no=this->IntTime(MDTime_NumberOutput);
         unsigned int dno=this->IntTime(MDTime_NumberStepBwOutput);
         T dOT=this->Time(MDTime_OutputInterval);
         for(unsigned int i=0;i<no;++i) {
-          for(unsigned int k=0;k<dno;++k)
-            this->_bind->Evolute(S.Location(),S.Energy(),S.Gradient(),
-                                 S.InteractionGroup(0),this->_props);
+          for(unsigned int k=0;k<dno;++k) StepEvolute(S);
           this->Time(MDTime_NowTime)+=dOT;
           this->IntTime(MDTime_NowStep)+=dno;
           this->_output->Write(this->Time(MDTime_NowTime),S,this);
@@ -119,9 +125,7 @@ namespace mysimulator {
         unsigned int nt=this->IntTime(MDTime_NowStep);
         unsigned int tt=this->IntTime(MDTime_NumberStep);
         if(nt<tt) {
-          for(unsigned int i=nt;i<tt;++i)
-            this->_bind->Evolute(S.Location(),S.Energy(),S.Gradient(),
-                                 S.InteractionGroup(0),this->_props);
+          for(unsigned int i=nt;i<tt;++i) StepEvolute(S);
           this->Time(MDTime_NowTime)=this->Time(MDTime_TotalPeriod);
           this->IntTime(MDTime_NowStep)=tt;
           this->_output->Write(this->Time(MDTime_NowTime),S,this);
