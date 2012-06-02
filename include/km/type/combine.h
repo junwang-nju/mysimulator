@@ -1,4 +1,11 @@
 
+/**
+ * @file type/combine.h
+ * @brief derive the type of result calculated from objects with two other types
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Type_Combine_H_
 #define _Type_Combine_H_
 

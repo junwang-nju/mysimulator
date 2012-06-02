@@ -1,4 +1,11 @@
 
+/**
+ * @file type/blas-size.h
+ * @brief Generate type used in BLAS operations
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Type_BlasSize_H_
 #define _Type_BlasSize_H_
 

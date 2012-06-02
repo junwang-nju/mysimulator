@@ -1,4 +1,11 @@
 
+/**
+ * @file type/is-copyable.h
+ * @brief check if one object can be copied into another
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Type_IsCopyAble_H_
 #define _Type_IsCopyAble_H_
 

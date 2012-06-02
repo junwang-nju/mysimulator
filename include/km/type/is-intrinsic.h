@@ -1,4 +1,11 @@
 
+/**
+ * @file type/is-intrinsic.h
+ * @brief check if a type is an intrinsic type
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Type_IsIntrinsic_H_
 #define _Type_IsIntrinsic_H_
 

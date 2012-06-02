@@ -1,4 +1,11 @@
 
+/**
+ * @file type/is-fillable.h
+ * @brief check if one object can be filled with another
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Type_IsFillAble_H_
 #define _Type_IsFillAble_H_
 

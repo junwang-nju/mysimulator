@@ -1,4 +1,11 @@
 
+/**
+ * @file type/is-memcopyable.h
+ * @brief check if an object can be copied with another object
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Type_IsMemCopyable_H_
 #define _Type_IsMemCopyable_H_
 
