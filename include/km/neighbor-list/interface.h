@@ -18,7 +18,8 @@ namespace mysimulator {
       friend void Clear<T,GT>(NeighborList<T,GT>&);
 
       NeighborList() : _FuncPool(),_IDPool(),_ParamPool(),_Used(),_NUsed(0U),
-                       _CutR(0),_SkinR(0),_BoundRSQ(0),_HfSkinRSQ(0),Dsp() {}
+                       _CutR(0),_SkinR(0),_BoundRSQ(0),_HfSkinRSQ(0),_Dsp(),
+                       _XSnapshot(),_RunInteraction(NULL) {}
       ~NeighborList() { Clear(*this); }
 
       bool IsValid() const {
@@ -27,7 +28,8 @@ namespace mysimulator {
           _Used.IsValid() && (_NUsed>0) && (_CutR>0) && (_SkinR>0) &&
           (_FuncPool.Size()==_IDPool.Size()) &&
           (_FuncPool.Size()==_ParamPool.Size()) &&
-          (_FuncPool.Size()==_Used.Size()) && _RadiusCheck();
+          (_FuncPool.Size()==_Used.Size()) && _RadiusCheck() &&
+          _XSnapshot.IsValid() && (_RunInteraction!=NULL);
       }
 
       void Allocate(const Array<InteractionFuncName>& IFN, unsigned int dim) {
@@ -40,17 +42,21 @@ namespace mysimulator {
         for(unsigned int i=0;i<n;++i) {
           Introduce(_FuncPool[i],IFN[i],dim);
           Introduce(_ParamPool[i],IFN[i]);
-          _ID[i].Allocate(InteractionFuncIDSize[IFN[i]]);
+          _IDPool[i].Allocate(InteractionFuncIDSize[IFN[i]]);
         }
         _Used.Allocate(n);
         _NUsed=0;
-        Dsp.Allocate(dim);
+        _Dsp.Allocate(dim);
       }
+      void LoadTarget(const SystemInteraction<T,GT>& SI) {
+        _RunInteraction=const_cast<SystemInteraction<T,GT>*>(&SI);
+      }
+      void Imprint(const Array2DNumeric<T>& X) { _XSnapshot.Imprint(X); }
 
       Array<unsigned int>& Index(unsigned int i) {
         assert(_IDPool.IsValid());  return _IDPool[i];
       }
-      const Array<unsigned int>& Index(unsigned int i) {
+      const Array<unsigned int>& Index(unsigned int i) const {
         assert(_IDPool.IsValid());  return _IDPool[i];
       }
 
@@ -74,38 +80,40 @@ namespace mysimulator {
         _BoundRSQ*=_BoundRSQ;
       }
 
-      const T& ThresholdDistance() const { return _HfSkinRSQ; }
-
-      void Update(const Array2DNumeric<T>& X, SystemInteraction<T,GT>& SI) {
-        const unsigned int n=_FuncPool.Size();
-        unsigned int I,J;
-        T dist;
-        _NUsed=0;
-        for(unsigned int i=0;i<n;++i) {
-          I=_IDPool[i][0];
-          J=_IDPool[i][1];
-          dist=DistanceSQ(Dsp,X[I],X[J],SI.Geometry());
-          if(dist<_BoundRSQ) { _Used[_NUsed]=i; ++_NUsed; }
-        }
-        Clear(SI._Func);
-        Clear(SI._ID);
-        Clear(SI._Param);
-        SI._Func.Allocate(_NUsed);
-        SI._ID.Allocate(_NUsed);
-        SI._Param.Allocate(_NUsed);
-        unsigned int m;
-        for(unsigned int i=0;i<_NUsed;++i) {
-          m=_Used[i];
-          SI._Func[i]=_FuncPool[m];
-          SI._ID[i].Refer(_IDPool[m]);
-          SI._Param[i]=_ParamPool[m];
+      void Update(const Array2DNumeric<T>& X) {
+        assert(IsSameSize(X,_XSnapshot));
+        if(_Check(X)) {
+          const unsigned int n=_FuncPool.Size();
+          unsigned int I,J;
+          T dist;
+          _NUsed=0;
+          for(unsigned int i=0;i<n;++i) {
+            I=_IDPool[i][0];
+            J=_IDPool[i][1];
+            dist=DistanceSQ(_Dsp,X[I],X[J],_RunInteraction->Geometry());
+            if(dist<_BoundRSQ) { _Used[_NUsed]=i; ++_NUsed; }
+          }
+          Clear(_RunInteraction->_Func);
+          Clear(_RunInteraction->_ID);
+          Clear(_RunInteraction->_Param);
+          _RunInteraction->_Func.Allocate(_NUsed);
+          _RunInteraction->_ID.Allocate(_NUsed);
+          _RunInteraction->_Param.Allocate(_NUsed);
+          unsigned int m;
+          for(unsigned int i=0;i<_NUsed;++i) {
+            m=_Used[i];
+            _RunInteraction->_Func[i]=_FuncPool[m];
+            _RunInteraction->_ID[i].Refer(_IDPool[m]);
+            _RunInteraction->_Param[i]=_ParamPool[m];
+          }
+          _XSnapshot.Copy(X);
         }
       }
 
     protected:
 
       Array<InteractionFunc<T,GT>*>   _FuncPool;
-      Array<Array<unsigned int>* >    _IDPool;
+      Array<Array<unsigned int> >    _IDPool;
       Array<InteractionParameter<T>*> _ParamPool;
       Array<unsigned int> _Used;
       unsigned int _NUsed;
@@ -113,6 +121,9 @@ namespace mysimulator {
       T _SkinR;
       T _BoundRSQ;
       T _HfSkinRSQ;
+      ArrayNumeric<T> _Dsp;
+      Array2DNumeric<T> _XSnapshot;
+      SystemInteraction<T,GT>* _RunInteraction;
 
     private:
 
@@ -150,11 +161,24 @@ namespace mysimulator {
           }
         return check;
       }
+      bool _Check(const Array2DNumeric<T>& X) const {
+        assert(IsSameSize(X,_XSnapshot));
+        bool check=false;
+        const unsigned int n=X.Size();
+        for(unsigned int i=0;i<n;++i)
+          if(DistanceSQ(_Dsp,X[i],_XSnapshot[i],_RunInteraction->Geometry())>
+             _HfSkinRSQ) { check=true; break; }
+        return check;
+      }
       
   };
 
   template <typename T,typename GT>
   void Clear(NeighborList<T,GT>& L) {
+    Clear(L._RunInteraction->_ID);
+    L._RunInteraction=NULL;
+    Clear(L._XSnapshot);
+    Clear(L._Dsp);
     L._HfSkinRSQ=0;
     L._SkinR=0;
     L._CutR=0;
@@ -163,7 +187,6 @@ namespace mysimulator {
     Clear(L._ParamPool);
     Clear(L._IDPool);
     Clear(L._FuncPool);
-    Clear(L.Dsp);
   }
 
 }
