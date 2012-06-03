@@ -33,27 +33,27 @@
 namespace mysimulator {
 
   /** @fn double _Sin(const double&)
-   * @brief definition of \a _Sin function for \c double data
+   * @brief definition of \a \_Sin function for \c double data
    *
-   * Implemented with the macro _SIN
+   * Implemented with the macro \_SIN
    *
    * @param d [in] the input \c double data (angle)
    * @return sine of the input \c double angle
    */
   _SIN(double,sin)
   /** @fn float _Sin(const float&)
-   * @brief definition of \a _Sin function for \c float data
+   * @brief definition of \a \_Sin function for \c float data
    *
-   * Implemented with the macro _SIN
+   * Implemented with the macro \_SIN
    *
    * @param d [in] the input \c float data (angle)
    * @return sine of the input \c float angle
    */
   _SIN(float,sinf)
   /** @fn long double _Sin(const long double&)
-   * @brief definition of \a _Sin function for \c long \c double data
+   * @brief definition of \a \_Sin function for \c long \c double data
    *
-   * Implemented with the macro _SIN
+   * Implemented with the macro \_SIN
    *
    * @param d [in] the input \c long \c double data (angle)
    * @return sine of the input \c long \c double angle

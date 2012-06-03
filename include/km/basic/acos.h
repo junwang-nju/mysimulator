@@ -39,27 +39,27 @@
 namespace mysimulator {
 
   /** @fn double _ACos(const double&)
-   * @brief definition of \a _ACos function for \c double data
+   * @brief definition of \a \_ACos function for \c double data
    *
-   * Implemented with the macro _ACOS
+   * Implemented with the macro \_ACOS
    *
    * @param d [in] the input \c double data
    * @return the angle with its cosine as the \c double data \a d
    */
   _ACOS(double, acos)
   /** @fn float _ACos(const float&)
-   * @brief definition of \a _ACos function for \c float data
+   * @brief definition of \a \_ACos function for \c float data
    *
-   * Implemented with the macro _ACOS
+   * Implemented with the macro \_ACOS
    *
    * @param d [in] the input \c float data
    * @return the angle with its cosine as the \c float data \a d
    */
   _ACOS(float, acosf)
   /** @fn long double _ACos(const long double&)
-   * @brief definition of \a _ACos function for \c long \c double data
+   * @brief definition of \a \_ACos function for \c long \c double data
    *
-   * Implemented with the macro _ACOS
+   * Implemented with the macro \_ACOS
    *
    * @param d [in] the input \c long \c double data
    * @return the angle with its cosine as the \c long \c double data \a d

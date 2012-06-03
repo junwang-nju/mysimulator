@@ -33,27 +33,27 @@
 namespace mysimulator {
 
   /** @fn double _Cos(const double& d)
-   * @brief definition of \a _Cos function for \c double data
+   * @brief definition of \c \_Cos function for \c double data
    *
-   * Implemented with macro \a _COS
+   * Implemented with macro \c \_COS
    *
    * @param d [in] the input \c double data (as angle)
    * @return cosine of input \c double angle
    */
   _COS(double,cos)
   /** @fn float _Cos(const float&)
-   * @brief definition of \a _Cos function for \c float data
+   * @brief definition of \c \_Cos function for \c float data
    *
-   * Implemented with macro \a _COS
+   * Implemented with macro \c \_COS
    *
    * @param d [in] the input \c float data (as angle)
    * @return cosine of input \c float angle
    */
   _COS(float,cosf)
   /** @fn long double _Cos(const long double&)
-   * @brief definition of \a _Cos function for \c long \c double data
+   * @brief definition of \c \_Cos function for \c long \c double data
    *
-   * Implemented with macro \a _COS
+   * Implemented with macro \c \_COS
    *
    * @param d [in] the input \c long \c double data (as angle)
    * @return cosine of input \c long \c double angle

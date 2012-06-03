@@ -15,6 +15,7 @@
  * @arg basic/sin.h
  * @arg basic/string.h
  * @arg basic/square-root.h
+ * @arg basic/abs-sum.h
  */
 
 /**

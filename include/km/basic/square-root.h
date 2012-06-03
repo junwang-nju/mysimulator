@@ -33,9 +33,9 @@
 namespace mysimulator {
 
   /** @fn long double __SqRoot(const long double&)
-   * @brief definition of \a __SqRoot function for \c long \c double data
+   * @brief definition of \c \_\_SqRoot function for \c long \c double data
    *
-   * Implemented with macro \a _SQROOT_
+   * Implemented with macro \c \_SQROOT\_
    *
    * @param d [in] the input \c long \c double data
    * @return the square root of input \c long \c double data
@@ -43,9 +43,9 @@ namespace mysimulator {
    */
   _SQROOT_(long double, sqrtl)
   /** @fn double __SqRoot(const double&)
-   * @brief definition of \a __SqRoot function for \c double data
+   * @brief definition of \c \_\_SqRoot function for \c double data
    *
-   * Implemented with macro \a _SQROOT_
+   * Implemented with macro \c \_SQROOT\_
    *
    * @param d [in] the input \c double data
    * @return the square root of input \c double data
@@ -53,9 +53,9 @@ namespace mysimulator {
    */
   _SQROOT_(double,      sqrt)
   /** @fn float __SqRoot(const float&)
-   * @brief definition of \a __SqRoot function for \c float data
+   * @brief definition of \c \_\_SqRoot function for \c float data
    *
-   * Implemented with macro \a _SQROOT_
+   * Implemented with macro \c \_SQROOT\_
    *
    * @param d [in] the input \c float data
    * @return the square root of input \c float data
@@ -78,7 +78,7 @@ namespace mysimulator {
    *
    * This function calculates square root of input data. The purpose of
    * this function is to enable the check for the type of input data.
-   * It is implemented with the functions \c __SqRoot. To be consistent
+   * It is implemented with the functions \c \_\_SqRoot. To be consistent
    * with the interface for other objects (such as ArrayNumeric), the
    * function operates the input object, rather than return a value.
    *
