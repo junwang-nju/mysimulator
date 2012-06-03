@@ -19,6 +19,7 @@
  * @arg basic/abs-value.h
  * @arg basic/tanh.h
  * @arg basic/angle-calc.h
+ * @arg basic/constant.h
  */
 
 /**
