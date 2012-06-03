@@ -1,4 +1,10 @@
 
+/** @file array/data/interface.h
+ * @file the data structure to store the data of array
+ *
+ * @author Jun |junwang.nju@gmail.com
+ */
+
 #ifndef _Array_Data_Interface_H_
 #define _Array_Data_Interface_H_
 

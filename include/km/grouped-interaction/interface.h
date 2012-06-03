@@ -1,4 +1,10 @@
 
+/** @file grouped-interaction/interface.h
+ * @brief the data structure to group several interaction together
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Grouped_Interaction_Interface_H_
 #define _Grouped_Interaction_Interface_H_
 

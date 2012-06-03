@@ -1,4 +1,10 @@
 
+/** @file interaction-func/name.h
+ * @brief the names for various functions of interaction
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Interaction_Func_Name_H_
 #define _Interaction_Func_Name_H_
 
