@@ -1,4 +1,14 @@
 
+/**
+ * @file basic/angle-calc.h
+ * @brief calculate angle based on three points
+ *
+ * Calculation of angle based on three related points is a basic geometrical
+ * operation. This file implements this calculation (for 3-dimension).
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_Angle_Calc_H_
 #define _Basic_Angle_Calc_H_
 
@@ -9,6 +19,21 @@
 
 namespace mysimulator {
 
+  /** @fn T Angle(const ArrayNumeric<T>&,const ArrayNumeric<T>&,const ArrayNumeric<T>&);
+   * @brief calculate the angle based on related three points (3-d case)
+   *
+   * This calculation is implemented based on the cosine law of triangle.
+   * The distance is defined based on the boundary condition of
+   * \c FreeSpace.
+   *
+   * @param A1,A2,A3 [in] the input location of the concerned points,
+   *                      in which the middle one \a A2 is vortex of the angle,
+   *                      and \a A1-A2 and \a A3-A2 correspond two edges
+   * @return the value of angle
+   * @note the present calculation works only for 3-dimensional case
+   * @note for other boundary conditions, the input points should be
+   *       move to match the expected condition of triangle.
+   */
   template <typename T>
   T Angle(const ArrayNumeric<T>& A1,const ArrayNumeric<T>& A2,
           const ArrayNumeric<T>& A3) {

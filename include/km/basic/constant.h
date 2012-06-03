@@ -3,6 +3,10 @@
  * @file basic/constant.h
  * @brief some constants of basic type
  *
+ * some constants are widely used in simulations (such as minimization or
+ * dynamics simulation). This file includes the definitions of the constants
+ * and some related interfaces to access them.
+ *
  * @author Jun | junwang@gmail.com
  */
 
@@ -11,7 +15,16 @@
 
 namespace mysimulator {
 
+  /** @var FRelDelta
+   * @brief the minimal value respective to unit of \c float type
+   *
+   * Since the storage of computer has limit size, there is a minimal
+   * value \a a to realize that \f$ 1+a > 1 \f$. This variable records
+   * the corresponding minimal value for \c float type.
+   */
   static const float FRelDelta=5.9604644775390625e-8;
+  /** @var FSqrtRelDelta
+   * @brief the square root of the minimal value respective to unit of \c float type */
   static const float FSqrtRelDelta=0.000244140625;
 
   static const double DRelDelta=1.1107651257113993e-16;
