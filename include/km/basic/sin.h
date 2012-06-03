@@ -15,7 +15,7 @@
 
 #include <cmath>
 
-/** @def _SIN
+/** @def _SIN_
  * @brief calculation sine for \c RT -type data
  *
  * This is a macro to ease the definition of sine function. The input data
@@ -24,8 +24,8 @@
  * @param RT the type of input data
  * @param Func the function matching the input data type
  */
-#ifndef _SIN
-#define _SIN(RT,Func) RT _Sin(const RT& d) { return Func(d); }
+#ifndef _SIN_
+#define _SIN_(RT,Func) RT _Sin(const RT& d) { return Func(d); }
 #else
 #error "Duplicate _SIN"
 #endif
@@ -35,30 +35,30 @@ namespace mysimulator {
   /** @fn double _Sin(const double&)
    * @brief definition of \a \_Sin function for \c double data
    *
-   * Implemented with the macro \_SIN
+   * Implemented with the macro \_SIN\_
    *
    * @param d [in] the input \c double data (angle)
    * @return sine of the input \c double angle
    */
-  _SIN(double,sin)
+  _SIN_(double,sin)
   /** @fn float _Sin(const float&)
    * @brief definition of \a \_Sin function for \c float data
    *
-   * Implemented with the macro \_SIN
+   * Implemented with the macro \_SIN\_
    *
    * @param d [in] the input \c float data (angle)
    * @return sine of the input \c float angle
    */
-  _SIN(float,sinf)
+  _SIN_(float,sinf)
   /** @fn long double _Sin(const long double&)
    * @brief definition of \a \_Sin function for \c long \c double data
    *
-   * Implemented with the macro \_SIN
+   * Implemented with the macro \_SIN\_
    *
    * @param d [in] the input \c long \c double data (angle)
    * @return sine of the input \c long \c double angle
    */
-  _SIN(long double,sinl)
+  _SIN_(long double,sinl)
 
 }
 

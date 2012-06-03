@@ -19,7 +19,7 @@
  * @brief calculate cosine for \c RT -type data
  *
  * This is a macro to ease the definition of cosine funtion. The input
- * data is \c RT -type, and the the calculation is implemented with \c Func
+ * data is \c RT -type, and the calculation is implemented with \c Func
  *
  * @param RT the type of input data
  * @param Func the function matching the input data type
