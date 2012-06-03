@@ -10,6 +10,10 @@
  * Present finished Document:
  *
  * \arg type/blas-size.h
+ * \arg basic/cos.h
+ * \arg basic/acos.h
+ * \arg basic/sin.h
+ * \arg basic/string.h
  */
 
 /**
