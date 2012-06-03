@@ -33,6 +33,8 @@ namespace mysimulator {
    * @note the present calculation works only for 3-dimensional case
    * @note for other boundary conditions, the input points should be
    *       move to match the expected condition of triangle.
+   * @note a temporary ArrayNumeric object is allocated and released in
+   *       calculation. Therefore it is not very efficient in frequent use.
    */
   template <typename T>
   T Angle(const ArrayNumeric<T>& A1,const ArrayNumeric<T>& A2,
