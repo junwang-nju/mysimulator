@@ -44,10 +44,50 @@ namespace mysimulator {
    * @return the absolute value of input \c long \c double data
    */
   _AbsValDEF_(long double,fabsl)
+  /** @fn double AbsVal(const double&)
+   * @brief get absolute value of \c double data
+   *
+   * Implemented with the macro \c \_AbsValDEF\_
+   *
+   * @param d [in] the input \c double data
+   * @return the absolute value of input \c double data
+   */
   _AbsValDEF_(double,fabs)
+  /** @fn float AbsVal(const float&)
+   * @brief get absolute value of \c float data
+   *
+   * Implemented with the macro \c \_AbsValDEF\_
+   *
+   * @param d [in] the input \c float data
+   * @return the absolute value of input \c float data
+   */
   _AbsValDEF_(float,fabsf)
+  /** @fn long long AbsVal(const long long&)
+   * @brief get absolute value of \c long \c long data
+   *
+   * Implemented with the macro \c \_AbsValDEF\_
+   *
+   * @param d [in] the input \c long \c long data
+   * @return the absolute value of input \c long \c long data
+   */
   _AbsValDEF_(long long,llabs)
+  /** @fn int AbsVal(const int&)
+   * @brief get absolute value of \c int data
+   *
+   * Implemented with the macro \c \_AbsValDEF\_
+   *
+   * @param d [in] the input \c int data
+   * @return the absolute value of input \c int data
+   */
   _AbsValDEF_(int,abs)
+  /** @fn long AbsVal(const long&)
+   * @brief get absolute value of \c long data
+   *
+   * Implemented with the macro \c \_AbsValDEF\_
+   *
+   * @param d [in] the input \c long data
+   * @return the absolute value of input \c long data
+   */
   _AbsValDEF_(long,labs)
 
 }
@@ -73,7 +113,23 @@ namespace mysimulator {
 
 namespace mysimulator {
 
+  /** @fn short AbsVal(const short&)
+   * @brief get absolute value of \c short data
+   *
+   * Implemented with the macro \c \_AbsValDEF1\_
+   *
+   * @param d [in] the input \c short data
+   * @return the absolute value of input \c short data
+   */
   _AbsValDEF1_(short)
+  /** @fn char AbsVal(const char&)
+   * @brief get absolute value of \c char data
+   *
+   * Implemented with the macro \c \_AbsValDEF1\_
+   *
+   * @param d [in] the input \c char data
+   * @return the absolute value of input \c char data
+   */
   _AbsValDEF1_(char)
 
 }
@@ -97,10 +153,50 @@ namespace mysimulator {
 
 namespace mysimulator {
 
+  /** @fn unsigned long long AbsVal(const unsigned long long&)
+   * @brief get absolute value of \c unsigned \c long \c long data
+   *
+   * Implemented with the macro \c \_AbsValDEF2\_
+   *
+   * @param d [in] the input \c unsigned \c long \c long data
+   * @return the absolute value of input \c unsigned \c long \c long data
+   */
   _AbsValDEF2_(unsigned long long)
+  /** @fn unsigned int AbsVal(const unsigned int&)
+   * @brief get absolute value of \c unsigned \c int data
+   *
+   * Implemented with the macro \c \_AbsValDEF2\_
+   *
+   * @param d [in] the input \c unsigned \c int data
+   * @return the absolute value of input \c unsigned \c int data
+   */
   _AbsValDEF2_(unsigned int)
+  /** @fn unsigned long AbsVal(const unsigned long&)
+   * @brief get absolute value of \c unsigned \c long data
+   *
+   * Implemented with the macro \c \_AbsValDEF2\_
+   *
+   * @param d [in] the input \c unsigned \c long data
+   * @return the absolute value of input \c unsigned \c long data
+   */
   _AbsValDEF2_(unsigned long)
+  /** @fn unsigned short AbsVal(const unsigned short&)
+   * @brief get absolute value of \c unsigned \c short data
+   *
+   * Implemented with the macro \c \_AbsValDEF2\_
+   *
+   * @param d [in] the input \c unsigned \c short data
+   * @return the absolute value of input \c unsigned \c short data
+   */
   _AbsValDEF2_(unsigned short)
+  /** @fn unsigned char AbsVal(const unsigned char&)
+   * @brief get absolute value of \c unsigned \c char data
+   *
+   * Implemented with the macro \c \_AbsValDEF2\_
+   *
+   * @param d [in] the input \c unsigned \c char data
+   * @return the absolute value of input \c unsigned \c char data
+   */
   _AbsValDEF2_(unsigned char)
 
 }

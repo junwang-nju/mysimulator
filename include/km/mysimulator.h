@@ -16,6 +16,7 @@
  * @arg basic/string.h
  * @arg basic/square-root.h
  * @arg basic/abs-sum.h
+ * @arg basic/abs-value.h
  */
 
 /**
