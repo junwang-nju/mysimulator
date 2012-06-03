@@ -20,7 +20,7 @@ namespace mysimulator {
     PropagatorMDWithNL_FacBf = PropagatorMD_FacBf,
     PropagatorMDWithNL_FacAf = PropagatorMD_FacAf,
     PropagatorMDWithNL_RelaxTime = PropagatorMD_RelaxTime,
-    PropagatorMDWithNL_ListArray = PropagatorMD_NumberParameter,
+    PropagatorMDWithNL_NeighborList = PropagatorMD_NumberParameter,
     PropagatorMDWithNL_NumberParameter
   };
 

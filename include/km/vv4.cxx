@@ -12,7 +12,7 @@
 #include "basic/dihedral-calc.h"
 #include "random/box-muller/interface.h"
 #include "random/mt-dsfmt/interface.h"
-#include "neighbor-list-accelerator/unique-skin/interface.h"
+#include "neighbor-list-accelerator/multi-skin/interface.h"
 using namespace mysimulator;
 
 #include <iostream>
@@ -193,7 +193,7 @@ int main() {
   P->Allocate(SPN,UniqueMass);
   P->AllocateOutput<MyOut>();
 
-  NeighborListAccelerator_UniqueSkin<double,FreeSpace> NLA;
+  NeighborListAccelerator_MultiSkin<double,FreeSpace> NLA;
   NLA.Allocate(1);
   NLA.List(0).Allocate(IFN[3],3);
   NLA.List(0).LoadTarget(S.Interaction(3));
@@ -206,9 +206,11 @@ int main() {
     NLA.List(0).Index(i)[0]=S.Interaction(3).Index(i)[0];
     NLA.List(0).Index(i)[1]=S.Interaction(3).Index(i)[1];
   }
-  NLA.SetSkinRadius(2);
-  NLA.List(0).SetCutRadius(4.);
+  cout<<"==================="<<endl;
+  NLA.List(0).SetListRadius(4.,6.);
   Pointer<NeighborListAccelerator<double,FreeSpace> >(P->Parameter(PropagatorMDWithNL_NeighborList))=&NLA;
+  cout<<S.Interaction(3).Energy()<<endl;
+  cout<<"=====W============="<<endl;
 
   P->Time(MDTime_NowTime)=0;
   P->IntTime(MDTime_NowStep)=0;
@@ -220,14 +222,21 @@ int main() {
   P->Step(0)->AllocateRange(1);
   P->Step(0)->Range(0)[0]=0;
   P->Step(0)->Range(0)[1]=NR;
+  cout<<"==================="<<endl;
   P->IntroduceSystem(S);
+  cout<<"======q============"<<endl;
   P->Init();
+  cout<<"======A============"<<endl;
   NLA.Init(S.Location());
+  cout<<S.Interaction(3).Energy()<<endl;
+  cout<<"==================="<<endl;
 
   *Pointer<double>(P->Parameter(PropagatorMD_Mass))=1.;
   P->Update();
 
+  cout<<S.Interaction(3).Energy()<<endl;
   P->Evolute(S);
+  cout<<S.Interaction(3).Energy()<<endl;
 
   P->DetachSystem();
 

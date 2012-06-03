@@ -4,7 +4,7 @@
 
 #include "propagator/molecular-dynamics/interface.h"
 #include "propagator/neighbor-list-molecular-dynamics/parameter-name.h"
-#include "neighbor-list/interface.h"
+#include "neighbor-list-accelerator/interface.h"
 
 #ifndef _NAME_
 #define _NAME_(U)         PropagatorMDWithNL_##U
@@ -24,10 +24,10 @@
 #error "Duplicate _Pointer_"
 #endif
 
-#ifndef _LIST_
-#define _LIST_            (*_Pointer_(NLArrayType,ListArray))
+#ifndef _PLIST_
+#define _PLIST_           _Pointer_(NLAccType,NeighborList)
 #else
-#error "Duplicate _LIST_"
+#error "Duplicate _PLIST_"
 #endif
 
 namespace mysimulator {
@@ -39,7 +39,7 @@ namespace mysimulator {
 
       typedef PropagatorMDWithNL<T,GT>    Type;
       typedef PropagatorMD<T,GT>    ParentType;
-      typedef Array<NeighborList<T,GT> >  NLArrayType;
+      typedef NeighborListAccelerator<T,GT> NLAccType;
 
       PropagatorMDWithNL() : ParentType() {}
       virtual ~PropagatorMDWithNL() { Clear(*this); }
@@ -51,14 +51,13 @@ namespace mysimulator {
       }
 
       virtual void StepEvolute(System<T,GT>& S) {
-        for(unsigned int i=0;i<_LIST_.Size();++i) _LIST_[i].Update(S.Location());
+        _PLIST_->Update(S.Location());
         ParentType::StepEvolute(S);
       }
       virtual void IntroduceSystem(System<T,GT>& S) {
         ParentType::IntroduceSystem(S);
-        assert(_Pointer_(NLArrayType,ListArray)!=NULL);
-        for(unsigned int i=0;i<_LIST_.Size();++i)
-          _LIST_[i].ImprintX(S.Location());
+        assert(_PLIST_!=NULL);
+        _PLIST_->ImprintX(S.Location());
       }
 
     private:
@@ -76,8 +75,8 @@ namespace mysimulator {
 
 }
 
-#ifdef _LIST_
-#undef _LIST_
+#ifdef _PLIST_
+#undef _PLIST_
 #endif
 
 #ifdef _Pointer_
