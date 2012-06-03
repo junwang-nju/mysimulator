@@ -26,13 +26,16 @@ namespace mysimulator {
    * The distance is defined based on the boundary condition of
    * \c FreeSpace.
    *
+   * @tparam T the type of the coordinates for the points
+   *
    * @param A1,A2,A3 [in] the input location of the concerned points,
    *                      in which the middle one \a A2 is vortex of the angle,
    *                      and \a A1-A2 and \a A3-A2 correspond two edges
    * @return the value of angle
+   *
    * @note the present calculation works only for 3-dimensional case
    * @note for other boundary conditions, the input points should be
-   *       move to match the expected condition of triangle.
+   *       moved to match the expected condition of triangle.
    * @note a temporary ArrayNumeric object is allocated and released in
    *       calculation. Therefore it is not very efficient in frequent use.
    */
