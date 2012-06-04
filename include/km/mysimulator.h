@@ -9,8 +9,9 @@
  *
  * Present finished Document:
  *
+ * @arg basic
  * @arg type/blas-size.h
- * @arg basic/
+ * @arg type/check-object.h
  */
 
 /**
