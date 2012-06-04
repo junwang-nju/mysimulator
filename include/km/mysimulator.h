@@ -12,6 +12,7 @@
  * @arg basic
  * @arg type/blas-size.h
  * @arg type/check-object.h
+ * @arg type/combine.h
  */
 
 /**
