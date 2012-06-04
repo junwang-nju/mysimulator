@@ -26,6 +26,7 @@ namespace mysimulator {
       friend void _SwapContent(ArrayData<T1>&,ArrayData<T1>&);
       template <typename T1>
       friend bool IsSame(const ArrayData<T1>&,const ArrayData<T1>&);
+      template <typename T1>  friend class ArrayData;
 
       ArrayData() : _data(NULL), _size(0), _alloc(false) {}
       ~ArrayData() { Clear(*this); }

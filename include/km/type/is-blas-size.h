@@ -5,7 +5,7 @@
 namespace mysimulator {
 
   template <typename T>
-  class IsBlasSizeFlag { static const bool Flag; };
+  class IsBlasSizeFlag { public: static const bool Flag; };
 
   template <typename T>
   const bool IsBlasSizeFlag<T>::Flag=

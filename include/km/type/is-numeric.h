@@ -33,6 +33,9 @@ namespace mysimulator {
   _NumDEF_(char)
   _NumDEF_(unsigned char)
 
+  union Unique64Bit;
+  _NumDEF_(Unique64Bit)
+
 }
 
 #ifdef _NumDEF_

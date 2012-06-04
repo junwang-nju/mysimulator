@@ -24,6 +24,20 @@ namespace mysimulator {
 
 }
 
+#include "type/is-intrinsic.h"
+
+namespace mysimulator {
+
+  union Unique64Bit;
+  template <typename T>
+  class IsFillableFlag<Unique64Bit,T> { public: static const bool Flag; };
+  template <typename T>
+  const bool IsFillableFlag<Unique64Bit,T>::Flag=
+    IsNumericFlag<T>::Flag&&IsIntrinsicFlag<T>::Flag&&
+    (sizeof(T)<sizeof(long double));
+
+}
+
 #include "type/check-object.h"
 
 namespace mysimulator {
