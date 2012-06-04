@@ -22,8 +22,9 @@ namespace mysimulator {
    * @brief scale the first value with the second
    *
    * For basic types, this operation just scales the first value with the
-   * second value. To avoid the side effect of the generic template, a check
-   * with IsScalable is used to check the consistency of two concerned types.
+   * second value, \f$a \leftarrow a\times b\f$. To avoid the side effect of
+   * the generic template, a check with IsScalable is used to check the
+   * consistency of two concerned types.
    *
    * @tparam T1 the type of data to be scaled
    * @tparam T2 the type of data as the scaling factor

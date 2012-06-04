@@ -10,25 +10,7 @@
  * Present finished Document:
  *
  * @arg type/blas-size.h
- * @arg basic/acos.h
- * @arg basic/abs-sum.h
- * @arg basic/abs-value.h
- * @arg basic/angle-calc.h
- * @arg basic/constant.h
- * @arg basic/copy.h
- * @arg basic/cos.h
- * @arg basic/dihedral-calc.h
- * @arg basic/dot.h
- * @arg basic/fill.h
- * @arg basic/imprint.h
- * @arg basic/inverse.h
- * @arg basic/is-same.h
- * @arg basic/norm-square.h
- * @arg basic/scale.h
- * @arg basic/sin.h
- * @arg basic/square-root.h
- * @arg basic/string.h
- * @arg basic/tanh.h
+ * @arg basic/
  */
 
 /**
