@@ -15,8 +15,9 @@
  * @arg type/combine.h
  * @arg type/data.h
  * @arg type/is-blas-size.h
- * @arg type/is-blas.h
- * @arg type/is-char.h
+ * @arg type/is-blas.h  // manual specification class
+ * @arg type/is-char.h  // manual specification class
+ * @arg type/is-integer.h // manual specification class
  */
 
 /**
