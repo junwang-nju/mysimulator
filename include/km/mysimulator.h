@@ -13,6 +13,9 @@
  * @arg type/blas-size.h
  * @arg type/check-object.h
  * @arg type/combine.h
+ * @arg type/data.h
+ * @arg type/is-blas-size.h
+ * @arg type/is-blas.h
  */
 
 /**

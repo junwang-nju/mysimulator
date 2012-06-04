@@ -26,21 +26,60 @@ namespace mysimulator {
   template <typename T>
   class IsBlasableFlag {
     public:
-      /** @brief the static flag indicating the check result
+      /** @var Flag
+       * @brief the static flag indicating the check result
        *
-       * true indicates that T is BLAS operatable, otherwise false
+       * \c true indicates that \c T is BLAS operatable, otherwise \c false
        */
       static const bool Flag;
   };
 
-  /** @brief the default flag for IsBlasableFlag which is set as false */
+  /** @var IsBlasableFlag::Flag
+   * the default flag for IsBlasableFlag which is set as \c false
+   */
   template <typename T>
   const bool IsBlasableFlag<T>::Flag=false;
 
-  /** @brief the flag for specialized class with double as input type */
-  template <> const bool IsBlasableFlag<double>::Flag=true;
-  /** @brief the flag for specialized class with float as input type */
-  template <> const bool IsBlasableFlag<float>::Flag=true;
+  /**
+   * @brief the specialization of class \c IsBlasableFlag for \c double
+   *
+   * This is a specialization for \c double type. It has the same interface
+   * as the default class.
+   */
+  template <>
+  class IsBlasableFlag<double> {
+    public:
+      /** @var Flag
+       * @brief the static flag indicating check flag
+       */
+      static const bool Flag;
+  };
+
+  /** @var IsBlasableFlag<double>::Flag
+   * the flag for specialized class \c IsBlasableFlag\<double\> with \c double
+   * as input type
+   */ 
+  template <>
+  const bool IsBlasableFlag<double>::Flag=true;
+
+  /**
+   * @brief the specialization of class \c IsBlasableFlag for \c flaot
+   *
+   * This is a specialization for \c float type. It has the same interface
+   * as the default class.
+   */
+  template <>
+  class IsBlasableFlag<float> {
+    public:
+      static const bool Flag;
+  };
+
+  /** @var IsBlasableFlag<float>::Flag
+   * the flag for specialized class \c IsBlasableFlag\<float\> with \c float
+   * as input type
+   */
+  template <>
+  const bool IsBlasableFlag<float>::Flag=true;
 
 }
 
@@ -50,17 +89,21 @@ namespace mysimulator {
 
   /**
    * @class IsBlasable
-   * @brief the object checking if a type is BLAS operatable
+   * @brief the object checking if a type is \c BLAS operatable
    *
-   * This object is implemented with Check class. If the type is not char,
-   * the trait definition of Type would fail.
+   * This object is implemented with Check class. If the type is not \c char,
+   * the trait definition of \c Type would fail.
    *
    * @tparam T the input type
    */
   template <typename T>
   class IsBlasable {
     public:
-      /** @brief the definition of default type trait */
+      /** @typedef Type
+       * @brief the definition of default type trait
+       *
+       * It is implemented with \c Check and \c IsBlasableFlag.
+       */
       typedef typename Check<IsBlasableFlag<T>::Flag>::Type   Type;
   };
 

@@ -26,15 +26,15 @@ namespace mysimulator {
   template <typename T>
   class IsBlasSizeFlag {
     public:
-      /** @brief the static flag indicating the check result
+      /** @var Flag
+       * @brief the static flag indicating the check result
        *
        * true indicates that size of T is compatible with BLAS modules.
        */
       static const bool Flag;
   };
 
-  /**
-   *
+  /** @var IsBlasSizeFlag::Flag
    * It is implemented as the size comparison with BLAS-compatible types
    * (including double and float)
    */
@@ -60,7 +60,9 @@ namespace mysimulator {
   template <typename T>
   class IsBlasSize {
     public:
-      /** @brief the definition of default type trait */
+      /** @typedef Type
+       * @brief the definition of default type trait
+       */
       typedef typename Check<IsBlasSizeFlag<T>::Flag>::Type   Type;
   };
 
