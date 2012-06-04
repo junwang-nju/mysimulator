@@ -16,6 +16,7 @@
  * @arg type/data.h
  * @arg type/is-blas-size.h
  * @arg type/is-blas.h
+ * @arg type/is-char.h
  */
 
 /**
