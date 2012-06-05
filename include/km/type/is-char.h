@@ -59,7 +59,6 @@ namespace mysimulator {
    * this is the flag for specialized class with input type of \c char, which
    * is set as \c true.
    */
-  template <>
   const bool IsCharFlag<char>::Flag=true;
 
   /**
@@ -80,7 +79,7 @@ namespace mysimulator {
    * the flag for specialized class with input type of \c unsigned \c char,
    * which is set as \c true
    */
-  template <> const bool IsCharFlag<unsigned char>::Flag=true;
+  const bool IsCharFlag<unsigned char>::Flag=true;
 
 }
 

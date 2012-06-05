@@ -59,7 +59,6 @@ namespace mysimulator {
    * the flag for specialized class \c IsBlasableFlag\<double\> with \c double
    * as input type
    */ 
-  template <>
   const bool IsBlasableFlag<double>::Flag=true;
 
   /**
@@ -78,7 +77,6 @@ namespace mysimulator {
    * the flag for specialized class \c IsBlasableFlag\<float\> with \c float
    * as input type
    */
-  template <>
   const bool IsBlasableFlag<float>::Flag=true;
 
 }

@@ -80,6 +80,7 @@ namespace mysimulator {
       void Allocate(const Array<InteractionFuncName>& IFN, unsigned int dim) {
         Clear(*this);
         _Func.Allocate(IFN.Size());
+        for(unsigned int i=0;i<IFN.Size();++i)  _Func[i]=NULL;
         _ID.Allocate(IFN.Size());
         _Param.Allocate(IFN.Size());
         for(unsigned int i=0;i<IFN.Size();++i) {

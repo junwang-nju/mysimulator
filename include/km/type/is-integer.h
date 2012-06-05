@@ -45,10 +45,10 @@ namespace mysimulator {
  * The specialized case, the flag is set as true. The specialized cases
  * include long long, int, long, short, char and their unsigned couterparts.
  */
-#define _IntDEF_(T) \
+#define _IntDEF_(RT) \
   template <> \
-  class IsIntegerFlag<T> { public: static const bool Flag; }; \
-  template <> const bool IsIntegerFlag<T>::Flag=true;
+  class IsIntegerFlag<RT> { public: static const bool Flag; }; \
+  const bool IsIntegerFlag<RT>::Flag=true;
 #else
 #error "Duplicate _IntDEF_"
 #endif
