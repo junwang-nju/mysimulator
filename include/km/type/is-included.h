@@ -1,20 +1,39 @@
 
+/**
+ * @file type/is-included.h
+ * @brief checking if the range of one type can cover that of another type
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Type_IsIncluded_H_
 #define _Type_IsIncluded_H_
 
 namespace mysimulator {
 
+  /** @class IsIncludedFlag
+   */
   template <typename T1, typename T2>
-  class IsIncludedFlag { public: static const bool Flag; };
+  class IsIncludedFlag {
+    public:
+      /** @var Flag
+       */
+      static const bool Flag;
+  };
 
+  /** @var IsIncludedFlag::Flag
+   */
   template <typename T1, typename T2>
   const bool IsIncludedFlag<T1,T2>::Flag=false;
 
 }
 
+/** @def _IncDEF_
+ */
 #ifndef _IncDEF_
 #define _IncDEF_(T1,T2) \
-  template <> const bool IsIncludedFlag<T1,T2>::Flag=true;
+  template <> class IsIncludedFlag<T1,T2> { public: static const bool Flag; }; \
+  const bool IsIncludedFlag<T1,T2>::Flag=true;
 #else
 #error "Duplicate _IncDEF_"
 #endif
@@ -105,8 +124,15 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  class IsIncludedFlag<T,T> { public: static const bool Flag; };
+  class IsIncludedFlag<T,T> {
+    public:
+      /** @var Flag
+       */
+      static const bool Flag;
+  };
 
+  /** @var IsIncludedFlag<T,T>::Flag
+   */
   template <typename T>
   const bool IsIncludedFlag<T,T>::Flag=true;
 
@@ -116,9 +142,13 @@ namespace mysimulator {
 
 namespace mysimulator {
 
+  /** @class IsIncluded
+   */
   template <typename T1,typename T2>
   class IsIncluded {
     public:
+      /** @typedef Type
+       */
       typedef typename Check<IsIncludedFlag<T1,T2>::Flag>::Type   Type;
   };
 
