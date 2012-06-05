@@ -14,12 +14,30 @@
 
 namespace mysimulator {
 
+  /** @class IsFloatPointFlag
+   * @brief the internal object producing flag of floating-point-type checking
+   *
+   * It contains a \c bool flag to indicate the check result. This could be
+   * incorporated into other checking
+   *
+   * @tparam T the input type
+   */
   template <typename T>
   class IsFloatPointFlag {
     public:
+      /** @var Flag
+       * @brief the static flag indicating the check result
+       *
+       * \c true indicating that \c T is a floating-point type, otherwise
+       * \c false
+       */
       static const bool Flag;
   };
 
+  /** @var IsFloatPointFlag::Flag
+   *
+   * The default flag for \c IsFloatPointFlag which is set as \c false
+   */
   template <typename T>
   const bool IsFloatPointFlag<T>::Flag=false;
 
