@@ -19,6 +19,7 @@
  * @arg type/is-char.h  // manual specification class
  * @arg type/is-integer.h // manual specification class
  * @arg type/is-copyable.h
+ * @arg type/is-fillable.h
  */
 
 /**
