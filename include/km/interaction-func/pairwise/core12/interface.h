@@ -70,6 +70,20 @@ namespace mysimulator {
 
   };
 
+  template <typename T,typename GT>
+  void Clear(InteractionFuncPairwiseCore12<T,GT>& F) {
+    typedef typename InteractionFuncPairwiseCore12<T,GT>::ParentType  PType;
+    Clear(static_cast<PType&>(F));
+  }
+
+  template <typename T1,typename GT1,typename T2,typename GT2>
+  void _Copy(InteractionFuncPairwiseCore12<T1,GT1>& F,
+             const InteractionFuncPairwiseCore12<T2,GT2>& BF) {
+    typedef typename InteractionFuncPairwiseCore12<T1,GT1>::ParentType  PType1;
+    typedef typename InteractionFuncPairwiseCore12<T2,GT2>::ParentType  PType2;
+    _Copy(static_cast<PType1&>(F),static_cast<const PType2&>(BF));
+  }
+
 }
 
 #endif

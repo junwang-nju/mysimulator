@@ -80,11 +80,12 @@ namespace mysimulator {
     Clear(static_cast<PType&>(F));
   }
 
-  template <typename T,typename GT>
-  void _Copy(InteractionFuncPairwiseLJ612<T,GT>& F,
-             const InteractionFuncPairwiseLJ612<T,GT>& BF) {
-    typedef typename InteractionFuncPairwiseLJ612<T,GT>::ParentType PType;
-    static_cast<PType&>(P).Copy(static_cast<const PType&>(BF));
+  template <typename T1,typename GT1,typename T2,typename GT2>
+  void _Copy(InteractionFuncPairwiseLJ612<T1,GT1>& F,
+             const InteractionFuncPairwiseLJ612<T2,GT2>& BF) {
+    typedef typename InteractionFuncPairwiseLJ612<T1,GT1>::ParentType PType1;
+    typedef typename InteractionFuncPairwiseLJ612<T2,GT2>::ParentType PType2;
+    _Copy(static_cast<PType1&>(F),static_cast<const PType2&>(BF));
   }
 
 }

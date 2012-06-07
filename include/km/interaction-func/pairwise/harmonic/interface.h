@@ -87,7 +87,7 @@ namespace mysimulator {
              const InteractionFuncPairwiseHarmonic<T2,GT2>& BF) {
     typedef typename InteractionFuncPairwiseHarmonic<T1,GT1>::ParentType PType1;
     typedef typename InteractionFuncPairwiseHarmonic<T2,GT2>::ParentType PType2;
-    static_cast<PType1&>(F).Copy(static_cast<const PType2&>(BF));
+    _Copy(static_cast<PType1&>(F),static_cast<const PType2&>(BF));
   }
 
 }
