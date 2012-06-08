@@ -11,6 +11,8 @@
 
 namespace mysimulator {
 
+  template <typename T,typename GT> class InteractionFuncPairwiseLJ612Cut;
+
   template <typename T,typename GeomType>
   class InteractionFuncPairwiseLJ612
     : public InteractionFuncPairwise<T,GeomType> {
@@ -19,9 +21,11 @@ namespace mysimulator {
 
       typedef InteractionFuncPairwiseLJ612<T,GeomType>  Type;
       typedef InteractionFuncPairwise<T,GeomType>   ParentType;
+      template <typename T1,typename GT>
+      friend class InteractionFuncPairwiseLJ612Cut;
 
       InteractionFuncPairwiseLJ612() : ParentType() {}
-      ~InteractionFuncPairwiseLJ612() { Clear(*this); }
+      virtual ~InteractionFuncPairwiseLJ612() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
         Clear(*this);
@@ -60,14 +64,12 @@ namespace mysimulator {
       }
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
         assert(this->IsValid());
-        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
-        this->post[LJ612IvDistance6]=tmd*tmd*tmd;
+        this->_post[LJ612IvDistance6]=tmd*tmd*tmd;
         this->_update=true;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
-        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612IvDistanceSQ]=tmd;
         this->_post[LJ612IvDistance6]=tmd*tmd*tmd;

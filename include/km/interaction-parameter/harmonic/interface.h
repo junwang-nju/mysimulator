@@ -16,7 +16,7 @@ namespace mysimulator {
       typedef InteractionParameter<T>   ParentType;
 
       InteractionParameterHarmonic() : ParentType() {}
-      ~InteractionParameterHarmonic() { Clear(*this); }
+      virtual ~InteractionParameterHarmonic() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=Harmonic;

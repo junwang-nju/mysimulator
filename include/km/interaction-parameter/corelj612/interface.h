@@ -17,7 +17,7 @@ namespace mysimulator {
       typedef InteractionParameterLJ612<T>        ParentType;
 
       InteractionParameterCoreLJ612() : ParentType() {}
-      ~InteractionParameterCoreLJ612() { Clear(*this); }
+      virtual ~InteractionParameterCoreLJ612() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=CoreLJ612;
@@ -32,7 +32,7 @@ namespace mysimulator {
 
     private:
 
-      InteractionParameterCoreLJ612(const Type&) { return *this; }
+      InteractionParameterCoreLJ612(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };

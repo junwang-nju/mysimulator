@@ -5,7 +5,7 @@
 #include "interaction-func/pairwise/interface.h"
 #include "interaction-func/pairwise/lj1012/pre-name.h"
 #include "interaction-func/pairwise/lj1012/post-name.h"
-#include "interaction-func/pairwise/lj1012/vec-name"
+#include "interaction-func/pairwise/lj1012/vec-name.h"
 #include "interaction-parameter/interface.h"
 #include "interaction-parameter/lj1012/name.h"
 
@@ -17,10 +17,10 @@ namespace mysimulator {
     public:
 
       typedef InteractionFuncPairwiseLJ1012<T,GT> Type;
-      typedef typename InteractionFuncPairwise<T,GT>  ParentType;
+      typedef InteractionFuncPairwise<T,GT>  ParentType;
 
       InteractionFuncPairwiseLJ1012() : ParentType() {}
-      ~InteractionFuncPairwiseLJ1012() { Clear(*this); }
+      virtual ~InteractionFuncPairwiseLJ1012() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
         Clear(*this);
@@ -42,7 +42,7 @@ namespace mysimulator {
       virtual void GFunc(const InteractionParameter<T>* P, T* Diff) {
         assert(this->IsValid());
         assert(P!=NULL);
-        tmd=this->_post[LJ1012IvDistanceSQ];
+        T tmd=this->_post[LJ1012IvDistanceSQ];
         *Diff=this->_post[LJ1012IvDistance10]*tmd*
               (Value<T>((*P)[LJ1012DiffFactorA])*tmd-
                Value<T>((*P)[LJ1012DiffFactorB]));
@@ -60,7 +60,6 @@ namespace mysimulator {
 
       void Pre2Post4E(const InteractionParameter<T>* P) {
         assert(this->IsValid());
-        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[LJ1012IvDistanceSQ]=tmd;
         T tmd1=tmd*tmd;
@@ -79,9 +78,9 @@ namespace mysimulator {
   };
 
   template <typename T,typename GT>
-  void Clear(void InteractionFuncPairwiseLJ1012<T,GT>& F) {
+  void Clear(InteractionFuncPairwiseLJ1012<T,GT>& F) {
     typedef typename InteractionFuncPairwiseLJ1012<T,GT>::ParentType  PType;
-    Clear(static_cast<ParentType&>(F));
+    Clear(static_cast<PType&>(F));
   }
 
   template <typename T1,typename GT1,typename T2,typename GT2>

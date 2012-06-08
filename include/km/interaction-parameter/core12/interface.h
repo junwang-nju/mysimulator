@@ -16,7 +16,7 @@ namespace mysimulator {
       typedef InteractionParameter<T>   ParentType;
 
       InteractionParameterCore12() : ParentType() {}
-      ~InteractionParameterCore12() { Clear(*this); }
+      virtual ~InteractionParameterCore12() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=Core12;

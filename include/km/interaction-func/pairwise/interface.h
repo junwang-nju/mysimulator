@@ -18,13 +18,17 @@ namespace mysimulator {
       typedef InteractionFunc<T,GeomType>   ParentType;
 
       InteractionFuncPairwise() : ParentType() {}
-      ~InteractionFuncPairwise() { Clear(*this); }
+      virtual ~InteractionFuncPairwise() { Clear(*this); }
 
       virtual
       void EMethod(const ArrayNumeric<ArrayNumeric<T> >& X,
                    const Array<unsigned int>& ID,
                    const InteractionParameter<T>* P,const GeomType& Geo,
                    T& Energy) {
+        assert(X.IsValid());
+        assert(ID.IsValid());
+        assert(P!=NULL);
+        assert(Geo.IsValid());
         if(this->_update) {
           unsigned int I=ID[0], J=ID[1];
           this->_pre[PairwiseDistanceSQ]=
@@ -40,6 +44,11 @@ namespace mysimulator {
                    const Array<unsigned int>& ID,
                    const InteractionParameter<T>* P,const GeomType& Geo,
                    ArrayNumeric<ArrayNumeric<T> >& Grad) {
+        assert(X.IsValid());
+        assert(ID.IsValid());
+        assert(P!=NULL);
+        assert(Geo.IsValid());
+        assert(Grad.IsValid());
         unsigned int I=ID[0], J=ID[1];
         if(this->_update) {
           this->_pre[PairwiseDistanceSQ]=
@@ -59,6 +68,11 @@ namespace mysimulator {
                    const Array<unsigned int>& ID,
                    const InteractionParameter<T>* P,const GeomType& Geo,
                    T& Energy,ArrayNumeric<ArrayNumeric<T> >& Grad) {
+        assert(X.IsValid());
+        assert(ID.IsValid());
+        assert(P!=NULL);
+        assert(Geo.IsValid());
+        assert(Grad.IsValid());
         unsigned int I=ID[0], J=ID[1];
         if(this->_update) {
           this->_pre[PairwiseDistanceSQ]=
@@ -102,8 +116,8 @@ namespace mysimulator {
   }
 
   template <typename T1,typename T2,typename GT1,typename GT2>
-  void _Copy(InteractionFuncPairwise<T,GT>& F,
-             const InteractionFuncPairwise<T,GT>& BF) {
+  void _Copy(InteractionFuncPairwise<T1,GT1>& F,
+             const InteractionFuncPairwise<T2,GT2>& BF) {
     typedef typename InteractionFuncPairwise<T1,GT1>::ParentType  PType1;
     typedef typename InteractionFuncPairwise<T2,GT2>::ParentType  PType2;
     _Copy(static_cast<PType1&>(F),static_cast<const PType2&>(BF));

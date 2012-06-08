@@ -20,14 +20,14 @@ namespace mysimulator {
       typedef InteractionFuncPairwiseLJ612<T,GeomType>  ParentType;
 
       InteractionFuncPairwiseLJ612Cut() : ParentType() {}
-      ~InteractionFuncPairwiseLJ612Cut() { Clear(*this); }
+      virtual ~InteractionFuncPairwiseLJ612Cut() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
         Clear(*this);
         this->_tag=LJ612Cut;
         this->_pre.Allocate(LJ612CutNumberPre);
         this->_post.Allocate(LJ612CutNumberPost);
-        this->_vec.Allocate(LJ612CutNumberVec);
+        this->_tmvec.Allocate(LJ612CutNumberVec,dim);
       }
 
     protected:
@@ -35,7 +35,7 @@ namespace mysimulator {
       virtual void EFunc(InteractionParameter<T>* P, T* Func) {
         assert(this->IsValid());
         assert(P!=NULL);
-        if(this->_Post[LJ612CutDistanceSQ]>Value<T>((*P)[LJ612CutCutRSQ]))
+        if(this->_post[LJ612CutDistanceSQ]>Value<T>((*P)[LJ612CutCutRSQ]))
           *Func=0;
         else {
           static_cast<ParentType*>(this)->EFunc(P,Func);
@@ -47,7 +47,7 @@ namespace mysimulator {
       virtual void GFunc(InteractionParameter<T>* P, T* Diff) {
         assert(this->IsValid());
         assert(P!=NULL);
-        if(this->_Post[LJ612CutDistanceSQ]>Value<T>((*P)[LJ612CutCutRSQ]))
+        if(this->_post[LJ612CutDistanceSQ]>Value<T>((*P)[LJ612CutCutRSQ]))
           *Diff=0;
         else {
           static_cast<ParentType*>(this)->GFunc(P,Diff);
@@ -57,7 +57,7 @@ namespace mysimulator {
       virtual void BFunc(InteractionParameter<T>* P, T* Func, T* Diff) {
         assert(this->IsValid());
         assert(P!=NULL);
-        if(this->_Post[LJ612CutDistanceSQ]>Value<T>((*P)[LJ612CutCutRSQ])) {
+        if(this->_post[LJ612CutDistanceSQ]>Value<T>((*P)[LJ612CutCutRSQ])) {
           *Func=0;
           *Diff=0;
         } else {
@@ -69,26 +69,26 @@ namespace mysimulator {
         }
       }
 
-      virtual void Pre2Post2E(const InteractionParameter<T>* P) {
+      virtual void Pre2Post4E(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ612CutCutRSQ])) {
           this->_post[LJ612CutDistance]=__SqRoot(tmd);
-          static_cast<ParentType*>(this)->Pre2Post2E(P);
+          static_cast<ParentType*>(this)->Pre2Post4E(P);
         } else this->_update=false;
       }
-      virtual void Pre2Post2G(const InteractionParameter<T>* P) {
+      virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ612CutCutRSQ])) {
-          static_cast<ParentType*>(this)->Pre2Post2G(P);
+          static_cast<ParentType*>(this)->Pre2Post4G(P);
           this->_post[LJ612CutIvDistance]=
             __SqRoot(this->_post[LJ612CutIvDistanceSQ]);
-          flag=true;
+          this->_update=true;
         } else this->_update=false;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
@@ -101,7 +101,7 @@ namespace mysimulator {
           this->_post[LJ612CutDistance]=__SqRoot(tmd);
           this->_post[LJ612CutIvDistance]=this->_post[LJ612CutDistance]*
                                           this->_post[LJ612CutIvDistanceSQ];
-        } else flag=false;
+        } else this->_update=false;
       }
 
     private:
@@ -122,7 +122,7 @@ namespace mysimulator {
              const InteractionFuncPairwiseLJ612Cut<T2,GT2>& BF) {
     typedef typename InteractionFuncPairwiseLJ612Cut<T1,GT1>::ParentType PType1;
     typedef typename InteractionFuncPairwiseLJ612Cut<T2,GT2>::ParentType PType2;
-    _Copy(static_cast<PType&>(F),static_cast<const PType&>(BF));
+    _Copy(static_cast<PType1&>(F),static_cast<const PType2&>(BF));
   }
 
 }

@@ -23,7 +23,7 @@ namespace mysimulator {
 
       InteractionFunc() : _tag(UnknownInteractionFunc), _pre(),
                           _post(), _tmvec(), _neighbor(), _update(true) {}
-      ~InteractionFunc() { Clear(*this); }
+      virtual ~InteractionFunc() { Clear(*this); }
 
       bool IsValid() const {
         return _pre.IsValid()&&_post.IsValid()&&_tmvec.IsValid()&&
@@ -83,6 +83,50 @@ namespace mysimulator {
   template <typename T1,typename T2,typename GT1,typename GT2>
   void _Copy(InteractionFunc<T1,GT1>& F,const InteractionFunc<T2,GT2>& BF) {
     F.Copy(BF);
+  }
+
+}
+
+#include "interaction-func/pairwise/core12/interface.h"
+#include "interaction-func/pairwise/corelj612/interface.h"
+#include "interaction-func/pairwise/coulomb/interface.h"
+#include "interaction-func/pairwise/dist-coulomb/interface.h"
+#include "interaction-func/pairwise/harmonic/interface.h"
+#include "interaction-func/pairwise/lj1012/interface.h"
+#include "interaction-func/pairwise/lj1012cut/interface.h"
+#include "interaction-func/pairwise/lj612/interface.h"
+#include "interaction-func/pairwise/lj612cut/interface.h"
+
+namespace mysimulator {
+
+  template <typename T,typename GT>
+  void Introduce(InteractionFunc<T,GT>*& P, const InteractionFuncName& FN,
+                 unsigned int dim) {
+    if(P!=NULL) { delete P; P=NULL; }
+    switch(FN) {
+      case Harmonic:
+        P=new InteractionFuncPairwiseHarmonic<T,GT>;  break;
+      case Core12:
+        P=new InteractionFuncPairwiseCore12<T,GT>;  break;
+      case CoreLJ612:
+        P=new InteractionFuncPairwiseCoreLJ612<T,GT>; break;
+      case Coulomb:
+        P=new InteractionFuncPairwiseCoulomb<T,GT>; break;
+      case DistDielCoulomb:
+        P=new InteractionFuncPairwiseDistDielCoulomb<T,GT>; break;
+      case LJ1012:
+        P=new InteractionFuncPairwiseLJ1012<T,GT>;  break;
+      case LJ1012Cut:
+        P=new InteractionFuncPairwiseLJ1012Cut<T,GT>; break;
+      case LJ612:
+        P=new InteractionFuncPairwiseLJ612<T,GT>; break;
+      case LJ612Cut:
+        P=new InteractionFuncPairwiseLJ612Cut<T,GT>;  break;
+      case UnknownInteractionFunc:
+      default:
+        fprintf(stderr,"Unknown Interaction!\n");
+    }
+    if(P!=NULL) P->Allocate(dim);
   }
 
 }

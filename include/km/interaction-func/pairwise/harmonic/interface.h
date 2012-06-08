@@ -21,7 +21,7 @@ namespace mysimulator {
       typedef InteractionFuncPairwise<T,GeomType>   ParentType;
 
       InteractionFuncPairwiseHarmonic() : ParentType() {}
-      ~InteractionFuncPairwiseHarmonic() { Clear(*this); }
+      virtual ~InteractionFuncPairwiseHarmonic() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
         Clear(*this);
@@ -94,7 +94,7 @@ namespace mysimulator {
     Clear(static_cast<PType&>(F));
   }
 
-  template <typename T1,typename T2,,typename GT1,typename GT2>
+  template <typename T1,typename T2,typename GT1,typename GT2>
   void _Copy(InteractionFuncPairwiseHarmonic<T1,GT1>& F,
              const InteractionFuncPairwiseHarmonic<T2,GT2>& BF) {
     typedef typename InteractionFuncPairwiseHarmonic<T1,GT1>::ParentType PType1;

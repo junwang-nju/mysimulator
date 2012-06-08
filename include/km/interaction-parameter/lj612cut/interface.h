@@ -16,7 +16,7 @@ namespace mysimulator {
       typedef InteractionParameter<T>   ParentType;
 
       InteractionParameterLJ612Cut() : ParentType() {}
-      ~InteractionParameterLJ612Cut() { Clear(*this); }
+      virtual ~InteractionParameterLJ612Cut() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=LJ612Cut;

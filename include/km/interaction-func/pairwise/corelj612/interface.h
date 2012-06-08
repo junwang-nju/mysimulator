@@ -20,7 +20,7 @@ namespace mysimulator {
       typedef InteractionFuncPairwiseLJ612<T,GeomType>  ParentType;
 
       InteractionFuncPairwiseCoreLJ612() : ParentType() {}
-      ~InteractionFuncPairwiseCoreLJ612() { Clear(*this); }
+      virtual ~InteractionFuncPairwiseCoreLJ612() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
         Clear(*this);

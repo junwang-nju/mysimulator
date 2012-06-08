@@ -17,7 +17,7 @@ namespace mysimulator {
       typedef InteractionParameterCoulomb<T>  ParentType;
 
       InteractionParameterDistDielCoulomb() : ParentType() {}
-      ~InteractionParameterDistDielCoulomb() { Clear(*this); }
+      virtual ~InteractionParameterDistDielCoulomb() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=DistDielCoulomb;

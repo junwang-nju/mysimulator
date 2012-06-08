@@ -20,7 +20,7 @@ namespace mysimulator {
       typedef InteractionFuncPairwiseLJ1012<T,GeomType>   ParentType;
 
       InteractionFuncPairwiseLJ1012Cut() : ParentType() {}
-      ~InteractionFuncPairwiseLJ1012Cut() { Clear(*this); }
+      virtual ~InteractionFuncPairwiseLJ1012Cut() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
         Clear(*this);
@@ -72,6 +72,8 @@ namespace mysimulator {
       }
 
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ1012CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ1012CutCutRSQ])) {
@@ -81,6 +83,8 @@ namespace mysimulator {
         } else this->_update=false;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ1012CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ1012CutCutRSQ])) {
@@ -91,6 +95,8 @@ namespace mysimulator {
         } else this->_update=false;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ1012CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ1012CutCutRSQ])) {

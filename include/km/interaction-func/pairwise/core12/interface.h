@@ -21,14 +21,14 @@ namespace mysimulator {
       typedef InteractionFuncPairwise<T,GeomType>   ParentType;
 
       InteractionFuncPairwiseCore12() : ParentType() {}
-      ~InteractionFuncPairwiseCore12() { Clear(*this); }
+      virtual ~InteractionFuncPairwiseCore12() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
         Clear(*this);
         this->_tag=Core12;
         this->_pre.Allocate(Core12NumberPre);
         this->_post.Allocate(Core12NumberPost);
-        this->_tmvec.Allocate(Core12NumberVec);
+        this->_tmvec.Allocate(Core12NumberVec,dim);
       }
 
     protected:
@@ -44,7 +44,7 @@ namespace mysimulator {
         *Diff=Value<T>((*P)[Core12TwlfEqStrength])*
               this->_post[Core12IvDistance12]*this->_post[Core12IvDistanceSQ];
       }
-      virtual BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
+      virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
         assert(this->IsValid());
         assert(P!=NULL);
         T tmd=Value<T>((*P)[Core12EqStrength])*this->_post[Core12IvDistance12];
@@ -54,7 +54,6 @@ namespace mysimulator {
 
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
         assert(this->IsValid());
-        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         tmd*=tmd;
         this->_post[Core12IvDistance12]=tmd*tmd*tmd;
@@ -62,7 +61,6 @@ namespace mysimulator {
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
-        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[Core12IvDistanceSQ]=tmd;
         tmd*=tmd;

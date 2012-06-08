@@ -16,7 +16,7 @@ namespace mysimulator {
       typedef InteractionParameter<T>   ParentType;
 
       InteractionParameterLJ1012Cut() : ParentType() {}
-      ~InteractionParameterLJ1012Cut() { Clear(*this); }
+      virtual ~InteractionParameterLJ1012Cut() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=LJ1012Cut;
@@ -57,7 +57,7 @@ namespace mysimulator {
         T A=Sigma10*Sigma2*5;
         T B=Sigma10*6;
         Value<T>(this->_data[LJ1012CutFactorA])=A;
-        Value<T>(this->_ddta[LJ1012CutFactorB])=B;
+        Value<T>(this->_data[LJ1012CutFactorB])=B;
         Value<T>(this->_data[LJ1012CutDiffFactorA])=A*12;
         Value<T>(this->_data[LJ1012CutDiffFactorB])=B*10;
         Value<T>(this->_data[LJ1012CutVc])=VC*E;

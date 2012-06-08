@@ -16,7 +16,7 @@ namespace mysimulator {
       typedef InteractionParameter<T>   ParentType;
 
       InteractionParameterCoulomb() : ParentType() {}
-      ~InteractionParameterCoulomb() { Clear(*this); }
+      virtual ~InteractionParameterCoulomb() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=Coulomb;

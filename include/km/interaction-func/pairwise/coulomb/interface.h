@@ -13,7 +13,7 @@ namespace mysimulator {
 
   template <typename T, typename GeomType>
   class InteractionFuncPairwiseCoulomb
-      : InteractionFuncPairwise<T,GeomType> {
+      : public InteractionFuncPairwise<T,GeomType> {
 
     public:
 
@@ -21,7 +21,7 @@ namespace mysimulator {
       typedef InteractionFuncPairwise<T,GeomType>   ParentType;
 
       InteractionFuncPairwiseCoulomb() : ParentType() {}
-      ~InteractionFuncPairwiseCoulomb() { Clear(*this); }
+      virtual ~InteractionFuncPairwiseCoulomb() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
         Clear(*this);
@@ -53,14 +53,12 @@ namespace mysimulator {
 
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
         assert(this->IsValid());
-        assert(P!=NULL);
         this->_post[CoulombIvDistance]=
           1./__SqRoot(this->_pre[PairwiseDistanceSQ]);
         this->_update=true;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
-        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[CoulombIvDistanceSQ]=tmd;
         this->_post[CoulombIvDistance]=__SqRoot(tmd);
@@ -79,15 +77,15 @@ namespace mysimulator {
 
   template <typename T,typename GT>
   void Clear(InteractionFuncPairwiseCoulomb<T,GT>& F) {
-    typedef typename InteractionFuncPairwiseCoulomb<T,GT>::ParentType Type;
+    typedef typename InteractionFuncPairwiseCoulomb<T,GT>::ParentType PType;
     Clear(static_cast<PType&>(F));
   }
 
   template <typename T1,typename GT1,typename T2,typename GT2>
   void _Copy(InteractionFuncPairwiseCoulomb<T1,GT1>& F,
              const InteractionFuncPairwiseCoulomb<T2,GT2>& BF) {
-    typedef typename InteractionFuncPairwiseCoulomb<T1,GT1>::ParentType Type1;
-    typedef typename InteractionFuncPairwiseCoulomb<T2,GT2>::ParentType Type2;
+    typedef typename InteractionFuncPairwiseCoulomb<T1,GT1>::ParentType PType1;
+    typedef typename InteractionFuncPairwiseCoulomb<T2,GT2>::ParentType PType2;
     _Copy(static_cast<PType1&>(F),static_cast<const PType2&>(BF));
   }
 
