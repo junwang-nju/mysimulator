@@ -34,17 +34,23 @@ namespace mysimulator {
     protected:
 
       virtual void EFunc(const InteractionParameter<T>* P, T* Func) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=this->_post[LJ612IvDistance6];
         *Func=tmd*(Value<T>((*P)[LJ612FactorA])*tmd-
                    Value<T>((*P)[LJ612FactorB]));
       }
       virtual void GFunc(const InteractionParameter<T>* P, T *Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=this->_post[LJ612IvDistance6];
         *Diff=tmd*this->_post[LJ612IvDistanceSQ]*
               (Value<T>((*P)[LJ612DiffFactorB])-
                Value<T>((*P)[LJ612DiffFactorA])*tmd);
       }
       virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=this->_post[LJ612IvDistance6];
         *Func=tmd*(Value<T>((*P)[LJ612FactorA])*tmd-
                    Value<T>((*P)[LJ612FactorB]));
@@ -53,11 +59,15 @@ namespace mysimulator {
                Value<T>((*P)[LJ612DiffFactorA])*tmd);
       }
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->post[LJ612IvDistance6]=tmd*tmd*tmd;
         this->_update=true;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612IvDistanceSQ]=tmd;
         this->_post[LJ612IvDistance6]=tmd*tmd*tmd;

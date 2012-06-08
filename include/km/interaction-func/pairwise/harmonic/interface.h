@@ -35,16 +35,22 @@ namespace mysimulator {
 
       virtual
       void EFunc(const InteractionParameter<T>* P,T* Func) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T Dd=this->_post[HarmonicLength]-Value<T>((*P)[HarmonicEqLength]);
         *Func=Value<T>((*P)[HarmonicEqStrength])*Dd*Dd;
       }
       virtual
       void GFunc(const InteractionParameter<T>* P,T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T Dd=1.-Value<T>((*P)[HarmonicEqLength])*this->_post[HarmonicIvLength];
         *Diff=Value<T>((*P)[HarmonicDualEqStrength])*Dd;
       }
       virtual
       void BFunc(const InteractionParameter<T>* P,T* Func,T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T Dd=this->_post[HarmonicLength]-Value<T>((*P)[HarmonicEqLength]);
         T tmd=Value<T>((*P)[HarmonicEqStrength])*Dd;
         *Func=tmd*Dd;
@@ -52,17 +58,23 @@ namespace mysimulator {
       }
       virtual
       void Pre2Post4E(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         this->_post[HarmonicLength]=__SqRoot(this->_pre[PairwiseDistanceSQ]);
         this->_update=true;
       }
       virtual
       void Pre2Post4G(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         this->_post[HarmonicIvLength]=
           1./__SqRoot(this->_pre[PairwiseDistanceSQ]);
         this->_update=true;
       }
       virtual
       void Pre2Post4B(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=__SqRoot(this->_pre[PairwiseDistanceSQ]);
         this->_post[HarmonicLength]=tmd;
         this->_post[HarmonicIvLength]=1./tmd;

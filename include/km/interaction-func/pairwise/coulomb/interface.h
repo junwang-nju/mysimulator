@@ -24,6 +24,7 @@ namespace mysimulator {
       ~InteractionFuncPairwiseCoulomb() { Clear(*this); }
 
       virtual void Allocate(unsigned int dim) {
+        Clear(*this);
         this->_tag=Coulomb;
         this->_pre.Allocate(CoulombNumberPre);
         this->_post.Allocate(CoulombNumberPost);
@@ -33,23 +34,33 @@ namespace mysimulator {
     protected:
 
       virtual void EFunc(const InteractionParameter<T>* P, T* Func) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         *Func=Value<T>((*P)[CoulombStrength])*this->_post[CoulombIvDistance];
       }
       virtual void GFunc(const InteractionParameter<T>* P, T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         *Diff=Value<T>((*P)[CoulombStrength])*this->_post[CoulombIvDistanceSQ]*
               this->_post[CoulombIvDistance];
       }
       virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         EFunc(P,Func);
         *Diff=(*Func)*this->_post[CoulombIvDistance];
       }
 
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         this->_post[CoulombIvDistance]=
           1./__SqRoot(this->_pre[PairwiseDistanceSQ]);
         this->_update=true;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[CoulombIvDistanceSQ]=tmd;
         this->_post[CoulombIvDistance]=__SqRoot(tmd);
@@ -72,11 +83,12 @@ namespace mysimulator {
     Clear(static_cast<PType&>(F));
   }
 
-  template <typename T,typename GT>
-  void _Copy(InteractionFuncPairwiseCoulomb<T,GT>& F,
-             const InteractionFuncPairwiseCoulomb<T,GT>& BF) {
-    typedef typename InteractionFuncPairwiseCoulomb<T,GT>::ParentType Type;
-    _Copy(static_cast<PType&>(F),static_cast<const PType&>(BF));
+  template <typename T1,typename GT1,typename T2,typename GT2>
+  void _Copy(InteractionFuncPairwiseCoulomb<T1,GT1>& F,
+             const InteractionFuncPairwiseCoulomb<T2,GT2>& BF) {
+    typedef typename InteractionFuncPairwiseCoulomb<T1,GT1>::ParentType Type1;
+    typedef typename InteractionFuncPairwiseCoulomb<T2,GT2>::ParentType Type2;
+    _Copy(static_cast<PType1&>(F),static_cast<const PType2&>(BF));
   }
 
 }

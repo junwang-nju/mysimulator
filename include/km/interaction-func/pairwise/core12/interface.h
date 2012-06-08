@@ -34,25 +34,35 @@ namespace mysimulator {
     protected:
 
       virtual void EFunc(const InteractionParameter<T>* P, T* Func) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         *Func=Value<T>((*P)[Core12EqStrength])*this->_post[Core12IvDistance12];
       }
       virtual void GFunc(const InteractionParameter<T>* P, T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         *Diff=Value<T>((*P)[Core12TwlfEqStrength])*
               this->_post[Core12IvDistance12]*this->_post[Core12IvDistanceSQ];
       }
       virtual BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=Value<T>((*P)[Core12EqStrength])*this->_post[Core12IvDistance12];
         *Func=tmd;
         *Diff=tmd*this->_post[Core12IvDistanceSQ];
       }
 
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         tmd*=tmd;
         this->_post[Core12IvDistance12]=tmd*tmd*tmd;
         this->_update=true;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[Core12IvDistanceSQ]=tmd;
         tmd*=tmd;

@@ -33,6 +33,8 @@ namespace mysimulator {
     protected:
 
       virtual void EFunc(const InteractionParameter<T>* P, T* Func) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         if(this->_post[CoreLJ612DistanceSQ]>Value<T>((*P)[CoreLJ612RadiusSQ]))
           *Func=0;
         else {
@@ -41,12 +43,16 @@ namespace mysimulator {
         }
       }
       virtual void GFunc(const InteractionParameter<T>* P, T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         if(this->_post[CoreLJ612DistanceSQ]>Value<T>((*P)[CoreLJ612RadiusSQ]))
           *Diff=0;
         else
           static_cast<ParentType*>(this)->GFunc(P,Diff);
       }
       virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         if(this->_post[CoreLJ612DistanceSQ]>Value<T>((*P)[CoreLJ612RadiusSQ])) {
           *Func=0;
           *Diff=0;
@@ -57,6 +63,8 @@ namespace mysimulator {
       }
 
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[CoreLJ612DistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[CoreLJ612RadiusSQ]))
@@ -65,6 +73,8 @@ namespace mysimulator {
           this->_update=false;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
+        assert(this->IsValid());
+        assert(P!=NULL);
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[CoreLJ612DistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[CoreLJ612RadiusSQ]))
@@ -89,11 +99,14 @@ namespace mysimulator {
     Clear(static_cast<PType&>(F));
   }
 
-  template <typename T,typename GT>
-  void _Copy(InteractionFuncPairwiseCoreLJ612<T,GT>& F,
-             const InteractionFuncPairwiseCoreLJ612<T,GT>& BF) {
-    typedef typename InteractionFuncPairwiseCoreLJ612<T,GT>::ParentType PType;
-    _Copy(static_cast<PType&>(F),static_cast<const PType&>(BF));
+  template <typename T1,typename GT1,typename T2,typename GT2>
+  void _Copy(InteractionFuncPairwiseCoreLJ612<T1,GT1>& F,
+             const InteractionFuncPairwiseCoreLJ612<T2,GT2>& BF) {
+    typedef typename InteractionFuncPairwiseCoreLJ612<T1,GT1>::ParentType
+                     PType1;
+    typedef typename InteractionFuncPairwiseCoreLJ612<T2,GT2>::ParentType
+                     PType2;
+    _Copy(static_cast<PType1&>(F),static_cast<const PType2&>(BF));
   }
 
 }
