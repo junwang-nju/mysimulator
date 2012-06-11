@@ -93,5 +93,30 @@ namespace mysimulator {
 
 }
 
+#include "step-propagator/vel-verlet-const-e/unique-mass/interface.h"
+#include "step-propagator/vel-verlet-const-e/array-mass/interface.h"
+#include <cstdarg>
+
+namespace mysimulator {
+
+  template <typename T>
+  void Introduce(StepPropagator<T>*& P, StepPropagatorName SPN,...) {
+    if(P!=NULL) { delete P; P=NULL; }
+    unsigned int MassF;
+    va_list vl;
+    va_start(vl,SPN);
+    switch(SPN) {
+      case VelVerletConstE:
+        MassF=va_arg(vl,unsigned int);
+        if(MassF==0)  P=new StepPropagatorVelVerletConstE_UMass<T>;
+        else if(MassF==1) P=new StepPropagatorVelVerletConstE_AMass<T>;
+      default:
+        fprintf(stderr,"Unknown StepPropagator Name!\n");
+    }
+    va_end(vl);
+  }
+
+}
+
 #endif
 
