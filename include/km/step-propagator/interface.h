@@ -33,6 +33,8 @@ namespace mysimulator {
       virtual void Update2()=0;
       virtual void Update3()=0;
       virtual void Update4()=0;
+      virtual void Update5()=0;
+      virtual void Update6()=0;
       virtual void Evolute1()=0;
       virtual void Evolute2()=0;
       virtual void Evolute3()=0;

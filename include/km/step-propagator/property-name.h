@@ -9,6 +9,11 @@ namespace mysimulator {
     ArrayMass
   };
 
+  enum FrictionPropertyName {
+    UniqueFriction=0,
+    ArrayFriction
+  };
+
 }
 
 #endif

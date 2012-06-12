@@ -26,6 +26,8 @@ namespace mysimulator {
         this->Update2();
         this->Update3();
       }
+      virtual void Update5() { fprintf(stderr,"Not Implemented!\n"); }
+      virtual void Update6() { fprintf(stderr,"Not Implemented!\n"); }
       virtual void Evolute3() { fprintf(stderr,"Not Implemented!\n"); }
       virtual void Evolute4() { fprintf(stderr,"Not Implemented!\n"); }
 

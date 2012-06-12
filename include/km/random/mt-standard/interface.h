@@ -3,7 +3,7 @@
 #define _Random_MT_Standard_Interface_H_
 
 #include "unique/64bit/interface.h"
-#include "array/interface.h"
+#include "array/data/interface.h"
 
 namespace mysimulator {
 
