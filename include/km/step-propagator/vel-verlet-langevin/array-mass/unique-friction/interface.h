@@ -80,34 +80,6 @@ namespace mysimulator {
         }
       }
 
-      virtual void Evolute1() {
-        assert(this->_param.IsValid());
-        assert(this->_X.IsValid());
-        assert(this->_G.IsValid());
-        assert(this->_V.IsValid());
-        assert(this->_X.Size()==this->_G.Size());
-        assert(this->_X.Size()==this->_V.Size());
-        for(unsigned int i=0;i<this->_X.Size();++i) {
-          this->_V[i].BlasScale((*_PtrArray_(FacBf))[i]);
-          this->_V[i].BlasShift((*_PtrArray_(NegHTIM))[i],this->_G[i]);
-          this->_V[i].BlasShift((*_PtrArray_(RandSize))[i],
-                                (*_PtrArray_(RandVector))[i]);
-          this->_X[i].BlasShift(_SrcValue_(TimeStep),this->_V[i]);
-        }
-      }
-      virtual void Evolute2() {
-        assert(this->_param.IsValid());
-        assert(this->_G.IsValid());
-        assert(this->_V.IsValid());
-        assert(this->_G.Size()==this->_V.Size());
-        for(unsigned int i=0;i<this->_V.Size();++i) {
-          this->_V[i].BlasShift((*_PtrArray_(RandSize))[i],
-                                (*_PtrArray_(RandVector))[i]);
-          this->_V[i].BlasShift((*_PtrArray_(NegHTIM))[i],this->_G[i]);
-          this->_V[i].BlasScale((*_PtrArray_(FacAf))[i]);
-        }
-      }
-
     private:
 
       StepPropagatorVelVerletLangevin_AMassUFric(const Type&) {}

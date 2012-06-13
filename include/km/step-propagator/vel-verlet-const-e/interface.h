@@ -1,6 +1,6 @@
 
-#ifndef _Step_Propagator_VelVerlet_ConstE_INterface_H_
-#define _Step_Propagator_VelVerlet_ConstE_INterface_H_
+#ifndef _Step_Propagator_VelVerlet_ConstE_Interface_H_
+#define _Step_Propagator_VelVerlet_ConstE_Interface_H_
 
 #include "step-propagator/interface.h"
 #include "step-propagator/vel-verlet-const-e/parameter-name.h"
