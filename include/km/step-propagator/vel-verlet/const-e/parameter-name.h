@@ -15,7 +15,7 @@ namespace mysimulator {
     VelVerletConstE_SrcNegHTIM        = VelVerlet_SrcNegHTIM,
     VelVerletConstE_SrcVelocitySQ     = VelVerlet_SrcVelocitySQ,
     VelVerletConstE_ValKineticEnergy  = VelVerlet_ValKineticEnergy,
-    VelVerlet_NumberParameter         = VelVerlet_NumberParameter
+    VelVerletConstE_NumberParameter   = VelVerlet_NumberParameter
   };
 
 }

@@ -95,8 +95,8 @@ namespace mysimulator {
 
 }
 
-#include "step-propagator/vel-verlet-const-e/unique-mass/interface.h"
-#include "step-propagator/vel-verlet-const-e/array-mass/interface.h"
+#include "step-propagator/vel-verlet/const-e/unique-mass/interface.h"
+#include "step-propagator/vel-verlet/const-e/array-mass/interface.h"
 #include "step-propagator/property-name.h"
 #include <cstdarg>
 

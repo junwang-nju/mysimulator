@@ -1,9 +1,9 @@
 
-#ifndef _Step_Propagator_VelVerlet_ArrayMass_Interface_H_
-#define _Step_Propagator_VelVerlet_ArrayMass_Interface_H_
+#ifndef _Step_Propagator_VelVerlet_Langevin_AMass_Interface_H_
+#define _Step_Propagator_VelVerlet_Langevin_AMass_Interface_H_
 
-#include "step-propagator/vel-verlet/interface.h"
-#include "step-propagator/vel-verlet/parameter-name.h"
+#include "step-propagator/vel-verlet/langevin/interface.h"
+#include "step-propagator/vel-verlet/array-mass/interface.h"
 
 #ifndef _NAME_
 #define _NAME_(DT,U)          VelVerlet_##DT##U
@@ -85,84 +85,74 @@
 #error "Duplicate _SrcValue_"
 #endif
 
-#ifndef _ValValue_
-#define _ValValue_(U)         Value<T>(_PARAM_(Val,U))
-#else
-#error "Duplicate _ValValue_"
-#endif
-
 namespace mysimulator {
 
   template <typename T>
-  class StepPropagatorVelVerlet_AMass : public StepPropagatorVelVerlet<T> {
+  class StepPropagatorVelVerletLangevin_AMass
+      : public StepPropagatorVelVerletLangevin<T,StepPropagatorVelVerlet_AMass>{
 
     public:
 
-      typedef StepPropagatorVelVerlet_AMass<T>    Type;
-      typedef StepPropagatorVelVerlet<T>  ParentType;
+      typedef StepPropagatorVelVerletLangevin_AMass<T>  Type;
+      typedef StepPropagatorVelVerletLangevin<T,StepPropagatorVelVerlet_AMass>
+              ParentType;
       typedef Array2DNumeric<T>   AType;
       typedef Array<AType>        AAType;
 
-      StepPropagatorVelVerlet_AMass() : ParentType() {}
-      ~StepPropagatorVelVerlet_AMass() { Clear(*this); }
+      StepPropagatorVelVerletLangevin_AMass() : ParentType() {}
+      ~StepPropagatorVelVerletLangevin_AMass() { Clear(*this); }
 
       virtual void Init() {
-        _Src2Ptr_Array_(Mass)
-        _Src2Ptr_Array_(NegHTIM)
-        _Src2Ptr_Array_(VelocitySQ)
+        static_cast<ParentType*>(this)->Init();
+        _Src2Ptr_Array_(RandSize)
+        _Src2Ptr_Array_(FacBf)
+        _Src2Ptr_Array_(FacAf)
       }
       virtual void Clean() {
-        _PtrClean_(Mass)
-        _PtrClean_(NegHTIM)
-        _PtrClean_(VelocitySQ)
+        static_cast<ParentType*>(this)->Clean();
+        _PtrClean_(RandSize)
+        _PtrClean_(FacBf)
+        _PtrClean_(FacAf)
       }
 
-      virtual void Update1() {  // HTIM
+      virtual void Evolute1() {
         assert(this->_param.IsValid());
-        T hdt=-0.5*_SrcValue_(TimeStep);
-        const unsigned int n=_PtrArray_(Mass).Size();
+        assert(this->_X.IsValid());
+        assert(this->_G.IsValid());
+        assert(this->_V.IsValid());
+        assert(this->_X.Size()==this->_G.Size());
+        assert(this->_X.Size()==this->_V.Size());
+        const unsigned int n=this->_X.Size();
         for(unsigned int i=0;i<n;++i) {
-          _PtrArray_(NegHTIM)[i].BlasCopy(_PtrArray_(Mass)[i]);
-          _PtrArray_(NegHTIM)[i].Inverse();
-          _PtrArray_(NegHTIM)[i].BlasScale(hdt);
+          this->_V[i].BlasScale(_PtrArray_(FacBf));
+          this->_V[i].BlasShift(this->_G[i],_PtrArray_(NegHTIM));
+          this->_V[i].BlasShift(_PtrArray_(RandVector)[i],
+                                _PtrArray_(RandSize)[i]);
+          this->_X[i].BlasShift(this->_V[i],_SrcValue_(TimeStep));
         }
       }
-      virtual void Update2() {  // VelocitySQ
+      virtual void Evolute2() {
         assert(this->_param.IsValid());
+        assert(this->_G.IsValid());
         assert(this->_V.IsValid());
+        assert(this->_G.Size()==this->_V.Size());
         const unsigned int n=this->_V.Size();
         for(unsigned int i=0;i<n;++i) {
-          _PtrArray_(VelocitySQ)[i].BlasCopy(this->_V[i]);
-          _PtrArray_(VelocitySQ)[i].BlasScale(this->_V[i]);
+          this->_V[i].BlasShift(_PtrArray_(RandVector)[i],
+                                _PtrArray_(RandSize)[i]);
+          this->_V[i].BlasShift(this->_G[i],_PtrArray_(NegHTIM));
+          this->_V[i].BlasScale(_PtrArray_(FacAf));
         }
-      }
-      virtual void Update3() {  // KineticEnergy_Simple
-        assert(this->_param.IsValid());
-        T d=0;
-        const unsigned int n=_PtrArray_(VelocitySQ).Size();
-        for(unsigned int i=0;i<n;++i)
-          d+=BlasDot(_PtrArray_(Mass)[i],_PtrArray_(VelocitySQ)[i]);
-        _ValValue_(KineticEnergy)=0.5*d;
       }
 
     private:
 
-      StepPropagatorVelVerlet_AMass(const Type&) {}
+      StepPropagatorVelVerletLangevin_AMass(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };
 
-  template <typename T>
-  void Clear(StepPropagatorVelVerlet_AMass<T>& P) {
-    typedef typename StepPropagatorVelVerlet_AMass<T>::ParentType PType;
-    Clear(static_cast<ParentType&>(P));
-  }
-
 }
-
-#ifdef _ValValue_
-#undef _ValValue_
-#endif
 
 #ifdef _SrcValue_
 #undef _SrcValue_
