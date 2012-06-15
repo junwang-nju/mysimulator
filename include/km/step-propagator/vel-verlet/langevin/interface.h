@@ -80,7 +80,7 @@ namespace mysimulator {
       typedef Array<AType>        AAType;
 
       StepPropagatorVelVerletLangevin() : ParentType() {}
-      ~StepPropagatorVelVerletLangevin() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletLangevin() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=VelVerletLangevin;

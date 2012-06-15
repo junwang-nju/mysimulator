@@ -104,7 +104,7 @@ namespace mysimulator {
       typedef Array<AType>        AAType;
 
       StepPropagatorVelVerlet_AMass() : ParentType() {}
-      ~StepPropagatorVelVerlet_AMass() { Clear(*this); }
+      virtual ~StepPropagatorVelVerlet_AMass() { Clear(*this); }
 
       virtual void Init() {
         _Src2Ptr_Array_(Mass)

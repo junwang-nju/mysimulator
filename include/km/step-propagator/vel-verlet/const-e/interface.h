@@ -16,7 +16,7 @@ namespace mysimulator {
       typedef PropagatorWithMass<T> ParentType;
 
       StepPropagatorVelVerletConstE() : ParentType() {}
-      ~StepPropagatorVelVerletConstE() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletConstE() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=VelVerletConstE;

@@ -19,7 +19,7 @@ namespace mysimulator {
 
       StepPropagator() : _tag(UnassignedStepPropagator), _range(), _param(),
                          _X(), _G(), _V(), _E() {}
-      ~StepPropagator() { Clear(*this); }
+      virtual ~StepPropagator() { Clear(*this); }
 
       bool IsValid() const {
         return (_tag!=UnassignedStepPropagator)&&_range.IsValid()&&

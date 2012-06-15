@@ -68,7 +68,7 @@ namespace mysimulator {
       typedef Array<AType>      AAType;
 
       StepPropagatorVelVerletConstE_AMass() : ParentType() {}
-      ~StepPropagatorVelVerletConstE_AMass() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletConstE_AMass() { Clear(*this); }
 
       virtual void Evolute1() {
         assert(this->_param.IsValid());

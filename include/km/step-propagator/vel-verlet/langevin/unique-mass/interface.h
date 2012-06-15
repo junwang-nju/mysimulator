@@ -18,7 +18,7 @@ namespace mysimulator {
               ParentType;
 
       StepPropagatorVelVerletLangevin_UMass() : ParentType() {}
-      ~StepPropagatorVelVerletLangevin_UMass() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletLangevin_UMass() { Clear(*this); }
 
     private:
 

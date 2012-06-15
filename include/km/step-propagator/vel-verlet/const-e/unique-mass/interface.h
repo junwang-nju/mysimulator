@@ -54,7 +54,7 @@ namespace mysimulator {
               ParentType;
 
       StepPropagatorVelVerletConstE_UMass() : ParentType() {}
-      ~StepPropagatorVelVerletConstE_UMass() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletConstE_UMass() { Clear(*this); }
 
       virtual void Evolute1() {
         assert(this->_param.IsValid());

@@ -64,7 +64,7 @@ namespace mysimulator {
       typedef StepPropagatorVelVerlet<T>  ParentType;
 
       StepPropagatorVelVerlet_UMass() : ParentType() {}
-      ~StepPropagatorVelVerlet_UMass() { Clear(*this); }
+      virtual ~StepPropagatorVelVerlet_UMass() { Clear(*this); }
 
       virtual void Init() {
         _Src2Ptr_Pointer_(Mass)

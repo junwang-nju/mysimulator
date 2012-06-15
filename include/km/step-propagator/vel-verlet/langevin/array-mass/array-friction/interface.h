@@ -98,7 +98,7 @@ namespace mysimulator {
       typedef Array<AType>    AAType;
 
       StepPropagatorVelVerletLangevin_AMassAFric() : ParentType() {}
-      ~StepPropagatorVelVerletLangevin_AMassAFric() { Clear(*this); }
+      virtual ~StepPropagatorVelVerletLangevin_AMassAFric() { Clear(*this); }
 
       virtual void Init() {
         static_cast<ParentType*>(this)->Init();
