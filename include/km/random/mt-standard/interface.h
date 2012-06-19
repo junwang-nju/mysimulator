@@ -52,9 +52,10 @@ namespace mysimulator {
         i=1;  j=0;  k=(v.Size()<N?N:v.Size());
         r=s[0];
         for(;k;--k) {
-          r=((s[i]^((r^(r>>30))*1664525UL))+v[j]+(j++))&Mask32;
+          r=((s[i]^((r^(r>>30))*1664525UL))+v[j]+j)&Mask32;
           s[i++]=r;
           if(i==N)  i=1;
+          j++;
           if(j==N)  j=0;
         }
         for(k=NmOne;k;--k) {
@@ -79,7 +80,7 @@ namespace mysimulator {
             s[k]=s[k-dMN]^(u>>1)^Value<unsigned int>(Mag,u&1);
           }
           u=(s[NmOne]&Upp)|(s[0]&Low);
-          s[NmOne]=s[MmOne]^(u>>1)^Value<unsigned int>(Mag.u&1);
+          s[NmOne]=s[MmOne]^(u>>1)^Value<unsigned int>(Mag,u&1);
           sloc=0;
         }
         u=s[sloc++];
@@ -105,12 +106,14 @@ namespace mysimulator {
         return static_cast<int>(UInt())*dUInt32+dHalfUInt32;
       }
       long double LDouble63Bit() {
+        unsigned int x=UInt();
+        unsigned int y=UInt();
         return (x|static_cast<unsigned long long>(y)<<32)*dLDouble63;
       }
 
     protected:
 
-      array<unsigned int> s;
+      Array<unsigned int> s;
       unsigned int sloc;
 
     private:
@@ -130,7 +133,7 @@ namespace mysimulator {
     MersenneTwisterStandard::M-1;
   const unsigned int MersenneTwisterStandard::Upp=0x80000000UL;
   const unsigned int MersenneTwisterStandard::Low=0x7FFFFFFFUL;
-  const unsigned int MersenneTwisterStandard::Mag(0x000000009908B0DFULL);
+  const Unique64Bit MersenneTwisterStandard::Mag(0x000000009908B0DFULL);
   const unsigned int MersenneTwisterStandard::Mask32=0xFFFFFFFFUL;
   const double MersenneTwisterStandard::dDouble53=1./9007199254740992.;
   const long double MersenneTwisterStandard::dLDouble63=

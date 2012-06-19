@@ -25,7 +25,7 @@ namespace mysimulator {
         assert(n<=_ISet.Size());
         _id.Allocate(n);
       }
-      void Introduce(Array<SystemInteraction<T,GT> >& AI) { ISet.Refer(AI); }
+      void Introduce(Array<SystemInteraction<T,GT> >& AI) { _ISet.Refer(AI); }
 
       unsigned int& WorkID(unsigned int n) { return _id[n]; }
       const unsigned int& WorkID(unsigned int n) const { return _id[n]; }

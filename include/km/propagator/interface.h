@@ -71,8 +71,8 @@ namespace mysimulator {
 
       typedef Propagator<T,GT,GRNG>    Type;
       typedef Array2DNumeric<T>   AType;
-      template <typename T1,typename GT1>
-      friend void Clear(Propagator<T1,GT1>&);
+      template <typename T1,typename GT1,typename GR1>
+      friend void Clear(Propagator<T1,GT1,GR1>&);
 
       Propagator()
         : _massFlag(UnknownMassProperty), _fricFlag(UnknownFrictionProperty),
@@ -136,13 +136,13 @@ namespace mysimulator {
               else if(_fricFlag==ArrayFriction)
                 _LoadSrcArray_(VelVerletLangevin,Friction)
               if((_massFlag==UniqueMass)&&(_fricFlag==UniqueFriction)) {
-                _LoadSrc_(RandSize)
-                _LoadSrc_(FacBf)
-                _LoadSrc_(FacAf)
+                _LoadSrc_(VelVerletLangevin,RandSize)
+                _LoadSrc_(VelVerletLangevin,FacBf)
+                _LoadSrc_(VelVerletLangevin,FacAf)
               } else if((_massFlag==ArrayMass)||(_fricFlag==ArrayFriction)) {
-                _LoadSrcArray_(RandSize)
-                _LoadSrcArray_(FacBf)
-                _LoadSrcArray_(FacAf)
+                _LoadSrcArray_(VelVerletLangevin,RandSize)
+                _LoadSrcArray_(VelVerletLangevin,FacBf)
+                _LoadSrcArray_(VelVerletLangevin,FacAf)
               }
               break;
             default:
@@ -166,7 +166,7 @@ namespace mysimulator {
         return _props[m][n];
       }
 
-      virtual void Evolute(System<T,GT>&)=0;
+      //virtual void Evolute(System<T,GT>&)=0;
 
     protected:
 
@@ -187,7 +187,7 @@ namespace mysimulator {
       }
       void _ClearParam() {
         _ClearArray_(RandVector)
-        if(_massFlag=ArrayMass) {
+        if(_massFlag==ArrayMass) {
           _ClearArray_(Mass)
           _ClearArray_(NegHTIM)
           _ClearArray_(VelocitySQ)

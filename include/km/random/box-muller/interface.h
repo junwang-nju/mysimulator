@@ -27,15 +27,15 @@ namespace mysimulator {
       }
       virtual double Double() {
         double d;
-        if(isSecond)  s=sY*sR;
+        if(isSecond)  d=rY*rR;
         else {
           do {
-            sX=urng.Double(); sX+=sX; sX-=1.;
-            sY=urng.Double(); sY+=sY; sY-=1.;
-            sR=sX*sX+sY*sY;
-          } while((sR>1.)||(sR==0));
-          sR=sqrt(-2.0*log(sR)/sR);
-          d=sX*sR;
+            rX=urng.Double(); rX+=rX; rX-=1.;
+            rY=urng.Double(); rY+=rY; rY-=1.;
+            rR=rX*rX+rY*rY;
+          } while((rR>1.)||(rR==0));
+          rR=sqrt(-2.0*log(rR)/rR);
+          d=rX*rR;
         }
         isSecond=!isSecond;
         return d;

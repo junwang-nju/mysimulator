@@ -7,6 +7,9 @@
 
 namespace mysimulator {
 
+  class Random;
+  void Clear(Random&);
+
   class Random {
 
     public:
@@ -16,7 +19,7 @@ namespace mysimulator {
       Random() {}
       virtual ~Random() { Clear(*this); }
 
-      virtual bool IsValid() = 0;
+      virtual bool IsValid() const = 0;
       virtual void Allocate() = 0;
       virtual void Init(unsigned int) = 0;
       virtual void Init(const ArrayData<unsigned int>&) = 0;
@@ -47,6 +50,8 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  void Clear(Random& R) {}
 
 }
 
