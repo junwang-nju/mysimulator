@@ -2,7 +2,7 @@
 #ifndef _System_Interface_H_
 #define _System_Interface_H_
 
-#include "system-interaction/interface.h"
+#include "grouped-interaction/interface.h"
 
 namespace mysimulator {
 
@@ -20,11 +20,39 @@ namespace mysimulator {
 
       bool IsValid() const { return _X.IsValid()&&_F.IsValid(); }
 
+      void AllocateDynVariable(unsigned int n, unsigned int dim) {
+        Clear(_X);
+        _X.Allocate(n,dim);
+        _CreateGVE();
+      }
+      void AllocateDynVariable(const Array<unsigned int>& sz) {
+        Clear(_X);
+        _X.Allocate(sz);
+        _CreateGVE();
+      }
+      template <typename T1,template<typename> class AF>
+      void ImprintDynVariable(const Array2DBase<T1,AF>& A) {
+        Clear(_X);
+        _X.ImprintStructure(A);
+        _CreateGVE();
+      }
+      void AllocateInteraction(const Array<Array<InteractionFuncName> >& FN,
+                               unsigned int dim) {
+        Clear(_F);
+        _F.Allocate(FN.Size());
+        for(unsigned int i=0;i<_F.Size();++i) _F[i].Allocate(FN[i],dim);
+      }
+      void AssignNumberInteractionGroup(unsigned int n) { _GF.Allocate(n); }
+
       Array2DNumeric<T>& Location() { assert(_X.IsValid()); return _X; }
       Array2DNumeric<T>& Velocity() { assert(_V.IsValid()); return _V; }
-      SystemInteraction<T,GeomType>& Interaction() {
+      SystemInteraction<T,GeomType>& Interaction(unsigned int n) {
         assert(_F.IsValid());
-        return _F;
+        return _F[n];
+      }
+      GroupedInteraction<T,GeomType>& InteractionGroup(unsigned int n) {
+        assert(_GF.IsValid());
+        return _GF[n];
       }
 
       const Array2DNumeric<T>& Location() const {
@@ -37,9 +65,14 @@ namespace mysimulator {
         assert(_V.IsValid()); return _V;
       }
       const T& Energy() const { assert(_E.IsValid()); return _E[0]; }
-      const SystemInteraction<T,GeomType>& Interaction() const {
+      const SystemInteraction<T,GeomType>& Interaction(unsigned int n) const {
         assert(_F.IsValid());
-        return _F;
+        return _F[n];
+      }
+      const GroupedInteraction<T,GeomType>&
+      InteractionGroup(unsigned int n) const {
+        assert(_GF.IsValid());
+        return _GF[n];
       }
 
     protected:
@@ -48,9 +81,17 @@ namespace mysimulator {
       Array2DNumeric<T>  _G;
       Array2DNumeric<T>  _V;
       ArrayNumeric<T>    _E;
-      SystemInteraction<T,GeomType> _F;
+      Array<SystemInteraction<T,GeomType> > _F;
+      Array<GroupedInteraction<T,GeomType> >  _GF;
 
     private:
+
+      void _CreateGVE() {
+        assert(_X.IsValid());
+        Clear(_G);  _G.ImprintStructure(_X);
+        Clear(_V);  _V.ImprintStructure(_X);
+        Clear(_E);  _E.Allocate(1);
+      }
 
       System(const Type&) {}
       Type& operator=(const Type&) { return *this; }
@@ -59,6 +100,7 @@ namespace mysimulator {
 
   template <typename T,typename GeomType>
   void Clear(System<T,GeomType>& S) {
+    Clear(S._GF);
     Clear(S._F);
     Clear(S._X);
     Clear(S._G);
