@@ -6,6 +6,7 @@
 #include "propagator/parameter-name.h"
 #include "random/box-muller/interface.h"
 #include "random/mt-standard/interface.h"
+#include "propagator-output/interface.h"
 #include "system/interface.h"
 
 #ifndef _NAME_
@@ -77,7 +78,8 @@ namespace mysimulator {
 
       Propagator()
         : _massFlag(UnknownMassProperty), _fricFlag(UnknownFrictionProperty),
-          _param(), _props(), _bind() {}
+          _param(), _props(), _bind(), _now(0), _nnow(0), _alltime(0),
+          _nstep(0), _out(NULL), _nout(0) {}
       virtual ~Propagator() { Clear(*this); }
 
       bool IsValid() const { return _props.IsValid()&&_bind.IsValid(); }
@@ -102,7 +104,7 @@ namespace mysimulator {
         _param.Allocate(PropagatorNumberParameter);
         for(unsigned int i=0;i<_props.Size();++i)
         for(unsigned int j=0;j<_props[i].Size();++j) {
-          switch(_props[i][j]->_tag) {
+          switch(_props[i][j]->Name()) {
             case VelVerletConstE:
               _LoadSrc_(VelVerletConstE,TimeStep)
               if(_massFlag==UniqueMass) {
@@ -121,8 +123,8 @@ namespace mysimulator {
               _LoadSrcArray_(VelVerletLangevin,RandVector)
               if(Pointer<GRNG>(_PARAM_(GaussRNG))==NULL)
                 Pointer<GRNG>(_PARAM_(GaussRNG))=new GRNG;
-              Pointer<GRNG>(_props[i][j]._param[VelVerletLangevin_SrcGaussRNG])=
-                Pointer<GRNG>(_PARAM_(GaussRNG));
+              Pointer<GRNG>(_props[i][j]->_param[VelVerletLangevin_SrcGaussRNG])
+                =Pointer<GRNG>(_PARAM_(GaussRNG));
               if(_massFlag==UniqueMass) {
                 _LoadSrc_(VelVerletLangevin,Mass)
                 _LoadSrc_(VelVerletLangevin,NegHTIM)
@@ -149,7 +151,7 @@ namespace mysimulator {
             default:
               fprintf(stderr,"Unknown StepPropagator Name!\n");
           }
-          _props[i][j].Init();
+          _props[i][j]->Init();
         }
       }
 
@@ -167,6 +169,36 @@ namespace mysimulator {
         return _props[m][n];
       }
 
+      void InitNowTime(const T& nt=0) { _now=nt; _nnow=0; }
+      void SetTime(const T& dt,const T& tt) {
+        _Value_(TimeStep)=dt;
+        _nstep=static_cast<unsigned int>(tt/dt+0.5);
+        _alltime=_Value_(TimeStep)*_nstep;
+      }
+      void SetTime(const T& dt,unsigned int n) {
+        _Value_(TimeStep)=dt;
+        _nstep=n;
+        _alltime=_Value_(TimeStep)*_nstep;
+      }
+      void SetTime(const unsigned int& n,const T& tt) {
+        _Value_(TimeStep)=tt/n;
+        _nstep=n;
+        _alltime=_Value_(TimeStep)*_nstep;
+      }
+
+      PropagatorOutput<T,GT,GRNG>*& Output() { return _out; }
+
+      void SetOutputTime(const T& ot) {
+        assert(_out!=NULL);
+        _out->SetTime(ot,_Value_(TimeStep));
+        _nout=_nstep/_out->OutputNumberStep();
+      }
+      void SetOutputTime(unsigned int n) {
+        assert(_out!=NULL);
+        _out->SetTime(n,_Value_(TimeStep));
+        _nout=_nstep/n;
+      }
+
       virtual void Evolute(System<T,GT>&)=0;
 
     protected:
@@ -176,6 +208,12 @@ namespace mysimulator {
       Array<Unique64Bit>                  _param;
       Array<Array<StepPropagator<T>*> >   _props;
       Array<StepPropagatorBinder<T,GT>*>  _bind;
+      T                                   _now;
+      unsigned int                        _nnow;
+      T                                   _alltime;
+      unsigned int                        _nstep;
+      PropagatorOutput<T,GT,GRNG>*        _out;
+      unsigned int                        _nout;
 
       void _ClearStepPropagator() {
         for(unsigned int i=0;i<_props.Size();++i)
@@ -226,6 +264,12 @@ namespace mysimulator {
     Clear(P._bind);
     P._ClearStepPropagator();
     Clear(P._props);
+    P._now=0;
+    P._nnow=0;
+    P._alltime=0;
+    P._nstep=0;
+    if(P._out!=NULL) { delete P._out; P._out=NULL; }
+    P._nout=0;
   }
 
 }

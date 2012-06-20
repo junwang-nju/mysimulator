@@ -18,7 +18,7 @@ namespace mysimulator {
       virtual ~StepPropagatorVelVerletBinder() { Clear(*this); }
 
       virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,
-                           ArrayNumeric<ArrayNumeric<T> >& G,
+                           Array2DNumeric<T>& G,
                            GroupedInteraction<T,GT>& I,
                            Array<StepPropagator<T>*>& Props) {
         // assuming X,G have been connected with Props
@@ -29,6 +29,7 @@ namespace mysimulator {
           assert(Props[i]!=NULL);
           Props[i]->Evolute1();
         }
+        I.ClearFlag();
         I.Calc(X,G);
         for(unsigned int i=0;i<Props.Size();++i) {
           assert(Props[i]!=NULL);
@@ -38,13 +39,16 @@ namespace mysimulator {
 
     private:
 
-      virtual bool IsWorkable(const StepPropagatorName SPN) {
+      virtual bool _IsWorkable(const StepPropagatorName SPN) const {
+        bool fg;
         switch(SPN) {
           case VelVerletConstE:
           case VelVerletLangevin:
-            return true;
+            fg=true;  break;
+          default:
+            fg=false; break;
         }
-        return false;
+        return fg;
       }
 
       StepPropagatorVelVerletBinder(const Type&) {}

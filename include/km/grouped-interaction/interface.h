@@ -38,7 +38,7 @@ namespace mysimulator {
         for(unsigned int i=0;i<_id.Size();++i)  Energy+=_ISet[_id[i]].Energy();
       }
       void Calc(const ArrayNumeric<ArrayNumeric<T> >& X,
-                ArrayNumeric<ArrayNumeric<T> >& Gradient) {
+                Array2DNumeric<T>& Gradient) {
         assert(IsValid());
         assert(X.IsValid());
         assert(Gradient.IsValid());
@@ -48,7 +48,7 @@ namespace mysimulator {
           Gradient.BlasShift(_ISet[_id[i]].Gradient());
       }
       void Calc(const ArrayNumeric<ArrayNumeric<T> >& X, T& Energy,
-                ArrayNumeric<ArrayNumeric<T> >& Gradient) {
+                Array2DNumeric<T>& Gradient) {
         assert(IsValid());
         assert(X.IsValid());
         assert(Gradient.IsValid());
@@ -59,6 +59,10 @@ namespace mysimulator {
           Energy+=_ISet[_id[i]].Energy();
           Gradient.BlasShift(_ISet[_id[i]].Gradient());
         }
+      }
+
+      void ClearFlag() {
+        for(unsigned int i=0;i<_ISet.Size();++i)  _ISet[i].ClearFlag();
       }
 
     protected:

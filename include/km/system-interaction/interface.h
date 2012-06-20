@@ -86,7 +86,7 @@ namespace mysimulator {
         assert(IsValid()&&_G.IsValid());
         assert(_Func.Size()==_ID.Size());
         assert(_Func.Size()==_Param.Size());
-        BlasFill(_G,0);
+        _G.BlasFill(0);
         for(unsigned int i=0;i<_Func.Size();++i)
           _Func[i]->GMethod(X,_ID[i],_Param[i],_Geom,_G);
       }
@@ -98,6 +98,10 @@ namespace mysimulator {
         BlasFill(_G,0);
         for(unsigned int i=0;i<_Func.Size();++i)
           _Func[i]->BMethod(X,_ID[i],_Param[i],_Geom,_E[0],_G);
+      }
+
+      void ClearFlag() {
+        for(unsigned int i=0;i<_Func.Size();++i)  _Func[i]->ClearFlag();
       }
 
     protected:

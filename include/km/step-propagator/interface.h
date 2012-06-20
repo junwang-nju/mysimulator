@@ -16,6 +16,7 @@ namespace mysimulator {
 
       typedef StepPropagator<T>   Type;
       template <typename T1> friend void Clear(StepPropagator<T1>&);
+      template <typename T1,typename GT,typename GR> friend class Propagator;
 
       StepPropagator() : _tag(UnassignedStepPropagator), _range(), _param(),
                          _X(), _G(), _V(), _E() {}
@@ -42,6 +43,7 @@ namespace mysimulator {
 
       void AllocateRange(unsigned int n) { _range.Allocate(n,2); }
 
+      const StepPropagatorName Name() const { return _tag; }
       Array<unsigned int>& Range(unsigned int n) {
         assert(_range.IsValid());
         return _range[n];

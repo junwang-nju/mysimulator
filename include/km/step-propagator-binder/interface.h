@@ -17,23 +17,23 @@ namespace mysimulator {
       StepPropagatorBinder() {}
       virtual ~StepPropagatorBinder() { Clear(*this); }
 
-      bool IsWorkable(const Array<StepPropagator<T>*>& Props) {
+      bool IsWorkable(const Array<StepPropagator<T>*>& Props) const {
         assert(Props.IsValid());
         for(unsigned int i=0;i<Props.Size();++i) {
           assert(Props[i]!=NULL);
-          if(!IsWorkable(Props[i]->_tag))   return false;
+          if(!_IsWorkable(Props[i]->Name()))   return false;
         }
         return true;
       }
 
       virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,
-                           ArrayNumeric<ArrayNumeric<T> >& G,
+                           Array2DNumeric<T>& G,
                            GroupedInteraction<T,GeomType>& I,
                            Array<StepPropagator<T>*>& Props)=0;
 
     private:
 
-      virtual bool IsWorkable(const StepPropagatorName)=0;
+      virtual bool _IsWorkable(const StepPropagatorName) const = 0;
 
       StepPropagatorBinder(const Type&) {}
       Type& operator=(const Type&) { return *this; }
