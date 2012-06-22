@@ -30,6 +30,7 @@ namespace mysimulator {
       virtual void Allocate()=0;
       virtual void Init()=0;
       virtual void Clean()=0;
+      virtual void Update()=0;
       virtual void Update1()=0;
       virtual void Update2()=0;
       virtual void Update3()=0;
