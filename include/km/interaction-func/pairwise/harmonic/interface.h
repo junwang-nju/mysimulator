@@ -26,7 +26,7 @@ namespace mysimulator {
       virtual void Allocate(unsigned int dim) {
         Clear(*this);
         this->_tag=Harmonic;
-        this->_pre.Allocate(PairwiseNumberPre);
+        this->_pre.Allocate(HarmonicNumberPre);
         this->_post.Allocate(HarmonicNumberPost);
         this->_tmvec.Allocate(HarmonicNumberVec,dim);
       }

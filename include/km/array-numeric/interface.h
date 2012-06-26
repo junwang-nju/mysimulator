@@ -370,18 +370,27 @@ namespace mysimulator {
   template <typename T1,typename T2>
   typename CombineType<typename DataType<T1>::Type,
                        typename DataType<T2>::Type>::Type
-  _Dot(const ArrayNumeric<T1>& A, const ArrayNumeric<T2>& B) {
+  _DotN(const ArrayNumeric<T1>& A, const ArrayNumeric<T2>& B, unsigned int n) {
     typedef typename IsNumericObject<ArrayNumeric<T1> >::Type DotCheck1;
     typedef typename IsNumericObject<ArrayNumeric<T2> >::Type DotCheck2;
     assert(A.IsValid());
     assert(B.IsValid());
-    assert(A.Size()==B.Size());
+    assert(A.Size()>=n);
+    assert(B.Size()>=n);
     typename CombineType<typename DataType<T1>::Type,
                          typename DataType<T2>::Type>::Type sum=0;
-    T1 *p=A.Head(), *pEnd=p+A.Size();
+    T1 *p=A.Head(), *pEnd=p+n;
     T2 *q=B.Head();
     for(;p!=pEnd;)  sum+=_Dot(*(p++),*(q++));
     return sum;
+  }
+
+  template <typename T1,typename T2>
+  typename CombineType<typename DataType<T1>::Type,
+                       typename DataType<T2>::Type>::Type
+  _Dot(const ArrayNumeric<T1>& A, const ArrayNumeric<T2>& B) {
+    assert(A.Size()==B.Size());
+    return _DotN(A,B,A.Size());
   }
 
   template <typename T>

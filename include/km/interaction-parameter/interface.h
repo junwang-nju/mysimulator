@@ -68,6 +68,7 @@ namespace mysimulator {
     if(P!=NULL) { delete P; P=NULL; }
     switch(FN) {
       case Harmonic:
+      case WallHarmonic:
         P=new InteractionParameterHarmonic<T>;  break;
       case Core12:
         P=new InteractionParameterCore12<T>;  break;

@@ -3,6 +3,7 @@
 #define _Array2D_Base_Interface_
 
 #include "array-numeric/interface.h"
+#include <cstdio>
 
 namespace mysimulator {
 
@@ -38,7 +39,9 @@ namespace mysimulator {
       void Allocate(const ArrayNumeric<unsigned int>& sz) {
         Clear(*this);
         static_cast<ParentType*>(this)->Allocate(sz.Size());
+        printf("=====A==  %d\n",sz.IsValid());
         _ldata.Allocate(sz.Summation());
+        printf("=====B==  %d\n",sz.Size());
         for(unsigned int i=0,m=0;i<sz.Size();m+=sz[i],++i)
           static_cast<ParentType*>(this)->operator[](i).Refer(_ldata,m,sz[i]);
       }

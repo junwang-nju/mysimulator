@@ -3,6 +3,7 @@
 #define _System_Interface_H_
 
 #include "grouped-interaction/interface.h"
+#include "system/monomer-kind-name.h"
 
 namespace mysimulator {
 
@@ -15,21 +16,29 @@ namespace mysimulator {
       template <typename T1,typename GT>
       friend void Clear(System<T1,GT>&);
 
-      System() : _X(), _G(), _V(), _E(), _F(), _GF() {}
+      System() : _Kind(),_X(), _G(), _V(), _E(), _F(), _GF() {}
       ~System() { Clear(*this); }
 
-      bool IsValid() const { return _X.IsValid()&&_F.IsValid()&&_GF.IsValid(); }
-
-      void AllocateXVGE(unsigned int n, unsigned int dim) {
-        Clear(_X);
-        _X.Allocate(n,dim);
-        _CreateGVE();
-        if(_F.IsValid())
-          for(unsigned int i=0;i<_F.Size();++i) _F[i].ImprintGE(_X);
+      bool IsValid() const {
+        return _Kind.IsValid()&&_X.IsValid()&&_F.IsValid()&&_GF.IsValid();
       }
-      void AllocateXVGE(const Array<unsigned int>& sz) {
+
+      void AllocateKind(unsigned int n) { Clear(_Kind); _Kind.Allocate(n); }
+
+      void AllocateXVGE(unsigned int dim) {
+        assert(_Kind.IsValid());
+        ArrayNumeric<unsigned int> sz;
+        sz.ImprintStructure(_Kind);
+        printf("========  %d\n",sz.Size());
+        printf("========  %d\n",sz.IsValid());
+        sz.Fill(dim);
+        for(unsigned int i=0;i<sz.Size();++i)
+          sz[i]+=MonomerAltDimension[_Kind[i]];
         Clear(_X);
+        printf("========  %d\n",sz.Size());
+        printf("========  %d\n",sz.IsValid());
         _X.Allocate(sz);
+        printf("========  %d\n",sz.Size());
         _CreateGVE();
         if(_F.IsValid())
           for(unsigned int i=0;i<_F.Size();++i) _F[i].ImprintGE(_X);
@@ -56,6 +65,9 @@ namespace mysimulator {
         for(unsigned int i=0;i<n;++i) _GF[i].Introduce(_F);
       }
 
+      MonomerKindName& Kind(unsigned int n) {
+        assert(_Kind.IsValid());  return _Kind[n];
+      }
       Array2DNumeric<T>& Location() { assert(_X.IsValid()); return _X; }
       Array2DNumeric<T>& Gradient() { assert(_G.IsValid()); return _G; }
       Array2DNumeric<T>& Velocity() { assert(_V.IsValid()); return _V; }
@@ -69,6 +81,9 @@ namespace mysimulator {
         return _GF[n];
       }
 
+      const MonomerKindName Kind(unsigned int n) const {
+        assert(_Kind.IsValid());  return _Kind[n];
+      }
       const Array2DNumeric<T>& Location() const {
         assert(_X.IsValid()); return _X;
       }
@@ -113,6 +128,7 @@ namespace mysimulator {
 
     protected:
 
+      Array<MonomerKindName>  _Kind;
       Array2DNumeric<T>  _X;
       Array2DNumeric<T>  _G;
       Array2DNumeric<T>  _V;
@@ -142,6 +158,7 @@ namespace mysimulator {
     Clear(S._G);
     Clear(S._V);
     Clear(S._E);
+    Clear(S._Kind);
   }
 
 }

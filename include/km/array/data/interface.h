@@ -39,6 +39,7 @@ namespace mysimulator {
         _data=new T[n];
         _size=n;
         SetAllocFlag(true);
+        printf("===W====  %d\n",IsValid());
       }
       void Imprint(const ArrayData<T>& A) {
         Allocate(A.Size());
@@ -65,13 +66,19 @@ namespace mysimulator {
       T& operator[](unsigned int n) { assert(n<_size); return *(_data+n); }
 
       template <typename T1>
-      void Copy(const ArrayData<T1>& D) {
+      void CopyN(const ArrayData<T1>& D,unsigned int n) {
         assert(IsValid());
         assert(D.IsValid());
-        assert(Size()==D.Size());
-        T   *p=_data, *pEnd=p+Size();
+        assert(Size()>=n);
+        assert(D.Size()>=n);
+        T   *p=_data, *pEnd=p+n;
         T1  *q=D._data;
         for(;p!=pEnd;)  _Copy(*(p++),*(q++));
+      }
+      template <typename T1>
+      void Copy(const ArrayData<T1>& D) {
+        assert(Size()==D.Size());
+        CopyN(D,Size());
       }
       template <typename T1>
       void Fill(const T1& D) {

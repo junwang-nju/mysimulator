@@ -43,7 +43,9 @@ int main() {
 
   System<double,FreeSpace> S;
 
-  S.AllocateXVGE(4,2);
+  S.AllocateKind(4);
+  for(unsigned int i=0;i<4;++i) S.Kind(i)=ParticleUnit;
+  S.AllocateXVGE(2);
   S.Location()[0][0]=0;       S.Location()[0][1]=0;
   S.Location()[1][0]=1.2;     S.Location()[1][1]=0;
   S.Location()[2][0]=1.3;     S.Location()[2][1]=1.5;

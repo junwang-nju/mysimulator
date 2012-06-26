@@ -20,6 +20,14 @@ namespace mysimulator {
     return Displacement2Distance(Dsp);
   }
 
+  template <typename T1,typename T2,typename GeomType>
+  typename CombineType<typename DataType<T1>::Type,
+                       typename DataType<T2>::Type>::Type
+  Distace2Wall(const ArrayNumeric<T1>& W, const ArrayNumeric<T2>& P,
+                 const GeomType&) {
+    return _DotN(W,P,P.Size())-W[P.Size()];
+  }
+
 }
 
 #endif
