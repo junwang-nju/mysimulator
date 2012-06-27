@@ -54,7 +54,7 @@ int main() {
   S.Location()[2][0]=1.3;  S.Location()[2][1]=1.5;
   S.Location()[3][0]=0.8;  S.Location()[3][1]=2.2;
   S.Location()[4][0]=1;    S.Location()[4][1]=0;    S.Location()[4][2]=-1;
-  S.Location()[5][0]=-1;   S.Location()[5][1]=0;    S.Location()[5][2]=2;
+  S.Location()[5][0]=-1;   S.Location()[5][1]=0;    S.Location()[5][2]=-2;
   S.Velocity().Fill(0);
 
   Array2D<InteractionFuncName>  IFN;

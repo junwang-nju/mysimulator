@@ -71,6 +71,7 @@ namespace mysimulator {
       case WallHarmonic:
         P=new InteractionParameterHarmonic<T>;  break;
       case Core12:
+      case WallCore12:
         P=new InteractionParameterCore12<T>;  break;
       case CoreLJ612:
         P=new InteractionParameterCoreLJ612<T>; break;

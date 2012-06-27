@@ -17,6 +17,7 @@ namespace mysimulator {
     AngleHarmonic,
     DihedralPeriodic,
     WallHarmonic,
+    WallCore12,
     InteractionNumberFuncs,
     UnknownInteractionFunc
   };
@@ -33,7 +34,8 @@ namespace mysimulator {
     2,    //  DistDielCoulomb,
     3,    //  AngleHarmonic,
     4,    //  DihedralPeriodic,
-    2     //  WallHarmonic
+    2,    //  WallHarmonic
+    2     //  WallCore12
   };
 
 }

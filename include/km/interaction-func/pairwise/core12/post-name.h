@@ -5,8 +5,8 @@
 namespace mysimulator {
 
   enum Core12PostName {
-    Core12IvDistanceSQ=0,
-    Core12IvDistance12,
+    Core12IvDistance12=0,
+    Core12IvDistance14,
     Core12NumberPost
   };
 

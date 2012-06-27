@@ -42,14 +42,11 @@ namespace mysimulator {
         assert(this->IsValid());
         assert(P!=NULL);
         *Diff=Value<T>((*P)[Core12TwlfEqStrength])*
-              this->_post[Core12IvDistance12]*this->_post[Core12IvDistanceSQ];
+              this->_post[Core12IvDistance14];
       }
       virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
-        assert(this->IsValid());
-        assert(P!=NULL);
-        T tmd=Value<T>((*P)[Core12EqStrength])*this->_post[Core12IvDistance12];
-        *Func=tmd;
-        *Diff=tmd*this->_post[Core12IvDistanceSQ];
+        EFunc(P,Func);
+        GFunc(P,Diff);
       }
 
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
@@ -62,9 +59,10 @@ namespace mysimulator {
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         T tmd=1./this->_pre[PairwiseDistanceSQ];
-        this->_post[Core12IvDistanceSQ]=tmd;
         tmd*=tmd;
-        this->_post[Core12IvDistance12]=tmd*tmd*tmd;
+        T tmd1=tmd*tmd*tmd;
+        this->_post[Core12IvDistance12]=tmd1;
+        this->_post[Core12IvDistance14]=tmd1*tmd;
         this->_update=false;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {

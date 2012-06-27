@@ -222,7 +222,9 @@ namespace mysimulator {
         switch(PN) {
           case VelVerletConstE: Introduce(P,PN,_massFlag);  break;
           case VelVerletLangevin: Introduce(P,PN,_massFlag,_fricFlag); break;
-          case FixPosition: Introduce(P,PN);  break;
+          case FixPosition:
+          case MinimizerLine:
+            Introduce(P,PN);  break;
           default:
             fprintf(stderr,"Unknown StepPropagator Name!\n");
         }
