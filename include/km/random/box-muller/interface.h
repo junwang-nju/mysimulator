@@ -20,7 +20,10 @@ namespace mysimulator {
       virtual ~BoxMuller() { Clear(*this); }
 
       virtual bool IsValid() const { return urng.IsValid(); }
-      virtual void Allocate() { urng.Allocate(); isSecond=false; }
+      virtual void Allocate() {
+        this->_tag=BoxMullerRNG;
+        urng.Allocate(); isSecond=false;
+      }
       virtual void Init(unsigned int seed) { urng.Init(seed); isSecond=false; }
       virtual void Init(const ArrayData<unsigned int>& A) {
         urng.Init(A); isSecond=false;
@@ -59,7 +62,11 @@ namespace mysimulator {
   };
 
   template <typename UG>
-  void Clear(BoxMuller<UG>& R) { Clear(R.urng); R.isSecond=false; }
+  void Clear(BoxMuller<UG>& R) {
+    Clear(R.urng); R.isSecond=false;
+    typedef typename BoxMuller<UniformRNG>::ParentType PType;
+    Clear(static_cast<PType&>(R));
+  }
 
 }
 

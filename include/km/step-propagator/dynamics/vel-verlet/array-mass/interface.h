@@ -98,7 +98,7 @@
 #endif
 
 #ifndef _PPARAM_
-#define _PPARAM_(U)           P[Propagator##U]
+#define _PPARAM_(U)           P[PropagatorMD_##U]
 #else
 #error "Duplicate _PPARAM_"
 #endif

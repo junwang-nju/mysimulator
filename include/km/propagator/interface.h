@@ -30,13 +30,13 @@ namespace mysimulator {
 
       StepPropagator<T>* Step(unsigned int n) { return _props[n]; }
       Unique64Bit& Parameter(unsigned int n) { return _param[n]; }
+      PropagatorTime<T>*& Time() { return _time; }
+      PropagatorOutput<T,GT>*& Output() { return _output; }
 
       const StepPropagator<T>* Step(unsigned int n) const { return _props[n]; }
       const Unique64Bit& Parameter(unsigned int n) const { return _param[n]; }
-      const PropagatorTime<T>* Time() const { return _time; }
-
-      virtual void SetTime1(const T&,...) = 0;
-      virtual void SetTime2(const T&,...) = 0;
+      const PropagatorTime<T>* const& Time() const { return _time; }
+      const PropagatorOutput<T,GT>* const& Output() const{ return _output; }
 
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) = 0;
       virtual void IntroduceSystem(System<T,GT>&) = 0;
@@ -49,7 +49,7 @@ namespace mysimulator {
       StepPropagatorBinder<T,GT>*   _bind;
       Array<Unique64Bit>            _param;
       PropagatorTime<T>*            _time;
-      PropagatorOutput<T>*          _output;
+      PropagatorOutput<T,GT>*       _output;
 
       void _ClearContent() {
         if(_bind!=NULL) { delete _bind; _bind=NULL; }

@@ -35,7 +35,10 @@ namespace mysimulator {
       virtual ~MersenneTwisterStandard() { Clear(*this); }
 
       virtual bool IsValid() const { return s.IsValid(); }
-      virtual void Allocate() { if(!IsValid()) s.Allocate(N); sloc=0; }
+      virtual void Allocate() {
+        this->_tag=MTStandardRNG;
+        if(!IsValid()) s.Allocate(N); sloc=0;
+      }
 
       virtual void Init(unsigned int seed) {
         s[0]=seed;
@@ -145,7 +148,11 @@ namespace mysimulator {
   const double MersenneTwisterStandard::dHalfUInt32M1=
     0.5+0.5*MersenneTwisterStandard::dUInt32M1;
 
-  void Clear(MersenneTwisterStandard& R) { Clear(R.s); R.sloc=0; }
+  void Clear(MersenneTwisterStandard& R) {
+    Clear(R.s); R.sloc=0;
+    typedef typename MersenneTwisterStandard::ParentType PType;
+    Clear(static_cast<PType&>(R));
+  }
 
 }
 
