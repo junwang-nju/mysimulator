@@ -84,16 +84,18 @@ namespace mysimulator {
           for(unsigned int k=0;k<dno;++k)
             this->_bind-Evolute(S.Location(),S.Gradient(),
                                 S.InteractionGroup(0),this->_props);
-          this->_time->IncNowTime(dOT,dno);
+          this->Time(MDTime_NowTime)+=dOT;
+          this->IntTime(MDTime_NowStep)+=dno;
           this->_output->Write(this->Time(MDTime_NowTime),S,this);
         }
-        unsigned int nt=this->_time->NowStep();
-        unsigned int tt=this->_time->NumberStep();
+        unsigned int nt=this->IntTime(MDTime_NowStep);
+        unsigned int tt=this->IntTime(MDTime_NumberStep);
         if(nt<tt) {
           for(unsigned int i=nt;i<tt;++i)
             this->_bind-Evolute(S.Location(),S.Gradient(),
                                 S.InteractionGroup(0),this->_props);
-          this->_time->SetNowTime(this->_time->TotalPeriod(),tt);
+          this->Time(MDTime_NowTime)=this->Time(MDTime_TotalPeriod);
+          this->Time(MDTime_NowStep)=tt;
           this->_output->Write(this->Time(MDTime_NowTime),S,this);
         }
       }
