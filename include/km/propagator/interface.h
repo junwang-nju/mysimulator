@@ -55,7 +55,7 @@ namespace mysimulator {
         return Value<unsigned int>(_time->Parameter(n));
       }
 
-      void IntroduceSystem(System<T,GT>& S) {
+      virtual void IntroduceSystem(System<T,GT>& S) {
         assert(S.Location().IsValid());
         for(unsigned int i=0;i<_props.Size();++i)
           _props[i]->IntroduceX(S.Location());
@@ -66,7 +66,7 @@ namespace mysimulator {
           for(unsigned int i=0;i<_props.Size();++i)
             _props[i]->IntroduceV(S.Velocity());
       }
-      void DetachSystem() {
+      virtual void DetachSystem() {
         for(unsigned int i=0;i<_props.Size();++i) _props[i]->Detach();
       }
       template <typename OT>
