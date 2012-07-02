@@ -4,7 +4,6 @@
 
 #include "step-propagator/dynamics/vel-verlet/const-e/interface.h"
 #include "step-propagator/dynamics/vel-verlet/unique-mass/interface.h"
-#include "propagator/parameter-name.h"
 #include <cstdarg>
 
 #ifndef _NAME_

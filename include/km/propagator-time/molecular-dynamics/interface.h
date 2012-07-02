@@ -101,9 +101,9 @@ namespace mysimulator {
   };
 
   template <typename T>
-  void Clear(PropagatorMDTime<T>& T) {
-    typedef PropagatorMDTime<T>::ParentType   PType;
-    Clear(static_cast<PType&>(T));
+  void Clear(PropagatorMDTime<T>& PT) {
+    typedef typename PropagatorMDTime<T>::ParentType   PType;
+    Clear(static_cast<PType&>(PT));
   }
 
 }

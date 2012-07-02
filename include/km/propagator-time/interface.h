@@ -42,9 +42,9 @@ namespace mysimulator {
   };
 
   template <typename T>
-  void Clear(PropagatorTime<T>& T) {
-    Clear(T._param);
-    T._tag=UnknownPropagator;
+  void Clear(PropagatorTime<T>& PT) {
+    Clear(PT._param);
+    PT._tag=UnknownPropagator;
   }
 
 }
@@ -54,16 +54,16 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  void Introduce(PropagatorTime<T>*& T,PropagatorName PN) {
-    if(T!=NULL) { delete T; T=NULL; }
+  void Introduce(PropagatorTime<T>*& PT,PropagatorName PN) {
+    if(PT!=NULL) { delete PT; PT=NULL; }
     switch(PN) {
       case MolecularDynamics:
-        T=new PropagatorMDTime;
+        PT=new PropagatorMDTime<T>;
         break;
       default:
         fprintf(stderr,"Unknown Propagator Name!\n");
     }
-    if(T!=NULL) T->Allocate();
+    if(PT!=NULL) PT->Allocate();
   }
 
 }

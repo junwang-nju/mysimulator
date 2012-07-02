@@ -16,7 +16,8 @@ namespace mysimulator {
     public:
 
       typedef Propagator<T,GT>    Type;
-      template <typename T1,typename GT1> friend Clear(Propagator<T1,GT1>&);
+      template <typename T1,typename GT1>
+      friend void Clear(Propagator<T1,GT1>&);
 
       Propagator()
         : _tag(UnknownPropagator), _props(), _bind(NULL), _param(),
@@ -63,7 +64,7 @@ namespace mysimulator {
             _props[i].IntroduceG(S.Gradient());
         if(S.Velocity().IsValid())
           for(unsigned int i=0;i<_props.Size();++i)
-            _props[j].IntroduceV(S.Velocity());
+            _props[i].IntroduceV(S.Velocity());
       }
       void DetachSystem() {
         for(unsigned int i=0;i<_props.Size();++i) _props.Detach();

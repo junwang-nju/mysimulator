@@ -7,7 +7,7 @@ namespace mysimulator {
   template <typename T,typename GT> class System;
   template <typename T,typename GT> class Propagator;
 
-  template <typename T,typename GT,typename GR>
+  template <typename T,typename GT>
   class PropagatorOutput {
 
     public:

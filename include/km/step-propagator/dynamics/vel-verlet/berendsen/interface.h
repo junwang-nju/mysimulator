@@ -4,6 +4,7 @@
 
 #include "step-propagator/dynamics/vel-verlet/interface.h"
 #include "step-propagator/dynamics/vel-verlet/berendsen/parameter-name.h"
+#include "propagator/molecular-dynamics/parameter-name.h"
 
 #ifndef _NAME_
 #define _NAME_(DT,U)        VelVerletBerendsen_##DT##U

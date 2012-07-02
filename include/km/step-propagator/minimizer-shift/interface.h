@@ -61,7 +61,7 @@ namespace mysimulator {
 
       virtual void Load(Array<Unique64Bit>& P) {
         assert(P.IsValid());
-        _LoadPointer_(T,Step)
+        //_LoadPointer_(T,Step)
       }
       virtual const T KineticEnergy() const {
         fprintf(stderr,"Not Available!\n");
