@@ -19,7 +19,8 @@ namespace mysimulator {
 
       bool IsValid() const { return true; }
 
-      virtual void Write(const T&,System<T,GT>&,Propagator<T,GT>&) = 0;
+      virtual void Allocate() = 0;
+      virtual void Write(const T&,System<T,GT>&,Propagator<T,GT>*) = 0;
 
     private:
 
@@ -27,6 +28,9 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
   };
+
+  template <typename T,typename GT>
+  void Clear(PropagatorOutput<T,GT>& PO) {}
 
 }
 

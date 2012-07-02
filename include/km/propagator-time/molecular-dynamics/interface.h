@@ -6,11 +6,35 @@
 #include "propagator-time/molecular-dynamics/parameter-name.h"
 #include "propagator-time/molecular-dynamics/update-name.h"
 
+#ifndef _NAME_
 #define _NAME_(U)   MDTime_##U
+#else
+#error "Duplicate _NAME_"
+#endif
+
+#ifndef _PARAM_
 #define _PARAM_(U)  this->_param[_NAME_(U)]
+#else
+#error "Duplicate _PARAM_"
+#endif
+
+#ifndef _Value_
 #define _Value_(RT,U)   Value<RT>(_PARAM_(U))
+#else
+#error "Duplicate _Value_"
+#endif
+
+#ifndef _TValue_
 #define _TValue_(U)     _Value_(T,U)
+#else
+#error "Duplicate _TValue_"
+#endif
+
+#ifndef _IValue_
 #define _IValue_(U)     _Value_(unsigned int,U)
+#else
+#error "Duplicate _IValue_"
+#endif
 
 namespace mysimulator {
 
@@ -23,12 +47,11 @@ namespace mysimulator {
       typedef PropagatorTime<T>     ParentType;
 
       PropagatorMDTime() : ParentType() {}
-      ~PropagatorMDTime() { Clear(*this); }
+      virtual ~PropagatorMDTime() { Clear(*this); }
 
       virtual void Allocate() {
         this->_tag=MolecularDynamics;
         this->_param.Allocate(MDTime_NumberParameter);
-        this->_flag.Allocate(MDTime_NumberParameter);
       }
       virtual bool IsTProperty(unsigned int n) {
         bool fg;
@@ -49,7 +72,8 @@ namespace mysimulator {
           case MDTime_NowStep:
           case MDTime_NumberStep:
           case MDTime_NumberStepBwOutput:
-            fg=true;
+          case MDTime_NumberOutput:
+            fg=true;  break;
           default:
             fg=false;
         }
@@ -88,6 +112,7 @@ namespace mysimulator {
                                      _TValue_(TimeStep);
             _IValue_(NumberOutput)=
               _IValue_(NumberStep)/_IValue_(NumberStepBwOutput);
+            break;
           default:
             fprintf(stderr,"Unknown Update Method!\n");
         }
@@ -107,6 +132,26 @@ namespace mysimulator {
   }
 
 }
+
+#ifdef _IValue_
+#undef _IValue_
+#endif
+
+#ifdef _TValue_
+#undef _TValue_
+#endif
+
+#ifdef _Value_
+#undef _Value_
+#endif
+
+#ifdef _PARAM_
+#undef _PARAM_
+#endif
+
+#ifdef _NAME_
+#undef _NAME_
+#endif
 
 #endif
 

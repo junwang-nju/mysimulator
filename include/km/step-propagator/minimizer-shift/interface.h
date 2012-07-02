@@ -4,6 +4,7 @@
 
 #include "step-propagator/interface.h"
 #include "step-propagator/minimizer-shift/parameter-name.h"
+#include "propagator/minimizer/parameter-name.h"
 
 #ifndef _NAME_
 #define _NAME_(DT,U)          MinimizerShift_##DT##U
@@ -24,7 +25,7 @@
 #endif
 
 #ifndef _PPARAM_
-#define _PPARAM_(U)           P[Propagator##U]
+#define _PPARAM_(U)           P[PropagatorMin_##U]
 #else
 #error "Duplicate _PPARAM_"
 #endif

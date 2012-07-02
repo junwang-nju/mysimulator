@@ -5,11 +5,30 @@
 #include "propagator/interface.h"
 #include "propagator/molecular-dynamics/parameter-name.h"
 
+#ifndef _NAME_
 #define _NAME_(U) PropagatorMD_##U
+#else
+#error "Duplicate _NAME_"
+#endif
+
+#ifndef _PARAM_
 #define _PARAM_(U) this->_param[_NAME_(U)]
+#else
+#error "Duplicate _PARAM_"
+#endif
+
+#ifndef _Pointer_
 #define _Pointer_(RT,U) Pointer<RT>(_PARAM_(U))
+#else
+#error "Duplicate _Pointer_"
+#endif
+
+#ifndef _ClearPointer_
 #define _ClearPointer_(RT,U) \
   if(_Pointer_(RT,U)!=NULL) { delete _Pointer_(RT,U); _Pointer_(RT,U)=NULL; }
+#else
+#error "Duplicate _ClearPointer_"
+#endif
 
 namespace mysimulator {
 
@@ -22,7 +41,7 @@ namespace mysimulator {
       typedef Propagator<T,GT>    ParentType;
       typedef Array2DNumeric<T>   AType;
       template <typename T1,typename GT1>
-      friend void Clear(PropagatorMD<T1,GT>&);
+      friend void Clear(PropagatorMD<T1,GT1>&);
 
       PropagatorMD() : ParentType(), _massFlag(UnknownMassProperty),
                        _fricFlag(UnknownFrictionProperty) {}
@@ -49,10 +68,11 @@ namespace mysimulator {
         _Pointer_(Random,GaussRNG)=NULL;
         if(fg&4) {
           RandomName RN1=static_cast<RandomName>(va_arg(vl,unsigned int));
+          RandomName RN2=UnknownRNG;
+          unsigned int n=0;
           switch(RN1) {
             case BoxMullerRNG:
-              RandomName RN2=static_cast<RandomName>(va_arg(vl,unsigned int));
-              unsigned int n=0;
+              RN2=static_cast<RandomName>(va_arg(vl,unsigned int));
               switch(RN2) {
                 case MTDSFMTRNG:
                 case MTSFMTRNG:
@@ -69,8 +89,8 @@ namespace mysimulator {
           }
         }
         for(unsigned int i=0;i<this->_props.Size();++i) {
-          this->_props[i]->_Load(this->_param);
-          this->_props[i]->_Init();
+          this->_props[i]->Load(this->_param);
+          this->_props[i]->Init();
         }
         va_end(vl);
       }
@@ -82,8 +102,8 @@ namespace mysimulator {
         T dOT=this->Time(MDTime_OutputInterval);
         for(unsigned int i=0;i<no;++i) {
           for(unsigned int k=0;k<dno;++k)
-            this->_bind-Evolute(S.Location(),S.Gradient(),
-                                S.InteractionGroup(0),this->_props);
+            this->_bind->Evolute(S.Location(),S.Gradient(),
+                                 S.InteractionGroup(0),this->_props);
           this->Time(MDTime_NowTime)+=dOT;
           this->IntTime(MDTime_NowStep)+=dno;
           this->_output->Write(this->Time(MDTime_NowTime),S,this);
@@ -92,12 +112,29 @@ namespace mysimulator {
         unsigned int tt=this->IntTime(MDTime_NumberStep);
         if(nt<tt) {
           for(unsigned int i=nt;i<tt;++i)
-            this->_bind-Evolute(S.Location(),S.Gradient(),
-                                S.InteractionGroup(0),this->_props);
+            this->_bind->Evolute(S.Location(),S.Gradient(),
+                                 S.InteractionGroup(0),this->_props);
           this->Time(MDTime_NowTime)=this->Time(MDTime_TotalPeriod);
           this->Time(MDTime_NowStep)=tt;
           this->_output->Write(this->Time(MDTime_NowTime),S,this);
         }
+      }
+
+      virtual const T KineticEnergy() const {
+        assert(this->_param.IsValid());
+        return Value<T>(this->Parameter(PropagatorMD_KineticEnergy));
+      }
+      virtual void UpdateKineticEnergy() {
+        assert(this->_props.IsValid());
+        assert(this->_param.IsValid());
+        T ke=0;
+        unsigned int n=this->_props.Size();
+        for(unsigned int i=0;i<n;++i) {
+          assert(this->_props[i]->IsDynamics());
+          this->_props[i]->Update4();
+          ke+=Value<double>(this->_props[i]->KineticEnergy());
+        }
+        Value<T>(this->Parameter(PropagatorMD_KineticEnergy))=ke;
       }
 
     protected:
@@ -106,7 +143,7 @@ namespace mysimulator {
       FrictionPropertyName  _fricFlag;
 
       virtual void _ClearParameter() {
-        if(!_param.IsValid()) return;
+        if(!this->_param.IsValid()) return;
         _ClearPointer_(T,Temperature)
         _ClearPointer_(Random,GaussRNG)
         _ClearPointer_(AType,RandVector)
@@ -156,7 +193,7 @@ namespace mysimulator {
           }
         return fg;
       }
-      void _IntroduceStep(StepPropagator<T>* P,StepPropagatorName PN) {
+      void _IntroduceStep(StepPropagator<T>*& P,StepPropagatorName PN) {
         switch(PN) {
           case VelVerletConstE:
           case VelVerletBerendsen:
@@ -184,6 +221,22 @@ namespace mysimulator {
   }
 
 }
+
+#ifdef _ClearPointer_
+#undef _ClearPointer_
+#endif
+
+#ifdef _Pointer_
+#undef _Pointer_
+#endif
+
+#ifdef _PARAM_
+#undef _PARAM_
+#endif
+
+#ifdef _NAME_
+#undef _NAME_
+#endif
 
 #endif
 

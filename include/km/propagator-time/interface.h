@@ -17,7 +17,7 @@ namespace mysimulator {
       template <typename T1> friend void Clear(PropagatorTime<T1>&);
 
       PropagatorTime() : _tag(UnknownPropagator), _param() {}
-      ~PropagatorTime() { Clear(*this); }
+      virtual ~PropagatorTime() { Clear(*this); }
 
       bool IsValid() const { return _param.IsValid(); }
       const PropagatorName Name() const { return _tag; }

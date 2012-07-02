@@ -4,6 +4,7 @@
 
 #include "step-propagator/name.h"
 #include "step-propagator/dynamics/vel-verlet/langevin/parameter-name.h"
+#include "propagator/molecular-dynamics/parameter-name.h"
 #include "random/interface.h"
 #include <cassert>
 
