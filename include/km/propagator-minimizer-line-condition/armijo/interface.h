@@ -15,7 +15,7 @@ namespace mysimulator {
       typedef LineMinimizerCondition<T>   ParentType;
 
       LineMinimizerConditionArmijo() : ParentType() {}
-      ~LineMinimizerConditionArmijo() { Clear(*this); }
+      virtual ~LineMinimizerConditionArmijo() { Clear(*this); }
 
       virtual void Allocate() { this->_tag=Armijo; }
       virtual bool Check(T ry,T,T my,T dp,T,T step) { return ry<=my+step*dp; }

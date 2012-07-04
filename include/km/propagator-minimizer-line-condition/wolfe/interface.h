@@ -15,9 +15,9 @@ namespace mysimulator {
       typedef LineMinimizerConditionArmijo<T>   ParentType;
 
       LineMinimizerConditionWolfe() : ParentType() {}
-      ~LineMinimizerConditionWolfe() { Clear(*this); }
+      virtual ~LineMinimizerConditionWolfe() { Clear(*this); }
 
-      virtual void Allocate() { _tag=Wolfe; }
+      virtual void Allocate() { this->_tag=Wolfe; }
       virtual bool Check(T ry,T rp,T my,T dp,T cp,T step) {
         return ParentType::Check(ry,rp,my,dp,cp,step)&&(rp>=cp);
       }

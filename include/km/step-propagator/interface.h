@@ -165,7 +165,7 @@ namespace mysimulator {
       case FixPosition:
         P=new StepPropagatorFixPosition<T>;
         break;
-      case MinimizerLine:
+      case MinimizerShiftLine:
         P=new StepPropagatorMinimizerShiftLine<T>;
         break;
       default:

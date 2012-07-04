@@ -15,7 +15,7 @@ namespace mysimulator {
       template <typename T1> friend void Clear(LineMinimizerCondition<T1>&);
 
       LineMinimizerCondition() : _tag(UnknownCondition) {}
-      ~LineMinimizerCondition() { Clear(*this); }
+      virtual ~LineMinimizerCondition() { Clear(*this); }
 
       const LineMinimizerConditionName Name() const { return _tag; }
       virtual void Allocate() = 0;

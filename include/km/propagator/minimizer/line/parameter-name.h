@@ -8,6 +8,7 @@ namespace mysimulator {
 
   enum PropagatorMinimizerLineParameterName {
     LineMin_Step = BaseMin_Step,
+    LineMin_MaxStep = BaseMin_MaxStep,
     LineMin_SearchScale = BaseMin_SearchScale,
     LineMin_GCalcCount = BaseMin_GCalcCount,
     LineMin_LineTag = BaseMin_NumberParameter,

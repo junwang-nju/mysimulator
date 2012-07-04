@@ -27,7 +27,7 @@ namespace mysimulator {
       }
 
       virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,
-                           Array2DNumeric<T>& G,
+                           T& E,Array2DNumeric<T>& G,
                            GroupedInteraction<T,GeomType>& I,
                            Array<StepPropagator<T>*>& Props)=0;
 

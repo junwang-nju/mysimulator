@@ -82,7 +82,7 @@ namespace mysimulator {
       }
 
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) = 0;
-      virtual void Evolute(System<T,GT>&) = 0;
+      virtual unsigned int Evolute(System<T,GT>&) = 0;
 
       virtual const T KineticEnergy() const = 0;
       virtual void UpdateKineticEnergy() = 0;

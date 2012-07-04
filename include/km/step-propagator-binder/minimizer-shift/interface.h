@@ -17,8 +17,8 @@ namespace mysimulator {
       StepPropagatorMinimizerShiftBinder() : ParentType() {}
       virtual ~StepPropagatorMinimizerShiftBinder() { Clear(*this); }
 
-      virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >&,
-                           Array2DNumeric<T>&,GroupedInteraction<T,GT>& I,
+      virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,T& E,
+                           Array2DNumeric<T>& G,GroupedInteraction<T,GT>& I,
                            Array<StepPropagator<T>*>& Props) {
         assert(Props.IsValid());
         for(unsigned int i=0;i<Props.Size();++i) {
@@ -26,6 +26,7 @@ namespace mysimulator {
           Props[i].Evolute1();
         }
         I.ClearFlag();
+        I.Calc(X,E,G);
       }
 
     private:

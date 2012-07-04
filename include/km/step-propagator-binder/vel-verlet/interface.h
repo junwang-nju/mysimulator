@@ -18,7 +18,7 @@ namespace mysimulator {
       virtual ~StepPropagatorVelVerletBinder() { Clear(*this); }
 
       virtual void Evolute(ArrayNumeric<ArrayNumeric<T> >& X,
-                           Array2DNumeric<T>& G,
+                           T&,Array2DNumeric<T>& G,
                            GroupedInteraction<T,GT>& I,
                            Array<StepPropagator<T>*>& Props) {
         // assuming X,G have been connected with Props

@@ -50,6 +50,7 @@ namespace mysimulator {
       virtual bool IsValid() const {
         return ParentType::IsValid()&&(this->_time!=NULL)&&
                (this->_output!=NULL);
+      }
 
       virtual void Allocate(const Array<StepPropagatorName>& PN, ...) {
         Clear(*this);
@@ -99,14 +100,14 @@ namespace mysimulator {
         va_end(vl);
       }
 
-      virtual void Evolute(System<T,GT>& S) {
+      virtual unsigned int Evolute(System<T,GT>& S) {
         this->_output->Write(this->Time(MDTime_NowTime),S,this);
         unsigned int no=this->IntTime(MDTime_NumberOutput);
         unsigned int dno=this->IntTime(MDTime_NumberStepBwOutput);
         T dOT=this->Time(MDTime_OutputInterval);
         for(unsigned int i=0;i<no;++i) {
           for(unsigned int k=0;k<dno;++k)
-            this->_bind->Evolute(S.Location(),S.Gradient(),
+            this->_bind->Evolute(S.Location(),S.Energy(),S.Gradient(),
                                  S.InteractionGroup(0),this->_props);
           this->Time(MDTime_NowTime)+=dOT;
           this->IntTime(MDTime_NowStep)+=dno;
@@ -116,12 +117,13 @@ namespace mysimulator {
         unsigned int tt=this->IntTime(MDTime_NumberStep);
         if(nt<tt) {
           for(unsigned int i=nt;i<tt;++i)
-            this->_bind->Evolute(S.Location(),S.Gradient(),
+            this->_bind->Evolute(S.Location(),S.Energy(),S.Gradient(),
                                  S.InteractionGroup(0),this->_props);
           this->Time(MDTime_NowTime)=this->Time(MDTime_TotalPeriod);
           this->Time(MDTime_NowStep)=tt;
           this->_output->Write(this->Time(MDTime_NowTime),S,this);
         }
+        return 1;
       }
 
       virtual const T KineticEnergy() const {

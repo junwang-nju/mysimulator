@@ -8,6 +8,7 @@ namespace mysimulator {
 
   enum PropagatorMinimizerLineTrackingParameterName {
     TrackingLineMin_Step = LineMin_Step,
+    TrackingLineMin_MaxStep = LineMin_MaxStep,
     TrackingLineMin_SearchScale = LineMin_SearchScale,
     TrackingLineMin_GCalcCount = LineMin_GCalcCount,
     TrackingLineMin_LineTag = LineMin_LineTag,

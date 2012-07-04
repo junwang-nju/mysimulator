@@ -31,7 +31,7 @@ namespace mysimulator {
       }
       virtual void DetachSystem() {
         ParentType::DetachSystem();
-        Release(_backupX);
+        Clear(_backupX);
       }
 
     protected:
@@ -42,7 +42,7 @@ namespace mysimulator {
       void _SetCondition(const LineMinimizerConditionName CN) {
         assert(this->_param.IsValid());
         Introduce(_Condition,CN);
-        this->_param[LineMin_ConditionTag]=CN;
+        Value<unsigned int>(this->_param[LineMin_ConditionTag])=CN;
       }
 
     private:

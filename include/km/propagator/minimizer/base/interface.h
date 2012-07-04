@@ -3,9 +3,10 @@
 #define _Propagator_Minimizer_Base_Interface_H_
 
 #include "propagator/interface.h"
+#include "propagator/minimizer/base/parameter-name.h"
 
 #ifndef _NAME_
-#define _NAME_(U)   PropagatorMin_##U
+#define _NAME_(U)   BaseMin_##U
 #else
 #error "Duplicate _NAME_"
 #endif
@@ -52,6 +53,11 @@ namespace mysimulator {
         fprintf(stderr,"UpdateKineticEnergy Does Not work for Minimizer!\n");
       }
 
+      virtual void IntroduceSystem(System<T,GT>& S) {
+        ParentType::IntroduceSystem(S);
+        _UpdateDOF();
+      }
+
     protected:
 
       T Proj;
@@ -62,14 +68,15 @@ namespace mysimulator {
         if(!this->_param.IsValid())  return;
         _ClearPointer_(T,Step)
       }
+
+    private:
+
       void _UpdateDOF() {
         assert(this->_props.IsValid());
         DOF=0;
         const unsigned int n=this->_props.Size();
         for(unsigned int i=0;i<n;++i) DOF+=this->_props[i]->DegreeFreedom();
       }
-
-    private:
 
       PropagatorBaseMinimizer(const Type&) {}
       Type& operator=(const Type&) { return *this; }
@@ -86,6 +93,22 @@ namespace mysimulator {
   }
 
 }
+
+#ifdef _ClearPointer_
+#undef _ClearPointer_
+#endif
+
+#ifdef _Pointer_
+#undef _Pointer_
+#endif
+
+#ifdef _PARAM_
+#undef _PARAM_
+#endif
+
+#ifdef _NAME_
+#undef _NAME_
+#endif
 
 #endif
 
