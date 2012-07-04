@@ -47,6 +47,10 @@ namespace mysimulator {
                        _fricFlag(UnknownFrictionProperty) {}
       virtual ~PropagatorMD() { Clear(*this); }
 
+      virtual bool IsValid() const {
+        return ParentType::IsValid()&&(this->_time!=NULL)&&
+               (this->_output!=NULL);
+
       virtual void Allocate(const Array<StepPropagatorName>& PN, ...) {
         Clear(*this);
         this->_tag=MolecularDynamics;

@@ -25,7 +25,7 @@ namespace mysimulator {
 
       virtual bool IsValid() const {
         return (_tag!=UnknownPropagator)&&_props.IsValid()&&(_bind!=NULL)&&
-               _param.IsValid()&&(_time!=NULL)&&(_output!=NULL);
+               _param.IsValid();
       }
       const PropagatorName Name() const { return _tag; }
 

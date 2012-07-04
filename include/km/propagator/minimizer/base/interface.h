@@ -1,29 +1,48 @@
 
-#ifndef _Propagator_Minimizer_Interface_H_
-#define _Propagator_Minimizer_Interface_H_
+#ifndef _Propagator_Minimizer_Base_Interface_H_
+#define _Propagator_Minimizer_Base_Interface_H_
 
 #include "propagator/interface.h"
 
+#ifndef _NAME_
 #define _NAME_(U)   PropagatorMin_##U
+#else
+#error "Duplicate _NAME_"
+#endif
+
+#ifndef _PARAM_
 #define _PARAM_(U)  this->_param[_NAME_(U)]
+#else
+#error "Duplicate _PARAM_"
+#endif
+
+#ifndef _Pointer_
 #define _Pointer_(RT,U)  Pointer<RT>(_PARAM_(U))
+#else
+#error "Duplicate _Pointer_"
+#endif
+
+#ifndef _ClearPointer_
 #define _ClearPointer_(RT,U)  \
   if(_Pointer_(RT,U)!=NULL) { delete _Pointer_(RT,U); _Pointer_(RT,U)=NULL; }
+#else
+#error "Duplicate _ClearPointer_"
+#endif
 
 namespace mysimulator {
 
   template <typename T,typename GT>
-  class PropagatorMinimizer : public Propagator<T,GT> {
+  class PropagatorBaseMinimizer : public Propagator<T,GT> {
 
     public:
 
-      typedef PropagatorMinimizer<T,GT>   Type;
+      typedef PropagatorBaseMinimizer<T,GT>   Type;
       typedef Propagator<T,GT>  ParentType;
       template <typename T1,typename GT1>
-      friend void Clear(PropagatorMinimizer<T1,GT1>&);
+      friend void Clear(PropagatorBaseMinimizer<T1,GT1>&);
 
-      PropagatorMinimizer() : ParentType(), Proj(0), Move(0), DOF(0) {}
-      virtual ~PropagatorMinimizer() { Clear(*this); }
+      PropagatorBaseMinimizer() : ParentType(), Proj(0), Move(0), DOF(0) {}
+      virtual ~PropagatorBaseMinimizer() { Clear(*this); }
 
       virtual const T KineticEnergy() const {
         fprintf(stderr,"KineticEnergy Does Not work for Minimizer!\n");
@@ -52,17 +71,17 @@ namespace mysimulator {
 
     private:
 
-      PropagatorMinimizer(const Type&) {}
+      PropagatorBaseMinimizer(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };
 
   template <typename T,typename GT>
-  void Clear(PropagatorMinimizer<T,GT>& P) {
+  void Clear(PropagatorBaseMinimizer<T,GT>& P) {
     P.Proj=0;
     P.Move=0;
     P.DOF=0;
-    typedef typename PropagatorMinimizer<T,GT>::ParentType  PType;
+    typedef typename PropagatorBaseMinimizer<T,GT>::ParentType  PType;
     Clear(static_cast<PType&>(P));
   }
 

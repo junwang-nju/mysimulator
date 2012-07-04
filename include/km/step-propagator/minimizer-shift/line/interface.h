@@ -50,7 +50,7 @@ namespace mysimulator {
       virtual ~StepPropagatorMinimizerShiftLine() { Clear(*this); }
 
       virtual void Allocate() {
-        this->_tag=MinimizerLine;
+        this->_tag=MinimizerShiftLine;
         this->_param.Allocate(MinimizerShiftLine_NumberParameter);
       }
 

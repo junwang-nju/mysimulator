@@ -6,7 +6,7 @@ namespace mysimulator {
 
   enum StepPropagatorName {
     FixPosition=0,
-    MinimizerLine,
+    MinimizerShiftLine,
     VelVerletConstE,
     VelVerletLangevin,
     VelVerletBerendsen,
