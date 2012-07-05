@@ -7,6 +7,10 @@
 
 namespace mysimulator {
 
+  template <typename T> class Array;
+  template <typename T> void Clear(Array<T>&);
+  template <typename T> void _Swap(Array<T>&,Array<T>&);
+
   template <typename,template<typename> class> class Array2DBase;
 
   template <typename T>
@@ -16,8 +20,8 @@ namespace mysimulator {
 
       typedef Array<T>  Type;
       typedef ArrayData<T>  ParentType;
-      template <typename T1> friend void Clear(Array<T1>&);
-      template <typename T1> friend void _Swap(Array<T1>&,Array<T1>&);
+      friend void Clear<T>(Array<T>&);
+      friend void _Swap<T>(Array<T>&,Array<T>&);
       template <typename T1, template <typename> class AF>
       friend class Array2DBase;
 

@@ -6,7 +6,9 @@
 
 namespace mysimulator {
 
-  template <typename T,template<typename>class AF>  class Array2DBase;
+  template <typename T,template<typename>class AF> class Array2DBase;
+  template <typename T,template<typename>class AF>
+  void Clear(Array2DBase<T,AF>&);
 
   template <typename T,template<typename> class ArrayFormat>
   class Array2DBase : public ArrayFormat<ArrayFormat<T> > {
@@ -15,9 +17,8 @@ namespace mysimulator {
 
       typedef Array2DBase<T,ArrayFormat>  Type;
       typedef ArrayFormat<ArrayFormat<T> >  ParentType;
+      friend void Clear<T,ArrayFormat>(Array2DBase<T,ArrayFormat>&);
       template <typename T1,template<typename> class AF>
-      friend void Clear(Array2DBase<T1,AF>&);
-      template <typename T1,template<typename> class AF1>
       friend class Array2DBase;
 
       Array2DBase() : ParentType(), _ldata() {}

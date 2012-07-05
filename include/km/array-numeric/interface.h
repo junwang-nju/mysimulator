@@ -19,6 +19,9 @@
 
 namespace mysimulator {
 
+  template<typename T> class ArrayNumeric;
+  template<typename T> T BlasDot(const ArrayNumeric<T>&,const ArrayNumeric<T>&);
+
   template <typename T>
   class ArrayNumeric : public Array<T> {
 
@@ -31,8 +34,7 @@ namespace mysimulator {
       friend typename CombineType<typename DataType<T1>::Type,
                                   typename DataType<T2>::Type>::Type
       _DotN(const ArrayNumeric<T1>&,const ArrayNumeric<T2>&,unsigned int);
-      template <typename T1>
-      friend T1 BlasDot(const ArrayNumeric<T1>&,const ArrayNumeric<T1>&);
+      friend T BlasDot<T>(const ArrayNumeric<T>&,const ArrayNumeric<T>&);
 
       ArrayNumeric() : ParentType() {}
       ~ArrayNumeric() { Clear(*this); }

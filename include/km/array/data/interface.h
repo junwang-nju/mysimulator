@@ -13,18 +13,22 @@
 
 namespace mysimulator {
 
+  template <typename T> class ArrayData;
+  template <typename T> void Clear(ArrayData<T>&);
+  template <typename T> void _Swap(ArrayData<T>&,ArrayData<T>&);
+  template <typename T> void _SwapContent(ArrayData<T>&,ArrayData<T>&);
+  template <typename T> bool IsSame(const ArrayData<T>&,const ArrayData<T>&);
+
   template <typename T>
   class ArrayData {
 
     public:
 
       typedef ArrayData<T>  Type;
-      template <typename T1> friend void Clear(ArrayData<T1>&);
-      template <typename T1> friend void _Swap(ArrayData<T1>&,ArrayData<T1>&);
-      template <typename T1>
-      friend void _SwapContent(ArrayData<T1>&,ArrayData<T1>&);
-      template <typename T1>
-      friend bool IsSame(const ArrayData<T1>&,const ArrayData<T1>&);
+      friend void Clear<T>(ArrayData<T>&);
+      friend void _Swap<T>(ArrayData<T>&,ArrayData<T>&);
+      friend void _SwapContent<T>(ArrayData<T>&,ArrayData<T>&);
+      friend bool IsSame<T>(const ArrayData<T>&,const ArrayData<T>&);
       template <typename T1>  friend class ArrayData;
 
       ArrayData() : _data(NULL), _size(0), _alloc(false) {}
