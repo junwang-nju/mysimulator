@@ -7,18 +7,19 @@
 
 namespace mysimulator {
 
-  template <typename T>
-  double MinimalStep(const Array2DNumeric<T>& X, const Array2DNumeric<T>& Dirc,
-                     const unsigned int DOF) {
+  template <typename T,template<typename> class AF>
+  T MinimalStep(const Array2DBase<T,AF>& X, const Array2DBase<T,AF>& Dirc,
+                const unsigned int DOF) {
     typedef typename IsFloatPoint<T>::Type  FloatCheck;
     assert(X.IsValid());
     assert(Dirc.IsValid());
     assert(IsSameSize(X,Dirc));
     T mstep,tmd1,tmd2;
     const unsigned int n=X.NumElements();
+    mstep=0;
     for(unsigned int i=0;i<n;++i) {
-      tmd1=AbsVal(X.Data()[i]);
-      tmd2=Dirc.Data()[i];
+      tmd1=AbsVal(X._ldata[i]);
+      tmd2=Dirc._ldata[i];
       tmd1=(tmd1<1?tmd2:tmd2/tmd1);
       mstep+=tmd1*tmd1;
     }

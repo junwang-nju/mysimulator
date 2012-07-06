@@ -11,6 +11,8 @@ namespace mysimulator {
   void Clear(Array2DBase<T,AF>&);
   template <typename T,template<typename>class AF>
   bool IsSame(const Array2DBase<T,AF>&,const Array2DBase<T,AF>&);
+  template <typename T,template<typename>class AF>
+  T MinimalStep(const Array2DBase<T,AF>&,const Array2DBase<T,AF>&,unsigned int);
 
   template <typename T,template<typename> class ArrayFormat>
   class Array2DBase : public ArrayFormat<ArrayFormat<T> > {
@@ -22,6 +24,9 @@ namespace mysimulator {
       friend void Clear<T,ArrayFormat>(Array2DBase<T,ArrayFormat>&);
       friend bool IsSame<T,ArrayFormat>(const Array2DBase<T,ArrayFormat>&,
                                         const Array2DBase<T,ArrayFormat>&);
+      friend T MinimalStep<T,ArrayFormat>(const Array2DBase<T,ArrayFormat>&,
+                                          const Array2DBase<T,ArrayFormat>&,
+                                          unsigned int);
       template <typename T1,template<typename> class AF>
       friend class Array2DBase;
 
@@ -32,7 +37,6 @@ namespace mysimulator {
         return ParentType::IsValid()&&_ldata.IsValid();
       }
       unsigned int NumElements() const { return _ldata.Size(); }
-      const ArrayFormat<T>& Data() const { return _ldata; }
 
       void Allocate(const ArrayNumeric<unsigned int>& sz) {
         Clear(*this);

@@ -4,7 +4,7 @@
 
 #include "step-propagator/interface.h"
 #include "step-propagator/minimizer-shift/parameter-name.h"
-#include "propagator/minimizer/base/parameter-name.h"
+#include "propagator/minimizer-base/parameter-name.h"
 
 #ifndef _NAME_
 #define _NAME_(DT,U)          MinimizerShift_##DT##U

@@ -3,7 +3,7 @@
 #define _Propagator_Minimizer_Base_Interface_H_
 
 #include "propagator/interface.h"
-#include "propagator/minimizer/base/parameter-name.h"
+#include "propagator/minimizer-base/parameter-name.h"
 
 #ifndef _NAME_
 #define _NAME_(U)   BaseMin_##U
@@ -53,6 +53,11 @@ namespace mysimulator {
       }
       virtual void UpdateKineticEnergy() {
         fprintf(stderr,"UpdateKineticEnergy Does Not work for Minimizer!\n");
+      }
+      virtual void Update() {
+        ParentType::Update();
+        if(Value<T>(_PARAM_(SearchScale))<1e-8)
+          Value<T>(_PARAM_(SearchScale))=0.1;
       }
 
       virtual void IntroduceSystem(System<T,GT>& S) {

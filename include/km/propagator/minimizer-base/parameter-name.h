@@ -6,7 +6,6 @@ namespace mysimulator {
 
   enum PropagatorBaseMinimizerParameterName {
     BaseMin_Step=0,
-    BaseMin_MaxStep,
     BaseMin_SearchScale,
     BaseMin_GCalcCount,
     BaseMin_NumberParameter

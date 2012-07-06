@@ -2,15 +2,34 @@
 #ifndef _Propagator_Minimizer_Line_Tracking_Interface_H_
 #define _Propagator_Minimizer_Line_Tracking_Interface_H_
 
-#include "propagator/minimizer/line/interface.h"
-#include "propagator/minimizer/line/name.h"
-#include "propagator/minimizer/line/minimal-step.h"
-#include "propagator/minimizer/line/tracking/parameter-name.h"
+#include "propagator/minimizer-line/interface.h"
+#include "propagator/minimizer-line/name.h"
+#include "propagator/minimizer-line/minimal-step.h"
+#include "propagator/minimizer-line/tracking/parameter-name.h"
 
+#ifndef _NAME_
 #define _NAME_(U) TrackingLineMin_##U
+#else
+#error "Duplicate _NAME_"
+#endif
+
+#ifndef _PARAM_
 #define _PARAM_(U)  this->_param[_NAME_(U)]
+#else
+#error "Duplicate _PARAM_"
+#endif
+
+#ifndef _VALUE_
 #define _VALUE_(RT,U) Value<RT>(_PARAM_(U))
+#else
+#error "Duplicate _VALUE_"
+#endif
+
+#ifndef _PointerVALUE_
 #define _PointerVALUE_(RT,U)  (*Pointer<RT>(_PARAM_(U)))
+#else
+#error "Duplicate _PointerVALUE_"
+#endif
 
 namespace mysimulator {
 
@@ -25,24 +44,9 @@ namespace mysimulator {
       PropagatorTrackingLineMinimizer() : ParentType() {}
       virtual ~PropagatorTrackingLineMinimizer() { Clear(*this); }
 
-      virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
-        Clear(*this);
-        this->_tag=LineMinimizer;
-        assert(_Flag(PN)==1);
-        this->_props.Allocate(PN.Size());
-        for(unsigned int i=0;i<this->_props.Size();++i)
-          Introduce(this->_props[i],PN[i]);
-        this->_bind=NULL;
-        Introduce(this->_bind,this->_props);
-        this->_param.Allocate(TrackingLineMin_NumberParameter);
-        _VALUE_(unsigned int,LineTag)=TrackingLineMinimizer;
-        this->_SetCondition(StrongWolfe);
-        for(unsigned int i=0;i<this->_props.Size();++i) {
-          this->_props[i]->Load(this->_param);
-          this->_props[i]->Init();
-        }
-        this->_time=NULL;
-        this->_output=NULL;
+      virtual void Update() {
+        ParentType::Update();
+        if(_VALUE_(T,TrackingFac)<1e-8) _VALUE_(T,TrackingFac)=_Golden<T>();
       }
 
       virtual unsigned int Evolute(System<T,GT>& S) {
@@ -83,26 +87,18 @@ namespace mysimulator {
         return state;
       }
 
+    protected:
+
+      virtual void BuildLine() {
+        assert(this->_param.IsValid());
+        _VALUE_(unsigned int,LineTag)=TrackingLineMinimizer;
+        ParentType::BuildLine();
+      }
+
     private:
 
       PropagatorTrackingLineMinimizer(const Type&) {}
       Type& operator=(const Type&) { return *this; }
-
-      unsigned int _Flag(const Array<StepPropagatorName>& PN) {
-        unsigned int fg=1;
-        for(unsigned int i=0;i<PN.Size();++i) {
-          switch(PN[i]) {
-            case MinimizerShiftLine:
-            case FixPosition:
-              break;
-            default:
-              fprintf(stderr,"Improper StepPropagator\n");
-              fg=0;
-          }
-          if(fg==0) break;
-        }
-        return fg;
-      }
 
   };
 
@@ -113,6 +109,22 @@ namespace mysimulator {
   }
 
 }
+
+#ifdef _PointerVALUE_
+#undef _PointerVALUE_
+#endif
+
+#ifdef _VALUE_
+#undef _VALUE_
+#endif
+
+#ifdef _PARAM_
+#undef _PARAM_
+#endif
+
+#ifdef _NAME_
+#undef _NAME_
+#endif
 
 #endif
 

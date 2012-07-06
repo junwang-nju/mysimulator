@@ -79,7 +79,7 @@ namespace mysimulator {
         _output->Allocate();
       }
       void UpdateTime(unsigned int n) { assert(_time!=NULL); _time->Update(n); }
-      void Update() {
+      virtual void Update() {
         assert(_props.IsValid());
         for(unsigned int i=0;i<_props.Size();++i) _props[i]->Update();
       }

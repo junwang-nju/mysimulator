@@ -17,6 +17,14 @@ namespace mysimulator {
   template <> const float _RelDelta<float>() { return FRelDelta; }
   template <> const double _RelDelta<double>() { return DRelDelta; }
 
+  static const double Golden=0.618033988749894848205;
+  static const double IvGolden=1.618033988749894848205;
+
+  template <typename T>
+  const T _Golden() { fprintf(stderr,"Unknown Type for Golden!"); return 0; }
+
+  template <> const double _Golden<double>() { return Golden; }
+
 }
 
 #endif
