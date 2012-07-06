@@ -1,5 +1,5 @@
 
-#include "propagator/minimizer/steep/interface.h"
+#include "propagator/minimizer/conjg/interface.h"
 #include "boundary/free/interface.h"
 using namespace mysimulator;
 
@@ -52,8 +52,7 @@ int main() {
   cout.precision(20);
 
   Propagator<double,FreeSpace>* P=NULL;
-  Introduce(P,SteepestDescentMinimizer,TrackingLineMinimizer);
-  //P=new PropagatorSteepestDescentMinimizer<double,FreeSpace>;
+  P=new PropagatorConjugateGradientMinimizer<double,FreeSpace>;
 
   Array<StepPropagatorName> SPN;
   SPN.Allocate(1);
@@ -69,7 +68,7 @@ int main() {
 
   P->Evolute(S);
   cout<<Value<unsigned int>(P->Parameter(BaseMin_GCalcCount))<<endl;
-  cout<<Value<unsigned int>(P->Parameter(SteepMinimizer_LineSearchCount))<<endl;
+  cout<<Value<unsigned int>(P->Parameter(ConjgMinimizer_LineSearchCount))<<endl;
   cout<<S.Energy()<<endl;
   for(unsigned int i=0;i<4;i++) {
     for(unsigned int j=0;j<2;j++) cout<<"\t"<<S.Location()[i][j];

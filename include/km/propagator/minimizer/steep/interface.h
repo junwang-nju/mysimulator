@@ -10,16 +10,16 @@ namespace mysimulator {
   template <typename T,typename GT,
             template<typename,typename> class LineMinimizer=
                                               PropagatorTrackingLineMinimizer>
-  class PropagatorSteepDescentMinimizer
+  class PropagatorSteepestDescentMinimizer
       : public PropagatorMinimizer<T,GT,LineMinimizer> {
 
     public:
 
-      typedef PropagatorSteepDescentMinimizer<T,GT,LineMinimizer> Type;
+      typedef PropagatorSteepestDescentMinimizer<T,GT,LineMinimizer> Type;
       typedef PropagatorMinimizer<T,GT,LineMinimizer> ParentType;
 
-      PropagatorSteepDescentMinimizer() : ParentType() {}
-      ~PropagatorSteepDescentMinimizer() { Clear(*this); }
+      PropagatorSteepestDescentMinimizer() : ParentType() {}
+      ~PropagatorSteepestDescentMinimizer() { Clear(*this); }
 
       virtual void Update() {
         ParentType::Update();
@@ -27,11 +27,13 @@ namespace mysimulator {
           Value<unsigned int>(this->_param[SteepMinimizer_MaxStep])=10000;
       }
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
+        this->_tag=SteepestDescentMinimizer;
         ParentType::Allocate(PN);
         this->_param.Allocate(SteepMinimizer_NumberParameter);
         this->BuildLine();
       }
       virtual unsigned int Evolute(System<T,GT>& S) {
+        assert(this->IsValid());
         Value<unsigned int>(this->_param[BaseMin_GCalcCount])=0;
         Value<unsigned int>(this->_param[SteepMinimizer_LineSearchCount])=0;
         T tmd,tmd2;
@@ -61,12 +63,19 @@ namespace mysimulator {
 
     private:
 
-      PropagatorSteepDescentMinimizer(const Type&) {}
+      PropagatorSteepestDescentMinimizer(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
       virtual void IndependentModule() {}
 
   };
+
+  template <typename T,typename GT,template<typename,typename> class LM>
+  void Clear(PropagatorSteepestDescentMinimizer<T,GT,LM>& M) {
+    typedef typename PropagatorSteepestDescentMinimizer<T,GT,LM>::ParentType
+                     PType;
+    Clear(static_cast<PType&>(M));
+  }
 
 }
 

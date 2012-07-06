@@ -76,7 +76,6 @@ namespace mysimulator {
 
       virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
         Clear(*this);
-        this->_tag=LineMinimizer;
         assert(_Flag(PN)==1);
         this->_props.Allocate(PN.Size());
         for(unsigned int i=0;i<this->_props.Size();++i)
