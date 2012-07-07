@@ -57,14 +57,14 @@ int main() {
   Array<StepPropagatorName> SPN;
   SPN.Allocate(1);
   SPN[0]=MinimizerShiftLine;
-  P->Allocate(SPN,6);
+  P->Allocate(SPN);
+
+  P->Update();
 
   P->Step(0)->AllocateRange(1);
   P->Step(0)->Range(0)[0]=0;
   P->Step(0)->Range(0)[1]=4;
   P->IntroduceSystem(S);
-
-  P->Update();
 
   P->Evolute(S);
   cout<<Value<unsigned int>(P->Parameter(BaseMin_GCalcCount))<<endl;

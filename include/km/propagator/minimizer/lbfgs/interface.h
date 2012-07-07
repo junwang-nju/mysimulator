@@ -54,23 +54,20 @@ namespace mysimulator {
         ParentType::Update();
         if(Value<unsigned int>(this->_param[LBFGSMinimizer_MaxStep])==0)
           Value<unsigned int>(this->_param[LBFGSMinimizer_MaxStep])=1000;
-      }
-      virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
-        ParentType::Allocate(PN);
-        this->_tag=LBFGSMinimizer;
-        this->_param.Allocate(LBFGSMinimizer_NumberParameter);
-        ParentType::BuildLine();
-        va_list vl;
-        va_start(vl,PN);
-        Value<unsigned int>(this->_param[LBFGSMinimizer_MaxCorrelation])=
-          va_arg(vl,unsigned int);
-        va_end(vl);
+        if(Value<unsigned int>(this->_param[LBFGSMinimizer_MaxCorrelation])==0)
+          Value<unsigned int>(this->_param[LBFGSMinimizer_MaxCorrelation])=6;
         const unsigned int n=
           Value<unsigned int>(this->_param[LBFGSMinimizer_MaxCorrelation]);
         alpha.Allocate(n);
         rho.Allocate(n);
         dX.Allocate(n);
         dG.Allocate(n);
+      }
+      virtual void Allocate(const Array<StepPropagatorName>& PN,...) {
+        ParentType::Allocate(PN);
+        this->_tag=LBFGSMinimizer;
+        this->_param.Allocate(LBFGSMinimizer_NumberParameter);
+        ParentType::BuildLine();
       }
 
       virtual unsigned int Evolute(System<T,GT>& S) {
