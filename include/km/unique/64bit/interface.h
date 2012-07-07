@@ -8,6 +8,7 @@
 namespace mysimulator {
 
   union Unique64Bit;
+  union Unique128Bit;
   void Clear(Unique64Bit&);
 
   union Unique64Bit {
@@ -38,6 +39,7 @@ namespace mysimulator {
         typedef typename IsCopyable<Unique64Bit,T>::Type  CopyCheck;
         Value<T>(*this)=v;
       }
+      void Copy(const Unique128Bit&);
       template <typename T>
       void Fill(const T& v) {
         typedef typename IsFillable<Unique64Bit,T>::Type  FillCheck;
@@ -110,7 +112,7 @@ namespace mysimulator {
 
 }
 
-#ifndef _VValueDEF
+#ifndef _VValueDEF_
 #define _VValueDEF_(T,v) \
   template <> T& Value<T>(Unique64Bit& P) { return P.v; }
 #else
@@ -244,6 +246,18 @@ namespace mysimulator {
   }
 
   void Clear(Unique64Bit& P) { Value<unsigned long long>(P)=0; }
+
+}
+
+#include "unique/128bit/interface.h"
+
+namespace mysimulator {
+
+  void Unique64Bit::Copy(const Unique128Bit& U) {
+    Copy(Value<unsigned long long>(U));
+  }
+
+  void _Copy(Unique64Bit& U,const Unique128Bit& LU) { U.Copy(LU); }
 
 }
 

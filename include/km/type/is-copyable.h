@@ -48,15 +48,39 @@ namespace mysimulator {
   class IsCopyableFlag<Unique64Bit,T> { public: static const bool Flag; };
 
   template <typename T> const bool IsCopyableFlag<Unique64Bit,T>::Flag=
-    IsNumericFlag<T>::Flag&&IsIntrinsicFlag<T>::Flag&&
-    (sizeof(T)<sizeof(long double));
+    IsNumericFlag<T>::Flag&&(sizeof(T)<sizeof(long double));
 
   template <typename T>
   class IsCopyableFlag<T,Unique64Bit> { public: static const bool Flag; };
 
   template <typename T> const bool IsCopyableFlag<T,Unique64Bit>::Flag=
-    IsNumericFlag<T>::Flag&&IsIntrinsicFlag<T>::Flag&&
-    (sizeof(T)<sizeof(long double));
+    IsNumericFlag<T>::Flag&&(sizeof(T)<sizeof(long double));
+
+  union Unique128Bit;
+
+  template <typename T>
+  class IsCopyableFlag<Unique128Bit,T> { public: static const bool Flag; };
+
+  template <typename T> const bool IsCopyableFlag<Unique128Bit,T>::Flag=
+    IsNumericFlag<T>::Flag;
+
+  template <>
+  class IsCopyableFlag<Unique128Bit,Unique64Bit> {
+    public: static const bool Flag;
+  };
+  const bool IsCopyableFlag<Unique128Bit,Unique64Bit>::Flag=true;
+
+  template <typename T>
+  class IsCopyableFlag<T,Unique128Bit> { public: static const bool Flag; };
+
+  template <typename T> const bool IsCopyableFlag<T,Unique128Bit>::Flag=
+    IsNumericFlag<T>::Flag;
+
+  template <>
+  class IsCopyableFlag<Unique64Bit,Unique128Bit> {
+    public: static const bool Flag;
+  };
+  const bool IsCopyableFlag<Unique64Bit,Unique128Bit>::Flag=true;
 
 }
 

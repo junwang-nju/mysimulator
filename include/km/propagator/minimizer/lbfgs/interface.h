@@ -86,6 +86,7 @@ namespace mysimulator {
           ncr=0;
           point=0;
           fg=0;
+          isSteep=true;
           const unsigned int n=
             Value<unsigned int>(this->_param[LBFGSMinimizer_MaxStep]);
           const unsigned int maxCr=

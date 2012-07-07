@@ -26,8 +26,15 @@ namespace mysimulator {
   class IsFillableFlag<Unique64Bit,T> { public: static const bool Flag; };
   template <typename T>
   const bool IsFillableFlag<Unique64Bit,T>::Flag=
-    IsNumericFlag<T>::Flag&&IsIntrinsicFlag<T>::Flag&&
-    (sizeof(T)<sizeof(long double));
+    IsNumericFlag<T>::Flag&&(sizeof(T)<sizeof(long double));
+
+  union Unique128Bit;
+  template <typename T>
+  class IsFillableFlag<Unique128Bit,T> { public: static const bool Flag; };
+  template <typename T>
+  const bool IsFillableFlag<Unique128Bit,T>::Flag=IsNumericFlag<T>::Flag;
+  template <>
+  const bool IsFillableFlag<Unique128Bit,Unique64Bit>::Flag=true;
 
 }
 
