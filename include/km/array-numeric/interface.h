@@ -357,25 +357,25 @@ namespace mysimulator {
     assert(this->IsValid());
     assert(A.IsValid());
     assert(this->Size()==A.Size());
-    assert(sizeof(long double)==3*sizeof(double));
+    assert(sizeof(long double)==3*sizeof(float));
     long m=this->Size(), three=3;
-    double *p=reinterpret_cast<double*>(A.Head());
-    double *q=reinterpret_cast<double*>(this->Head());
-    BLAS<double>::Copy(&m,p,  &three,q,  &three);
-    BLAS<double>::Copy(&m,p+1,&three,q+1,&three);
-    BLAS<double>::Copy(&m,p+2,&three,q+2,&three);
+    float *p=reinterpret_cast<float*>(A.Head());
+    float *q=reinterpret_cast<float*>(this->Head());
+    BLAS<float>::Copy(&m,p,  &three,q,  &three);
+    BLAS<float>::Copy(&m,p+1,&three,q+1,&three);
+    BLAS<float>::Copy(&m,p+2,&three,q+2,&three);
   }
 
   template <>
   void ArrayNumeric<long double>::BlasFill(const long double& d) {
     assert(this->IsValid());
-    assert(sizeof(long double)==3*sizeof(double));
+    assert(sizeof(long double)==3*sizeof(float));
     long m=this->Size(), three=3, zero=0;
-    double *p=reinterpret_cast<double*>(const_cast<long double*>(&d));
-    double *q=reinterpret_cast<double*>(this->Head());
-    BLAS<double>::Copy(&m,p,  &zero,q,  &three);
-    BLAS<double>::Copy(&m,p+1,&zero,q,  &three);
-    BLAS<double>::Copy(&m,p+2,&zero,q,  &three);
+    float *p=reinterpret_cast<float*>(const_cast<long double*>(&d));
+    float *q=reinterpret_cast<float*>(this->Head());
+    BLAS<float>::Copy(&m,p,  &zero,q,  &three);
+    BLAS<float>::Copy(&m,p+1,&zero,q,  &three);
+    BLAS<float>::Copy(&m,p+2,&zero,q,  &three);
   }
 
   template <typename T>

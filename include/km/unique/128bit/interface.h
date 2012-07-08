@@ -151,14 +151,27 @@ namespace mysimulator {
 
 }
 
+#ifndef _VValueDEF_
 #define _VValueDEF_(T,v) \
   template <> T& Value<T>(Unique128Bit& P) { return P.v; }
+#else
+#error "Duplicate _VValueDEF_"
+#endif
+
+#ifndef _CValueDEF_
 #define _CValueDEF_(T,v) \
   template <> const T& Value<T>(const Unique128Bit& P) { return P.v; }
+#else
+#error "Duplicate _CValueDEF_"
+#endif
 
+#ifndef _ValueDEF_
 #define _ValueDEF_(T,v) \
   _VValueDEF_(T,v) \
   _CValueDEF_(T,v)
+#else
+#error "Duplicate _ValueDEF_"
+#endif
 
 namespace mysimulator {
 
@@ -178,9 +191,17 @@ namespace mysimulator {
 
 }
 
+#ifdef _ValueDEF_
 #undef _ValueDEF_
+#endif
+
+#ifdef _CValueDEF_
 #undef _CValueDEF_
+#endif
+
+#ifdef _VValueDEF_
 #undef _VValueDEF_
+#endif
 
 namespace mysimulator {
 
@@ -197,20 +218,33 @@ namespace mysimulator {
 
 }
 
+#ifndef _VValueDEF_
 #define _VValueDEF_(T,v) \
   template <> T& Value<T>(Unique128Bit& U,unsigned int i) { \
     assert(i<sizeof(Unique128Bit)/sizeof(T)); \
     return U.v[i]; \
   }
+#else
+#error "Duplicate _VValueDEF_"
+#endif
+
+#ifndef _CValueDEF_
 #define _CValueDEF_(T,v) \
   template <> const T& Value<T>(const Unique128Bit& U,unsigned int i) { \
     assert(i<sizeof(Unique128Bit)/sizeof(T)); \
     return U.v[i]; \
   }
+#else
+#error "Duplicate _CValueDEF_"
+#endif
 
+#ifndef _ValueDEF_
 #define _ValueDEF_(T,v) \
   _VValueDEF_(T,v) \
   _CValueDEF_(T,v)
+#else
+#error "Duplicate _ValueDEF_"
+#endif
 
 namespace mysimulator {
 
@@ -230,9 +264,17 @@ namespace mysimulator {
 
 }
 
+#ifdef _ValueDEF_
 #undef _ValueDEF_
+#endif
+
+#ifdef _CValueDEF_
 #undef _CValueDEF_
+#endif
+
+#ifdef _VValueDEF_
 #undef _VValueDEF_
+#endif
 
 namespace mysimulator {
 
@@ -242,6 +284,36 @@ namespace mysimulator {
   template <typename T>
   const T* const& Pointer(const Unique128Bit& U) {
     return reinterpret_cast<const T* const&>(U.ptr);
+  }
+
+}
+
+#include "array-numeric/interface.h"
+
+namespace mysimulator {
+
+  typedef ArrayNumeric<Unique128Bit> AUnique128Bit;
+
+  template <>
+  void ArrayNumeric<Unique128Bit>::BlasCopy(const AUnique128Bit& A) {
+    assert(this->IsValid());
+    assert(A.IsValid());
+    assert(this->Size()==A.Size());
+    long m=this->Size(), two=2;
+    double *p=reinterpret_cast<double*>(A.Head());
+    double *q=reinterpret_cast<double*>(this->Head());
+    BLAS<double>::Copy(&m,p,  &two,q,  &two);
+    BLAS<double>::Copy(&m,p+1,&two,q+1,&two);
+  }
+
+  template <>
+  void ArrayNumeric<Unique128Bit>::BlasFill(const Unique128Bit& U) {
+    assert(this->IsValid());
+    long m=this->Size(), zero=0, two=2;
+    double *p=reinterpret_cast<double*>(const_cast<Unique128Bit*>(&U));
+    double *q=reinterpret_cast<double*>(this->Head());
+    BLAS<double>::Copy(&m,p,  &zero,q,  &two);
+    BLAS<double>::Copy(&m,p+1,&zero,q+1,&two);
   }
 
 }
