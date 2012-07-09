@@ -15,22 +15,6 @@ namespace mysimulator {
       typedef Random  ParentType;
       friend void Clear(MersenneTwisterStandard&);
 
-      static const unsigned int N;
-      static const unsigned int M;
-      static const unsigned int dMN;
-      static const unsigned int NmOne;
-      static const unsigned int MmOne;
-      static const unsigned int Upp;
-      static const unsigned int Low;
-      static const Unique64Bit  Mag;
-      static const unsigned int Mask32;
-      static const double dDouble53;
-      static const long double dLDouble63;
-      static const double dUInt32;
-      static const double dUInt32M1;
-      static const double dHalfUInt32;
-      static const double dHalfUInt32M1;
-
       MersenneTwisterStandard() : s(), sloc(0) {}
       virtual ~MersenneTwisterStandard() { Clear(*this); }
 
@@ -120,6 +104,22 @@ namespace mysimulator {
       unsigned int sloc;
 
     private:
+
+      static const unsigned int N;
+      static const unsigned int M;
+      static const unsigned int dMN;
+      static const unsigned int NmOne;
+      static const unsigned int MmOne;
+      static const unsigned int Upp;
+      static const unsigned int Low;
+      static const Unique64Bit  Mag;
+      static const unsigned int Mask32;
+      static const double dDouble53;
+      static const long double dLDouble63;
+      static const double dUInt32;
+      static const double dUInt32M1;
+      static const double dHalfUInt32;
+      static const double dHalfUInt32M1;
 
       MersenneTwisterStandard(const Type&) {}
       Type& operator=(const Type&) { return *this; }

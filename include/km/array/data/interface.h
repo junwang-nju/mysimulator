@@ -30,6 +30,7 @@ namespace mysimulator {
       friend void _SwapContent<T>(ArrayData<T>&,ArrayData<T>&);
       friend bool IsSame<T>(const ArrayData<T>&,const ArrayData<T>&);
       template <typename T1>  friend class ArrayData;
+      template <unsigned int Fac> friend class MersenneTwisterDSFMT;
 
       ArrayData() : _data(NULL), _size(0), _alloc(false) {}
       virtual ~ArrayData() { Clear(*this); }

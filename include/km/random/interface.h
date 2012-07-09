@@ -62,6 +62,7 @@ namespace mysimulator {
 
 #include "random/mt-standard/interface.h"
 #include "random/box-muller/interface.h"
+#include <cstdarg>
 
 namespace mysimulator {
 

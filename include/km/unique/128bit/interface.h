@@ -46,7 +46,7 @@ namespace mysimulator {
         Value<T>(*this)=v;
       }
 #ifdef _HAVE_SSE2_
-      void Copy(const __m128u& m) { _mm_storeu_si128(&si,_mm_loadu_si128(&m)); }
+      void Copy(const __m128i& m) { _mm_storeu_si128(&si,_mm_loadu_si128(&m)); }
       void Copy(const __m128d& m) {
         _mm_storeu_pd(dv,_mm_loadu_pd(reinterpret_cast<const double*>(&m)));
       }
@@ -135,6 +135,15 @@ namespace mysimulator {
     typedef typename IsCopyable<T,Unique128Bit>::Type CopyCheck;
     v=Value<T>(U);
   }
+#ifdef _HAVE_SSE2_
+  void _Copy(__m128i& v, const Unique128Bit& U) {
+    _mm_storeu_si128(&v,_mm_loadu_si128(&Value<__m128i>(U)));
+  }
+  void _Copy(__m128d& v, const Unique128Bit& U) {
+    _mm_storeu_pd(reinterpret_cast<double*>(&v),
+                  _mm_loadu_pd(reinterpret_cast<const double*>(&U)));
+  }
+#endif
   template <typename T>
   void _Fill(Unique128Bit& U,const T& v) { U.Fill(v); }
 
@@ -175,6 +184,10 @@ namespace mysimulator {
 
 namespace mysimulator {
 
+#ifdef _HAVE_SSE2_
+  _ValueDEF_(__m128i,si)
+  _ValueDEF_(__m128d,sd)
+#endif
   _ValueDEF_(long double,ld)
   _ValueDEF_(double,d)
   _ValueDEF_(float,f)
