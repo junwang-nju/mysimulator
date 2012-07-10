@@ -159,9 +159,30 @@ namespace mysimulator {
       virtual void GFunc(const InteractionParameter<T>*,T*) = 0;
       virtual void BFunc(const InteractionParameter<T>*,T*,T*) = 0;
 
-      virtual void Pre2Post4E(const InteractionParameter<T>*) = 0;
-      virtual void Pre2Post4G(const InteractionParameter<T>*) = 0;
-      virtual void Pre2Post4B(const InteractionParameter<T>*) = 0;
+      virtual void Pre2Post4E(const InteractionParameter<T>*) {
+        assert(this->IsValid());
+        this->_post[AngleCosine]=
+          this->pre[AngleDotAB]/__SqRoot(this->_pre[AngleEdgeASQ]*
+                                         this->_pre[AngleEdgeBSQ]);
+        this->_update=true;
+      }
+      virtual void Pre2Post4G(const InteractionParameter<T>*) {
+        assert(this->IsValid());
+        T tmda=1./this->_pre[AngleEdgeASQ];
+        T tmdb=1./this->_pre[AngleEdgeBSQ];
+        T tmd=__SqRoot(tmda*tmdb);
+        T tmd1=tmd*this->_pre[AngleDotAB];
+        T tmd2=1./__SqRoot(1-tmd1*tmd1);
+        T tmd3=tmd1*tmd2;
+        this->_post[AngleCosine]=tmd1;
+        this->_post[AngleIvRabSin]=tmd*tmd2;
+        this->_post[AngleIvRaSQCtg]=tmd3*tmda;
+        this->_post[AngleIvRbSQCtg]=tmd3*tmdb;
+        this->_update=false;
+      }
+      virtual void Pre2Post4B(const InteractionParameter<T>* P) {
+        Pre2Post4G(P);
+      }
 
     private:
 

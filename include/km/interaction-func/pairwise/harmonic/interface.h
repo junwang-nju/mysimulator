@@ -6,7 +6,6 @@
 #include "interaction-func/pairwise/harmonic/post-name.h"
 #include "interaction-func/pairwise/harmonic/pre-name.h"
 #include "interaction-func/pairwise/harmonic/vec-name.h"
-#include "interaction-parameter/interface.h"
 #include "interaction-parameter/harmonic/name.h"
 
 namespace mysimulator {

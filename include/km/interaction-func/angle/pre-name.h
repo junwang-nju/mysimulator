@@ -8,7 +8,7 @@ namespace mysimulator {
     AngleEdgeASQ = 0,
     AngleEdgeBSQ,
     AngleDotAB,
-    AngleNumberpre
+    AngleNumberPre
   };
 
 }

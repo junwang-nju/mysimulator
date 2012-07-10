@@ -5,6 +5,7 @@
 #include "array2d-numeric/interface.h"
 #include "unique/64bit/interface.h"
 #include "interaction-func/name.h"
+#include "interaction-parameter/interface.h"
 
 namespace mysimulator {
 
