@@ -6,6 +6,7 @@
 #include "interaction-func/angle/harmonic/post-name.h"
 #include "interaction-func/angle/harmonic/pre-name.h"
 #include "interaction-func/angle/harmonic/vec-name.h"
+#include "interaction-func/angle/harmonic/neighbor-name.h"
 #include "basic/acos.h"
 
 namespace mysimulator {
@@ -27,6 +28,7 @@ namespace mysimulator {
         this->_pre.Allocate(AngleHarmonicNumberPre);
         this->_post.Allocate(AngleHarmonicNumberPost);
         this->_tmvec.Allocate(AngleHarmonicNumberVec);
+        this->_neighbor.Allocate(AngleHarmonicNumberNeighbor);
       }
 
     protected:
@@ -56,13 +58,13 @@ namespace mysimulator {
         assert(this->IsValid());
         assert(P!=NULL);
         ParentType::Pre2Post4E(P);
-        this->_post[AngleHarmonicValue]=arcCos(this->_post[AngleCosine]);
+        this->_post[AngleHarmonicValue]=_ACos(this->_post[AngleCosine]);
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
         ParentType::Pre2Post4G(P);
-        this->_post[AngleHarmonicValue]=arcCos(this->_post[AngleCosine]);
+        this->_post[AngleHarmonicValue]=_ACos(this->_post[AngleCosine]);
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
         Pre2Post4G(P);

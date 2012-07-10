@@ -409,6 +409,17 @@ namespace mysimulator {
     return BLAS<T>::Dot(&m,A.Head(),&one,B.Head(),&one);
   }
 
+  template <typename T1,typename T2,typename T3>
+  void Cross(ArrayNumeric<T1>& A, const ArrayNumeric<T2>& B,
+                                  const ArrayNumeric<T3>& C) {
+    assert(A.Size()==3);
+    assert(B.Size()==3);
+    assert(C.Size()==3);
+    A[0] = B[1]*C[2] - B[2]*C[1];
+    A[1] = B[2]*C[0] - B[0]*C[2];
+    A[2] = B[0]*C[1] - B[1]*C[0];
+  }
+
 }
 
 #endif

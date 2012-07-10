@@ -102,6 +102,7 @@ namespace mysimulator {
 #include "interaction-func/wall/harmonic/interface.h"
 #include "interaction-func/wall/core12/interface.h"
 #include "interaction-func/angle/harmonic/interface.h"
+#include "interaction-func/dihedral/periodic/interface.h"
 
 namespace mysimulator {
 
@@ -134,6 +135,8 @@ namespace mysimulator {
         P=new InteractionFuncWallCore12<T,GT>;  break;
       case AngleHarmonic:
         P=new InteractionFuncAngleHarmonic<T,GT>; break;
+      case DihedralPeriodic:
+        P=new InteractionFuncDihedralPeriodic<T,GT>;  break;
       case UnknownInteractionFunc:
       default:
         fprintf(stderr,"Unknown Interaction!\n");

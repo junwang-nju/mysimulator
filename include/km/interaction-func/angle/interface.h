@@ -142,19 +142,6 @@ namespace mysimulator {
 
     protected:
 
-      void GetPre4E() {
-        assert(this->_neighbor.IsValid());
-        InteractionFunc<T,GeomType>* P;
-        P=this->_neighbor[AngleNeighbor4EdgeA];
-        assert(P!=NULL);
-        this->_pre[AngleEdgeASQ]=P->_pre[PairwiseDistanceSQ];
-        P=this->_neighbor[AngleNeighbor4EdgeB];
-        assert(P!=NULL);
-        this->_pre[AngleEdgeBSQ]=P->_pre[PairwiseDistanceSQ];
-      }
-      void GetPre4G() { GetPre4E(); }
-      void GetPre4B() { GetPre4E(); }
-
       virtual void EFunc(const InteractionParameter<T>*,T*) = 0;
       virtual void GFunc(const InteractionParameter<T>*,T*) = 0;
       virtual void BFunc(const InteractionParameter<T>*,T*,T*) = 0;
@@ -188,6 +175,19 @@ namespace mysimulator {
 
       InteractionFuncAngle(const Type&) {}
       Type& operator=(const Type&) { return *this; }
+
+      void GetPre4E() {
+        assert(this->_neighbor.IsValid());
+        InteractionFunc<T,GeomType>* P;
+        P=this->_neighbor[AngleNeighbor4EdgeA];
+        assert(P!=NULL);
+        this->_pre[AngleEdgeASQ]=P->_pre[PairwiseDistanceSQ];
+        P=this->_neighbor[AngleNeighbor4EdgeB];
+        assert(P!=NULL);
+        this->_pre[AngleEdgeBSQ]=P->_pre[PairwiseDistanceSQ];
+      }
+      void GetPre4G() { GetPre4E(); }
+      void GetPre4B() { GetPre4E(); }
 
   };
 
