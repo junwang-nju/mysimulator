@@ -64,12 +64,17 @@ namespace mysimulator {
 #include "interaction-parameter/lj612/interface.h"
 #include "interaction-parameter/lj612cut/interface.h"
 #include "interaction-parameter/angle-harmonic/interface.h"
+#include "interaction-parameter/dihedral-periodic/interface.h"
+#include <cstdarg>
 
 namespace mysimulator {
 
   template <typename T>
-  void Introduce(InteractionParameter<T>*& P,const InteractionFuncName& FN) {
+  void Introduce(InteractionParameter<T>*& P,const InteractionFuncName& FN,
+                 ...) {
     if(P!=NULL) { delete P; P=NULL; }
+    va_list vl;
+    va_start(vl,FN);
     switch(FN) {
       case Harmonic:
       case WallHarmonic:
@@ -93,11 +98,18 @@ namespace mysimulator {
         P=new InteractionParameterLJ612Cut<T>;  break;
       case AngleHarmonic:
         P=new InteractionParameterAngleHarmonic<T>; break;
+      case DihedralPeriodic:
+        P=new InteractionParameterDihedralPeriodic<T>;
+        P->_data.Allocate(DihedralPeriodicShift);
+        Value<unsigned int>(P->_data[DihedralPeriodicNumberUnit])=
+          va_arg(vl,unsigned int);
+        break;
       case UnknownInteractionFunc:
       default:
         fprintf(stderr,"Unknown Interaction!\n");
     }
     if(P!=NULL)   P->Allocate();
+    va_end(vl);
   }
 
 }
