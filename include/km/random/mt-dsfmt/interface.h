@@ -374,6 +374,114 @@ namespace mysimulator {
   const Unique128Bit MersenneTwisterDSFMT<521>::Pcv(0xCCAA588000000000ULL,
                                                     0x0000000000000001ULL);
 
+  template <> const unsigned int MersenneTwisterDSFMT<1279>::Pos=9;
+  template <> const unsigned int MersenneTwisterDSFMT<1279>::SL=19;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<1279>::Msk(0x000EFFF7FFDDFFEEULL,
+                                                     0x000FBFFFFFF77FFFULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<1279>::Fix(0xB66627623D1A31BEULL,
+                                                     0x04B6C51147B6109BULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<1279>::Pcv(0x7049F2DA382A6AEBULL,
+                                                     0xDE4CA84A40000001ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<2203>::Pos=7;
+  template <> const unsigned int MersenneTwisterDSFMT<2203>::SL=19;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<2203>::Msk(0x000FDFFFF5EDBFFFULL,
+                                                     0x000F77FFFFFFFBFEULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<2203>::Fix(0xB14E907A39338485ULL,
+                                                     0xF98F0735C637EF90ULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<2203>::Pcv(0x8000000000000000ULL,
+                                                     0x0000000000000001ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<4253>::Pos=19;
+  template <> const unsigned int MersenneTwisterDSFMT<4253>::SL=19;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<4253>::Msk(0x0007B7FFFEF5FEFFULL,
+                                                     0x000FFDFFEFFEFBFCULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<4253>::Fix(0x80901B5FD7A11C65ULL,
+                                                     0x5A63FF0E7CB0BA74ULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<4253>::Pcv(0x1AD277BE12000000ULL,
+                                                     0x0000000000000001ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<11213>::Pos=37;
+  template <> const unsigned int MersenneTwisterDSFMT<11213>::SL=19;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<11213>::Msk(0x000FFFFFFDF7FFFDULL,
+                                                      0x000DFFFFFFF6BFFFULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<11213>::Fix(0xD0EF7B7C75B06793ULL,
+                                                      0x9C50FF4CAAE0A641ULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<11213>::Pcv(0x8234C51207C80000ULL,
+                                                      0x0000000000000001ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<19937>::Pos=117;
+  template <> const unsigned int MersenneTwisterDSFMT<19937>::SL=19;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<19937>::Msk(0x000FFAFFFFFFFB3FULL,
+                                                      0x000FFDFFFC90FFFDULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<19937>::Fix(0x90014964B32F4329ULL,
+                                                      0x3B8D12AC548A7C7AULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<19937>::Pcv(0x3D84E1AC0DC82880ULL,
+                                                      0x0000000000000001ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<44497>::Pos=304;
+  template <> const unsigned int MersenneTwisterDSFMT<44497>::SL=19;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<44497>::Msk(0x000FF6DFFFFFFFEFULL,
+                                                      0x0007FFDDDEEFFF6FULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<44497>::Fix(0x75D910F235F6E10EULL,
+                                                      0x7B32158AEDC8E969ULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<44497>::Pcv(0x4C3356B2A0000000ULL,
+                                                      0x0000000000000001ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<86243>::Pos=231;
+  template <> const unsigned int MersenneTwisterDSFMT<86243>::SL=13;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<86243>::Msk(0x000FFEDFF6FFFFDFULL,
+                                                      0x000FFFF7FDFFFF7EULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<86243>::Fix(0x1D553E776B975E68ULL,
+                                                      0x648FAADF1416BF91ULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<86243>::Pcv(0x5F2CD03E2758A373ULL,
+                                                      0xC0B7EB8410000001ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<132049>::Pos=371;
+  template <> const unsigned int MersenneTwisterDSFMT<132049>::SL=23;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<132049>::Msk(0x000FB9F4EFF4BF77ULL,
+                                                       0x000FFFFFBFEFFF37ULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<132049>::Fix(0x4CE24C0E4E234F3BULL,
+                                                       0x62612409B5665C2DULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<132049>::Pcv(0x181232889145D000ULL,
+                                                       0x0000000000000001ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<216091>::Pos=1890;
+  template <> const unsigned int MersenneTwisterDSFMT<216091>::SL=23;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<216091>::Msk(0x000BF7DF7FEFCFFFULL,
+                                                       0x000E7FFFFEF737FFULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<216091>::Fix(0xD7F95A04764C27D7ULL,
+                                                       0x6A483861810BEBC2ULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<216091>::Pcv(0x3AF0A8F3D5600000ULL,
+                                                       0x0000000000000001ULL);
+
 #ifdef _HAVE_SSE2_
 
   template <unsigned int Fac>
