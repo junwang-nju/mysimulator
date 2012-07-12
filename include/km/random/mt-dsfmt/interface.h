@@ -249,7 +249,7 @@ namespace mysimulator {
         Convert2C0O1(w);
       }
 #else
-      void Conver2C0O1(Unique128Bit& w) {
+      void Convert2C0O1(Unique128Bit& w) {
         Value<double>(w,0)-=1.; Value<double>(w,1)-=1.;
       }
       void Convert2O0C1(Unique128Bit& w) {
@@ -268,7 +268,7 @@ namespace mysimulator {
         unsigned int i,j;
         Unique128Bit lung;
         lung.Copy(s[N]);
-        for(i=0;i<N-Pos;++i) _Recursion(s[i],s[i+Pos],v[i],lung);
+        for(i=0;i<N-Pos;++i) _Recursion(s[i],s[i+Pos],V[i],lung);
         for(;i<N;++i) _Recursion(s[i],V[i+Pos-N],V[i],lung);
         for(;i+N<n;++i) {
           _Recursion(V[i-N],V[i+Pos-N],V[i],lung);
@@ -286,7 +286,7 @@ namespace mysimulator {
       void _GenArrayDouble(ArrayData<double>& V, CvFuncType Cv) {
         assert(V.IsValid());
         assert((V.Size()&1)==0);
-        _GenArray(reinterpret_cast<Unique128Bit*>(V.Head()),n>>1,Cv);
+        _GenArray(reinterpret_cast<Unique128Bit*>(V.Head()),V.Size()>>1,Cv);
       }
 
   };
@@ -347,6 +347,32 @@ namespace mysimulator {
   template <unsigned int Fac>
   const unsigned long long MersenneTwisterDSFMT<Fac>::Upp=
     0x3FF0000000000000ULL;
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwisterDSFMT<Fac>::SR=12;
+
+  template <unsigned int Fac>
+  const unsigned int MersenneTwisterDSFMT<Fac>::Pos=0;
+  template <unsigned int Fac>
+  const unsigned int MersenneTwisterDSFMT<Fac>::SL=0;
+  template <unsigned int Fac>
+  const Unique128Bit MersenneTwisterDSFMT<Fac>::Msk(0ULL,0ULL);
+  template <unsigned int Fac>
+  const Unique128Bit MersenneTwisterDSFMT<Fac>::Fix(0ULL,0ULL);
+  template <unsigned int Fac>
+  const Unique128Bit MersenneTwisterDSFMT<Fac>::Pcv(0ULL,0ULL);
+
+  template <> const unsigned int MersenneTwisterDSFMT<521>::Pos=3;
+  template <> const unsigned int MersenneTwisterDSFMT<521>::SL=25;
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<521>::Msk(0x000FBFEFFF77EFFFULL,
+                                                    0x000FFEEBFBDFBFDFULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<521>::Fix(0xCFB393D661638469ULL,
+                                                    0xC166867883AE2ADBULL);
+  template <>
+  const Unique128Bit MersenneTwisterDSFMT<521>::Pcv(0xCCAA588000000000ULL,
+                                                    0x0000000000000001ULL);
 
 #ifdef _HAVE_SSE2_
 
