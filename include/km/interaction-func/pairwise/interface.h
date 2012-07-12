@@ -91,12 +91,9 @@ namespace mysimulator {
 
     protected:
 
-      virtual
-      void EFunc(const InteractionParameter<T>*,T*)=0;
-      virtual
-      void GFunc(const InteractionParameter<T>*,T*)=0;
-      virtual
-      void BFunc(const InteractionParameter<T>*,T*,T*)=0;
+      virtual void EFunc(const InteractionParameter<T>*,T*)=0;
+      virtual void GFunc(const InteractionParameter<T>*,T*)=0;
+      virtual void BFunc(const InteractionParameter<T>*,T*,T*)=0;
 
       virtual void Pre2Post4E(const InteractionParameter<T>*)=0;
       virtual void Pre2Post4G(const InteractionParameter<T>*)=0;

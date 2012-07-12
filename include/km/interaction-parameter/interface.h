@@ -63,6 +63,7 @@ namespace mysimulator {
 #include "interaction-parameter/lj1012cut/interface.h"
 #include "interaction-parameter/lj612/interface.h"
 #include "interaction-parameter/lj612cut/interface.h"
+#include "interaction-parameter/angle-harmonic/interface.h"
 
 namespace mysimulator {
 
@@ -90,6 +91,8 @@ namespace mysimulator {
         P=new InteractionParameterLJ612<T>; break;
       case LJ612Cut:
         P=new InteractionParameterLJ612Cut<T>;  break;
+      case AngleHarmonic:
+        P=new InteractionParameterAngleHarmonic<T>; break;
       case UnknownInteractionFunc:
       default:
         fprintf(stderr,"Unknown Interaction!\n");
