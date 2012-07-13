@@ -14,7 +14,7 @@ namespace mysimulator {
       flag=true;
       for(unsigned int k=0;k<NumberResidueKey;++k)
         if(Key[k]!=ResidueKeyLibrary[i][k]) { flag=false; break; }
-      if(flag)  { RRN=Residue4Key[i]; break; }
+      if(flag)  { PRN=Residue4Key[i]; break; }
     }
     return PRN;
   }

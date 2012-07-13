@@ -2,13 +2,12 @@
 #ifndef _PDB_File_Interface_H_
 #define _PDB_File_Interface_H_
 
-#include "basic/string.h"
 #include "pdb-file/record-name.h"
 #include "pdb-file/atom-name-map.h"
-#include "pdb-object/interface.h"
-#include "array-numeric/interface.h"
+#include "pdb/interface.h"
+#include "pdb-residue/guess-residue-name.h"
+#include "basic/string.h"
 #include <cstdio>
-#include <csdtlib>
 #include <cstring>
 
 namespace mysimulator {
@@ -58,7 +57,7 @@ namespace mysimulator {
         }
       }
 
-      void Produce(PDBOb& M) {
+      void Produce(PDBObject& M) {
         assert(IsValid());
         Clear(M);
         strncpy(M._code,_code,5);
@@ -66,6 +65,7 @@ namespace mysimulator {
         M.Allocate(nmodel);
         const unsigned int nmol=NumberMolecule();
         ArrayNumeric<unsigned int> nres;
+        Array2D<ArrayNumeric<unsigned int> > reskey;
         nres.Allocate(nmol);
         NumberResidue(nres);
         for(unsigned int i=0;i<nmodel;++i) {
@@ -73,43 +73,17 @@ namespace mysimulator {
           for(unsigned int j=0;j<nmol;++j)
             M.Model(i).Molecule(j).Allocate(nres[j]);
         }
-        int nl,nowModel,nowMol,nowRes,MolTag,prevMolTag,ResID,prevResID;
-        PDBRecordName PRN;
-        PDBAtomName PAN;
-        nowModel=0;
-        nowMol=-1;
-        prevMolTag=0x0FFFFFFF;
-        prevResID=-1;
-        nowRes=-1;
-        _now=_content.Head();
-        while(1) {
-          nl=LineSize(_now);
-          PRN=RecordName();
-          if(PRN==PDB_ENDMDL) {
-            nowModel++;
-            nowMol=-1;
-            prevMolTag=0x0FFFFFFF;
-          } else if((PRN==PDB_ATOM)&&(!AltLocationFlag())) {
-            PAN=AtomName();
-            ResID=ResidueID();
-            MolTag=ChainTag();
-            if(PAN==UnknownAtom) {
-              fprintf(stderr,"Unknown Atom Type!\n");
-              exit(0);
-            }
-            if(MolTag!=prevMolTag) {
-              ++nowMol;
-              prevMolTag=MolTag;
-              prevResID=-1;
-              nowRes=-1;
-            }
-            if(ResID!=prevResID) {
-              ++nowRes;
-              prevResID=ResID;
-            }
-            //// Add Key4Residue
-          }
-          if(_now[nl]=='\0')   break;
+        reskey.Allocate(nres);
+        for(unsigned int i=0;i<nmol;++i)
+        for(unsigned int j=0;j<nres[i];++j)
+          reskey[i][j].Allocate(NumberResidueKey);
+        GetResidueKey(reskey);
+        PDBResidueName RN;
+        for(unsigned int i=0;i<nmodel;++i)
+        for(unsigned int j=0;j<nmol;++j)
+        for(unsigned int k=0;k<nres[i];++k) {
+          RN=GuessResidueName(reskey[j][k]);
+          M.Model(i).Molecule(j).Residue(k).Allocate(RN);
         }
       }
 
@@ -192,7 +166,7 @@ namespace mysimulator {
         _now=run;
         return (nmodel==0?1:nmodel);
       }
-      unsigned int NumberMolecule() const {
+      unsigned int NumberMolecule() {
         char *run=_now;
         unsigned int nl,nmol;
         nl=0;
@@ -203,13 +177,14 @@ namespace mysimulator {
           PRN=RecordName();
           if(PRN==PDB_TER)  ++nmol;
           else if(PRN==PDB_ENDMDL)  break;
+          if(_now[nl]=='\0')   break;
           _now+=nl+1;
         }
         _now=run;
         return nmol;
       }
       void NumberResidue(ArrayData<unsigned int>& RSz) {
-        assert(Rsz.Size()==NumberMolecule());
+        assert(RSz.Size()==NumberMolecule());
         char *run=_now;
         PDBRecordName PRN;
         unsigned int nl,nmol,nres,tres,rres;
@@ -225,14 +200,41 @@ namespace mysimulator {
             if(tres!=rres)  { ++nres; rres=tres; }
           } else if(PRN==PDB_TER) { RSz[nmol]=nres; ++nmol; nres=0; }
           else if(PRN==PDB_ENDMDL)  break;
+          if(_now[nl]=='\0')   break;
           _now+=nl+1;
         }
+        _now=run;
+      }
+      void GetResidueKey(Array2D<ArrayNumeric<unsigned int> >& key) {
+        char *run=_now;
+        PDBRecordName PRN;
+        PDBAtomName PAN;
+        unsigned int nl,nmol,nres,tres,rres;
+        nl=0;
+        nmol=0;
+        nres=-1;
+        tres=rres=0;
+        while(1) {
+          nl=LineSize(_now);
+          PRN=RecordName();
+          if((PRN==PDB_ATOM)&&(!AltLocationFlag())) {
+            tres=ResidueID();
+            if(tres!=rres)  { ++nres; rres=tres; }
+            PAN=AtomName();
+            if(PAN==UnknownAtom)  fprintf(stderr,"Unknown Atom Type!\n");
+            else  key[nmol][nres][PAN/32]+=(1<<(PAN%32));
+          } else if(PRN==PDB_TER) { ++nmol; nres=0; }
+          else if(PRN==PDB_ENDMDL)  break;
+          if(_now[nl]=='\0')   break;
+          _now+=nl+1;
+        }
+        _now=run;
       }
 
   };
 
   void Clear(PDBFile& F) {
-    Clear(F._content); F._now=NULL; strncpy(_code,"    ",5); }
+    Clear(F._content); F._now=NULL; strncpy(F._code,"    ",5); }
 
 }
 

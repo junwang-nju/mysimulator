@@ -6,7 +6,7 @@
 
 namespace mysimulator {
 
-  static const unsigned int ResidueSize[NumberResidueNames] = {
+  static const unsigned int ResidueSize[NumberResidueName] = {
     10,   24,   14,   12,   11,   17,   15,   7,    18,   19,
     19,   22,   18,   20,   14,   11,   14,   23,   21,   16,
     12,   26,   16,   14,   13,   19,   17,   9,    20,   21,

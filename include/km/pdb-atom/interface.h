@@ -18,7 +18,7 @@ namespace mysimulator {
       PDBAtom() : _tag(UnknownAtom), _loc(), _altLoc(), _bfac(0), _altBFac() {}
       ~PDBAtom() { Clear(*this); }
 
-      bool IsValid() const { return _location.IsValid(); }
+      bool IsValid() const { return _loc.IsValid(); }
 
       void Allocate(PDBAtomName PAN, unsigned int n=1) {
         Clear(*this);
@@ -68,7 +68,7 @@ namespace mysimulator {
   };
 
   void Clear(PDBAtom& A) {
-    _tag=UnknownAtom;
+    A._tag=UnknownAtom;
     Clear(A._loc);
     Clear(A._altLoc);
     A._bfac=0;

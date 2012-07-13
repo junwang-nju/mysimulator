@@ -22,7 +22,7 @@ namespace mysimulator {
       ~PDBObject() { Clear(*this); }
 
       bool IsValid() const {
-        return (strncpy(_code,"    ",4)!=0)&&(_nres>0)&&
+        return (strncmp(_code,"    ",4)!=0)&&(_nres>0)&&
                _model.IsValid()&&_seqIdx.IsValid();
       }
       void Allocate(unsigned int n) { _model.Allocate(n); }

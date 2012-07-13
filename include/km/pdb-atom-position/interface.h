@@ -17,9 +17,9 @@ namespace mysimulator {
       ~PDBAtomPosition() { Clear(*this); }
 
       bool IsValid() const { return true; }
-      void Copy(PDBAtomPosition& P) { _X=P._X; _Y=P._Y; _Z=P._Z; }
+      void Copy(const PDBAtomPosition& P) { _X=P._X; _Y=P._Y; _Z=P._Z; }
       template <typename T>
-      void Copy(ArrayData<T>& A) {
+      void Copy(const ArrayData<T>& A) {
         typedef typename IsFloatPoint<T>::Type  FloatPointCheck;
         assert(A.IsValid()); _X=A[0]; _Y=A[1]; _Z=A[2];
       }

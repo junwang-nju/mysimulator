@@ -3,6 +3,7 @@
 #define _PDB_File_Atom_Name_Map_H_
 
 #include "pdb-atom/name.h"
+#include <cstdlib>
 
 namespace mysimulator {
 
