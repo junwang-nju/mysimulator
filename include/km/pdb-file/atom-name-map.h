@@ -16,6 +16,7 @@ namespace mysimulator {
       PDBAtomNameMapping() : _str(NULL), _name(UnknownAtom) {}
       PDBAtomNameMapping(const char* c,PDBAtomName AN)
         : _str(const_cast<char*>(c)), _name(AN) {}
+      PDBAtomNameMapping(const Type& M) : _str(M._str), _name(M._name) {}
       ~PDBAtomNameMapping() { Clear(*this); }
 
       bool IsValid() const { return (_str!=NULL)&&(_name!=UnknownAtom); }
@@ -30,7 +31,6 @@ namespace mysimulator {
 
     private:
 
-      PDBAtomNameMapping(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
   };

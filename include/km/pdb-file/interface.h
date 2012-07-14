@@ -7,6 +7,7 @@
 #include "pdb-file/record-name.h"
 #include "pdb-file/atom-name-map.h"
 #include <cstdio>
+#include <csdtlib>
 #include <cstring>
 
 namespace mysimulator {
@@ -68,13 +69,37 @@ namespace mysimulator {
         return PDB_NotIMPLEMENTED;
       }
       PDBAtomName AtomName() {
-        assert(RecordName(_now)==PDB_ATOM);
+        assert(RecordName()==PDB_ATOM);
         char str[6];
         SubString(str,_now,12,15);
         for(unsigned int i=0;i<NumberAtomNames;++i)
           if(strncmp(str,AtomMapping[i].NameString(),4)==0)
             return AtomMapping[i].Name();
         return UnknownAtom;
+      }
+      double BFactor() {
+        assert(RecordName()==PDB_ATOM);
+        char str[8];
+        SubString(str,_now,60,65);
+        return atof(str);
+      }
+      double PositionX() {
+        assert(RecordName()=PDB_ATOM);
+        char str[8];
+        SubString(str,_now,30,37);
+        return atof(str);
+      }
+      double PositionY() {
+        assert(RecordName()=PDB_ATOM);
+        char str[8];
+        SubString(str,_now,38,45);
+        return atof(str);
+      }
+      double PositionZ() {
+        assert(RecordName()=PDB_ATOM);
+        char str[8];
+        SubString(str,_now,46,53);
+        return atof(str);
       }
 
   };
