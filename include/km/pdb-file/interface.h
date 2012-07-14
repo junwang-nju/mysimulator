@@ -61,14 +61,14 @@ namespace mysimulator {
       PDBFile(const Type&) {}
       Type& operator=(const Type&) { return *this; }
 
-      PDBRecordName RecordName() {
+      PDBRecordName RecordName() const {
         if(strncmp(_now,"ATOM  ",6)==0)       return PDB_ATOM;
         else if(strncmp(_now,"MODEL ",6)==0)  return PDB_MODEL;
         else if(strncmp(_now,"ENDMDL",6)==0)  return PDB_ENDMDL;
         else if(strncmp(_now,"TER   ",6)==0)  return PDB_TER;
         return PDB_NotIMPLEMENTED;
       }
-      PDBAtomName AtomName() {
+      PDBAtomName AtomName() const {
         assert(RecordName()==PDB_ATOM);
         char str[6];
         SubString(str,_now,12,15);
@@ -77,29 +77,43 @@ namespace mysimulator {
             return AtomMapping[i].Name();
         return UnknownAtom;
       }
-      double BFactor() {
+      double BFactor() const {
         assert(RecordName()==PDB_ATOM);
         char str[8];
         SubString(str,_now,60,65);
         return atof(str);
       }
-      double PositionX() {
-        assert(RecordName()=PDB_ATOM);
+      double PositionX() const {
+        assert(RecordName()==PDB_ATOM);
         char str[8];
         SubString(str,_now,30,37);
         return atof(str);
       }
-      double PositionY() {
-        assert(RecordName()=PDB_ATOM);
+      double PositionY() const {
+        assert(RecordName()==PDB_ATOM);
         char str[8];
         SubString(str,_now,38,45);
         return atof(str);
       }
-      double PositionZ() {
-        assert(RecordName()=PDB_ATOM);
+      double PositionZ() const {
+        assert(RecordName()==PDB_ATOM);
         char str[8];
         SubString(str,_now,46,53);
         return atof(str);
+      }
+      unsigned int ChainTag() const {
+        assert(RecordName()==PDB_ATOM);
+        return static_cast<unsigned int>(_now[21]);
+      }
+      int ResidueID() const {
+        assert(RecordName()==PDB_ATOM);
+        char str[6];
+        SubString(str,_now,22,25);
+        return atoi(str);
+      }
+      bool AltLocationFlag() const {
+        assert(RecordName()==PDB_ATOM);
+        return (_now[16]!=' ')&&(_now[16]!='A');
       }
 
   };
