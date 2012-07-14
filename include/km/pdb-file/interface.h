@@ -3,7 +3,9 @@
 #define _PDB_File_Interface_H_
 
 #include "array/interface.h"
+#include "basic/string.h"
 #include "pdb-file/record-name.h"
+#include "pdb-file/atom-name-map.h"
 #include <cstdio>
 #include <cstring>
 
@@ -64,6 +66,15 @@ namespace mysimulator {
         else if(strncmp(_now,"ENDMDL",6)==0)  return PDB_ENDMDL;
         else if(strncmp(_now,"TER   ",6)==0)  return PDB_TER;
         return PDB_NotIMPLEMENTED;
+      }
+      PDBAtomName AtomName() {
+        assert(RecordName(_now)==PDB_ATOM);
+        char str[6];
+        SubString(str,_now,12,15);
+        for(unsigned int i=0;i<NumberAtomNames;++i)
+          if(strncmp(str,AtomMapping[i].NameString(),4)==0)
+            return AtomMapping[i].Name();
+        return UnknownAtom;
       }
 
   };
