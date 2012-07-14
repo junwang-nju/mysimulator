@@ -12,6 +12,7 @@ namespace mysimulator {
 
       typedef PDBModel    Type;
       friend void Clear(PDBModel&);
+      friend class PDBFile;
 
       PDBModel() : _Molecule() {}
       ~PDBModel() { Clear(*this); }
@@ -29,9 +30,28 @@ namespace mysimulator {
         return _Molecule[i];
       }
 
+      PDBResidue& Residue(unsigned int i,unsigned int k,char w=' ') {
+        return _Molecule[i].Residue(k,_Index(w));
+      }
+      const PDBResidue& Residue(unsigned int i,unsigned int k,char w=' ') const{
+        return _Molecule[i].Residue(k,_Index(w));
+      }
+
     protected:
 
       Array<PDBMolecule>  _Molecule;
+      Array<char> _AFlag;
+
+      unsigned int _Index(char c) const {
+        unsigned int m=_AFlag.Size()+1;
+        if(c==' ') m=0;
+        else {
+          for(unsigned int i=0;i<_AFlag.Size();++i)
+            if(c==_AFlag[i]) { m=i; break; }
+        }
+        if(m>_AFlag.Size()) { fprintf(stderr,"Unknown Alt Flag!\n"); m=0; }
+        return m;
+      }
 
     private:
 

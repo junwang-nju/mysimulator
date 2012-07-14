@@ -65,14 +65,19 @@ namespace mysimulator {
         M.Allocate(nmodel);
         const unsigned int nmol=NumberMolecule();
         ArrayNumeric<unsigned int> nres;
-        Array2D<ArrayNumeric<unsigned int> > reskey;
         nres.Allocate(nmol);
         NumberResidue(nres);
         for(unsigned int i=0;i<nmodel;++i) {
           M.Model(i).Allocate(nmol);
-          for(unsigned int j=0;j<nmol;++j)
+          for(unsigned int j=0;j<nmol;++j) {
             M.Model(i).Molecule(j).Allocate(nres[j]);
+          }
         }
+        LoadAltInfo(M);
+        ///////////////
+
+        /*
+        Array2D<ArrayNumeric<unsigned int> > reskey;
         reskey.Allocate(nres);
         for(unsigned int i=0;i<nmol;++i)
         for(unsigned int j=0;j<nres[i];++j)
@@ -85,6 +90,7 @@ namespace mysimulator {
           RN=GuessResidueName(reskey[j][k]);
           M.Model(i).Molecule(j).Residue(k).Allocate(RN,reskey[j][k].Head());
         }
+        */
       }
 
     protected:
@@ -183,7 +189,7 @@ namespace mysimulator {
         _now=run;
         return nmol;
       }
-      void NumberResidue(ArrayData<unsigned int>& RSz) {
+      void NumberResidue(ArrayData<unsigned int>& RSz) { // scan only 1st-model
         assert(RSz.Size()==NumberMolecule());
         char *run=_now;
         PDBRecordName PRN;
@@ -195,7 +201,7 @@ namespace mysimulator {
         while(1) {
           nl=LineSize(_now);
           PRN=RecordName();
-          if((PRN==PDB_ATOM)&&(!AltLocationFlag())) {
+          if(PRN==PDB_ATOM){
             tres=ResidueID();
             if(tres!=rres)  { ++nres; rres=tres; }
           } else if(PRN==PDB_TER) { RSz[nmol]=nres; ++nmol; nres=0; }
@@ -205,6 +211,81 @@ namespace mysimulator {
         }
         _now=run;
       }
+      void LoadAltInfo(PDBObject& M) {
+        char ALFSet[256];
+        unsigned int NSet;
+        unsigned int nl,nowModel,nowSet;
+        bool isHaveEndMDL;
+        char ALF;
+        PDBRecordName PRN;
+        nowModel=0;
+        NSet=0;
+        _now=_content.Head();
+        isHaveEndMDL=false;
+        while(1) {
+          nl=LineSize(_now);
+          PRN=RecordName();
+          if(PRN==PDB_ENDMDL) {
+            isHaveEndMDL=true;
+            Clear(M.Model(nowModel)._AFlag);
+            if(NSet>0)  {
+              M.Model(nowModel)._AFlag.Allocate(NSet);
+              for(unsigned int i=0;i<NSet;++i)
+                M.Model(nowModel)._AFlag[i]=ALFSet[i];
+            }
+            ++nowModel;
+            NSet=0;
+          } else if(PRN==PDB_ATOM) {
+            ALF=AltLocationFlag();
+            if(ALF!=' ') {
+              nowSet=257;
+              for(unsigned int i=0;i<NSet;++i)
+                if(ALF==ALFSet[i])  { nowSet=i; break; }
+              if(nowSet>256) { ALFSet[NSet]=ALF;  ++NSet; }
+            }
+          }
+          if(_now[nl]=='\0')   break;
+          _now+=nl+1;
+        }
+        if(!isHaveEndMDL) {
+          Clear(M.Model(nowModel)._AFlag);
+          if(NSet>0)  {
+            M.Model(nowModel)._AFlag.Allocate(NSet);
+            for(unsigned int i=0;i<NSet;++i)
+              M.Model(nowModel)._AFlag[i]=ALFSet[i];
+          }
+        }
+        bool isHaveAlt;
+        unsigned int nowMol,nowRes,tRes,rRes,n;
+        nowModel=0;
+        nowMol=0;
+        nowRes=0;
+        rRes=0;
+        isHaveAlt=false;
+        _now=_content.Head();
+        while(1) {
+          nl=LineSize(_now);
+          PRN=RecordName();
+          if(PRN==PDB_ENDMDL) { ++nowModel; nowMol=0; nowRes=0; }
+          else if(PRN==PDB_TER) { ++nowMol; nowRes=0; }
+          else if(PRN==PDB_ATOM) {
+            tRes=ResidueID();
+            if(rRes==0) rRes=tRes;
+            if(tRes!=rRes) {
+              n=(isHaveAlt?M.Model(nowModel)._AFlag.Size():1);
+              M.Model(nowModel).Molecule(nowMol).AltResidue(nowRes).Allocate(n);
+              isHaveAlt=false;
+              ++nowRes;
+              rRes=tRes;
+            }
+            isHaveAlt=isHaveAlt||(AltLocationFlag()!=' ');
+          }
+          if(_now[nl]=='\0')   break;
+          _now+=nl+1;
+        }
+        _now=_content.Head();
+      }
+      /*
       void GetResidueKey(Array2D<ArrayNumeric<unsigned int> >& key) {
         char *run=_now;
         PDBRecordName PRN;
@@ -230,35 +311,7 @@ namespace mysimulator {
         }
         _now=run;
       }
-      void AltLocationNumber(ArrayData<unsigned int>& ALN) {
-        char ALFSet[256];
-        unsigned int NSet;
-        ALN.Fill(0U);
-        char *run=_now;
-        unsigned int nl,nowModel,nowSet;
-        char ALF;
-        PDBRecordName PRN;
-        nowModel=0;
-        NSet=0;
-        while(1) {
-          nl=LineSize(_now);
-          PRN=RecordName();
-          if(PRN==PDB_ENDMDL) {
-            ALN[nowModel]=(NSet>0?NSet:1); ++nowModel; NSet=0;
-          } else if(PRN==PDB_ATOM) {
-            ALF=AltLocationFlag();
-            if(ALF!=' ') {
-              nowSet=257;
-              for(unsigned int i=0;i<NSet;i++)
-                if(ALF==ALFSet[i]) { nowSet=i; break; }
-              if(nowSet>256) { ALFSet[NSet]=ALF;  ++NSet; }
-            }
-          }
-          if(_now[nl]=='\0')   break;
-          _now+=nl+1;
-        }
-        _now=run;
-      }
+      */
 
   };
 

@@ -2,7 +2,7 @@
 #ifndef _PDB_Molecule_Interface_H_
 #define _PDB_Molecule_Interface_H_
 
-#include "pdb-residue/interface.h"
+#include "pdb-alt-residue/interface.h"
 
 namespace mysimulator {
 
@@ -20,13 +20,21 @@ namespace mysimulator {
 
       void Allocate(unsigned int n) { Clear(*this); _Residue.Allocate(n); }
 
-      PDBResidue& Residue(unsigned int i) { return _Residue[i]; }
-      const PDBResidue& Residue(unsigned int i) const { return _Residue[i]; }
+      PDBAltResidue& AltResidue(unsigned int i) { return _Residue[i]; }
+      PDBResidue& Residue(unsigned int i, unsigned int w=0) {
+        return _Residue[i].WorkResidue(w);
+      }
+      const PDBAltResidue& AltResidue(unsigned int i) const {
+        return _Residue[i];
+      }
+      const PDBResidue& Residue(unsigned int i, unsigned int w=0) const {
+        return _Residue[i].WorkResidue(w);
+      }
       const unsigned int Tag() const { return _tag; }
 
     protected:
 
-      Array<PDBResidue> _Residue;
+      Array<PDBAltResidue> _Residue;
       unsigned int _tag;
 
     private:
