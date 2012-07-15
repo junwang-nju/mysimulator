@@ -82,7 +82,7 @@ namespace mysimulator {
       10,         //  Ile
       11,         //  Leu
       12,         //  Lys
-      14,         //  Met
+      13,         //  Met
       15,         //  Phe
       16,         //  Pro
       17,         //  Ser
@@ -102,7 +102,7 @@ namespace mysimulator {
       32,         //  ctIle
       33,         //  ctLeu
       34,         //  ctLys
-      36,         //  ctMet
+      35,         //  ctMet
       37,         //  ctPhe
       38,         //  ctPro
       39,         //  ctSer
@@ -146,6 +146,18 @@ namespace mysimulator {
     isCover=true;
     for(unsigned int i=0;i<NumberResidueKey;++i)
       if((key[i]|mask[i])^mask[i]) { isCover=false; break; }
+    if(!isCover&&(RN==8)) {
+      isCover=true;
+      const unsigned int *mask2=ResidueKeyLibrary[DefaultKeyID[RN]+1];
+      for(unsigned int i=0;i<NumberResidueKey;++i)
+        if((key[i]|mask2[i])^mask2[i]) { isCover=false; break; }
+    }
+    if(!isCover&&(RN==12)) {
+      isCover=true;
+      const unsigned int *mask2=ResidueKeyLibrary[DefaultKeyID[RN]+1];
+      for(unsigned int i=0;i<NumberResidueKey;++i)
+        if((key[i]|mask2[i])^mask2[i]) { isCover=false; break; }
+    }
     return isCover;
   }
 

@@ -39,6 +39,22 @@ namespace mysimulator {
           if(key!=NULL)
             for(unsigned int i=0;i<NumberResidueKey;++i)
               if((key[i]|mask[i])^mask[i]) { isCover=false; break; }
+          if(!isCover&&((RN==8)||(RN==28)||(RN==48))) {
+            isCover=true;
+            mask=
+              const_cast<unsigned int*>(ResidueKeyLibrary[DefaultKeyID[RN]+1]);
+            for(unsigned int i=0;i<NumberResidueKey;++i)
+              if((key[i]|mask[i])^mask[i]) { isCover=false; break; }
+          }
+          if(!isCover&&((RN==12)||(RN==32))) {
+            isCover=true;
+            mask=
+              const_cast<unsigned int*>(ResidueKeyLibrary[DefaultKeyID[RN]+1]);
+            for(unsigned int i=0;i<NumberResidueKey;++i)
+              if((key[i]|mask[i])^mask[i]) { isCover=false; break; }
+          }
+          if(key!=NULL);
+            for(unsigned int i=0;i<NumberResidueKey;++i)
           assert(isCover);
           if(key!=NULL) mask=const_cast<unsigned int*>(key);
           unsigned int sz=0;
@@ -71,6 +87,8 @@ namespace mysimulator {
       const unsigned int Index() const {
         assert(_ID>-1); return static_cast<unsigned int>(_ID);
       }
+
+      const unsigned int NumberAtom() const { return _AtomName.Size(); }
 
     protected:
 
