@@ -77,6 +77,7 @@ namespace mysimulator {
         LoadMoleculeTag(M);
         LoadAltInfo(M);
         LoadResidue(M);
+        LoadAtom(M);
       }
 
     protected:
@@ -344,6 +345,7 @@ namespace mysimulator {
                 RN[i]=static_cast<PDBResidueName>(RN[i]+20);
               M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(RN[i],
                                                             key[i].Head());
+              M.Model(nMod).Residue(nMol,nRes,ALF)._ID=rRes;
             }
             ++nMol; nRes=0; rRes=0; key.BlasFill(0U);
             for(unsigned int i=0;i<key.Size();i++) RN[i]=UnknownResidue;
@@ -361,6 +363,7 @@ namespace mysimulator {
                 }
                 M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(RN[i],
                                                               key[i].Head());
+                M.Model(nMod).Residue(nMol,nRes,ALF)._ID=rRes;
               }
               ++nRes;
               rRes=tRes;
@@ -381,6 +384,63 @@ namespace mysimulator {
                 key[n][PAN/32]|=(1<<(PAN%32));
                 RN[n]=ResidueName();
               }
+            }
+          }
+          if(_now[nl]=='\0')   break;
+          _now+=nl+1;
+        }
+        _now=_content.Head();
+      }
+      void LoadAtom(PDBObject& M) {
+        char ALF;
+        unsigned int nl,nMod,nMol,nRes,tRes,rRes,nAlt;
+        PDBRecordName PRN;
+        PDBAtomName PAN;
+        nMod=0;
+        nMol=0;
+        nRes=0;
+        rRes=0;
+        nAlt=M.Model(nMod).Molecule(nMol).AltResidue(nRes)._AResidue.Size();
+        _now=_content.Head();
+        while(1) {
+          nl=LineSize(_now);
+          PRN=RecordName();
+          if(PRN==PDB_ENDMDL) { ++nMod; nMol=0; nRes=0; rRes=0; }
+          else if(PRN==PDB_TER) { ++nMol; nRes=0; rRes=0; }
+          else if(PRN==PDB_ATOM) {
+            tRes=ResidueID();
+            if(rRes==0) {
+              rRes=tRes;
+              nAlt=
+                M.Model(nMod).Molecule(nMol).AltResidue(nRes)._AResidue.Size();
+            }
+            if(rRes!=tRes) {
+              ++nRes; rRes=tRes;
+              nAlt=
+                M.Model(nMod).Molecule(nMol).AltResidue(nRes)._AResidue.Size();
+            }
+            ALF=AltLocationFlag();
+            PAN=AtomName();
+            if(ALF==' ') {
+              for(unsigned int i=0;i<nAlt;++i) {
+                M.Model(nMod).Molecule(nMol).AltResidue(nRes).WorkResidue(i).
+                  Atom(PAN).BFactor()=BFactor();
+                M.Model(nMod).Molecule(nMol).AltResidue(nRes).WorkResidue(i).
+                  Atom(PAN).Location().X()=PositionX();
+                M.Model(nMod).Molecule(nMol).AltResidue(nRes).WorkResidue(i).
+                  Atom(PAN).Location().Y()=PositionY();
+                M.Model(nMod).Molecule(nMol).AltResidue(nRes).WorkResidue(i).
+                  Atom(PAN).Location().Z()=PositionZ();
+              }
+            } else {
+              M.Model(nMod).Residue(nMol,nRes,ALF).Atom(PAN).BFactor()=
+                BFactor();
+              M.Model(nMod).Residue(nMol,nRes,ALF).Atom(PAN).Location().X()=
+                PositionX();
+              M.Model(nMod).Residue(nMol,nRes,ALF).Atom(PAN).Location().Y()=
+                PositionY();
+              M.Model(nMod).Residue(nMol,nRes,ALF).Atom(PAN).Location().Z()=
+                PositionZ();
             }
           }
           if(_now[nl]=='\0')   break;

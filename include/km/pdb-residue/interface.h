@@ -14,6 +14,7 @@ namespace mysimulator {
 
       typedef PDBResidue    Type;
       friend void Clear(PDBResidue&);
+      friend class PDBFile;
 
       PDBResidue() : _tag(UnknownResidue), _Atom(), _AtomName(), _ID(-1) {}
       ~PDBResidue() { Clear(*this); }
