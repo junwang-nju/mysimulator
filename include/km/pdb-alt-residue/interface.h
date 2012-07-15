@@ -21,10 +21,14 @@ namespace mysimulator {
       void Allocate(unsigned int n) { Clear(*this); _AResidue.Allocate(n); }
 
       PDBResidue& WorkResidue(unsigned int i) {
+        if(i>=_AResidue.Size())
+          fprintf(stderr,"NO this AltLoc! Using Default\n");
         const unsigned int m=(i>=_AResidue.Size()?0:i);
         return _AResidue[m];
       }
       const PDBResidue& WorkResidue(unsigned int i) const {
+        if(i>=_AResidue.Size())
+          fprintf(stderr,"NO this AltLoc! Using Default\n");
         const unsigned int m=(i>=_AResidue.Size()?0:i);
         return _AResidue[m];
       }
