@@ -46,6 +46,8 @@ namespace mysimulator {
         for(unsigned int i=0;i<n;++i) _seqIdx._ldata[i]=i;
       }
 
+      const unsigned int NumberModel() const { return _model.Size(); }
+
     protected:
 
       char _code[5];

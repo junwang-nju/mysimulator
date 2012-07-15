@@ -36,6 +36,8 @@ namespace mysimulator {
         return _Molecule[i].Residue(k,_Index(w));
       }
 
+      const unsigned int NumberMolecule() const { return _Molecule.Size(); }
+
     protected:
 
       Array<PDBMolecule>  _Molecule;

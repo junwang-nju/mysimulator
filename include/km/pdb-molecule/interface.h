@@ -33,6 +33,8 @@ namespace mysimulator {
       }
       const unsigned int Tag() const { return _tag; }
 
+      const unsigned int NumberResidue() const { return _Residue.Size(); }
+
     protected:
 
       Array<PDBAltResidue> _Residue;

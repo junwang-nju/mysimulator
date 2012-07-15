@@ -33,6 +33,8 @@ namespace mysimulator {
         return _AResidue[m];
       }
 
+      const unsigned int NumberAltLoc() const { return _AResidue.Size(); }
+
     protected:
 
       Array<PDBResidue> _AResidue;
