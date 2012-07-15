@@ -68,6 +68,8 @@ namespace mysimulator {
         ArrayNumeric<unsigned int> nres;
         nres.Allocate(nmol);
         NumberResidue(nres);
+        M._seqIdx.Allocate(nres);
+        M.BuildIndex();
         for(unsigned int i=0;i<nmodel;++i) {
           M.Model(i).Allocate(nmol);
           for(unsigned int j=0;j<nmol;++j) {

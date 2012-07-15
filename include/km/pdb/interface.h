@@ -39,6 +39,12 @@ namespace mysimulator {
         assert(_seqIdx.IsValid());
         return _seqIdx[i][j];
       }
+      void BuildIndex() {
+        assert(_seqIdx.IsValid());
+        const unsigned int n=_seqIdx.NumElements();
+        _nres=n;
+        for(unsigned int i=0;i<n;++i) _seqIdx._ldata[i]=i;
+      }
 
     protected:
 

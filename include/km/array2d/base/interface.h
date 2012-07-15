@@ -29,6 +29,7 @@ namespace mysimulator {
                                           unsigned int);
       template <typename T1,template<typename> class AF>
       friend class Array2DBase;
+      friend class PDBObject;
 
       Array2DBase() : ParentType(), _ldata() {}
       ~Array2DBase() { Clear(*this); }
