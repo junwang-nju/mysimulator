@@ -317,7 +317,8 @@ namespace mysimulator {
           } else if(PRN==PDB_TER) {
             n=M.Model(nMod).Molecule(nMol).AltResidue(nRes)._AResidue.Size();
             for(unsigned int i=0;i<n;++i) {
-              ALF=M.Model(nMod)._AFlag[i];
+              if(M.Model(nMod)._AFlag.IsValid()) ALF=M.Model(nMod)._AFlag[i];
+              else ALF=' ';
               M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(
                   static_cast<PDBResidueName>(RN[i]+20),key[i].Head());
             }
@@ -329,7 +330,8 @@ namespace mysimulator {
             if(tRes!=rRes) {
               n=M.Model(nMod).Molecule(nMol).AltResidue(nRes)._AResidue.Size();
               for(unsigned int i=0;i<n;++i) {
-                ALF=M.Model(nMod)._AFlag[i];
+                if(M.Model(nMod)._AFlag.IsValid()) ALF=M.Model(nMod)._AFlag[i];
+                else ALF=' ';
                 if(nRes==0) RN[i]=static_cast<PDBResidueName>(RN[i]+40);
                 M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(RN[i],
                                                               key[i].Head());
