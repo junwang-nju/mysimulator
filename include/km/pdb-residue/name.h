@@ -71,37 +71,37 @@ namespace mysimulator {
 
   int DefaultKeyID[] = {
       0,          //  Ala
-      4,          //  Arg
-      6,          //  Asn
-      8,          //  Asp
-      10,         //  Cys
-      11,         //  Gln
-      13,         //  Glu
-      17,         //  Gly
-      20,         //  His
-      22,         //  Ile
-      24,         //  Leu
-      26,         //  Lys
-      30,         //  Met
-      35,         //  Phe
-      37,         //  Pro
-      39,         //  Ser
-      41,         //  Thr
-      43,         //  Trp
-      45,         //  Tyr
-      47,         //  Val
-      2,          //  ctAla
+      1,          //  Arg
+      2,          //  Asn
+      3,          //  Asp
+      4,          //  Cys
+      5,          //  Gln
+      6,          //  Glu
+      7,          //  Gly
+      9,          //  His
+      10,         //  Ile
+      11,         //  Leu
+      12,         //  Lys
+      14,         //  Met
+      15,         //  Phe
+      16,         //  Pro
+      17,         //  Ser
+      18,         //  Thr
+      19,         //  Trp
+      20,         //  Tyr
+      21,         //  Val
+      22,         //  ctAla
       -1,         //  ctArg
-      -1,         //  ctAsn
+      23,         //  ctAsn
       -1,         //  ctAsp
       -1,         //  ctCys
       -1,         //  ctGln
-      15,         //  ctGlu
-      19,         //  ctGly
+      24,         //  ctGlu
+      25,         //  ctGly
       -1,         //  ctHis
       -1,         //  ctIle
       -1,         //  ctLeu
-      28,         //  ctLys
+      26,         //  ctLys
       -1,         //  ctMet
       -1,         //  ctPhe
       -1,         //  ctPro
@@ -110,7 +110,7 @@ namespace mysimulator {
       -1,         //  ctTrp
       -1,         //  ctTyr
       -1,         //  ctVal
-      -1,          //  ntAla
+      -1,         //  ntAla
       -1,         //  ntArg
       -1,         //  ntAsn
       -1,         //  ntAsp
@@ -122,14 +122,14 @@ namespace mysimulator {
       -1,         //  ntIle
       -1,         //  ntLeu
       -1,         //  ntLys
-      33,         //  ntMet
+      27,         //  ntMet
       -1,         //  ntPhe
       -1,         //  ntPro
       -1,         //  ntSer
-      -1,         //  ntThr
+      28,         //  ntThr
       -1,         //  ntTrp
       -1,         //  ntTyr
-      -1,         //  ntVal
+      -1          //  ntVal
   };
 
 }

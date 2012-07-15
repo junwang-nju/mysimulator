@@ -24,32 +24,38 @@ namespace mysimulator {
                (_ID!=-1);
       }
 
-      void Allocate(PDBResidueName& RN, const unsigned int* key=NULL) {
+      void Allocate(PDBResidueName RN, const unsigned int* key=NULL) {
         assert(RN!=UnknownResidue);
         Clear(*this);
         _tag=RN;
         _Atom.Allocate(NumberAtomNames);
         for(unsigned int i=0;i<NumberAtomNames;++i) _Atom[i]=NULL;
         unsigned int* mask=NULL;
-        if(key==NULL) {
-          if(DefaultKeyID[RN]==-1) fprintf(stderr,"Residue NOT Implemented!\n");
-          else
-            mask=const_cast<unsigned int*>(ResidueKeyLibrary[DefaultKeyID[RN]]);
-        } else mask=const_cast<unsigned int*>(key);
-        unsigned int sz=0;
-        for(unsigned int i=0;i<NumberAtomNames;++i)
-          if(mask[i/32]&(1<<(i%32))) {
-            _Atom[i]=new PDBAtom;
-            _Atom[i]->Allocate(static_cast<PDBAtomName>(i));
-            ++sz;
-          }
-        _AtomName.Allocate(sz);
-        sz=0;
-        for(unsigned int i=0;i<NumberAtomNames;++i)
-          if(mask[i/32]&(1<<(i%32))) {
-            _AtomName[sz]=static_cast<PDBAtomName>(i);
-            ++sz;
-          }
+        if(DefaultKeyID[RN]==-1) fprintf(stderr,"Residue NOT Implemented!\n");
+        else {
+          mask=const_cast<unsigned int*>(ResidueKeyLibrary[DefaultKeyID[RN]]);
+          bool isCover;
+          isCover=true;
+          if(key!=NULL)
+            for(unsigned int i=0;i<NumberResidueKey;++i)
+              if((key[i]|mask[i])^mask[i]) { isCover=false; break; }
+          assert(isCover);
+          if(key!=NULL) mask=const_cast<unsigned int*>(key);
+          unsigned int sz=0;
+          for(unsigned int i=0;i<NumberAtomNames;++i)
+            if(mask[i/32]&(1<<(i%32))) {
+              _Atom[i]=new PDBAtom;
+              _Atom[i]->Allocate(static_cast<PDBAtomName>(i));
+              ++sz;
+            }
+          _AtomName.Allocate(sz);
+          sz=0;
+          for(unsigned int i=0;i<NumberAtomNames;++i)
+            if(mask[i/32]&(1<<(i%32))) {
+              _AtomName[sz]=static_cast<PDBAtomName>(i);
+              ++sz;
+            }
+        }
       }
 
       const PDBResidueName Name() const { return _tag; }

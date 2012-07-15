@@ -12,6 +12,7 @@ namespace mysimulator {
 
       typedef PDBAltResidue Type;
       friend void Clear(PDBAltResidue&);
+      friend class PDBFile;
 
       PDBAltResidue() : _AResidue() {}
       ~PDBAltResidue() { Clear(*this); }

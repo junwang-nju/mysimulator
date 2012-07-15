@@ -4,8 +4,9 @@
 
 #include "pdb-file/record-name.h"
 #include "pdb-file/atom-name-map.h"
+#include "pdb-file/residue-name-map.h"
 #include "pdb/interface.h"
-#include "pdb-residue/guess-residue-name.h"
+#include "array2d-numeric/interface.h"
 #include "basic/string.h"
 #include <cstdio>
 #include <cstring>
@@ -74,23 +75,7 @@ namespace mysimulator {
           }
         }
         LoadAltInfo(M);
-        ///////////////
-
-        /*
-        Array2D<ArrayNumeric<unsigned int> > reskey;
-        reskey.Allocate(nres);
-        for(unsigned int i=0;i<nmol;++i)
-        for(unsigned int j=0;j<nres[i];++j)
-          reskey[i][j].Allocate(NumberResidueKey);
-        GetResidueKey(reskey);
-        PDBResidueName RN;
-        for(unsigned int i=0;i<nmodel;++i)
-        for(unsigned int j=0;j<nmol;++j)
-        for(unsigned int k=0;k<nres[i];++k) {
-          RN=GuessResidueName(reskey[j][k]);
-          M.Model(i).Molecule(j).Residue(k).Allocate(RN,reskey[j][k].Head());
-        }
-        */
+        LoadResidue(M);
       }
 
     protected:
@@ -119,6 +104,15 @@ namespace mysimulator {
           if(strncmp(str,AtomMapping[i].NameString(),4)==0)
             return AtomMapping[i].Name();
         return UnknownAtom;
+      }
+      PDBResidueName ResidueName() const {
+        assert(RecordName()==PDB_ATOM);
+        char str[4];
+        SubString(str,_now,17,19);
+        for(unsigned int i=0;i<PDBResidueMappingSize;++i)
+          if(strncmp(str,ResidueMapping[i].NameString(),3)==0)
+            return ResidueMapping[i].Name();
+        return UnknownResidue;
       }
       double BFactor() const {
         assert(RecordName()==PDB_ATOM);
@@ -267,8 +261,12 @@ namespace mysimulator {
           nl=LineSize(_now);
           PRN=RecordName();
           if(PRN==PDB_ENDMDL) { ++nowModel; nowMol=0; nowRes=0; }
-          else if(PRN==PDB_TER) { ++nowMol; nowRes=0; }
-          else if(PRN==PDB_ATOM) {
+          else if(PRN==PDB_TER) {
+            n=(isHaveAlt?M.Model(nowModel)._AFlag.Size():1);
+            M.Model(nowModel).Molecule(nowMol).AltResidue(nowRes).Allocate(n);
+            isHaveAlt=false;
+            ++nowMol; nowRes=0; rRes=0;
+          } else if(PRN==PDB_ATOM) {
             tRes=ResidueID();
             if(rRes==0) rRes=tRes;
             if(tRes!=rRes) {
@@ -285,33 +283,83 @@ namespace mysimulator {
         }
         _now=_content.Head();
       }
-      /*
-      void GetResidueKey(Array2D<ArrayNumeric<unsigned int> >& key) {
-        char *run=_now;
+
+      void LoadResidue(PDBObject& M) {
+        Array2DNumeric<unsigned int> key;
+        char ALF;
+        unsigned int nl,nMod,nMol,nRes,tRes,rRes,n;
         PDBRecordName PRN;
         PDBAtomName PAN;
-        unsigned int nl,nmol,nres,tres,rres;
+        Array<PDBResidueName> RN;
         nl=0;
-        nmol=0;
-        nres=-1;
-        tres=rres=0;
+        nMod=0;
+        nMol=0;
+        nRes=0;
+        rRes=0;
+        n=M.Model(nMod)._AFlag.Size();
+        n=(n==0?1:n);
+        key.Allocate(n,NumberResidueKey);
+        key.BlasFill(0U);
+        RN.Allocate(n);
+        for(unsigned int i=0;i<n;i++) RN[i]=UnknownResidue;
+        _now=_content.Head();
         while(1) {
           nl=LineSize(_now);
           PRN=RecordName();
-          if((PRN==PDB_ATOM)&&(!AltLocationFlag())) {
-            tres=ResidueID();
-            if(tres!=rres)  { ++nres; rres=tres; }
+          if(PRN==PDB_ENDMDL) { ++nMod; nMol=0; nRes=0; rRes=0; Clear(key); }
+          else if(PRN==PDB_MODEL) {
+            n=M.Model(nMod)._AFlag.Size();
+            n=(n==0?1:n);
+            key.Allocate(n,NumberResidueKey);
+            key.BlasFill(0U);
+            RN.Allocate(n);
+            for(unsigned int i=0;i<n;i++) RN[i]=UnknownResidue;
+          } else if(PRN==PDB_TER) {
+            n=M.Model(nMod).Molecule(nMol).AltResidue(nRes)._AResidue.Size();
+            for(unsigned int i=0;i<n;++i) {
+              ALF=M.Model(nMod)._AFlag[i];
+              M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(
+                  static_cast<PDBResidueName>(RN[i]+20),key[i].Head());
+            }
+            ++nMol; nRes=0; rRes=0; key.BlasFill(0U);
+            for(unsigned int i=0;i<key.Size();i++) RN[i]=UnknownResidue;
+          } else if(PRN==PDB_ATOM) {
+            tRes=ResidueID();
+            if(rRes==0)   rRes=tRes;
+            if(tRes!=rRes) {
+              n=M.Model(nMod).Molecule(nMol).AltResidue(nRes)._AResidue.Size();
+              for(unsigned int i=0;i<n;++i) {
+                ALF=M.Model(nMod)._AFlag[i];
+                if(nRes==0) RN[i]=static_cast<PDBResidueName>(RN[i]+40);
+                M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(RN[i],
+                                                              key[i].Head());
+              }
+              ++nRes;
+              rRes=tRes;
+              key.BlasFill(0U);
+              for(unsigned int i=0;i<key.Size();i++) RN[i]=UnknownResidue;
+            }
             PAN=AtomName();
             if(PAN==UnknownAtom)  fprintf(stderr,"Unknown Atom Type!\n");
-            else  key[nmol][nres][PAN/32]+=(1<<(PAN%32));
-          } else if(PRN==PDB_TER) { ++nmol; nres=0; }
-          else if(PRN==PDB_ENDMDL)  break;
+            else {
+              ALF=AltLocationFlag();
+              if(ALF==' ')
+                for(unsigned int i=0;i<key.Size();++i) {
+                  key[i][PAN/32]|=(1<<(PAN%32));
+                  if(RN[i]==UnknownResidue) RN[i]=ResidueName();
+                }
+              else {
+                n=M.Model(nMod)._Index(ALF);
+                key[n][PAN/32]|=(1<<(PAN%32));
+                RN[n]=ResidueName();
+              }
+            }
+          }
           if(_now[nl]=='\0')   break;
           _now+=nl+1;
         }
-        _now=run;
+        _now=_content.Head();
       }
-      */
 
   };
 
