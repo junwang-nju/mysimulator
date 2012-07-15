@@ -4,7 +4,6 @@
 
 #include "pdb-residue/name.h"
 #include "pdb-atom/interface.h"
-#include "pdb-residue/key-library.h"
 #include <cstdio>
 
 namespace mysimulator {
@@ -30,10 +29,10 @@ namespace mysimulator {
         _tag=RN;
         _Atom.Allocate(NumberAtomNames);
         for(unsigned int i=0;i<NumberAtomNames;++i) _Atom[i]=NULL;
-        unsigned int* mask=NULL;
         if(DefaultKeyID[RN]==-1) fprintf(stderr,"Residue NOT Implemented!\n");
         else {
-          mask=const_cast<unsigned int*>(ResidueKeyLibrary[DefaultKeyID[RN]]);
+          unsigned int *mask=
+            const_cast<unsigned int*>(ResidueKeyLibrary[DefaultKeyID[RN]]);
           bool isCover;
           isCover=true;
           if(key!=NULL)

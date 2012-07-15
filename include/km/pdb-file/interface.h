@@ -74,6 +74,7 @@ namespace mysimulator {
             M.Model(i).Molecule(j).Allocate(nres[j]);
           }
         }
+        LoadMoleculeTag(M);
         LoadAltInfo(M);
         LoadResidue(M);
       }
@@ -182,6 +183,26 @@ namespace mysimulator {
         }
         _now=run;
         return nmol;
+      }
+      void LoadMoleculeTag(PDBObject& M) {
+        unsigned int nl,nMol,nTag;
+        PDBRecordName PRN;
+        nl=0;
+        nMol=0;
+        _now=_content.Head();
+        while(1) {
+          nl=LineSize(_now);
+          PRN=RecordName();
+          if(PRN==PDB_ENDMDL) break;
+          else if(PRN==PDB_TER) { M.Model(0).Molecule(nMol)._tag=nTag; ++nMol; }
+          else if(PRN==PDB_ATOM) nTag=ChainTag();
+          if(_now[nl]=='\0')   break;
+          _now+=nl+1;
+        }
+        _now=_content.Head();
+        for(unsigned int i=1;i<M._model.Size();++i)
+        for(unsigned int j=0;j<M.Model(i)._Molecule.Size();++j)
+          M.Model(i).Molecule(j)._tag=M.Model(0).Molecule(j).Tag();
       }
       void NumberResidue(ArrayData<unsigned int>& RSz) { // scan only 1st-model
         assert(RSz.Size()==NumberMolecule());
@@ -319,8 +340,10 @@ namespace mysimulator {
             for(unsigned int i=0;i<n;++i) {
               if(M.Model(nMod)._AFlag.IsValid()) ALF=M.Model(nMod)._AFlag[i];
               else ALF=' ';
-              M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(
-                  static_cast<PDBResidueName>(RN[i]+20),key[i].Head());
+              if(!IsMatchResidue(RN[i],key[i].Head()))
+                RN[i]=static_cast<PDBResidueName>(RN[i]+20);
+              M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(RN[i],
+                                                            key[i].Head());
             }
             ++nMol; nRes=0; rRes=0; key.BlasFill(0U);
             for(unsigned int i=0;i<key.Size();i++) RN[i]=UnknownResidue;
@@ -332,7 +355,10 @@ namespace mysimulator {
               for(unsigned int i=0;i<n;++i) {
                 if(M.Model(nMod)._AFlag.IsValid()) ALF=M.Model(nMod)._AFlag[i];
                 else ALF=' ';
-                if(nRes==0) RN[i]=static_cast<PDBResidueName>(RN[i]+40);
+                if(nRes==0) {
+                  if(!IsMatchResidue(RN[i],key[i].Head()))
+                    RN[i]=static_cast<PDBResidueName>(RN[i]+40);
+                }
                 M.Model(nMod).Residue(nMol,nRes,ALF).Allocate(RN[i],
                                                               key[i].Head());
               }

@@ -12,6 +12,7 @@ namespace mysimulator {
 
       typedef PDBMolecule   Type;
       friend void Clear(PDBMolecule&);
+      friend class PDBFile;
 
       PDBMolecule() : _Residue(), _tag(0) {}
       ~PDBMolecule() { Clear(*this); }

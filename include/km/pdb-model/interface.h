@@ -22,7 +22,6 @@ namespace mysimulator {
       void Allocate(unsigned int n) { Clear(*this); _Molecule.Allocate(n); }
 
       PDBMolecule& Molecule(unsigned int i) {
-        assert(_Molecule.IsValid());
         return _Molecule[i];
       }
       const PDBMolecule& Molecule(unsigned int i) const {

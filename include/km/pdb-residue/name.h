@@ -78,7 +78,7 @@ namespace mysimulator {
       5,          //  Gln
       6,          //  Glu
       7,          //  Gly
-      9,          //  His
+      8,          //  His
       10,         //  Ile
       11,         //  Leu
       12,         //  Lys
@@ -91,46 +91,63 @@ namespace mysimulator {
       20,         //  Tyr
       21,         //  Val
       22,         //  ctAla
-      -1,         //  ctArg
-      23,         //  ctAsn
-      -1,         //  ctAsp
-      -1,         //  ctCys
-      -1,         //  ctGln
-      24,         //  ctGlu
-      25,         //  ctGly
-      -1,         //  ctHis
-      -1,         //  ctIle
-      -1,         //  ctLeu
-      26,         //  ctLys
-      -1,         //  ctMet
-      -1,         //  ctPhe
-      -1,         //  ctPro
-      -1,         //  ctSer
-      -1,         //  ctThr
-      -1,         //  ctTrp
-      -1,         //  ctTyr
-      -1,         //  ctVal
-      -1,         //  ntAla
-      -1,         //  ntArg
-      -1,         //  ntAsn
-      -1,         //  ntAsp
-      -1,         //  ntCys
-      -1,         //  ntGln
-      -1,         //  ntGlu
-      -1,         //  ntGly
-      -1,         //  ntHis
-      -1,         //  ntIle
-      -1,         //  ntLeu
-      -1,         //  ntLys
-      27,         //  ntMet
-      -1,         //  ntPhe
+      23,         //  ctArg
+      24,         //  ctAsn
+      25,         //  ctAsp
+      26,         //  ctCys
+      27,         //  ctGln
+      28,         //  ctGlu
+      29,         //  ctGly
+      30,         //  ctHis
+      32,         //  ctIle
+      33,         //  ctLeu
+      34,         //  ctLys
+      36,         //  ctMet
+      37,         //  ctPhe
+      38,         //  ctPro
+      39,         //  ctSer
+      40,         //  ctThr
+      41,         //  ctTrp
+      42,         //  ctTyr
+      43,         //  ctVal
+      44,         //  ntAla
+      45,         //  ntArg
+      46,         //  ntAsn
+      47,         //  ntAsp
+      48,         //  ntCys
+      49,         //  ntGln
+      50,         //  ntGlu
+      51,         //  ntGly
+      52,         //  ntHis
+      54,         //  ntIle
+      55,         //  ntLeu
+      56,         //  ntLys
+      57,         //  ntMet
+      58,         //  ntPhe
       -1,         //  ntPro
-      -1,         //  ntSer
-      28,         //  ntThr
-      -1,         //  ntTrp
-      -1,         //  ntTyr
-      -1          //  ntVal
+      59,         //  ntSer
+      60,         //  ntThr
+      61,         //  ntTrp
+      62,         //  ntTyr
+      63          //  ntVal
   };
+
+}
+
+#include "pdb-residue/key-library.h"
+#include <cassert>
+
+namespace mysimulator {
+
+  bool IsMatchResidue(PDBResidueName RN, const unsigned int* key) {
+    assert(key!=NULL);
+    const unsigned int *mask=ResidueKeyLibrary[DefaultKeyID[RN]];
+    bool isCover;
+    isCover=true;
+    for(unsigned int i=0;i<NumberResidueKey;++i)
+      if((key[i]|mask[i])^mask[i]) { isCover=false; break; }
+    return isCover;
+  }
 
 }
 
