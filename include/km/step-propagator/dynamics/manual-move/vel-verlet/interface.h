@@ -80,8 +80,8 @@ namespace mysimulator {
         assert(this->_X.IsValid());
         assert(this->_V.IsValid());
         assert(this->_X.Size()==this->_V.Size());
-        assert(VGenerator!=NULL);
-        VGenerator(this->_param,this->_V);
+        assert(this->VGenerator!=NULL);
+        this->VGenerator(this->_param,this->_V);
         const unsigned int n=this->_X.Size();
         for(unsigned int i=0;i<n;++i)
           this->_X[i].BlasShift(this->_V[i],_SrcValue_(TimeStep));
@@ -89,8 +89,8 @@ namespace mysimulator {
       virtual void Evolute2() {
         assert(this->_param.IsValid());
         assert(this->_V.IsValid());
-        assert(VGenerator!=NULL);
-        VGenerator(this->_param,this->_V);
+        assert(this->VGenerator!=NULL);
+        this->VGenerator(this->_param,this->_V);
       }
       virtual void Evolute3() {}
       virtual void Evolute4() {}

@@ -6,6 +6,9 @@
 
 namespace mysimulator {
 
+  template <typename T> class StepPropagatorManualMove;
+  template <typename T> void Clear(StepPropagatorManualMove<T>&);
+
   template <typename T>
   class StepPropagatorManualMove : public StepPropagatorDynamics<T> {
 
@@ -15,13 +18,13 @@ namespace mysimulator {
       typedef StepPropagatorDynamics<T>     ParentType;
       typedef void (*VelGeneratorType)(const Array<Unique64Bit>&,
                                        Array<Array2DNumeric<T> >&);
-      friend void Clear(StepPropagatorManualMove<T>&);
+      friend void Clear<T>(StepPropagatorManualMove<T>&);
 
       StepPropagatorManualMove() : ParentType(), VGenerator(NULL) {}
       virtual ~StepPropagatorManualMove() { Clear(*this); }
 
-      virtual void Init() { assert(this->_V.IsValid()); }
-      virtual void Clear() {}
+      virtual void Init() {}
+      virtual void Clean() {}
       virtual void Update() {}
       virtual void Update1() {}
       virtual void Update2() {}

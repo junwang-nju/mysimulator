@@ -59,7 +59,7 @@ namespace mysimulator {
         ParentType::Refer(static_cast<ParentType&>(A),b,n);
         unsigned int bl,nl;
         bl=static_cast<unsigned int>(A[b].Head()-A[0].Head());
-        nl=(b+n<this->Size()?
+        nl=(b+n<A.Size()?
             static_cast<unsigned int>(A[b+n].Head()-A[b].Head()):
             A._ldata.Size()-bl);
         _ldata.Refer(A._ldata,bl,nl);

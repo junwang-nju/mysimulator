@@ -7,6 +7,8 @@
 #include "interaction-func/dihedral/periodic/post-name.h"
 #include "interaction-func/dihedral/periodic/vec-name.h"
 #include "interaction-func/dihedral/periodic/neighbor-name.h"
+#include "basic/cos.h"
+#include "basic/sin.h"
 
 namespace mysimulator {
 
@@ -21,22 +23,23 @@ namespace mysimulator {
       InteractionFuncDihedralPeriodic() : ParentType() {}
       ~InteractionFuncDihedralPeriodic() { Clear(*this); }
 
-      virtual void Allocate() {
+      virtual void Allocate(unsigned int dim) {
         Clear(*this);
         this->_tag=DihedralPeriodic;
         this->_pre.Allocate(DihedralPeriodicNumberPre);
         this->_post.Allocate(DihedralPeriodicNumberPost);
-        this->_tmvec.Allocate(DihedralPeriodicNumberVec);
+        this->_tmvec.Allocate(DihedralPeriodicNumberVec,dim);
         this->_neighbor.Allocate(DihedralPeriodicNumberNeighbor);
       }
 
     protected:
 
       virtual void EFunc(const InteractionParameter<T>* P, T* Func) {
-        Unique64Bit *Q=const_cast<Unique64Bit*>(&(P[DihedralPeriodicShift]));
+        Unique64Bit *Q=const_cast<Unique64Bit*>(&((*P)[DihedralPeriodicShift]));
         T dih=this->_post[DihedralValue];
         T theta;
-        const unsigned int n=Value<unsigned int>(P[DihedralPeriodicNumberUnit]);
+        const unsigned int n=
+          Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
         for(unsigned int i=0;i<n;++i) {
           theta=dih+Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);
@@ -45,10 +48,11 @@ namespace mysimulator {
         }
       }
       virtual void GFunc(const InteractionParameter<T>* P, T* Diff) {
-        Unique64Bit *Q=const_cast<Unique64Bit*>(&(P[DihedralPeriodicShift]));
+        Unique64Bit *Q=const_cast<Unique64Bit*>(&((*P)[DihedralPeriodicShift]));
         T dih=this->_post[DihedralValue];
         T theta;
-        const unsigned int n=Value<unsigned int>(P[DihedralPeriodicNumberUnit]);
+        const unsigned int n=
+          Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
         for(unsigned int i=0;i<n;++i) {
           theta=dih+Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);
@@ -57,10 +61,11 @@ namespace mysimulator {
         }
       }
       virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
-        Unique64Bit *Q=const_cast<Unique64Bit*>(&(P[DihedralPeriodicShift]));
+        Unique64Bit *Q=const_cast<Unique64Bit*>(&((*P)[DihedralPeriodicShift]));
         T dih=this->_post[DihedralValue];
         T theta;
-        const unsigned int n=Value<unsigned int>(P[DihedralPeriodicNumberUnit]);
+        const unsigned int n=
+          Value<unsigned int>((*P)[DihedralPeriodicNumberUnit]);
         for(unsigned int i=0;i<n;++i) {
           theta=dih+Value<T>(Q[DihedralPeriodicPhase]);
           theta*=Value<unsigned int>(Q[DihedralPeriodicFrequency]);

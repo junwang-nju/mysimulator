@@ -27,7 +27,7 @@ namespace mysimulator {
         this->_tag=AngleHarmonic;
         this->_pre.Allocate(AngleHarmonicNumberPre);
         this->_post.Allocate(AngleHarmonicNumberPost);
-        this->_tmvec.Allocate(AngleHarmonicNumberVec);
+        this->_tmvec.Allocate(AngleHarmonicNumberVec,dim);
         this->_neighbor.Allocate(AngleHarmonicNumberNeighbor);
       }
 
@@ -36,20 +36,23 @@ namespace mysimulator {
       virtual void EFunc(const InteractionParameter<T>* P, T* Func) {
         assert(this->IsValid());
         assert(P!=NULL);
-        T dA=this->_post[AngleHarmonicValue]-Value<T>(P[AngleHarmonicEqAngle]);
-        *Func=Value<T>(P[AngleHarmonicStrength])*dA*dA;
+        T dA=this->_post[AngleHarmonicValue]-
+             Value<T>((*P)[AngleHarmonicEqAngle]);
+        *Func=Value<T>((*P)[AngleHarmonicStrength])*dA*dA;
       }
       virtual void GFunc(const InteractionParameter<T>* P, T* Diff) {
         assert(this->IsValid());
         assert(P!=NULL);
-        T dA=this->_post[AngleHarmonicValue]-Value<T>(P[AngleHarmonicEqAngle]);
-        *Diff=Value<T>(P[AngleHarmonicDualStrength])*dA;
+        T dA=this->_post[AngleHarmonicValue]-
+             Value<T>((*P)[AngleHarmonicEqAngle]);
+        *Diff=Value<T>((*P)[AngleHarmonicDualStrength])*dA;
       }
       virtual void BFunc(const InteractionParameter<T>* P, T* Func, T* Diff) {
         assert(this->IsValid());
         assert(P!=NULL);
-        T dA=this->_post[AngleHarmonicValue]-Value<T>(P[AngleHarmonicEqAngle]);
-        T tmd=dA*Value<T>(P[AngleHarmonicStrength]);
+        T dA=this->_post[AngleHarmonicValue]-
+             Value<T>((*P)[AngleHarmonicEqAngle]);
+        T tmd=dA*Value<T>((*P)[AngleHarmonicStrength]);
         *Func=tmd*dA;
         *Diff=tmd+tmd;
       }

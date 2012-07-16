@@ -43,7 +43,7 @@ namespace mysimulator {
               DistanceSQ(this->_tmvec[AngleBondVecKJ],X[K],X[J],Geo);
           }
           this->_pre[AngleDotAB]=
-            Dot(this->_tmvec[AngleBondVecIJ],this->_tmvec[AngleBondVecKJ]);
+            _Dot(this->_tmvec[AngleBondVecIJ],this->_tmvec[AngleBondVecKJ]);
           Pre2Post4E(P);
         }
         T ee;
@@ -69,10 +69,10 @@ namespace mysimulator {
           if(this->_neighbor.IsValid())   GetPre4G();
           else {
             this->_pre[AngleEdgeASQ]=this->_tmvec[AngleBondVecIJ].NormSQ();
-            this->_pre[AngleEdgeBSQ]=this->_tmvec[AngleBondvecKJ].NormSQ();
+            this->_pre[AngleEdgeBSQ]=this->_tmvec[AngleBondVecKJ].NormSQ();
           }
           this->_pre[AngleDotAB]=
-            Dot(this->_tmvec[AngleBondVecIJ],this->_tmvec[AngleBondVecKJ]);
+            _Dot(this->_tmvec[AngleBondVecIJ],this->_tmvec[AngleBondVecKJ]);
           Pre2Post4G(P);
           this->_tmvec[AngleNormVecI].Copy(this->_tmvec[AngleBondVecKJ]);
           this->_tmvec[AngleNormVecI].Scale(this->_post[AngleIvRabSin]);
@@ -81,7 +81,7 @@ namespace mysimulator {
           this->_tmvec[AngleNormVecK].Copy(this->_tmvec[AngleBondVecIJ]);
           this->_tmvec[AngleNormVecK].Scale(this->_post[AngleIvRabSin]);
           this->_tmvec[AngleNormVecK].Shift(-this->_post[AngleIvRbSQCtg],
-                                            this->tmvec[AngleBondVecKJ]);
+                                            this->_tmvec[AngleBondVecKJ]);
         }
         T ef;
         GFunc(P,&ef);
@@ -113,10 +113,10 @@ namespace mysimulator {
           if(this->_neighbor.IsValid())   GetPre4B();
           else {
             this->_pre[AngleEdgeASQ]=this->_tmvec[AngleBondVecIJ].NormSQ();
-            this->_pre[AngleEdgeBSQ]=this->_tmvec[AngleBondvecKJ].NormSQ();
+            this->_pre[AngleEdgeBSQ]=this->_tmvec[AngleBondVecKJ].NormSQ();
           }
           this->_pre[AngleDotAB]=
-            Dot(this->_tmvec[AngleBondVecIJ],this->_tmvec[AngleBondVecKJ]);
+            _Dot(this->_tmvec[AngleBondVecIJ],this->_tmvec[AngleBondVecKJ]);
           Pre2Post4B(P);
           this->_tmvec[AngleNormVecI].Copy(this->_tmvec[AngleBondVecKJ]);
           this->_tmvec[AngleNormVecI].Scale(this->_post[AngleIvRabSin]);
@@ -125,7 +125,7 @@ namespace mysimulator {
           this->_tmvec[AngleNormVecK].Copy(this->_tmvec[AngleBondVecIJ]);
           this->_tmvec[AngleNormVecK].Scale(this->_post[AngleIvRabSin]);
           this->_tmvec[AngleNormVecK].Shift(-this->_post[AngleIvRbSQCtg],
-                                            this->tmvec[AngleBondVecKJ]);
+                                            this->_tmvec[AngleBondVecKJ]);
         }
         T ee,ef;
         BFunc(P,&ee,&ef);
@@ -149,8 +149,8 @@ namespace mysimulator {
       virtual void Pre2Post4E(const InteractionParameter<T>*) {
         assert(this->IsValid());
         this->_post[AngleCosine]=
-          this->pre[AngleDotAB]/__SqRoot(this->_pre[AngleEdgeASQ]*
-                                         this->_pre[AngleEdgeBSQ]);
+          this->_pre[AngleDotAB]/__SqRoot(this->_pre[AngleEdgeASQ]*
+                                          this->_pre[AngleEdgeBSQ]);
         this->_update=true;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>*) {

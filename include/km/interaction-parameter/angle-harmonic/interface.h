@@ -36,7 +36,7 @@ namespace mysimulator {
 
   template <typename T>
   void Clear(InteractionParameterAngleHarmonic<T>& P) {
-    typedef typename InteractionParameterAngleHarmonic<T>:ParentType PType;
+    typedef typename InteractionParameterAngleHarmonic<T>::ParentType PType;
     Clear(static_cast<PType&>(P));
   }
 

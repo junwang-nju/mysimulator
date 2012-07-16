@@ -13,8 +13,17 @@
 #include "interaction-func/angle/post-name.h"
 #include "basic/acos.h"
 
+#ifndef _NAME_
 #define _NAME_(U) Dihedral##U
+#else
+#error "Duplicate _NAME_"
+#endif
+
+#ifndef _VEC_
 #define _VEC_(U)  this->_tmvec[_NAME_(U)]
+#else
+#error "Duplicate _VEC_"
+#endif
 
 namespace mysimulator {
 
@@ -52,9 +61,9 @@ namespace mysimulator {
             this->_pre[DihedralIvNormASQ]=1./_VEC_(NormVecA).NormSQ();
             this->_pre[DihedralIvNormBSQ]=1./_VEC_(NormVecB).NormSQ();
           }
-          this->_pre[DihedralDotNormAB]=Dot(_VEC_(NormVecA),_VEC_(NormVecB));
-          this->_pre[DihedralCrossNormAB]=Dot(_VEC_(BondVecKJ),
-                                              _VEC_(CrossNormVec));
+          this->_pre[DihedralDotNormAB]=_Dot(_VEC_(NormVecA),_VEC_(NormVecB));
+          this->_pre[DihedralCrossNormAB]=_Dot(_VEC_(BondVecKJ),
+                                               _VEC_(CrossNormVec));
           Pre2Post4E(P);
         }
         T ee;
@@ -86,14 +95,14 @@ namespace mysimulator {
             this->_pre[DihedralIvNormASQ]=1./_VEC_(NormVecA).NormSQ();
             this->_pre[DihedralIvNormBSQ]=1./_VEC_(NormVecB).NormSQ();
             this->_pre[DihedralAxisSQ]=_VEC_(BondVecKJ).NormSQ();
-            this->_pre[DihedralDotBondAB]=Dot(_VEC_(BondVecJI),
-                                              _VEC_(BondVecKJ));
-            this->_pre[DihedralDotBondBC]=Dot(_VEC_(BondVecKJ),
-                                              _VEC_(BondVecLK));
+            this->_pre[DihedralDotBondAB]=_Dot(_VEC_(BondVecJI),
+                                               _VEC_(BondVecKJ));
+            this->_pre[DihedralDotBondBC]=_Dot(_VEC_(BondVecKJ),
+                                               _VEC_(BondVecLK));
           }
-          this->_pre[DihedralDotNormAB]=Dot(_VEC_(NormVecA),_VEC_(NormVecB));
-          this->_pre[DihedralCrossNormAB]=Dot(_VEC_(BondVecKJ),
-                                              _VEC_(CrossNormVec));
+          this->_pre[DihedralDotNormAB]=_Dot(_VEC_(NormVecA),_VEC_(NormVecB));
+          this->_pre[DihedralCrossNormAB]=_Dot(_VEC_(BondVecKJ),
+                                               _VEC_(CrossNormVec));
           Pre2Post4G(P);
         }
         T ef;
@@ -134,14 +143,14 @@ namespace mysimulator {
             this->_pre[DihedralIvNormASQ]=1./_VEC_(NormVecA).NormSQ();
             this->_pre[DihedralIvNormBSQ]=1./_VEC_(NormVecB).NormSQ();
             this->_pre[DihedralAxisSQ]=_VEC_(BondVecKJ).NormSQ();
-            this->_pre[DihedralDotBondAB]=Dot(_VEC_(BondVecJI),
-                                              _VEC_(BondVecKJ));
-            this->_pre[DihedralDotBondBC]=Dot(_VEC_(BondVecKJ),
-                                              _VEC_(BondVecLK));
+            this->_pre[DihedralDotBondAB]=_Dot(_VEC_(BondVecJI),
+                                               _VEC_(BondVecKJ));
+            this->_pre[DihedralDotBondBC]=_Dot(_VEC_(BondVecKJ),
+                                               _VEC_(BondVecLK));
           }
-          this->_pre[DihedralDotNormAB]=Dot(_VEC_(NormVecA),_VEC_(NormVecB));
-          this->_pre[DihedralCrossNormAB]=Dot(_VEC_(BondVecKJ),
-                                              _VEC_(CrossNormVec));
+          this->_pre[DihedralDotNormAB]=_Dot(_VEC_(NormVecA),_VEC_(NormVecB));
+          this->_pre[DihedralCrossNormAB]=_Dot(_VEC_(BondVecKJ),
+                                               _VEC_(CrossNormVec));
           Pre2Post4B(P);
         }
         T ee,ef;
@@ -199,7 +208,7 @@ namespace mysimulator {
 
       void GetPre4E() {
         assert(this->_neighbor.IsValid());
-        InteractionFunc<T,GT>* P;
+        InteractionFunc<T,GeomType>* P;
         P=this->_neighbor[DihedralNeighbor4NormA];
         assert(P!=NULL);
         this->_pre[DihedralIvNormASQ]=
@@ -213,7 +222,7 @@ namespace mysimulator {
       }
       void GetPre4G() {
         GetPre4E();
-        InteractionFunc<T,GT>* P;
+        InteractionFunc<T,GeomType>* P;
         P=this->_neighbor[DihedralNeighbor4Axis];
         assert(P!=NULL);
         this->_pre[DihedralAxisSQ]=P->_pre[PairwiseDistanceSQ];
@@ -243,6 +252,14 @@ namespace mysimulator {
   }
 
 }
+
+#ifdef _VEC_
+#undef _VEC_
+#endif
+
+#ifdef _NAME_
+#undef _NAME_
+#endif
 
 #endif
 
