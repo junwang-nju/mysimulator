@@ -1,3 +1,12 @@
+/**
+ * @file data.h
+ * @brief Object to Get Type of Internal Data of Array-Like Structure
+ *
+ * This is used for array-like objects. The GP enables the recursion of array.
+ * Thus, the final result is the type which is not array-like.
+ *
+ * @author Jun | junwang.nju@gmai.com
+ */
 
 #ifndef _Type_Data_H_
 #define _Type_Data_H_

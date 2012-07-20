@@ -1,4 +1,14 @@
 
+/**
+ * @file cos.h
+ * @brief Cosine Operation (Math)
+ *
+ * This is a wrapper of cosine calculation. It helps to match the type of
+ * input parameter.
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_Cosine_H_
 #define _Basic_Cosine_H_
 
