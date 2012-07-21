@@ -14,12 +14,26 @@ namespace mysimulator {
 
   class MyOut : public PropagatorOutput<double,FreeSpace> {
     public:
-      virtual void Allocate() {}
+      ArrayNumeric<double> Dsp;
+      double d;
+      unsigned int I,J,Q;
+      FreeSpace FS;
+      virtual ~MyOut() { Clear(Dsp); }
+      virtual void Allocate() { Dsp.Allocate(3); }
       virtual void Write(const double& now,System<double,FreeSpace>& S,
                          Propagator<double,FreeSpace>* P) {
+        Q=0;
+        for(unsigned int i=0;i<137;++i) {
+          I=S.Interaction(2).Index(i)[0];
+          J=S.Interaction(2).Index(i)[1];
+          d=Distance(Dsp,S.Location()[I],S.Location()[J],FS);
+          if(d<1.2*Value<double>(S.Interaction(2).Parameter(i,LJ1012EqRadius)))
+            Q++;
+        }
         S.UpdateE(0);
         P->UpdateKineticEnergy();
         std::cout<<now<<"\t"<<S.Energy()<<"\t"<<P->KineticEnergy();
+        std::cout<<"\t"<<Q;
         for(unsigned int i=0;i<5;++i)
           std::cout<<"\t"<<S.Interaction(i).Energy();
         cout<<endl;
@@ -189,9 +203,9 @@ int main() {
 
   P->Time(MDTime_NowTime)=0;
   P->IntTime(MDTime_NowStep)=0;
-  P->Time(MDTime_TimeStep)=0.0001;
-  P->Time(MDTime_TotalPeriod)=10.;
-  P->Time(MDTime_OutputInterval)=0.0001;
+  P->Time(MDTime_TimeStep)=0.001;
+  P->Time(MDTime_TotalPeriod)=1000000.;
+  P->Time(MDTime_OutputInterval)=1;
   P->UpdateTime(Step_Total_OInterval);
 
   P->Step(0)->AllocateRange(1);
@@ -201,7 +215,8 @@ int main() {
   P->Init();
 
   *Pointer<double>(P->Parameter(PropagatorMD_Mass))=1.;
-  *Pointer<double>(P->Parameter(PropagatorMD_Temperature))=0.5;
+  *Pointer<double>(P->Parameter(PropagatorMD_Friction))=0.1;
+  *Pointer<double>(P->Parameter(PropagatorMD_Temperature))=1.02;
   P->Update();
 
   P->Evolute(S);
