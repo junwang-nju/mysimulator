@@ -195,8 +195,12 @@ namespace mysimulator {
   _ValueDEF_(__m128i,si)
   _ValueDEF_(__m128d,sd)
 #endif
+  /** @brief function to get value of \c long \c double type from Unique128Bit */
   _ValueDEF_(long double,ld)
+
+  /** @brief function to get value of \c double type from Unique128Bit */
   _ValueDEF_(double,d)
+
   _ValueDEF_(float,f)
   _ValueDEF_(unsigned long long,ull)
   _ValueDEF_(long long,ll)
