@@ -5,7 +5,7 @@
 #include "basic/dihedral-calc.h"
 #include "random/box-muller/interface.h"
 #include "random/mt-dsfmt/interface.h"
-#include "neighbor-list-accelerator/multi-skin/interface.h"
+#include "neighbor-list-accelerator/unique-skin/interface.h"
 using namespace mysimulator;
 
 #include <iostream>
@@ -15,15 +15,22 @@ namespace mysimulator {
 
   class MyOut : public PropagatorOutput<double,FreeSpace> {
     public:
-      virtual void Allocate() {}
+      ArrayNumeric<double> Dsp;
+      FreeSpace FS;
+      virtual ~MyOut() { Clear(Dsp); Clear(FS); }
+      virtual void Allocate() { Dsp.Allocate(3); }
       virtual void Write(const double& now,System<double,FreeSpace>& S,
                          Propagator<double,FreeSpace>* P) {
         S.UpdateE(0);
         P->UpdateKineticEnergy();
         std::cout<<now<<"\t"<<S.Energy()<<"\t"<<P->KineticEnergy();
-        for(unsigned int i=0;i<5;++i)
-          std::cout<<"\t"<<S.Interaction(i).Energy();
-        cout<<endl;
+        std::cout<<"\t"<<S.Interaction(2).Energy();
+        //for(unsigned int i=0;i<5;++i)
+        //  std::cout<<"\t"<<S.Interaction(i).Energy();
+        const unsigned int n=S.Location().Size()-2;
+        std::cout<<"\t"<<Distance(Dsp,S.Location()[0],S.Location()[n],FS);
+        std::cout<<"\t"<<Distance(Dsp,S.Location()[n-1],S.Location()[n+1],FS);
+        std::cout<<std::endl;
       }
   };
 
@@ -39,21 +46,29 @@ int main() {
   PF.Produce(PO);
 
   FreeSpace FS;
+  Array2DNumeric<double> PX;
 
   System<double,FreeSpace> S;
   const unsigned int NR=PO.NumberResidue();
-  S.AllocateKind(NR);
-  for(unsigned int i=0;i<NR;++i)  S.Kind(i)=ParticleUnit;
+  S.AllocateKind(NR+2);
+  for(unsigned int i=0;i<NR+2;++i)  S.Kind(i)=ParticleUnit;
 
   S.AllocateXVGE(3);
-  PO.ProduceCAlpha<UseFirstModel>(S.Location());
+  PO.ProduceCAlpha<UseFirstModel>(PX);
+  S.Location().CopyN(PX,NR);
+  S.Location()[NR].Copy(S.Location()[0]);
+  S.Location()[NR][0]-=1.;
+  S.Location()[NR+1].Copy(S.Location()[NR-1]);
+  S.Location()[NR+1][0]+=1.;
   S.Velocity().Fill(0);
+
+  S.Velocity()[NR+1][0]=1;
 
   BoxMuller<MersenneTwisterDSFMT<19937> > RNG;
   RNG.Allocate();
   RNG.InitWithTime();
   //RNG.Init(2789243);
-  for(unsigned int i=0;i<S.Velocity().Size();++i)
+  for(unsigned int i=0;i<NR;++i)
   for(unsigned int k=0;k<S.Velocity()[i].Size();++k)
     S.Velocity()[i][k]=RNG.Double();
 
@@ -67,10 +82,10 @@ int main() {
   Array2D<InteractionFuncName> IFN;
   ArrayNumeric<unsigned int> sz;
   sz.Allocate(5);
-  sz[0]=NR-1;
+  sz[0]=NR-1+2;
   sz[1]=NR-2;
   sz[2]=NC;
-  sz[3]=(NR*(NR-1)/2)-sz[0]-sz[1]-sz[2]-(NR-3);
+  sz[3]=(NR*(NR-1)/2)-(NR-1)-sz[1]-sz[2]-(NR-3);
   sz[4]=NR-3;
   IFN.Allocate(sz);
   for(unsigned int i=0;i<sz[0];++i)   IFN[0][i]=Harmonic;
@@ -79,10 +94,14 @@ int main() {
   for(unsigned int i=0;i<sz[3];++i)   IFN[3][i]=CoreLJ612;
   for(unsigned int i=0;i<sz[4];++i)   IFN[4][i]=DihedralPeriodic2P;
   S.AllocateInteraction(IFN,3);
-  for(unsigned int i=0;i<sz[0];++i) {
+  for(unsigned int i=0;i<NR-1;++i) {
     S.Interaction(0).Index(i)[0]=i;
     S.Interaction(0).Index(i)[1]=i+1;
   }
+  S.Interaction(0).Index(NR-1)[0]=0;
+  S.Interaction(0).Index(NR-1)[1]=NR;
+  S.Interaction(0).Index(NR)[0]=NR-1;
+  S.Interaction(0).Index(NR)[1]=NR+1;
   for(unsigned int i=0;i<sz[1];++i) {
     S.Interaction(1).Index(i)[0]=i;
     S.Interaction(1).Index(i)[1]=i+1;
@@ -118,13 +137,20 @@ int main() {
 
   ArrayNumeric<double> Dsp;
   Dsp.Allocate(3);
-  for(unsigned int i=0;i<sz[0];++i) {
+  for(unsigned int i=0;i<NR-1;++i) {
     Value<double>(S.Interaction(0).Parameter(i,HarmonicEqLength))=
       Distance(Dsp,S.Location()[S.Interaction(0).Index(i)[0]],
                    S.Location()[S.Interaction(0).Index(i)[1]],FS);
     Value<double>(S.Interaction(0).Parameter(i,HarmonicEqStrength))=100.;
     S.Interaction(0).ParameterBuild(i);
   }
+  Value<double>(S.Interaction(0).Parameter(NR-1,HarmonicEqLength))=1.;
+  Value<double>(S.Interaction(0).Parameter(NR-1,HarmonicEqStrength))=100.;
+  S.Interaction(0).ParameterBuild(NR-1);
+  Value<double>(S.Interaction(0).Parameter(NR,HarmonicEqLength))=1.;
+  Value<double>(S.Interaction(0).Parameter(NR,HarmonicEqStrength))=0.1;
+  S.Interaction(0).ParameterBuild(NR);
+
   for(unsigned int i=0;i<sz[1];++i) {
     Value<double>(S.Interaction(1).Parameter(i,AngleHarmonicEqAngle))=
       Angle(S.Location()[S.Interaction(1).Index(i)[0]],
@@ -181,12 +207,13 @@ int main() {
   Introduce(P,MolecularDynamicsWithNeighborList);
 
   Array<StepPropagatorName>   SPN;
-  SPN.Allocate(1);
-  SPN[0]=VelVerletConstE;
-  P->Allocate(SPN,UniqueMass);
+  SPN.Allocate(2);
+  SPN[0]=VelVerletLangevin;
+  SPN[1]=VelVerletConstVelocity;
+  P->Allocate(SPN,UniqueMass,UniqueFriction,BoxMullerRNG,MTDSFMTRNG,19937);
   P->AllocateOutput<MyOut>();
 
-  NeighborListAccelerator_MultiSkin<double,FreeSpace> NLA;
+  NeighborListAccelerator_UniqueSkin<double,FreeSpace> NLA;
   NLA.Allocate(1);
   NLA.List(0).Allocate(IFN[3],3);
   NLA.List(0).LoadTarget(S.Interaction(3));
@@ -199,37 +226,33 @@ int main() {
     NLA.List(0).Index(i)[0]=S.Interaction(3).Index(i)[0];
     NLA.List(0).Index(i)[1]=S.Interaction(3).Index(i)[1];
   }
-  cout<<"==================="<<endl;
-  NLA.List(0).SetListRadius(4.,6.);
+  NLA.SetSkinRadius(2);
+  NLA.List(0).SetCutRadius(4.);
   Pointer<NeighborListAccelerator<double,FreeSpace> >(P->Parameter(PropagatorMDWithNL_NeighborList))=&NLA;
-  cout<<S.Interaction(3).Energy()<<endl;
-  cout<<"=====W============="<<endl;
 
   P->Time(MDTime_NowTime)=0;
   P->IntTime(MDTime_NowStep)=0;
-  P->Time(MDTime_TimeStep)=0.0001;
-  P->Time(MDTime_TotalPeriod)=10.;
-  P->Time(MDTime_OutputInterval)=0.001;
+  P->Time(MDTime_TimeStep)=0.001;
+  P->Time(MDTime_TotalPeriod)=10000.;
+  P->Time(MDTime_OutputInterval)=0.1;
   P->UpdateTime(Step_Total_OInterval);
 
   P->Step(0)->AllocateRange(1);
   P->Step(0)->Range(0)[0]=0;
   P->Step(0)->Range(0)[1]=NR;
-  cout<<"==================="<<endl;
+  P->Step(1)->AllocateRange(1);
+  P->Step(1)->Range(0)[0]=NR;
+  P->Step(1)->Range(0)[1]=2;
   P->IntroduceSystem(S);
-  cout<<"======q============"<<endl;
   P->Init();
-  cout<<"======A============"<<endl;
   NLA.Init(S.Location());
-  cout<<S.Interaction(3).Energy()<<endl;
-  cout<<"==================="<<endl;
 
   *Pointer<double>(P->Parameter(PropagatorMD_Mass))=1.;
+  *Pointer<double>(P->Parameter(PropagatorMD_Friction))=10;
+  *Pointer<double>(P->Parameter(PropagatorMD_Temperature))=1.02;
   P->Update();
 
-  cout<<S.Interaction(3).Energy()<<endl;
   P->Evolute(S);
-  cout<<S.Interaction(3).Energy()<<endl;
 
   P->DetachSystem();
 
