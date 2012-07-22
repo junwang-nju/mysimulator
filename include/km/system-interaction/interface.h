@@ -9,6 +9,7 @@ namespace mysimulator {
 
   template <typename T,typename GT> class SystemInteraction;
   template <typename T,typename GT> void Clear(SystemInteraction<T,GT>&);
+  template <typename T,typename GT> class NeighborList;
 
   template <typename T,typename GeomType>
   class SystemInteraction {
@@ -17,6 +18,7 @@ namespace mysimulator {
 
       typedef SystemInteraction<T,GeomType>   Type;
       friend void Clear<T,GeomType>(SystemInteraction<T,GeomType>&);
+      friend class NeighborList<T,GeomType>;
 
       SystemInteraction() : _Func(), _ID(), _Param(), _Geom(), _E(), _G() {}
       ~SystemInteraction() { Clear(*this); }

@@ -36,6 +36,8 @@ namespace mysimulator {
                (_tag!=UnknownInteractionFunc);
       }
       void ClearFlag() { _update=true; }
+      InteractionFuncName Name() const { return _tag; }
+
       template <typename T1,typename GT>
       void Copy(const InteractionFunc<T1,GT>& F) {
         assert(_tag==F._tag);
