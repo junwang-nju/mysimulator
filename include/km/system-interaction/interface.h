@@ -96,7 +96,7 @@ namespace mysimulator {
       }
 
       void CalcE(const ArrayNumeric<ArrayNumeric<T> >& X) {
-        assert(IsValid()&&_E.IsValid());
+        assert(_Geom.IsValid()&&_E.IsValid());
         assert(_Func.Size()==_ID.Size());
         assert(_Func.Size()==_Param.Size());
         _E[0]=0;
@@ -104,7 +104,7 @@ namespace mysimulator {
           _Func[i]->EMethod(X,_ID[i],_Param[i],_Geom,_E[0]);
       }
       void CalcG(const ArrayNumeric<ArrayNumeric<T> >& X) {
-        assert(IsValid()&&_G.IsValid());
+        assert(_Geom.IsValid()&&_G.IsValid());
         assert(_Func.Size()==_ID.Size());
         assert(_Func.Size()==_Param.Size());
         _G.BlasFill(0);
@@ -112,7 +112,7 @@ namespace mysimulator {
           _Func[i]->GMethod(X,_ID[i],_Param[i],_Geom,_G);
       }
       void CalcB(const ArrayNumeric<ArrayNumeric<T> >& X) {
-        assert(IsValid()&&_E.IsValid()&&_G.IsValid());
+        assert(_Geom.IsValid()&&_E.IsValid()&&_G.IsValid());
         assert(_Func.Size()==_ID.Size());
         assert(_Func.Size()==_Param.Size());
         _E[0]=0;
