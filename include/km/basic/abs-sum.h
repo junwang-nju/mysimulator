@@ -18,7 +18,7 @@
 
 namespace mysimulator {
 
-  /**
+  /** @fn T _AbsSum(const T&)
    * @brief summation of absolute value of object
    *
    * This generalizd template format is used only for intrinsic data type
