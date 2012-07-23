@@ -75,6 +75,7 @@ namespace mysimulator {
 #include "interaction-parameter/lj612cut/interface.h"
 #include "interaction-parameter/angle-harmonic/interface.h"
 #include "interaction-parameter/dihedral-periodic/interface.h"
+#include "interaction-parameter/step-continuous/interface.h"
 #include <cstdarg>
 
 namespace mysimulator {
@@ -113,6 +114,8 @@ namespace mysimulator {
         P->_data.Allocate(DihedralPeriodicShift);
         Value<unsigned int>(P->_data[DihedralPeriodicNumberUnit])=2U;
         break;
+      case StepContinuous:
+        P=new InteractionParameterStepContinuous<T>;  break;
       case UnknownInteractionFunc:
       default:
         fprintf(stderr,"Unknown Interaction!\n");

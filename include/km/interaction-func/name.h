@@ -20,6 +20,7 @@ namespace mysimulator {
     CoreLJ612,
     Coulomb,
     DistDielCoulomb,
+    StepContinuous,
     AngleHarmonic,
     DihedralPeriodic,
     DihedralPeriodic2P,
@@ -39,6 +40,7 @@ namespace mysimulator {
     2,    //  CoreLJ612,
     2,    //  Coulomb,
     2,    //  DistDielCoulomb,
+    2,    //  StepContinuous
     3,    //  AngleHarmonic,
     0,    //  DihedralPeriodic
     4,    //  DihedralPeriodic2P,

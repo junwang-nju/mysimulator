@@ -119,6 +119,7 @@ namespace mysimulator {
 #include "interaction-func/wall/core12/interface.h"
 #include "interaction-func/angle/harmonic/interface.h"
 #include "interaction-func/dihedral/periodic/interface.h"
+#include "interaction-func/pairwise/step-continuous/interface.h"
 
 namespace mysimulator {
 
@@ -154,6 +155,8 @@ namespace mysimulator {
       case DihedralPeriodic:
       case DihedralPeriodic2P:
         P=new InteractionFuncDihedralPeriodic<T,GT>;  break;
+      case StepContinuous:
+        P=new InteractionFuncPairwiseStepContinuous<T,GT>;  break;
       case UnknownInteractionFunc:
       default:
         fprintf(stderr,"Unknown Interaction!\n");
