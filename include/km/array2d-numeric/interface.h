@@ -72,15 +72,15 @@ namespace mysimulator {
         assert(this->IsValid());
         this->_ldata.NegShift(d);
       }
-      template <typename T1, template<typename> class AF>
-      void NegShift(const Array2DBase<T1,AF>& A) {
+      template <typename T1>
+      void NegShift(const Array2DNumeric<T1>& A) {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(IsSameSize(*this,A));
         this->_ldata.NegShift(A._ldata);
       }
-      template <typename T1,typename T2,template<typename>class AF>
-      void Shift(const Array2DBase<T1,AF>& A,const T2& d) {
+      template <typename T1,typename T2>
+      void Shift(const Array2DNumeric<T1>& A,const T2& d) {
         assert(this->IsValid());
         assert(A.IsValid());
         assert(IsSameSize(*this,A));

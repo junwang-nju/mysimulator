@@ -28,7 +28,7 @@ namespace mysimulator {
         this->_tag=StepContinuous;
         this->_pre.Allocate(StepContinuousNumberPre);
         this->_post.Allocate(StepContinuousNumberPost);
-        this->_tmvec.Allocate(StepContinuousNumberVec);
+        this->_tmvec.Allocate(StepContinuousNumberVec,dim);
       }
 
     protected:

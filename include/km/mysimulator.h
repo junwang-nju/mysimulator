@@ -21,6 +21,10 @@
  * @arg basic/dot.h
  * @arg basic/fill.h
  * @arg basic/imprint.h
+ * @arg basic/inverse.h
+ * @arg basic/is-same.h
+ * @arg basic/norm-square.h
+ * @arg basic/scale.h
  * @arg basic/sin.h
  * @arg basic/square-root.h
  * @arg basic/string.h
