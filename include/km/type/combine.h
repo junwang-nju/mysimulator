@@ -3,6 +3,11 @@
  * @file type/combine.h
  * @brief derive the type of result calculated from objects with two other types
  *
+ * In some two-member operations, the type of results depends on the input
+ * types. How to get the resultant type without manual interference is the
+ * purpose of this file. Here we define some classes to get the resultant
+ * types with generic programming.
+ *
  * @author Jun | junwang.nju@gmail.com
  */
 
@@ -11,11 +16,26 @@
 
 namespace mysimulator {
 
+  /** @class _LargeType
+   * @brief the class to get type which is one-level larger
+   *
+   * All the types can be aligned in a sequential order based on the
+   * their inclusion relation. This class expects to give out the type
+   * which is larger than the input type and us closest to the input type.
+   * This is the default form. There are no contents. The detailed relations
+   * would be implemented with specializations, since the relation cannot
+   * be expressed with simple logic.
+   *
+   * @tparam T the input type
+   */
   template <typename T>
   class _LargeType {};
 
 }
 
+/** @def _LargeDEF_
+ * @brief the macro to implement specializations of class \c _LargeType
+ */
 #ifndef _LargeDEF_
 #define _LargeDEF_(T,TL) template <> class _LargeType<T> { typedef TL Type; };
 #else
