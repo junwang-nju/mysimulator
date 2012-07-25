@@ -35,15 +35,28 @@ namespace mysimulator {
 
 /** @def _LargeDEF_
  * @brief the macro to implement specializations of class \c _LargeType
+ *
+ * The relation between types cannot determined by logic operation. it needs
+ * many specifications for class. This macro omplements the general
+ * form of the specialization of class \c _LargeType.
+ *
+ * @param T the input type for class \c _LargeType
+ * @param TL the type to define the trait in class \c _LargeType
  */
 #ifndef _LargeDEF_
-#define _LargeDEF_(T,TL) template <> class _LargeType<T> { typedef TL Type; };
+#define _LargeDEF_(T,TL) template <> class _LargeType<T> { public: typedef TL Type; };
 #else
 #error "Duplicate _LargeDEF_"
 #endif
 
 namespace mysimulator {
 
+  /** @var typedef long double _LargeType<long double>::Type
+   * @brief sdsdsd
+   */
+  /**
+   * @brief the specialization of \c _LargeType for \c long \c double type
+   */
   _LargeDEF_(long double, long double)
   _LargeDEF_(double, long double)
   _LargeDEF_(float, double)
