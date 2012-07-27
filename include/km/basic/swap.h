@@ -5,7 +5,7 @@
  *
  * to swap content of two variables is a regular operation. this operation
  * may ease the naming procedure in some algorithms. To be consisitent
- * with the operation for \c ArrayNumric object, the swap operation for
+ * with the operation for \c ArrayNumeric object, the swap operation for
  * two values should be defined. This file implements this operation.
  *
  * @author Jun | junwang.nju@gmail.com

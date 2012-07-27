@@ -8,6 +8,54 @@ using namespace mysimulator;
 #include <fstream>
 using namespace std;
 
+double F(System<double,FreeSpace>& S, unsigned int NC,
+         Array2DNumeric<double>& XBk, Array2DNumeric<double>& GP,
+         Array2DNumeric<double>& GN) {
+  static const double DT=1e-5;
+  static const double Gamma=5;
+  static const double IGamma=1./Gamma;
+  static const unsigned int NB=NC+64+2;
+  for(unsigned int i=0;i<NB;++i)  S.Interaction(i).ClearFlag();
+  S.UpdateG(0);
+  for(unsigned int i=1;i<=65;++i) {
+    S.Velocity()[i].Copy(S.Gradient()[i]);
+    S.Velocity()[i].Scale(-IGamma);
+  }
+  XBk.BlasCopy(S.Location());
+  S.Location().BlasShift(DT,S.Velocity());
+  for(unsigned int i=0;i<NB;++i)  S.Interaction(i).ClearFlag();
+  S.UpdateG(0);
+  GP.BlasCopy(S.Gradient());
+  S.Location().BlasShift(-DT-DT,S.Velocity());
+  for(unsigned int i=0;i<NB;++i)  S.Interaction(i).ClearFlag();
+  S.UpdateG(0);
+  GN.BlasCopy(S.Gradient());
+  GP.NegShift(GN);
+  double T=0;
+  for(unsigned int i=1;i<=65;++i) T+=GP[i].NormSQ();
+  T=__SqRoot(T)/DT*0.5;
+  S.Location().BlasCopy(XBk);
+  return T;
+}
+
+void G(System<double,FreeSpace>& S, unsigned int NC,
+       Array2DNumeric<double>& GF,
+       Array2DNumeric<double>& XBk, Array2DNumeric<double>& XBk2,
+       Array2DNumeric<double>& GP, Array2DNumeric<double>& GN) {
+  static const double dd=1e-6;
+  static const double ihdd=0.5/dd;
+  double TP,TN;
+  for(unsigned int i=1;i<=65;++i)
+  for(unsigned int k=0;k<3;++k) {
+    XBk2.BlasCopy(S.Location());
+    S.Location()[i][k]+=dd;
+    TP=F(S,NC,XBk,GP,GN);
+    S.Location()[i][k]-=dd+dd;
+    TN=F(S,NC,XBk,GP,GN);
+    GF[i][k]=-(TP-TN)*ihdd;
+  }
+}
+
 int main() {
 
   System<double,FreeSpace>  S;
@@ -49,7 +97,7 @@ int main() {
     else if(CM[i][3]-CM[i][1]>=4) ++NC;
 
   Array2D<InteractionFuncName>  IFN;
-  IFN.Allocate(NC+64,1);
+  IFN.Allocate(NC+64+2,1);
   for(unsigned int i=0;i<NC+64;++i) IFN[i][0]=Harmonic;
   S.AllocateInteraction(IFN,3);
   for(unsigned int i=0;i<64;++i) {
@@ -62,6 +110,10 @@ int main() {
       S.Interaction(n+64).Index(0)[1]=PO.Index(CM[i][2],CM[i][3])+1;
       ++n;
     }
+  S.Interaction(NC+64).Index(0)[0]=0;
+  S.Interaction(NC+64).Index(0)[1]=1;
+  S.Interaction(NC+64+1).Index(0)[0]=65;
+  S.Interaction(NC+64+1).Index(0)[1]=66;
   ArrayNumeric<double> Dsp;
   FreeSpace FS;
   Dsp.Allocate(3);
@@ -69,6 +121,9 @@ int main() {
     Value<double>(S.Interaction(i).Parameter(0,HarmonicEqLength))=
       Distance(Dsp,S.Location()[S.Interaction(i).Index(0)[0]],
                    S.Location()[S.Interaction(i).Index(0)[1]],FS);
+  Value<double>(S.Interaction(NC+64).Parameter(0,HarmonicEqLength))=1;
+  Value<double>(S.Interaction(NC+64+1).Parameter(0,HarmonicEqLength))=1;
+
   for(unsigned int i=0;i<64;++i) {
     Value<double>(S.Interaction(i).Parameter(0,HarmonicEqStrength))=100.;
     S.Interaction(i).ParameterBuild(0);
@@ -77,9 +132,50 @@ int main() {
     Value<double>(S.Interaction(i+64).Parameter(0,HarmonicEqStrength))=20;
     S.Interaction(i+64).ParameterBuild(0);
   }
+  Value<double>(S.Interaction(NC+64).Parameter(0,HarmonicEqStrength))=20;
+  S.Interaction(NC+64).ParameterBuild(0);
+  Value<double>(S.Interaction(NC+64+1).Parameter(0,HarmonicEqStrength))=20;
+  S.Interaction(NC+64+1).ParameterBuild(0);
+  
   S.AssignNumberInteractionGroup(1);
   S.InteractionGroup(0).Allocate(IFN.Size());
   for(unsigned int i=0;i<IFN.Size();++i)  S.InteractionGroup(0).WorkID(i)=i;
+
+  double NG,Step;
+  double TP,T;
+
+  //S.Velocity()[66][0]=1.;
+  S.Location()[66][0]=15.9376;
+  S.Location()[66][1]=0;
+  S.Location()[66][2]=0;
+
+  T=F(S,NC,XBk,GP,GN);
+  while(true) {
+    G(S,NC,GF,XBk,XBk2,GP,GN);
+    XBk.BlasCopy(S.Location());
+    NG=0;
+    for(unsigned int i=1;i<=65;++i) NG+=GF[i].NormSQ();
+    if(NG<1e-12)  break;
+    else {
+      NG=1./__SqRoot(NG);
+      GF.BlasScale(NG);
+      Step=0.1;
+      while(Step>1e-8) {
+        S.Location().BlasCopy(XBk);
+        for(unsigned int i=1;i<=65;++i) S.Location()[i].Shift(Step,GF[i]);
+        TP=F(S,NC,XBk2,GP,GN);
+        if(TP<T)  { T=TP; break; }
+        else Step*=0.5;
+      }
+      cout<<Step<<"\t"<<T<<endl;
+      if(Step<1e-8) break;
+    }
+  }
+
+  for(unsigned int i=0;i<67;++i) {
+    for(unsigned int k=0;k<3;++k) cout<<"\t"<<S.Location()[i][k];
+    cout<<endl;
+  }
 
   return 0;
 }
