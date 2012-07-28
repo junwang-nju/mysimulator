@@ -1,4 +1,11 @@
 
+/**
+ * @file interaction-parameter/interface.h
+ * @brief basic framework of interaction parameter
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Interaction_Parameter_Interface_H_
 #define _Interaction_Parameter_Interface_H_
 

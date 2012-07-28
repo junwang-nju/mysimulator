@@ -1,4 +1,11 @@
 
+/**
+ * @file system-interaction/interface.h
+ * @brief the interaction description of system object
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _System_Interaction_Interface_H_
 #define _System_Interaction_Interface_H_
 

@@ -1,4 +1,11 @@
 
+/**
+ * @file basic/acos.h
+ * @brief calculate ArcCosine for data of basic type
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_ArcCosine_H_
 #define _Basic_ArcCosine_H_
 

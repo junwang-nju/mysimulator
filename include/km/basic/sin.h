@@ -1,4 +1,11 @@
 
+/**
+ * @file basic/sin.h
+ * @brief calculate sine for data of basic type
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_Sine_H_
 #define _Basic_Sine_H_
 

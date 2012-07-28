@@ -1,4 +1,11 @@
 
+/**
+ * @file pdb-atom/name.h
+ * @brief the names of various atoms in PDB file
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _PDB_ATOM_Name_H_
 #define _PDB_ATOM_Name_H_
 

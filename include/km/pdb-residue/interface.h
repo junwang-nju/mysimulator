@@ -1,4 +1,11 @@
 
+/**
+ * @file pdb-residue/interface.h
+ * @brief data structure to storing residue information in PDB file
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _PDB_Residue_Interface_H_
 #define _PDB_Residue_Interface_H_
 

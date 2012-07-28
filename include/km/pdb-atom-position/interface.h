@@ -1,4 +1,11 @@
 
+/**
+ * @file pdb-atom-position/interface.h
+ * @brief the data structure to store position from PDB file
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _PDB_Atom_Position_Interface_H_
 #define _PDB_Atom_Position_Interface_H_
 

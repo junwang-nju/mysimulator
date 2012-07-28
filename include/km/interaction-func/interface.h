@@ -1,3 +1,9 @@
+/**
+ * @file interaction-func/interface.h
+ * @brief basic framework of interaction function
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
 
 #ifndef _Interaction_Func_H_
 #define _Interaction_Func_H_

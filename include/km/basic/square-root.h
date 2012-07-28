@@ -1,4 +1,11 @@
 
+/**
+ * @file basic/square-root.h
+ * @brief calculate square root for data of basic type
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_SquareRoot_H_
 #define _Basic_SquareRoot_H_
 

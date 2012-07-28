@@ -1,4 +1,11 @@
 
+/**
+ * @file system/interface.h
+ * @brief the system object for simulation
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _System_Interface_H_
 #define _System_Interface_H_
 

@@ -1,4 +1,11 @@
 
+/**
+ * @file pdb/interface.h
+ * @brief dat structure storing whole information from PDB file
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _PDB_Interface_H_
 #define _PDB_Interface_H_
 

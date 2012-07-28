@@ -1,4 +1,11 @@
 
+/**
+ * @file basic/is-same.h
+ * @brief check if two values are same
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_IsSame_H_
 #define _Basic_IsSame_H_
 

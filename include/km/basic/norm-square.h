@@ -1,9 +1,15 @@
 
+/**
+ * @file basic/norm-square.h"
+ * @brief calculate square for data of basic type
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_NormSquare_H_
 #define _Basic_NormSquare_H_
 
 #include "type/is-numeric.h"
-#include "type/data.h"
 
 namespace mysimulator {
 

@@ -1,4 +1,11 @@
 
+/**
+ * @file pdb-model/interface.h
+ * @brief the data structure storing MODEL information in PDB file
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _PDB_Model_Interface_H_
 #define _PDB_Model_Interface_H_
 

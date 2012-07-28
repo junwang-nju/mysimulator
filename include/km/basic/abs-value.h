@@ -1,4 +1,11 @@
 
+/**
+ * @file basic/abs-value.h
+ * @brief calculate absolute value for data of basic type
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Basic_AbsoluteValue_H_
 #define _Basic_AbsoluteValue_H_
 

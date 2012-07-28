@@ -1,4 +1,11 @@
 
+/**
+ * @file distance/calc.h
+ * @brief methods to calculate distance
+ *
+ * @author JUn | junwang.nju@gmail.com
+ */
+
 #ifndef _Distance_Calc_H_
 #define _Distance_Calc_H_
 

@@ -1,4 +1,11 @@
 
+/**
+ * @file step-propagator/interface.h
+ * @brief the framework of propagator of a step in simulation
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Step_Propagator_H_
 #define _Step_Propagator_H_
 

@@ -1,4 +1,11 @@
 
+/**
+ * @file basic/constant.h
+ * @brief some constants of basic type
+ *
+ * @author Jun | junwang@gmail.com
+ */
+
 #ifndef _Basic_Constant_H_
 #define _Basic_Constant_H_
 

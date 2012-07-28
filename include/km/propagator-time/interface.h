@@ -1,4 +1,11 @@
 
+/**
+ * @file propagator-time/interface.h
+ * @brief the data structure storing time information in propagator
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Propagator_Time_Interface_H_
 #define _Propagator_Time_Interface_H_
 
