@@ -1,4 +1,11 @@
 
+/**
+ * @file pdb-molecule/interface.h
+ * @brief data structure storing molecule information in PDB file
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _PDB_Molecule_Interface_H_
 #define _PDB_Molecule_Interface_H_
 

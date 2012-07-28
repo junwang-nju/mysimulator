@@ -1,4 +1,11 @@
 
+/**
+ * @file pdb-file/interface.h
+ * @brief the object to operate PDB file
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _PDB_File_Interface_H_
 #define _PDB_File_Interface_H_
 

@@ -47,6 +47,8 @@ namespace mysimulator {
  * The specialized case, the flag is set as true. The specialized cases
  * include unsigned long long, unsigned int, unsigned long, unsigned short,
  * and unsigned char.
+ *
+ * @param T the input type
  */
 #define _UnsignDEF_(T)  template <> const bool IsUnsignedFlag<T>::Flag=true;
 #else

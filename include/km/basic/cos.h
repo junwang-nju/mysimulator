@@ -15,6 +15,14 @@
 #include <cmath>
 
 #ifndef _COS
+/** @brief calculate cosine for RT-type data
+ *
+ * This is a macro to ease the definition of cosine funtion. The input
+ * data is RT-type, and the the calculation is implemented with Func
+ *
+ * @param RT the type of input data
+ * @param Func the function matching the input data type
+ */
 #define _COS(RT,Func)   RT _Cos(const RT& d) { return Func(d); }
 #else
 #error "Duplicate _COS"

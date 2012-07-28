@@ -3,6 +3,9 @@
  * @file basic/inverse.h
  * @brief calculate inverse for data of basic type
  *
+ * To be compatible with the ArrayNumeric object, the operation inverse should
+ * be defined for basic type. This file implements this operation.
+ *
  * @author Jun | junwang.nju@gmail.com
  */
 
