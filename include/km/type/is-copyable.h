@@ -21,8 +21,8 @@ namespace mysimulator {
   /** @class IsCopyableFlag
    * @brief the class to produce a flag related to validity of copy operation
    *
-   * This class produces a flag based on the comparison of two input type.
-   * This is the basic framework to evaluate the validity of copy operation.
+   * This class produces a flag based on the comparison of two input types.
+   * This is the basic component to evaluate the validity of copy operation.
    *
    * @tparam T1 the type of data as destination of copy operation
    * @tparam T2 the type of data as source of copy operation
