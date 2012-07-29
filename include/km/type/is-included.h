@@ -3,6 +3,11 @@
  * @file type/is-included.h
  * @brief checking if the range of one type can cover that of another type
  *
+ * In many operations, we need to check if the range of one type is larger
+ * than (thus could cover) the range of another type. This information could
+ * help to derive types after the calculations between these types. This
+ * file implements the objects related to this purpose.
+ *
  * @author Jun | junwang.nju@gmail.com
  */
 
