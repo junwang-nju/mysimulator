@@ -17,16 +17,32 @@
 namespace mysimulator {
 
   /** @class IsIncludedFlag
+   * @brief the class to produce a flag indicating inclusion relation
+   *
+   * This class contains a flag, which indicates the inclusion relation
+   * between two input types. This is the basic component to evaluate
+   * the inclusion relation between types.
+   *
+   * @tparam T1 the input type which is larger when the inclusion relation
+   *            is \c true
+   * @tparam T2 the input type which is smaller when the inclusion relation
+   *            is \c true
    */
   template <typename T1, typename T2>
   class IsIncludedFlag {
     public:
       /** @var Flag
+       * @brief the static flag indicating the relation of input types
+       *
+       * When the range of \c T1 is larger than the range of \c T2, the
+       * flag would be set as \c true, otherwise \c false.
        */
       static const bool Flag;
   };
 
   /** @var IsIncludedFlag::Flag
+   *
+   * The default flag is set as \c false.
    */
   template <typename T1, typename T2>
   const bool IsIncludedFlag<T1,T2>::Flag=false;
@@ -34,6 +50,16 @@ namespace mysimulator {
 }
 
 /** @def _IncDEF_
+ *
+ * To ease the specialization of the class \c IsIncludedFlag, this macro
+ * is implemented for the specialized class and the corresponding flags.
+ * Since the relation cannot be derived based on simple logic, here we
+ * enumerate the possible combinations as specializations.
+ * These specialized classes are defined as to fit the requirement of
+ * present version of doxygen.
+ *
+ * @param T1 the first input type which is regular larger
+ * @param T2 the second input type which is regularly smaller
  */
 #ifndef _IncDEF_
 #define _IncDEF_(T1,T2) \
@@ -45,6 +71,20 @@ namespace mysimulator {
 
 namespace mysimulator {
 
+  /** @var IsIncludedFlag<long double,double>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c double
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c double
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c double. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, double)
   _IncDEF_(long double, float)
   _IncDEF_(long double, long long)
