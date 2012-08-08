@@ -3,8 +3,8 @@
  * @file is-unsigned.h
  * @brief The Class to check unsigned data type
  *
- * Some operations can only apply for the unsigned data. This class is used
- * to check if the data type is unsigned. It is implemented by enumerating
+ * Some operations can only apply for the \c unsigned data. This class is used
+ * to check if the data type is \c unsigned. It is implemented by enumerating
  * all possible types.
  *
  * @note Presently, this class works for intrinsic type only.
@@ -19,7 +19,7 @@ namespace mysimulator {
 
   /**
    * @class IsUnsignedFlag
-   * @brief the Object checking if the type is unsigned
+   * @brief the Object checking if the type is \c unsigned
    *
    * This class contains a static flag to indicate checking result, so that it
    * works for all types and can be incorporated into other checking.
@@ -29,28 +29,36 @@ namespace mysimulator {
   template <typename T>
   class IsUnsignedFlag {
     public:
-      /** @brief the static flag indicating if T is unsigned or not
+      /** @var Flag
+       * @brief the static flag indicating if \c T is \c unsigned or not
        *
-       * true when T is unsigned object, otherwise false
+       * \c true when \c T is \c unsigned object, otherwise \c false
        */
       static const bool Flag;
   };
 
-  /** @brief the default flag for IsUnsignedFlag is set as false */
+  /** @var IsUnsignedFlag::Flag
+   *
+   * the default flag for \c IsUnsignedFlag is set as \c false
+   */
   template <typename T> const bool IsUnsignedFlag<T>::Flag=false;
 
 }
 
 #ifndef _UnsignDEF_
-/** @brief static flags for specialized IsUnsignedFlag object
+/** @def _UnsignDEF_
+ * @brief static flags for specialized \c IsUnsignedFlag object
  *
- * The specialized case, the flag is set as true. The specialized cases
- * include unsigned long long, unsigned int, unsigned long, unsigned short,
- * and unsigned char.
+ * The specialized case, the flag is set as \c true. The specialized cases
+ * include \c unsigned \c long \c long, \c unsigned \c int, \c unsigned \c long,
+ * \c unsigned \c short, and \c unsigned \c char. The specialization of class
+ * is defined to vaidate the document with doxygen.
  *
  * @param T the input type
  */
-#define _UnsignDEF_(T)  template <> const bool IsUnsignedFlag<T>::Flag=true;
+#define _UnsignDEF_(T)  \
+  template <> class IsUnsignedFlag<T> { public: static const bool Flag; }; \
+  const bool IsUnsignedFlag<T>::Flag=true;
 #else
 #error "Duplicate _UnsignDEF_"
 #endif
@@ -75,10 +83,10 @@ namespace mysimulator {
 
   /**
    * @class IsUnsigned
-   * @brief the Class to check if the type is unsigned
+   * @brief the Class to check if the type is \c unsigned
    *
-   * Using the generic Check class and IsUnsignedFlag object to implement
-   * checking operation. When the type is not unsigned, an error would
+   * Using the generic \c Check class and \c IsUnsignedFlag object to implement
+   * checking operation. When the type is not \c unsigned, an error would
    * occur during compiling.
    *
    * @tparam T the input type
