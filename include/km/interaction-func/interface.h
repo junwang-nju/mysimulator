@@ -12,6 +12,7 @@
 #include "array2d-numeric/interface.h"
 #include "unique/64bit/interface.h"
 #include "interaction-func/name.h"
+#include "interaction-func/update-name.h"
 #include "interaction-parameter/interface.h"
 
 namespace mysimulator {
@@ -35,14 +36,14 @@ namespace mysimulator {
       friend class InteractionFuncDihedral<T,GeomType>;
 
       InteractionFunc() : _tag(UnknownInteractionFunc), _pre(),
-                          _post(), _tmvec(), _neighbor(), _update(true) {}
+                          _post(), _tmvec(), _neighbor(), _update(NoUpdateOK) {}
       virtual ~InteractionFunc() { Clear(*this); }
 
       bool IsValid() const {
         return _pre.IsValid()&&_post.IsValid()&&_tmvec.IsValid()&&
                (_tag!=UnknownInteractionFunc);
       }
-      void ClearFlag() { _update=true; }
+      void ClearFlag() { _update=NoUpdateOK; }
       InteractionFuncName Name() const { return _tag; }
 
       template <typename T1,typename GT>
@@ -80,7 +81,7 @@ namespace mysimulator {
       ArrayNumeric<T>       _post;
       Array2DNumeric<T>     _tmvec;
       Array<Type*>          _neighbor;
-      bool                  _update;
+      InteractionFuncUpdateName   _update;
 
     private:
 
@@ -91,7 +92,7 @@ namespace mysimulator {
 
   template <typename T,typename GT>
   void Clear(InteractionFunc<T,GT>& F) {
-    F._update=true;
+    F._update=NoUpdateOK;
     Clear(F._neighbor);
     Clear(F._tmvec);
     Clear(F._post);
