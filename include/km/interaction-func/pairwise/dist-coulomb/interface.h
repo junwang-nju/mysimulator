@@ -54,7 +54,7 @@ namespace mysimulator {
         assert(this->IsValid());
         this->_post[DistDielCoulombIvDistanceSQ]=
           1./this->_pre[PairwiseDistanceSQ];
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         Pre2Post4E(P);

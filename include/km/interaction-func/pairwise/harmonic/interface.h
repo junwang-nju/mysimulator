@@ -60,7 +60,7 @@ namespace mysimulator {
         assert(this->IsValid());
         assert(P!=NULL);
         this->_post[HarmonicLength]=__SqRoot(this->_pre[PairwiseDistanceSQ]);
-        this->_update=true;
+        this->_update|=EFuncUpdateOK;
       }
       virtual
       void Pre2Post4G(const InteractionParameter<T>* P) {
@@ -68,7 +68,7 @@ namespace mysimulator {
         assert(P!=NULL);
         this->_post[HarmonicIvLength]=
           1./__SqRoot(this->_pre[PairwiseDistanceSQ]);
-        this->_update=true;
+        this->_update|=GFuncUpdateOK;
       }
       virtual
       void Pre2Post4B(const InteractionParameter<T>* P) {
@@ -77,7 +77,7 @@ namespace mysimulator {
         T tmd=__SqRoot(this->_pre[PairwiseDistanceSQ]);
         this->_post[HarmonicLength]=tmd;
         this->_post[HarmonicIvLength]=1./tmd;
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
 
     private:

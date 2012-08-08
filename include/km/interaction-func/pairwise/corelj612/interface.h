@@ -65,22 +65,24 @@ namespace mysimulator {
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
+        InteractionFuncUpdateName IUN=this->_update;
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[CoreLJ612DistanceSQ]=tmd;
-        if(tmd<Value<T>((*P)[CoreLJ612RadiusSQ]))
+        if(tmd<Value<T>((*P)[CoreLJ612RadiusSQ])) {
           ParentType::Pre2Post4E(P);
-        else
-          this->_update=false;
+          this->_update=IUN|EFuncUpdateOK;
+        } else  this->_update=IUN|EGFuncUpdateOK;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
+        InteractionFuncUpdateName IUN=this->_update;
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[CoreLJ612DistanceSQ]=tmd;
-        if(tmd<Value<T>((*P)[CoreLJ612RadiusSQ]))
+        if(tmd<Value<T>((*P)[CoreLJ612RadiusSQ])) {
           ParentType::Pre2Post4G(P);
-        else
-          this->_update=false;
+          this->_update=IUN|EGFuncUpdateOK;
+        } else  this->_update=IUN|EGFuncUpdateOK;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
         Pre2Post4G(P);

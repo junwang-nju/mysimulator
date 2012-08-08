@@ -69,7 +69,7 @@ namespace mysimulator {
       virtual
       void Pre2Post4E(const InteractionParameter<T>* P) {
         this->_post[StepContinuousDistSQ]=this->_pre[PairwiseDistanceSQ];
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
       virtual
       void Pre2Post4G(const InteractionParameter<T>* P) { Pre2Post4E(P); }

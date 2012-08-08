@@ -69,14 +69,14 @@ namespace mysimulator {
         assert(this->IsValid());
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612IvDistance6]=tmd*tmd*tmd;
-        this->_update=true;
+        this->_update|=EFuncUpdateOK;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612IvDistanceSQ]=tmd;
         this->_post[LJ612IvDistance6]=tmd*tmd*tmd;
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
         Pre2Post4G(P);
