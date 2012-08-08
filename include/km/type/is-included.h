@@ -86,39 +86,417 @@ namespace mysimulator {
    * member.
    */
   _IncDEF_(long double, double)
+  /** @var IsIncludedFlag<long double,float>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c float
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c float
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c float. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, float)
+  /** @var IsIncludedFlag<long double,long long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c long \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c long \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c long \c long. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, long long)
+  /** @var IsIncludedFlag<long double,unsigned long long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c unsigned \c long \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c unsigned \c long \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c unsigned \c long \c long. The definition of the
+   * specialized class is used for the the implementation of documents
+   * related to the specialized member.
+   */
   _IncDEF_(long double, unsigned long long)
+  /** @var IsIncludedFlag<long double,int>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c int
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c int
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c int. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, int)
+  /** @var IsIncludedFlag<long double,unsigned int>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c unsigned \c int
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c unsigned \c int
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c unsigned \c int. The definition of the specialized class
+   * is used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, unsigned int)
+  /** @var IsIncludedFlag<long double,long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c long. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, long)
+  /** @var IsIncludedFlag<long double,unsigned long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c unsigned \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c unsigned \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c unsigned \c long. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, unsigned long)
+  /** @var IsIncludedFlag<long double,short>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c short
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c short
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c short. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, short)
+  /** @var IsIncludedFlag<long double,unsigned short>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c unsigned \c short
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c unsigned \c short
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c unsigned \c short. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, unsigned short)
+  /** @var IsIncludedFlag<long double,char>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c char
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c char
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c char. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, char)
+  /** @var IsIncludedFlag<long double,unsigned char>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c long \c double is
+   * larger that \c unsigned \c char
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c long \c double and \c unsigned \c char
+   *
+   * This is a specialization of \c IsIncludedFlag for types of \c long
+   * \c double and \c unsigned \c char. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(long double, unsigned char)
 
+  /** @var IsIncludedFlag<double,float>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c float
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c float
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c float. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, float)
+  /** @var IsIncludedFlag<double,long long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c long \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c long \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c long \c long. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, long long)
+  /** @var IsIncludedFlag<double,unsigned long long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c unsigned \c long \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c unsigned \c long \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c unsigned \c long \c long. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, unsigned long long)
+  /** @var IsIncludedFlag<double,int>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c int
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c int
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c int. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, int)
+  /** @var IsIncludedFlag<double,unsigned int>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c unsigned \c int
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c unsigned \c int
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c unsigned \c int. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, unsigned int)
+  /** @var IsIncludedFlag<double,long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c long. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, long)
+  /** @var IsIncludedFlag<double,unsigned long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c unsigned \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c unsigned \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c unsigned \c long. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, unsigned long)
+  /** @var IsIncludedFlag<double,short>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c short
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c short
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c short. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, short)
+  /** @var IsIncludedFlag<double,unsigned short>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c unsigned \c short
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c unsigned \c short
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c unsigned \c short. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, unsigned short)
+  /** @var IsIncludedFlag<double,char>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c char
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c char
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c char. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, char)
+  /** @var IsIncludedFlag<double,unsigned char>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c double is
+   * larger that \c unsigned \c char
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c double and \c unsigned \c char
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c double and \c unsigned \c char. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(double, unsigned char)
 
   _IncDEF_(float, long long)
   _IncDEF_(float, unsigned long long)
+  /** @var IsIncludedFlag<float,int>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c floatis
+   * larger that \c int
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c floatand \c int
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c floatand \c int. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(float, int)
   _IncDEF_(float, unsigned int)
+  /** @var IsIncludedFlag<float,long>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c floatis
+   * larger that \c long
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c floatand \c long
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c floatand \c long. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(float, long)
   _IncDEF_(float, unsigned long)
+  /** @var IsIncludedFlag<float,short>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c floatis
+   * larger that \c short
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c floatand \c short
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c floatand \c short. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(float, short)
   _IncDEF_(float, unsigned short)
+  /** @var IsIncludedFlag<float,char>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c floatis
+   * larger that \c char
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c floatand \c char
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c floatand \c char. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(float, char)
+  /** @var IsIncludedFlag<float,unsigned char>::Flag
+   * @brief the static flag indicating the relation of input types
+   *
+   * This takes the value \c true, indicating \c floatis
+   * larger that \c unsigned \c char
+   */
+  /**
+   * @brief the specialization of \c IsIncludedFlag for \c floatand \c unsigned \c char
+   *
+   * This is a specialization of \c IsIncludedFlag for types of 
+   * \c floatand \c unsigned \c char. The definition of the specialized class is
+   * used for the the implementation of documents related to the specialized
+   * member.
+   */
   _IncDEF_(float, unsigned char)
 
   _IncDEF_(long long, int)
