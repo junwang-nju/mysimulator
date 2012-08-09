@@ -21,6 +21,7 @@
  * @arg type/is-copyable.h
  * @arg type/is-fillable.h
  * @arg type/is-float-point.h
+ * @arg type/is-included.h
  */
 
 /**
