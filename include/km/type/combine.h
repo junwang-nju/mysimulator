@@ -22,14 +22,16 @@ namespace mysimulator {
    * All the types can be aligned in a sequential order based on the
    * their inclusion relation. This class expects to give out the type
    * which is larger than the input type and us closest to the input type.
-   * This is the default form. There are no contents. The detailed relations
+   * This is the default form. The input type is used to define the
+   * \c Type trait.(This would act as an exit for unexpected types which
+   * cannnot be operated by \c CombineType)  The detailed relations
    * would be implemented with specializations, since the relation cannot
    * be expressed with simple logic.
    *
    * @tparam T the input type
    */
   template <typename T>
-  class _LargeType {};
+  class _LargeType { public: typedef T Type; };
 
 }
 
