@@ -19,7 +19,7 @@ namespace mysimulator {
    * @class IsIntegerFlag
    * @brief the internal object producing flag of integer-type checking
    *
-   * It contains a bool flag to indicate the checking result. This could
+   * It contains a \c bool flag to indicate the checking result. This could
    * be incorporated into other checking.
    *
    * @tparam T the input type
@@ -27,23 +27,31 @@ namespace mysimulator {
   template <typename T>
   class IsIntegerFlag {
     public:
-      /** @brief the static flag indicating the check result
+      /** @var Flag
+       * @brief the static flag indicating the check result
        *
-       * true indicates that T is integer-type, otherwise false
+       * \c true indicates that \c T is integer-type, otherwise \c false
        */
       static const bool Flag;
   };
 
-  /** @brief default flag for IsIntegerFlag with is set as false */
+  /** @var IsIntegerFlag::Flag
+   *
+   * default flag for \c IsIntegerFlag with is set as \c false
+   */
   template <typename T> const bool IsIntegerFlag<T>::Flag=false;
 
 }
 
 #ifndef _IntDEF_
-/** @brief static flags for specialized IsIntegerFlag object
+/** @def _IntDEF_
+ * @brief static flags for specialized IsIntegerFlag object
  *
- * The specialized case, the flag is set as true. The specialized cases
- * include long long, int, long, short, char and their unsigned couterparts.
+ * The specialized case, the flag is set as \c true. The specialized cases
+ * include \c long \c long, \c int, \c long, \c short, \c char and
+ * their \c unsigned couterparts.
+ *
+ * @param RT the input type for the macro
  */
 #define _IntDEF_(RT) \
   template <> \

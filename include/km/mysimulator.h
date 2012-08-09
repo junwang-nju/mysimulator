@@ -17,11 +17,14 @@
  * @arg type/is-blas-size.h
  * @arg type/is-blas.h  // manual specification class
  * @arg type/is-char.h  // manual specification class
- * @arg type/is-integer.h // manual specification class
  * @arg type/is-copyable.h
  * @arg type/is-fillable.h
  * @arg type/is-float-point.h
  * @arg type/is-included.h
+ * @arg type/is-integer.h // manual specification class
+ * @arg type/is-intrinsic.h
+ * @arg type/is-memcopyable.h
+ * @arg type/is-numeric.h
  */
 
 /**
