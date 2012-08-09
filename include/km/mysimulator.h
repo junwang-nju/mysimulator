@@ -23,6 +23,7 @@
  * @arg type/is-included.h
  * @arg type/is-integer.h // manual specification class
  * @arg type/is-intrinsic.h
+ * @arg type/is-memcopyable.h
  */
 
 /**
