@@ -1,4 +1,16 @@
 
+/**
+ * @file type/is-numeric-object.h
+ * @brief the class to check if an object is related to numeric operation
+ *
+ * In simulations, the numeric operations could only be applied to some certain
+ * objects. To avoid incorrect usage of numeric operations, we need a check
+ * if an object is compatible to the numeric operations. This file implements
+ * the related objects.
+ *
+ * @author Jun | junwang.nju@gmail.com
+ */
+
 #ifndef _Type_IsNumericObject_H_
 #define _Type_IsNumericObject_H_
 
