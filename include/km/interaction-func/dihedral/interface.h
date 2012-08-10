@@ -48,7 +48,7 @@ namespace mysimulator {
         assert(ID.IsValid());
         assert(P!=NULL);
         assert(Geo.IsValid());
-        if(this->_update) {
+        if((this->_update&EFuncUpdateOK)!=EFuncUpdateOK) {
           unsigned int I=ID[0], J=ID[1], K=ID[2], L=ID[3];
           DisplacementCalc(_VEC_(BondVecJI),X[J],X[I],Geo);
           DisplacementCalc(_VEC_(BondVecKJ),X[K],X[J],Geo);
@@ -83,7 +83,7 @@ namespace mysimulator {
         assert(Geo.IsValid());
         assert(Grad.IsValid());
         unsigned int I=ID[0], J=ID[1], K=ID[2], L=ID[3];
-        if(this->_update) {
+        if((this->_update&GFuncUpdateOK)!=GFuncUpdateOK) {
           DisplacementCalc(_VEC_(BondVecJI),X[J],X[I],Geo);
           DisplacementCalc(_VEC_(BondVecKJ),X[K],X[J],Geo);
           DisplacementCalc(_VEC_(BondVecLK),X[L],X[K],Geo);
@@ -131,7 +131,7 @@ namespace mysimulator {
         assert(Geo.IsValid());
         assert(Grad.IsValid());
         unsigned int I=ID[0], J=ID[1], K=ID[2], L=ID[3];
-        if(this->_update) {
+        if((this->_update&EGFuncUpdateOK)!=EGFuncUpdateOK) {
           DisplacementCalc(_VEC_(BondVecJI),X[J],X[I],Geo);
           DisplacementCalc(_VEC_(BondVecKJ),X[K],X[J],Geo);
           DisplacementCalc(_VEC_(BondVecLK),X[L],X[K],Geo);
@@ -192,7 +192,7 @@ namespace mysimulator {
                          this->_pre[DihedralIvNormBSQ]);
         this->_post[DihedralValue]=_ACos(csDih)*
                                    (this->_pre[DihedralCrossNormAB]>0?1:-1);
-        this->_update=true;
+        this->_update|=EFuncUpdateOK;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>*) {
         T tmda=this->_pre[DihedralIvNormASQ];
@@ -207,7 +207,7 @@ namespace mysimulator {
         this->_post[DihedralFactorJ]=-this->_pre[DihedralDotBondAB]*tmda*tmd1;
         this->_post[DihedralFactorK]= this->_pre[DihedralDotBondBC]*tmdb*tmd1;
         this->_post[DihedralFactorL]= tmd*tmdb;
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
         Pre2Post4G(P);
@@ -223,14 +223,20 @@ namespace mysimulator {
         InteractionFunc<T,GeomType>* P;
         P=this->_neighbor[DihedralNeighbor4NormA];
         assert(P!=NULL);
-        this->_pre[DihedralIvNormASQ]=
-          (P->_update?1./_VEC_(NormVecA).NormSQ():
-                      P->_post[AngleIvRabSin]*P->_post[AngleIvRabSin]);
+        if((P->_update&GFuncUpdateOK)==GFuncUpdateOK)
+          this->_pre[DihedralIvNormASQ]=
+            P->_post[AngleIvRabSin]*P->_post[AngleIvRabSin];
+        else
+          this->_pre[DihedralIvNormASQ]=
+            1./_VEC_(NormVecA).NormSQ();
         P=this->_neighbor[DihedralNeighbor4NormB];
         assert(P!=NULL);
-        this->_pre[DihedralIvNormBSQ]=
-          (P->_update?1./_VEC_(NormVecB).NormSQ():
-                      P->_post[AngleIvRabSin]*P->_post[AngleIvRabSin]);
+        if((P->_update&GFuncUpdateOK)==GFuncUpdateOK)
+          this->_pre[DihedralIvNormBSQ]=
+            P->_post[AngleIvRabSin]*P->_post[AngleIvRabSin];
+        else
+          this->_pre[DihedralIvNormBSQ]=
+            1./_VEC_(NormVecB).NormSQ();
       }
       void GetPre4G() {
         GetPre4E();

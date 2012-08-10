@@ -54,7 +54,7 @@ namespace mysimulator {
         assert(this->IsValid());
         assert(P!=NULL);
         this->_post[WallHarmonicLength]=this->_pre[WallDistance];
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
       virtual 
       void Pre2Post4G(const InteractionParameter<T>* P) { Pre2Post4E(P); }

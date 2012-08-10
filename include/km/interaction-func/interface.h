@@ -81,7 +81,7 @@ namespace mysimulator {
       ArrayNumeric<T>       _post;
       Array2DNumeric<T>     _tmvec;
       Array<Type*>          _neighbor;
-      InteractionFuncUpdateName   _update;
+      unsigned int          _update;
 
     private:
 

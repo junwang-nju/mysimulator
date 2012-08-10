@@ -48,7 +48,7 @@ namespace mysimulator {
         tmd*=tmd;
         tmd*=tmd;
         this->_post[WallCore12IvDistance12]=tmd*tmd*tmd;
-        this->_update=true;
+        this->_update|=EFuncUpdateOK;
       }
       virtual
       void Pre2Post4G(const InteractionParameter<T>* P) {
@@ -59,7 +59,7 @@ namespace mysimulator {
         tmd1*=tmd1*tmd1;
         this->_post[WallCore12IvDistance12]=tmd1;
         this->_post[WallCore12IvDistance13]=tmd1*tmd;
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
 
     private:

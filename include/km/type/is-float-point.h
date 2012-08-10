@@ -28,21 +28,21 @@ namespace mysimulator {
     public:
       static const bool Flag;
   };
-  template <> const bool IsFloatPointFlag<long double>::Flag=true;
+  const bool IsFloatPointFlag<long double>::Flag=true;
 
   template <>
   class IsFloatPointFlag<double> {
     public:
       static const bool Flag;
   };
-  template <> const bool IsFloatPointFlag<double>::Flag=true;
+  const bool IsFloatPointFlag<double>::Flag=true;
 
   template <>
   class IsFloatPointFlag<float> {
     public:
       static const bool Flag;
   };
-  template <> const bool IsFloatPointFlag<float>::Flag=true;
+  const bool IsFloatPointFlag<float>::Flag=true;
 
 }
 

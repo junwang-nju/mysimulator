@@ -72,7 +72,7 @@ namespace mysimulator {
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
-        InteractionFuncUpdateName IUN=this->_update;
+        unsigned int IUN=this->_update;
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ612CutCutRSQ])) {
@@ -84,7 +84,7 @@ namespace mysimulator {
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
-        InteractionFuncUpdateName IUN=this->_update;
+        unsigned int IUN=this->_update;
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ612CutCutRSQ])) {
@@ -97,7 +97,7 @@ namespace mysimulator {
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
-        InteractionFuncUpdateName IUN=this->_update;
+        unsigned int IUN=this->_update;
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ612CutCutRSQ])) {

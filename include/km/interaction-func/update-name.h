@@ -5,10 +5,10 @@
 namespace mysimulator {
 
   enum InteractionFuncUpdateName {
-    NoUpdateOK = 0,
-    EFuncUpdateOK = 1,
-    GFuncUpdateOK = 2,
-    HFuncUpdateOK = 4,
+    NoUpdateOK = 0U,
+    EFuncUpdateOK = 1U,
+    GFuncUpdateOK = 2U,
+    HFuncUpdateOK = 4U,
     EGFuncUpdateOK = EFuncUpdateOK + GFuncUpdateOK,
     EHFuncUpdateOK = EFuncUpdateOK + HFuncUpdateOK,
     GHFuncUpdateOK = GFuncUpdateOK + HFuncUpdateOK,
