@@ -25,6 +25,7 @@
  * @arg type/is-intrinsic.h
  * @arg type/is-memcopyable.h
  * @arg type/is-numeric.h
+ * @arg type/is-numeric-object.h
  */
 
 /**
