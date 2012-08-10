@@ -2,7 +2,7 @@
 /** @file type/is-scalable.h
  * @brief check if the types are compatible with scale operation
  *
- * scale operation is a kind of numeric operation. this operation can
+ * scale operation is a kind of numeric operation. this operation can work for
  * only some combinations of type. a check is needed to test the validity
  * of scale operation for the input types. This file implements the related
  * objects.

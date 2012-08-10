@@ -28,6 +28,7 @@
  * @arg type/is-numeric-object.h
  * @arg type/is-same.h
  * @arg type/is-scalable.h
+ * @arg type/is-shiftable.h
  */
 
 /**
