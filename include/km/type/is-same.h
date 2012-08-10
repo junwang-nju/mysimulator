@@ -3,7 +3,7 @@
  * @file type/is-same.h
  * @brief checking if two objects are of same type
  *
- * Some operations require that two objects are of same type (such as BLAS
+ * Some operations require that two objects are of same type (such as \c BLAS
  * operations). This file offers objects to carry out the related check.
  */
 
@@ -16,7 +16,7 @@ namespace mysimulator {
    * @class IsTypeSameFlag
    * @brief the internal object producing flag of same-type checking
    *
-   * It contains a static bool flag to indicate the checking result. This
+   * It contains a static \c bool flag to indicate the checking result. This
    * could be incorporated into other checking.
    *
    * @tparam T1,T2 two input types
@@ -24,14 +24,18 @@ namespace mysimulator {
   template <typename T1, typename T2>
   class IsTypeSameFlag {
     public:
-      /** @brief the static flag indicating the checking result
+      /** @var Flag
+       * @brief the static flag indicating the checking result
        *
-       * true indicates that T1 and T2 are the same, otherwise false
+       * \c true indicates that \c T1 and \c T2 are the same, otherwise \c false
        */
       static const bool Flag;
   };
 
-  /** @brief the default flag for IsTypeSameFlag which is set as false */
+  /** @var IsTypeSameFlag::Flag
+   *
+   * the default flag for IsTypeSameFlag which is set as \c false
+   */
   template <typename T1, typename T2>
   const bool IsTypeSameFlag<T1,T2>::Flag=false;
 
@@ -47,11 +51,17 @@ namespace mysimulator {
   template <typename T>
   class IsTypeSameFlag<T,T> {
     public:
-      /** @brief the static flag indicating checking result for specialized class */
+      /** @var Flag
+       * @brief the static flag indicating checking result for specialized class
+       */
       static const bool Flag;
   };
 
-  /** @brief the flag for specialized class with two same input types */
+  /** @var IsTypeSameFlag<T,T>::Flag
+   *
+   * the flag for specialized class with two same input types. Certainly, it
+   * is set as \c true.
+   */
   template <typename T>
   const bool IsTypeSameFlag<T,T>::Flag=true;
 
@@ -73,7 +83,11 @@ namespace mysimulator {
   template <typename T1, typename T2>
   class IsTypeSame {
     public:
-      /** @brief the definition of default type trait */
+      /** @typedef Type
+       * @brief the definition of default type trait
+       *
+       * It is implemented with \c Check and \c IsTypeSameFlag.
+       */
       typedef typename Check<IsTypeSameFlag<T1,T2>::Flag>::Type   Type;
   };
 
