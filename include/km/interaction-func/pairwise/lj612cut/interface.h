@@ -72,28 +72,32 @@ namespace mysimulator {
       virtual void Pre2Post4E(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
+        unsigned int IUN=this->_update;
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ612CutCutRSQ])) {
           this->_post[LJ612CutDistance]=__SqRoot(tmd);
           ParentType::Pre2Post4E(P);
-        } else this->_update=false;
+          this->_update=IUN|EFuncUpdateOK;
+        } else this->_update=IUN|EGFuncUpdateOK;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
+        unsigned int IUN=this->_update;
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ612CutCutRSQ])) {
           ParentType::Pre2Post4G(P);
           this->_post[LJ612CutIvDistance]=
             __SqRoot(this->_post[LJ612CutIvDistanceSQ]);
-          this->_update=true;
-        } else this->_update=false;
+          this->_update=IUN|GFuncUpdateOK;
+        } else this->_update=IUN|EGFuncUpdateOK;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
         assert(this->IsValid());
         assert(P!=NULL);
+        unsigned int IUN=this->_update;
         T tmd=this->_pre[PairwiseDistanceSQ];
         this->_post[LJ612CutDistanceSQ]=tmd;
         if(tmd<Value<T>((*P)[LJ612CutCutRSQ])) {
@@ -101,7 +105,8 @@ namespace mysimulator {
           this->_post[LJ612CutDistance]=__SqRoot(tmd);
           this->_post[LJ612CutIvDistance]=this->_post[LJ612CutDistance]*
                                           this->_post[LJ612CutIvDistanceSQ];
-        } else this->_update=false;
+          this->_update=IUN|EGFuncUpdateOK;
+        } else this->_update=IUN|EGFuncUpdateOK;
       }
 
     private:

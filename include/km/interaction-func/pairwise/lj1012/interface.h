@@ -69,7 +69,7 @@ namespace mysimulator {
         T tmd1=tmd*tmd;
         tmd1*=tmd1;
         this->_post[LJ1012IvDistance10]=tmd1*tmd;
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
       void Pre2Post4G(const InteractionParameter<T>* P) { Pre2Post4E(P); }
       void Pre2Post4B(const InteractionParameter<T>* P) { Pre2Post4E(P); }

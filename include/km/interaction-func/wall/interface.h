@@ -30,7 +30,7 @@ namespace mysimulator {
         assert(ID.IsValid());
         assert(P!=NULL);
         assert(Geo.IsValid());
-        if(this->_update) {
+        if((this->_update&EFuncUpdateOK)==EFuncUpdateOK) {
           unsigned int I=ID[0], J=ID[1];
           this->_pre[WallDistance]=Distance2Wall(X[I],X[J],Geo);
           this->Pre2Post4E(P);
@@ -50,7 +50,7 @@ namespace mysimulator {
         assert(Geo.IsValid());
         assert(Grad.IsValid());
         unsigned int I=ID[0], J=ID[1];
-        if(this->_update) {
+        if((this->_update&GFuncUpdateOK)==GFuncUpdateOK) {
           this->_pre[WallDistance]=Distance2Wall(X[I],X[J],Geo);
           this->Pre2Post4G(P);
         }
@@ -73,7 +73,7 @@ namespace mysimulator {
         assert(Geo.IsValid());
         assert(Grad.IsValid());
         unsigned int I=ID[0], J=ID[1];
-        if(this->_update) {
+        if((this->_update&EGFuncUpdateOK)==EGFuncUpdateOK) {
           this->_pre[WallDistance]=Distance2Wall(X[I],X[J],Geo);
           this->Pre2Post4B(P);
         }

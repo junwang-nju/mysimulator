@@ -33,7 +33,7 @@ namespace mysimulator {
         assert(ID.IsValid());
         assert(P!=NULL);
         assert(Geo.IsValid());
-        if(this->_update) {
+        if((this->_update&EFuncUpdateOK)!=EFuncUpdateOK) {
           if(this->_neighbor.IsValid())   GetPre4E();
           else {
             unsigned int I=ID[0], J=ID[1], K=ID[2];
@@ -63,7 +63,7 @@ namespace mysimulator {
         assert(Geo.IsValid());
         assert(Grad.IsValid());
         unsigned int I=ID[0], J=ID[1], K=ID[2];
-        if(this->_update) {
+        if((this->_update&GFuncUpdateOK)!=GFuncUpdateOK) {
           DisplacementCalc(this->_tmvec[AngleBondVecIJ],X[I],X[J],Geo);
           DisplacementCalc(this->_tmvec[AngleBondVecKJ],X[K],X[J],Geo);
           if(this->_neighbor.IsValid())   GetPre4G();
@@ -107,7 +107,7 @@ namespace mysimulator {
         assert(Geo.IsValid());
         assert(Grad.IsValid());
         unsigned int I=ID[0], J=ID[1], K=ID[2];
-        if(this->_update) {
+        if((this->_update&EGFuncUpdateOK)!=EGFuncUpdateOK) {
           DisplacementCalc(this->_tmvec[AngleBondVecIJ],X[I],X[J],Geo);
           DisplacementCalc(this->_tmvec[AngleBondVecKJ],X[K],X[J],Geo);
           if(this->_neighbor.IsValid())   GetPre4B();
@@ -160,7 +160,7 @@ namespace mysimulator {
         this->_post[AngleCosine]=
           this->_pre[AngleDotAB]/__SqRoot(this->_pre[AngleEdgeASQ]*
                                           this->_pre[AngleEdgeBSQ]);
-        this->_update=true;
+        this->_update|=EFuncUpdateOK;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>*) {
         assert(this->IsValid());
@@ -174,7 +174,7 @@ namespace mysimulator {
         this->_post[AngleIvRabSin]=tmd*tmd2;
         this->_post[AngleIvRaSQCtg]=tmd3*tmda;
         this->_post[AngleIvRbSQCtg]=tmd3*tmdb;
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
         Pre2Post4G(P);

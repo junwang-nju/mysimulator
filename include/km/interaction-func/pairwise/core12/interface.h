@@ -54,7 +54,7 @@ namespace mysimulator {
         T tmd=1./this->_pre[PairwiseDistanceSQ];
         tmd*=tmd;
         this->_post[Core12IvDistance12]=tmd*tmd*tmd;
-        this->_update=true;
+        this->_update|=EFuncUpdateOK;
       }
       virtual void Pre2Post4G(const InteractionParameter<T>* P) {
         assert(this->IsValid());
@@ -63,7 +63,7 @@ namespace mysimulator {
         T tmd1=tmd*tmd*tmd;
         this->_post[Core12IvDistance12]=tmd1;
         this->_post[Core12IvDistance14]=tmd1*tmd;
-        this->_update=false;
+        this->_update|=EGFuncUpdateOK;
       }
       virtual void Pre2Post4B(const InteractionParameter<T>* P) {
         Pre2Post4G(P);
