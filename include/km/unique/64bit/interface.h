@@ -388,8 +388,7 @@ namespace mysimulator {
  */
 #ifndef _ValueDEF_
 #define _ValueDEF_(T,v) \
-  _VValueDEF_(T,v) \
-  _CValueDEF_(T,v)
+  _VValueDEF_(T,v) _CValueDEF_(T,v)
 #endif
 
 namespace mysimulator {
@@ -443,61 +442,66 @@ namespace mysimulator {
 
 #include <cassert>
 
-#ifndef _VValueDEF_
-#define _VValueDEF_(T,u) \
+/** @def _VValueDEF1_
+ */
+#ifndef _VValueDEF1_
+#define _VValueDEF1_(T,u) \
   template <> T& Value<T>(Unique64Bit& P,unsigned int n) { \
     assert(n<sizeof(double)/sizeof(T)); \
     return P.u[n]; \
   }
 #else
-#error "Duplicate _VValueDEF_"
+#error "Duplicate _VValueDEF1_"
 #endif
 
-#ifndef _CValueDEF_
-#define _CValueDEF_(T,u) \
+/** @def _CValueDEF1_
+ */
+#ifndef _CValueDEF1_
+#define _CValueDEF1_(T,u) \
   template <> const T& Value<T>(const Unique64Bit& P,unsigned int n) { \
     assert(n<sizeof(double)/sizeof(T)); \
     return P.u[n]; \
   }
 #else
-#error "Duplicate _CValueDEF_"
+#error "Duplicate _CValueDEF1_"
 #endif
 
-#ifndef _ValueDEF_
-#define _ValueDEF_(T,u) \
-  _VValueDEF_(T,u) \
-  _CValueDEF_(T,u)
+/** @def _ValueDEF1_
+ */
+#ifndef _ValueDEF1_
+#define _ValueDEF1_(T,u) \
+  _VValueDEF1_(T,u)   _CValueDEF1_(T,u)
 #else
-#error "Duplicate _ValueDEF_"
+#error "Duplicate _ValueDEF1_"
 #endif
 
 namespace mysimulator {
 
-  _ValueDEF_(double,dv)
-  _ValueDEF_(float,fv)
-  _ValueDEF_(long long,llv)
-  _ValueDEF_(unsigned long long,ullv)
-  _ValueDEF_(int,iv)
-  _ValueDEF_(unsigned int,uv)
-  _ValueDEF_(long,lv)
-  _ValueDEF_(unsigned long,ulv)
-  _ValueDEF_(short,sv)
-  _ValueDEF_(unsigned short,usv)
-  _ValueDEF_(char,cv)
-  _ValueDEF_(unsigned char, ucv)
+  _ValueDEF1_(double,dv)
+  _ValueDEF1_(float,fv)
+  _ValueDEF1_(long long,llv)
+  _ValueDEF1_(unsigned long long,ullv)
+  _ValueDEF1_(int,iv)
+  _ValueDEF1_(unsigned int,uv)
+  _ValueDEF1_(long,lv)
+  _ValueDEF1_(unsigned long,ulv)
+  _ValueDEF1_(short,sv)
+  _ValueDEF1_(unsigned short,usv)
+  _ValueDEF1_(char,cv)
+  _ValueDEF1_(unsigned char, ucv)
 
 }
 
-#ifdef _ValueDEF_
-#undef _ValueDEF_
+#ifdef _ValueDEF1_
+#undef _ValueDEF1_
 #endif
 
-#ifdef _CValueDEF_
-#undef _CValueDEF_
+#ifdef _CValueDEF1_
+#undef _CValueDEF1_
 #endif
 
-#ifdef _VValueDEF_
-#undef _VValueDEF_
+#ifdef _VValueDEF1_
+#undef _VValueDEF1_
 #endif
 
 namespace mysimulator {
