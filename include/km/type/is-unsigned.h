@@ -65,10 +65,75 @@ namespace mysimulator {
 
 namespace mysimulator {
 
+  /** @var IsUnsignedFlag<unsigned long long>::Flag
+   * @brief the static flag indicating the check result
+   *
+   * This takes the value \c true and is the specialization for \c unsigned
+   * \c long \c long type.
+   */
+  /**
+   * @brief the specialization of \c IsUnsignedFlag for \c unsigned \c long \c long
+   *
+   * This is a specialization of class \c IsUnsignedFlag for \c unsigned \c long
+   * \c long type. The definition of this specialization is used for the
+   * implementation of documents related to the specialized member.
+   */
   _UnsignDEF_(unsigned long long)
+  /** @var IsUnsignedFlag<unsigned int>::Flag
+   * @brief the static flag indicating the check result
+   *
+   * This takes the value \c true and is the specialization for \c unsigned
+   * \c int type.
+   */
+  /**
+   * @brief the specialization of \c IsUnsignedFlag for \c unsigned \c int
+   *
+   * This is a specialization of class \c IsUnsignedFlag for \c unsigned
+   * \c int type. The definition of this specialization is used for the
+   * implementation of documents related to the specialized member.
+   */
   _UnsignDEF_(unsigned int)
+  /** @var IsUnsignedFlag<unsigned long>::Flag
+   * @brief the static flag indicating the check result
+   *
+   * This takes the value \c true and is the specialization for \c unsigned
+   * \c long type.
+   */
+  /**
+   * @brief the specialization of \c IsUnsignedFlag for \c unsigned \c long
+   *
+   * This is a specialization of class \c IsUnsignedFlag for \c unsigned
+   * \c long type. The definition of this specialization is used for the
+   * implementation of documents related to the specialized member.
+   */
   _UnsignDEF_(unsigned long)
+  /** @var IsUnsignedFlag<unsigned short>::Flag
+   * @brief the static flag indicating the check result
+   *
+   * This takes the value \c true and is the specialization for \c unsigned
+   * \c short type.
+   */
+  /**
+   * @brief the specialization of \c IsUnsignedFlag for \c unsigned \c short
+   *
+   * This is a specialization of class \c IsUnsignedFlag for \c unsigned
+   * \c short type. The definition of this specialization is used for the
+   * implementation of documents related to the specialized member.
+   */
   _UnsignDEF_(unsigned short)
+  /** @var IsUnsignedFlag<unsigned char>::Flag
+   * @brief the static flag indicating the check result
+   *
+   * This takes the value \c true and is the specialization for \c unsigned
+   * \c char type.
+   */
+  /**
+   * @brief the specialization of \c IsUnsignedFlag for \c unsigned \c char
+   *
+   * This is a specialization of class \c IsUnsignedFlag for \c unsigned
+   * \c char type. The definition of this specialization is used for the
+   * implementation of documents related to the specialized member.
+   */
   _UnsignDEF_(unsigned char)
 
 }
