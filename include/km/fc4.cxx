@@ -5,6 +5,7 @@
 using namespace mysimulator;
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 void Hessian(Array2DNumeric<Array2DNumeric<double> >& Hess,
@@ -35,8 +36,12 @@ void Hessian(Array2DNumeric<Array2DNumeric<double> >& Hess,
 }
 
 double HG(const Array2DNumeric<Array2DNumeric<double> >& Hess,
-          const System<double,FreeSpace>& S, const unsigned int NMer) {
+          System<double,FreeSpace>& S, const unsigned int NMer) {
+  static const double Gamma=10;
   double Sum=0,D=0;
+  S.Gradient()[0].Fill(0);
+  S.Gradient()[NMer-1].Copy(S.Velocity()[NMer-1]);
+  S.Gradient()[NMer-1].Scale(Gamma);
   for(unsigned int i=1;i<NMer-1;++i)
   for(unsigned int k=0;k<3;++k) {
     D=_Dot(Hess[i][k],S.Gradient());
@@ -58,7 +63,18 @@ int main() {
   S.Location()[2][0]=2;
   S.Location()[3][0]=2; S.Location()[3][1]=1;
   S.Location()[4][0]=2; S.Location()[4][1]=1; S.Location()[4][2]=1;
-  S.Location()[5][0]=4;
+  S.Location()[5][0]=3;
+
+  //S.Location()[2][0]=1.5; S.Location()[2][2]=__SqRoot(0.5); S.Location()[2][1]=0.5;
+  //S.Location()[3][0]=1.5; S.Location()[3][2]=__SqRoot(0.5); S.Location()[3][1]=-0.5;
+  //S.Location()[4][0]=2; S.Location()[4][1]=0; S.Location()[4][2]=0.1;
+
+  //ifstream ifs;
+  //ifs.open("bbb");
+  //for(unsigned int i=0;i<NMer;++i)
+  //for(unsigned int k=0;k<3;++k)
+  //  ifs>>S.Location()[i][k];
+  //ifs.close();
 
   S.Velocity().Fill(0);
 
@@ -106,47 +122,45 @@ int main() {
   ArrayNumeric<double> Dsp;
   Dsp.Allocate(3);
 
-  const double Del=1e-6;
-  double T,TP,NG,Step;
-  Array2DNumeric<double> XBk,GT;
+  const double Del=1e-8;
+  double T,TP,Step;
+  unsigned int NG;
+  Array2DNumeric<double> XBk;
   XBk.Imprint(S.Location());
-  GT.Imprint(XBk);
 
   Hessian(Hess,S,Dsp,NB);
   for(unsigned int i=0;i<NB;++i) S.Interaction(i).ClearFlag();
   S.UpdateG(0);
   T=HG(Hess,S,NMer);
   while(true) {
-    GT[0].Fill(0);
-    GT[NMer-1].Fill(0);
+    NG=0;
     for(unsigned int i=1;i<NMer-1;++i)
     for(unsigned int k=0;k<3;++k) {
-      S.Location()[i][k]+=Del;
-      Hessian(Hess,S,Dsp,NB);
-      for(unsigned int u=0;u<NB;++u) S.Interaction(u).ClearFlag();
-      S.UpdateG(0);
-      GT[i][k]=(HG(Hess,S,NMer)-T)/Del;
-      S.Location()[i][k]-=Del;
-    }
-    XBk.BlasCopy(S.Location());
-    NG=GT.Norm();
-    if(NG<1e-8) break;
-    else {
-      GT.BlasScale(-1./NG);
-      Step=0.1;
-      while(Step>1e-8) {
-        S.Location().BlasCopy(XBk);
-        for(unsigned int i=1;i<NMer-1;++i) S.Location()[i].Shift(Step,GT[i]);
+      XBk.BlasCopy(S.Location());
+      Step=1e-3;
+      while(true) {
+        S.Location()[i][k]+=Step;
         Hessian(Hess,S,Dsp,NB);
         for(unsigned int u=0;u<NB;++u) S.Interaction(u).ClearFlag();
         S.UpdateG(0);
         TP=HG(Hess,S,NMer);
-        if(TP<T)  { T=TP; break; }
-        else Step*=0.5;
+        //cout<<i<<"\t"<<k<<"\t"<<Step<<"\t"<<TP<<"\t"<<T<<endl;  getchar();
+        if(TP<T)  { ++NG; T=TP; break; }
+        S.Location()[i][k]-=Step*2.;
+        Hessian(Hess,S,Dsp,NB);
+        for(unsigned int u=0;u<NB;++u) S.Interaction(u).ClearFlag();
+        S.UpdateG(0);
+        TP=HG(Hess,S,NMer);
+        //cout<<i<<"\t"<<k<<"\t"<<Step<<"\t"<<TP<<"\t"<<T<<endl;  getchar();
+        if(TP<T)  { ++NG; T=TP; break; }
+        S.Location()[i][k]+=Step;
+        Step*=0.5;
+        if(Step<Del) break;
       }
-      cout<<Step<<"\t"<<T<<endl;
-      if(Step<1e-8) break;
+      //S.Location().BlasCopy(XBk);
     }
+    cout<<NG<<"\t"<<T<<endl;
+    if(NG==0) break;
   }
 
   for(unsigned int i=0;i<NMer;++i) {
@@ -154,11 +168,17 @@ int main() {
     cout<<endl;
   }
 
+  cout<<endl;
   for(unsigned int u=0;u<NB;++u) S.Interaction(u).ClearFlag();
   S.UpdateE(0);
-
   for(unsigned int i=0;i<NB;++i)
     cout<<i<<"\t"<<S.Interaction(i).Energy()<<endl;
+
+  cout<<endl;
+  Hessian(Hess,S,Dsp,NB);
+  S.UpdateG(0);
+  T=HG(Hess,S,NMer);
+  cout<<T<<endl;
 
   return 0;
 }
