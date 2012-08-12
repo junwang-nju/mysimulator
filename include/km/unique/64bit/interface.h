@@ -367,6 +367,14 @@ namespace mysimulator {
 }
 
 /** @def _VValueDEF_
+ * @brief the macro to define the function to get reference to specialized value
+ *
+ * To ease the definition of the specialization of the function to get
+ * reference to certain type ofvalue, this macro is used. It implemented
+ * through the value interface of \c Unique64Bit.
+ *
+ * @param T the expected type
+ * @param v the value name of the concerned type in the \c union \c Unique64Bit
  */
 #ifndef _VValueDEF_
 #define _VValueDEF_(T,v) \
@@ -376,6 +384,14 @@ namespace mysimulator {
 #endif
 
 /** @def _CValueDEF_
+ * @brief the macro to define functions to get \c const reference to specialized value
+ *
+ * To ease the definition of the specialization of functions to get \c const
+ * reference to certain type of value, thie macro is used. It is implemented
+ * through the value interface of \c Unique64Bit.
+ *
+ * @param T the expected type
+ * @param v the value name of the concerned type in the \c union \c Unique64Bit
  */
 #ifndef _CValueDEF_
 #define _CValueDEF_(T,v)  \
@@ -385,6 +401,14 @@ namespace mysimulator {
 #endif
 
 /** @def _ValueDEF_
+ * @brief the macro for functions to get specialized value
+ *
+ * This is a combination of two macros (\c _VValueDEF_ and \c _CValueDEF_ ).
+ * This macro includes all the definitions related to the functions to get 
+ * reference (or \c onnst reference) of specialized value.
+ *
+ * @param T the expected type
+ * @param v the value name of the concerned type in the \c union \c Unique64Bit
  */
 #ifndef _ValueDEF_
 #define _ValueDEF_(T,v) \
@@ -393,16 +417,172 @@ namespace mysimulator {
 
 namespace mysimulator {
 
+  /** @fn double& Value<double>(Unique64Bit&)
+   * @brief the function to get \c double reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c double
+   * member in \c Unique64Bit. It just returns the reference to related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c double value in \c Unique64Bit.
+   */
+  /** @fn const double& Value<double>(const Unique64Bit&)
+   * @brief the function to get \c const \c double reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c double member in
+   * \c Unique64Bit. It just returns the \c const  reference to related member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c double value in \c Unique64Bit.
+   */
   _ValueDEF_(double,d)
+  /** @fn float& Value<float>(Unique64Bit&)
+   * @brief the function to get \c float reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c float
+   * member in \c Unique64Bit. It just returns the reference to related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c float value in \c Unique64Bit.
+   */
+  /** @fn const float & Value<float>(const Unique64Bit&)
+   * @brief the function to get \c const \c float reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c float member in
+   * \c Unique64Bit. It just returns the \c const  reference to related member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c float value in \c Unique64Bit.
+   */
   _ValueDEF_(float,f)
+  /** @fn long long& Value<long long>(Unique64Bit&)
+   * @brief the function to get \c long \c long reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c long \c long
+   * member in \c Unique64Bit. It just returns the reference to related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c long \c long value in \c Unique64Bit.
+   */
+  /** @fn const long long& Value<long long>(const Unique64Bit&)
+   * @brief the function to get \c const \c long \c long reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c long \c long member in
+   * \c Unique64Bit. It just returns the \c const  reference to related member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c long \c long value in \c Unique64Bit.
+   */
   _ValueDEF_(long long,ll)
+  /** @fn unsigned long long& Value<unsigned long long>(Unique64Bit&)
+   * @brief the function to get \c unsigned \c long \c long reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned \c long
+   * \c long member in \c Unique64Bit. It just returns the reference to related
+   * member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c unsigned \c long \c long value in
+   *         \c Unique64Bit.
+   */
+  /** @fn const unsigned long long& Value<unsigned long long>(const Unique64Bit&)
+   * @brief the function to get \c const \c unsigned \c long \c long reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c long \c long
+   * member in \c Unique64Bit. It just returns the \c const  reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c unsigned \c long \c long value in
+   *         \c Unique64Bit.
+   */
   _ValueDEF_(unsigned long long,ull)
+  /** @fn int& Value<int>(Unique64Bit&)
+   * @brief the function to get \c int reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c int
+   * member in \c Unique64Bit. It just returns the reference to related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c int value in \c Unique64Bit.
+   */
+  /** @fn const int& Value<int>(const Unique64Bit&)
+   * @brief the function to get \c const \c int reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c int member in
+   * \c Unique64Bit. It just returns the \c const  reference to related member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c int value in \c Unique64Bit.
+   */
   _ValueDEF_(int,i)
   _ValueDEF_(unsigned int,u)
+  /** @fn long& Value<long>(Unique64Bit&)
+   * @brief the function to get \c long reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c long
+   * member in \c Unique64Bit. It just returns the reference to related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c long value in \c Unique64Bit.
+   */
+  /** @fn const long& Value<long>(const Unique64Bit&)
+   * @brief the function to get \c const \c long reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c long member in
+   * \c Unique64Bit. It just returns the \c const  reference to related member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c long value in \c Unique64Bit.
+   */
   _ValueDEF_(long,l)
   _ValueDEF_(unsigned long,ul)
+  /** @fn short& Value<short>(Unique64Bit&)
+   * @brief the function to get \c short reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c short
+   * member in \c Unique64Bit. It just returns the reference to related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c short value in \c Unique64Bit.
+   */
+  /** @fn const short& Value<short>(const Unique64Bit&)
+   * @brief the function to get \c const \c short reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c short member in
+   * \c Unique64Bit. It just returns the \c const  reference to related member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c short value in \c Unique64Bit.
+   */
   _ValueDEF_(short,s)
   _ValueDEF_(unsigned short,us)
+  /** @fn char& Value<char>(Unique64Bit&)
+   * @brief the function to get \c char reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c char
+   * member in \c Unique64Bit. It just returns the reference to related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c char value in \c Unique64Bit.
+   */
+  /** @fn const char& Value<char>(const Unique64Bit&)
+   * @brief the function to get \c const \c char reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c char member in
+   * \c Unique64Bit. It just returns the \c const  reference to related member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c char value in \c Unique64Bit.
+   */
   _ValueDEF_(char,c)
   _ValueDEF_(unsigned char, uc)
 
