@@ -521,6 +521,28 @@ namespace mysimulator {
    * @return the const reference to the \c int value in \c Unique64Bit.
    */
   _ValueDEF_(int,i)
+  /** @fn unsigned int& Value<unsigned int>(Unique64Bit&)
+   * @brief the function to get \c unsigned \c int reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned
+   * \c int member in \c Unique64Bit. It just returns the reference to related
+   * member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c unsigned \c int value in \c Unique64Bit.
+   */
+  /** @fn const unsigned int& Value<unsigned int>(const Unique64Bit&)
+   * @brief the function to get \c const \c unsigned \c int reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c int member
+   * in \c Unique64Bit. It just returns the \c const  reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c unsigned \c int value in
+   *         \c Unique64Bit.
+   */
   _ValueDEF_(unsigned int,u)
   /** @fn long& Value<long>(Unique64Bit&)
    * @brief the function to get \c long reference from \c Unique64Bit
@@ -542,6 +564,28 @@ namespace mysimulator {
    * @return the const reference to the \c long value in \c Unique64Bit.
    */
   _ValueDEF_(long,l)
+  /** @fn unsigned long& Value<unsigned long>(Unique64Bit&)
+   * @brief the function to get \c unsigned \c long reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned
+   * \c long member in \c Unique64Bit. It just returns the reference to related
+   * member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c unsigned \c long value in \c Unique64Bit.
+   */
+  /** @fn const unsigned long& Value<unsigned long>(const Unique64Bit&)
+   * @brief the function to get \c const \c unsigned \c long reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c long member
+   * in \c Unique64Bit. It just returns the \c const  reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c unsigned \c long value in
+   *         \c Unique64Bit.
+   */
   _ValueDEF_(unsigned long,ul)
   /** @fn short& Value<short>(Unique64Bit&)
    * @brief the function to get \c short reference from \c Unique64Bit
@@ -563,6 +607,28 @@ namespace mysimulator {
    * @return the const reference to the \c short value in \c Unique64Bit.
    */
   _ValueDEF_(short,s)
+  /** @fn unsigned short& Value<unsigned short>(Unique64Bit&)
+   * @brief the function to get \c unsigned \c short reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned
+   * \c short member in \c Unique64Bit. It just returns the reference to related
+   * member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c unsigned \c short value in \c Unique64Bit.
+   */
+  /** @fn const unsigned short& Value<unsigned short>(const Unique64Bit&)
+   * @brief the function to get \c const \c unsigned \c short reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c short member
+   * in \c Unique64Bit. It just returns the \c const  reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c unsigned \c short value in
+   *         \c Unique64Bit.
+   */
   _ValueDEF_(unsigned short,us)
   /** @fn char& Value<char>(Unique64Bit&)
    * @brief the function to get \c char reference from \c Unique64Bit
@@ -584,6 +650,28 @@ namespace mysimulator {
    * @return the const reference to the \c char value in \c Unique64Bit.
    */
   _ValueDEF_(char,c)
+  /** @fn unsigned char& Value<unsigned char>(Unique64Bit&)
+   * @brief the function to get \c unsigned \c char reference from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned
+   * \c char member in \c Unique64Bit. It just returns the reference to related
+   * member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @return the reference to the \c unsigned \c char value in \c Unique64Bit.
+   */
+  /** @fn const unsigned char& Value<unsigned char>(const Unique64Bit&)
+   * @brief the function to get \c const \c unsigned \c char reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c char member
+   * in \c Unique64Bit. It just returns the \c const  reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the const reference to the \c unsigned \c char value in
+   *         \c Unique64Bit.
+   */
   _ValueDEF_(unsigned char, uc)
 
 }
