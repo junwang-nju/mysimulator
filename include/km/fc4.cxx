@@ -25,7 +25,7 @@ void Hessian(Array2DNumeric<Array2DNumeric<double> >& Hess,
     TMPD=D-DR/Dst;
     for(unsigned int k=0;k<3;++k)
     for(unsigned int l=0;l<3;++l) {
-      TMP=DR/DstSQ*Dsp[k]*Dsp[l];
+      TMP=DR/(DstSQ*Dst)*Dsp[k]*Dsp[l];
       if(k==l)  TMP+=TMPD;
       Hess[I][k][I][l]+=TMP;
       Hess[I][k][J][l]-=TMP;
@@ -39,6 +39,7 @@ double HG(const Array2DNumeric<Array2DNumeric<double> >& Hess,
           System<double,FreeSpace>& S, const unsigned int NMer) {
   static const double Gamma=10;
   double Sum=0,D=0;
+  S.Gradient().BlasScale(-1.);
   S.Gradient()[0].Fill(0);
   S.Gradient()[NMer-1].Copy(S.Velocity()[NMer-1]);
   S.Gradient()[NMer-1].Scale(Gamma);
