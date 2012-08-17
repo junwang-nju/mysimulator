@@ -76,10 +76,10 @@ int main() {
   //S.Location()[4][0]=2; S.Location()[4][1]=0; S.Location()[4][2]=0.1;
 
   //ifstream ifs;
-  //ifs.open("bbb");
+  //ifs.open("fff");
   //for(unsigned int i=0;i<NMer;++i)
   //for(unsigned int k=0;k<3;++k)
-  //  ifs>>S.Location()[i][k];
+    //ifs>>S.Location()[i][k];
   //ifs.close();
 
   S.Velocity().Fill(0);
@@ -120,12 +120,13 @@ int main() {
   S.UpdateB(0);
 
   Array2DNumeric<Array2DNumeric<double> > Hess;
-  Array2DNumeric<double> GT;
+  Array2DNumeric<double> GT,OX;
   ArrayNumeric<double> Dsp,OL;
 
   Dsp.Allocate(3);
   OL.Allocate(3);
   GT.Allocate(NMer,3);
+  OX.Allocate(NMer,3);
   Hess.Allocate(NMer,3);
   for(unsigned int i=0;i<NMer;++i)
   for(unsigned int k=0;k<3;++k) Hess[i][k].Allocate(NMer,3);
@@ -144,23 +145,33 @@ int main() {
   HG(Hess,S,NMer,NB,Dsp,GT);
   T=GT.Norm();
 
-  S.Velocity()[NMer-1][0]=1.;
+  S.Velocity()[NMer-1][0]=0.01;
 
   NG=0;
-  Step=0.001;
+  Step=1e-5;
   while(true) {
-    MI=UG.Double()*(NMer-1)+1;
+    MI=UG.Double()*(NMer-2)+1;
     OL.Copy(S.Location()[MI]);
     for(unsigned int k=0;k<3;++k)
       S.Location()[MI][k]+=BG.Double()*Step;
+    //OX.Copy(S.Location());
+    //for(unsigned int i=1;i<NMer-1;++i)
+    //for(unsigned int k=0;k<3;++k)
+    //  S.Location()[i][k]+=BG.Double()*Step;
     HG(Hess,S,NMer,NB,Dsp,GT);
     TP=GT.Norm();
     if(TP<T) {
-      T=TP; cout<<T<<"\t"<<NG<<endl;
-      if(NG>200) Step=1e-5; else Step=1e-4;
+      T=TP; cout<<T<<"\t"<<NG<<"\t"<<MI<<endl;
       NG=0;
-    } else { S.Location()[MI].Copy(OL); NG++; }
-    if(T<1e-3)  break;
+    } else {
+      S.Location()[MI].Copy(OL); NG++;
+      //S.Location().Copy(OX); NG++;
+    }
+    if(T<1e-1)  break;
+    if(NG>2e6) Step=1e-7;
+    else if(NG>2e4) Step=1e-6;
+    else if(NG>200) Step=1e-5;
+    else Step=1e-4;
   }
 
 
