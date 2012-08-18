@@ -320,9 +320,9 @@ namespace mysimulator {
   /** @fn void _Copy(Unique64Bit&,const T&)
    * @brief copy from \c T -type data to \c Unique64Bit object
    *
-   * It is implemented with the Unique64Bit::Copy method. This function provides
-   * the common interface of copy operation, which would be used in copy of 
-   * advanced objects (such as Array)
+   * It is implemented with the \c Unique64Bit::Copy method. This function
+   * provides the common interface of copy operation, which would be used in
+   * copy of advanced objects (such as \c Array)
    *
    * @tparam T the type of the input data
    *
@@ -332,6 +332,19 @@ namespace mysimulator {
   template <typename T>
   void _Copy(Unique64Bit& P,const T& v) { P.Copy(v); }
   /** @fn void _Copy(T&,const Unique64Bit&)
+   * @brief copy a \c T -type value from \c Unique64Bit
+   *
+   * This procedure extracts the \c T -type content fron \c Unique64Bit
+   * (using the \c Value function) and then assigns it to the output variable.
+   * Therefore it only works for the types that are supported by \c Unique64Bit.
+   * The validity of copy operation is checked by \c IsCopyable. This module
+   * is implemented so that some copy of advanced objects could work on the
+   * base of this operation.
+   *
+   * @tparam T the type of output data
+   *
+   * @param v [out] the resultant \c T -type variable
+   * @param P [in] the input \c Unique64Bit object
    */
   template <typename T>
   void _Copy(T& v,const Unique64Bit& P) {
@@ -339,6 +352,16 @@ namespace mysimulator {
     v=Value<T>(P);
   }
   /** @fn void _Fill(Unique64Bit&,const T&)
+   * @brief fill \c Unique64Bit object with \c T -type data
+   *
+   * It is implemented with \c Unique64Bit::Fill method. The definition
+   * of this module provides common interface for fill operation, which
+   * may be used in advanced fill operations (such as for \c Array).
+   *
+   * @tparam T the type of data which are used to carry out fill operation
+   *
+   * @param P [out] the \c Unique64Bit object to be filled
+   * @param v [in] the \c T -type data to be filled with
    */
   template <typename T>
   void _Fill(Unique64Bit& P,const T& v) { P.Fill(v); }
