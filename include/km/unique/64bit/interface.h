@@ -373,6 +373,18 @@ namespace mysimulator {
 namespace mysimulator {
 
   /** @fn T& Value(Unique64Bit&)
+   * @brief the function to get \c T -type data from \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c T -type 
+   * member in \c Unique64Bit. for the default case, an warning message
+   * is created. the returned reference does not have any meaning.
+   *
+   * @tparam T the type of the output data
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference
+   *                   of the member is returned, the is object may be changed.
+   * @return the reference to internal data, this does not have any meaning
+   *         and it is just used to match the format of function.
    */
   template <typename T>
   T& Value(Unique64Bit& P) {
