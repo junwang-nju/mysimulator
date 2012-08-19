@@ -376,7 +376,7 @@ namespace mysimulator {
    * @brief the function to get \c T -type data from \c Unique64Bit
    *
    * It is an interface to access and change the content of the \c T -type 
-   * member in \c Unique64Bit. for the default case, an warning message
+   * member in \c Unique64Bit. for the default case, a warning message
    * is created. the returned reference does not have any meaning.
    *
    * @tparam T the type of the output data
@@ -392,6 +392,17 @@ namespace mysimulator {
     return static_cast<T&>(P.d);
   }
   /** @fn const T& Value(const Unique64Bit&)
+   * @brief the function to get \c const \c T -type reference from \c Unique64Bit
+   *
+   * It is an interface to access the content of \c const \c T -type
+   * member in \c Unique64Bit. for the default case, a warning message
+   * is created. the returned \c const reference does not have any meaning.
+   *
+   * @tparam T the type of output data
+   *
+   * @param P [in] the input \c const \c Unique64Bit object
+   * @return the \c const reference to internal data, this does not have any
+   *         meaning and it is just used to match the format of function.
    */
   template <typename T>
   const T& Value(const Unique64Bit& P) {
@@ -405,7 +416,7 @@ namespace mysimulator {
  * @brief the macro to define the function to get reference to specialized value
  *
  * To ease the definition of the specialization of the function to get
- * reference to certain type ofvalue, this macro is used. It implemented
+ * reference to certain type of value, this macro is used. It is implemented
  * through the value interface of \c Unique64Bit.
  *
  * @param T the expected type
@@ -726,6 +737,20 @@ namespace mysimulator {
 namespace mysimulator {
 
   /** @fn T Value(Unique64Bit&,unsigned int)
+   * @brief the function to get the member reference of \c T -type array from \c Unique64Bit
+   *
+   * This is an interface to access and change the content of the member
+   * in the array of \c Unique64Bit object. For the default case, a warning
+   * message is returned, and the returned reference does not have any
+   * meaning.
+   *
+   * @tparam T the type of output data
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference
+   *                   of the member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to internal data. For this default case, the
+   *         reference has no meanings.
    */
   template <typename T>
   T& Value(Unique64Bit& P, unsigned int n) {
@@ -734,6 +759,18 @@ namespace mysimulator {
   }
 
   /** @fn const T Value(const Unique64Bit&,unsigned int)
+   * @brief the function to get the \c const member reference of \c T -type array in \c Unique64Bit
+   *
+   * This is an interface to access the content of the member in the array
+   * of \c const \c Unique64Bit object. For the default case, a warning message
+   * is returned, and the returned reference does not have any meaning.
+   *
+   * @tparam T the type of the output data
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return the \c const reference to internal data. For this default case,
+   *         the reference has not meaning.
    */
   template <typename T>
   const T& Value(const Unique64Bit& P, unsigned int n) {
@@ -746,6 +783,14 @@ namespace mysimulator {
 #include <cassert>
 
 /** @def _VValueDEF1_
+ * @brief the macro to define the function to get reference to member of specialized array
+ *
+ * To ease the definition of the specialization of the function to get
+ * reference to member of certain type of array, this macro is used.
+ * It is implemented through the array interface of \c Unique64Bit.
+ *
+ * @param T the expected type
+ * @param u the array name of the concerned type in the \c union \c Unique64Bit
  */
 #ifndef _VValueDEF1_
 #define _VValueDEF1_(T,u) \
@@ -758,6 +803,14 @@ namespace mysimulator {
 #endif
 
 /** @def _CValueDEF1_
+ * @brief the macro to define the function to get \c const reference to member of specialized array
+ *
+ * To ease the definition of the specialization of the function to get \c const
+ * reference to member of certain type of array in \c Unique64Bit, the macro is
+ * defined. It is implemented through the array interface of \c Unique64Bit.
+ *
+ * @param T the expected type
+ * @param u the array name of the concerned type in the \c union \c Unique64Bit
  */
 #ifndef _CValueDEF1_
 #define _CValueDEF1_(T,u) \
