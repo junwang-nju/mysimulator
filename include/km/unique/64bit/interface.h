@@ -451,7 +451,7 @@ namespace mysimulator {
  *
  * This is a combination of two macros (\c _VValueDEF_ and \c _CValueDEF_ ).
  * This macro includes all the definitions related to the functions to get 
- * reference (or \c onnst reference) of specialized value.
+ * reference (or \c const reference) of specialized value.
  *
  * @param T the expected type
  * @param v the value name of the concerned type in the \c union \c Unique64Bit
@@ -823,6 +823,14 @@ namespace mysimulator {
 #endif
 
 /** @def _ValueDEF1_
+ * @brief the macro for functions to get member of specialized array
+ *
+ * This is a combination of two macros (\c _VValueDEF1_ and \c _CValueDEF1_ ).
+ * This macro includes all the definitions related to the functions to get 
+ * reference (or \c const reference) to member of specialized array.
+ *
+ * @param T the expected type
+ * @param u the array name of the concerned type in the \c union \c Unique64Bit
  */
 #ifndef _ValueDEF1_
 #define _ValueDEF1_(T,u) \
@@ -863,11 +871,34 @@ namespace mysimulator {
 namespace mysimulator {
 
   /** @fn T*& Pointer(Unique64Bit&)
+   * @brief the function to get the reference to pointer information in \c Unique64Bit
+   *
+   * The \c Unique64Bit object could contain pointer. This function provides
+   * an interface to access and modify the content of pointer in \c Unique64Bit
+   * object. It is implemented by the pointer interface of \c Unique64Bit.
+   *
+   * @tparam T the type of data which is pointed by the pointer in
+   *           \c Unique64Bit object
+   *
+   * @param P [in,out] the input \c Unique64Bit object
+   * @return the reference to the pointer in \c Unique64Bit object
    */
   template <typename T>
   T*& Pointer(Unique64Bit& P) { return reinterpret_cast<T*&>(P.ptr); }
 
   /** @fn const T* const& Pointer(const Unique64Bit&)
+   * @brief the function to get the \c const reference to pointer in \c const \c Unique64Bit
+   *
+   * The \c Unique64Bit object could contain pointer. This function provides
+   * an interface to access the \c const content of pointer in \c const
+   * \c Unique64Bit object. It is implemented by the pointer interface of
+   * \c const \c Unique64Bit.
+   *
+   * @tparam T the type of data which is pointed by the pointer in
+   *           \c Unique64Bit
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @return the \c const reference to the pointer in \c const \c Unique64Bit.
    */
   template <typename T>
   const T* const& Pointer(const Unique64Bit& P) {
@@ -875,6 +906,16 @@ namespace mysimulator {
   }
 
   /** @fn void Clear(Unique64Bit&)
+   * @brief clear the content of \c Unique64Bit object.
+   *
+   * Defaultly the \c Unique64Bit does not involve allocation operation.
+   * The clear operation is then just to clean up the content by setting
+   * all the data bits as zero. It is implemented through the interface
+   * of \c unsigned \c long \c long value of \c Unique64Bit.
+   *
+   * @param P [in,out] the \c Unique64Bit object to be cleared
+   * @note Since \c Unique64Bit may contain pointer information, be sure
+   *       to clear the pointer-related storage to avoid memory leak.
    */
   void Clear(Unique64Bit& P) { Value<unsigned long long>(P)=0; }
 
@@ -885,11 +926,29 @@ namespace mysimulator {
 namespace mysimulator {
 
   /** @fn void Unique64Bit::Copy(const Unique128Bit&)
+   * @brief copy from another \c Unique128Bit object
+   *
+   * Since \c Unique128Bit is larger than \c Unique64Bit, we only copy
+   * the compatible data from \c Unique128Bit to \c Unique64Bit, namely
+   * the data of \c unsigned \c long \c long data. It is implemented
+   * with the \c Value function for \c Unique128Bit.
+   *
+   * @param U [in] the input \c Unique128Bit object
    */
   void Unique64Bit::Copy(const Unique128Bit& U) {
     Copy(Value<unsigned long long>(U));
   }
 
+  /** @fn void _Copy(Unique64Bit&,const Unique128Bit&)
+   * @brief copy from \c Unique128Bit data to \c Unique64Bit object
+   *
+   * It is implemented with the \c Unique64Bit::Copy method. This function
+   * provides the common interface of copy operation, which would be used in
+   * copy of advanced objects (such as \c Array)
+   *
+   * @param U [out] the resultant \c Unique64Bit object
+   * @param LU [in] the input \c Unique128Bit data
+   */
   void _Copy(Unique64Bit& U,const Unique128Bit& LU) { U.Copy(LU); }
 
 }
