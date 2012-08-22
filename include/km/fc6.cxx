@@ -95,11 +95,13 @@ int main() {
   S.UpdateB(0);
 
   Array2DNumeric<Array2DNumeric<double> > Hess;
-  Array2DNumeric<double> GT,MX;
+  Array2DNumeric<double> GT,EX,DX,MX;
   ArrayNumeric<double> Dsp;
 
   Dsp.Allocate(3);
   GT.Allocate(NMer,3);
+  EX.Allocate(NMer,3);
+  DX.Allocate(NMer,3);
   MX.Allocate(NMer,3);
   Hess.Allocate(NMer,3);
   for(unsigned int i=0;i<NMer;++i)
@@ -109,8 +111,10 @@ int main() {
   MersenneTwisterDSFMT<216091> UG;
   BG.Allocate();
   BG.Init(2139731);
+  BG.InitWithTime();
   UG.Allocate();
   UG.Init(24972847);
+  UG.InitWithTime();
 
   cout.precision(10);
 
@@ -120,70 +124,55 @@ int main() {
 
   S.Velocity()[NMer-1][0]=1.;
 
-  Hessian(Hess,S,Dsp,NB);
-  for(unsigned int u=0;u<NB;++u) S.Interaction(u).ClearFlag();
-  S.UpdateG(0);
-  S.Velocity()[NMer-2].Copy(S.Gradient()[NMer-2]);
-  S.Velocity()[NMer-2].Scale(-iGamma);
-  GT.Fill(0);
-  for(unsigned int j=0;j<3;++j)
-    GT[NMer-2][j]+=_Dot(Hess[NMer-2][j],S.Velocity());
-  T=GT.Norm();
+  DX[3][0]=1;
+  DX[3][1]=1;
+  DX[3][2]=1;
+  DX[4][0]=1;
+  DX[4][1]=1;
+  DX[4][2]=1;
 
-  double DX,DY,DZ,CX,CY,CZ,THM;
-  unsigned int NR;
+  EX[3][0]=S.Location()[3][0];
+  EX[3][1]=S.Location()[3][1];
+  EX[3][2]=S.Location()[3][2];
+  EX[4][0]=S.Location()[4][0];
+  EX[4][1]=S.Location()[4][1];
+  EX[4][2]=S.Location()[4][2];
 
-  DX=2;
-  DY=2;
-  DZ=2;
-  CX=2;
-  CY=0;
-  CZ=0;
-  THM=1.;
+  double THM=40;
 
-  MT=T; MX[NMer-2].Copy(S.Location()[NMer-2]);
+  MT=1e10;  MX.Fill(0);
   while(true) {
-    NR=0;
-    while(true) {
-      S.Location()[NMer-2][0]=UG.Double()*DX+(CX-DX*0.5);
-      S.Location()[NMer-2][1]=UG.Double()*DY+(CY-DY*0.5);
-      S.Location()[NMer-2][2]=UG.Double()*DZ+(CZ-DZ*0.5);
-      Hessian(Hess,S,Dsp,NB);
-      for(unsigned int u=0;u<NB;++u) S.Interaction(u).ClearFlag();
-      S.UpdateG(0);
-      S.Velocity()[NMer-2].Copy(S.Gradient()[NMer-2]);
-      S.Velocity()[NMer-2].Scale(-iGamma);
-      GT.Fill(0);
-      for(unsigned int j=0;j<3;++j)
-        GT[NMer-2][j]+=_Dot(Hess[NMer-2][j],S.Velocity());
-      T=GT.Norm();
-      if(T<MT) {
-        MT=T; MX[NMer-2].Copy(S.Location()[NMer-2]);
-        cout<<MT<<endl;
-        cout<<"\t"<<MX[NMer-2][0]<<"\t"<<MX[NMer-2][1]<<"\t"<<MX[NMer-2][2]<<endl;
-      }
-      NR++;
-      if(MT<THM) break;
-      if(NR>=1e7)  break;
+    S.Location()[3][0]=UG.Double()*DX[3][0]+(EX[3][0]-DX[3][0]*0.5);
+    S.Location()[3][1]=UG.Double()*DX[3][1]+(EX[3][1]-DX[3][1]*0.5);
+    S.Location()[3][2]=UG.Double()*DX[3][2]+(EX[3][2]-DX[3][2]*0.5);
+    S.Location()[4][0]=UG.Double()*DX[4][0]+(EX[4][0]-DX[4][0]*0.5);
+    S.Location()[4][1]=UG.Double()*DX[4][1]+(EX[4][1]-DX[4][1]*0.5);
+    S.Location()[4][2]=UG.Double()*DX[4][2]+(EX[4][2]-DX[4][2]*0.5);
+    Hessian(Hess,S,Dsp,NB);
+    for(unsigned int u=0;u<NB;++u) S.Interaction(u).ClearFlag();
+    S.UpdateG(0);
+    S.Velocity()[3].Copy(S.Gradient()[3]);
+    S.Velocity()[2].Scale(-iGamma);
+    S.Velocity()[4].Copy(S.Gradient()[4]);
+    S.Velocity()[4].Scale(-iGamma);
+    GT.Fill(0);
+    for(unsigned int j=0;j<3;++j)
+      GT[3][j]+=_Dot(Hess[3][j],S.Velocity());
+    for(unsigned int j=0;j<3;++j)
+      GT[4][j]+=_Dot(Hess[4][j],S.Velocity());
+    T=GT.Norm();
+    if(T<MT) {
+      MT=T;
+      MX[3].Copy(S.Location()[3]);
+      MX[4].Copy(S.Location()[4]);
+      //cout<<MT<<endl;
+      //cout<<"\t"<<MX[NMer-2][0]<<"\t"<<MX[NMer-2][1]<<"\t"<<MX[NMer-2][2]<<endl;
     }
-    if(MT<1e-3) break;
-    if(MT>THM) {
-      CX=MX[NMer-2][0];
-      CY=MX[NMer-2][1];
-      CZ=MX[NMer-2][2];
-      DX*=0.9;
-      DY*=0.9;
-      DZ*=0.9;
-      cout<<"======== Shrink ========= "<<DX<<endl;
-    } else {
-      CX=MX[NMer-2][0];
-      CY=MX[NMer-2][1];
-      CZ=MX[NMer-2][2];
-      DX*=0.8;
-      DY*=0.8;
-      DZ*=0.8;
-      THM=MT*0.5;
-      cout<<"======== New Step ========= "<<DX<<endl;
+    if(MT<THM) {
+      cout<<MT<<endl;
+      cout<<"\t"<<MX[3][0]<<"\t"<<MX[3][1]<<"\t"<<MX[3][2]<<endl;
+      cout<<"\t"<<MX[4][0]<<"\t"<<MX[4][1]<<"\t"<<MX[4][2]<<endl;
+      MT=1e10;  MX.Fill(0);
     }
   }
 
