@@ -110,10 +110,10 @@ int main() {
   BoxMuller<MersenneTwisterDSFMT<19937> > BG;
   MersenneTwisterDSFMT<216091> UG;
   BG.Allocate();
-  BG.Init(2139731);
+  //BG.Init(2139731);
   BG.InitWithTime();
   UG.Allocate();
-  UG.Init(24972847);
+  //UG.Init(24972847);
   UG.InitWithTime();
 
   cout.precision(10);
@@ -124,56 +124,51 @@ int main() {
 
   S.Velocity()[NMer-1][0]=1.;
 
-  DX[3][0]=1;
-  DX[3][1]=1;
-  DX[3][2]=1;
-  DX[4][0]=1;
-  DX[4][1]=1;
-  DX[4][2]=1;
+  //double THM=0.004;
 
-  EX[3][0]=S.Location()[3][0];
-  EX[3][1]=S.Location()[3][1];
-  EX[3][2]=S.Location()[3][2];
-  EX[4][0]=S.Location()[4][0];
-  EX[4][1]=S.Location()[4][1];
-  EX[4][2]=S.Location()[4][2];
+  for(unsigned int i=1;i<=4;++i) EX[i].Copy(S.Location()[i]);
+  DX.Fill(1);
+  //THM=1;
 
-  double THM=40;
+  ifstream ifs;
+  ifs.open("xxx");
+  for(unsigned int i=1;i<=4;++i)
+  for(unsigned int j=0;j<3;++j) ifs>>EX[i][j];
+  ifs>>T;
+  DX.Fill(T);
+  ifs.close();
 
   MT=1e10;  MX.Fill(0);
   while(true) {
-    S.Location()[3][0]=UG.Double()*DX[3][0]+(EX[3][0]-DX[3][0]*0.5);
-    S.Location()[3][1]=UG.Double()*DX[3][1]+(EX[3][1]-DX[3][1]*0.5);
-    S.Location()[3][2]=UG.Double()*DX[3][2]+(EX[3][2]-DX[3][2]*0.5);
-    S.Location()[4][0]=UG.Double()*DX[4][0]+(EX[4][0]-DX[4][0]*0.5);
-    S.Location()[4][1]=UG.Double()*DX[4][1]+(EX[4][1]-DX[4][1]*0.5);
-    S.Location()[4][2]=UG.Double()*DX[4][2]+(EX[4][2]-DX[4][2]*0.5);
+    for(unsigned int i=1;i<=4;++i)
+    for(unsigned int j=0;j<3;++j)
+      S.Location()[i][j]=UG.Double()*DX[i][j]+(EX[i][j]-DX[i][j]*0.5);
     Hessian(Hess,S,Dsp,NB);
     for(unsigned int u=0;u<NB;++u) S.Interaction(u).ClearFlag();
     S.UpdateG(0);
-    S.Velocity()[3].Copy(S.Gradient()[3]);
-    S.Velocity()[2].Scale(-iGamma);
-    S.Velocity()[4].Copy(S.Gradient()[4]);
-    S.Velocity()[4].Scale(-iGamma);
+    for(unsigned int i=1;i<=4;++i) {
+      S.Velocity()[i].Copy(S.Gradient()[i]);
+      S.Velocity()[i].Scale(iGamma);
+    }
     GT.Fill(0);
+    for(unsigned int i=1;i<=4;++i)
     for(unsigned int j=0;j<3;++j)
-      GT[3][j]+=_Dot(Hess[3][j],S.Velocity());
-    for(unsigned int j=0;j<3;++j)
-      GT[4][j]+=_Dot(Hess[4][j],S.Velocity());
+      GT[i][j]=_Dot(Hess[i][j],S.Velocity());
     T=GT.Norm();
     if(T<MT) {
       MT=T;
-      MX[3].Copy(S.Location()[3]);
-      MX[4].Copy(S.Location()[4]);
-      //cout<<MT<<endl;
-      //cout<<"\t"<<MX[NMer-2][0]<<"\t"<<MX[NMer-2][1]<<"\t"<<MX[NMer-2][2]<<endl;
-    }
-    if(MT<THM) {
+      MX.BlasCopy(S.Location());
       cout<<MT<<endl;
-      cout<<"\t"<<MX[3][0]<<"\t"<<MX[3][1]<<"\t"<<MX[3][2]<<endl;
-      cout<<"\t"<<MX[4][0]<<"\t"<<MX[4][1]<<"\t"<<MX[4][2]<<endl;
-      MT=1e10;  MX.Fill(0);
+      for(unsigned int i=1;i<=4;++i) {
+        for(unsigned int j=0;j<3;++j) cout<<"\t"<<MX[i][j]; cout<<endl;
+      }
     }
+    //if(MT<THM) {
+    //  cout<<MT<<endl;
+    //  cout<<"\t"<<MX[3][0]<<"\t"<<MX[3][1]<<"\t"<<MX[3][2]<<endl;
+    //  cout<<"\t"<<MX[4][0]<<"\t"<<MX[4][1]<<"\t"<<MX[4][2]<<endl;
+    //  MT=1e10;  MX.Fill(0);
+    //}
   }
 
   return 0;
