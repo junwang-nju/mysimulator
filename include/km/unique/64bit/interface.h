@@ -865,16 +865,269 @@ namespace mysimulator {
    * @return \c const reference to the \c double member of array in \c Unique64Bit.
    */
   _ValueDEF1_(double,dv)
+  /** @fn float& Value<float>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c float member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c float
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c float member of array in \c Unique64Bit.
+   */
+  /** @fn const float& Value<float>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c float member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c float member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c float member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(float,fv)
+  /** @fn long long& Value<long long>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c long \c long member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c long \c long
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c long \c long member of array in \c Unique64Bit.
+   */
+  /** @fn const long long& Value<long long>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c long \c long member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c long \c long member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c long \c long member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(long long,llv)
+  /** @fn unsigned long long& Value<unsigned long long>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c unsigned \c long \c long member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned \c long \c long
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c unsigned \c long \c long member of array in \c Unique64Bit.
+   */
+  /** @fn const unsigned long long& Value<unsigned long long>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c unsigned \c long \c long member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c long \c long member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c unsigned \c long \c long member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(unsigned long long,ullv)
+  /** @fn int& Value<int>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c int member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c int
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c int member of array in \c Unique64Bit.
+   */
+  /** @fn const int& Value<int>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c int member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c int member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c int member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(int,iv)
+  /** @fn unsigned int& Value<unsigned int>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c unsigned \c int member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned \c int
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c unsigned \c int member of array in \c Unique64Bit.
+   */
+  /** @fn const unsigned int& Value<unsigned int>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c unsigned \c int member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c int member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c unsigned \c int member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(unsigned int,uv)
+  /** @fn long& Value<long>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c long member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c long
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c long member of array in \c Unique64Bit.
+   */
+  /** @fn const long& Value<long>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c long member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c long member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c long member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(long,lv)
+  /** @fn unsigned long& Value<unsigned long>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c unsigned \c long member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned \c long
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c unsigned \c long member of array in \c Unique64Bit.
+   */
+  /** @fn const unsigned long& Value<unsigned long>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c unsigned \c long member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c long member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c unsigned \c long member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(unsigned long,ulv)
+  /** @fn short& Value<short>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c short member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c short
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c short member of array in \c Unique64Bit.
+   */
+  /** @fn const short& Value<short>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c short member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c short member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c short member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(short,sv)
+  /** @fn unsigned short& Value<unsigned short>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c unsigned \c short member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned \c short
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c unsigned \c short member of array in \c Unique64Bit.
+   */
+  /** @fn const unsigned short& Value<unsigned short>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c unsigned \c short member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c short member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c unsigned \c short member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(unsigned short,usv)
+  /** @fn char& Value<char>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c char member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c char
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c char member of array in \c Unique64Bit.
+   */
+  /** @fn const char& Value<char>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c char member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c char member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c char member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(char,cv)
+  /** @fn unsigned char& Value<unsigned char>(Unique64Bit&,unsigned int)
+   * @brief the function to get reference of \c unsigned \c char member from the array in \c Unique64Bit
+   *
+   * It is an interface to access and change the content of the \c unsigned \c char
+   * member of array in \c Unique64Bit. It just returns the reference to
+   * related member.
+   *
+   * @param P [in,out] the input \c Unique64Bit object. Since the reference of the
+   *                   member is returned, the is object may be changed.
+   * @param n [in] the index of member in array
+   * @return the reference to the \c unsigned \c char member of array in \c Unique64Bit.
+   */
+  /** @fn const unsigned char& Value<unsigned char>(const Unique64Bit&,unsigned int)
+   * @brief the function to get \c const reference of \c unsigned \c char member from the array in \c Unique64Bit
+   *
+   * It is an interface to access the content of the \c unsigned \c char member of the
+   * array in \c Unique64Bit. It just returns the \c const reference to related
+   * member.
+   *
+   * @param P [in] the input \c const \c Unique64Bit object.
+   * @param n [in] the index of member in array
+   * @return \c const reference to the \c unsigned \c char member of array in \c Unique64Bit.
+   */
   _ValueDEF1_(unsigned char, ucv)
 
 }
