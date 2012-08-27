@@ -7,6 +7,10 @@
  * solvent. A data structure is needed to describe this kind of boundary
  * condition. This file implements the data structure.
  *
+ * @note to simplify the definition, the displacement calculation for free-space
+ *       boundary condition is included in this file. This is regularly
+ *       useful for molecular simulation.
+ *
  * @author Jun | junwang.nju@gmail.com
  */
 

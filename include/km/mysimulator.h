@@ -12,6 +12,8 @@
  * @arg basic
  * @arg type
  * @arg boundary
+ * @arg displacement
+ * @arg distance
  * @arg unique/64bit/interface.h
  */
 
