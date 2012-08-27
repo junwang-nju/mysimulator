@@ -16,7 +16,7 @@
 
 namespace mysimulator {
 
-  /** @fn void DisplacementCalc(ArrayNumeric<T>&,const ArrayNumeric<T1>,const ArrayNumeric<T2>&,const FreeSpace&)
+  /** @fn void DisplacementCalc(ArrayNumeric<T>&,const ArrayNumeric<T1>&,const ArrayNumeric<T2>&,const FreeSpace&)
    * @brief calculate displacement for free boundary condition
    *
    * Based on the definition of free boundary condition, this operation is
