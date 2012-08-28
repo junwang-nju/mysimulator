@@ -3,6 +3,10 @@
  * @file pdb-atom-position/interface.h
  * @brief the data structure to store position from PDB file
  *
+ * In the data structure describing information in pdb file, the coordination
+ * of atoms is a part inside. This file includes the data structure describing
+ * the coordinate of atom.
+ *
  * @author Jun | junwang.nju@gmail.com
  */
 
@@ -13,10 +17,19 @@
 
 namespace mysimulator {
 
+  /** @class PDBAtomPosition
+   * @brief the object containing the spatial coordinates for atom in pdb
+   *
+   * In pdb structure, the atom has a spatial location which is described
+   * with a three-dimensional vector. This class describes the spatial
+   * location.
+   */
   class PDBAtomPosition {
 
     public:
 
+      /** @typedef Type
+       */
       typedef PDBAtomPosition Type;
       friend void Clear(PDBAtomPosition&);
 
