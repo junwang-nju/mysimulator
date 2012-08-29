@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <cstdio>
 using namespace std;
 
 extern "C" {
@@ -53,20 +54,61 @@ void GetHessian(double* X,double* Hess,double* K,double* D,int* bID,int* eID,
   }
 }
 
+double GetDV(double* X,double* Hess,double *G,
+             double* K,double *D,int* bID,int* eID,
+             double* V,double* A,double* B,int *IP,
+             int NB,int N,int TN,int NS,int NH,
+             double iGamma,int& Inf) {
+  double T;
+  GetHessian(X,Hess,K,D,bID,eID,NB,N,TN);
+  for(int k=0;k<NS;++k)
+  for(int l=0;l<NS;++l) A[k*NS+l]=Hess[(3+k)*TN+3+l];
+  for(int k=0;k<NS;++k) {
+    T=0;
+    for(int i=0;i<3;++i) T+=Hess[(3+k+1)*TN-3+i]*V[TN-3+i];
+    B[k]=-T;
+  }
+  dgesv_(&NS,&NH,A,&NS,IP,B,&NS,&Inf);
+
+  GetG(X,G,K,D,bID,eID,NB,N,TN);
+  for(int k=0;k<NS;++k)  V[3+k]=-iGamma*G[3+k];
+  for(int k=0;k<NS;++k)  B[k]=V[3+k]-B[k];
+  T=0;
+  for(int k=0;k<NS;++k)  T+=B[k]*B[k];
+  T=sqrt(T);
+  if(T>10) {
+    for(int i=0;i<4;++i) {
+      for(int k=0;k<3;++k) cout<<"\t"<<B[i*3+k]; cout<<endl;
+    }
+    cout<<endl;
+    for(int i=0;i<4;++i) {
+      for(int k=0;k<3;++k) cout<<"\t"<<V[3+3*i+k]-B[i*3+k]; cout<<endl;
+    }
+    cout<<Inf<<endl;
+    getchar();
+  }
+  //for(int k=0;k<NS;++k)  B[k]/=T;
+  return T;
+}
+
 int main() {
   double * Hess;
-  double * A;
-  double * X, * V, *G;
+  double * A, * B, * RB;
+  double * X, * XP, * V, *G, *GT;
   double * K, * D;
-  int    * bID, *eID;
+  int    * bID, * eID, * IP;
 
   int N=6;
   int TN=N*3;
   int NB=8;
+  int NS=12;
+  int NH=1;
 
   X=new double[TN];
+  XP=new double[TN];
   V=new double[TN];
   G=new double[TN];
+  GT=new double[TN];
 
   K=new double[NB];
   D=new double[NB];
@@ -84,6 +126,9 @@ int main() {
   bID[6]=3; eID[6]=4;   D[6]=1;   K[6]=100;
   bID[7]=4; eID[7]=5;   D[7]=1;   K[7]=20;
 
+  for(int i=0;i<TN;++i) V[i]=0;
+  V[15]=0.1;
+
   double T;
   T=sqrt(0.5);
   X[0]=0;       X[1]=0;         X[2]=0;
@@ -91,15 +136,54 @@ int main() {
   X[6]=1.5;     X[7]=0.5;       X[8]=T;
   X[9]=1.5;     X[10]=-0.5;     X[11]=T;
   X[12]=2;      X[13]=0;        X[14]=0;
-  X[15]=3;      X[16]=1;        X[17]=0;
+  X[15]=3;      X[16]=0;        X[17]=0;
 
-  GetG(X,G,K,D,bID,eID,NB,N,TN);
+  double Gamma=10;
+  double iGamma=1./Gamma;
 
-  GetHessian(X,Hess,K,D,bID,eID,NB,N,TN);
+  A=new double[NS*NS];
+  B=new double[NS];
+  RB=new double[NS];
+  IP=new int[NS];
+  int Inf;
+  double Step,PT;
 
-  for(int k=0;k<3;++k) {
-    for(int l=0;l<3;++l)  cout<<"\t"<<Hess[(15+k)*TN+15+l]; cout<<endl;
+  T=GetDV(X,Hess,G,K,D,bID,eID,V,A,B,IP,NB,N,TN,NS,NH,iGamma,Inf);
+  for(int k=0;k<NS;++k)  RB[k]=B[k];
+  cout<<T<<endl;
+  Step=1e-5;
+  while(true) {
+    //for(int k=0;k<NS;++k)  XP[3+k]=X[3+k]+RB[k]*Step*0.5;
+    //PT=GetDV(XP,Hess,G,K,D,bID,eID,V,A,B,IP,NB,N,TN,NS,NH,iGamma,Inf);
+    //for(int k=0;k<NS;++k)  RB[k]=B[k];
+    for(int k=0;k<NS;++k)  X[3+k]+=RB[k]*Step;
+    PT=GetDV(X,Hess,G,K,D,bID,eID,V,A,B,IP,NB,N,TN,NS,NH,iGamma,Inf);
+    /*
+    if(PT<T) {
+      T=PT; for(int k=0;k<NS;++k) RB[k]=B[k]; Step=0.01; //cout<<T<<endl;
+    } else { for(int k=0;k<NS;++k) X[3+k]-=RB[k]*Step;  Step*=0.5; }
+    */
+    T=PT; for(int k=0;k<NS;++k) RB[k]=B[k];
+    cout<<T<<endl;
+    if(T<1e-3)  break;
   }
+  cout<<endl;
+  cout<<X[3]<<"\t"<<X[4]<<"\t"<<X[5]<<endl;
+  cout<<X[6]<<"\t"<<X[7]<<"\t"<<X[8]<<endl;
+  cout<<X[9]<<"\t"<<X[10]<<"\t"<<X[11]<<endl;
+  cout<<X[12]<<"\t"<<X[13]<<"\t"<<X[14]<<endl;
+  GetHessian(X,Hess,K,D,bID,eID,NB,N,TN);
+  GetG(X,G,K,D,bID,eID,NB,N,TN);
+  for(int k=0;k<NS;++k) V[3+k]=-iGamma*G[3+k];
+  T=0;
+  for(int i=0;i<NS;++i) {
+    T=0;
+    for(int k=0;k<TN-3;++k) T+=Hess[(3+i)*TN+3+k]*V[3+k];
+    GT[3+i]=T;
+  }
+  T=0;
+  for(int k=0;k<NS;++k) T+=GT[3+k]*GT[3+k];
+  cout<<sqrt(T)<<endl;
 
   return 0;
 }
