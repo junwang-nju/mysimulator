@@ -4,6 +4,9 @@
 #include <cstdio>
 using namespace std;
 
+#include "random/interface.h"
+using namespace mysimulator;
+
 extern "C" {
   void dgesv_(int*,int*,double*,int*,int*,double*,int*,int*);
 }
@@ -76,24 +79,41 @@ double GetDV(double* X,double* Hess,double *G,
   T=0;
   for(int k=0;k<NS;++k)  T+=B[k]*B[k];
   T=sqrt(T);
-  if(T>10) {
-    for(int i=0;i<4;++i) {
-      for(int k=0;k<3;++k) cout<<"\t"<<B[i*3+k]; cout<<endl;
-    }
-    cout<<endl;
-    for(int i=0;i<4;++i) {
-      for(int k=0;k<3;++k) cout<<"\t"<<V[3+3*i+k]-B[i*3+k]; cout<<endl;
-    }
-    cout<<Inf<<endl;
-    getchar();
-  }
+  //for(int k=0;k<NS;++k)
+  //for(int l=0;l<NS;++l) A[k*NS+l]=Hess[(3+k)*TN+3+l];
+  //dgesv_(&NS,&NH,A,&NS,IP,B,&NS,&Inf);
   //for(int k=0;k<NS;++k)  B[k]/=T;
   return T;
 }
 
+double GetGT(double* X,double* Hess,double *G,
+             double* K,double *D,int* bID,int* eID,
+             double* V,double* GT,
+             int NB,int N,int TN,int NS,int NH,
+             double iGamma) {
+  GetHessian(X,Hess,K,D,bID,eID,NB,N,TN);
+  GetG(X,G,K,D,bID,eID,NB,N,TN);
+  for(int k=0;k<NS;++k) V[3+k]=-iGamma*G[3+k];
+  double T=0;
+  for(int i=0;i<NS;++i) {
+    T=0;
+    for(int k=0;k<TN-3;++k) T+=Hess[(3+i)*TN+3+k]*V[3+k];
+    GT[3+i]=T;
+  }
+  T=0;
+  for(int k=0;k<NS;++k) T+=GT[3+k]*GT[3+k];
+  return sqrt(T);
+}
+
+double NORM(double* V, int N) {
+  double T=0;
+  for(int i=0;i<N;++i)  T+=V[i]*V[i];
+  return sqrt(T);
+}
+
 int main() {
   double * Hess;
-  double * A, * B, * RB;
+  double * A, * B, * RB, * MB;
   double * X, * XP, * V, *G, *GT;
   double * K, * D;
   int    * bID, * eID, * IP;
@@ -127,7 +147,7 @@ int main() {
   bID[7]=4; eID[7]=5;   D[7]=1;   K[7]=20;
 
   for(int i=0;i<TN;++i) V[i]=0;
-  V[15]=0.1;
+  V[15]=1.;
 
   double T;
   T=sqrt(0.5);
@@ -144,11 +164,61 @@ int main() {
   A=new double[NS*NS];
   B=new double[NS];
   RB=new double[NS];
+  MB=new double[NS];
   IP=new int[NS];
-  int Inf;
-  double Step,PT;
+  int Inf,RI,RJ;
+  double Step,PT,TT;
 
-  T=GetDV(X,Hess,G,K,D,bID,eID,V,A,B,IP,NB,N,TN,NS,NH,iGamma,Inf);
+  BoxMuller<MersenneTwisterDSFMT<19937> > BG;
+  MersenneTwisterDSFMT<216091> UG;
+  BG.Allocate();
+  //BG.Init(2139731);
+  BG.InitWithTime();
+  UG.Allocate();
+  //UG.Init(24972847);
+  UG.InitWithTime();
+
+  cout.precision(10);
+  cout<<T<<endl;
+  Step=1e-4;
+
+  while(true) {
+  T=GetGT(X,Hess,G,K,D,bID,eID,V,GT,NB,N,TN,NS,NH,iGamma);
+  while(true) {
+    for(int k=0;k<NS;++k) MB[k]=0;
+    for(int k=0;k<NS;++k) RB[k]=0;
+    RI=0;
+    RJ=1;
+    while(true) {
+      RB[RI]+=RJ;
+      if(NORM(RB,NS)<0.5) TT=1.;
+      else TT=1./NORM(RB,NS);
+      for(int k=0;k<NS;++k) X[3+k]+=RB[k]*TT*Step;
+      PT=GetGT(X,Hess,G,K,D,bID,eID,V,GT,NB,N,TN,NS,NH,iGamma);
+      for(int k=0;k<NS;++k) X[3+k]-=RB[k]*Step*TT;
+      //cout<<"----- "<<PT<<endl;
+      //for(int i=0;i<NS;++i) cout<<" -- "<<RB[i]; cout<<endl;
+      if(PT<T) { T=PT; for(int i=0;i<NS;++i) MB[i]=RB[i]; RI=0; RJ=1;
+        cout<<T<<endl;
+        //for(int i=0;i<NS;++i) cout<<" == "<<MB[i]; cout<<endl;
+      } else {
+        RB[RI]-=RJ;
+        if(RJ<0) { RI++; RJ=1; } else RJ=-RJ;
+        if(RI>=NS) break;
+      }
+      //getchar();
+    }
+    if(NORM(MB,NS)<0.5)   break;
+    else TT=1./NORM(MB,NS);
+    for(int k=0;k<NS;++k) X[3+k]+=MB[k]*TT*Step;
+    T=GetGT(X,Hess,G,K,D,bID,eID,V,GT,NB,N,TN,NS,NH,iGamma);
+  }
+  Step*=0.3;
+  if(Step<1e-8) break;
+  }
+
+
+  return 0;
   for(int k=0;k<NS;++k)  RB[k]=B[k];
   cout<<T<<endl;
   Step=1e-5;
