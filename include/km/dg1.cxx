@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstdio>
+#include <fstream>
 using namespace std;
 
 #include "random/interface.h"
@@ -141,6 +142,11 @@ int main() {
   X[12]=2;      X[13]=0;        X[14]=0;
   X[15]=3;      X[16]=0;        X[17]=0;
 
+  ifstream ifs;
+  ifs.open("XXX");
+  for(int i=0;i<NS;++i) ifs>>X[i+3];
+  ifs.close();
+
   double Gamma=10;
   double iGamma=1./Gamma;
 
@@ -160,12 +166,14 @@ int main() {
   UG.InitWithTime();
 
   cout.precision(10);
-  Step=1e-4;
+  Step=1e-6;
 
   T=GetDV(X,Hess,G,K,D,bID,eID,V,A,B,IP,NB,N,TN,NS,NH,iGamma,Inf);
+  for(int i=0;i<NS;++i) X[i+3]+=0.0001*G[i+3];
+  T=GetDV(X,Hess,G,K,D,bID,eID,V,A,B,IP,NB,N,TN,NS,NH,iGamma,Inf);
 
-  cout<<T<<endl;
-  while(true) {
+  cout<<"=========== "<<T<<endl;
+  while(T>-0.999) {
     for(int i=0;i<NS;++i) MV[3+i]=BG.Double();
     TT=0;
     for(int i=0;i<NS;++i) TT+=MV[3+i]*B[i];
@@ -176,7 +184,6 @@ int main() {
     PT=GetDV(X,Hess,G,K,D,bID,eID,V,A,B,IP,NB,N,TN,NS,NH,iGamma,Inf);
     if(PT<T)  { T=PT; cout<<T<<endl; }
     else { for(int i=0;i<NS;++i) X[3+i]-=MV[3+i]; }
-    if(T<-0.99) break;
   }
 
   cout<<endl;
