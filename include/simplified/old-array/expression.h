@@ -6,13 +6,13 @@
 
 namespace mysimulator {
 
-  template <typename E>
+  template <typename E,typename T>
   class ArrayExpression {
 
     public:
 
-      typedef typename E::size_type   size_type;
-      typedef typename E::value_type  value_type;
+      typedef unsigned int size_type;
+      typedef T value_type;
 
       size_type size() const { return static_cast<E const&>(*this).size(); }
       value_type operator[](size_type i) const {

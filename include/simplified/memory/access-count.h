@@ -21,7 +21,7 @@ namespace mysimulator {
 
       memory_access_count() : count(0), part_count(0) {}
       memory_access_count(const Type&) = delete;
-      ~memory_access_count() { part_count=0; count=0; }
+      ~memory_access_count() { reset(); }
 
       Type& operator=(const Type&) = delete;
 
@@ -38,6 +38,8 @@ namespace mysimulator {
       }
       unsigned int GlobalUseCount() const { return count; }
       unsigned int PartUsedCount() const { return part_count; }
+
+      void reset() { part_count=0; count=0; }
 
   };
 

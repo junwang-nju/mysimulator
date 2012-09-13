@@ -2,78 +2,76 @@
 #ifndef _Array_Container_H_
 #define _Array_Container_H_
 
-#include "memory/accessed-ptr.h"
-#include "basic/imprint.h"
+#include "array/container-base.h"
 
 namespace mysimulator {
 
-  enum class ArrayFormat { Regular, Data, ShortData, LargeData };
-
-  template <typename T,ArrayFormat AF=ArrayFormat::Regular>
+  template <typename T,ArrayFormat AF>
   class ArrayContainer {
+    public:
+      ArrayContainer() = delete;
+  };
 
+  template <typename T>
+  class ArrayContainer<T,ArrayFormat::Regular>
+      : public ArrayContainerBase<T,ArrayFormat::Regular> {
+    
     public:
 
-      typedef ArrayContainer<T,AF>    Type;
-      typedef T             value_type;
-      typedef T&            reference;
-      typedef const T&      const_reference;
-      typedef T*            pointer;
-      typedef const T*      const_pointer;
-      typedef unsigned int  size_type;
+      typedef ArrayContainer<T,ArrayFormat::Regular>        Type;
+      typedef ArrayContainerBase<T,ArrayFormat::Regular>    ParentType;
+      typedef unsigned int size_type;
 
-    protected:
-
-      accessed_ptr<T>   _pdata;
-      unsigned int      _ndata;
-
-    public:
-
-      ArrayContainer() : _pdata(), _ndata(0U) {}
-      ArrayContainer(unsigned int size) : ArrayContainer() { allocate(size); }
+      ArrayContainer() : ParentType() {}
+      ArrayContainer(size_type size) : ParentType(size) {}
       ArrayContainer(const Type&) = delete;
-      virtual ~ArrayContainer() { _pdata.~accessed_ptr(); _ndata=0; }
+      virtual ~ArrayContainer() { ParentType::reset(); }
 
-      operator bool() const { return (bool)_pdata && (_ndata>0); }
-      unsigned int size() const { return _ndata; }
-      reference operator[](unsigned int i) {
-        assert(i<_ndata);
-        return _pdata[i];
-      }
-      const_reference operator[](unsigned int i)  const {
-        assert(i<_ndata);
-        return _pdata[i];
-      }
-      pointer head() const { return _pdata.get(); }
-      const_pointer end() const { return head()+_ndata; }
-
-      template <typename Y,ArrayFormat YAF>
-      Type& operator=(const ArrayContainer<Y,YAF>&) = delete;
-
-      virtual void allocate(unsigned int size) {
-        this->~ArrayContainer();
-        _pdata.reset(new T[size]);
-        _pdata.set_deleter(operator delete[]);
-        _ndata=size;
-      }
-      template <typename Y,ArrayFormat YAF>
-      void imprint_structure(const ArrayContainer<Y,YAF>& A) {
-        assert((bool)A);
-        allocate(A.size());
-      }
-      template <typename Y,ArrayFormat YAF>
-      void imprint(const ArrayContainer<Y,YAF>& A) {
-        imprint_structure(A);
-        pointer p=head(), q=A.head();
-        for(pointer p=head(),q=A.head();p!=end();)  __imprint(*(p++),*(q++));
+      virtual void allocate(size_type size) override {
+        printf("------------R-------------\n");
+        this->reset();
+        this->_pdata.reset(new T[size],operator delete[]);
+        this->_ndata=size;
       }
 
   };
 
-  template <typename T,ArrayFormat AF,typename Y,ArrayFormat YAF>
-  void __imprint(ArrayContainer<T,AF>& A,const ArrayContainer<Y,YAF>& B) {
-    A.imprint(B);
-  }
+}
+
+#include "memory/aligned-memory.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  class ArrayContainer<T,ArrayFormat::Data>
+      : public ArrayContainerBase<T,ArrayFormat::Data> {
+
+    public:
+
+      typedef ArrayContainer<T,ArrayFormat::Data>    Type;
+      typedef ArrayContainerBase<T,ArrayFormat::Data>   ParentType;
+      typedef unsigned int size_type;
+      typedef T* pointer;
+
+      ArrayContainer() : ParentType() {}
+      ArrayContainer(size_type size) : ParentType(size) {}
+      ArrayContainer(const Type&) = delete;
+      virtual ~ArrayContainer() { ParentType::reset(); }
+
+      virtual void allocate(size_type size) override {
+        printf("------------D-------------\n");
+        this->reset();
+        size_type byte_size=size*sizeof(T);
+        size_type alloc_size=
+          (byte_size&(~0xFU))+((byte_size&0xFU)==0?0:0xFU-(byte_size&0xFU));
+        this->_pdata.reset(
+            reinterpret_cast<pointer>(__aligned_malloc(alloc_size)),
+            __aligned_free);
+        this->_ndata=size;
+      }
+
+  };
+
 
 }
 

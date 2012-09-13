@@ -7,12 +7,12 @@
 namespace mysimulator {
 
   template <typename T,ArrayFormat AF=ArrayFormat::Regular>
-  class Array : public ArrayExpression<Array<T,AF>> {
+  class Array : public ArrayExpression<Array<T,AF>,T> {
 
     public:
 
       typedef Array<T,AF>   Type;
-      typedef ArrayExpression<Array<T,AF>>  ParentType;
+      typedef ArrayExpression<Array<T,AF>,T>  ParentType;
       typedef T         value_type;
       typedef T&        reference;
       typedef const T&  const_reference;
@@ -20,7 +20,7 @@ namespace mysimulator {
       typedef const T*  const_pointer;
       typedef unsigned int size_type;
 
-      //template <typename Y,ArrayFormat YAF> friend class Array<Y,YAF>;
+      template <typename Y,ArrayFormat YAF> friend class Array;
 
     protected:
 
@@ -47,8 +47,8 @@ namespace mysimulator {
       template <typename Y,ArrayFormat YAF>
       void imprint(const Array<Y,YAF>& A) { _data.imprint(A._data); }
 
-      template <typename E>
-      Array(ArrayExpression<E> const& A) {
+      template <typename E,typename ET>
+      Array(ArrayExpression<E,ET> const& A) {
         allocate(A.size());
         operator=(A);
       }
@@ -62,8 +62,8 @@ namespace mysimulator {
         for(unsigned int i=0;i<size();++i)  _data[i]=A[i];
         return *this;
       }
-      template <typename E>
-      Type& operator=(ArrayExpression<E> const& A) {
+      template <typename E,typename ET>
+      Type& operator=(ArrayExpression<E,ET> const& A) {
         assert((bool)(*this));
         assert(size()<=A.size());
         for(unsigned int i=0;i<size();++i)  _data[i]=A[i];
