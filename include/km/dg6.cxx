@@ -210,7 +210,7 @@ int main() {
 
   unsigned int NB=NC+N-1;
   double T,TT,PT,ZT,ZPT;
-  double Step=0.0002;
+  double Step=0.0001;
   Array2DNumeric<double> MV,GT;
   MV.Imprint(S.Location());
   GT.Imprint(MV);
@@ -238,7 +238,7 @@ int main() {
       for(unsigned int k=0;k<3;++k) S.Location()[i][k]+=MV[i][k]*Step;
       ZPT=GetGT(S,Hess,GT,N,NB);
       PT=GetDV(S,Hess,A,B,IP,N,NB);
-      if((fabs(PT-T)>0.002)||(ZPT>ZT)) {
+      if((fabs(PT-T)>0.001)||(ZPT>ZT)) {
         for(unsigned int i=1;i<N-1;++i)
         for(unsigned int k=0;k<3;++k) S.Location()[i][k]-=MV[i][k]*Step;
         //cout<<PT<<"\t"<<ZPT<<endl;
@@ -256,7 +256,7 @@ int main() {
       for(unsigned int k=0;k<3;++k) S.Location()[i][k]+=MV[i][k]*Step;
       ZPT=GetGT(S,Hess,GT,N,NB);
       PT=GetDV(S,Hess,A,B,IP,N,NB);
-      if((fabs(ZPT-ZT)>1)||(PT>T)) {
+      if((fabs(ZPT-ZT)>0.3)||(PT>T)) {
         for(unsigned int i=1;i<N-1;++i)
         for(unsigned int k=0;k<3;++k) S.Location()[i][k]-=MV[i][k]*Step;
         //cout<<PT<<"\t"<<ZPT<<endl;
@@ -265,7 +265,7 @@ int main() {
 
     ZT=GetGT(S,Hess,GT,N,NB);
     T=GetDV(S,Hess,A,B,IP,N,NB);
-    if(ZT<700) break;
+    if(ZT<400) break;
   }while(true);
 
   for(unsigned int i=0;i<N;++i) {

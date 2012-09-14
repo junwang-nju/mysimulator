@@ -187,7 +187,7 @@ int main() {
 
   unsigned int NB=NC+N-1;
   double T,TT,PT;
-  double Step=0.002;
+  double Step=0.001;
   Array2DNumeric<double> MV;
   MV.Imprint(S.Location());
 
