@@ -213,8 +213,8 @@ int main() {
   unsigned int NB=NC+N-1;
   unsigned int M=25;
   double T,TT,PT,ZT,ZPT;
-  double Step=3e-11;
-  double THD=-0.85;
+  double Step=2e-11;
+  double THD=-0.91;
 
   cout.precision(20);
   Array2DNumeric<double> MV,GT;
