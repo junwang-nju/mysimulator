@@ -123,10 +123,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator=(
           const ArrayExpression<
-                  ArraySum<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sum_flag>::Type>&& A) {
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>&& A) {
         typedef ArraySum<EA,EB> SType;
         operator=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
@@ -134,10 +131,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator=(
           const ArrayExpression<
-                  ArraySum<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sum_flag>::Type>& A) {
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
         typedef ArraySum<EA,EB> SType;
         operator=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
@@ -145,10 +139,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator=(
           const ArrayExpression<
-                  ArraySub<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sub_flag>::Type>&& A) {
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>&& A) {
         typedef ArraySub<EA,EB>   SType;
         operator=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
@@ -156,10 +147,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator=(
           const ArrayExpression<
-                  ArraySub<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sub_flag>::Type>& A) {
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
         typedef ArraySub<EA,EB>   SType;
         operator=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
@@ -201,32 +189,23 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator+=(
           const ArrayExpression<
-                  ArraySum<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sum_flag>::Type>&& A) {
-        typedef ArraySum<EA,EB> SType;
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>&& A) {
+        typedef ArraySub<EA,EB>   SType;
         operator+=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
       }
       template <typename EA,typename EB>
       Type& operator+=(
           const ArrayExpression<
-                  ArraySum<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sum_flag>::Type>& A) {
-        typedef ArraySum<EA,EB> SType;
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
+        typedef ArraySub<EA,EB>   SType;
         operator+=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
       }
       template <typename EA,typename EB>
       Type& operator+=(
           const ArrayExpression<
-                  ArraySub<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sub_flag>::Type>&& A) {
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>&& A) {
         typedef ArraySub<EA,EB>   SType;
         operator+=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
@@ -234,10 +213,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator+=(
           const ArrayExpression<
-                  ArraySub<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sub_flag>::Type>& A) {
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
         typedef ArraySub<EA,EB>   SType;
         operator+=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
@@ -279,32 +255,23 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator-=(
           const ArrayExpression<
-                  ArraySum<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sum_flag>::Type>&& A) {
-        typedef ArraySum<EA,EB>   SType;
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>&& A) {
+        typedef ArraySum<EA,EB> SType;
         operator-=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
       }
       template <typename EA,typename EB>
       Type& operator-=(
           const ArrayExpression<
-                  ArraySum<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sum_flag>::Type>& A) {
-        typedef ArraySum<EA,EB>   SType;
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
+        typedef ArraySum<EA,EB> SType;
         operator-=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
       }
       template <typename EA,typename EB>
       Type& operator-=(
           const ArrayExpression<
-                  ArraySub<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sub_flag>::Type>&& A) {
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>&& A) {
         typedef ArraySub<EA,EB>   SType;
         operator-=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
@@ -312,10 +279,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator-=(
           const ArrayExpression<
-                  ArraySub<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __sub_flag>::Type>& A) {
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
         typedef ArraySub<EA,EB>   SType;
         operator-=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
@@ -357,10 +321,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator*=(
           const ArrayExpression<
-                  ArrayMul<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __mul_flag>::Type>&& A) {
+                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>&& A) {
         typedef ArrayMul<EA,EB>   SType;
         operator*=(static_cast<SType const&>(A).first());
         return operator*=(static_cast<SType const&>(A).second());
@@ -368,10 +329,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator*=(
           const ArrayExpression<
-                  ArrayMul<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __mul_flag>::Type>& A) {
+                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>& A) {
         typedef ArrayMul<EA,EB>   SType;
         operator*=(static_cast<SType const&>(A).first());
         return operator*=(static_cast<SType const&>(A).second());
@@ -379,10 +337,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator*=(
           const ArrayExpression<
-                  ArrayDiv<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __div_flag>::Type>&& A) {
+                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>&& A) {
         typedef ArrayDiv<EA,EB>   SType;
         operator*=(static_cast<SType const&>(A).first());
         return operator/=(static_cast<SType const&>(A).second());
@@ -390,10 +345,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator*=(
           const ArrayExpression<
-                  ArrayDiv<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __div_flag>::Type>& A) {
+                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>& A) {
         typedef ArrayDiv<EA,EB>   SType;
         operator*=(static_cast<SType const&>(A).first());
         return operator/=(static_cast<SType const&>(A).second());
@@ -439,10 +391,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator/=(
           const ArrayExpression<
-                  ArrayMul<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __mul_flag>::Type>&& A) {
+                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>&& A) {
         typedef ArrayMul<EA,EB>   SType;
         operator/=(static_cast<SType const&>(A).first());
         return operator/=(static_cast<SType const&>(A).second());
@@ -450,10 +399,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator/=(
           const ArrayExpression<
-                  ArrayMul<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __mul_flag>::Type>& A) {
+                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>& A) {
         typedef ArrayMul<EA,EB>   SType;
         operator/=(static_cast<SType const&>(A).first());
         return operator/=(static_cast<SType const&>(A).second());
@@ -461,10 +407,7 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator/=(
           const ArrayExpression<
-                  ArrayDiv<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __div_flag>::Type>&& A) {
+                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>&& A) {
         typedef ArrayDiv<EA,EB>   SType;
         operator/=(static_cast<SType const&>(A).first());
         return operator*=(static_cast<SType const&>(A).second());
@@ -472,38 +415,21 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator/=(
           const ArrayExpression<
-                  ArrayDiv<EA,EB>,
-                  typename __dual_selector<typename EA::value_type,
-                                           typename EB::value_type,
-                                           __div_flag>::Type>& A) {
+                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>& A) {
         typedef ArrayDiv<EA,EB>   SType;
         operator/=(static_cast<SType const&>(A).first());
-        return operator/=(static_cast<SType const&>(A).second());
+        return operator*=(static_cast<SType const&>(A).second());
       }
       //====----------==========-------------
-      // need to compare regular multiple and SSE-divide for array
-
       template <typename T1,typename T2,
-                template<typename,typename> class ArrayOp,
-                template<typename,typename> class ArrayOpType>
-      Type& operator=(
-          const ArrayExpression<
-                  ArrayOp<Intrinsic<T1>,Intrinsic<T2>>,
-                  typename __dual_selector<T1,T2,ArrayOpType>::Type>&& A) {
-        typedef ArrayOp<Intrinsic<T1>,Intrinsic<T2>>    SType;
-        printf("+++++++T++++++++++\n");
-        return operator+=(static_cast<SType const&>(A).result());
+                template<typename,typename> class ArrayOp>
+      Type& operator=(const ArrayOp<Intrinsic<T1>,Intrinsic<T2>>&& A) {
+        return operator=(A.result());
       }
       template <typename T1,typename T2,
-                template<typename,typename> class ArrayOp,
-                template<typename,typename> class ArrayOpType>
-      Type& operator=(
-          const ArrayExpression<
-                  ArrayOp<Intrinsic<T1>,Intrinsic<T2>>,
-                  typename __dual_selector<T1,T2,ArrayOpType>::Type>& A) {
-        typedef ArrayOp<Intrinsic<T1>,Intrinsic<T2>>    SType;
-        printf("+++++++T+++Y++++++\n");
-        return operator=(static_cast<SType const&>(A).result());
+                template<typename,typename> class ArrayOp>
+      Type& operator=(const ArrayOp<Intrinsic<T1>,Intrinsic<T2>>& A) {
+        return operator=(A.result());
       }
 
   };

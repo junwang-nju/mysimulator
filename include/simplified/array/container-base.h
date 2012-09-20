@@ -67,7 +67,7 @@ namespace mysimulator {
         imprint_structure(AC);
         pointer p=head();
         const_pointer e=end();
-        Y* q=AC.head();
+        typename ArrayContainerBase<Y,YAF>::pointer q=AC.head();
         for(;p!=e;) __imprint(*(p++),*(q++));
       }
       void refer(const Type& AC) {
