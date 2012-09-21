@@ -46,8 +46,8 @@ void GetHessian(System<double,FreeSpace>& S,Array2DNumeric<double>& Hess,
 }
 
 double GetDV(System<double,FreeSpace>& S,Array2DNumeric<double>& Hess,
-             double* A,double* B,int* IP,unsigned int N,unsigned int NB) {
-  GetHessian(S,Hess,N,NB);
+             double* A,double* B,int* IP,unsigned int N,unsigned int NB,
+             double Step) {
   unsigned int NS=(N-2)*3;
   for(unsigned int k=0;k<NS;++k)
   for(unsigned int l=0;l<NS;++l) A[k*NS+l]=Hess[k+3][l+3];
@@ -63,28 +63,62 @@ double GetDV(System<double,FreeSpace>& S,Array2DNumeric<double>& Hess,
   dgesv_(&INS,&One,A,&INS,IP,B,&INS,&Inf);
 
   static const double IGamma=0.1;
-  static const double RFac=1e-3;
   for(unsigned int i=0;i<NB;++i)  S.Interaction(i).ClearFlag();
   S.UpdateG(0);
   for(unsigned int i=1;i<N-1;++i)
   for(unsigned int k=0;k<3;++k) S.Velocity()[i][k]=-IGamma*S.Gradient()[i][k];
   for(unsigned int i=1,n=0;i<N-1;++i)
-  for(unsigned int k=0;k<3;++k,++n) B[n]=(B[n]-S.Velocity()[i][k])*RFac;
-  // here we need new HESS
+  for(unsigned int k=0;k<3;++k,++n) B[n]=-(B[n]-S.Velocity()[i][k])*Step;
   for(unsigned int k=0;k<NS;++k)
   for(unsigned int l=0;l<NS;++l) A[k*NS+l]=Hess[k+3][l+3];
+  dgesv_(&INS,&One,A,&INS,IP,B,&INS,&Inf);
+  //for(unsigned int i=0;i<NS;++i)  cout<<i<<"\t"<<B[i]<<endl;  getchar();
+  return 0;
+}
+double DGetDV(System<double,FreeSpace>& S,Array2DNumeric<double>& Hess,
+              double* A,double* B,int* IP,unsigned int N,unsigned int NB) {
+  unsigned int NS=(N-2)*3;
+  for(unsigned int k=0;k<NS;++k)
+  for(unsigned int l=0;l<NS;++l) A[k*NS+l]=Hess[k+3][l+3];
+  double T;
+  for(unsigned int k=0;k<NS;++k) {
+    T=0;
+    for(unsigned int i=0;i<3;++i) T+=Hess[k+3][(N-1)*3+i]*S.Velocity()[N-1][i];
+    B[k]=-T;
+  }
+  int INS=static_cast<int>(NS);
+  int One=1;
+  int Inf;
+  dgesv_(&INS,&One,A,&INS,IP,B,&INS,&Inf);
+
+  T=0;
+  for(unsigned int i=0;i<NS;++i)  T+=B[i]*B[i];
+  T=1./sqrt(T);
+  for(unsigned int i=0;i<NS;++i)  B[i]*=T;
+
+  for(unsigned int i=0;i<NB;++i)  S.Interaction(i).ClearFlag();
+  S.UpdateG(0);
+  T=0;
+  for(unsigned int i=1;i<N-1;++i)
+  for(unsigned int k=0;k<3;++k) T+=S.Gradient()[i][k]*S.Gradient()[i][k];
+  T=sqrt(T);
+  if(T<1e-8)  return 100;
+  T=1./T;
+  for(unsigned int i=1;i<N-1;++i)
+  for(unsigned int k=0;k<3;++k) S.Gradient()[i][k]*=T;
+  T=0;
+  for(unsigned int i=1,n=0;i<N-1;++i)
+  for(unsigned int k=0;k<3;++k,++n) T+=B[n]*S.Gradient()[i][k];
   return T;
 }
 
 double GetGT(System<double,FreeSpace>& S,Array2DNumeric<double>& Hess,
-             Array2DNumeric<double>& GT,unsigned int N,unsigned int NB,
-             unsigned int M) {
+             Array2DNumeric<double>& GT,unsigned int N,unsigned int NB) {
   static const double IGamma=0.1;
   for(unsigned int i=0;i<NB;++i)  S.Interaction(i).ClearFlag();
   S.UpdateG(0);
-  for(unsigned int i=N-1-M;i<N-1;++i)
+  for(unsigned int i=1;i<N-1;++i)
   for(unsigned int k=0;k<3;++k) S.Velocity()[i][k]=-IGamma*S.Gradient()[i][k];
-  GetHessian(S,Hess,N,NB);
   double T;
   for(unsigned int i=1;i<N-1;++i)
   for(unsigned int k=0;k<3;++k) {
@@ -94,7 +128,7 @@ double GetGT(System<double,FreeSpace>& S,Array2DNumeric<double>& Hess,
     GT[i][k]=T;
   }
   T=0;
-  for(unsigned int i=N-1-M;i<N-1;++i)
+  for(unsigned int i=1;i<N-1;++i)
   for(unsigned int k=0;k<3;++k)
     T+=GT[i][k]*GT[i][k];
   return sqrt(T);
@@ -204,10 +238,8 @@ int main() {
   IP=new int[(N-2)*3];
 
   unsigned int NB=NC+N-1;
-  unsigned int M=26;
-  double T,TT,PT,ZT,ZPT;
-  double Step=4e-8;
-  double THD=-0.90;
+  double ZT,VT;
+  double Step=1e-8;
 
   cout.precision(20);
   Array2DNumeric<double> MV,GT;
@@ -228,43 +260,23 @@ int main() {
 
   S.Velocity()[N-1][0]=1;
 
-  cout.precision(10);
+  do {
+    GetHessian(S,Hess,N,NB);
+    ZT=GetGT(S,Hess,GT,N,NB);
+    VT=DGetDV(S,Hess,A,B,IP,N,NB);
+    cout<<ZT<<"\t"<<VT<<endl;
+    if(ZT<10) break;
+    if(VT<-0.9) break;
 
-  ZT=GetGT(S,Hess,GT,N,NB,M);
-  do{
-    T=GetDV(S,Hess,A,B,IP,N,NB,M);
-    if(T<THD) break;
-    cout<<T<<'\t'<<ZT<<endl;
-    do{
-      //for(unsigned int i=N-1-M;i<N-1;++i)
-      //for(unsigned int k=0;k<3;++k) MV[i][k]=BG.Double();
-      {
-        for(unsigned int i=N-1-M;i<N-1;++i)
-        for(unsigned int k=0;k<3;++k) MV[i][k]=0;
-        unsigned int i=N-1-M+(unsigned int)(UG.Double()*M);
-        unsigned int k=(unsigned int)(3*UG.Double());
-        MV[i][k]=BG.Double();
-      }
-      for(unsigned int i=N-1-M;i<N-1;++i)
-      for(unsigned int k=0;k<3;++k) S.Location()[i][k]+=MV[i][k]*Step;
-      ZPT=GetGT(S,Hess,GT,N,NB,M);
-      PT=GetDV(S,Hess,A,B,IP,N,NB,M);
-      //if((fabs(ZPT-ZT)>5)||(PT>T)) {
-      if(PT>T) {
-        for(unsigned int i=1;i<N-1;++i)
-        for(unsigned int k=0;k<3;++k) S.Location()[i][k]-=MV[i][k]*Step;
-        //cout<<PT<<"\t"<<ZPT<<endl;
-      } else { cout<<"=====A========  "<<ZPT<<"\t"<<PT<<endl; break; }
-    } while(true);
-
-    T=GetDV(S,Hess,A,B,IP,N,NB,M);
-    if(T<THD) break;
-  }while(true);
-
-  for(unsigned int i=0;i<N;++i) {
-    for(unsigned int k=0;k<3;++k) cout<<"\t"<<S.Location()[i][k];
-    cout<<endl;
-  }
+    MV.Copy(S.Location());
+    GetDV(S,Hess,A,B,IP,N,NB,Step*0.5);
+    for(unsigned int i=1,n=0;i<N-1;++i)
+    for(unsigned int k=0;k<3;++k,++n) S.Location()[i][k]+=B[n];
+    GetHessian(S,Hess,N,NB);
+    GetDV(S,Hess,A,B,IP,N,NB,Step);
+    for(unsigned int i=1,n=0;i<N-1;++i)
+    for(unsigned int k=0;k<3;++k,++n) S.Location()[i][k]=MV[i][k]+B[n];
+  } while(true);
 
   return 0;
 }
