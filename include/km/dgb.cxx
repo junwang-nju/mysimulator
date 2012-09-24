@@ -232,6 +232,7 @@ int main() {
   NUsed=1+9;
   NUsed=1+9+14;
   NUsed=1+9+14+15;
+  NUsed=1+9+14+15+14;
   UsedID=new int[NUsed];
   // ----
   Used[65]=1;
@@ -277,13 +278,28 @@ int main() {
   Used[58]=1;
   Used[61]=1;
   // ----
+  Used[8]=1;
+  Used[11]=1;
+  Used[12]=1;
+  Used[13]=1;
+  Used[14]=1;
+  Used[20]=1;
+  Used[24]=1;
+  Used[34]=1;
+  Used[35]=1;
+  Used[53]=1;
+  Used[56]=1;
+  Used[57]=1;
+  Used[59]=1;
+  Used[60]=1;
+  // ----
   for(unsigned int i=1,n=0;i<N-1;++i)
     if(Used[i]==1)  UsedID[n++]=i;
 
   unsigned int NB=NC+N-1;
   double ZT,VT,ZPT;
-  double Step=1e-4;
-  double TTH=-0.99;
+  double Step=1e-7;
+  double TTH=-0.97;
 
   cout.precision(20);
   Array2DNumeric<double> MV,GT;
