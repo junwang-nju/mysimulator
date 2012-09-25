@@ -33,6 +33,7 @@ namespace mysimulator {
         return *this;
       }
       Type& Refer(Type& A) {
+        ParentType::Clear();
         ParentType::_pdata=A._pdata;
         ParentType::_ndata=A._ndata;
         return *this;
