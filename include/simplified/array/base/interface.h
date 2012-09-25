@@ -24,22 +24,21 @@ namespace mysimulator {
       ArrayBase(const Type&) = delete;
       ~ArrayBase() { Clear(); }
 
-      void Clear() { _ndata=0; _pdata.reset(); }
+      void Clear() { _ndata=0; if((bool)_pdata) _pdata.reset(); }
       unsigned int Size() const { return _ndata; }
 
       T& operator[](unsigned int i) {
         assert(i<_ndata);
-        return _pdata[i];
+        return *(_pdata.get()+i);
       }
       const T& operator[](unsigned int i) const {
         assert(i<_ndata);
-        return _pdata[i];
+        return *(_pdata.get()+i);
       }
 
-    protected:
-
       Type& operator=(const Type& iA) {
-        assert(_ndata>=iA._ndata);
+        assert(_ndata<=iA._ndata);
+        return *this;
       }
 
   };

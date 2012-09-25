@@ -20,7 +20,8 @@ namespace mysimulator {
   }
 
   inline void __aligned_free(void* ptr) {
-    if(ptr!=nullptr)  free(*(reinterpret_cast<void**>(ptr)-1));
+    if(ptr!=nullptr)  std::free(*(reinterpret_cast<void**>(ptr)-1));
+    ptr=nullptr;
   }
 
 }
