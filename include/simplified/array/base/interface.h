@@ -2,7 +2,6 @@
 #ifndef _Array_Base_Interface_H_
 #define _Array_Base_Interface_H_
 
-#include <memory>
 #include <cassert>
 
 namespace mysimulator {
@@ -14,7 +13,7 @@ namespace mysimulator {
 
       typedef ArrayBase<T,TPtr>  Type;
 
-    private:
+    protected:
 
       TPtr         _pdata;
       unsigned int _ndata;
@@ -26,6 +25,7 @@ namespace mysimulator {
       ~ArrayBase() { Clear(); }
 
       void Clear() { _ndata=0; _pdata.reset(); }
+      unsigned int Size() const { return _ndata; }
 
       T& operator[](unsigned int i) {
         assert(i<_ndata);
