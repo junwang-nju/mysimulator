@@ -17,6 +17,7 @@ namespace mysimulator {
       typedef T* pointer;
       typedef const T* const_pointer;
       typedef T& reference;
+      typedef const T& const_reference;
       typedef memory_access_count*  count_pointer;
 
     private:
@@ -84,12 +85,12 @@ namespace mysimulator {
       }
 
       void reset() {  this->~accessed_ptr();  }
-      void reset(const pointer* PTR,
+      void reset(const_pointer PTR,
                  AccessContentName PF=AccessContentName::GlobalUsed) {
         assert(PTR!=nullptr);
         this->~accessed_ptr();
         ptr=const_cast<pointer>(PTR);
-        count=new count_pointer;
+        count=new memory_access_count;
         part_flag=PF;
         IncCount();
       }
@@ -106,6 +107,8 @@ namespace mysimulator {
       pointer get() const { return ptr; }
       reference operator*() { return *ptr; }
       pointer operator->() { return ptr; }
+      reference operator[](int i) { return *(ptr+i); }
+      const_reference operator[](int i) const { return *(ptr+i); }
 
       operator bool() const {
         return (ptr!=nullptr)&&(count!=nullptr)&&(bool)(*count)&&
