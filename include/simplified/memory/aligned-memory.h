@@ -6,7 +6,7 @@
 
 namespace mysimulator {
 
-  static const unsigned int alignedBytes=16; // 64bit
+  static const unsigned int alignedBytes=16; // 128bit
 
   inline void* __aligned_malloc(unsigned int size) {
     static_assert(sizeof(unsigned int)==sizeof(void*),
@@ -24,14 +24,6 @@ namespace mysimulator {
     ptr=nullptr;
   }
 
-}
-
-void* operator new(unsigned int size) {
-  return mysimulator::__aligned_malloc(size);
-}
-
-void operator delete(void* ptr) _GLIBCXX_USE_NOEXCEPT {
-  mysimulator::__aligned_free(ptr);
 }
 
 #endif
