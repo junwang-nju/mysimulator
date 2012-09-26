@@ -19,23 +19,26 @@ namespace mysimulator {
       typedef T& reference;
       typedef const T& const_reference;
       typedef memory_access_count*  count_pointer;
+      typedef void (*deleter)(void*);
 
     private:
 
       enum class AllocationName { NeedFree, NeedNotFree };
 
-      pointer         ptr;
-      count_pointer   count;
+      pointer           ptr;
+      count_pointer     count;
       AccessContentName part_flag;
+      deleter           del;
 
     public:
 
       accessed_ptr() : ptr(nullptr), count(nullptr),
-                       part_flag(AccessContentName::Unassigned) {}
+                       part_flag(AccessContentName::Unassigned),
+                       del(operator delete) {}
       accessed_ptr(const_pointer PTR,
                    AccessContentName PF=AccessContentName::GlobalUsed)
         : ptr(const_cast<pointer>(PTR)), count(new memory_access_count),
-          part_flag(PF) {
+          part_flag(PF), del(operator delete) {
         assert(PTR!=nullptr);
         IncCount();
       }
@@ -43,7 +46,8 @@ namespace mysimulator {
         : ptr(const_cast<pointer>(APTR.ptr)+BgIdx),
           count(const_cast<count_pointer>(APTR.count)),
           part_flag(BgIdx==0?AccessContentName::GlobalUsed:
-                             AccessContentName::PartUsed) {
+                             AccessContentName::PartUsed),
+          del(operator delete) {
         assert((bool)APTR);
         IncCount();
       }
@@ -58,7 +62,7 @@ namespace mysimulator {
               alloc_flag=AllocationName::NeedFree;
             }
           } else count->Dec();
-          if(alloc_flag==AllocationName::NeedFree)  ptr->~T();
+          if(alloc_flag==AllocationName::NeedFree)  del(ptr);
           ptr=nullptr;
           count=nullptr;
           part_flag=AccessContentName::Unassigned;
@@ -94,6 +98,7 @@ namespace mysimulator {
         part_flag=PF;
         IncCount();
       }
+      void set_deleter(deleter idel) { del=idel; }
 
       void swap(Type& APTR) {
         pointer P;
@@ -102,6 +107,8 @@ namespace mysimulator {
         PC=count; count=APTR.count; APTR.count=PC;
         AccessContentName PP;
         PP=part_flag; part_flag=APTR.part_flag; APTR.part_flag=PP;
+        deleter PD;
+        PD=del; del=APTR.del; APTR.del=PD;
       }
 
       pointer get() const { return ptr; }
