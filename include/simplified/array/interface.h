@@ -2,117 +2,72 @@
 #ifndef _Array_Interface_H_
 #define _Array_Interface_H_
 
-#include "memory/accessed-ptr.h"
-#include "basic/imprint.h"
+#include "array/expression.h"
 
 namespace mysimulator {
 
-  enum class ArrayFormat { RegularArray, ShortDataArray, LongDataArray };
-
-  template <typename T,ArrayFormat AF=ArrayFormat::RegularArray>
-  class Array {
+  template <typename T,ArrayFormat AF=ArrayFormat::Regular>
+  class Array : public ArrayExpression<Array<T,AF>> {
 
     public:
 
-      typedef Array<T,AF>    Type;
-      typedef T* pointer;
-      typedef const T* const_pointer;
-      typedef T& reference;
-      typedef const T& const_reference;
+      typedef Array<T,AF>   Type;
+      typedef ArrayExpression<Array<T,AF>>  ParentType;
+      typedef T         value_type;
+      typedef T&        reference;
+      typedef const T&  const_reference;
+      typedef T*        pointer;
+      typedef const T*  const_pointer;
+      typedef unsigned int size_type;
+
+      //template <typename Y,ArrayFormat YAF> friend class Array<Y,YAF>;
 
     protected:
 
-      accessed_ptr<T>   _pdata;
-      unsigned int      _ndata;
+      ArrayContainer<T,AF> _data;
 
     public:
 
-      Array() : _pdata(), _ndata(0U) {}
-      Array(unsigned int size) : Array() { allocate(size); }
-      Array(const Type&) = delete;
-      virtual ~Array() { _pdata.~accessed_ptr(); _ndata=0; }
+      Array() : ParentType(), _data() {}
+      Array(unsigned int size) : ParentType(), _data(size) {}
+      ~Array() { _data.~ArrayContainer(); }
 
-      operator bool() const { return (bool)_pdata && (_ndata>0); }
-      unsigned int size() const { return _ndata; }
+      operator bool() const { return (bool)_data; }
+      unsigned int size() const { return _data.size(); }
+      reference operator[](unsigned int i) { return _data[i]; }
+      const_reference operator[](unsigned int i) const { return _data[i]; }
+      pointer head() const { return _data.head(); }
+      const_pointer end() const { return _data.end(); }
+
+      void allocate(unsigned int size) { _data.allocate(size); }
+      template <typename Y,ArrayFormat YAF>
+      void imprint_structure(const Array<Y,YAF>& A) {
+        _data.imprint_structure(A._data);
+      }
+      template <typename Y,ArrayFormat YAF>
+      void imprint(const Array<Y,YAF>& A) { _data.imprint(A._data); }
+
+      template <typename E>
+      Array(ArrayExpression<E> const& A) {
+        allocate(A.size());
+        operator=(A);
+      }
+      Array(const Type& A) : Array() { imprint(A); operator=(A); }
+
       template <typename Y,ArrayFormat YAF>
       Type& operator=(const Array<Y,YAF>& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(_ndata<=A.size());
-        Y* q=A.head();
-        for(pointer p=head();p!=end();) *(p++)=*(q++);
+        assert(size()<=A.size());
+        for(unsigned int i=0;i<size();++i)  _data[i]=A[i];
         return *this;
       }
-      Type& operator=(const Type& A) { return operator=<T,AF>(A); }
-      template <typename Y>
-      Type& operator=(const Y& D) {
+      template <typename E>
+      Type& operator=(ArrayExpression<E> const& A) {
         assert((bool)(*this));
-        for(pointer p=head();p!=end();) *(p++)=D;
+        assert(size()<=A.size());
+        for(unsigned int i=0;i<size();++i)  _data[i]=A[i];
         return *this;
-      }
-      reference operator[](unsigned int i) {
-        assert(i<_ndata);
-        return _pdata[i];
-      }
-      const_reference operator[](unsigned int i) const {
-        assert(i<_ndata);
-        return _pdata[i];
-      }
-      pointer head() const { return _pdata.get(); }
-      const_pointer end() const { return _pdata.get()+_ndata; }
-
-      virtual void allocate(unsigned int size) {
-        this->~Array();
-        _pdata.reset(new T[size]);
-        _pdata.set_deleter(operator delete[]);
-        _ndata=size;
-      }
-      void refer(const Type& A) {
-        this->~Array(); _pdata=A._pdata; _ndata=A._ndata;
-      }
-      void refer(const Type& A, unsigned int bg, unsigned int num) {
-        assert(bg+num<=A.size());
-        this->~Array();
-        _pdata.reset(A.get()+bg,bg==0?AccessContentName::GlobalUsed:
-                                      AccessContentName::PartUsed);
-        _ndata=num;
-      }
-      template <typename Y,ArrayFormat YAF>
-      void imprint_structure(const Array<Y,YAF>& A) {
-        assert((bool)A);
-        allocate(A.size());
-      }
-      template <typename Y,ArrayFormat YAF>
-      void imprint(const Array<Y,YAF>& A) {
-        imprint_structure(A);
-        pointer p=head(), q=A.head();
-        for(;p!=end();) __imprint(*(p++),*(q++));
-      }
-      template <typename Y,ArrayFormat YAF>
-      void copy(const Array<Y,YAF>& A, unsigned int num,
-                unsigned int bg=0, unsigned int dlt=1,
-                unsigned int bgA=0, unsigned int dltA=1) {
-        assert((bool)(*this));
-        assert((bool)A);
-        unsigned int e=bg+num*dlt, eA=bgA+num*dltA;
-        assert(e<=size());
-        assert(eA<=A.size());
-        pointer p=head()+bg;
-        Y* q=A.head()+bgA;
-        const_pointer ep=p+e;
-        for(;p!=ep;p+=dlt,q+=dltA)  (*p)=(*q);
-      }
-      template <typename Y>
-      void fill(const Y& D, unsigned int bg=0, unsigned int dlt=1) {
-        unsigned int num=(size()-bg)/dlt+((size()-bg)%dlt>0?1:0);
-        pointer p=head()+bg;
-        const_pointer ep=p+num*dlt;
-        for(;p!=ep;p+=dlt)  (*p)=D;
-      }
-
-      void swap(Type& A) {
-        std::swap(_pdata,A._pdata);
-        std::swap(_ndata,A._ndata);
       }
 
   };
@@ -121,26 +76,6 @@ namespace mysimulator {
   void __imprint(Array<T,AF>& A, const Array<Y,YAF>& B) { A.imprint(B); }
 
 }
-
-#include <algorithm>
-
-namespace std {
-
-  template <typename T,mysimulator::ArrayFormat AF>
-  void swap(mysimulator::Array<T,AF>& A, mysimulator::Array<T,AF>& B) {
-    A.swap(B);
-  }
-
-}
-
-namespace mysimulator {
-
-  static const unsigned int ShortThresholdByte=500;
-
-}
-
-#include "array/short-data-array-interface.h"
-#include "array/long-data-array-interface.h"
 
 #endif
 
