@@ -7,7 +7,7 @@
 
 namespace mysimulator {
 
-  enum class ArrayFormat { RegularArray, ShortNumArray, LargeNumArray };
+  enum class ArrayFormat { RegularArray, ShortDataArray, LongDataArray };
 
   template <typename T,ArrayFormat AF=ArrayFormat::RegularArray>
   class Array {
@@ -20,7 +20,7 @@ namespace mysimulator {
       typedef T& reference;
       typedef const T& const_reference;
 
-    private:
+    protected:
 
       accessed_ptr<T>   _pdata;
       unsigned int      _ndata;
@@ -30,7 +30,7 @@ namespace mysimulator {
       Array() : _pdata(), _ndata(0U) {}
       Array(unsigned int size) : Array() { allocate(size); }
       Array(const Type&) = delete;
-      ~Array() { _pdata.~accessed_ptr(); _ndata=0; }
+      virtual ~Array() { _pdata.~accessed_ptr(); _ndata=0; }
 
       operator bool() const { return (bool)_pdata && (_ndata>0); }
       unsigned int size() const { return _ndata; }
@@ -39,15 +39,15 @@ namespace mysimulator {
         assert((bool)(*this));
         assert((bool)A);
         assert(_ndata<=A.size());
-        Y* q=const_cast<Y*>(A.head());
-        for(pointer p=const_cast<pointer>(head());p!=end();) *(p++)=*(q++);
+        Y* q=A.head();
+        for(pointer p=head();p!=end();) *(p++)=*(q++);
         return *this;
       }
       Type& operator=(const Type& A) { return operator=<T,AF>(A); }
       template <typename Y>
       Type& operator=(const Y& D) {
         assert((bool)(*this));
-        for(pointer p=const_cast<pointer>(head());p!=end();) *(p++)=D;
+        for(pointer p=head();p!=end();) *(p++)=D;
         return *this;
       }
       reference operator[](unsigned int i) {
@@ -58,16 +58,24 @@ namespace mysimulator {
         assert(i<_ndata);
         return _pdata[i];
       }
-      const_pointer head() const { return _pdata.get(); }
+      pointer head() const { return _pdata.get(); }
       const_pointer end() const { return _pdata.get()+_ndata; }
 
-      void allocate(unsigned int size) {
+      virtual void allocate(unsigned int size) {
         this->~Array();
         _pdata.reset(new T[size]);
+        _pdata.set_deleter(operator delete[]);
         _ndata=size;
       }
       void refer(const Type& A) {
         this->~Array(); _pdata=A._pdata; _ndata=A._ndata;
+      }
+      void refer(const Type& A, unsigned int bg, unsigned int num) {
+        assert(bg+num<=A.size());
+        this->~Array();
+        _pdata.reset(A.get()+bg,bg==0?AccessContentName::GlobalUsed:
+                                      AccessContentName::PartUsed);
+        _ndata=num;
       }
       template <typename Y,ArrayFormat YAF>
       void imprint_structure(const Array<Y,YAF>& A) {
@@ -77,7 +85,7 @@ namespace mysimulator {
       template <typename Y,ArrayFormat YAF>
       void imprint(const Array<Y,YAF>& A) {
         imprint_structure(A);
-        pointer p=const_cast<pointer>(head()), q=const_cast<pointer>(A.head());
+        pointer p=head(), q=A.head();
         for(;p!=end();) __imprint(*(p++),*(q++));
       }
       template <typename Y,ArrayFormat YAF>
@@ -89,9 +97,9 @@ namespace mysimulator {
         unsigned int e=bg+num*dlt, eA=bgA+num*dltA;
         assert(e<=size());
         assert(eA<=A.size());
-        pointer p=const_cast<pointer>(head())+bg;
+        pointer p=head()+bg;
+        Y* q=A.head()+bgA;
         const_pointer ep=p+e;
-        Y* q=const_cast<Y*>(A.head())+bgA;
         for(;p!=ep;p+=dlt,q+=dltA)  (*p)=(*q);
       }
       template <typename Y>
@@ -102,16 +110,37 @@ namespace mysimulator {
         for(;p!=ep;p+=dlt)  (*p)=D;
       }
 
+      void swap(Type& A) {
+        std::swap(_pdata,A._pdata);
+        std::swap(_ndata,A._ndata);
+      }
+
   };
 
   template <typename T,ArrayFormat AF,typename Y,ArrayFormat YAF>
   void __imprint(Array<T,AF>& A, const Array<Y,YAF>& B) { A.imprint(B); }
 
-  template <typename T>
-  class Array<T,ArrayFormat::ShortNumArray> : public Array<T> {
-  };
+}
+
+#include <algorithm>
+
+namespace std {
+
+  template <typename T,mysimulator::ArrayFormat AF>
+  void swap(mysimulator::Array<T,AF>& A, mysimulator::Array<T,AF>& B) {
+    A.swap(B);
+  }
 
 }
+
+namespace mysimulator {
+
+  static const unsigned int ShortThresholdByte=500;
+
+}
+
+#include "array/short-data-array-interface.h"
+#include "array/long-data-array-interface.h"
 
 #endif
 
