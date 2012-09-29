@@ -23,12 +23,11 @@ namespace mysimulator {
       typedef unsigned int size_type;
 
       ArrayContainer() : ParentType() {}
-      ArrayContainer(size_type size) : ParentType(size) {}
+      ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
       ArrayContainer(const Type&) = delete;
-      virtual ~ArrayContainer() { ParentType::reset(); }
+      virtual ~ArrayContainer() { this->reset(); }
 
       virtual void allocate(size_type size) override {
-        printf("------------R-------------\n");
         this->reset();
         this->_pdata.reset(new T[size],operator delete[]);
         this->_ndata=size;
@@ -54,12 +53,11 @@ namespace mysimulator {
       typedef T* pointer;
 
       ArrayContainer() : ParentType() {}
-      ArrayContainer(size_type size) : ParentType(size) {}
+      ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
       ArrayContainer(const Type&) = delete;
-      virtual ~ArrayContainer() { ParentType::reset(); }
+      virtual ~ArrayContainer() { this->reset(); }
 
       virtual void allocate(size_type size) override {
-        printf("------------D-------------\n");
         this->reset();
         size_type byte_size=size*sizeof(T);
         size_type alloc_size=
@@ -72,6 +70,43 @@ namespace mysimulator {
 
   };
 
+  template <typename T>
+  class ArrayContainer<T,ArrayFormat::ShortData>
+      : public ArrayContainer<T,ArrayFormat::Data> {
+
+    public:
+
+      typedef ArrayContainer<T,ArrayFormat::ShortData>  Type;
+      typedef ArrayContainer<T,ArrayFormat::Data> ParentType;
+      typedef unsigned int size_type;
+
+      ArrayContainer() : ParentType() {}
+      ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
+      ArrayContainer(const Type&) = delete;
+      ~ArrayContainer() { this->reset(); }
+
+      virtual void allocate(size_type size) override { ParentType::allocate(size); }
+
+  };
+
+  template <typename T>
+  class ArrayContainer<T,ArrayFormat::LargeData>
+      : public ArrayContainer<T,ArrayFormat::Data> {
+
+    public:
+
+      typedef ArrayContainer<T,ArrayFormat::LargeData>  Type;
+      typedef ArrayContainer<T,ArrayFormat::Data> ParentType;
+      typedef unsigned int size_type;
+
+      ArrayContainer() : ParentType() {}
+      ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
+      ArrayContainer(const Type&) = delete;
+      ~ArrayContainer() { this->reset(); }
+
+      virtual void allocate(size_type size) { ParentType::allocate(size); }
+
+  };
 
 }
 

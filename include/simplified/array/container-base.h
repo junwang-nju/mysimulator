@@ -58,7 +58,6 @@ namespace mysimulator {
       void reset() { _pdata.reset(); _ndata=0U; }
       template <typename Y,ArrayFormat YAF>
       void imprint_structure(const ArrayContainerBase<Y,YAF>& AC) {
-        printf("%d\n",(int)AF);
         assert((bool)AC);  this->allocate(AC.size());
       }
       template <typename Y,ArrayFormat YAF>

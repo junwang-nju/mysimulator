@@ -55,7 +55,7 @@ namespace mysimulator {
                        APTR.del) {}
       ~accessed_ptr() { reset(); }
 
-      Type& operator=(const Type& APTR) { reset(APTR); }
+      Type& operator=(const Type& APTR) { reset(APTR); return *this; }
 
       void reset() {
         if((bool)(*this)) {
@@ -93,7 +93,7 @@ namespace mysimulator {
         reset(
             APTR.get()+BgIdx,APTR.count,
             BgIdx==0?AccessContentName::GlobalUsed:AccessContentName::PartUsed,
-            APTR.idel);
+            APTR.del);
       }
       void set_deleter(deleter idel) { del=idel; }
 
