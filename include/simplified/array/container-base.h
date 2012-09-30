@@ -50,6 +50,7 @@ namespace mysimulator {
       pointer head() const { return _pdata.get(); }
       const_pointer end() const { return head()+_ndata; }
 
+      Type& operator=(const Type&) = delete;
       template <typename Y,ArrayFormat YAF>
       Type& operator=(const ArrayContainerBase<Y,YAF>&) = delete;
 
