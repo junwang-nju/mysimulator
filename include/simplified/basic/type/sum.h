@@ -2,10 +2,6 @@
 #ifndef _Basic_Type_Sum_H_
 #define _Basic_Type_Sum_H_
 
-#include "basic/type/intrinsic.h"
-#include "basic/type/float-point.h"
-#include "basic/type/unsigned.h"
-
 namespace mysimulator {
 
   template <typename T1,typename T2>
@@ -21,6 +17,14 @@ namespace mysimulator {
       static const bool _second_unsigned;
       static const bool _same_unsigned;
   };
+
+}
+
+#include "basic/type/intrinsic.h"
+#include "basic/type/float-point.h"
+#include "basic/type/unsigned.h"
+
+namespace mysimulator {
 
   template <typename T1,typename T2>
   const bool __sum_flag<T1,T2>::_all_intrinsic=

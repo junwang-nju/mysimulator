@@ -23,6 +23,7 @@ namespace mysimulator {
 #include "array/large-data.h"
 
 #include "array/expression-sum.h"
+#include "array/expression-substract.h"
 
 #endif
 

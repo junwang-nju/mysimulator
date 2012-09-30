@@ -2,8 +2,6 @@
 #ifndef _Array_Expression_Sum_H_
 #define _Array_Expression_Sum_H_
 
-#include "array/expression.h"
-
 namespace mysimulator {
 
   template <typename EA,typename EB>
@@ -11,6 +9,7 @@ namespace mysimulator {
 
 }
 
+#include "array/expression.h"
 #include "basic/type/sum.h"
 #include "basic/type/selector.h"
 
