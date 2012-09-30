@@ -38,6 +38,7 @@ namespace mysimulator {
 }
 
 #include "memory/aligned-memory.h"
+#include "basic/type/intrinsic.h"
 
 namespace mysimulator {
 
@@ -46,6 +47,8 @@ namespace mysimulator {
       : public ArrayContainerBase<T,ArrayFormat::Data> {
 
     public:
+
+      static_assert(__intrinsic_flag<T>::FG,"Only Intrinsic Type Permitted!\n");
 
       typedef ArrayContainer<T,ArrayFormat::Data>    Type;
       typedef ArrayContainerBase<T,ArrayFormat::Data>   ParentType;
