@@ -70,6 +70,8 @@ namespace mysimulator {
 
   };
 
+  static const unsigned int ArrayByteBoundary=400;
+
   template <typename T>
   class ArrayContainer<T,ArrayFormat::ShortData>
       : public ArrayContainer<T,ArrayFormat::Data> {
@@ -85,7 +87,10 @@ namespace mysimulator {
       ArrayContainer(const Type&) = delete;
       ~ArrayContainer() { this->reset(); }
 
-      virtual void allocate(size_type size) override { ParentType::allocate(size); }
+      virtual void allocate(size_type size) override {
+        assert(size<=ArrayByteBoundary);
+        ParentType::allocate(size);
+      }
 
   };
 
@@ -104,7 +109,10 @@ namespace mysimulator {
       ArrayContainer(const Type&) = delete;
       ~ArrayContainer() { this->reset(); }
 
-      virtual void allocate(size_type size) { ParentType::allocate(size); }
+      virtual void allocate(size_type size) {
+        assert(size>ArrayByteBoundary);
+        ParentType::allocate(size);
+      }
 
   };
 

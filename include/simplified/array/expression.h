@@ -8,6 +8,7 @@ namespace mysimulator {
   class ArrayExpression {
     public:
       typedef unsigned int size_type;
+
       operator bool() const { return (bool)((E const&)(*this)); }
       size_type size() const { return static_cast<E const&>(*this).size(); }
       ET operator[](size_type i) const {
