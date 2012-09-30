@@ -85,6 +85,7 @@ namespace mysimulator {
         _Param.Allocate(IFN.Size());
         for(unsigned int i=0;i<IFN.Size();++i) {
           Introduce(_Func[i],IFN[i],dim);
+          _Param[i]=NULL;
           Introduce(_Param[i],IFN[i]);
           _ID[i].Allocate(InteractionFuncIDSize[IFN[i]]);
         }
