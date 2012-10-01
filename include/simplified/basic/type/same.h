@@ -11,6 +11,9 @@ namespace mysimulator {
   const bool __same_type<T1,T2>::FG=false;
 
   template <typename T>
+  class __same_type<T,T> { public: static const bool FG; };
+
+  template <typename T>
   const bool __same_type<T,T>::FG=true;
 
   template <>

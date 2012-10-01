@@ -4,6 +4,12 @@
 
 #include "array/interface.h"
 #include "array/expression.h"
+#include "basic/type/same.h"
+#include "basic/type/selector.h"
+#include "basic/type/sum.h"
+#include "basic/type/substract.h"
+#include "basic/type/multiple.h"
+#include "basic/type/divide.h"
 
 #ifndef _HAVE_SSE2
 #error "\nSSE2 is required for ShortData Array! Try -msse2 -D_HAVE_SSE2\n"
@@ -96,6 +102,9 @@ namespace mysimulator {
 
       template <typename E,typename ET>
       Type& operator+=(const ArrayExpression<E,ET>& EA) {
+        static_assert((
+            __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG),
+            "Type T cannot accept sum result!\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -104,6 +113,9 @@ namespace mysimulator {
       }
       template <typename E,typename ET>
       Type& operator+=(const ArrayExpression<E,ET>&& EA) {
+        static_assert((
+            __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG),
+            "Type T cannot accept sum result!\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -118,6 +130,9 @@ namespace mysimulator {
 
       template <typename E,typename ET>
       Type& operator-=(const ArrayExpression<E,ET> & EA) {
+        static_assert((
+            __same_type<T,typename __dual_selector<T,ET,__sub_flag>::Type>::FG),
+            "Type T cannot accept sum result!\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -126,6 +141,9 @@ namespace mysimulator {
       }
       template <typename E,typename ET>
       Type& operator-=(const ArrayExpression<E,ET> && EA) {
+        static_assert((
+            __same_type<T,typename __dual_selector<T,ET,__sub_flag>::Type>::FG),
+            "Type T cannot accept sum result!\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -135,6 +153,62 @@ namespace mysimulator {
       Type& operator-=(const T& D) {
         assert((bool)(*this));
         for(size_type i=0;i<size();++i)   (*this)[i]-=D;
+        return *this;
+      }
+
+      template <typename E,typename ET>
+      Type& operator*=(const ArrayExpression<E,ET>& EA) {
+        static_assert((
+            __same_type<T,typename __dual_selector<T,ET,__mul_flag>::Type>::FG),
+            "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]*=EA[i];
+        return *this;
+      }
+      template <typename E,typename ET>
+      Type& operator*=(const ArrayExpression<E,ET>&& EA) {
+        static_assert((
+            __same_type<T,typename __dual_selector<T,ET,__mul_flag>::Type>::FG),
+            "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]*=EA[i];
+        return *this;
+      }
+      Type& operator*=(const T& D) {
+        assert((bool)(*this));
+        for(size_type i=0;i<size();++i)   (*this)[i]*=D;
+        return *this;
+      }
+
+      template <typename E,typename ET>
+      Type& operator/=(const ArrayExpression<E,ET>& EA) {
+        static_assert((
+            __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG),
+            "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]/=EA[i];
+        return *this;
+      }
+      template <typename E,typename ET>
+      Type& operator/=(const ArrayExpression<E,ET>&& EA) {
+        static_assert((
+            __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG),
+            "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]/=EA[i];
+        return *this;
+      }
+      Type& operator/=(const T& D) {
+        assert((bool)(*this));
+        for(size_type i=0;i<size();++i)   (*this)[i]/=D;
         return *this;
       }
 
