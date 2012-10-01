@@ -5,7 +5,7 @@
 namespace mysimulator {
 
   template <typename EA,typename EB>
-  class ArraySubstract {};
+  class ArraySub {};
 
 }
 
@@ -19,15 +19,15 @@ namespace mysimulator {
   template <typename T,ArrayFormat AF> class Array;
 
   template <typename T1,ArrayFormat AF1,typename T2,ArrayFormat AF2>
-  class ArraySubstract<Array<T1,AF1>,Array<T2,AF2>>
+  class ArraySub<Array<T1,AF1>,Array<T2,AF2>>
       : public ArrayExpression<
-                  ArraySubstract<Array<T1,AF1>,Array<T2,AF2>>,
-                  typename __dual_selector<T1,T2,__substract_flag>::Type> {
+                  ArraySub<Array<T1,AF1>,Array<T2,AF2>>,
+                  typename __dual_selector<T1,T2,__sub_flag>::Type> {
 
     public:
 
-      typedef ArraySubstract<Array<T1,AF1>,Array<T2,AF2>>   Type;
-      typedef typename __dual_selector<T1,T2,__substract_flag>::Type
+      typedef ArraySub<Array<T1,AF1>,Array<T2,AF2>>   Type;
+      typedef typename __dual_selector<T1,T2,__sub_flag>::Type
               value_type;
       typedef ArrayExpression<Type,value_type>    ParentType;
       typedef unsigned int size_type;
@@ -41,7 +41,7 @@ namespace mysimulator {
 
     public:
 
-      ArraySubstract(Array<T1,AF1> const& A, Array<T2,AF2> const& B)
+      ArraySub(Array<T1,AF1> const& A, Array<T2,AF2> const& B)
           : _A(A), _B(B) {}
       operator bool() const { return (bool)_A && (bool)_B; }
       size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
@@ -54,8 +54,8 @@ namespace mysimulator {
   };
 
   template <typename EA,typename EB>
-  ArraySubstract<EA,EB> const operator-(EA const& a, EB const& b) {
-    return ArraySubstract<EA,EB>(a,b);
+  ArraySub<EA,EB> const operator-(EA const& a, EB const& b) {
+    return ArraySub<EA,EB>(a,b);
   }
 
 }

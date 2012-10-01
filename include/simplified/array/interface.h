@@ -24,6 +24,8 @@ namespace mysimulator {
 
 #include "array/expression-sum.h"
 #include "array/expression-substract.h"
+#include "array/expression-multiple.h"
+#include "array/expression-divide.h"
 
 #endif
 

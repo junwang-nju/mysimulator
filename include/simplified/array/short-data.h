@@ -116,6 +116,28 @@ namespace mysimulator {
         return *this;
       }
 
+      template <typename E,typename ET>
+      Type& operator-=(const ArrayExpression<E,ET> & EA) {
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]-=EA[i];
+        return *this;
+      }
+      template <typename E,typename ET>
+      Type& operator-=(const ArrayExpression<E,ET> && EA) {
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]-=EA[i];
+        return *this;
+      }
+      Type& operator-=(const T& D) {
+        assert((bool)(*this));
+        for(size_type i=0;i<size();++i)   (*this)[i]-=D;
+        return *this;
+      }
+
   };
 
   typedef Array<int,ArrayFormat::ShortData>     ItShortDataArray;
