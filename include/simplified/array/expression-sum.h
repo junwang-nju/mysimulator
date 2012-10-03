@@ -74,7 +74,7 @@ namespace mysimulator {
                value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef T* pointer1;
+      typedef Array<T,AF> const& const_reference1;
       typedef ArrayOp<EA,EB> const& const_reference2;
 
     private:
@@ -90,7 +90,7 @@ namespace mysimulator {
       value_type operator[](size_type i) const {
         assert(i<size()); return (value_type)_A[i] + (value_type)_B[i];
       }
-      pointer1 first()  const { return _A.head(); }
+      const_reference1 first()  const { return _A; }
       const_reference2 second() const { return _B; }
 
   };
@@ -115,7 +115,7 @@ namespace mysimulator {
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
       typedef ArrayOp<EA,EB> const& const_reference1;
-      typedef T* pointer2;
+      typedef Array<T,AF> const& const_reference2;
 
     private:
 
@@ -130,8 +130,8 @@ namespace mysimulator {
       value_type operator[](size_type i) const {
         assert(i<size()); return (value_type)_A[i] + (value_type)_B[i];
       }
-      const_reference1 first() const { return _A; }
-      pointer2 second() const { return _B.head(); }
+      const_reference1 first()  const { return _A; }
+      const_reference2 second() const { return _B; }
 
   };
 

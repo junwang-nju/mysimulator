@@ -41,7 +41,7 @@ namespace mysimulator {
 
       ArrayMul(Array<T1,AF1> const& A,Array<T2,AF2> const& B) : _A(A),_B(B) {}
       operator bool() const { return (bool)_A && (bool)_B; }
-      size_type size() const { return _A.size()<_B.size()?_A>size():_B.size(); }
+      size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
       value_type operator[](size_type i) const {
         assert(i<size()); return (value_type)_A[i] * value_type(_B[i]);
       }
