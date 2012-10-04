@@ -225,6 +225,7 @@ namespace mysimulator {
       value_type operator[](size_type i) const { return _R; }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
+      value_type result() const { return _R; }
 
   };
 

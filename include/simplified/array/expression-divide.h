@@ -55,7 +55,7 @@ namespace mysimulator {
   };
 
   template <typename EA,typename EB>
-  ArrayDiv<EA,EB> const operator*(const EA& a, const EB& b) {
+  ArrayDiv<EA,EB> const operator/(const EA& a, const EB& b) {
     return ArrayDiv<EA,EB>(a,b);
   }
 
@@ -235,6 +235,7 @@ namespace mysimulator {
       value_type operator[](size_type i) const { return _R; }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
+      value_type result() const { return _R; };
 
   };
 

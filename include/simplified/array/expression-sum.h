@@ -219,7 +219,7 @@ namespace mysimulator {
         : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
       operator bool() const { return true; }
       size_type size() const { return 0xFFFFFFFFU; }
-      value_type operator[](size_type) { return _R; }
+      value_type operator[](size_type) const { return _R; }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
       value_type result() const { return _R; }

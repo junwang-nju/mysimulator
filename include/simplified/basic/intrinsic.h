@@ -32,7 +32,7 @@ namespace mysimulator {
       ~Intrinsic() { _data=0; }
 
       operator T&() { return static_cast<T&>(_data); }
-      operator T const&() const { return static_cast<T&>(_data); }
+      operator T const&() const { return static_cast<const T&>(_data); }
       Type& operator=(const Type& D) { _data=D._data; return *this; }
       T* operator &() { return &_data; }
       const T* operator &() const { return &_data; }

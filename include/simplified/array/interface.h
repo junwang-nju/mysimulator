@@ -9,6 +9,8 @@ namespace mysimulator {
   template <typename T,ArrayFormat AF>
   class Array {
     public:
+      static_assert(!__intrinsic_flag<T>::FG,
+                    "For Intrinsic Type, please use Intrinsic<T>!\n");
       typedef Array<T,AF>   Type;
       Array() = delete;
       Array(Type const&) = delete;
@@ -20,7 +22,7 @@ namespace mysimulator {
 
 #include "array/regular.h"
 #include "array/short-data.h"
-#include "array/large-data.h"
+//#include "array/large-data.h"
 
 #include "array/expression-sum.h"
 #include "array/expression-substract.h"

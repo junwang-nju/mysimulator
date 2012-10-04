@@ -14,12 +14,16 @@ namespace mysimulator {
 
     public:
 
+      static_assert(!__intrinsic_flag<T>::FG,
+                    "For Intrinsic Type, please use Intrinsic<T>!\n");
+
       typedef Array<T,ArrayFormat::Regular>             Type;
       typedef ArrayExpression<Type,T>                   ParentTypeA;
       typedef ArrayContainer<T,ArrayFormat::Regular>    ParentTypeB;
+      typedef typename ParentTypeB::value_type          value_type;
       typedef unsigned int size_type;
-      typedef T& reference;
-      typedef const T& const_reference;
+      typedef value_type& reference;
+      typedef const value_type& const_reference;
 
       Array() : ParentTypeA(), ParentTypeB() {}
       Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
