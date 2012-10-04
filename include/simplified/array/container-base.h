@@ -4,6 +4,7 @@
 
 #include "memory/accessed-ptr.h"
 #include "basic/imprint.h"
+#include "array/content-selector.h"
 #include <algorithm>
 
 namespace mysimulator {
@@ -11,22 +12,22 @@ namespace mysimulator {
   enum class ArrayFormat { Regular, Data, ShortData, LargeData };
 
   template <typename T,ArrayFormat AF=ArrayFormat::Regular>
-  class ArrayContainerBase {
+  class ArrayContainerBase : private ArrayContentSelector<T> {
 
     public:
 
       typedef ArrayContainerBase<T,AF>  Type;
-      typedef T value_type;
-      typedef T* pointer;
-      typedef T& reference;
-      typedef const T* const_pointer;
-      typedef const T& const_reference;
+      typedef typename ArrayContentSelector<T>::value_type value_type;
+      typedef value_type* pointer;
+      typedef value_type& reference;
+      typedef const value_type* const_pointer;
+      typedef const value_type& const_reference;
       typedef unsigned int size_type;
 
     protected:
 
-      accessed_ptr<T> _pdata;
-      size_type       _ndata;
+      accessed_ptr<value_type> _pdata;
+      size_type                _ndata;
 
     public:
 
@@ -39,11 +40,11 @@ namespace mysimulator {
 
       operator bool() const { return (bool)_pdata && (_ndata>0U); }
       size_type size() const { return _ndata; }
-      reference operator[](unsigned int i) {
+      reference operator[](size_type i) {
         assert(i<_ndata);
         return _pdata[i];
       }
-      const_reference operator[](unsigned int i) const {
+      const_reference operator[](size_type i) const {
         assert(i<_ndata);
         return _pdata[i];
       }

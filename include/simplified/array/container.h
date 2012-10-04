@@ -20,6 +20,7 @@ namespace mysimulator {
 
       typedef ArrayContainer<T,ArrayFormat::Regular>        Type;
       typedef ArrayContainerBase<T,ArrayFormat::Regular>    ParentType;
+      typedef typename ParentType::value_type value_type;
       typedef unsigned int size_type;
 
       ArrayContainer() : ParentType() {}
@@ -29,7 +30,7 @@ namespace mysimulator {
 
       virtual void allocate(size_type size) override {
         this->reset();
-        this->_pdata.reset(new T[size],operator delete[]);
+        this->_pdata.reset(new value_type[size],operator delete[]);
         this->_ndata=size;
       }
 
@@ -38,22 +39,20 @@ namespace mysimulator {
 }
 
 #include "memory/aligned-memory.h"
-#include "basic/type/intrinsic.h"
 
 namespace mysimulator {
 
   template <typename T>
-  class ArrayContainer<T,ArrayFormat::Data>
-      : public ArrayContainerBase<T,ArrayFormat::Data> {
+  class ArrayContainer<Intrinsic<T>,ArrayFormat::Data>
+      : public ArrayContainerBase<Intrinsic<T>,ArrayFormat::Data> {
 
     public:
 
-      static_assert(__intrinsic_flag<T>::FG,"Only Intrinsic Type Permitted!\n");
-
-      typedef ArrayContainer<T,ArrayFormat::Data>    Type;
-      typedef ArrayContainerBase<T,ArrayFormat::Data>   ParentType;
+      typedef ArrayContainer<Intrinsic<T>,ArrayFormat::Data>    Type;
+      typedef ArrayContainerBase<Intrinsic<T>,ArrayFormat::Data>   ParentType;
+      typedef typename ParentType::value_type value_type;
       typedef unsigned int size_type;
-      typedef T* pointer;
+      typedef value_type* pointer;
 
       ArrayContainer() : ParentType() {}
       ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
@@ -62,7 +61,7 @@ namespace mysimulator {
 
       virtual void allocate(size_type size) override {
         this->reset();
-        size_type byte_size=size*sizeof(T);
+        size_type byte_size=size*sizeof(value_type);
         size_type alloc_size=
           (byte_size&(~0xFU))+((byte_size&0xFU)==0?0:0xFU-(byte_size&0xFU));
         this->_pdata.reset(

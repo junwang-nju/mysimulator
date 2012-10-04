@@ -2,10 +2,57 @@
 #ifndef _Array_Expression_Sum_H_
 #define _Array_Expression_Sum_H_
 
+#include "array/expression.h"
+#include "basic/type/sum.h"
+#include "basic/type/selector.h"
+
 namespace mysimulator {
 
   template <typename EA,typename EB>
-  class ArraySum  {};
+  class ArraySum
+    : public ArrayExpression<
+                ArraySum<EA,EB>,
+                typename __dual_selector<typename EA::value_type,
+                                         typename EB::value_type,
+                                         __sum_flag>::Type> {
+
+    public:
+
+      static_assert(!__intrinsic_flag<EA>::FG && !__intrinsic_flag<EB>::FG,
+                    "For intrinsic type, please use Intrinsic<T>!\n");
+
+      typedef ArraySum<EA,EB>   Type;
+      typedef typename __dual_selector<typename EA::value_type,
+                                       typename EB::value_type,
+                                       __sum_flag>::Type
+              value_type;
+      typedef ArrayExpression<Type,value_type>  ParentType;
+      typedef unsigned int size_type;
+      typedef EA const& const_referenceA;
+      typedef EB const& const_referenceB;
+      typedef EA const&& const_lreferenceA;
+      typedef EB const&& const_lreferenceB;
+
+    private:
+
+      const_referenceA _A;
+      const_referenceB _B;
+
+    public:
+
+      ArraySum(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ArraySum(const_referenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lreferenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lreferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      operator bool() const { return (bool)_A && (bool)_B; }
+      size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
+      value_type operator[](size_type i) const {
+        assert(i<size()); return (value_type)_A[i] + (value_type)_B[i];
+      }
+      const_referenceA first()  const { return _A; }
+      const_referenceB second() const { return _B; }
+
+  };
 
   template <typename EA, typename EB>
   ArraySum<EA,EB> const operator+(const EA& a,const EB& b) {
@@ -14,321 +61,168 @@ namespace mysimulator {
 
 }
 
-#include "array/expression.h"
-#include "basic/type/sum.h"
-#include "basic/type/selector.h"
+#include "basic/intrinsic.h"
 
 namespace mysimulator {
 
-  enum class ArrayFormat;
-  template <typename T,ArrayFormat AF> class Array;
-
-  template <typename T1,ArrayFormat AF1,typename T2,ArrayFormat AF2>
-  class ArraySum<Array<T1,AF1>,Array<T2,AF2>>
-    : public ArrayExpression<ArraySum<Array<T1,AF1>,Array<T2,AF2>>,
-                             typename __dual_selector<T1,T2,__sum_flag>::Type> {
-
-    public:
-
-      typedef ArraySum<Array<T1,AF1>,Array<T2,AF2>>   Type;
-      typedef typename __dual_selector<T1,T2,__sum_flag>::Type  value_type;
-      typedef ArrayExpression<Type,value_type>  ParentType;
-      typedef unsigned int size_type;
-      typedef T1* pointer1;
-      typedef T2* pointer2;
-
-    private:
-
-      Array<T1,AF1> const& _A;
-      Array<T2,AF2> const& _B;
-
-    public:
-
-      ArraySum(Array<T1,AF1> const& A, Array<T2,AF2> const& B) : _A(A),_B(B) {}
-      operator bool() const { return (bool)_A&&(bool)_B; }
-      size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
-      value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A[i] + (value_type)_B[i];
-      }
-      pointer1 first()  const { return _A.head(); }
-      pointer2 second() const { return _B.head(); }
-
-  };
-
-  template <typename T,ArrayFormat AF,
-            template<typename,typename> class ArrayOp,typename EA,typename EB>
-  class ArraySum<Array<T,AF>,ArrayOp<EA,EB>>
+  template <typename T,typename E>
+  class ArraySum<Intrinsic<T>,E>
     : public ArrayExpression<
-                ArraySum<Array<T,AF>,ArrayOp<EA,EB>>,
-                typename __dual_selector<T,
-                                         typename ArrayOp<EA,EB>::value_type,
+                ArraySum<Intrinsic<T>,E>,
+                typename __dual_selector<T,typename E::value_type,
                                          __sum_flag>::Type> {
 
     public:
 
-      typedef ArraySum<Array<T,AF>,ArrayOp<EA,EB>>  Type;
+      static_assert(!__intrinsic_flag<E>::FG,
+                    "For intrinsic type, please use Intrinsic<T>!\n");
+
+      typedef ArraySum<Intrinsic<T>,E>  Type;
       typedef
-      typename __dual_selector<T,
-                               typename ArraySum<EA,EB>::value_type,
-                               __sum_flag>::Type
-               value_type;
+        typename __dual_selector<T,typename E::value_type,__sum_flag>::Type
+        value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef Array<T,AF> const& const_reference1;
-      typedef ArrayOp<EA,EB> const& const_reference2;
+      typedef T const& const_referenceA;
+      typedef E const& const_referenceB;
+      typedef Intrinsic<T> const& const_ireferenceA;
+      typedef T const&& const_lreferenceA;
+      typedef E const&& const_lreferenceB;
+      typedef Intrinsic<T> const&& const_lireferenceA;
 
     private:
 
-      Array<T,AF> const& _A;
-      ArrayOp<EA,EB> const& _B;
+      const_referenceA _A;
+      const_referenceB _B;
 
     public:
 
-      ArraySum(Array<T,AF> const& A, ArrayOp<EA,EB> const& B) : _A(A),_B(B) {}
-      operator bool() const { return (bool)_A && (bool)_B; }
-      size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
-      value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A[i] + (value_type)_B[i];
-      }
-      const_reference1 first()  const { return _A; }
-      const_reference2 second() const { return _B; }
-
-  };
-
-  template <template<typename,typename> class ArrayOp,typename EA,typename EB,
-            typename T,ArrayFormat AF>
-  class ArraySum<ArrayOp<EA,EB>,Array<T,AF>>
-    : public ArrayExpression<
-                ArraySum<ArrayOp<EA,EB>,Array<T,AF>>,
-                typename __dual_selector<T,
-                                         typename ArrayOp<EA,EB>::value_type,
-                                         __sum_flag>::Type> {
-
-    public:
-
-      typedef ArraySum<ArrayOp<EA,EB>,Array<T,AF>>    Type;
-      typedef
-      typename __dual_selector<T,
-                               typename ArraySum<EA,EB>::value_type,
-                               __sum_flag>::Type
-               value_type;
-      typedef ArrayExpression<Type,value_type>  ParentType;
-      typedef unsigned int size_type;
-      typedef ArrayOp<EA,EB> const& const_reference1;
-      typedef Array<T,AF> const& const_reference2;
-
-    private:
-
-      ArrayOp<EA,EB> const& _A;
-      Array<T,AF> const& _B;
-
-    public:
-
-      ArraySum(ArrayOp<EA,EB> const& A,Array<T,AF> const& B) : _A(A),_B(B) {}
-      operator bool() const { return (bool)_A && (bool)_B; }
-      size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
-      value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A[i] + (value_type)_B[i];
-      }
-      const_reference1 first()  const { return _A; }
-      const_reference2 second() const { return _B; }
-
-  };
-
-  template <template<typename,typename>class ArrayOp1,typename EA1,typename EB1,
-            template<typename,typename>class ArrayOp2,typename EA2,typename EB2>
-  class ArraySum<ArrayOp1<EA1,EB1>,ArrayOp2<EA2,EB2>>
-    : public ArrayExpression<
-             ArraySum<ArrayOp1<EA1,EB1>,ArrayOp2<EA2,EB2>>,
-             typename __dual_selector<typename ArrayOp1<EA1,EB1>::value_type,
-                                      typename ArrayOp2<EA2,EB2>::value_type,
-                                      __sum_flag>::Type> {
-
-    public:
-
-      typedef ArraySum<ArrayOp1<EA1,EB1>,ArrayOp2<EA2,EB2>> Type;
-      typedef
-      typename __dual_selector<typename ArrayOp1<EA1,EB1>::value_type,
-                               typename ArrayOp2<EA2,EB2>::value_type,
-                               __sum_flag>::Type
-               value_type;
-      typedef ArrayExpression<Type,value_type>  ParentType;
-      typedef unsigned int size_type;
-      typedef ArrayOp1<EA1,EB1> const& const_reference1;
-      typedef ArrayOp2<EA2,EB2> const& const_reference2;
-
-    private:
-
-      ArrayOp1<EA1,EB1> const& _A;
-      ArrayOp2<EA2,EB2> const& _B;
-
-    public:
-
-      ArraySum(ArrayOp1<EA1,EB1> const& A,ArrayOp2<EA2,EB2> const& B)
-        : _A(A),_B(B) {}
-      operator bool() const { return (bool)_A && (bool)_B; }
-      size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
-      value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A[i] + (value_type)_B[i];
-      }
-      const_reference1 first() const { return _A; }
-      const_reference2 second() const { return _B; }
-
-  };
-
-
-}
-
-#include "basic/type/intrinsic.h"
-
-namespace mysimulator {
-
-  template <typename T1,typename T2,ArrayFormat AF2>
-  class ArraySum<T1,Array<T2,AF2>>
-    : public ArrayExpression<ArraySum<T1,Array<T2,AF2>>,
-                             typename __dual_selector<T1,T2,__sum_flag>::Type> {
-
-    static_assert(__intrinsic_flag<T1>::FG,
-                  "Only Intrinsic Type Permitted for this type!\n");
-
-    public:
-
-      typedef ArraySum<T1,Array<T2,AF2>>  Type;
-      typedef typename __dual_selector<T1,T2,__sum_flag>::Type  value_type;
-      typedef ArrayExpression<Type,value_type>  ParentType;
-      typedef unsigned int size_type;
-      typedef T1* pointer1;
-      typedef T2* pointer2;
-
-    private:
-
-      T1 const& _A;
-      Array<T2,AF2> const& _B;
-
-    public:
-
-      ArraySum(T1 const& A,Array<T2,AF2> const& B) : _A(A),_B(B) {}
+      ArraySum(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ArraySum(const_ireferenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lreferenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lireferenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ArraySum(const_referenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_ireferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lreferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lireferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
       operator bool() const { return (bool)_B; }
       size_type size() const { return _B.size(); }
       value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A+(value_type)_B[i];
+        assert(i<size()); return (value_type)_A + (value_type)_B[i];
       }
-      pointer1 first()    const { return const_cast<pointer1>(&_A); }
-      pointer2 second()   const { return _B.head(); }
+      const_referenceA first()  const { return _A; }
+      const_referenceB second() const { return _B; }
 
   };
 
-  template <typename T1,ArrayFormat AF1,typename T2>
-  class ArraySum<Array<T1,AF1>,T2>
-    : public ArrayExpression<ArraySum<Array<T1,AF1>,T2>,
-                             typename __dual_selector<T1,T2,__sum_flag>::Type> {
-
-    static_assert(__intrinsic_flag<T2>::FG,
-                  "Only Intrinsic Type Permitted for this type!\n");
+  template <typename E,typename T>
+  class ArraySum<E,Intrinsic<T>>
+    : public ArrayExpression<
+                ArraySum<E,Intrinsic<T>>,
+                typename __dual_selector<typename E::value_type,T,
+                                         __sum_flag>::Type> {
 
     public:
 
-      typedef ArraySum<Array<T1,AF1>,T2>  Type;
-      typedef typename __dual_selector<T1,T2,__sum_flag>::Type  value_type;
+      static_assert(!__intrinsic_flag<E>::FG,
+                    "For intrinsic type, please use Intrinsic<T>!\n");
+
+      typedef ArraySum<E,Intrinsic<T>>    Type;
+      typedef
+        typename __dual_selector<typename E::value_type,T,__sum_flag>::Type
+        value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef T1* pointer1;
-      typedef T2* pointer2;
+      typedef E const& const_referenceA;
+      typedef T const& const_referenceB;
+      typedef Intrinsic<T> const& const_ireferenceB;
+      typedef E const&& const_lreferenceA;
+      typedef T const&& const_lreferenceB;
+      typedef Intrinsic<T> const&& const_lireferenceB;
 
     private:
 
-      Array<T1,AF1> const& _A;
-      T2 const& _B;
+      const_referenceA _A;
+      const_referenceB _B;
 
     public:
 
-      ArraySum(Array<T1,AF1> const& A,T2 const& B) : _A(A),_B(B) {}
+      ArraySum(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ArraySum(const_referenceA A,const_ireferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_referenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_referenceA A,const_lireferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lreferenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lreferenceA A,const_ireferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lreferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ArraySum(const_lreferenceA A,const_lireferenceB B) : _A(A),_B(B) {}
       operator bool() const { return (bool)_A; }
       size_type size() const { return _A.size(); }
       value_type operator[](size_type i) const {
         assert(i<size()); return (value_type)_A[i] + (value_type)_B;
       }
-      pointer1 first()  const { return _A.head(); }
-      pointer2 second() const { return const_cast<pointer2>(&_B); }
+      const_referenceA first()  const { return _A; }
+      const_referenceB second() const { return _B; }
 
   };
 
-  template <typename T,
-            template<typename,typename> class ArrayOp,typename EA,typename EB>
-  class ArraySum<T,ArrayOp<EA,EB>>
-    : public ArrayExpression<
-                ArraySum<T,ArrayOp<EA,EB>>,
-                typename __dual_selector<T,
-                                         typename ArrayOp<EA,EB>::value_type,
-                                         __sum_flag>::Type> {
+  template <typename T1,typename T2>
+  class ArraySum<Intrinsic<T1>,Intrinsic<T2>>
+    : public ArrayExpression<ArraySum<Intrinsic<T1>,Intrinsic<T2>>,
+                             typename __dual_selector<T1,T2,__sum_flag>::Type> {
 
     public:
 
-      typedef ArraySum<T,ArrayOp<EA,EB>>  Type;
-      typedef
-      typename __dual_selector<T,
-                               typename ArrayOp<EA,EB>::value_type,
-                               __sum_flag>::Type
-               value_type;
+      typedef ArraySum<Intrinsic<T1>,Intrinsic<T2>> Type;
+      typedef typename __dual_selector<T1,T2,__sum_flag>::Type  value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef T* pointer1;
-      typedef ArrayOp<EA,EB>  const& const_reference2;
+      typedef T1 const& const_referenceA;
+      typedef T2 const& const_referenceB;
+      typedef Intrinsic<T1> const& const_ireferenceA;
+      typedef Intrinsic<T2> const& const_ireferenceB;
+      typedef T1 const&& const_lreferenceA;
+      typedef T2 const&& const_lreferenceB;
+      typedef Intrinsic<T1> const&& const_lireferenceA;
+      typedef Intrinsic<T2> const&& const_lireferenceB;
 
     private:
 
-      T const& _A;
-      ArrayOp<EA,EB> const& _B;
+      const_referenceA _A;
+      const_referenceB _B;
+      value_type _R;
 
     public:
 
-      ArraySum(T const& A,ArrayOp<EA,EB> const& B) : _A(A),_B(B) {}
-      operator bool() const { return (bool)_B; }
-      size_type size() const { return _B.size(); }
-      value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A+(value_type)_B[i];
-      }
-      pointer1 first()    const { return const_cast<pointer1>(&_A); }
-      const_reference2 second() const { return _B; }
-
-  };
-
-  template <template<typename,typename> class ArrayOp,typename EA,typename EB,
-            typename T>
-  class ArraySum<ArrayOp<EA,EB>,T>
-    : public ArrayExpression<
-                ArraySum<ArrayOp<EA,EB>,T>,
-                typename __dual_selector<typename ArrayOp<EA,EB>::value_type,
-                                         T,__sum_flag>::Type> {
-
-    public:
-
-      typedef ArraySum<ArrayOp<EA,EB>,T>  Type;
-      typedef
-      typename __dual_selector<typename ArrayOp<EA,EB>::value_type,
-                               T,
-                               __sum_flag>::Type
-      value_type;
-      typedef ArrayExpression<Type,value_type>  ParentType;
-      typedef unsigned int size_type;
-      typedef ArrayOp<EA,EB> const& const_reference1;
-      typedef T* pointer2;
-
-    private:
-
-      ArrayOp<EA,EB>  const& _A;
-      T const& _B;
-
-    public:
-
-      ArraySum(ArrayOp<EA,EB> const& A, T const& B) : _A(A),_B(B) {}
-      operator bool() const { return (bool)_A; }
-      size_type size() const { return _A.size(); }
-      value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A[i] + (value_type)_B;
-      }
-      const_reference1 first() const { return _A; }
-      pointer2 second() const { return const_cast<pointer2>(&_B); }
+      ArraySum(const_referenceA A,const_referenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_lreferenceA A,const_referenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_ireferenceA A,const_referenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_lireferenceA A,const_referenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_referenceA A,const_lreferenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_lreferenceA A,const_lreferenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_ireferenceA A,const_lreferenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_lireferenceA A,const_lreferenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_referenceA A,const_ireferenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_lreferenceA A,const_ireferenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_ireferenceA A,const_ireferenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      ArraySum(const_lireferenceA A,const_ireferenceB B)
+        : _A(A),_B(B), _R((value_type)_A+(value_type)_B) {}
+      operator bool() const { return true; }
+      size_type size() const { return 0xFFFFFFFFU; }
+      value_type operator[](size_type) { return _R; }
+      const_referenceA first()  const { return _A; }
+      const_referenceB second() const { return _B; }
+      value_type result() const { return _R; }
 
   };
 
