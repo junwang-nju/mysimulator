@@ -119,6 +119,19 @@ namespace mysimulator {
         return operator=((value_type)D);
       }
 
+      //====----------==========-------------
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArraySum<EA,EB>,
+                  typename __dual_selector<typename EA::value_type,
+                                           typename EB::value_type,
+                                           __sum_flag>::Type>&& A) {
+        typedef ArraySum<EA,EB> SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator+=(static_cast<SType const&>(A).second());
+      }
+      //====----------==========-------------
       template <typename T1,typename E>
       Type& operator=(
           const ArrayExpression<
