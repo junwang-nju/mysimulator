@@ -74,6 +74,7 @@ namespace mysimulator {
 
       template <typename E,typename ET>
       Type& operator=(const ArrayExpression<E,ET>& EA) {
+        printf("------------G---------------\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -82,6 +83,7 @@ namespace mysimulator {
       }
       template <typename E,typename ET>
       Type& operator=(const ArrayExpression<E,ET>&& EA) {
+        printf("------------E---------------\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -89,6 +91,7 @@ namespace mysimulator {
         return *this;
       }
       Type& operator=(const ArrayExpression<Type,T>& EA) {
+        printf("------------D---------------\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -101,15 +104,18 @@ namespace mysimulator {
       }
 
       Type& operator=(const Type& A) {
+        printf("------------C---------------\n");
         return operator=(static_cast<const ParentTypeA&>(A));
       }
       Type& operator=(const value_type& D) {
         assert((bool)(*this));
+        printf("------------A---------------\n");
         for(size_type i=0;i<size();++i) (*this)[i]=D;
         return *this;
       }
       template <typename T1>
       Type& operator=(const Intrinsic<T1>& D) {
+        printf("------------B---------------\n");
         return operator=((value_type)D);
       }
 
@@ -706,7 +712,6 @@ namespace mysimulator {
         operator*=(static_cast<SType const&>(A).first());
         return operator*=(static_cast<SType const&>(A).second());
       }
-      ///=================
       template <typename T1,typename E>
       Type& operator*=(
           const ArrayExpression<
@@ -778,7 +783,6 @@ namespace mysimulator {
         operator*=(static_cast<SType const&>(A).first());
         return operator/=(static_cast<SType const&>(A).second());
       }
-      ///=================
 
       template <typename E,typename ET>
       Type& operator/=(const ArrayExpression<E,ET>& EA) {
@@ -804,6 +808,7 @@ namespace mysimulator {
       }
       Type& operator/=(const T& D) {
         assert((bool)(*this));
+        // keep this form for integer
         for(size_type i=0;i<size();++i)   (*this)[i]/=D;
         return *this;
       }
@@ -811,6 +816,80 @@ namespace mysimulator {
       Type& operator/=(const Intrinsic<T1>& D) {
         return operator/=((value_type)D);
       }
+      ///=================
+      template <typename T1,typename E>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayMul<Intrinsic<T1>,E>,
+                  typename __dual_selector<T1,typename E::value_type,
+                                           __mul_flag>::Type>&& A) {
+        typedef ArrayMul<Intrinsic<T1>,E>   SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      template <typename E,typename T1>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayMul<E,Intrinsic<T1>>,
+                  typename __dual_selector<T1,typename E::value_type,
+                                           __mul_flag>::Type>&& A) {
+        typedef ArrayMul<E,Intrinsic<T1>>   SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      template <typename T1,typename T2>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayMul<Intrinsic<T1>,Intrinsic<T2>>,
+                  typename __dual_selector<T1,T2,__mul_flag>::Type>&& A) {
+        typedef ArrayMul<Intrinsic<T1>,Intrinsic<T2>>   SType;
+        return operator/=(static_cast<SType const&>(A).result());
+      }
+      template <typename E>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayMul<Type,E>,
+                  typename __dual_selector<T,typename E::value_type,
+                                           __div_flag>::Type>&& A) {
+        typedef ArrayMul<Type,E>  SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      template <typename E>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayMul<E,Type>,
+                  typename __dual_selector<typename E::value_type,T,
+                                           __mul_flag>::Type>&& A) {
+        typedef ArrayMul<E,Type>  SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      template <typename T1>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayMul<Intrinsic<T1>,Type>,
+                  typename __dual_selector<T1,T,__mul_flag>::Type>&& A) {
+        typedef ArrayMul<Intrinsic<T1>,Type>    SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      template <typename T1>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayMul<Type,Intrinsic<T1>>,
+                  typename __dual_selector<T,T1,__mul_flag>::Type>&& A) {
+        typedef ArrayMul<Type,Intrinsic<T1>>  SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      Type& operator/=(const ArrayExpression<ArrayMul<Type,Type>,T>&& A) {
+        typedef ArrayMul<Type,Type>   SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      ///=================// consider for floating point /= could be specialized
+      // need to compare regular multiple and SSE-divide for array
 
   };
 
@@ -838,6 +917,7 @@ namespace mysimulator {
   }
   template <>
   DbShortDataArray& DbShortDataArray::operator=(const double& D) {
+    printf("------------Z---------------\n");
     assert((bool)(*this));
     __m128d *p=reinterpret_cast<__m128d*>(this->head());
     const __m128d *e=p+_n128;
