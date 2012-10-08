@@ -33,6 +33,10 @@ namespace mysimulator {
       typedef EA const&& const_lreferenceA;
       typedef EB const&& const_lreferenceB;
 
+      static_assert(
+          Intrinsic<value_type>::IsFloatPoint,
+          "Only float-point data are permitted for divide operation, Since integer-related division depends on the operational sequence is complex!\n");
+
     private:
 
       const_referenceA _A;

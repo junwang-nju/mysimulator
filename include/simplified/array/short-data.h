@@ -789,6 +789,7 @@ namespace mysimulator {
         static_assert((
             __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG),
             "Type T cannot accept sum result!\n");
+        assert(Intrinsic<T>::IsFloatPoint);
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -800,16 +801,18 @@ namespace mysimulator {
         static_assert((
             __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG),
             "Type T cannot accept sum result!\n");
+        assert(Intrinsic<T>::IsFloatPoint);
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
         for(size_type i=0;i<size();++i)   (*this)[i]/=EA[i];
         return *this;
       }
-      Type& operator/=(const T& D) {
+      Type& operator/=(const value_type& D) {
+        assert(Intrinsic<T>::IsFloatPoint);
         assert((bool)(*this));
-        // keep this form for integer
-        for(size_type i=0;i<size();++i)   (*this)[i]/=D;
+        value_type iD=((value_type)1.)/D;
+        for(size_type i=0;i<size();++i)   (*this)[i]*=iD;
         return *this;
       }
       template <typename T1>
@@ -823,6 +826,7 @@ namespace mysimulator {
                   ArrayMul<Intrinsic<T1>,E>,
                   typename __dual_selector<T1,typename E::value_type,
                                            __mul_flag>::Type>&& A) {
+        printf("=====================1======= \n");
         typedef ArrayMul<Intrinsic<T1>,E>   SType;
         operator/=(static_cast<SType const&>(A).first());
         return operator/=(static_cast<SType const&>(A).second());
@@ -842,6 +846,7 @@ namespace mysimulator {
           const ArrayExpression<
                   ArrayMul<Intrinsic<T1>,Intrinsic<T2>>,
                   typename __dual_selector<T1,T2,__mul_flag>::Type>&& A) {
+        printf("========2============1======= \n");
         typedef ArrayMul<Intrinsic<T1>,Intrinsic<T2>>   SType;
         return operator/=(static_cast<SType const&>(A).result());
       }
@@ -888,7 +893,7 @@ namespace mysimulator {
         operator/=(static_cast<SType const&>(A).first());
         return operator/=(static_cast<SType const&>(A).second());
       }
-      ///=================// consider for floating point /= could be specialized
+      ///=================
       // need to compare regular multiple and SSE-divide for array
       template <typename T1,typename E>
       Type& operator/=(
@@ -961,7 +966,7 @@ namespace mysimulator {
         operator/=(static_cast<SType const&>(A).first());
         return operator*=(static_cast<SType const&>(A).second());
       }
-      //================== only float point permitted for divide
+      //==================
 
   };
 
