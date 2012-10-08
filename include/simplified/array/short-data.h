@@ -890,6 +890,78 @@ namespace mysimulator {
       }
       ///=================// consider for floating point /= could be specialized
       // need to compare regular multiple and SSE-divide for array
+      template <typename T1,typename E>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayDiv<Intrinsic<T1>,E>,
+                  typename __dual_selector<T1,typename E::value_type,
+                                           __div_flag>::Type>&& A) {
+        typedef ArrayDiv<Intrinsic<T1>,E> SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename E,typename T1>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayDiv<E,Intrinsic<T1>>,
+                  typename __dual_selector<typename E::value_type,T1,
+                                           __div_flag>::Type>&& A) {
+        typedef ArrayDiv<E,Intrinsic<T1>>   SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename T1,typename T2>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayDiv<Intrinsic<T1>,Intrinsic<T2>>,
+                  typename __dual_selector<T1,T2,__div_flag>::Type>&& A) {
+        typedef ArrayDiv<Intrinsic<T1>,Intrinsic<T2>>   SType;
+        return operator/=(static_cast<SType const&>(A).result());
+      }
+      template <typename E>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayDiv<Type,E>,
+                  typename __dual_selector<T,typename E::value_type,
+                                           __div_flag>::Type>&& A) {
+        typedef ArrayDiv<Type,E>  SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename E>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayDiv<E,Type>,
+                  typename __dual_selector<typename E::value_type,T,
+                                           __div_flag>::Type>&& A) {
+        typedef ArrayDiv<E,Type>  SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename T1>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayDiv<Intrinsic<T1>,Type>,
+                  typename __dual_selector<T1,T,__div_flag>::Type>&& A) {
+        typedef ArrayDiv<Intrinsic<T1>,Type>  SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename T1>
+      Type& operator/=(
+          const ArrayExpression<
+                  ArrayDiv<Type,Intrinsic<T1>>,
+                  typename __dual_selector<T,T1,__div_flag>::Type>&& A) {
+        typedef ArrayDiv<Type,Intrinsic<T1>>    SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      Type& operator/=(const ArrayExpression<ArrayDiv<Type,Type>,T>&& A) {
+        typedef ArrayDiv<Type,Type> SType;
+        operator/=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      //================== only float point permitted for divide
 
   };
 
