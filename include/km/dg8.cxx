@@ -211,10 +211,10 @@ int main() {
   IP=new int[(N-2)*3];
 
   unsigned int NB=NC+N-1;
-  unsigned int M=25;
+  unsigned int M=26;
   double T,TT,PT,ZT,ZPT;
-  double Step=2e-11;
-  double THD=-0.91;
+  double Step=4e-8;
+  double THD=-0.90;
 
   cout.precision(20);
   Array2DNumeric<double> MV,GT;
@@ -222,8 +222,11 @@ int main() {
   GT.Imprint(MV);
 
   BoxMuller<MersenneTwisterDSFMT<19937> > BG;
+  MersenneTwisterDSFMT<19937> UG;
   BG.Allocate();
+  UG.Allocate();
   BG.InitWithTime();
+  UG.InitWithTime();
 
   ifs.open("ZZZZ");
   for(unsigned int i=0;i<N;++i)
@@ -240,8 +243,15 @@ int main() {
     if(T<THD) break;
     cout<<T<<'\t'<<ZT<<endl;
     do{
-      for(unsigned int i=N-1-M;i<N-1;++i)
-      for(unsigned int k=0;k<3;++k) MV[i][k]=BG.Double();
+      //for(unsigned int i=N-1-M;i<N-1;++i)
+      //for(unsigned int k=0;k<3;++k) MV[i][k]=BG.Double();
+      {
+        for(unsigned int i=N-1-M;i<N-1;++i)
+        for(unsigned int k=0;k<3;++k) MV[i][k]=0;
+        unsigned int i=N-1-M+(unsigned int)(UG.Double()*M);
+        unsigned int k=(unsigned int)(3*UG.Double());
+        MV[i][k]=BG.Double();
+      }
       for(unsigned int i=N-1-M;i<N-1;++i)
       for(unsigned int k=0;k<3;++k) S.Location()[i][k]+=MV[i][k]*Step;
       ZPT=GetGT(S,Hess,GT,N,NB,M);
