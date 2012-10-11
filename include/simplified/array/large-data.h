@@ -74,6 +74,22 @@ namespace mysimulator {
                size()*sizeof(T));
         return *this;
       }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>&& A) {
+        typedef ArraySum<EA,EB>   SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator+=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
+        typedef ArraySum<EA,EB>   SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator+=(static_cast<SType const&>(A).second());
+      }
 
       Type& operator=(const Type& A) {
         return operator=<ParentTypeA const&>(A);
@@ -185,7 +201,7 @@ namespace mysimulator {
       }
 
       template <typename E,typename ET>
-      Type& operator/=(const ArrayExpression<E,ET>& A) {
+      Type& operator/=(const ArrayExpression<E,ET>& EA) {
         static_assert((
           __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG),
           "Type T cannot accept sum result!\n");
@@ -196,7 +212,7 @@ namespace mysimulator {
         return *this;
       }
       template <typename E,typename ET>
-      Type& operator/=(const ArrayExpression<E,ET>&& A) {
+      Type& operator/=(const ArrayExpression<E,ET>&& EA) {
         static_assert((
           __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG),
           "Type T cannot accept sum result!\n");
