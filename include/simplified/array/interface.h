@@ -22,7 +22,7 @@ namespace mysimulator {
 
 #include "array/regular.h"
 #include "array/short-data.h"
-//#include "array/large-data.h"
+#include "array/large-data.h"
 
 #include "array/expression-sum.h"
 #include "array/expression-substract.h"

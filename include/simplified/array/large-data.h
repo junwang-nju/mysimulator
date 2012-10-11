@@ -4,23 +4,30 @@
 
 #include "array/interface.h"
 #include "array/expression.h"
+#include "basic/type/same.h"
 #include <cstring>
+
+#include "array/expression-sum.h"
+#include "array/expression-substract.h"
+#include "array/expression-multiple.h"
+#include "array/expression-divide.h"
 
 namespace mysimulator {
 
   template <typename T>
-  class Array<T,ArrayFormat::LargeData>
-      : public ArrayExpression<Array<T,ArrayFormat::LargeData>,T>,
-        public ArrayContainer<T,ArrayFormat::LargeData> {
+  class Array<Intrinsic<T>,ArrayFormat::LargeData>
+      : public ArrayExpression<Array<Intrinsic<T>,ArrayFormat::LargeData>,T>,
+        public ArrayContainer<Intrinsic<T>,ArrayFormat::LargeData> {
 
     public:
 
-      typedef Array<T,ArrayFormat::LargeData>           Type;
-      typedef ArrayExpression<Type,T>                   ParentTypeA;
-      typedef ArrayContainer<T,ArrayFormat::LargeData>  ParentTypeB;
+      typedef Array<Intrinsic<T>,ArrayFormat::LargeData>           Type;
+      typedef ArrayExpression<Type,T>                              ParentTypeA;
+      typedef ArrayContainer<Intrinsic<T>,ArrayFormat::LargeData>  ParentTypeB;
+      typedef typename ParentTypeB::value_type value_type;
       typedef unsigned int size_type;
-      typedef T& reference;
-      typedef const T& const_reference;
+      typedef value_type& reference;
+      typedef const value_type& const_reference;
 
       Array() : ParentTypeA(), ParentTypeB() {}
       Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
@@ -68,15 +75,24 @@ namespace mysimulator {
         return *this;
       }
 
-      Type& operator=(const Type& A) { return operator=<Type,T>(A); }
-      Type& operator=(const T& D) {
+      Type& operator=(const Type& A) {
+        return operator=<ParentTypeA const&>(A);
+      }
+      Type& operator=(const value_type& D) {
         assert((bool)(*this));
         for(size_type i=0;i<size();++i)   (*this)[i]=D;
         return *this;
       }
+      template <typename T1>
+      Type& operator=(const Intrinsic<T1>& D) {
+        return operator=((value_type)D);
+      }
 
       template <typename E,typename ET>
       Type& operator+=(const ArrayExpression<E,ET>& EA) {
+        static_assert((
+          __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG),
+          "Type T cannot accept sum result!\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -85,6 +101,9 @@ namespace mysimulator {
       }
       template <typename E,typename ET>
       Type& operator+=(const ArrayExpression<E,ET>&& EA) {
+        static_assert((
+          __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG),
+          "Type T cannot accept sum result!\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -96,6 +115,33 @@ namespace mysimulator {
         for(size_type i=0;i<size();++i)   (*this)[i]+=D;
         return *this;
       }
+      template <typename T1>
+      Type& operator+=(const Intrinsic<T1>& D) {
+        return operator+=((value_type)D);
+      }
+
+      template <typename E,typename ET>
+      Type& operator-=(const ArrayExpression<E,ET>& EA) {
+        static_assert((
+          __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG),
+          "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]-=EA[i];
+        return *this;
+      }
+      template <typename E,typename ET>
+      Type& operator-=(const ArrayExpression<E,ET>&& EA) {
+        static_assert((
+          __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG),
+          "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]-=EA[i];
+        return *this;
+      }
 
   };
 
@@ -105,9 +151,9 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  typedef Array<int,ArrayFormat::LargeData>     ItLargeDataArray;
-  typedef Array<float,ArrayFormat::LargeData>   FtLargeDataArray;
-  typedef Array<double,ArrayFormat::LargeData>  DbLargeDataArray;
+  typedef Array<Int,ArrayFormat::LargeData>     ItLargeDataArray;
+  typedef Array<Float,ArrayFormat::LargeData>   FtLargeDataArray;
+  typedef Array<Double,ArrayFormat::LargeData>  DbLargeDataArray;
 
   template <>
   ItLargeDataArray& ItLargeDataArray::operator=(
