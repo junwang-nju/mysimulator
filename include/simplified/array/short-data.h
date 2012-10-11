@@ -74,7 +74,6 @@ namespace mysimulator {
 
       template <typename E,typename ET>
       Type& operator=(const ArrayExpression<E,ET>& EA) {
-        printf("------------G---------------\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -83,7 +82,6 @@ namespace mysimulator {
       }
       template <typename E,typename ET>
       Type& operator=(const ArrayExpression<E,ET>&& EA) {
-        printf("------------E---------------\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -91,7 +89,6 @@ namespace mysimulator {
         return *this;
       }
       Type& operator=(const ArrayExpression<Type,T>& EA) {
-        printf("------------D---------------\n");
         assert((bool)(*this));
         assert((bool)EA);
         assert(size()<=EA.size());
@@ -104,22 +101,18 @@ namespace mysimulator {
       }
 
       Type& operator=(const Type& A) {
-        printf("------------C---------------\n");
         return operator=(static_cast<const ParentTypeA&>(A));
       }
       Type& operator=(const value_type& D) {
         assert((bool)(*this));
-        printf("------------A---------------\n");
         for(size_type i=0;i<size();++i) (*this)[i]=D;
         return *this;
       }
       template <typename T1>
       Type& operator=(const Intrinsic<T1>& D) {
-        printf("------------B---------------\n");
         return operator=((value_type)D);
       }
 
-      //====----------==========-------------
       template <typename EA,typename EB>
       Type& operator=(
           const ArrayExpression<
@@ -152,7 +145,6 @@ namespace mysimulator {
         operator=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
       }
-      //====----------==========-------------
 
       template <typename E,typename ET>
       Type& operator+=(const ArrayExpression<E,ET>& EA) {
@@ -185,12 +177,11 @@ namespace mysimulator {
       Type& operator+=(const Intrinsic<T1>& D) {
         return operator+=((value_type)D);
       }
-      //====----------==========-------------
       template <typename EA,typename EB>
       Type& operator+=(
           const ArrayExpression<
                   ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>&& A) {
-        typedef ArraySub<EA,EB>   SType;
+        typedef ArraySum<EA,EB>   SType;
         operator+=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
       }
@@ -198,7 +189,7 @@ namespace mysimulator {
       Type& operator+=(
           const ArrayExpression<
                   ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
-        typedef ArraySub<EA,EB>   SType;
+        typedef ArraySum<EA,EB>   SType;
         operator+=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
       }
@@ -218,7 +209,6 @@ namespace mysimulator {
         operator+=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
       }
-      //====----------==========-------------
 
       template <typename E,typename ET>
       Type& operator-=(const ArrayExpression<E,ET> & EA) {
@@ -251,7 +241,6 @@ namespace mysimulator {
       Type& operator-=(const Intrinsic<T1>& D) {
         return operator-=((value_type)D);
       }
-      //====----------==========-------------
       template <typename EA,typename EB>
       Type& operator-=(
           const ArrayExpression<
@@ -284,7 +273,6 @@ namespace mysimulator {
         operator-=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
       }
-      //====----------==========-------------
 
       template <typename E,typename ET>
       Type& operator*=(const ArrayExpression<E,ET>& EA) {
@@ -317,7 +305,6 @@ namespace mysimulator {
       Type& operator*=(const Intrinsic<T1>& D) {
         return operator*=((value_type)D);
       }
-      //====----------==========-------------
       template <typename EA,typename EB>
       Type& operator*=(
           const ArrayExpression<
@@ -350,7 +337,6 @@ namespace mysimulator {
         operator*=(static_cast<SType const&>(A).first());
         return operator/=(static_cast<SType const&>(A).second());
       }
-      //====----------==========-------------
 
       template <typename E,typename ET>
       Type& operator/=(const ArrayExpression<E,ET>& EA) {
@@ -387,7 +373,6 @@ namespace mysimulator {
       Type& operator/=(const Intrinsic<T1>& D) {
         return operator/=((value_type)D);
       }
-      //====----------==========-------------
       template <typename EA,typename EB>
       Type& operator/=(
           const ArrayExpression<
@@ -420,7 +405,6 @@ namespace mysimulator {
         operator/=(static_cast<SType const&>(A).first());
         return operator*=(static_cast<SType const&>(A).second());
       }
-      //====----------==========-------------
       template <typename T1,typename T2,
                 template<typename,typename> class ArrayOp>
       Type& operator=(const ArrayOp<Intrinsic<T1>,Intrinsic<T2>>&& A) {
@@ -460,7 +444,6 @@ namespace mysimulator {
   }
   template <>
   DbShortDataArray& DbShortDataArray::operator=(const double& D) {
-    printf("------------Z---------------\n");
     assert((bool)(*this));
     __m128d *p=reinterpret_cast<__m128d*>(this->head());
     const __m128d *e=p+_n128;
@@ -515,6 +498,19 @@ namespace mysimulator {
   }
   template <>
   template <>
+  ItShortDataArray& ItShortDataArray::operator+=(
+      const ArrayExpression<ItShortDataArray,int>&& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128i *p=reinterpret_cast<__m128i*>(this->head());
+    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
+    const __m128i *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_add_epi32(*p,*(q++));  ++p; }
+    return *this;
+  }
+  template <>
+  template <>
   FtShortDataArray& FtShortDataArray::operator+=(
       const ArrayExpression<FtShortDataArray,float>& A) {
     assert((bool)(*this));
@@ -528,8 +524,34 @@ namespace mysimulator {
   }
   template <>
   template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<FtShortDataArray,float>&& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
+    const __m128 *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_add_ps(*p,*(q++));  ++p; }
+    return *this;
+  }
+  template <>
+  template <>
   DbShortDataArray& DbShortDataArray::operator+=(
       const ArrayExpression<DbShortDataArray,double>& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
+    const __m128d *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_add_pd(*p,*(q++));  ++p; }
+    return *this;
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<DbShortDataArray,double>&& A) {
     assert((bool)(*this));
     assert((bool)A);
     assert(size()<=A.size());
@@ -585,8 +607,34 @@ namespace mysimulator {
   }
   template <>
   template <>
+  ItShortDataArray& ItShortDataArray::operator-=(
+      const ArrayExpression<ItShortDataArray,int>&& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128i *p=reinterpret_cast<__m128i*>(this->head());
+    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
+    const __m128i *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_sub_epi32(*p,*(q++));  ++p; }
+    return *this;
+  }
+  template <>
+  template <>
   FtShortDataArray& FtShortDataArray::operator-=(
       const ArrayExpression<FtShortDataArray,float>& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
+    const __m128 *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_sub_ps(*p,*(q++));  ++p; }
+    return *this;
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<FtShortDataArray,float>&& A) {
     assert((bool)(*this));
     assert((bool)A);
     assert(size()<=A.size());
@@ -609,8 +657,20 @@ namespace mysimulator {
     for(;p!=e;)   { *p=_mm_sub_pd(*p,*(q++));  ++p; }
     return *this;
   }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<DbShortDataArray,double>&& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
+    const __m128d *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_sub_pd(*p,*(q++));  ++p; }
+    return *this;
+  }
 
-  /*
   template <>
   ItShortDataArray& ItShortDataArray::operator*=(const int& D) {
     assert((bool)(*this));
@@ -638,31 +698,23 @@ namespace mysimulator {
     for(;p!=e;)  { *p=_mm_mul_pd(*p,u); ++p; }
     return *this;
   }
-
-  template <>
-  FtShortDataArray& FtShortDataArray::operator/=(const float& D) {
-    assert((bool)(*this));
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 u=_mm_set1_ps(D);
-    for(;p!=e;)  { *p=_mm_div_ps(*p,u); ++p; }
-    return *this;
-  }
-  template <>
-  DbShortDataArray& DbShortDataArray::operator/=(const double& D) {
-    assert((bool)(*this));
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d u=_mm_set1_pd(D);
-    for(;p!=e;)  { *p=_mm_div_pd(*p,u); ++p; }
-    return *this;
-  }
-
-
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator*=(
       const ArrayExpression<ItShortDataArray,int>& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128i *p=reinterpret_cast<__m128i*>(this->head());
+    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
+    const __m128i *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_mullo_epi32(*p,*(q++));  ++p; }
+    return *this;
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ItShortDataArray,int>&& A) {
     assert((bool)(*this));
     assert((bool)A);
     assert(size()<=A.size());
@@ -687,6 +739,19 @@ namespace mysimulator {
   }
   template <>
   template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<FtShortDataArray,float>&& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
+    const __m128 *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_mul_ps(*p,*(q++));  ++p; }
+    return *this;
+  }
+  template <>
+  template <>
   DbShortDataArray& DbShortDataArray::operator*=(
       const ArrayExpression<DbShortDataArray,double>& A) {
     assert((bool)(*this));
@@ -698,11 +763,55 @@ namespace mysimulator {
     for(;p!=e;)   { *p=_mm_mul_pd(*p,*(q++));  ++p; }
     return *this;
   }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<DbShortDataArray,double>&& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
+    const __m128d *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_mul_pd(*p,*(q++));  ++p; }
+    return *this;
+  }
 
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(const float& D) {
+    assert((bool)(*this));
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    const __m128 *e=p+_n128;
+    __m128 u=_mm_set1_ps(D);
+    for(;p!=e;)  { *p=_mm_div_ps(*p,u); ++p; }
+    return *this;
+  }
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(const double& D) {
+    assert((bool)(*this));
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    const __m128d *e=p+_n128;
+    __m128d u=_mm_set1_pd(D);
+    for(;p!=e;)  { *p=_mm_div_pd(*p,u); ++p; }
+    return *this;
+  }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator/=(
       const ArrayExpression<FtShortDataArray,float>& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
+    const __m128 *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_div_ps(*p,*(q++));  ++p; }
+    return *this;
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<FtShortDataArray,float>&& A) {
     assert((bool)(*this));
     assert((bool)A);
     assert(size()<=A.size());
@@ -725,7 +834,38 @@ namespace mysimulator {
     for(;p!=e;)   { *p=_mm_div_pd(*p,*(q++));  ++p; }
     return *this;
   }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<DbShortDataArray,double>&& A) {
+    assert((bool)(*this));
+    assert((bool)A);
+    assert(size()<=A.size());
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
+    const __m128d *e=p+_n128;
+    for(;p!=e;)   { *p=_mm_div_pd(*p,*(q++));  ++p; }
+    return *this;
+  }
 
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator=(
+      const ArrayExpression<ArraySum<ItShortDataArray,ItShortDataArray>,
+                            int>& EA) {
+    typedef ArraySum<ItShortDataArray,ItShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128i *p=reinterpret_cast<__m128i*>(this->head());
+    __m128i *q=reinterpret_cast<__m128i*>(
+                                static_cast<SType const&>(EA).first().head());
+    __m128i *r=reinterpret_cast<__m128i*>(
+                                static_cast<SType const&>(EA).second().head());
+    const __m128i *e=p+_n128;
+    for(;p!=e;) *(p++)=_mm_add_epi32(*(q++),*(r++));
+    return *this;
+  }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator=(
@@ -737,11 +877,29 @@ namespace mysimulator {
     assert(size()<=EA.size());
     __m128i *p=reinterpret_cast<__m128i*>(this->head());
     __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first());
+                                static_cast<const SType&>(EA).first().head());
     __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second());
+                                static_cast<const SType&>(EA).second().head());
     const __m128i *e=p+_n128;
     for(;p!=e;) *(p++)=_mm_add_epi32(*(q++),*(r++));
+    return *this;
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator=(
+      const ArrayExpression<ArraySum<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    typedef ArraySum<FtShortDataArray,FtShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    __m128 *q=reinterpret_cast<__m128*>(
+                               static_cast<const SType&>(EA).first().head());
+    __m128 *r=reinterpret_cast<__m128*>(
+                               static_cast<const SType&>(EA).second().head());
+    const __m128 *e=p+_n128;
+    for(;p!=e;) *(p++)=_mm_add_ps(*(q++),*(r++));
     return *this;
   }
   template <>
@@ -755,11 +913,29 @@ namespace mysimulator {
     assert(size()<=EA.size());
     __m128 *p=reinterpret_cast<__m128*>(this->head());
     __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first());
+                               static_cast<const SType&>(EA).first().head());
     __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second());
+                               static_cast<const SType&>(EA).second().head());
     const __m128 *e=p+_n128;
     for(;p!=e;) *(p++)=_mm_add_ps(*(q++),*(r++));
+    return *this;
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator=(
+      const ArrayExpression<ArraySum<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    typedef ArraySum<DbShortDataArray,DbShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    const __m128d *e=p+_n128;
+    __m128d *q=reinterpret_cast<__m128d*>(
+                                static_cast<const SType&>(EA).first().head());
+    __m128d *r=reinterpret_cast<__m128d*>(
+                                static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_add_pd(*(q++),*(r++));
     return *this;
   }
   template <>
@@ -774,13 +950,31 @@ namespace mysimulator {
     __m128d *p=reinterpret_cast<__m128d*>(this->head());
     const __m128d *e=p+_n128;
     __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first());
+                                static_cast<const SType&>(EA).first().head());
     __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second());
+                                static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_add_pd(*(q++),*(r++));
     return *this;
   }
 
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator=(
+      const ArrayExpression<ArraySub<ItShortDataArray,ItShortDataArray>,
+                            int>& EA) {
+    typedef ArraySub<ItShortDataArray,ItShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128i *p=reinterpret_cast<__m128i*>(this->head());
+    const __m128i *e=p+_n128;
+    __m128i *q=reinterpret_cast<__m128i*>(
+                                static_cast<const SType&>(EA).first().head());
+    __m128i *r=reinterpret_cast<__m128i*>(
+                                static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_sub_epi32(*(q++),*(r++));
+    return *this;
+  }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator=(
@@ -793,10 +987,28 @@ namespace mysimulator {
     __m128i *p=reinterpret_cast<__m128i*>(this->head());
     const __m128i *e=p+_n128;
     __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first());
+                                static_cast<const SType&>(EA).first().head());
     __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second());
+                                static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_sub_epi32(*(q++),*(r++));
+    return *this;
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator=(
+      const ArrayExpression<ArraySub<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    typedef ArraySub<FtShortDataArray,FtShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    const __m128 *e=p+_n128;
+    __m128 *q=reinterpret_cast<__m128*>(
+                               static_cast<const SType&>(EA).first().head());
+    __m128 *r=reinterpret_cast<__m128*>(
+                               static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_sub_ps(*(q++),*(r++));
     return *this;
   }
   template <>
@@ -811,10 +1023,28 @@ namespace mysimulator {
     __m128 *p=reinterpret_cast<__m128*>(this->head());
     const __m128 *e=p+_n128;
     __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first());
+                               static_cast<const SType&>(EA).first().head());
     __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second());
+                               static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_sub_ps(*(q++),*(r++));
+    return *this;
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator=(
+      const ArrayExpression<ArraySub<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    typedef ArraySub<DbShortDataArray,DbShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    const __m128d *e=p+_n128;
+    __m128d *q=reinterpret_cast<__m128d*>(
+                                static_cast<const SType&>(EA).first().head());
+    __m128d *r=reinterpret_cast<__m128d*>(
+                                static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_sub_pd(*(q++),*(r++));
     return *this;
   }
   template <>
@@ -829,13 +1059,31 @@ namespace mysimulator {
     __m128d *p=reinterpret_cast<__m128d*>(this->head());
     const __m128d *e=p+_n128;
     __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first());
+                                static_cast<const SType&>(EA).first().head());
     __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second());
+                                static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_sub_pd(*(q++),*(r++));
     return *this;
   }
 
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,ItShortDataArray>,
+                            int>& EA) {
+    typedef ArrayMul<ItShortDataArray,ItShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128i *p=reinterpret_cast<__m128i*>(this->head());
+    const __m128i *e=p+_n128;
+    __m128i *q=reinterpret_cast<__m128i*>(
+                                static_cast<const SType&>(EA).first().head());
+    __m128i *r=reinterpret_cast<__m128i*>(
+                                static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_mullo_epi32(*(q++),*(r++));
+    return *this;
+  }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator=(
@@ -848,10 +1096,28 @@ namespace mysimulator {
     __m128i *p=reinterpret_cast<__m128i*>(this->head());
     const __m128i *e=p+_n128;
     __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first());
+                                static_cast<const SType&>(EA).first().head());
     __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second());
+                                static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_mullo_epi32(*(q++),*(r++));
+    return *this;
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    typedef ArrayMul<FtShortDataArray,FtShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    const __m128 *e=p+_n128;
+    __m128 *q=reinterpret_cast<__m128*>(
+                               static_cast<const SType&>(EA).first().head());
+    __m128 *r=reinterpret_cast<__m128*>(
+                               static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_mul_ps(*(q++),*(r++));
     return *this;
   }
   template <>
@@ -866,10 +1132,28 @@ namespace mysimulator {
     __m128 *p=reinterpret_cast<__m128*>(this->head());
     const __m128 *e=p+_n128;
     __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first());
+                               static_cast<const SType&>(EA).first().head());
     __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second());
+                               static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_mul_ps(*(q++),*(r++));
+    return *this;
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator=(
+      const ArrayExpression<ArrayMul<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    typedef ArrayMul<DbShortDataArray,DbShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    const __m128d *e=p+_n128;
+    __m128d *q=reinterpret_cast<__m128d*>(
+                                static_cast<const SType&>(EA).first().head());
+    __m128d *r=reinterpret_cast<__m128d*>(
+                                static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_mul_pd(*(q++),*(r++));
     return *this;
   }
   template <>
@@ -884,13 +1168,31 @@ namespace mysimulator {
     __m128d *p=reinterpret_cast<__m128d*>(this->head());
     const __m128d *e=p+_n128;
     __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first());
+                                static_cast<const SType&>(EA).first().head());
     __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second());
+                                static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_mul_pd(*(q++),*(r++));
     return *this;
   }
 
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    typedef ArrayDiv<FtShortDataArray,FtShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128 *p=reinterpret_cast<__m128*>(this->head());
+    const __m128 *e=p+_n128;
+    __m128 *q=reinterpret_cast<__m128*>(
+                               static_cast<const SType&>(EA).first().head());
+    __m128 *r=reinterpret_cast<__m128*>(
+                               static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_div_ps(*(q++),*(r++));
+    return *this;
+  }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator=(
@@ -903,10 +1205,28 @@ namespace mysimulator {
     __m128 *p=reinterpret_cast<__m128*>(this->head());
     const __m128 *e=p+_n128;
     __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first());
+                               static_cast<const SType&>(EA).first().head());
     __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second());
+                               static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_div_ps(*(q++),*(r++));
+    return *this;
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    typedef ArrayDiv<DbShortDataArray,DbShortDataArray> SType;
+    assert((bool)(*this));
+    assert((bool)EA);
+    assert(size()<=EA.size());
+    __m128d *p=reinterpret_cast<__m128d*>(this->head());
+    const __m128d *e=p+_n128;
+    __m128d *q=reinterpret_cast<__m128d*>(
+                                static_cast<const SType&>(EA).first().head());
+    __m128d *r=reinterpret_cast<__m128d*>(
+                                static_cast<const SType&>(EA).second().head());
+    for(;p!=e;) *(p++)=_mm_div_pd(*(q++),*(r++));
     return *this;
   }
   template <>
@@ -921,71 +1241,12 @@ namespace mysimulator {
     __m128d *p=reinterpret_cast<__m128d*>(this->head());
     const __m128d *e=p+_n128;
     __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first());
+                                static_cast<const SType&>(EA).first().head());
     __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second());
+                                static_cast<const SType&>(EA).second().head());
     for(;p!=e;) *(p++)=_mm_div_pd(*(q++),*(r++));
     return *this;
   }
-  /////////-------------
-
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator+=(
-      const ArrayExpression<ArraySum<ItShortDataArray,ItShortDataArray>,
-                            int>&& EA) {
-    typedef ArraySum<ItShortDataArray,ItShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first());
-    __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second());
-    const __m128i *e=p+_n128;
-    __m128i u;
-    for(;p!=e;) { u=_mm_add_epi32(*(q++),*(r++)); *p=_mm_add_epi32(*p,u); ++p; }
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator+=(
-      const ArrayExpression<ArraySum<FtShortDataArray,FtShortDataArray>,
-                            float>&& EA) {
-    typedef ArraySum<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second());
-    const __m128 *e=p+_n128;
-    __m128 u;
-    for(;p!=e;) { u=_mm_add_ps(*(q++),*(r++)); *p=_mm_add_ps(*p,u); p++; }
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator+=(
-      const ArrayExpression<ArraySum<DbShortDataArray,DbShortDataArray>,
-                            double>&& EA) {
-    typedef ArraySum<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second());
-    for(;p!=e;) { *p=_mm_add_pd(*p,_mm_add_pd(*(q++),*(r++))); ++p; }
-    return *this;
-  }
-  */
 
 }
 
