@@ -5,14 +5,13 @@
 #include "array/interface.h"
 #include "array/expression.h"
 #include "basic/type/same.h"
-#include "basic/type/selector.h"
-#include "basic/type/sum.h"
-#include "basic/type/substract.h"
-#include "basic/type/multiple.h"
-#include "basic/type/divide.h"
 
-#ifndef _HAVE_SSE4
-#error "\nSSE4 is required for ShortData Array! Try -msse4 -D_HAVE_SSE4\n"
+//#ifndef _HAVE_SSE4
+//#error "\nSSE4 is required for ShortData Array! Try -msse4 -D_HAVE_SSE4\n"
+//#endif
+
+#ifndef __SSE4_1__
+#error "\nSSE4.1 is required for ShortData Array! Try -msse4.1 !\n"
 #endif
 
 #include <emmintrin.h>
