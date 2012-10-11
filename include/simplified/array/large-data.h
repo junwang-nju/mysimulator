@@ -123,24 +123,98 @@ namespace mysimulator {
       template <typename E,typename ET>
       Type& operator-=(const ArrayExpression<E,ET>& EA) {
         static_assert((
-          __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG),
+          __same_type<T,typename __dual_selector<T,ET,__sub_flag>::Type>::FG),
           "Type T cannot accept sum result!\n");
         assert((bool)(*this));
         assert((bool)EA);
-        assert(size<=EA.size());
+        assert(size()<=EA.size());
         for(size_type i=0;i<size();++i)   (*this)[i]-=EA[i];
         return *this;
       }
       template <typename E,typename ET>
       Type& operator-=(const ArrayExpression<E,ET>&& EA) {
         static_assert((
-          __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG),
+          __same_type<T,typename __dual_selector<T,ET,__sub_flag>::Type>::FG),
           "Type T cannot accept sum result!\n");
         assert((bool)(*this));
         assert((bool)EA);
-        assert(size<=EA.size());
+        assert(size()<=EA.size());
         for(size_type i=0;i<size();++i)   (*this)[i]-=EA[i];
         return *this;
+      }
+      Type& operator-=(const value_type& D) {
+        assert((bool)(*this));
+        for(size_type i=0;i<size();++i) (*this)[i]-=D;
+        return *this;
+      }
+      template <typename T1>
+      Type& operator-=(const Intrinsic<T1>& D) {
+        return operator-=((value_type)D);
+      }
+
+      template <typename E,typename ET>
+      Type& operator*=(const ArrayExpression<E,ET>& EA) {
+        static_assert((
+          __same_type<T,typename __dual_selector<T,ET,__mul_flag>::Type>::FG),
+          "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]*=EA[i];
+        return *this;
+      }
+      template <typename E,typename ET>
+      Type& operator*=(const ArrayExpression<E,ET>&& EA) {
+        static_assert((
+          __same_type<T,typename __dual_selector<T,ET,__mul_flag>::Type>::FG),
+          "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]*=EA[i];
+        return *this;
+      }
+      Type& operator*=(const value_type& D) {
+        assert((bool)(*this));
+        for(size_type i=0;i<size();++i)   (*this)[i]*=D;
+        return *this;
+      }
+      template <typename T1>
+      Type& operator*=(const Intrinsic<T1>& D) {
+        return operator*=((value_type)D);
+      }
+
+      template <typename E,typename ET>
+      Type& operator/=(const ArrayExpression<E,ET>& A) {
+        static_assert((
+          __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG),
+          "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]/=EA[i];
+        return *this;
+      }
+      template <typename E,typename ET>
+      Type& operator/=(const ArrayExpression<E,ET>&& A) {
+        static_assert((
+          __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG),
+          "Type T cannot accept sum result!\n");
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]/=EA[i];
+        return *this;
+      }
+      Type& operator/=(const value_type& D) {
+        assert((bool)(*this));
+        value_type iD=1./D;
+        for(size_type i=0;i<size();++i)   (*this)[i]*=iD;
+        return *this;
+      }
+      template <typename T1>
+      Type& operator/=(const Intrinsic<T1>& D) {
+        return operator/=((value_type)D);
       }
 
   };
