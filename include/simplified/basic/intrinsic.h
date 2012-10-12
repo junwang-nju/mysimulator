@@ -77,5 +77,130 @@ namespace mysimulator {
 
 }
 
+#include "basic/type/selector.h"
+#include "basic/type/sum.h"
+
+namespace mysimulator {
+
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__sum_flag>::Type>
+  operator+(Intrinsic<T1> const& A,Intrinsic<T2> const& B) {
+    typedef typename __dual_selector<T1,T2,__sum_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)+((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__sum_flag>::Type>
+  operator+(Intrinsic<T1> const& A,Intrinsic<T2> const&& B) {
+    typedef typename __dual_selector<T1,T2,__sum_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)+((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__sum_flag>::Type>
+  operator+(Intrinsic<T1> const&& A,Intrinsic<T2> const& B) {
+    typedef typename __dual_selector<T1,T2,__sum_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)+((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__sum_flag>::Type>
+  operator+(Intrinsic<T1> const&& A,Intrinsic<T2> const&& B) {
+    typedef typename __dual_selector<T1,T2,__sum_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)+((value_type)B));
+  }
+
+}
+
+#include "basic/type/substract.h"
+
+namespace mysimulator {
+
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__sub_flag>::Type>
+  operator-(Intrinsic<T1> const& A,Intrinsic<T2> const& B) {
+    typedef typename __dual_selector<T1,T2,__sub_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)-((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__sub_flag>::Type>
+  operator-(Intrinsic<T1> const&& A,Intrinsic<T2> const& B) {
+    typedef typename __dual_selector<T1,T2,__sub_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)-((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__sub_flag>::Type>
+  operator-(Intrinsic<T1> const& A,Intrinsic<T2> const&& B) {
+    typedef typename __dual_selector<T1,T2,__sub_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)-((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__sub_flag>::Type>
+  operator-(Intrinsic<T1> const&& A,Intrinsic<T2> const&& B) {
+    typedef typename __dual_selector<T1,T2,__sub_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)-((value_type)B));
+  }
+
+}
+
+#include "basic/type/multiple.h"
+
+namespace mysimulator {
+
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__mul_flag>::Type>
+  operator*(Intrinsic<T1> const& A, Intrinsic<T2> const& B) {
+    typedef typename __dual_selector<T1,T2,__mul_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)*((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__mul_flag>::Type>
+  operator*(Intrinsic<T1> const&& A, Intrinsic<T2> const& B) {
+    typedef typename __dual_selector<T1,T2,__mul_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)*((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__mul_flag>::Type>
+  operator*(Intrinsic<T1> const& A, Intrinsic<T2> const&& B) {
+    typedef typename __dual_selector<T1,T2,__mul_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)*((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__mul_flag>::Type>
+  operator*(Intrinsic<T1> const&& A, Intrinsic<T2> const&& B) {
+    typedef typename __dual_selector<T1,T2,__mul_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)*((value_type)B));
+  }
+
+}
+
+#include "basic/type/divide.h"
+
+namespace mysimulator {
+
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__div_flag>::Type>
+  operator/(Intrinsic<T1> const& A, Intrinsic<T2> const& B) {
+    typedef typename __dual_selector<T1,T2,__div_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)/((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__div_flag>::Type>
+  operator/(Intrinsic<T1> const& A, Intrinsic<T2> const&& B) {
+    typedef typename __dual_selector<T1,T2,__div_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)/((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__div_flag>::Type>
+  operator/(Intrinsic<T1> const&& A, Intrinsic<T2> const& B) {
+    typedef typename __dual_selector<T1,T2,__div_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)/((value_type)B));
+  }
+  template <typename T1,typename T2>
+  Intrinsic<typename __dual_selector<T1,T2,__div_flag>::Type>
+  operator/(Intrinsic<T1> const&& A, Intrinsic<T2> const&& B) {
+    typedef typename __dual_selector<T1,T2,__div_flag>::Type value_type;
+    return Intrinsic<value_type>(((value_type)A)/((value_type)B));
+  }
+
+}
+
 #endif
 

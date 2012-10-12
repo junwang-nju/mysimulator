@@ -107,6 +107,10 @@ namespace mysimulator {
       Type& operator=(const Intrinsic<T1>& D) {
         return operator=((value_type)D);
       }
+      template <typename T1>
+      Type& operator=(const Intrinsic<T1>&& D) {
+        return operator=((value_type)D);
+      }
 
       template <typename EA,typename EB>
       Type& operator=(
@@ -172,6 +176,10 @@ namespace mysimulator {
       Type& operator+=(const Intrinsic<T1>& D) {
         return operator+=((value_type)D);
       }
+      template <typename T1>
+      Type& operator+=(const Intrinsic<T1>&& D) {
+        return operator+=((value_type)D);
+      }
       template <typename EA,typename EB>
       Type& operator+=(
           const ArrayExpression<
@@ -231,6 +239,10 @@ namespace mysimulator {
         assert((bool)(*this));
         for(size_type i=0;i<size();++i)   (*this)[i]-=D;
         return *this;
+      }
+      template <typename T1>
+      Type& operator-=(const Intrinsic<T1>&& D) {
+        return operator-=((value_type)D);
       }
       template <typename T1>
       Type& operator-=(const Intrinsic<T1>& D) {
@@ -295,6 +307,10 @@ namespace mysimulator {
         assert((bool)(*this));
         for(size_type i=0;i<size();++i)   (*this)[i]*=D;
         return *this;
+      }
+      template <typename T1>
+      Type& operator*=(const Intrinsic<T1>&& D) {
+        return operator*=((value_type)D);
       }
       template <typename T1>
       Type& operator*=(const Intrinsic<T1>& D) {
@@ -368,6 +384,10 @@ namespace mysimulator {
       Type& operator/=(const Intrinsic<T1>& D) {
         return operator/=((value_type)D);
       }
+      template <typename T1>
+      Type& operator/=(const Intrinsic<T1>&& D) {
+        return operator/=((value_type)D);
+      }
       template <typename EA,typename EB>
       Type& operator/=(
           const ArrayExpression<
@@ -399,16 +419,6 @@ namespace mysimulator {
         typedef ArrayDiv<EA,EB>   SType;
         operator/=(static_cast<SType const&>(A).first());
         return operator*=(static_cast<SType const&>(A).second());
-      }
-      template <typename T1,typename T2,
-                template<typename,typename> class ArrayOp>
-      Type& operator=(const ArrayOp<Intrinsic<T1>,Intrinsic<T2>>&& A) {
-        return operator=(A.result());
-      }
-      template <typename T1,typename T2,
-                template<typename,typename> class ArrayOp>
-      Type& operator=(const ArrayOp<Intrinsic<T1>,Intrinsic<T2>>& A) {
-        return operator=(A.result());
       }
 
   };
