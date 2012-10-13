@@ -146,6 +146,38 @@ namespace mysimulator {
         operator=(static_cast<SType const&>(A).first());
         return operator-=(static_cast<SType const&>(A).second());
       }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>& A) {
+        typedef ArrayMul<EA,EB> SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>&& A) {
+        typedef ArrayMul<EA,EB> SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>& A) {
+        typedef ArrayDiv<EA,EB> SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>&& A) {
+        typedef ArrayDiv<EA,EB> SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
 
       template <typename E,typename ET>
       Type& operator+=(const ArrayExpression<E,ET>& EA) {
@@ -957,6 +989,1194 @@ namespace mysimulator {
   DbShortDataArray& DbShortDataArray::operator/=(
       const ArrayExpression<DbShortDataArray,double>&& A) {
     return __divide_to<double>(*this,A);
+  }
+
+  template <typename T,template<typename,typename> class ArrayOp>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __more_more(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         ArrayOp<Intrinsic<T>,
+                 typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type>,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>& E,
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*f)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&),
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*g)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&)) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef ArrayOp<Intrinsic<T>,
+                    typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type>
+            AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(
+              ((AType const&)E).first());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).second().head());
+    for(;p!=e;) { *p=f(*p,g(u,*(q++))); ++p; }
+  }
+  template <typename T,template<typename,typename> class ArrayOp>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __more_more(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         ArrayOp<Intrinsic<T>,
+                 typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type>,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>&& E,
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*f)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&),
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*g)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&)) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef ArrayOp<Intrinsic<T>,
+                    typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type>
+            AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(
+              ((AType const&)E).first());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).second().head());
+    for(;p!=e;) { *p=f(*p,g(u,*(q++))); ++p; }
+  }
+  template <typename T,template<typename,typename> class ArrayOp>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __more_more(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         ArrayOp<typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+                 Intrinsic<T>>,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>& E,
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*f)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&),
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*g)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&)) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef ArrayOp<typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+                    Intrinsic<T>>
+            AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(
+              ((AType const&)E).second());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).first().head());
+    for(;p!=e;) { *p=f(*p,g(*(q++),u)); ++p; }
+  }
+  template <typename T,template<typename,typename> class ArrayOp>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __more_more(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         ArrayOp<typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+                 Intrinsic<T>>,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>&& E,
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*f)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&),
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*g)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&)) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef ArrayOp<typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+                    Intrinsic<T>>
+            AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(
+              ((AType const&)E).second());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).first().head());
+    for(;p!=e;) { *p=f(*p,g(*(q++),u)); ++p; }
+  }
+  template <typename T,template<typename,typename> class ArrayOp>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __more_more(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         ArrayOp<typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+                 typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type>,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>& E,
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*f)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&),
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*g)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&)) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef ArrayOp<typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+                    typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type>
+            AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).first().head());
+    T128 *r=reinterpret_cast<T128*>(((AType const&)E).second().head());
+    for(;p!=e;) { *p=f(*p,g(*(q++),*(r++))); ++p; }
+  }
+  template <typename T,template<typename,typename> class ArrayOp>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __more_more(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         ArrayOp<typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+                 typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type>,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>&& E,
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*f)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&),
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type (*g)(
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type const&)) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef ArrayOp<typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+                    typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type>
+            AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).first().head());
+    T128 *r=reinterpret_cast<T128*>(((AType const&)E).second().head());
+    for(;p!=e;) { *p=f(*p,g(*(q++),*(r++))); ++p; }
+  }
+
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<Int,ItShortDataArray>,int>& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::add128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<Int,ItShortDataArray>,int>&& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::add128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,Int>,int>& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::add128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,Int>,int>&& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::add128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,ItShortDataArray>,
+                                     int>& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::add128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,ItShortDataArray>,
+                                     int>&& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::add128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<Float,FtShortDataArray>,float>& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<Float,FtShortDataArray>,float>&& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,Float>,float>& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,Float>,float>&& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,FtShortDataArray>,
+                                     float>& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,FtShortDataArray>,
+                                     float>&& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<Double,DbShortDataArray>,double>& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<Double,DbShortDataArray>,double>&& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<DbShortDataArray,Double>,double>& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayMul<DbShortDataArray,Double>,double>&& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+     const ArrayExpression<ArrayMul<DbShortDataArray,DbShortDataArray>,
+                           double>& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+     const ArrayExpression<ArrayMul<DbShortDataArray,DbShortDataArray>,
+                           double>&& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<Float,FtShortDataArray>,float>& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<Float,FtShortDataArray>,float>&& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,Float>,float>& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,Float>,float>&& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,FtShortDataArray>,
+                            float>&& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::add128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<Double,DbShortDataArray>,double>& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<Double,DbShortDataArray>,double>&& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,Double>,double>& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,Double>,double>&& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,DbShortDataArray>,
+                            double>&& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::add128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Int,ItShortDataArray>,int>& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::substract128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Int,ItShortDataArray>,int>&& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::substract128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,Int>,int>& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::substract128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,Int>,int>&& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::substract128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,ItShortDataArray>,
+                            int>& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::substract128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<ItShortDataArray,ItShortDataArray>,
+                            int>&& EA) {
+    return __more_more<int,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Int>::substract128,
+        ShortArrayTypeWrapper<Int>::mul128);
+  }
+
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Float,FtShortDataArray>,float>& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Float,FtShortDataArray>,float>&& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,Float>,float>& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,Float>,float>&& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<FtShortDataArray,FtShortDataArray>,
+                            float>&& EA) {
+    return __more_more<float,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::mul128);
+  }
+
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Double,DbShortDataArray>,double>& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Double,DbShortDataArray>,double>&& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<DbShortDataArray,Double>,double>& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<DbShortDataArray,Double>,double>&& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayMul<DbShortDataArray,DbShortDataArray>,
+                            double>&& EA) {
+    return __more_more<double,ArrayMul>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::mul128);
+  }
+
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<Float,FtShortDataArray>,float>& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<Float,FtShortDataArray>,float>&& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,Float>,float>& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,Float>,float>&& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<FtShortDataArray,FtShortDataArray>,
+                            float>&& EA) {
+    return __more_more<float,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Float>::substract128,
+        ShortArrayTypeWrapper<Float>::div128);
+  }
+
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<Double,DbShortDataArray>,double>& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<Double,DbShortDataArray>,double>&& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,Double>,double>& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,Double>,double>&& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<DbShortDataArray,DbShortDataArray>,
+                            double>&& EA) {
+    return __more_more<double,ArrayDiv>(*this,EA,
+        ShortArrayTypeWrapper<Double>::substract128,
+        ShortArrayTypeWrapper<Double>::div128);
+  }
+
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<Int,ItShortDataArray>,int>& EA) {
+    return __more_more<int,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::add128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<Int,ItShortDataArray>,int>&& EA) {
+    return __more_more<int,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::add128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<ItShortDataArray,Int>,int>& EA) {
+    return __more_more<int,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::add128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<ItShortDataArray,Int>,int>&& EA) {
+    return __more_more<int,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::add128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<ItShortDataArray,ItShortDataArray>,
+                            int>& EA) {
+    return __more_more<int,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::add128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<ItShortDataArray,ItShortDataArray>,
+                            int>&& EA) {
+    return __more_more<int,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::add128);
+  }
+
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<Float,FtShortDataArray>,float>& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<Float,FtShortDataArray>,float>&& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<FtShortDataArray,Float>,float>& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<FtShortDataArray,Float>,float>&& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<FtShortDataArray,FtShortDataArray>,
+                            float>&& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<Double,DbShortDataArray>,double>& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<Double,DbShortDataArray>,double>&& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<DbShortDataArray,Double>,double>& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<DbShortDataArray,Double>,double>&& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySum<DbShortDataArray,DbShortDataArray>,
+                            double>&& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<Int,ItShortDataArray>,int>& EA) {
+    return __more_more<int,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::substract128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<Int,ItShortDataArray>,int>&& EA) {
+    return __more_more<int,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::substract128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<ItShortDataArray,Int>,int>& EA) {
+    return __more_more<int,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::substract128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<ItShortDataArray,Int>,int>&& EA) {
+    return __more_more<int,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::substract128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<ItShortDataArray,ItShortDataArray>,
+                            int>& EA) {
+    return __more_more<int,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::substract128);
+  }
+  template <>
+  template <>
+  ItShortDataArray& ItShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<ItShortDataArray,ItShortDataArray>,
+                            int>&& EA) {
+    return __more_more<int,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Int>::mul128,
+        ShortArrayTypeWrapper<Int>::substract128);
+  }
+
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<Float,FtShortDataArray>,float>& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<Float,FtShortDataArray>,float>&& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<FtShortDataArray,Float>,float>& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<FtShortDataArray,Float>,float>&& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<FtShortDataArray,FtShortDataArray>,
+                            float>&& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::mul128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<Double,DbShortDataArray>,double>& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<Double,DbShortDataArray>,double>&& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<DbShortDataArray,Double>,double>& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<DbShortDataArray,Double>,double>&& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator*=(
+      const ArrayExpression<ArraySub<DbShortDataArray,DbShortDataArray>,
+                            double>&& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::mul128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<Float,FtShortDataArray>,float>& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<Float,FtShortDataArray>,float>&& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<FtShortDataArray,Float>,float>& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<FtShortDataArray,Float>,float>&& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<FtShortDataArray,FtShortDataArray>,
+                            float>&& EA) {
+    return __more_more<float,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::add128);
+  }
+
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<Double,DbShortDataArray>,double>& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<Double,DbShortDataArray>,double>&& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<DbShortDataArray,Double>,double>& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<DbShortDataArray,Double>,double>&& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySum<DbShortDataArray,DbShortDataArray>,
+                            double>&& EA) {
+    return __more_more<double,ArraySum>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::add128);
+  }
+
+  //------------
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<Float,FtShortDataArray>,float>& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<Float,FtShortDataArray>,float>&& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<FtShortDataArray,Float>,float>& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<FtShortDataArray,Float>,float>&& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<FtShortDataArray,FtShortDataArray>,
+                            float>& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+  template <>
+  template <>
+  FtShortDataArray& FtShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<FtShortDataArray,FtShortDataArray>,
+                            float>&& EA) {
+    return __more_more<float,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Float>::div128,
+        ShortArrayTypeWrapper<Float>::substract128);
+  }
+
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<Double,DbShortDataArray>,double>& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<Double,DbShortDataArray>,double>&& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<DbShortDataArray,Double>,double>& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<DbShortDataArray,Double>,double>&& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<DbShortDataArray,DbShortDataArray>,
+                            double>& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::substract128);
+  }
+  template <>
+  template <>
+  DbShortDataArray& DbShortDataArray::operator/=(
+      const ArrayExpression<ArraySub<DbShortDataArray,DbShortDataArray>,
+                            double>&& EA) {
+    return __more_more<double,ArraySub>(*this,EA,
+        ShortArrayTypeWrapper<Double>::div128,
+        ShortArrayTypeWrapper<Double>::substract128);
   }
 
 }
