@@ -54,7 +54,13 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef value_type* pointer;
 
-      ArrayContainer() : ParentType() {}
+    private:
+
+      unsigned int _n128;
+
+    public:
+
+      ArrayContainer() : ParentType(),_n128(0U) {}
       ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
       ArrayContainer(const Type&) = delete;
       virtual ~ArrayContainer() { this->reset(); }
@@ -63,12 +69,14 @@ namespace mysimulator {
         this->reset();
         size_type byte_size=size*sizeof(value_type);
         size_type alloc_size=
-          (byte_size&(~0xFU))+((byte_size&0xFU)==0?0:0xFU-(byte_size&0xFU));
+          (byte_size&(~0xFU))+((byte_size&0xFU)==0?0:0x10U-(byte_size&0xFU));
+        _n128=((byte_size&0xFU)==0?0:1)+(byte_size>>4);
         this->_pdata.reset(
             reinterpret_cast<pointer>(__aligned_malloc(alloc_size)),
             __aligned_free);
         this->_ndata=size;
       }
+      unsigned int size128() const { return _n128; }
 
   };
 

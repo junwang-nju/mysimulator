@@ -35,15 +35,10 @@ namespace mysimulator {
       typedef value_type& reference;
       typedef const value_type& const_reference;
 
-    private:
-
-      unsigned int _n128;
-
     public:
 
-      Array() : ParentTypeA(), ParentTypeB(), _n128(0U) {}
-      Array(size_type size) : ParentTypeA(), ParentTypeB(size),
-                              _n128((size*sizeof(value_type))>>4) {}
+      Array() : ParentTypeA(), ParentTypeB() {}
+      Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
       Array(const Type& A) : Array(A.size()) { operator=(A); }
       ~Array() { ParentTypeB::reset(); }
 
@@ -58,14 +53,9 @@ namespace mysimulator {
 
       operator bool() const { return ParentTypeB::operator bool(); }
       size_type size() const { return ParentTypeB::size(); }
-      size_type size128() const { return _n128; }
       reference operator[](size_type i) { return ParentTypeB::operator[](i); }
       const_reference operator[](size_type i) const {
         return ParentTypeB::operator[](i);
-      }
-      void allocate(size_type size) {
-        ParentTypeB::allocate(size);
-        _n128=(size*sizeof(value_type))>>4;
       }
 
       template <typename E,typename ET>
@@ -91,7 +81,7 @@ namespace mysimulator {
         __m128i* p=reinterpret_cast<__m128i*>(this->head());
         __m128i* q=reinterpret_cast<__m128i*>(
                                     static_cast<const Type&>(EA).head());
-        const __m128i* e=p+_n128;
+        const __m128i* e=p+this->size128();
         for(;p!=e;) _mm_store_si128(p++,*(q++));
         return *this;
       }
@@ -117,7 +107,6 @@ namespace mysimulator {
       Type& operator=(
           const ArrayExpression<
                   ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>&& A) {
-        printf("-----------------A----------------\n");
         typedef ArraySum<EA,EB> SType;
         operator=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
