@@ -58,6 +58,7 @@ namespace mysimulator {
 
       operator bool() const { return ParentTypeB::operator bool(); }
       size_type size() const { return ParentTypeB::size(); }
+      size_type size128() const { return _n128; }
       reference operator[](size_type i) { return ParentTypeB::operator[](i); }
       const_reference operator[](size_type i) const {
         return ParentTypeB::operator[](i);
@@ -422,32 +423,344 @@ namespace mysimulator {
         return operator*=(static_cast<SType const&>(A).second());
       }
 
-      template <typename T1,template<typename,typename> class ArrayOp>
-      Type& operator=(const ArrayOp<Type,Intrinsic<T1>>& A) {
-        return operator=(
-                  ArrayOp<Type,Intrinsic<T>>(A.first(),
-                                             Intrinsic<T>(A.second())));
-      }
-      template <typename T1,template<typename,typename> class ArrayOp>
-      Type& operator=(const ArrayOp<Type,Intrinsic<T1>>&& A) {
-        return operator=(
-                  ArrayOp<Type,Intrinsic<T>>(A.first(),
-                                             Intrinsic<T>(A.second())));
-      }
-      template <typename T1,template<typename,typename> class ArrayOp>
-      Type& operator=(const ArrayOp<Intrinsic<T1>,Type>& A) {
-        return operator=(
-                  ArrayOp<Intrinsic<T>,Type>(Intrinsic<T>(A.first()),
-                                             A.second()));
-      }
-      template <typename T1,template<typename,typename> class ArrayOp>
-      Type& operator=(const ArrayOp<Intrinsic<T1>,Type>&& A) {
-        return operator=(
-                  ArrayOp<Intrinsic<T>,Type>(Intrinsic<T>(A.first()),
-                                             A.second()));
-      }
-
   };
+
+  template <typename T>
+  class ShortArrayTypeWrapper {
+    public:
+      typedef ShortArrayTypeWrapper<T>  Type;
+      ShortArrayTypeWrapper() = delete;
+      ShortArrayTypeWrapper(const Type&) = delete;
+      Type& operator=(const Type&) = delete;
+      ~ShortArrayTypeWrapper() {}
+  };
+
+  template <>
+  class ShortArrayTypeWrapper<Int> {
+    public:
+      typedef Int::value_type value_type;
+      typedef Array<Int,ArrayFormat::ShortData>   array_type;
+      typedef __m128i value128_type;
+      static
+      inline value128_type set_from_unit(int D) { return _mm_set1_epi32(D); }
+      static
+      inline value128_type add128(value128_type const& a,
+                                  value128_type const& b) {
+        return _mm_add_epi32(a,b);
+      }
+      static
+      inline value128_type substract128(value128_type const& a,
+                                        value128_type const& b) {
+        return _mm_sub_epi32(a,b);
+      }
+      static
+      inline value128_type mul128(value128_type const& a,
+                                  value128_type const& b) {
+        return _mm_mullo_epi32(a,b);
+      }
+  };
+
+  template <>
+  class ShortArrayTypeWrapper<Float> {
+    public:
+      typedef Float::value_type   value_type;
+      typedef Array<Float,ArrayFormat::ShortData> array_type;
+      typedef __m128 value128_type;
+      static
+      inline value128_type set_from_unit(float D) { return _mm_set1_ps(D); }
+      static
+      inline value128_type add128(value128_type const& a,
+                                  value128_type const& b) {
+        return _mm_add_ps(a,b);
+      }
+      static
+      inline value128_type substract128(value128_type const& a,
+                                        value128_type const& b) {
+        return _mm_sub_ps(a,b);
+      }
+      static
+      inline value128_type mul128(value128_type const& a,
+                                  value128_type const& b) {
+        return _mm_mul_ps(a,b);
+      }
+      static
+      inline value128_type div128(value128_type const& a,
+                                  value128_type const& b) {
+        return _mm_div_ps(a,b);
+      }
+  };
+
+  template <>
+  class ShortArrayTypeWrapper<Double> {
+    public:
+      typedef Double::value_type    value_type;
+      typedef Array<Double,ArrayFormat::ShortData>  array_type;
+      typedef __m128d value128_type;
+      static
+      inline value128_type set_from_unit(double D) { return _mm_set1_pd(D); }
+      static
+      inline value128_type add128(value128_type const& a,
+                                  value128_type const& b) {
+        return _mm_add_pd(a,b);
+      }
+      static
+      inline value128_type substract128(value128_type const& a,
+                                        value128_type const& b) {
+        return _mm_sub_pd(a,b);
+      }
+      static
+      inline value128_type mul128(value128_type const& a,
+                                  value128_type const& b) {
+        return _mm_mul_pd(a,b);
+      }
+      static
+      inline value128_type div128(value128_type const& a,
+                                  value128_type const& b) {
+        return _mm_div_pd(a,b);
+      }
+  };
+
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __assign(typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+           const typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
+    assert((bool)A);
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(D);
+    assert((((int)(&u))&0xFU)==0);
+    for(;p!=e;) *(p++)=u;
+    return A;
+  }
+
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __add_to(typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+           const typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
+    assert((bool)A);
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(D);
+    assert((((int)(&u))&0xFU)==0);
+    for(;p!=e;) { *p=ShortArrayTypeWrapper<Intrinsic<T>>::add128(*p,u); ++p; }
+    return A;
+  }
+
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __add_to(typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+           const ArrayExpression<
+              typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+              typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    const T128 *e=p+A.size128();
+    for(;p!=e;) { *p=ShortArrayTypeWrapper<Intrinsic<T>>::add128(*p,*(q++)); ++p; }
+    return A;
+  }
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __add_to(typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+           const ArrayExpression<
+              typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+              typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>&& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    const T128 *e=p+A.size128();
+    for(;p!=e;) { *p=ShortArrayTypeWrapper<Intrinsic<T>>::add128(*p,*(q++)); ++p; }
+    return A;
+  }
+
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __substract_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
+    assert((bool)A);
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(D);
+    assert((((int)(&u))&0xFU)==0);
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::substract128(*p,u);
+      ++p;
+    }
+  }
+
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __substract_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    const T128 *e=p+A.size128();
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::substract128(*p,*(q++));
+      ++p;
+    }
+    return A;
+  }
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __substract_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>&& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    const T128 *e=p+A.size128();
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::substract128(*p,*(q++));
+      ++p;
+    }
+    return A;
+  }
+
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __multiple_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
+    assert((bool)A);
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(D);
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::mul128(*p,u);
+      ++p;
+    }
+    return A;
+  }
+
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __multiple_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    const T128 *e=p+A.size128();
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::mul128(*p,*(q++));
+      ++p;
+    }
+    return A;
+  }
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __multiple_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>&& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    const T128 *e=p+A.size128();
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::mul128(*p,*(q++));
+      ++p;
+    }
+    return A;
+  }
+
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __divide_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
+    assert((bool)A);
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 u=ShortArrayTypeWrapper<Intrinsic<T>>::set_from_unit(D);
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::div128(*p,u);
+      ++p;
+    }
+    return A;
+  }
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __divide_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::div128(*p,*(q++));
+      ++p;
+    }
+    return A;
+  }
+  template <typename T>
+  typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __divide_to(
+      typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+      const ArrayExpression<
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type,
+         typename ShortArrayTypeWrapper<Intrinsic<T>>::value_type>&& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::value128_type T128;
+    typedef typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type AType;
+    T128 *p=reinterpret_cast<T128*>(A.head());
+    const T128 *e=p+A.size128();
+    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    for(;p!=e;) {
+      *p=ShortArrayTypeWrapper<Intrinsic<T>>::div128(*p,*(q++));
+      ++p;
+    }
+    return A;
+  }
 
   typedef Array<Int,ArrayFormat::ShortData>     ItShortDataArray;
   typedef Array<Float,ArrayFormat::ShortData>   FtShortDataArray;
@@ -455,1341 +768,195 @@ namespace mysimulator {
 
   template <>
   ItShortDataArray& ItShortDataArray::operator=(const int& D) {
-    assert((bool)(*this));
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i u=_mm_set1_epi32(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;)   _mm_store_si128(p++,u);
-    return *this;
+    return __assign<int>(*this,D);
   }
   template <>
   FtShortDataArray& FtShortDataArray::operator=(const float& D) {
-    assert((bool)(*this));
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 u=_mm_set1_ps(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;)   *(p++)=u;
-    return *this;
+    return __assign<float>(*this,D);
   }
   template <>
   DbShortDataArray& DbShortDataArray::operator=(const double& D) {
-    assert((bool)(*this));
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d u=_mm_set1_pd(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;)   *(p++)=u;
-    return *this;
+    return __assign<double>(*this,D);
   }
 
   template <>
   ItShortDataArray& ItShortDataArray::operator+=(const int& D) {
-    assert((bool)(*this));
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i u=_mm_set1_epi32(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;)  { *p=_mm_add_epi32(*p,u); ++p; }
-    return *this;
+    return __add_to<int>(*this,D);
   }
   template <>
   FtShortDataArray& FtShortDataArray::operator+=(const float& D) {
-    assert((bool)(*this));
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 u=_mm_set1_ps(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;)  { *p=_mm_add_ps(*p,u);  ++p; }
-    return *this;
+    return __add_to<float>(*this,D);
   }
   template <>
   DbShortDataArray& DbShortDataArray::operator+=(const double& D) {
-    assert((bool)(*this));
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d u=_mm_set1_pd(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;)  { *p=_mm_add_pd(*p,u); ++p; }
-    return *this;
+    return __add_to<double>(*this,D);
   }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator+=(
       const ArrayExpression<ItShortDataArray,int>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
-    const __m128i *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_add_epi32(*p,*(q++));  ++p; }
-    return *this;
+    return __add_to<int>(*this,A);
   }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator+=(
       const ArrayExpression<ItShortDataArray,int>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
-    const __m128i *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_add_epi32(*p,*(q++));  ++p; }
-    return *this;
+    return __add_to<int>(*this,A);
   }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator+=(
       const ArrayExpression<FtShortDataArray,float>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_add_ps(*p,*(q++));  ++p; }
-    return *this;
+    return __add_to<float>(*this,A);;
   }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator+=(
       const ArrayExpression<FtShortDataArray,float>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_add_ps(*p,*(q++));  ++p; }
-    return *this;
+    return __add_to<float>(*this,A);
   }
   template <>
   template <>
   DbShortDataArray& DbShortDataArray::operator+=(
       const ArrayExpression<DbShortDataArray,double>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
-    const __m128d *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_add_pd(*p,*(q++));  ++p; }
-    return *this;
+    return __add_to<double>(*this,A);
   }
   template <>
   template <>
   DbShortDataArray& DbShortDataArray::operator+=(
       const ArrayExpression<DbShortDataArray,double>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
-    const __m128d *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_add_pd(*p,*(q++));  ++p; }
-    return *this;
+    return __add_to<double>(*this,A);
   }
 
   template <>
   ItShortDataArray& ItShortDataArray::operator-=(const int& D) {
-    assert((bool)(*this));
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i u=_mm_set1_epi32(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;) { *p=_mm_sub_epi32(*p,u); ++p; }
-    return *this;
+    return __substract_to<int>(*this,D);
   }
   template <>
   FtShortDataArray& FtShortDataArray::operator-=(const float& D) {
-    assert((bool)(*this));
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 u=_mm_set1_ps(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;)  { *p=_mm_sub_ps(*p,u);  ++p; }
-    return *this;
+    return __substract_to<float>(*this,D);
   }
   template <>
   DbShortDataArray& DbShortDataArray::operator-=(const double& D) {
-    assert((bool)(*this));
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d u=_mm_set1_pd(D);
-    assert((((int)(&u))&0xFU)==0);
-    for(;p!=e;)  { *p=_mm_sub_pd(*p,u); ++p; }
-    return *this;
+    return __substract_to<double>(*this,D);
   }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator-=(
       const ArrayExpression<ItShortDataArray,int>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
-    const __m128i *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_sub_epi32(*p,*(q++));  ++p; }
-    return *this;
+    return __substract_to<int>(*this,A);
   }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator-=(
       const ArrayExpression<ItShortDataArray,int>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
-    const __m128i *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_sub_epi32(*p,*(q++));  ++p; }
-    return *this;
+    return __substract_to<int>(*this,A);
   }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator-=(
       const ArrayExpression<FtShortDataArray,float>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_sub_ps(*p,*(q++));  ++p; }
-    return *this;
+    return __substract_to<float>(*this,A);
   }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator-=(
       const ArrayExpression<FtShortDataArray,float>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_sub_ps(*p,*(q++));  ++p; }
-    return *this;
+    return __substract_to<float>(*this,A);
   }
   template <>
   template <>
   DbShortDataArray& DbShortDataArray::operator-=(
       const ArrayExpression<DbShortDataArray,double>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
-    const __m128d *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_sub_pd(*p,*(q++));  ++p; }
-    return *this;
+    return __substract_to<double>(*this,A);
   }
   template <>
   template <>
   DbShortDataArray& DbShortDataArray::operator-=(
       const ArrayExpression<DbShortDataArray,double>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
-    const __m128d *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_sub_pd(*p,*(q++));  ++p; }
-    return *this;
+    return __substract_to<double>(*this,A);
   }
 
   template <>
   ItShortDataArray& ItShortDataArray::operator*=(const int& D) {
-    assert((bool)(*this));
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i u=_mm_set1_epi32(D);
-    for(;p!=e;)  { *p=_mm_mullo_epi32(*p,u); ++p; }
-    return *this;
+    return __multiple_to<int>(*this,D);
   }
   template <>
   FtShortDataArray& FtShortDataArray::operator*=(const float& D) {
-    assert((bool)(*this));
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 u=_mm_set1_ps(D);
-    for(;p!=e;)  { *p=_mm_mul_ps(*p,u); ++p; }
-    return *this;
+    return __multiple_to<float>(*this,D);
   }
   template <>
   DbShortDataArray& DbShortDataArray::operator*=(const double& D) {
-    assert((bool)(*this));
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d u=_mm_set1_pd(D);
-    for(;p!=e;)  { *p=_mm_mul_pd(*p,u); ++p; }
-    return *this;
+    return __multiple_to<double>(*this,D);
   }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator*=(
       const ArrayExpression<ItShortDataArray,int>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
-    const __m128i *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_mullo_epi32(*p,*(q++));  ++p; }
-    return *this;
+    return __multiple_to<int>(*this,A);
   }
   template <>
   template <>
   ItShortDataArray& ItShortDataArray::operator*=(
       const ArrayExpression<ItShortDataArray,int>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(((ItShortDataArray const&)A).head());
-    const __m128i *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_mullo_epi32(*p,*(q++));  ++p; }
-    return *this;
+    return __multiple_to<int>(*this,A);
   }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator*=(
       const ArrayExpression<FtShortDataArray,float>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_mul_ps(*p,*(q++));  ++p; }
-    return *this;
+    return __multiple_to<float>(*this,A);
   }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator*=(
       const ArrayExpression<FtShortDataArray,float>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_mul_ps(*p,*(q++));  ++p; }
-    return *this;
+    return __multiple_to<float>(*this,A);
   }
   template <>
   template <>
   DbShortDataArray& DbShortDataArray::operator*=(
       const ArrayExpression<DbShortDataArray,double>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
-    const __m128d *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_mul_pd(*p,*(q++));  ++p; }
-    return *this;
+    return __multiple_to<double>(*this,A);
   }
   template <>
   template <>
   DbShortDataArray& DbShortDataArray::operator*=(
       const ArrayExpression<DbShortDataArray,double>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
-    const __m128d *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_mul_pd(*p,*(q++));  ++p; }
-    return *this;
+    return __multiple_to<double>(*this,A);
   }
 
   template <>
   FtShortDataArray& FtShortDataArray::operator/=(const float& D) {
-    assert((bool)(*this));
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 u=_mm_set1_ps(D);
-    for(;p!=e;)  { *p=_mm_div_ps(*p,u); ++p; }
-    return *this;
+    return __divide_to<float>(*this,D);
   }
   template <>
   DbShortDataArray& DbShortDataArray::operator/=(const double& D) {
-    assert((bool)(*this));
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d u=_mm_set1_pd(D);
-    for(;p!=e;)  { *p=_mm_div_pd(*p,u); ++p; }
-    return *this;
+    return __divide_to<double>(*this,D);
   }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator/=(
       const ArrayExpression<FtShortDataArray,float>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_div_ps(*p,*(q++));  ++p; }
-    return *this;
+    return __divide_to<float>(*this,A);
   }
   template <>
   template <>
   FtShortDataArray& FtShortDataArray::operator/=(
       const ArrayExpression<FtShortDataArray,float>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(((FtShortDataArray const&)A).head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_div_ps(*p,*(q++));  ++p; }
-    return *this;
+    return __divide_to<float>(*this,A);
   }
   template <>
   template <>
   DbShortDataArray& DbShortDataArray::operator/=(
       const ArrayExpression<DbShortDataArray,double>& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
-    const __m128d *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_div_pd(*p,*(q++));  ++p; }
-    return *this;
+    return __divide_to<double>(*this,A);
   }
   template <>
   template <>
   DbShortDataArray& DbShortDataArray::operator/=(
       const ArrayExpression<DbShortDataArray,double>&& A) {
-    assert((bool)(*this));
-    assert((bool)A);
-    assert(size()<=A.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    __m128d *q=reinterpret_cast<__m128d*>(((DbShortDataArray const&)A).head());
-    const __m128d *e=p+_n128;
-    for(;p!=e;)   { *p=_mm_div_pd(*p,*(q++));  ++p; }
-    return *this;
-  }
-
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayExpression<ArraySum<ItShortDataArray,ItShortDataArray>,
-                            int>& EA) {
-    typedef ArraySum<ItShortDataArray,ItShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<SType const&>(EA).first().head());
-    __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<SType const&>(EA).second().head());
-    const __m128i *e=p+_n128;
-    for(;p!=e;) *(p++)=_mm_add_epi32(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayExpression<ArraySum<ItShortDataArray,ItShortDataArray>,
-                            int>&& EA) {
-    typedef ArraySum<ItShortDataArray,ItShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second().head());
-    const __m128i *e=p+_n128;
-    for(;p!=e;) *(p++)=_mm_add_epi32(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayExpression<ArraySum<FtShortDataArray,FtShortDataArray>,
-                            float>& EA) {
-    typedef ArraySum<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first().head());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second().head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;) *(p++)=_mm_add_ps(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayExpression<ArraySum<FtShortDataArray,FtShortDataArray>,
-                            float>&& EA) {
-    typedef ArraySum<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first().head());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second().head());
-    const __m128 *e=p+_n128;
-    for(;p!=e;) *(p++)=_mm_add_ps(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayExpression<ArraySum<DbShortDataArray,DbShortDataArray>,
-                            double>& EA) {
-    typedef ArraySum<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_add_pd(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayExpression<ArraySum<DbShortDataArray,DbShortDataArray>,
-                            double>&& EA) {
-    typedef ArraySum<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_add_pd(*(q++),*(r++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayExpression<ArraySub<ItShortDataArray,ItShortDataArray>,
-                            int>& EA) {
-    typedef ArraySub<ItShortDataArray,ItShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_sub_epi32(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayExpression<ArraySub<ItShortDataArray,ItShortDataArray>,
-                            int>&& EA) {
-    typedef ArraySub<ItShortDataArray,ItShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_sub_epi32(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayExpression<ArraySub<FtShortDataArray,FtShortDataArray>,
-                            float>& EA) {
-    typedef ArraySub<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first().head());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_sub_ps(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayExpression<ArraySub<FtShortDataArray,FtShortDataArray>,
-                            float>&& EA) {
-    typedef ArraySub<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first().head());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_sub_ps(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayExpression<ArraySub<DbShortDataArray,DbShortDataArray>,
-                            double>& EA) {
-    typedef ArraySub<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_sub_pd(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayExpression<ArraySub<DbShortDataArray,DbShortDataArray>,
-                            double>&& EA) {
-    typedef ArraySub<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_sub_pd(*(q++),*(r++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayExpression<ArrayMul<ItShortDataArray,ItShortDataArray>,
-                            int>& EA) {
-    typedef ArrayMul<ItShortDataArray,ItShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_mullo_epi32(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayExpression<ArrayMul<ItShortDataArray,ItShortDataArray>,
-                            int>&& EA) {
-    typedef ArrayMul<ItShortDataArray,ItShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128i *r=reinterpret_cast<__m128i*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_mullo_epi32(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayExpression<ArrayMul<FtShortDataArray,FtShortDataArray>,
-                            float>& EA) {
-    typedef ArrayMul<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first().head());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_mul_ps(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayExpression<ArrayMul<FtShortDataArray,FtShortDataArray>,
-                            float>&& EA) {
-    typedef ArrayMul<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first().head());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_mul_ps(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayExpression<ArrayMul<DbShortDataArray,DbShortDataArray>,
-                            double>& EA) {
-    typedef ArrayMul<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_mul_pd(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayExpression<ArrayMul<DbShortDataArray,DbShortDataArray>,
-                            double>&& EA) {
-    typedef ArrayMul<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_mul_pd(*(q++),*(r++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayExpression<ArrayDiv<FtShortDataArray,FtShortDataArray>,
-                            float>& EA) {
-    typedef ArrayDiv<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first().head());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_div_ps(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayExpression<ArrayDiv<FtShortDataArray,FtShortDataArray>,
-                            float>&& EA) {
-    typedef ArrayDiv<FtShortDataArray,FtShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).first().head());
-    __m128 *r=reinterpret_cast<__m128*>(
-                               static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_div_ps(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayExpression<ArrayDiv<DbShortDataArray,DbShortDataArray>,
-                            double>& EA) {
-    typedef ArrayDiv<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_div_pd(*(q++),*(r++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayExpression<ArrayDiv<DbShortDataArray,DbShortDataArray>,
-                            double>&& EA) {
-    typedef ArrayDiv<DbShortDataArray,DbShortDataArray> SType;
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).first().head());
-    __m128d *r=reinterpret_cast<__m128d*>(
-                                static_cast<const SType&>(EA).second().head());
-    for(;p!=e;) *(p++)=_mm_div_pd(*(q++),*(r++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArraySum<ItShortDataArray,Int>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.first().head());
-    __m128i u=_mm_set1_epi32(EA.second());
-    for(;p!=e;)   *(p++)=_mm_add_epi32(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArraySum<ItShortDataArray,Int>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.first().head());
-    __m128i u=_mm_set1_epi32(EA.second());
-    for(;p!=e;)   *(p++)=_mm_add_epi32(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArraySum<Int,ItShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.second().head());
-    __m128i u=_mm_set1_epi32(EA.first());
-    for(;p!=e;)   *(p++)=_mm_add_epi32(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArraySum<Int,ItShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.second().head());
-    __m128i u=_mm_set1_epi32(EA.first());
-    for(;p!=e;)   *(p++)=_mm_add_epi32(u,*(q++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArraySum<FtShortDataArray,Float>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.first().head());
-    __m128 u=_mm_set1_ps(EA.second());
-    for(;p!=e;) *(p++)=_mm_add_ps(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArraySum<FtShortDataArray,Float>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.first().head());
-    __m128 u=_mm_set1_ps(EA.second());
-    for(;p!=e;) *(p++)=_mm_add_ps(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArraySum<Float,FtShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.second().head());
-    __m128 u=_mm_set1_ps(EA.first());
-    for(;p!=e;) *(p++)=_mm_add_ps(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArraySum<Float,FtShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.second().head());
-    __m128 u=_mm_set1_ps(EA.first());
-    for(;p!=e;) *(p++)=_mm_add_ps(u,*(q++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArraySum<DbShortDataArray,Double>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.first().head());
-    __m128d u=_mm_set1_pd(EA.second());
-    for(;p!=e;) *(p++)=_mm_add_pd(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArraySum<DbShortDataArray,Double>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.first().head());
-    __m128d u=_mm_set1_pd(EA.second());
-    for(;p!=e;) *(p++)=_mm_add_pd(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArraySum<Double,DbShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.second().head());
-    __m128d u=_mm_set1_pd(EA.first());
-    for(;p!=e;) *(p++)=_mm_add_pd(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArraySum<Double,DbShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.second().head());
-    __m128d u=_mm_set1_pd(EA.first());
-    for(;p!=e;) *(p++)=_mm_add_pd(u,*(q++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArraySub<ItShortDataArray,Int>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.first().head());
-    __m128i u=_mm_set1_epi32(EA.second());
-    for(;p!=e;) *(p++)=_mm_sub_epi32(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArraySub<ItShortDataArray,Int>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.first().head());
-    __m128i u=_mm_set1_epi32(EA.second());
-    for(;p!=e;) *(p++)=_mm_sub_epi32(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArraySub<Int,ItShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.second().head());
-    __m128i u=_mm_set1_epi32(EA.first());
-    for(;p!=e;) *(p++)=_mm_sub_epi32(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArraySub<Int,ItShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.second().head());
-    __m128i u=_mm_set1_epi32(EA.first());
-    for(;p!=e;) *(p++)=_mm_sub_epi32(u,*(q++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArraySub<FtShortDataArray,Float>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.first().head());
-    __m128 u=_mm_set1_ps(EA.second());
-    for(;p!=e;) *(p++)=_mm_sub_ps(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArraySub<FtShortDataArray,Float>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.first().head());
-    __m128 u=_mm_set1_ps(EA.second());
-    for(;p!=e;) *(p++)=_mm_sub_ps(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArraySub<Float,FtShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.second().head());
-    __m128 u=_mm_set1_ps(EA.first());
-    for(;p!=e;) *(p++)=_mm_sub_ps(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArraySub<Float,FtShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.second().head());
-    __m128 u=_mm_set1_ps(EA.first());
-    for(;p!=e;) *(p++)=_mm_sub_ps(u,*(q++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArraySub<DbShortDataArray,Double>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.first().head());
-    __m128d u=_mm_set1_pd(EA.second());
-    for(;p!=e;) *(p++)=_mm_sub_pd(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArraySub<DbShortDataArray,Double>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.first().head());
-    __m128d u=_mm_set1_pd(EA.second());
-    for(;p!=e;) *(p++)=_mm_sub_pd(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArraySub<Double,DbShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.second().head());
-    __m128d u=_mm_set1_pd(EA.first());
-    for(;p!=e;) *(p++)=_mm_sub_pd(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArraySub<Double,DbShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.second().head());
-    __m128d u=_mm_set1_pd(EA.first());
-    for(;p!=e;) *(p++)=_mm_sub_pd(u,*(q++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayMul<ItShortDataArray,Int>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.first().head());
-    __m128i u=_mm_set1_epi32(EA.second());
-    for(;p!=e;)   *(p++)=_mm_mullo_epi32(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayMul<ItShortDataArray,Int>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.first().head());
-    __m128i u=_mm_set1_epi32(EA.second());
-    for(;p!=e;)   *(p++)=_mm_mullo_epi32(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayMul<Int,ItShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.second().head());
-    __m128i u=_mm_set1_epi32(EA.first());
-    for(;p!=e;)   *(p++)=_mm_mullo_epi32(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  ItShortDataArray& ItShortDataArray::operator=(
-      const ArrayMul<Int,ItShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128i *p=reinterpret_cast<__m128i*>(this->head());
-    const __m128i *e=p+_n128;
-    __m128i *q=reinterpret_cast<__m128i*>(EA.second().head());
-    __m128i u=_mm_set1_epi32(EA.first());
-    for(;p!=e;)   *(p++)=_mm_mullo_epi32(u,*(q++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayMul<FtShortDataArray,Float>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.first().head());
-    __m128 u=_mm_set1_ps(EA.second());
-    for(;p!=e;)   *(p++)=_mm_mul_ps(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayMul<FtShortDataArray,Float>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.first().head());
-    __m128 u=_mm_set1_ps(EA.second());
-    for(;p!=e;)   *(p++)=_mm_mul_ps(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayMul<Float,FtShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.second().head());
-    __m128 u=_mm_set1_ps(EA.first());
-    for(;p!=e;)   *(p++)=_mm_mul_ps(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  FtShortDataArray& FtShortDataArray::operator=(
-      const ArrayMul<Float,FtShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128 *p=reinterpret_cast<__m128*>(this->head());
-    const __m128 *e=p+_n128;
-    __m128 *q=reinterpret_cast<__m128*>(EA.second().head());
-    __m128 u=_mm_set1_ps(EA.first());
-    for(;p!=e;)   *(p++)=_mm_mul_ps(u,*(q++));
-    return *this;
-  }
-
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayMul<DbShortDataArray,Double>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.first().head());
-    __m128d u=_mm_set1_pd(EA.second());
-    for(;p!=e;)   *(p++)=_mm_mul_pd(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayMul<DbShortDataArray,Double>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.first().head());
-    __m128d u=_mm_set1_pd(EA.second());
-    for(;p!=e;)   *(p++)=_mm_mul_pd(*(q++),u);
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayMul<Double,DbShortDataArray>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.second().head());
-    __m128d u=_mm_set1_pd(EA.first());
-    for(;p!=e;)   *(p++)=_mm_mul_pd(u,*(q++));
-    return *this;
-  }
-  template <>
-  template <>
-  DbShortDataArray& DbShortDataArray::operator=(
-      const ArrayMul<Double,DbShortDataArray>&& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    __m128d *p=reinterpret_cast<__m128d*>(this->head());
-    const __m128d *e=p+_n128;
-    __m128d *q=reinterpret_cast<__m128d*>(EA.second().head());
-    __m128d u=_mm_set1_pd(EA.first());
-    for(;p!=e;)   *(p++)=_mm_mul_pd(u,*(q++));
-    return *this;
+    return __divide_to<double>(*this,A);
   }
 
 }
