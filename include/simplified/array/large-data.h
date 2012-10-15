@@ -292,6 +292,23 @@ namespace mysimulator {
 
   template <>
   class LargeArrayTypeWrapper<Int> {
+    public:
+      typedef Int::value_type   value_type;
+      typedef Array<Int,ArrayFormat::LargeData>   array_type;
+  };
+
+  template <>
+  class LargeArrayTypeWrapper<Float> {
+    public:
+      typedef Float::value_type   value_type;
+      typedef Array<Float,ArrayFormat::LargeData>   array_type;
+  };
+
+  template <>
+  class LargeArrayTypeWrapper<Double> {
+    public:
+      typedef Double::value_type    value_type;
+      typedef Array<Double,ArrayFormat::LargeData>  array_type;
   };
 
   typedef Array<Int,ArrayFormat::LargeData>     ItLargeDataArray;
