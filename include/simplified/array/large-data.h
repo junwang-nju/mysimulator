@@ -295,6 +295,7 @@ namespace mysimulator {
     public:
       typedef Int::value_type   value_type;
       typedef Array<Int,ArrayFormat::LargeData>   array_type;
+      typedef float blas_type;
   };
 
   template <>
@@ -302,6 +303,7 @@ namespace mysimulator {
     public:
       typedef Float::value_type   value_type;
       typedef Array<Float,ArrayFormat::LargeData>   array_type;
+      typedef float blas_type;
   };
 
   template <>
@@ -309,6 +311,7 @@ namespace mysimulator {
     public:
       typedef Double::value_type    value_type;
       typedef Array<Double,ArrayFormat::LargeData>  array_type;
+      typedef double blas_type;
   };
 
   typedef Array<Int,ArrayFormat::LargeData>     ItLargeDataArray;
