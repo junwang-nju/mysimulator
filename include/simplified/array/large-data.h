@@ -280,6 +280,20 @@ namespace mysimulator {
 
   };
 
+  template <typename T>
+  class LargeArrayTypeWrapper {
+    public:
+      typedef LargeArrayTypeWrapper<T>  Type;
+      LargeArrayTypeWrapper() = delete;
+      LargeArrayTypeWrapper(const Type&) = delete;
+      Type& operator=(const Type&) = delete;
+      ~LargeArrayTypeWrapper() {}
+  };
+
+  template <>
+  class LargeArrayTypeWrapper<Int> {
+  };
+
   typedef Array<Int,ArrayFormat::LargeData>     ItLargeDataArray;
   typedef Array<Float,ArrayFormat::LargeData>   FtLargeDataArray;
   typedef Array<Double,ArrayFormat::LargeData>  DbLargeDataArray;
