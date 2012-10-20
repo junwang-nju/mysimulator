@@ -357,6 +357,19 @@ namespace mysimulator {
     return A;
   }
 
+  template <typename T>
+  typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __plus(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+         const typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type& D,
+         const typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& B) {
+    assert((bool)A);
+    assert((bool)B);
+    assert(A.size()<=B.size());
+    long n=A.size(),one=1;
+    LargeArrayTypeWrapper<Intrinsic<T>>::axpy(n,D,B.head(),one,A.head(),one);
+    return A;
+  }
+
   typedef Array<Int,ArrayFormat::LargeData>     ItLargeDataArray;
   typedef Array<Float,ArrayFormat::LargeData>   FtLargeDataArray;
   typedef Array<Double,ArrayFormat::LargeData>  DbLargeDataArray;
@@ -377,31 +390,78 @@ namespace mysimulator {
   }
 
   template <>
-  template <>
-  DbLargeDataArray& DbLargeDataArray::operator+=(
-      const ArrayExpression<DbLargeDataArray,double>& EA) {
-    assert((bool)(*this));
-    assert((bool)EA);
-    assert(size()<=EA.size());
-    long n=size(), one=1;
-    double D=1.;
-    daxpy_(
-     &n,
-     &D,
-     reinterpret_cast<double*>(static_cast<const DbLargeDataArray&>(EA).head()),
-     &one,
-     this->head(),
-     &one);
-    return *this;
-  }
-
-  template <>
   FtLargeDataArray& FtLargeDataArray::operator+=(const float& D) {
     return __plus<float>(*this,D);
   }
   template <>
   DbLargeDataArray& DbLargeDataArray::operator+=(const double& D) {
     return __plus<double>(*this,D);
+  }
+
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<FtLargeDataArray,float>& EA) {
+    float fOne=1.;
+    return __plus<float>(*this,fOne,(FtLargeDataArray const&)EA);
+  }
+
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<DbLargeDataArray,double>& EA) {
+    double dOne=1.;
+    return __plus<double>(*this,dOne,(DbLargeDataArray const&)EA);
+  }
+
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(const float& D) {
+    return __plus<float>(*this,-D);
+  }
+
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(const double& D) {
+    return __plus<double>(*this,-D);
+  }
+
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(
+      const ArrayExpression<FtLargeDataArray,float>& EA) {
+    float fNOne=-1.;
+    return __plus<float>(*this,fNOne,(FtLargeDataArray const&)EA);
+  }
+
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(
+      const ArrayExpression<DbLargeDataArray,double>& EA) {
+    double dNOne=-1.;
+    return __plus<double>(*this,dNOne,(DbLargeDataArray const&)EA);
+  }
+
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator*=(const float& D) {
+    float fac=D-1.;
+    return __plus<float>(*this,fac,*this);
+  }
+
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator*=(const double& D) {
+    double fac=D-1.;
+    return __plus<double>(*this,fac,*this);
+  }
+
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator/=(const float& D) {
+    float fac=1./D-1;
+    return __plus<float>(*this,fac,*this);
+  }
+
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator/=(const double& D) {
+    double fac=1./D-1;
+    return __plus<double>(*this,fac,*this);
   }
 
 }
