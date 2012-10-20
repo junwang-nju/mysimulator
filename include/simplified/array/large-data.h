@@ -132,6 +132,54 @@ namespace mysimulator {
         operator=(static_cast<SType const&>(A).first());
         return operator+=(static_cast<SType const&>(A).second());
       }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>&& A) {
+        typedef ArraySub<EA,EB>   SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator-=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
+        typedef ArraySub<EA,EB>   SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator-=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>&& A) {
+        typedef ArrayMul<EA,EB>   SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>& A) {
+        typedef ArrayMul<EA,EB>   SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator*=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>&& A) {
+        typedef ArrayDiv<EA,EB>   SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator=(
+          const ArrayExpression<
+                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>& A) {
+        typedef ArrayDiv<EA,EB>   SType;
+        operator=(static_cast<SType const&>(A).first());
+        return operator/=(static_cast<SType const&>(A).second());
+      }
 
       template <typename E,typename ET>
       Type& operator+=(const ArrayExpression<E,ET>& EA) {
@@ -388,6 +436,19 @@ namespace mysimulator {
 
   template <typename T>
   typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __plus(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+         const typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type& D,
+         const typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&& B) {
+    assert((bool)A);
+    assert((bool)B);
+    assert(A.size()<=B.size());
+    long n=A.size(),one=1;
+    LargeArrayTypeWrapper<Intrinsic<T>>::axpy(n,D,B.head(),one,A.head(),one);
+    return A;
+  }
+
+  template <typename T>
+  typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
   __scale(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
           const typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
     assert((bool)A);
@@ -400,6 +461,20 @@ namespace mysimulator {
   typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
   __scale(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
           const typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& B) {
+    assert((bool)A);
+    assert((bool)B);
+    assert(A.size()<=B.size());
+    char FG[]="LNN";
+    long n=A.size(),zero=0,one=1;
+    LargeArrayTypeWrapper<Intrinsic<T>>::tbmv(FG[0],FG[1],FG[2],n,zero,
+                                              B.head(),one,A.head(),one);
+    return A;
+  }
+
+  template <typename T>
+  typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __scale(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+          const typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&& B) {
     assert((bool)A);
     assert((bool)B);
     assert(A.size()<=B.size());
@@ -445,11 +520,25 @@ namespace mysimulator {
     float fOne=1.;
     return __plus<float>(*this,fOne,(FtLargeDataArray const&)EA);
   }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<FtLargeDataArray,float>&& EA) {
+    float fOne=1.;
+    return __plus<float>(*this,fOne,(FtLargeDataArray const&)EA);
+  }
 
   template <>
   template <>
   DbLargeDataArray& DbLargeDataArray::operator+=(
       const ArrayExpression<DbLargeDataArray,double>& EA) {
+    double dOne=1.;
+    return __plus<double>(*this,dOne,(DbLargeDataArray const&)EA);
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<DbLargeDataArray,double>&& EA) {
     double dOne=1.;
     return __plus<double>(*this,dOne,(DbLargeDataArray const&)EA);
   }
@@ -471,11 +560,25 @@ namespace mysimulator {
     float fNOne=-1.;
     return __plus<float>(*this,fNOne,(FtLargeDataArray const&)EA);
   }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(
+      const ArrayExpression<FtLargeDataArray,float>&& EA) {
+    float fNOne=-1.;
+    return __plus<float>(*this,fNOne,(FtLargeDataArray const&)EA);
+  }
 
   template <>
   template <>
   DbLargeDataArray& DbLargeDataArray::operator-=(
       const ArrayExpression<DbLargeDataArray,double>& EA) {
+    double dNOne=-1.;
+    return __plus<double>(*this,dNOne,(DbLargeDataArray const&)EA);
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(
+      const ArrayExpression<DbLargeDataArray,double>&& EA) {
     double dNOne=-1.;
     return __plus<double>(*this,dNOne,(DbLargeDataArray const&)EA);
   }
@@ -496,11 +599,23 @@ namespace mysimulator {
       const ArrayExpression<FtLargeDataArray,float>& A) {
     return __scale<float>(*this,(FtLargeDataArray const&)A);
   }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator*=(
+      const ArrayExpression<FtLargeDataArray,float>&& A) {
+    return __scale<float>(*this,(FtLargeDataArray const&)A);
+  }
 
   template <>
   template <>
   DbLargeDataArray& DbLargeDataArray::operator*=(
       const ArrayExpression<DbLargeDataArray,double>& A) {
+    return __scale<double>(*this,(DbLargeDataArray const&)A);
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator*=(
+      const ArrayExpression<DbLargeDataArray,double>&& A) {
     return __scale<double>(*this,(DbLargeDataArray const&)A);
   }
 
