@@ -216,6 +216,38 @@ namespace mysimulator {
       Type& operator+=(const Intrinsic<T1>&& D) {
         return operator+=((value_type)D);
       }
+      template <typename EA,typename EB>
+      Type& operator+=(
+          const ArrayExpression<
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>&& A) {
+        typedef ArraySum<EA,EB>   SType;
+        operator+=(static_cast<SType const&>(A).first());
+        return operator+=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator+=(
+          const ArrayExpression<
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
+        typedef ArraySum<EA,EB>   SType;
+        operator+=(static_cast<SType const&>(A).first());
+        return operator+=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator+=(
+          const ArrayExpression<
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>&& A) {
+        typedef ArraySub<EA,EB>   SType;
+        operator+=(static_cast<SType const&>(A).first());
+        return operator-=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator+=(
+          const ArrayExpression<
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
+        typedef ArraySub<EA,EB>   SType;
+        operator+=(static_cast<SType const&>(A).first());
+        return operator-=(static_cast<SType const&>(A).second());
+      }
 
       template <typename E,typename ET>
       Type& operator-=(const ArrayExpression<E,ET>& EA) {
@@ -251,6 +283,38 @@ namespace mysimulator {
       template <typename T1>
       Type& operator-=(const Intrinsic<T1>&& D) {
         return operator-=((value_type)D);
+      }
+      template <typename EA,typename EB>
+      Type& operator-=(
+          const ArrayExpression<
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>&& A) {
+        typedef ArraySum<EA,EB>   SType;
+        operator-=(static_cast<SType const&>(A).first());
+        return operator-=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator-=(
+          const ArrayExpression<
+                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
+        typedef ArraySum<EA,EB>   SType;
+        operator-=(static_cast<SType const&>(A).first());
+        return operator-=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator-=(
+          const ArrayExpression<
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>&& A) {
+        typedef ArraySub<EA,EB>   SType;
+        operator-=(static_cast<SType const&>(A).first());
+        return operator+=(static_cast<SType const&>(A).second());
+      }
+      template <typename EA,typename EB>
+      Type& operator-=(
+          const ArrayExpression<
+                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
+        typedef ArraySub<EA,EB>   SType;
+        operator-=(static_cast<SType const&>(A).first());
+        return operator+=(static_cast<SType const&>(A).second());
       }
 
       template <typename E,typename ET>
