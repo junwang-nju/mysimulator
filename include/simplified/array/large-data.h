@@ -295,7 +295,13 @@ namespace mysimulator {
     public:
       typedef Int::value_type   value_type;
       typedef Array<Int,ArrayFormat::LargeData>   array_type;
-      typedef float blas_type;
+      static void copy(long n,const value_type* A,long dA,
+                              value_type* B,long dB) {
+        static_assert(sizeof(int)==sizeof(float),
+                      "Sizes of int and float Needs to Be Equal!\n");
+        scopy_(&n,reinterpret_cast<float*>(const_cast<value_type*>(A)),&dA,
+               reinterpret_cast<float*>(B),&dB);
+      }
   };
 
   template <>
@@ -303,7 +309,15 @@ namespace mysimulator {
     public:
       typedef Float::value_type   value_type;
       typedef Array<Float,ArrayFormat::LargeData>   array_type;
-      typedef float blas_type;
+      static void copy(long n,const value_type* A, long dA,
+                              value_type* B, long dB) {
+        scopy_(&n,const_cast<value_type*>(A),&dA,B,&dB);
+      }
+      static void axpy(long n,const value_type& D,const value_type* A,long dA,
+                       value_type* B,long dB) {
+        saxpy_(&n,const_cast<value_type*>(&D),const_cast<value_type*>(A),&dA,
+               B,&dB);
+      }
   };
 
   template <>
@@ -311,8 +325,37 @@ namespace mysimulator {
     public:
       typedef Double::value_type    value_type;
       typedef Array<Double,ArrayFormat::LargeData>  array_type;
-      typedef double blas_type;
+      static void copy(long n,const value_type* A,long dA,
+                              value_type* B,long dB) {
+        dcopy_(&n,const_cast<value_type*>(A),&dA,B,&dB);
+      }
+      static void axpy(long n,const value_type& D,const value_type* A,long dA,
+                       value_type* B,long dB) {
+        daxpy_(&n,const_cast<value_type*>(&D),const_cast<value_type*>(A),&dA,
+               B,&dB);
+      }
   };
+
+  template <typename T>
+  typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __assign(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+           const typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
+    assert((bool)A);
+    long n=A.size(),zero=0,one=1;
+    LargeArrayTypeWrapper<Intrinsic<T>>::copy(n,&D,zero,A.head(),one);
+    return A;
+  }
+
+  template <typename T>
+  typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __plus(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+         const typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
+    assert((bool)A);
+    long n=A.size(),zero=0,one=1;
+    typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type dOne=1.;
+    LargeArrayTypeWrapper<Intrinsic<T>>::axpy(n,dOne,&D,zero,A.head(),one);
+    return A;
+  }
 
   typedef Array<Int,ArrayFormat::LargeData>     ItLargeDataArray;
   typedef Array<Float,ArrayFormat::LargeData>   FtLargeDataArray;
@@ -320,21 +363,17 @@ namespace mysimulator {
 
   template <>
   ItLargeDataArray& ItLargeDataArray::operator=(const int& D) {
-    static_assert(sizeof(int)==sizeof(float),
-                  "Sizes of int and float Needs to Be Equal!\n");
-    assert((bool)(*this));
-    long n=size(), one=1, zero=0;
-    scopy_(&n,reinterpret_cast<float*>(const_cast<int*>(&D)),&zero,
-              reinterpret_cast<float*>(this->head()),&one);
-    return *this;
+    return __assign<int>(*this,D);
+  }
+
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator=(const float& D) {
+    return __assign<float>(*this,D);
   }
 
   template <>
   DbLargeDataArray& DbLargeDataArray::operator=(const double& D) {
-    assert((bool)(*this));
-    long n=size(), one=1, zero=0;
-    dcopy_(&n,const_cast<double*>(&D),&zero,this->head(),&one);
-    return *this;
+    return __assign<double>(*this,D);
   }
 
   template <>
@@ -357,18 +396,12 @@ namespace mysimulator {
   }
 
   template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(const float& D) {
+    return __plus<float>(*this,D);
+  }
+  template <>
   DbLargeDataArray& DbLargeDataArray::operator+=(const double& D) {
-    assert((bool)(*this));
-    long n=size(), one=1, zero=0;
-    static double E=1.;
-    daxpy_(
-        &n,
-        &E,
-        const_cast<double*>(&D),
-        &zero,
-        this->head(),
-        &one);
-    return *this;
+    return __plus<double>(*this,D);
   }
 
 }
