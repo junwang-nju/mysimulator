@@ -318,6 +318,14 @@ namespace mysimulator {
         saxpy_(&n,const_cast<value_type*>(&D),const_cast<value_type*>(A),&dA,
                B,&dB);
       }
+      static void tbmv(char ul,char ts,char dg,
+                       long n,long k,const value_type* A,long lda,
+                       value_type* B,long dB) {
+        stbmv_(&ul,&ts,&dg,&n,&k,const_cast<value_type*>(A),&lda,B,&dB);
+      }
+      static void scale(long n,const value_type& D,value_type* A,long dA) {
+        sscal_(&n,const_cast<value_type*>(&D),A,&dA);
+      }
   };
 
   template <>
@@ -333,6 +341,14 @@ namespace mysimulator {
                        value_type* B,long dB) {
         daxpy_(&n,const_cast<value_type*>(&D),const_cast<value_type*>(A),&dA,
                B,&dB);
+      }
+      static void tbmv(char ul,char ts,char dg,
+                       long n,long k,const value_type* A,long lda,
+                       value_type* B,long dB) {
+        dtbmv_(&ul,&ts,&dg,&n,&k,const_cast<value_type*>(A),&lda,B,&dB);
+      }
+      static void scale(long n,const value_type& D,value_type* A,long dA) {
+        dscal_(&n,const_cast<value_type*>(&D),A,&dA);
       }
   };
 
@@ -367,6 +383,30 @@ namespace mysimulator {
     assert(A.size()<=B.size());
     long n=A.size(),one=1;
     LargeArrayTypeWrapper<Intrinsic<T>>::axpy(n,D,B.head(),one,A.head(),one);
+    return A;
+  }
+
+  template <typename T>
+  typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __scale(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+          const typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type& D) {
+    assert((bool)A);
+    long n=A.size(),one=1;
+    LargeArrayTypeWrapper<Intrinsic<T>>::scale(n,D,A.head(),one);
+    return A;
+  }
+
+  template <typename T>
+  typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __scale(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+          const typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& B) {
+    assert((bool)A);
+    assert((bool)B);
+    assert(A.size()<=B.size());
+    char FG[]="LNN";
+    long n=A.size(),zero=0,one=1;
+    LargeArrayTypeWrapper<Intrinsic<T>>::tbmv(FG[0],FG[1],FG[2],n,zero,
+                                              B.head(),one,A.head(),one);
     return A;
   }
 
@@ -442,26 +482,36 @@ namespace mysimulator {
 
   template <>
   FtLargeDataArray& FtLargeDataArray::operator*=(const float& D) {
-    float fac=D-1.;
-    return __plus<float>(*this,fac,*this);
+    return __scale<float>(*this,D);
   }
 
   template <>
   DbLargeDataArray& DbLargeDataArray::operator*=(const double& D) {
-    double fac=D-1.;
-    return __plus<double>(*this,fac,*this);
+    return __scale<double>(*this,D);
+  }
+
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator*=(
+      const ArrayExpression<FtLargeDataArray,float>& A) {
+    return __scale<float>(*this,(FtLargeDataArray const&)A);
+  }
+
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator*=(
+      const ArrayExpression<DbLargeDataArray,double>& A) {
+    return __scale<double>(*this,(DbLargeDataArray const&)A);
   }
 
   template <>
   FtLargeDataArray& FtLargeDataArray::operator/=(const float& D) {
-    float fac=1./D-1;
-    return __plus<float>(*this,fac,*this);
+    return operator*=(1./D);
   }
 
   template <>
   DbLargeDataArray& DbLargeDataArray::operator/=(const double& D) {
-    double fac=1./D-1;
-    return __plus<double>(*this,fac,*this);
+    return operator*=(1./D);
   }
 
 }
