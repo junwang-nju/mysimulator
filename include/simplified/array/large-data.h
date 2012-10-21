@@ -502,6 +502,13 @@ namespace mysimulator {
       static void scale(long n,const value_type& D,value_type* A,long dA) {
         sscal_(&n,const_cast<value_type*>(&D),A,&dA);
       }
+      static void sbmv(char ul,long n,long k,const value_type& AP,
+                       const value_type* A,long lda,const value_type* X,long dX,
+                       const value_type& BT,value_type* Y,long dY) {
+        ssbmv_(&ul,&n,&k,const_cast<value_type*>(&AP),
+               const_cast<value_type*>(A),&lda,const_cast<value_type*>(X),&dX,
+               const_cast<value_type*>(&BT),Y,&dY);
+      }
   };
 
   template <>
@@ -525,6 +532,13 @@ namespace mysimulator {
       }
       static void scale(long n,const value_type& D,value_type* A,long dA) {
         dscal_(&n,const_cast<value_type*>(&D),A,&dA);
+      }
+      static void sbmv(char ul,long n,long k,const value_type& AP,
+                       const value_type* A,long lda,const value_type* X,long dX,
+                       const value_type& BT,value_type* Y,long dY) {
+        dsbmv_(&ul,&n,&k,const_cast<value_type*>(&AP),
+               const_cast<value_type*>(A),&lda,const_cast<value_type*>(X),&dX,
+               const_cast<value_type*>(&BT),Y,&dY);
       }
   };
 
@@ -573,6 +587,24 @@ namespace mysimulator {
     long n=A.size(),one=1;
     LargeArrayTypeWrapper<Intrinsic<T>>::axpy(n,D,B.head(),one,A.head(),one);
     return A;
+  }
+
+  template <typename T>
+  typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type&
+  __plus(typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& A,
+         const typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type& D,
+         const typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& F,
+         const typename LargeArrayTypeWrapper<Intrinsic<T>>::array_type& B) {
+    assert((bool)A);
+    assert((bool)F);
+    assert((bool)B);
+    assert(A.size()<=F.size());
+    assert(A.size()<=B.size());
+    char FG='L';
+    long n=A.size(),zero=0,one=1;
+    typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type dOne=1.;
+    LargeArrayTypeWrapper<Intrinsic<T>>::sbmv(FG,n,zero,D,F.head(),one,B.head(),
+                                              one,dOne,A.head(),one);
   }
 
   template <typename T>
@@ -725,7 +757,6 @@ namespace mysimulator {
   template <>
   DbLargeDataArray& DbLargeDataArray::operator+=(
       const ArrayExpression<ArrayMul<Double,DbLargeDataArray>,double>& EA) {
-    printf("---1--------\n");
     typedef ArrayMul<Double,DbLargeDataArray>   SType;
     return __plus<double>(*this,((SType const&)EA).first(),
                                 ((SType const&)EA).second());
@@ -734,7 +765,6 @@ namespace mysimulator {
   template <>
   DbLargeDataArray& DbLargeDataArray::operator+=(
       const ArrayExpression<ArrayMul<Double,DbLargeDataArray>,double>&& EA) {
-    printf("---2--------\n");
     typedef ArrayMul<Double,DbLargeDataArray>   SType;
     return __plus<double>(*this,((SType const&)EA).first(),
                                 ((SType const&)EA).second());
@@ -771,6 +801,319 @@ namespace mysimulator {
     typedef ArrayDiv<DbLargeDataArray,Double>   SType;
     return __plus<double>(*this,1./((SType const&)EA).second(),
                                 ((SType const&)EA).first());
+  }
+
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<ArrayMul<FtLargeDataArray,FtLargeDataArray>,
+                            float>& EA) {
+    typedef ArrayMul<FtLargeDataArray,FtLargeDataArray>   SType;
+    float fOne=1.;
+    return __plus<float>(*this,fOne,((SType const&)EA).first(),
+                                    ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<ArrayMul<FtLargeDataArray,FtLargeDataArray>,
+                            float>&& EA) {
+    typedef ArrayMul<FtLargeDataArray,FtLargeDataArray>   SType;
+    float fOne=1.;
+    return __plus<float>(*this,fOne,((SType const&)EA).first(),
+                                    ((SType const&)EA).second());
+  }
+
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<Float,
+                       ArrayMul<FtLargeDataArray,FtLargeDataArray>>,
+              float>& EA) {
+    typedef ArrayMul<FtLargeDataArray,FtLargeDataArray> MType;
+    typedef ArrayMul<Float,MType> SType;
+    return __plus<float>(*this,((SType const&)EA).first(),
+                               ((SType const&)EA).second().first(),
+                               ((SType const&)EA).second().second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<Float,
+                       ArrayMul<FtLargeDataArray,FtLargeDataArray>>,
+              float>&& EA) {
+    printf("========ZZZZ=============\n");
+    typedef ArrayMul<FtLargeDataArray,FtLargeDataArray> MType;
+    typedef ArrayMul<Float,MType> SType;
+    return __plus<float>(*this,((SType const&)EA).first(),
+                               ((SType const&)EA).second().first(),
+                               ((SType const&)EA).second().second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<Float,FtLargeDataArray>,
+                       FtLargeDataArray>,float>& EA) {
+    typedef ArrayMul<Float,FtLargeDataArray> MType;
+    typedef ArrayMul<MType,FtLargeDataArray>   SType;
+    return __plus<float>(*this,((SType const&)EA).first().first(),
+                               ((SType const&)EA).first().second(),
+                               ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<Float,FtLargeDataArray>,
+                       FtLargeDataArray>,float>&& EA) {
+    typedef ArrayMul<Float,FtLargeDataArray> MType;
+    typedef ArrayMul<MType,FtLargeDataArray>   SType;
+    return __plus<float>(*this,((SType const&)EA).first().first(),
+                               ((SType const&)EA).first().second(),
+                               ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<FtLargeDataArray,
+                       ArrayMul<Float,FtLargeDataArray>>,float>& EA) {
+    typedef ArrayMul<Float,FtLargeDataArray>  MType;
+    typedef ArrayMul<FtLargeDataArray,MType>  SType;
+    return __plus<float>(*this,((SType const&)EA).second().first(),
+                               ((SType const&)EA).first(),
+                               ((SType const&)EA).second().second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<FtLargeDataArray,
+                       ArrayMul<Float,FtLargeDataArray>>,float>&& EA) {
+    typedef ArrayMul<Float,FtLargeDataArray>  MType;
+    typedef ArrayMul<FtLargeDataArray,MType>  SType;
+    return __plus<float>(*this,((SType const&)EA).second().first(),
+                               ((SType const&)EA).first(),
+                               ((SType const&)EA).second().second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<FtLargeDataArray,Float>,
+                       FtLargeDataArray>,float>& EA) {
+    typedef ArrayMul<FtLargeDataArray,Float>  MType;
+    typedef ArrayMul<MType,FtLargeDataArray>  SType;
+    return __plus<float>(*this,((SType const&)EA).first().second(),
+                               ((SType const&)EA).first().first(),
+                               ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<FtLargeDataArray,Float>,
+                       FtLargeDataArray>,float>&& EA) {
+    typedef ArrayMul<FtLargeDataArray,Float>  MType;
+    typedef ArrayMul<MType,FtLargeDataArray>  SType;
+    return __plus<float>(*this,((SType const&)EA).first().second(),
+                               ((SType const&)EA).first().first(),
+                               ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<FtLargeDataArray,
+                       ArrayMul<FtLargeDataArray,Float>>,float>& EA) {
+    typedef ArrayMul<FtLargeDataArray,Float>  MType;
+    typedef ArrayMul<FtLargeDataArray,MType>  SType;
+    return __plus<float>(*this,((SType const&)EA).second().second(),
+                               ((SType const&)EA).first(),
+                               ((SType const&)EA).second().first());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<FtLargeDataArray,
+                       ArrayMul<FtLargeDataArray,Float>>,float>&& EA) {
+    typedef ArrayMul<FtLargeDataArray,Float>  MType;
+    typedef ArrayMul<FtLargeDataArray,MType>  SType;
+    return __plus<float>(*this,((SType const&)EA).second().second(),
+                               ((SType const&)EA).first(),
+                               ((SType const&)EA).second().first());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<FtLargeDataArray,FtLargeDataArray>,
+                       Float>,float>& EA) {
+    typedef ArrayMul<FtLargeDataArray,FtLargeDataArray> MType;
+    typedef ArrayMul<MType,Float>   SType;
+    return __plus<float>(*this,((SType const&)EA).second(),
+                               ((SType const&)EA).first().first(),
+                               ((SType const&)EA).first().second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<FtLargeDataArray,FtLargeDataArray>,
+                       Float>,float>&& EA) {
+    typedef ArrayMul<FtLargeDataArray,FtLargeDataArray> MType;
+    typedef ArrayMul<MType,Float>   SType;
+    return __plus<float>(*this,((SType const&)EA).second(),
+                               ((SType const&)EA).first().first(),
+                               ((SType const&)EA).first().second());
+  }
+
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<ArrayMul<DbLargeDataArray,DbLargeDataArray>,
+                            double>& EA) {
+    typedef ArrayMul<DbLargeDataArray,DbLargeDataArray> SType;
+    double dOne=1.;
+    return __plus<double>(*this,dOne,((SType const&)EA).first(),
+                                     ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<ArrayMul<DbLargeDataArray,DbLargeDataArray>,
+                            double>&& EA) {
+    typedef ArrayMul<DbLargeDataArray,DbLargeDataArray> SType;
+    double dOne=1.;
+    return __plus<double>(*this,dOne,((SType const&)EA).first(),
+                                     ((SType const&)EA).second());
+  }
+
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<Double,
+                       ArrayMul<DbLargeDataArray,DbLargeDataArray>>,
+              double>& EA) {
+    typedef ArrayMul<DbLargeDataArray,DbLargeDataArray> MType;
+    typedef ArrayMul<Double,MType>    SType;
+    return __plus<double>(*this,((SType const&)EA).first(),
+                                ((SType const&)EA).second().first(),
+                                ((SType const&)EA).second().second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<Double,
+                       ArrayMul<DbLargeDataArray,DbLargeDataArray>>,
+              double>&& EA) {
+    typedef ArrayMul<DbLargeDataArray,DbLargeDataArray> MType;
+    typedef ArrayMul<Double,MType>    SType;
+    return __plus<double>(*this,((SType const&)EA).first(),
+                                ((SType const&)EA).second().first(),
+                                ((SType const&)EA).second().second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<Double,DbLargeDataArray>,
+                       DbLargeDataArray>,double>& EA) {
+    typedef ArrayMul<Double,DbLargeDataArray> MType;
+    typedef ArrayMul<MType,DbLargeDataArray>  SType;
+    return __plus<double>(*this,((SType const&)EA).first().first(),
+                                ((SType const&)EA).first().second(),
+                                ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<Double,DbLargeDataArray>,
+                       DbLargeDataArray>,double>&& EA) {
+    typedef ArrayMul<Double,DbLargeDataArray> MType;
+    typedef ArrayMul<MType,DbLargeDataArray>  SType;
+    return __plus<double>(*this,((SType const&)EA).first().first(),
+                                ((SType const&)EA).first().second(),
+                                ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<DbLargeDataArray,
+                       ArrayMul<Double,DbLargeDataArray>>,double>& EA) {
+    typedef ArrayMul<Double,DbLargeDataArray> MType;
+    typedef ArrayMul<DbLargeDataArray,MType>  SType;
+    return __plus<double>(*this,((SType const&)EA).second().first(),
+                                ((SType const&)EA).first(),
+                                ((SType const&)EA).second().second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<DbLargeDataArray,
+                       ArrayMul<Double,DbLargeDataArray>>,double>&& EA) {
+    typedef ArrayMul<Double,DbLargeDataArray> MType;
+    typedef ArrayMul<DbLargeDataArray,MType>  SType;
+    return __plus<double>(*this,((SType const&)EA).second().first(),
+                                ((SType const&)EA).first(),
+                                ((SType const&)EA).second().second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<DbLargeDataArray,
+                       ArrayMul<DbLargeDataArray,Double>>,double>& EA) {
+    typedef ArrayMul<DbLargeDataArray,Double>   MType;
+    typedef ArrayMul<DbLargeDataArray,MType>    SType;
+    return __plus<double>(*this,((SType const&)EA).second().second(),
+                                ((SType const&)EA).first(),
+                                ((SType const&)EA).second().first());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<DbLargeDataArray,
+                       ArrayMul<DbLargeDataArray,Double>>,double>&& EA) {
+    typedef ArrayMul<DbLargeDataArray,Double>   MType;
+    typedef ArrayMul<DbLargeDataArray,MType>    SType;
+    return __plus<double>(*this,((SType const&)EA).second().second(),
+                                ((SType const&)EA).first(),
+                                ((SType const&)EA).second().first());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<DbLargeDataArray,DbLargeDataArray>,
+                       Double>,double>& EA) {
+    typedef ArrayMul<DbLargeDataArray,DbLargeDataArray> MType;
+    typedef ArrayMul<MType,Double>  SType;
+    return __plus<double>(*this,((SType const&)EA).second(),
+                                ((SType const&)EA).first().first(),
+                                ((SType const&)EA).first().second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<
+              ArrayMul<ArrayMul<DbLargeDataArray,DbLargeDataArray>,
+                       Double>,double>&& EA) {
+    typedef ArrayMul<DbLargeDataArray,DbLargeDataArray> MType;
+    typedef ArrayMul<MType,Double>  SType;
+    return __plus<double>(*this,((SType const&)EA).second(),
+                                ((SType const&)EA).first().first(),
+                                ((SType const&)EA).first().second());
   }
 
   template <>
