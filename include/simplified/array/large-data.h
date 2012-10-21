@@ -706,6 +706,23 @@ namespace mysimulator {
 
   template <>
   template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<FtLargeDataArray,Float>,float>& EA) {
+    typedef ArrayDiv<FtLargeDataArray,Float>  SType;
+    return __plus<float>(*this,1./((SType const&)EA).second(),
+                               ((SType const&)EA).first());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<FtLargeDataArray,Float>,float>&& EA) {
+    typedef ArrayDiv<FtLargeDataArray,Float>  SType;
+    return __plus<float>(*this,1./((SType const&)EA).second(),
+                               ((SType const&)EA).first());
+  }
+
+  template <>
+  template <>
   DbLargeDataArray& DbLargeDataArray::operator+=(
       const ArrayExpression<ArrayMul<Double,DbLargeDataArray>,double>& EA) {
     printf("---1--------\n");
@@ -740,6 +757,23 @@ namespace mysimulator {
   }
 
   template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<DbLargeDataArray,Double>,double>& EA) {
+    typedef ArrayDiv<DbLargeDataArray,Double>   SType;
+    return __plus<double>(*this,1./((SType const&)EA).second(),
+                                ((SType const&)EA).first());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator+=(
+      const ArrayExpression<ArrayDiv<DbLargeDataArray,Double>,double>&& EA) {
+    typedef ArrayDiv<DbLargeDataArray,Double>   SType;
+    return __plus<double>(*this,1./((SType const&)EA).second(),
+                                ((SType const&)EA).first());
+  }
+
+  template <>
   FtLargeDataArray& FtLargeDataArray::operator-=(const float& D) {
     return __plus<float>(*this,-D);
   }
@@ -763,6 +797,55 @@ namespace mysimulator {
     float fNOne=-1.;
     return __plus<float>(*this,fNOne,(FtLargeDataArray const&)EA);
   }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Float,FtLargeDataArray>,float>& EA) {
+    typedef ArrayMul<Float,FtLargeDataArray>  SType;
+    return __plus<float>(*this,-((SType const&)EA).first(),
+                               ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Float,FtLargeDataArray>,float>&& EA) {
+    typedef ArrayMul<Float,FtLargeDataArray>  SType;
+    return __plus<float>(*this,-((SType const&)EA).first(),
+                               ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(
+      const ArrayExpression<ArrayMul<FtLargeDataArray,Float>,float>& EA) {
+    typedef ArrayMul<FtLargeDataArray,Float>    SType;
+    return __plus<float>(*this,-((SType const&)EA).second(),
+                               ((SType const&)EA).first());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(
+      const ArrayExpression<ArrayMul<FtLargeDataArray,Float>,float>&& EA) {
+    typedef ArrayMul<FtLargeDataArray,Float>    SType;
+    return __plus<float>(*this,-((SType const&)EA).second(),
+                               ((SType const&)EA).first());
+  }
+
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<FtLargeDataArray,Float>,float>& EA) {
+    typedef ArrayDiv<FtLargeDataArray,Float>  SType;
+    return __plus<float>(*this,-1./((SType const&)EA).second(),
+                               ((SType const&)EA).first());
+  }
+  template <>
+  template <>
+  FtLargeDataArray& FtLargeDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<FtLargeDataArray,Float>,float>&& EA) {
+    typedef ArrayDiv<FtLargeDataArray,Float>  SType;
+    return __plus<float>(*this,-1./((SType const&)EA).second(),
+                               ((SType const&)EA).first());
+  }
 
   template <>
   template <>
@@ -777,6 +860,56 @@ namespace mysimulator {
       const ArrayExpression<DbLargeDataArray,double>&& EA) {
     double dNOne=-1.;
     return __plus<double>(*this,dNOne,(DbLargeDataArray const&)EA);
+  }
+
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Double,DbLargeDataArray>,double>& EA) {
+    typedef ArrayMul<Double,DbLargeDataArray>   SType;
+    return __plus<double>(*this,-((SType const&)EA).first(),
+                                ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(
+      const ArrayExpression<ArrayMul<Double,DbLargeDataArray>,double>&& EA) {
+    typedef ArrayMul<Double,DbLargeDataArray>   SType;
+    return __plus<double>(*this,-((SType const&)EA).first(),
+                                ((SType const&)EA).second());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(
+      const ArrayExpression<ArrayMul<DbLargeDataArray,Double>,double>& EA) {
+    typedef ArrayMul<DbLargeDataArray,Double>   SType;
+    return __plus<double>(*this,-((SType const&)EA).second(),
+                                ((SType const&)EA).first());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(
+      const ArrayExpression<ArrayMul<DbLargeDataArray,Double>,double>&& EA) {
+    typedef ArrayMul<DbLargeDataArray,Double>   SType;
+    return __plus<double>(*this,-((SType const&)EA).second(),
+                                ((SType const&)EA).first());
+  }
+
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<DbLargeDataArray,Double>,double>& EA) {
+    typedef ArrayDiv<DbLargeDataArray,Double>   SType;
+    return __plus<double>(*this,-1./((SType const&)EA).second(),
+                                ((SType const&)EA).first());
+  }
+  template <>
+  template <>
+  DbLargeDataArray& DbLargeDataArray::operator-=(
+      const ArrayExpression<ArrayDiv<DbLargeDataArray,Double>,double>&& EA) {
+    typedef ArrayDiv<DbLargeDataArray,Double>   SType;
+    return __plus<double>(*this,-1./((SType const&)EA).second(),
+                                ((SType const&)EA).first());
   }
 
   template <>
