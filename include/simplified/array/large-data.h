@@ -605,6 +605,7 @@ namespace mysimulator {
     typename LargeArrayTypeWrapper<Intrinsic<T>>::value_type dOne=1.;
     LargeArrayTypeWrapper<Intrinsic<T>>::sbmv(FG,n,zero,D,F.head(),one,B.head(),
                                               one,dOne,A.head(),one);
+    return A;
   }
 
   template <typename T>

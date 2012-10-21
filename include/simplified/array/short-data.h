@@ -619,6 +619,7 @@ namespace mysimulator {
       *p=ShortArrayTypeWrapper<Intrinsic<T>>::substract128(*p,u);
       ++p;
     }
+    return A;
   }
 
   template <typename T>
@@ -1007,6 +1008,7 @@ namespace mysimulator {
               ((AType const&)E).first());
     T128 *q=reinterpret_cast<T128*>(((AType const&)E).second().head());
     for(;p!=e;) { *p=f(*p,g(u,*(q++))); ++p; }
+    return A;
   }
   template <typename T,template<typename,typename> class ArrayOp>
   typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
@@ -1035,6 +1037,7 @@ namespace mysimulator {
               ((AType const&)E).first());
     T128 *q=reinterpret_cast<T128*>(((AType const&)E).second().head());
     for(;p!=e;) { *p=f(*p,g(u,*(q++))); ++p; }
+    return A;
   }
   template <typename T,template<typename,typename> class ArrayOp>
   typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
@@ -1063,6 +1066,7 @@ namespace mysimulator {
               ((AType const&)E).second());
     T128 *q=reinterpret_cast<T128*>(((AType const&)E).first().head());
     for(;p!=e;) { *p=f(*p,g(*(q++),u)); ++p; }
+    return A;
   }
   template <typename T,template<typename,typename> class ArrayOp>
   typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
@@ -1091,6 +1095,7 @@ namespace mysimulator {
               ((AType const&)E).second());
     T128 *q=reinterpret_cast<T128*>(((AType const&)E).first().head());
     for(;p!=e;) { *p=f(*p,g(*(q++),u)); ++p; }
+    return A;
   }
   template <typename T,template<typename,typename> class ArrayOp>
   typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
@@ -1118,6 +1123,7 @@ namespace mysimulator {
     T128 *q=reinterpret_cast<T128*>(((AType const&)E).first().head());
     T128 *r=reinterpret_cast<T128*>(((AType const&)E).second().head());
     for(;p!=e;) { *p=f(*p,g(*(q++),*(r++))); ++p; }
+    return A;
   }
   template <typename T,template<typename,typename> class ArrayOp>
   typename ShortArrayTypeWrapper<Intrinsic<T>>::array_type&
@@ -1145,6 +1151,7 @@ namespace mysimulator {
     T128 *q=reinterpret_cast<T128*>(((AType const&)E).first().head());
     T128 *r=reinterpret_cast<T128*>(((AType const&)E).second().head());
     for(;p!=e;) { *p=f(*p,g(*(q++),*(r++))); ++p; }
+    return A;
   }
 
   template <>
