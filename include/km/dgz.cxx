@@ -181,7 +181,7 @@ int main() {
     for(unsigned int i=0;i<NUsed;++i) {
       MI=UsedID[i];
       for(unsigned int k=0;k<3;++k) 
-        S.Location()[MI][k]+=Step*GT[MI][k];
+        S.Location()[MI][k]+=1e-5/ZT*GT[MI][k];
     }
     ZT=GetGT(S,Hess,N,NB,GT,Used);
     cout<<ZT<<endl;
