@@ -238,6 +238,7 @@ int main() {
   NUsed=1+9+16;
   NUsed=1+9+16+19;
   NUsed=1+9+16+19+16;
+  NUsed=1+9+16+19+16+4;
   //NUsed=1+9+16+20+16;
   //NUsed=1+9+16+20+16+3;
   //NUsed=1+9+14+15+14;
@@ -310,10 +311,10 @@ int main() {
   Used[59]=1;
   Used[60]=1;
   // ----
-  //Used[1]=1;
-  //Used[15]=1;
-  //Used[54]=1;
-  //Used[55]=1;
+  Used[1]=1;
+  Used[15]=1;
+  Used[54]=1;
+  Used[55]=1;
   // ----
   //for(unsigned int i=1;i<=65;++i)  Used[i]=1;
   for(unsigned int i=1,n=0;i<N-1;++i)
