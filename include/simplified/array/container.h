@@ -69,7 +69,7 @@ namespace mysimulator {
         this->reset();
         size_type byte_size=size*sizeof(value_type);
         size_type alloc_size=
-          (byte_size&(~0xFU))+((byte_size&0xFU)==0?0:0x10U-(byte_size&0xFU));
+          (byte_size&(~0xFU))+((byte_size&0xFU)==0?0:0x10U);
         _n128=((byte_size&0xFU)==0?0:1)+(byte_size>>4);
         this->_pdata.reset(
             reinterpret_cast<pointer>(__aligned_malloc(alloc_size)),
