@@ -6,26 +6,20 @@
 
 namespace mysimulator {
 
-  template <typename T,ArrayFormat AF>
-  class ArrayContainer {
-    public:
-      ArrayContainer() = delete;
-  };
-
   template <typename T>
-  class ArrayContainer<T,ArrayFormat::Regular>
-      : public ArrayContainerBase<T,ArrayFormat::Regular> {
+  class ArrayContainer : public ArrayContainerBase<T> {
     
     public:
 
-      typedef ArrayContainer<T,ArrayFormat::Regular>        Type;
-      typedef ArrayContainerBase<T,ArrayFormat::Regular>    ParentType;
+      typedef ArrayContainer<T>        Type;
+      typedef ArrayContainerBase<T>    ParentType;
       typedef typename ParentType::value_type value_type;
       typedef unsigned int size_type;
 
       ArrayContainer() : ParentType() {}
       ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
       ArrayContainer(const Type&) = delete;
+      ArrayContainer(Type&&) = delete;
       virtual ~ArrayContainer() { this->reset(); }
 
       virtual void allocate(size_type size) override {
@@ -43,13 +37,12 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  class ArrayContainer<Intrinsic<T>,ArrayFormat::Data>
-      : public ArrayContainerBase<Intrinsic<T>,ArrayFormat::Data> {
+  class ArrayContainer<Intrinsic<T>> : public ArrayContainerBase<Intrinsic<T>> {
 
     public:
 
-      typedef ArrayContainer<Intrinsic<T>,ArrayFormat::Data>    Type;
-      typedef ArrayContainerBase<Intrinsic<T>,ArrayFormat::Data>   ParentType;
+      typedef ArrayContainer<Intrinsic<T>>    Type;
+      typedef ArrayContainerBase<Intrinsic<T>>   ParentType;
       typedef typename ParentType::value_type value_type;
       typedef unsigned int size_type;
       typedef value_type* pointer;
@@ -63,6 +56,7 @@ namespace mysimulator {
       ArrayContainer() : ParentType(),_n128(0U) {}
       ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
       ArrayContainer(const Type&) = delete;
+      ArrayContainer(Type&&) = delete;
       virtual ~ArrayContainer() { this->reset(); }
 
       virtual void allocate(size_type size) override {
@@ -77,52 +71,6 @@ namespace mysimulator {
         this->_ndata=size;
       }
       unsigned int size128() const { return _n128; }
-
-  };
-
-  static const unsigned int ArrayByteBoundary=400;
-
-  template <typename T>
-  class ArrayContainer<T,ArrayFormat::ShortData>
-      : public ArrayContainer<T,ArrayFormat::Data> {
-
-    public:
-
-      typedef ArrayContainer<T,ArrayFormat::ShortData>  Type;
-      typedef ArrayContainer<T,ArrayFormat::Data> ParentType;
-      typedef unsigned int size_type;
-
-      ArrayContainer() : ParentType() {}
-      ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
-      ArrayContainer(const Type&) = delete;
-      ~ArrayContainer() { this->reset(); }
-
-      virtual void allocate(size_type size) override {
-        assert(size<=ArrayByteBoundary);
-        ParentType::allocate(size);
-      }
-
-  };
-
-  template <typename T>
-  class ArrayContainer<T,ArrayFormat::LargeData>
-      : public ArrayContainer<T,ArrayFormat::Data> {
-
-    public:
-
-      typedef ArrayContainer<T,ArrayFormat::LargeData>  Type;
-      typedef ArrayContainer<T,ArrayFormat::Data> ParentType;
-      typedef unsigned int size_type;
-
-      ArrayContainer() : ParentType() {}
-      ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
-      ArrayContainer(const Type&) = delete;
-      ~ArrayContainer() { this->reset(); }
-
-      virtual void allocate(size_type size) {
-        assert(size>ArrayByteBoundary);
-        ParentType::allocate(size);
-      }
 
   };
 

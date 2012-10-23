@@ -9,14 +9,12 @@
 
 namespace mysimulator {
 
-  enum class ArrayFormat { Regular, Data, ShortData, LargeData };
-
-  template <typename T,ArrayFormat AF=ArrayFormat::Regular>
+  template <typename T>
   class ArrayContainerBase : private ArrayContentSelector<T> {
 
     public:
 
-      typedef ArrayContainerBase<T,AF>  Type;
+      typedef ArrayContainerBase<T>  Type;
       typedef typename ArrayContentSelector<T>::value_type value_type;
       typedef value_type* pointer;
       typedef value_type& reference;
@@ -36,6 +34,7 @@ namespace mysimulator {
         allocate(size);
       }
       ArrayContainerBase(const Type&) = delete;
+      ArrayContainerBase(Type&&) = delete;
       virtual ~ArrayContainerBase() { reset(); }
 
       operator bool() const { return (bool)_pdata && (_ndata>0U); }
@@ -52,22 +51,23 @@ namespace mysimulator {
       const_pointer end() const { return head()+_ndata; }
 
       Type& operator=(const Type&) = delete;
-      template <typename Y,ArrayFormat YAF>
-      Type& operator=(const ArrayContainerBase<Y,YAF>&) = delete;
+      Type& operator=(Type&&) = delete;
+      template <typename Y>
+      Type& operator=(const ArrayContainerBase<Y>&) = delete;
 
       virtual void allocate(size_type size) = 0;
 
       void reset() { _pdata.reset(); _ndata=0U; }
-      template <typename Y,ArrayFormat YAF>
-      void imprint_structure(const ArrayContainerBase<Y,YAF>& AC) {
+      template <typename Y>
+      void imprint_structure(const ArrayContainerBase<Y>& AC) {
         assert((bool)AC);  this->allocate(AC.size());
       }
-      template <typename Y,ArrayFormat YAF>
-      void imprint(const ArrayContainerBase<Y,YAF>& AC) {
+      template <typename Y>
+      void imprint(const ArrayContainerBase<Y>& AC) {
         imprint_structure(AC);
         pointer p=head();
         const_pointer e=end();
-        typename ArrayContainerBase<Y,YAF>::pointer q=AC.head();
+        typename ArrayContainerBase<Y>::pointer q=AC.head();
         for(;p!=e;) __imprint(*(p++),*(q++));
       }
       void refer(const Type& AC) {
@@ -87,9 +87,8 @@ namespace mysimulator {
 
   };
 
-  template <typename T,ArrayFormat AF,typename Y,ArrayFormat YAF>
-  void __imprint(ArrayContainerBase<T,AF>& AC,
-                 const ArrayContainerBase<Y,YAF>& YAC) {
+  template <typename T,typename Y>
+  void __imprint(ArrayContainerBase<T>& AC,const ArrayContainerBase<Y>& YAC) {
     AC.imprint(YAC);
   }
 
@@ -97,9 +96,9 @@ namespace mysimulator {
 
 namespace std {
 
-  template <typename T,mysimulator::ArrayFormat AF>
-  void swap(mysimulator::ArrayContainerBase<T,AF>& AC1,
-            mysimulator::ArrayContainerBase<T,AF>& AC2) {
+  template <typename T>
+  void swap(mysimulator::ArrayContainerBase<T>& AC1,
+            mysimulator::ArrayContainerBase<T>& AC2) {
     AC1.swap(AC2);
   }
 
