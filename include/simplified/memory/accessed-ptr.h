@@ -37,25 +37,12 @@ namespace mysimulator {
       accessed_ptr() : ptr(nullptr), count(nullptr),
                        part_flag(AccessContentName::Unassigned),
                        del(operator delete) {}
-      accessed_ptr(const_pointer PTR, const_count_pointer icount,
-                   AccessContentName PF=AccessContentName::GlobalUsed,
-                   deleter idel=operator delete)
-        : ptr(const_cast<pointer>(PTR)),
-          count(const_cast<count_pointer>(icount)),part_flag(PF), del(idel) {
-        assert(PTR!=nullptr);
-        IncCount();
-      }
-      accessed_ptr(const_pointer PTR, deleter idel=operator delete)
-        : accessed_ptr(PTR,new memory_access_count,
-                       AccessContentName::GlobalUsed,idel) {}
-      accessed_ptr(const Type& APTR,unsigned int BgIdx=0)
-        : accessed_ptr(APTR.get()+BgIdx,APTR.count,
-                       BgIdx==0?AccessContentName::GlobalUsed:
-                                AccessContentName::PartUsed,
-                       APTR.del) {}
+      accessed_ptr(const Type& APTR) : accessed_ptr() { reset(APTR); }
+      accessed_ptr(Type&& APTR) : accessed_ptr() { swap(APTR); }
       ~accessed_ptr() { reset(); }
 
       Type& operator=(const Type& APTR) { reset(APTR); return *this; }
+      Type& operator=(const Type&& APTR) { swap(APTR); return *this; }
 
       void reset() {
         if((bool)(*this)) {
@@ -92,7 +79,8 @@ namespace mysimulator {
         assert((bool)APTR);
         reset(
             APTR.get()+BgIdx,APTR.count,
-            BgIdx==0?AccessContentName::GlobalUsed:AccessContentName::PartUsed,
+            (APTR.part_flag==AccessContentName::GlobalUsed&&BgIdx==0)?
+              AccessContentName::GlobalUsed:AccessContentName::PartUsed,
             APTR.del);
       }
       void set_deleter(deleter idel) { del=idel; }

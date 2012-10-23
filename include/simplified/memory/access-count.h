@@ -3,6 +3,7 @@
 #define _Memory_Access_Count_H_
 
 #include <cassert>
+#include <cstdio>
 
 namespace mysimulator {
 
@@ -21,9 +22,11 @@ namespace mysimulator {
 
       memory_access_count() : count(0), part_count(0) {}
       memory_access_count(const Type&) = delete;
+      memory_access_count(Type&&) = delete;
       ~memory_access_count() { reset(); }
 
       Type& operator=(const Type&) = delete;
+      Type& operator=(Type&&) = delete;
 
       operator bool() const { return count>0; }
       bool IsOnly() const { return count==1; }
