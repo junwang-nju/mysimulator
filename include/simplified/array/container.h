@@ -72,7 +72,22 @@ namespace mysimulator {
       }
       unsigned int size128() const { return _n128; }
 
+      void swap(Type& AC) {
+        ParentType::swap(static_cast<ParentType&>(AC));
+        std::swap(_n128,AC._n128);
+      }
+
   };
+
+}
+
+namespace std {
+
+  template <typename T>
+  void swap(mysimulator::ArrayContainer<T>& AC1,
+            mysimulator::ArrayContainer<T>& AC2) {
+    AC1.swap(AC2);
+  }
 
 }
 
