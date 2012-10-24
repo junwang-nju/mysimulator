@@ -3,6 +3,7 @@
 #define _Memory_Accessed_Pointer_H_
 
 #include "memory/access-count.h"
+#include "memory/deleter.h"
 #include <algorithm>
 
 namespace mysimulator {
@@ -36,7 +37,7 @@ namespace mysimulator {
 
       accessed_ptr() : ptr(nullptr), count(nullptr),
                        part_flag(AccessContentName::Unassigned),
-                       del(operator delete) {}
+                       del(_delete_unit<T>) {}
       accessed_ptr(const Type& APTR) : accessed_ptr() { reset(APTR); }
       accessed_ptr(Type&& APTR) : accessed_ptr() { swap(APTR); }
       ~accessed_ptr() { reset(); }
@@ -63,7 +64,7 @@ namespace mysimulator {
       }
       void reset(const_pointer PTR,const_count_pointer icount,
                  AccessContentName PF=AccessContentName::GlobalUsed,
-                 deleter idel=operator delete) {
+                 deleter idel=_delete_unit) {
         assert(PTR!=nullptr);
         reset();
         ptr=const_cast<pointer>(PTR);
@@ -72,7 +73,7 @@ namespace mysimulator {
         del=idel;
         IncCount();
       }
-      void reset(const_pointer PTR,deleter idel=operator delete) {
+      void reset(const_pointer PTR,deleter idel=_delete_unit) {
         reset(PTR,new memory_access_count,AccessContentName::GlobalUsed,idel);
       }
       void reset(const Type& APTR, unsigned int BgIdx=0) {

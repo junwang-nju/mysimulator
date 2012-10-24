@@ -24,7 +24,7 @@ namespace mysimulator {
 
       virtual void allocate(size_type size) override {
         this->reset();
-        this->_pdata.reset(new value_type[size],operator delete[]);
+        this->_pdata.reset(new value_type[size],_delete_array<T>);
         this->_ndata=size;
       }
 
