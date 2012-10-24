@@ -7,18 +7,30 @@
 
 namespace mysimulator {
 
+  template <typename T,bool _vflag=ArrayContentSelector<T>::_has_value>
+  class Array {
+    public:
+      typedef Array<T,_vflag>   Type;
+      Array() = delete;
+      Array(const Type&) = delete;
+      Type& operator=(const Type&) = delete;
+      ~Array() {}
+  };
+
   template <typename T>
-  class Array : public ArrayExpression<Array<T>,T>, public ArrayContainer<T> {
+  class Array<T,true> : public ArrayExpression<Array<T,true>,T>,
+                        public ArrayContainer<T> {
 
     public:
 
-      typedef Array<T>   Type;
+      typedef Array<T,true>   Type;
       typedef ArrayExpression<Type,T> ParentTypeA;
       typedef ArrayContainer<T>       ParentTypeB;
-      typedef typename ParentTypeB::value_type  value_type;
+      typedef typename ParentTypeB::monomer_type  monomer_type;
+      typedef typename ArrayContentSelector<T>::value_type  value_type;
       typedef unsigned int size_type;
-      typedef value_type& reference;
-      typedef const value_type& const_reference;
+      typedef monomer_type& reference;
+      typedef const monomer_type& const_reference;
 
       Array() : ParentTypeA(), ParentTypeB() {}
       Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
@@ -48,7 +60,68 @@ namespace mysimulator {
         return *this;
       }
       Type& operator=(const Type& A) { return operator=<Type,T>(A); }
-      Type& operator=(const T& D) {
+      Type& operator=(const monomer_type& D) {
+        assert((bool)(*this));
+        for(size_type i=0;i<size();++i)   (*this)[i]=D;
+        return *this;
+      }
+      Type& operator=(const value_type& D) {
+        assert((bool)(*this));
+        for(size_type i=0;i<size();++i)   (*this)[i]=D;
+        return *this;
+      }
+      template <typename T1>
+      Type& operator=(const Intrinsic<T1>& D) {
+        return operator=((value_type)((T1)D));
+      }
+
+      void reset() { ParentTypeB::reset(); }
+
+  };
+
+  template <typename T>
+  class Array<T,false> : public ArrayExpression<Array<T,false>,T>,
+                         public ArrayContainer<T> {
+
+    public:
+
+      typedef Array<T,false>   Type;
+      typedef ArrayExpression<Type,T> ParentTypeA;
+      typedef ArrayContainer<T>       ParentTypeB;
+      typedef typename ParentTypeB::monomer_type  monomer_type;
+      typedef unsigned int size_type;
+      typedef monomer_type& reference;
+      typedef const monomer_type& const_reference;
+
+      Array() : ParentTypeA(), ParentTypeB() {}
+      Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
+      Array(const Type& A) : Array(A.size()) { operator=(A); }
+      Array(Type&& A) : Array() {
+        ParentTypeB::swap(static_cast<ParentTypeB>(A));
+      }
+      template <typename E,typename ET>
+      Array(const ArrayExpression<E,ET>& EA) : Array(EA.size()) {
+        operator=(EA);
+      }
+      ~Array() { reset(); }
+
+      operator bool() const { return ParentTypeB::operator bool(); }
+      size_type size() const { return ParentTypeB::size(); }
+      reference operator[](size_type i) { return ParentTypeB::operator[](i); }
+      const_reference operator[](size_type i) const {
+        return ParentTypeB::operator[](i);
+      }
+
+      template <typename E,typename ET>
+      Type& operator=(const ArrayExpression<E,ET>& EA) {
+        assert((bool)(*this));
+        assert((bool)EA);
+        assert(size()<=EA.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]=EA[i];
+        return *this;
+      }
+      Type& operator=(const Type& A) { return operator=<Type,T>(A); }
+      Type& operator=(const monomer_type& D) {
         assert((bool)(*this));
         for(size_type i=0;i<size();++i)   (*this)[i]=D;
         return *this;
@@ -75,19 +148,21 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  class Array<Intrinsic<T>>
+  class Array<Intrinsic<T>,true>
       : public ArrayExpression<Array<Intrinsic<T>>,T>,
         public ArrayContainer<Intrinsic<T>> {
 
     public:
 
-      typedef Array<Intrinsic<T>>           Type;
+      typedef Array<Intrinsic<T>,true>           Type;
       typedef ArrayExpression<Type,T>       ParentTypeA;
       typedef ArrayContainer<Intrinsic<T>>  ParentTypeB;
-      typedef typename ParentTypeB::value_type  value_type;
+      typedef typename ParentTypeB::monomer_type  monomer_type;
+      typedef typename ArrayContentSelector<Intrinsic<T>>::value_type
+              value_type;
       typedef unsigned int size_type;
-      typedef value_type& reference;
-      typedef const value_type& const_reference;
+      typedef monomer_type& reference;
+      typedef const monomer_type& const_reference;
 
       Array() : ParentTypeA(), ParentTypeB() {}
       Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}

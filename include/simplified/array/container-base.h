@@ -15,16 +15,16 @@ namespace mysimulator {
     public:
 
       typedef ArrayContainerBase<T>  Type;
-      typedef typename ArrayContentSelector<T>::value_type value_type;
-      typedef value_type* pointer;
-      typedef value_type& reference;
-      typedef const value_type* const_pointer;
-      typedef const value_type& const_reference;
+      typedef typename ArrayContentSelector<T>::monomer_type monomer_type;
+      typedef monomer_type* pointer;
+      typedef monomer_type& reference;
+      typedef const monomer_type* const_pointer;
+      typedef const monomer_type& const_reference;
       typedef unsigned int size_type;
 
     protected:
 
-      accessed_ptr<value_type> _pdata;
+      accessed_ptr<monomer_type> _pdata;
       size_type                _ndata;
 
     public:

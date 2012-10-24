@@ -13,7 +13,7 @@ namespace mysimulator {
 
       typedef ArrayContainer<T>        Type;
       typedef ArrayContainerBase<T>    ParentType;
-      typedef typename ParentType::value_type value_type;
+      typedef typename ParentType::monomer_type monomer_type;
       typedef unsigned int size_type;
 
       ArrayContainer() : ParentType() {}
@@ -24,7 +24,7 @@ namespace mysimulator {
 
       virtual void allocate(size_type size) override {
         this->reset();
-        this->_pdata.reset(new value_type[size],_delete_array<T>);
+        this->_pdata.reset(new monomer_type[size],_delete_array<T>);
         this->_ndata=size;
       }
 
@@ -43,9 +43,9 @@ namespace mysimulator {
 
       typedef ArrayContainer<Intrinsic<T>>    Type;
       typedef ArrayContainerBase<Intrinsic<T>>   ParentType;
-      typedef typename ParentType::value_type value_type;
+      typedef typename ParentType::monomer_type monomer_type;
       typedef unsigned int size_type;
-      typedef value_type* pointer;
+      typedef monomer_type* pointer;
 
     private:
 
@@ -61,7 +61,7 @@ namespace mysimulator {
 
       virtual void allocate(size_type size) override {
         this->reset();
-        size_type byte_size=size*sizeof(value_type);
+        size_type byte_size=size*sizeof(monomer_type);
         size_type alloc_size=
           (byte_size&(~0xFU))+((byte_size&0xFU)==0?0:0x10U);
         _n128=((byte_size&0xFU)==0?0:1)+(byte_size>>4);
@@ -75,6 +75,7 @@ namespace mysimulator {
       void refer(const Type& AC) { ParentType::_refer_align16(AC); }
       void refer(const Type& AC,size_type bg,size_type num) {
         ParentType::_refer_align16(AC,bg,num);
+        _n128=((num*sizeof(monomer_type))>>4);
       }
       void swap(Type& AC) {
         ParentType::swap(static_cast<ParentType&>(AC));
