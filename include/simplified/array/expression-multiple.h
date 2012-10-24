@@ -30,8 +30,8 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef EA const& const_referenceA;
       typedef EB const& const_referenceB;
-      typedef EA const&& const_lreferenceA;
-      typedef EB const&& const_lreferenceB;
+
+      static const __ArrayOperationName OpName;
 
     private:
 
@@ -41,9 +41,8 @@ namespace mysimulator {
     public:
 
       ArrayMul(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lreferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_referenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lreferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ~ArrayMul() {}
+
       operator bool() const { return (bool)_A && (bool)_B; }
       size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
       value_type operator[](size_type i) const {
@@ -55,9 +54,15 @@ namespace mysimulator {
   };
 
   template <typename EA,typename EB>
+  const __ArrayOperationName ArrayMul<EA,EB>::OpName=
+        __ArrayOperationName::Multiple;
+
+  template <typename EA,typename EB>
   ArrayMul<EA,EB> const operator*(const EA& a, const EB& b) {
     return ArrayMul<EA,EB>(a,b);
   }
+
+  /// the specialization for intrinsic data in multiple are not implemented.
 
 }
 
@@ -80,12 +85,10 @@ namespace mysimulator {
         value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef T const& const_referenceA;
-      typedef E const& const_referenceB;
-      typedef Intrinsic<T> const& const_ireferenceA;
-      typedef T const&& const_lreferenceA;
-      typedef E const&& const_lreferenceB;
-      typedef Intrinsic<T> const&& const_lireferenceA;
+      typedef Intrinsic<T> const& const_referenceA;
+      typedef E const&            const_referenceB;
+
+      static const __ArrayOperationName OpName;
 
     private:
 
@@ -95,22 +98,21 @@ namespace mysimulator {
     public:
 
       ArrayMul(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_ireferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lreferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lireferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_referenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_ireferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lreferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lireferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ~ArrayMul() {}
+
       operator bool() const { return (bool)_B; }
       size_type size() const { return _B.size(); }
       value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A * (value_type)_B[i];
+        assert(i<size()); return (value_type)((T)_A) * (value_type)_B[i];
       }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
 
   };
+
+  template <typename T,typename E>
+  const __ArrayOperationName ArrayMul<Intrinsic<T>,E>::OpName=
+        __ArrayOperationName::Multiple;
 
   template <typename E,typename T>
   class ArrayMul<E,Intrinsic<T>>
@@ -127,12 +129,10 @@ namespace mysimulator {
         value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef E const& const_referenceA;
-      typedef T const& const_referenceB;
-      typedef Intrinsic<T> const& const_ireferenceB;
-      typedef E const&& const_lreferenceA;
-      typedef T const&& const_lreferenceB;
-      typedef Intrinsic<T> const&& const_lireferenceB;
+      typedef E const&            const_referenceA;
+      typedef Intrinsic<T> const& const_referenceB;
+
+      static const __ArrayOperationName OpName;
 
     private:
 
@@ -142,92 +142,21 @@ namespace mysimulator {
     public:
 
       ArrayMul(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_referenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_referenceA A,const_ireferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_referenceA A,const_lireferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lreferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lreferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lreferenceA A,const_ireferenceB B) : _A(A),_B(B) {}
-      ArrayMul(const_lreferenceA A,const_lireferenceB B) : _A(A),_B(B) {}
+      ~ArrayMul() {}
+
       operator bool() const { return (bool)_A; }
       size_type size() const { return _A.size(); }
       value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_B * (value_type)_A[i];
+        assert(i<size()); return (value_type)((T)_B) * (value_type)_A[i];
       }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
 
   };
 
-  template <typename T1,typename T2>
-  class ArrayMul<Intrinsic<T1>,Intrinsic<T2>>
-    : public ArrayExpression<
-                ArrayMul<Intrinsic<T1>,Intrinsic<T2>>,
-                typename __dual_selector<T1,T2,__mul_flag>::Type> {
-
-    public:
-
-      typedef ArrayMul<Intrinsic<T1>,Intrinsic<T2>> Type;
-      typedef typename __dual_selector<T1,T2,__mul_flag>::Type  value_type;
-      typedef ArrayExpression<Type,value_type>  ParentType;
-      typedef unsigned int size_type;
-      typedef T1 const& const_referenceA;
-      typedef T2 const& const_referenceB;
-      typedef Intrinsic<T1> const& const_ireferenceA;
-      typedef Intrinsic<T2> const& const_ireferenceB;
-      typedef T1 const&& const_lreferenceA;
-      typedef T2 const&& const_lreferenceB;
-      typedef Intrinsic<T1> const&& const_lireferenceA;
-      typedef Intrinsic<T2> const&& const_lireferenceB;
-
-    private:
-
-      const_referenceA _A;
-      const_referenceB _B;
-      value_type _R;
-
-    public:
-
-      ArrayMul(const_referenceA A,const_referenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_ireferenceA A,const_referenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_lreferenceA A,const_referenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_lireferenceA A,const_referenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_referenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_ireferenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_lreferenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_lireferenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_referenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_ireferenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_lreferenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_lireferenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_referenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_ireferenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_lreferenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      ArrayMul(const_lireferenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A*(value_type)_B) {}
-      operator bool() const { return true; }
-      size_type size() const { return 0xFFFFFFFFU; }
-      value_type operator[](size_type i) const { return _R; }
-      const_referenceA first()  const { return _A; }
-      const_referenceB second() const { return _B; }
-      value_type result() const { return _R; }
-
-  };
+  template <typename E,typename T>
+  const __ArrayOperationName ArrayMul<E,Intrinsic<T>>::OpName=
+        __ArrayOperationName::Multiple;
 
 }
 

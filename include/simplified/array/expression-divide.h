@@ -30,12 +30,12 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef EA const& const_referenceA;
       typedef EB const& const_referenceB;
-      typedef EA const&& const_lreferenceA;
-      typedef EB const&& const_lreferenceB;
 
       static_assert(
           Intrinsic<value_type>::IsFloatPoint,
           "Only float-point data are permitted for divide operation, Since integer-related division depends on the operational sequence is complex!\n");
+
+      static const __ArrayOperationName OpName;
 
     private:
 
@@ -45,9 +45,8 @@ namespace mysimulator {
     public:
 
       ArrayDiv(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_lreferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_referenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_lreferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ~ArrayDiv() {}
+
       operator bool() const { return (bool)_A && (bool)_B; }
       size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
       value_type operator[](size_type i) const {
@@ -57,6 +56,10 @@ namespace mysimulator {
       const_referenceB second() const { return _B; }
 
   };
+
+  template <typename EA,typename EB>
+  const __ArrayOperationName ArrayDiv<EA,EB>::OpName=
+        __ArrayOperationName::Divide;
 
   template <typename EA,typename EB>
   ArrayDiv<EA,EB> const operator/(const EA& a, const EB& b) {
@@ -84,12 +87,10 @@ namespace mysimulator {
         value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef T const& const_referenceA;
-      typedef E const& const_referenceB;
-      typedef Intrinsic<T> const& const_ireferenceA;
-      typedef T const&& const_lreferenceA;
-      typedef E const&& const_lreferenceB;
-      typedef Intrinsic<T> const&& const_lireferenceA;
+      typedef Intrinsic<T> const& const_referenceA;
+      typedef E const&            const_referenceB;
+
+      static const __ArrayOperationName OpName;
 
     private:
 
@@ -99,22 +100,21 @@ namespace mysimulator {
     public:
 
       ArrayDiv(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_ireferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_lreferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_lireferenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_referenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_ireferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_lreferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
-      ArrayDiv(const_lireferenceA A,const_lreferenceB B) : _A(A),_B(B) {}
+      ~ArrayDiv() {}
+
       operator bool() const { return (bool)_B; }
       size_type size() const { return _B.size(); }
       value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A / (value_type)_B[i];
+        assert(i<size()); return (value_type)((T)_A) / (value_type)_B[i];
       }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
 
   };
+
+  template <typename T,typename E>
+  const __ArrayOperationName ArrayDiv<Intrinsic<T>,E>::OpName=
+        __ArrayOperationName::Divide;
 
   template <typename E,typename T>
   class ArrayDiv<E,Intrinsic<T>>
@@ -131,12 +131,10 @@ namespace mysimulator {
         value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef E const& const_referenceA;
-      typedef T const& const_referenceB;
-      typedef Intrinsic<T> const& const_ireferenceB;
-      typedef E const&& const_lreferenceA;
-      typedef T const&& const_lreferenceB;
-      typedef Intrinsic<T> const&& const_lireferenceB;
+      typedef E const&            const_referenceA;
+      typedef Intrinsic<T> const& const_referenceB;
+
+      static const __ArrayOperationName OpName;
 
     private:
 
@@ -148,20 +146,8 @@ namespace mysimulator {
 
       ArrayDiv(const_referenceA A,const_referenceB B)
         : _A(A),_B(B),_F(1/((value_type)_B)) {}
-      ArrayDiv(const_referenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_F(1/((value_type)_B)) {}
-      ArrayDiv(const_referenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_F(1/((value_type)_B)) {}
-      ArrayDiv(const_referenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_F(1/((value_type)_B)) {}
-      ArrayDiv(const_lreferenceA A,const_referenceB B)
-        : _A(A),_B(B),_F(1/((value_type)_B)) {}
-      ArrayDiv(const_lreferenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_F(1/((value_type)_B)) {}
-      ArrayDiv(const_lreferenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_F(1/((value_type)_B)) {}
-      ArrayDiv(const_lreferenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_F(1/((value_type)_B)) {}
+      ~ArrayDiv() {}
+
       operator bool() const { return (bool)_A; }
       size_type size() const { return _A.size(); }
       value_type operator[](size_type i) const {
@@ -173,75 +159,9 @@ namespace mysimulator {
 
   };
 
-  template <typename T1,typename T2>
-  class ArrayDiv<Intrinsic<T1>,Intrinsic<T2>>
-    : public ArrayExpression<
-                ArrayDiv<Intrinsic<T1>,Intrinsic<T2>>,
-                typename __dual_selector<T1,T2,__div_flag>::Type> {
-
-    public:
-
-      typedef ArrayDiv<Intrinsic<T1>,Intrinsic<T2>> Type;
-      typedef typename __dual_selector<T1,T2,__div_flag>::Type  value_type;
-      typedef ArrayExpression<Type,value_type>  ParentType;
-      typedef unsigned int size_type;
-      typedef T1 const& const_referenceA;
-      typedef T2 const& const_referenceB;
-      typedef Intrinsic<T1> const& const_ireferenceA;
-      typedef Intrinsic<T2> const& const_ireferenceB;
-      typedef T1 const&& const_lreferenceA;
-      typedef T2 const&& const_lreferenceB;
-      typedef Intrinsic<T1> const&& const_lireferenceA;
-      typedef Intrinsic<T2> const&& const_lireferenceB;
-
-    private:
-
-      const_referenceA _A;
-      const_referenceB _B;
-      value_type _R;
-
-    public:
-
-      ArrayDiv(const_referenceA A,const_referenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_ireferenceA A,const_referenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_lreferenceA A,const_referenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_lireferenceA A,const_referenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_referenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_ireferenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_lreferenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_lireferenceA A,const_ireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_referenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_ireferenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_lreferenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_lireferenceA A,const_lreferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_referenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_ireferenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_lreferenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      ArrayDiv(const_lireferenceA A,const_lireferenceB B)
-        : _A(A),_B(B),_R((value_type)_A/(value_type)_B) {}
-      operator bool() const { return true; }
-      size_type size() const { return 0xFFFFFFFFU; }
-      value_type operator[](size_type i) const { return _R; }
-      const_referenceA first()  const { return _A; }
-      const_referenceB second() const { return _B; }
-      value_type result() const { return _R; };
-
-  };
+  template <typename E,typename T>
+  const __ArrayOperationName ArrayDiv<E,Intrinsic<T>>::OpName=
+        __ArrayOperationName::Divide;
 
 }
 

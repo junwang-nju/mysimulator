@@ -18,6 +18,8 @@ namespace mysimulator {
       operator E const&() const { return static_cast<const E&>(*this); }
   };
 
+  enum class __ArrayOperationName { Add, Substract, Multiple, Divide };
+
 }
 
 #endif
