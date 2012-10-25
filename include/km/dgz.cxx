@@ -75,27 +75,28 @@ int main() {
 
   Dsp.Allocate(3);
 
-  const unsigned int N=67;
+  const unsigned int N=58;
   System<double,FreeSpace> S;
   S.AllocateKind(N);
   for(unsigned int i=0;i<N;++i) S.Kind(i)=ParticleUnit;
   S.AllocateXVGE(3);
 
   ifstream ifs;
-  ifs.open("NAT");
+  ifs.open("NAT-1PGA");
   for(unsigned int i=0;i<N;++i)
   for(unsigned int k=0;k<3;++k)
     ifs>>S.Location()[i][k];
   ifs.close();
 
-  const unsigned int NB=137+N-1;
+  const unsigned int NC=132;
+  const unsigned int NB=NC+N-1;
   Array2DNumeric<unsigned int>  ID;
   ID.Allocate(NB,2);
   for(unsigned int i=0;i<N-1;++i) {
     ID[i][0]=i;
     ID[i][1]=i+1;
   }
-  ifs.open("CntMap");
+  ifs.open("CntMap-1PGA");
   for(unsigned int i=N-1;i<NB;++i)
     ifs>>ID[i][0]>>ID[i][1];
   ifs.close();
@@ -116,7 +117,7 @@ int main() {
     Value<double>(S.Interaction(i).Parameter(0,HarmonicEqStrength))=100.;
   Value<double>(S.Interaction(N-2).Parameter(0,HarmonicEqStrength))=10.;
   for(unsigned int i=N-1;i<NB;++i)
-    Value<double>(S.Interaction(i).Parameter(0,HarmonicEqStrength))=20.;
+    Value<double>(S.Interaction(i).Parameter(0,HarmonicEqStrength))=50.;
   for(unsigned int i=0;i<NB;++i)
     S.Interaction(i).ParameterBuild(0);
 
@@ -163,28 +164,34 @@ int main() {
   double ZT;
   unsigned int MI;
 
-  /*
-  ifs.open("TMPP");
+  ifs.open("TMPP-500");
   for(unsigned int i=0;i<N;++i)
   for(unsigned int k=0;k<3;++k)
     ifs>>S.Location()[i][k];
   ifs.close();
-  */
 
-  S.Velocity().Fill(0);
-  S.Velocity()[N-1][0]=1.;
-
-  ZT=GetGT(S,Hess,N,NB,GT,Used);
-
-  cout.precision(16);
-  while(ZT>TTH) {
-    for(unsigned int i=0;i<NUsed;++i) {
-      MI=UsedID[i];
-      for(unsigned int k=0;k<3;++k) 
-        S.Location()[MI][k]+=Step*GT[MI][k];
-    }
+  cout<<5000<<"\t"<<Distance(Dsp,S.Location()[N-2],S.Location()[N-1],FS)<<"  ====="<<endl;
+  for(unsigned int w=0;w<5000;++w) {
+    S.Velocity().Fill(0);
+    S.Velocity()[N-1][0]=0.01;
     ZT=GetGT(S,Hess,N,NB,GT,Used);
-    cout<<ZT<<endl;
+    for(unsigned int i=0;i<N;++i)
+    for(unsigned int k=0;k<3;++k)
+      S.Location()[i][k]+=S.Velocity()[i][k]*0.1;
+
+    ZT=GetGT(S,Hess,N,NB,GT,Used);
+    cout.precision(16);
+    while(ZT>TTH) {
+      for(unsigned int i=0;i<NUsed;++i) {
+        MI=UsedID[i];
+        for(unsigned int k=0;k<3;++k) 
+          S.Location()[MI][k]+=Step*GT[MI][k];
+      }
+      ZT=GetGT(S,Hess,N,NB,GT,Used);
+      cout<<ZT<<endl;
+    }
+
+    cout<<w+5001<<"\t"<<Distance(Dsp,S.Location()[N-2],S.Location()[N-1],FS)<<"  ====="<<endl;
   }
 
   for(unsigned int i=0;i<N;++i) {
