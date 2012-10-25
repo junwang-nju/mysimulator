@@ -2,7 +2,7 @@
 #ifndef _Array_2D_Container_Base_H_
 #define _Array_2D_Container_Base_H_
 
-#include "array/1d/interface.h"
+#include "array/interface.h"
 
 namespace mysimulator {
 
@@ -23,7 +23,7 @@ namespace mysimulator {
       Array2DContainerBase(Type&& A) : ParentType((ParentType&&)A) {}
       ~Array2DContainerBase() { ParentType::reset(); }
 
-      Type& operator=(const Type& A) { return ParentType::operator=(A); }
+      Type& operator=(const Type&) = delete;
 
       reference operator()(size_type i,size_type j) {
         return (ParentType::operator[](i))[j];

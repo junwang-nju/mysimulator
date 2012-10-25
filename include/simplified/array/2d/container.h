@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   template <typename T>
-  class Array2DContainer : private Array<T>, public Array2DContainerBase<T> {
+  class Array2DContainer : protected Array<T>, public Array2DContainerBase<T> {
 
     public:
 
@@ -38,6 +38,8 @@ namespace mysimulator {
         return ParentTypeB::operator[](i);
       }
       void reset() { ParentTypeB::reset(); ParentTypeA::reset(); }
+
+      Type& operator=(const Type&) = delete;
 
       void allocate(size_type m, size_type n) {
         reset();
@@ -95,7 +97,7 @@ namespace mysimulator {
 
   template <typename T>
   class Array2DContainer<Intrinsic<T>>
-      : private Array<Intrinsic<T>>,
+      : protected Array<Intrinsic<T>>,
         public Array2DContainerBase<Intrinsic<T>> {
 
     public:
@@ -127,6 +129,8 @@ namespace mysimulator {
         return ParentTypeB::operator[](i);
       }
       void reset() { ParentTypeB::reset(); ParentTypeA::reset(); }
+
+      Type& operator=(const Type&) = delete;
 
       void allocate(size_type m, size_type n) {
         reset();
@@ -174,6 +178,14 @@ namespace mysimulator {
         ParentTypeB::swap((ParentTypeB&)A);
       }
 
+      template <typename Y>
+      bool _is_same(Array2DContainer<Y> const& A) const {
+        if(size()!=A.size())  return false;
+        for(size_type i=0;i<size();++i)
+          if((*this)[i].size()!=A[i].size())  return false;
+        return true;
+      }
+
     private:
 
       size_type __span16(size_type n) { // may shift to basic
@@ -182,6 +194,11 @@ namespace mysimulator {
       }
 
   };
+
+  template <typename T1,typename T2>
+  bool IsSameSize(Array2DContainer<T1> const& A,Array2DContainer<T2> const& B) {
+    return A._is_same(B);
+  }
 
 }
 
