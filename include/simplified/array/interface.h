@@ -27,7 +27,7 @@ namespace mysimulator {
       typedef ArrayExpression<Type,T> ParentTypeA;
       typedef ArrayContainer<T>       ParentTypeB;
       typedef typename ParentTypeB::monomer_type  monomer_type;
-      typedef typename ArrayContentSelector<T>::value_type  value_type;
+      typedef typename T::value_type  value_type;
       typedef unsigned int size_type;
       typedef monomer_type& reference;
       typedef const monomer_type& const_reference;
@@ -158,8 +158,7 @@ namespace mysimulator {
       typedef ArrayExpression<Type,T>       ParentTypeA;
       typedef ArrayContainer<Intrinsic<T>>  ParentTypeB;
       typedef typename ParentTypeB::monomer_type  monomer_type;
-      typedef typename ArrayContentSelector<Intrinsic<T>>::value_type
-              value_type;
+      typedef T  value_type;
       typedef unsigned int size_type;
       typedef monomer_type& reference;
       typedef const monomer_type& const_reference;
@@ -553,6 +552,7 @@ namespace mysimulator {
     T128 u=__ArrayWrapper<Intrinsic<T>>::set_from_unit(D);
     assert((((int)(&u))&0xFU)==0);
     for(;p!=e;) { *p=__Op128<T,RunOp>(*p,u); ++p; }
+    return A;
   }
 
   template <typename T,__ArrayOperationName RunOp>

@@ -28,7 +28,6 @@ namespace mysimulator {
   class ArrayContentSelector<Intrinsic<T>> {
     public:
       typedef T monomer_type;
-      typedef T value_type;
       static const bool _has_value;
   };
 
@@ -41,7 +40,6 @@ namespace mysimulator {
   class ArrayContentSelector<Array<T,true>> {
     public:
       typedef Array<T,true>             monomer_type;
-      typedef typename T::value_type    value_type;
       static const bool _has_value;
   };
 
