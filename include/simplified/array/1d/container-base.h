@@ -87,7 +87,6 @@ namespace mysimulator {
       void _refer_align16(const Type& AC, size_type bg, size_type num) {
         assert(AC._pdata.__aligned16());
         assert(((bg*sizeof(T))&0xFU)==0);
-        assert(((num*sizeof(T))&0xFU)==0);
         refer(AC,bg,num);
       }
 

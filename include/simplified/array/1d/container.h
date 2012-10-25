@@ -73,10 +73,15 @@ namespace mysimulator {
       }
       unsigned int size128() const { return _n128; }
 
-      void refer(const Type& AC) { ParentType::_refer_align16(AC); }
-      void refer(const Type& AC,size_type bg,size_type num) {
+      void refer(const Type& AC) {
+        ParentType::_refer_align16(AC);
+        _n128=AC.size128();
+      }
+      void refer(const Type&,size_type,size_type) = delete;
+      void _refer(const Type& AC,size_type bg,size_type num) {
         ParentType::_refer_align16(AC,bg,num);
-        _n128=((num*sizeof(monomer_type))>>4);
+        size_type nbyte=num*sizeof(monomer_type);
+        _n128=(nbyte>>4)+((nbyte&0xFU)==0?0:1); // be careful the side effect
       }
       void swap(Type& AC) {
         ParentType::swap(static_cast<ParentType&>(AC));
