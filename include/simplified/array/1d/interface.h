@@ -1,9 +1,9 @@
 
-#ifndef _Array_Interface_H_
-#define _Array_Interface_H_
+#ifndef _Array_1D_Interface_H_
+#define _Array_1D_Interface_H_
 
-#include "array/container.h"
-#include "array/expression.h"
+#include "array/1d/container.h"
+#include "array/1d/expression.h"
 
 namespace mysimulator {
 
@@ -138,10 +138,10 @@ namespace mysimulator {
 #endif
 
 #include "basic/type/same.h"
-#include "array/expression-sum.h"
-#include "array/expression-substract.h"
-#include "array/expression-multiple.h"
-#include "array/expression-divide.h"
+#include "array/1d/expression-sum.h"
+#include "array/1d/expression-substract.h"
+#include "array/1d/expression-multiple.h"
+#include "array/1d/expression-divide.h"
 #include <emmintrin.h>
 #include <smmintrin.h>
 
@@ -404,8 +404,6 @@ namespace mysimulator {
   template <>
   class __ArrayWrapper<Int> {
     public:
-      typedef Int::value_type value_type;
-      typedef Array<Int>      array_type;
       typedef __m128i         value128_type;
       static inline
       value128_type set_from_unit(int D) { return _mm_set1_epi32(D); }
@@ -414,8 +412,6 @@ namespace mysimulator {
   template <>
   class __ArrayWrapper<Float> {
     public:
-      typedef Float::value_type value_type;
-      typedef Array<Float>      array_type;
       typedef __m128            value128_type;
       static inline
       value128_type set_from_unit(float D) { return _mm_set1_ps(D); }
@@ -424,8 +420,6 @@ namespace mysimulator {
   template <>
   class __ArrayWrapper<Double> {
     public:
-      typedef Double::value_type    value_type;
-      typedef Array<Double>         array_type;
       typedef __m128d               value128_type;
       static inline
       value128_type set_from_unit(double D) { return _mm_set1_pd(D); }
@@ -440,97 +434,74 @@ namespace mysimulator {
   }
 
   template <>
-  inline typename __ArrayWrapper<Int>::value128_type
-  __Op128<int,__ArrayOperationName::Add>(
-      typename __ArrayWrapper<Int>::value128_type const& a,
-      typename __ArrayWrapper<Int>::value128_type const& b) {
+  inline __m128i __Op128<int,__ArrayOperationName::Add>(
+      __m128i const& a,__m128i const& b) {
     return _mm_add_epi32(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Int>::value128_type
-  __Op128<int,__ArrayOperationName::Substract>(
-      typename __ArrayWrapper<Int>::value128_type const& a,
-      typename __ArrayWrapper<Int>::value128_type const& b) {
+  inline __m128i __Op128<int,__ArrayOperationName::Substract>(
+      __m128i const& a,__m128i const& b) {
     return _mm_sub_epi32(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Int>::value128_type
-  __Op128<int,__ArrayOperationName::Multiple>(
-      typename __ArrayWrapper<Int>::value128_type const& a,
-      typename __ArrayWrapper<Int>::value128_type const& b) {
+  inline __m128i __Op128<int,__ArrayOperationName::Multiple>(
+      __m128i const& a,__m128i const& b) {
     return _mm_mullo_epi32(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Float>::value128_type
-  __Op128<float,__ArrayOperationName::Add>(
-      typename __ArrayWrapper<Float>::value128_type const& a,
-      typename __ArrayWrapper<Float>::value128_type const& b) {
+  inline __m128 __Op128<float,__ArrayOperationName::Add>(
+      __m128 const& a,__m128 const& b) {
     return _mm_add_ps(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Float>::value128_type
-  __Op128<float,__ArrayOperationName::Substract>(
-      typename __ArrayWrapper<Float>::value128_type const& a,
-      typename __ArrayWrapper<Float>::value128_type const& b) {
+  inline __m128 __Op128<float,__ArrayOperationName::Substract>(
+      __m128 const& a,__m128 const& b) {
     return _mm_sub_ps(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Float>::value128_type
-  __Op128<float,__ArrayOperationName::Multiple>(
-      typename __ArrayWrapper<Float>::value128_type const& a,
-      typename __ArrayWrapper<Float>::value128_type const& b) {
+  inline __m128 __Op128<float,__ArrayOperationName::Multiple>(
+      __m128 const& a,__m128 const& b) {
     return _mm_mul_ps(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Float>::value128_type
-  __Op128<float,__ArrayOperationName::Divide>(
-      typename __ArrayWrapper<Float>::value128_type const& a,
-      typename __ArrayWrapper<Float>::value128_type const& b) {
+  inline __m128 __Op128<float,__ArrayOperationName::Divide>(
+      __m128 const& a,__m128 const& b) {
     return _mm_div_ps(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Double>::value128_type
-  __Op128<double,__ArrayOperationName::Add>(
-      typename __ArrayWrapper<Double>::value128_type const& a,
-      typename __ArrayWrapper<Double>::value128_type const& b) {
+  inline __m128d __Op128<double,__ArrayOperationName::Add>(
+      __m128d const& a,__m128d const& b) {
     return _mm_add_pd(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Double>::value128_type
-  __Op128<double,__ArrayOperationName::Substract>(
-      typename __ArrayWrapper<Double>::value128_type const& a,
-      typename __ArrayWrapper<Double>::value128_type const& b) {
+  inline __m128d __Op128<double,__ArrayOperationName::Substract>(
+      __m128d const& a,__m128d const& b) {
     return _mm_sub_pd(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Double>::value128_type
-  __Op128<double,__ArrayOperationName::Multiple>(
-      typename __ArrayWrapper<Double>::value128_type const& a,
-      typename __ArrayWrapper<Double>::value128_type const& b) {
+  inline __m128d __Op128<double,__ArrayOperationName::Multiple>(
+      __m128d const& a,__m128d const& b) {
     return _mm_mul_pd(a,b);
   }
 
   template <>
-  inline typename __ArrayWrapper<Double>::value128_type
-  __Op128<double,__ArrayOperationName::Divide>(
-      typename __ArrayWrapper<Double>::value128_type const& a,
-      typename __ArrayWrapper<Double>::value128_type const& b) {
+  inline __m128d __Op128<double,__ArrayOperationName::Divide>(
+      __m128d const& a,__m128d const& b) {
     return _mm_div_pd(a,b);
   }
 
   template <typename T>
-  typename __ArrayWrapper<Intrinsic<T>>::array_type&
-  __assign(typename __ArrayWrapper<Intrinsic<T>>::array_type& A,
-           const typename __ArrayWrapper<Intrinsic<T>>::value_type& D) {
+  Array<Intrinsic<T>>&
+  __assign(Array<Intrinsic<T>>& A,const T& D) {
     assert((bool)A);
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
     T128 *p=reinterpret_cast<T128*>(A.head());
@@ -542,9 +513,8 @@ namespace mysimulator {
   }
 
   template <typename T,__ArrayOperationName RunOp>
-  typename __ArrayWrapper<Intrinsic<T>>::array_type&
-  __val_op(typename __ArrayWrapper<Intrinsic<T>>::array_type& A,
-           const typename __ArrayWrapper<Intrinsic<T>>::value_type& D) {
+  Array<Intrinsic<T>>&
+  __val_op(Array<Intrinsic<T>>& A,const T& D) {
     assert((bool)A);
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
     T128 *p=reinterpret_cast<T128*>(A.head());
@@ -556,16 +526,14 @@ namespace mysimulator {
   }
 
   template <typename T,__ArrayOperationName RunOp>
-  typename __ArrayWrapper<Intrinsic<T>>::array_type&
-  __array_op(typename __ArrayWrapper<Intrinsic<T>>::array_type& A,
-             const ArrayExpression<
-               typename __ArrayWrapper<Intrinsic<T>>::array_type,
-               typename __ArrayWrapper<Intrinsic<T>>::value_type>& E) {
+  Array<Intrinsic<T>>&
+  __array_op(Array<Intrinsic<T>>& A,
+             const ArrayExpression<Array<Intrinsic<T>>,T>& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
-    typedef typename __ArrayWrapper<Intrinsic<T>>::array_type AType;
+    typedef Array<Intrinsic<T>> AType;
     T128 *p=reinterpret_cast<T128*>(A.head());
     T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
     const T128 *e=p+A.size128();
@@ -575,18 +543,15 @@ namespace mysimulator {
 
   template <typename T,template<typename,typename> class ArrayOp,
             __ArrayOperationName RunOp>
-  typename __ArrayWrapper<Intrinsic<T>>::array_type&
+  Array<Intrinsic<T>>&
   __two_level_op(
-      typename __ArrayWrapper<Intrinsic<T>>::array_type& A,
-      const ArrayExpression<
-        ArrayOp<Intrinsic<T>,typename __ArrayWrapper<Intrinsic<T>>::array_type>,
-        typename __ArrayWrapper<Intrinsic<T>>::value_type>& E) {
+      Array<Intrinsic<T>>& A,
+      const ArrayExpression<ArrayOp<Intrinsic<T>,Array<Intrinsic<T>>>,T>& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
-    typedef ArrayOp<Intrinsic<T>,
-                    typename __ArrayWrapper<Intrinsic<T>>::array_type> AType;
+    typedef ArrayOp<Intrinsic<T>,Array<Intrinsic<T>>> AType;
     AType const& RA=static_cast<AType const&>(E);
     T128 *p=reinterpret_cast<T128*>(A.head());
     const T128 *e=p+A.size128();
@@ -600,18 +565,15 @@ namespace mysimulator {
   }
   template <typename T,template<typename,typename> class ArrayOp,
             __ArrayOperationName RunOp>
-  typename __ArrayWrapper<Intrinsic<T>>::array_type&
+  Array<Intrinsic<T>>&
   __two_level_op(
-      typename __ArrayWrapper<Intrinsic<T>>::array_type& A,
-      const ArrayExpression<
-        ArrayOp<typename __ArrayWrapper<Intrinsic<T>>::array_type,Intrinsic<T>>,
-        typename __ArrayWrapper<Intrinsic<T>>::value_type>& E) {
+      Array<Intrinsic<T>>& A,
+      const ArrayExpression<ArrayOp<Array<Intrinsic<T>>,Intrinsic<T>>,T>& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
-    typedef ArrayOp<typename __ArrayWrapper<Intrinsic<T>>::array_type,
-                    Intrinsic<T>> AType;
+    typedef ArrayOp<Array<Intrinsic<T>>,Intrinsic<T>> AType;
     AType const& RA=static_cast<AType const&>(E);
     T128 *p=reinterpret_cast<T128*>(A.head());
     const T128 *e=p+A.size128();
@@ -625,19 +587,16 @@ namespace mysimulator {
   }
   template <typename T,template<typename,typename> class ArrayOp,
             __ArrayOperationName RunOp>
-  typename __ArrayWrapper<Intrinsic<T>>::array_type&
+  Array<Intrinsic<T>>&
   __two_level_op(
-      typename __ArrayWrapper<Intrinsic<T>>::array_type& A,
+      Array<Intrinsic<T>>& A,
       const ArrayExpression<
-        ArrayOp<typename __ArrayWrapper<Intrinsic<T>>::array_type,
-                typename __ArrayWrapper<Intrinsic<T>>::array_type>,
-        typename __ArrayWrapper<Intrinsic<T>>::value_type>& E) {
+            ArrayOp<Array<Intrinsic<T>>,Array<Intrinsic<T>>>,T>& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
-    typedef ArrayOp<typename __ArrayWrapper<Intrinsic<T>>::array_type,
-                    typename __ArrayWrapper<Intrinsic<T>>::array_type> AType;
+    typedef ArrayOp<Array<Intrinsic<T>>,Array<Intrinsic<T>>> AType;
     AType const& RA=static_cast<AType const&>(E);
     T128 *p=reinterpret_cast<T128*>(A.head());
     const T128 *e=p+A.size128();

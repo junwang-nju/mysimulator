@@ -18,11 +18,7 @@ namespace mysimulator {
   template <typename T>
   const bool ArrayContentSelector<T>::_has_value=false;
 
-}
-
-#include "basic/intrinsic.h"
-
-namespace mysimulator {
+  template <typename T> class Intrinsic;
 
   template <typename T>
   class ArrayContentSelector<Intrinsic<T>> {

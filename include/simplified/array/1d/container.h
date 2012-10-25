@@ -1,8 +1,8 @@
 
-#ifndef _Array_Container_H_
-#define _Array_Container_H_
+#ifndef _Array_1D_Container_H_
+#define _Array_1D_Container_H_
 
-#include "array/container-base.h"
+#include "array/1d/container-base.h"
 
 namespace mysimulator {
 
@@ -33,6 +33,7 @@ namespace mysimulator {
 }
 
 #include "memory/aligned-memory.h"
+#include "basic/intrinsic.h"
 
 namespace mysimulator {
 

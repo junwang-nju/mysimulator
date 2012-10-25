@@ -1,6 +1,6 @@
 
-#ifndef _Array_Container_Base_H_
-#define _Array_Container_Base_H_
+#ifndef _Array_1D_Container_Base_H_
+#define _Array_1D_Container_Base_H_
 
 #include "memory/accessed-ptr.h"
 #include "basic/imprint.h"
@@ -24,8 +24,8 @@ namespace mysimulator {
 
     protected:
 
-      accessed_ptr<monomer_type> _pdata;
-      size_type                _ndata;
+      accessed_ptr<monomer_type>  _pdata;
+      size_type                   _ndata;
 
     public:
 

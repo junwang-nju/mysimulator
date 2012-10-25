@@ -1,6 +1,6 @@
 
-#ifndef _Array_Expression_H_
-#define _Array_Expression_H_
+#ifndef _Array_1D_Expression_H_
+#define _Array_1D_Expression_H_
 
 namespace mysimulator {
 

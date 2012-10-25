@@ -1,8 +1,8 @@
 
-#ifndef _Array_Expression_Multiple_H_
-#define _Array_Expression_Multiple_H_
+#ifndef _Array_1D_Expression_Multiple_H_
+#define _Array_1D_Expression_Multiple_H_
 
-#include "array/expression.h"
+#include "array/1d/expression.h"
 #include "basic/type/multiple.h"
 #include "basic/type/selector.h"
 
@@ -61,8 +61,6 @@ namespace mysimulator {
   ArrayMul<EA,EB> const operator*(const EA& a, const EB& b) {
     return ArrayMul<EA,EB>(a,b);
   }
-
-  /// the specialization for intrinsic data in multiple are not implemented.
 
 }
 

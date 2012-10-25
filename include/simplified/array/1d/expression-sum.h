@@ -1,39 +1,35 @@
 
-#ifndef _Array_Expression_Divide_H_
-#define _Array_Expression_Divide_H_
+#ifndef _Array_1D_Expression_Sum_H_
+#define _Array_1D_Expression_Sum_H_
 
-#include "array/expression.h"
-#include "basic/type/divide.h"
+#include "array/1d/expression.h"
+#include "basic/type/sum.h"
 #include "basic/type/selector.h"
 
 namespace mysimulator {
 
   template <typename EA,typename EB>
-  class ArrayDiv
+  class ArraySum
     : public ArrayExpression<
-                ArrayDiv<EA,EB>,
+                ArraySum<EA,EB>,
                 typename __dual_selector<typename EA::value_type,
                                          typename EB::value_type,
-                                         __div_flag>::Type> {
+                                         __sum_flag>::Type> {
 
     public:
 
       static_assert(!__intrinsic_flag<EA>::FG && !__intrinsic_flag<EB>::FG,
                     "For intrinsic type, please use Intrinsic<T>!\n");
 
-      typedef ArrayDiv<EA,EB>   Type;
-      typedef
-        typename __dual_selector<typename EA::value_type,
-                                 typename EB::value_type,__div_flag>::Type
-        value_type;
+      typedef ArraySum<EA,EB>   Type;
+      typedef typename __dual_selector<typename EA::value_type,
+                                       typename EB::value_type,
+                                       __sum_flag>::Type
+              value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
       typedef EA const& const_referenceA;
       typedef EB const& const_referenceB;
-
-      static_assert(
-          Intrinsic<value_type>::IsFloatPoint,
-          "Only float-point data are permitted for divide operation, Since integer-related division depends on the operational sequence is complex!\n");
 
       static const __ArrayOperationName OpName;
 
@@ -44,13 +40,13 @@ namespace mysimulator {
 
     public:
 
-      ArrayDiv(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ~ArrayDiv() {}
+      ArraySum(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ~ArraySum() {}
 
       operator bool() const { return (bool)_A && (bool)_B; }
       size_type size() const { return _A.size()<_B.size()?_A.size():_B.size(); }
       value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)_A[i] / (value_type)_B[i];
+        assert(i<size()); return (value_type)_A[i] + (value_type)_B[i];
       }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
@@ -58,12 +54,11 @@ namespace mysimulator {
   };
 
   template <typename EA,typename EB>
-  const __ArrayOperationName ArrayDiv<EA,EB>::OpName=
-        __ArrayOperationName::Divide;
+  const __ArrayOperationName ArraySum<EA,EB>::OpName=__ArrayOperationName::Add;
 
-  template <typename EA,typename EB>
-  ArrayDiv<EA,EB> const operator/(const EA& a, const EB& b) {
-    return ArrayDiv<EA,EB>(a,b);
+  template <typename EA, typename EB>
+  ArraySum<EA,EB> const operator+(const EA& a,const EB& b) {
+    return ArraySum<EA,EB>(a,b);
   }
 
 }
@@ -73,22 +68,25 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T,typename E>
-  class ArrayDiv<Intrinsic<T>,E>
+  class ArraySum<Intrinsic<T>,E>
     : public ArrayExpression<
-                ArrayDiv<Intrinsic<T>,E>,
+                ArraySum<Intrinsic<T>,E>,
                 typename __dual_selector<T,typename E::value_type,
-                                         __div_flag>::Type> {
+                                         __sum_flag>::Type> {
 
     public:
 
-      typedef ArrayDiv<Intrinsic<T>,E>  Type;
+      static_assert(!__intrinsic_flag<E>::FG,
+                    "For intrinsic type, please use Intrinsic<T>!\n");
+
+      typedef ArraySum<Intrinsic<T>,E>  Type;
       typedef
-        typename __dual_selector<T,typename E::value_type,__div_flag>::Type
+        typename __dual_selector<T,typename E::value_type,__sum_flag>::Type
         value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
-      typedef Intrinsic<T> const& const_referenceA;
-      typedef E const&            const_referenceB;
+      typedef Intrinsic<T>  const& const_referenceA;
+      typedef E const&      const_referenceB;
 
       static const __ArrayOperationName OpName;
 
@@ -99,13 +97,12 @@ namespace mysimulator {
 
     public:
 
-      ArrayDiv(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
-      ~ArrayDiv() {}
+      ArraySum(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ~ArraySum() {}
 
-      operator bool() const { return (bool)_B; }
       size_type size() const { return _B.size(); }
       value_type operator[](size_type i) const {
-        assert(i<size()); return (value_type)((T)_A) / (value_type)_B[i];
+        assert(i<size()); return (value_type)((T)_A) + (value_type)_B[i];
       }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
@@ -113,21 +110,24 @@ namespace mysimulator {
   };
 
   template <typename T,typename E>
-  const __ArrayOperationName ArrayDiv<Intrinsic<T>,E>::OpName=
-        __ArrayOperationName::Divide;
+  const __ArrayOperationName ArraySum<Intrinsic<T>,E>::OpName=
+        __ArrayOperationName::Add;
 
   template <typename E,typename T>
-  class ArrayDiv<E,Intrinsic<T>>
+  class ArraySum<E,Intrinsic<T>>
     : public ArrayExpression<
-                ArrayDiv<E,Intrinsic<T>>,
+                ArraySum<E,Intrinsic<T>>,
                 typename __dual_selector<typename E::value_type,T,
-                                         __div_flag>::Type> {
+                                         __sum_flag>::Type> {
 
     public:
 
-      typedef ArrayDiv<E,Intrinsic<T>>  Type;
+      static_assert(!__intrinsic_flag<E>::FG,
+                    "For intrinsic type, please use Intrinsic<T>!\n");
+
+      typedef ArraySum<E,Intrinsic<T>>    Type;
       typedef
-        typename __dual_selector<typename E::value_type,T,__div_flag>::Type
+        typename __dual_selector<typename E::value_type,T,__sum_flag>::Type
         value_type;
       typedef ArrayExpression<Type,value_type>  ParentType;
       typedef unsigned int size_type;
@@ -140,28 +140,25 @@ namespace mysimulator {
 
       const_referenceA _A;
       const_referenceB _B;
-      value_type _F;
 
     public:
 
-      ArrayDiv(const_referenceA A,const_referenceB B)
-        : _A(A),_B(B),_F(1/((value_type)_B)) {}
-      ~ArrayDiv() {}
+      ArraySum(const_referenceA A,const_referenceB B) : _A(A),_B(B) {}
+      ~ArraySum() {}
 
       operator bool() const { return (bool)_A; }
       size_type size() const { return _A.size(); }
       value_type operator[](size_type i) const {
-        assert(i<size()); return _F * (value_type)_A[i];
+        assert(i<size()); return (value_type)_A[i] + (value_type)((T)_B);
       }
       const_referenceA first()  const { return _A; }
       const_referenceB second() const { return _B; }
-      value_type factor() const { return _F; }
 
   };
 
   template <typename E,typename T>
-  const __ArrayOperationName ArrayDiv<E,Intrinsic<T>>::OpName=
-        __ArrayOperationName::Divide;
+  const __ArrayOperationName ArraySum<E,Intrinsic<T>>::OpName=
+        __ArrayOperationName::Add;
 
 }
 
