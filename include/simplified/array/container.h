@@ -1,8 +1,8 @@
 
-#ifndef _Array_1D_Container_H_
-#define _Array_1D_Container_H_
+#ifndef _Array_Container_H_
+#define _Array_Container_H_
 
-#include "array/1d/container-base.h"
+#include "array/container-base.h"
 
 namespace mysimulator {
 

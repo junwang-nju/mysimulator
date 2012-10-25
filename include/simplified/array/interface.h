@@ -1,9 +1,9 @@
 
-#ifndef _Array_1D_Interface_H_
-#define _Array_1D_Interface_H_
+#ifndef _Array_Interface_H_
+#define _Array_Interface_H_
 
-#include "array/1d/container.h"
-#include "array/1d/expression.h"
+#include "array/container.h"
+#include "array/expression.h"
 
 namespace mysimulator {
 
@@ -34,7 +34,7 @@ namespace mysimulator {
 
       Array() : ParentTypeA(), ParentTypeB() {}
       Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
-      Array(const Type& A) : Array(A.size()) { operator=(A); }
+      Array(const Type& A) : Array() { this->imprint(A); operator=(A); }
       Array(Type&& A) : Array() {
         ParentTypeB::swap(static_cast<ParentTypeB>(A));
       }
@@ -138,10 +138,10 @@ namespace mysimulator {
 #endif
 
 #include "basic/type/same.h"
-#include "array/1d/expression-sum.h"
-#include "array/1d/expression-substract.h"
-#include "array/1d/expression-multiple.h"
-#include "array/1d/expression-divide.h"
+#include "array/expression-sum.h"
+#include "array/expression-substract.h"
+#include "array/expression-multiple.h"
+#include "array/expression-divide.h"
 #include <emmintrin.h>
 #include <smmintrin.h>
 
