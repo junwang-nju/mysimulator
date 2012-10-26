@@ -19,10 +19,7 @@ namespace mysimulator {
 
 }
 
-#include "vec-array/expression-sum.h"
-#include "vec-array/expression-substract.h"
-#include "vec-array/expression-multiple.h"
-#include "vec-array/expression-divide.h"
+#include "vec-array/expression-operation.h"
 
 namespace mysimulator {
 
@@ -51,7 +48,7 @@ namespace mysimulator {
       }
       template <typename ET>
       Type& operator=(VectorArray<ET> const& A) {
-        ParentType::ParentTypeB::operator=((Array<Array<ET>> const&)A);
+        ParentType::ParentTypeB::operator=((Array<Array<Intrinsic<ET>>> const&)A);
         return *this;
       }
       Type& operator=(const T& D) {
@@ -97,7 +94,7 @@ namespace mysimulator {
         assert((bool)(*this));
         assert((bool)A);
         assert(ParentType::_is_same_size((ParentType const&)A));
-        ParentType::ParentTypeA::operator+=((Array<T> const&)A);
+        ParentType::ParentTypeA::operator+=((Array<Intrinsic<T>> const&)A);
         return *this;
       }
       Type& operator+=(const T& D) {
@@ -149,7 +146,7 @@ namespace mysimulator {
         assert((bool)(*this));
         assert((bool)A);
         assert(ParentType::_is_same_size((ParentType const&)A));
-        ParentType::ParentTypeA::operator-=((Array<T> const&)A);
+        ParentType::ParentTypeA::operator-=((Array<Intrinsic<T>> const&)A);
         return *this;
       }
       Type& operator-=(const T& D) {
@@ -201,7 +198,7 @@ namespace mysimulator {
         assert((bool)(*this));
         assert((bool)A);
         assert(ParentType::_is_same_size((ParentType const&)A));
-        ParentType::ParentTypeA::operator*=((Array<T> const&)A);
+        ParentType::ParentTypeA::operator*=((Array<Intrinsic<T>> const&)A);
         return *this;
       }
       Type& operator*=(const T& D) {
@@ -253,7 +250,7 @@ namespace mysimulator {
         assert((bool)(*this));
         assert((bool)A);
         assert(ParentType::_is_same_size((ParentType const&)A));
-        ParentType::ParentTypeA::operator/=((Array<T> const&)A);
+        ParentType::ParentTypeA::operator/=((Array<Intrinsic<T>> const&)A);
         return *this;
       }
       Type& operator/=(const T& D) {
@@ -291,6 +288,258 @@ namespace mysimulator {
       Type& operator/=(VecArrayDiv<EA,EB> const& A) {
         operator/=(A.first());
         return operator*=(A.second());
+      }
+
+      template <typename T1,typename T2>
+      Type& operator+=(VecArrayMul<VectorArray<Intrinsic<T1>>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator+=(
+              ((Array<Intrinsic<T1>> const&)A.first()) *
+              ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator+=(VecArrayMul<VectorArray<Intrinsic<T1>>,
+                                   Intrinsic<T2>> const& A) {
+        assert((bool)(*this));
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        ParentType::ParentTypeA::operator+=(
+              ((Array<Intrinsic<T1>> const&)A.first()) * A.second());
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator+=(VecArrayMul<Intrinsic<T1>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator+=(
+              A.first() * ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator+=(VecArrayDiv<VectorArray<Intrinsic<T1>>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator+=(
+              ((Array<Intrinsic<T1>> const&)A.first()) /
+              ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator+=(VecArrayDiv<VectorArray<Intrinsic<T1>>,
+                                   Intrinsic<T2>> const& A) {
+        assert((bool)(*this));
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        ParentType::ParentTypeA::operator+=(
+              ((Array<Intrinsic<T1>> const&)A.first()) / A.second());
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator+=(VecArrayDiv<Intrinsic<T1>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator+=(
+              A.first() / ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+
+      template <typename T1,typename T2>
+      Type& operator-=(VecArrayMul<VectorArray<Intrinsic<T1>>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator-=(
+              ((Array<Intrinsic<T1>> const&)A.first()) *
+              ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator-=(VecArrayMul<VectorArray<Intrinsic<T1>>,
+                                   Intrinsic<T2>> const& A) {
+        assert((bool)(*this));
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        ParentType::ParentTypeA::operator-=(
+              ((Array<Intrinsic<T1>> const&)A.first()) * A.second());
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator-=(VecArrayMul<Intrinsic<T1>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator-=(
+              A.first() * ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator-=(VecArrayDiv<VectorArray<Intrinsic<T1>>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator-=(
+              ((Array<Intrinsic<T1>> const&)A.first()) /
+              ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator-=(VecArrayDiv<VectorArray<Intrinsic<T1>>,
+                                   Intrinsic<T2>> const& A) {
+        assert((bool)(*this));
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        ParentType::ParentTypeA::operator-=(
+              ((Array<Intrinsic<T1>> const&)A.first()) / A.second());
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator-=(VecArrayDiv<Intrinsic<T1>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator-=(
+              A.first() / ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+
+      template <typename T1,typename T2>
+      Type& operator*=(VecArraySum<VectorArray<Intrinsic<T1>>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator*=(
+              ((Array<Intrinsic<T1>> const&)A.first()) +
+              ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator*=(VecArraySum<VectorArray<Intrinsic<T1>>,
+                                   Intrinsic<T2>> const& A) {
+        assert((bool)(*this));
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        ParentType::ParentTypeA::operator*=(
+              ((Array<Intrinsic<T1>> const&)A.first()) + A.second());
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator*=(VecArraySum<Intrinsic<T1>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator*=(
+              A.first() + ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator*=(VecArraySub<VectorArray<Intrinsic<T1>>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator*=(
+              ((Array<Intrinsic<T1>> const&)A.first()) -
+              ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator*=(VecArraySub<VectorArray<Intrinsic<T1>>,
+                                   Intrinsic<T2>> const& A) {
+        assert((bool)(*this));
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        ParentType::ParentTypeA::operator*=(
+              ((Array<Intrinsic<T1>> const&)A.first()) - A.second());
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator*=(VecArraySub<Intrinsic<T1>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator*=(
+              A.first() - ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+
+      template <typename T1,typename T2>
+      Type& operator/=(VecArraySum<VectorArray<Intrinsic<T1>>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator/=(
+              ((Array<Intrinsic<T1>> const&)A.first()) +
+              ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator/=(VecArraySum<VectorArray<Intrinsic<T1>>,
+                                   Intrinsic<T2>> const& A) {
+        assert((bool)(*this));
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        ParentType::ParentTypeA::operator/=(
+              ((Array<Intrinsic<T1>> const&)A.first()) + A.second());
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator/=(VecArraySum<Intrinsic<T1>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator/=(
+              A.first() + ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator/=(VecArraySub<VectorArray<Intrinsic<T1>>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator/=(
+              ((Array<Intrinsic<T1>> const&)A.first()) -
+              ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator/=(VecArraySub<VectorArray<Intrinsic<T1>>,
+                                   Intrinsic<T2>> const& A) {
+        assert((bool)(*this));
+        assert(ParentType::_is_same_size((ParentType const&)A.first()));
+        ParentType::ParentTypeA::operator/=(
+              ((Array<Intrinsic<T1>> const&)A.first()) - A.second());
+        return *this;
+      }
+      template <typename T1,typename T2>
+      Type& operator/=(VecArraySub<Intrinsic<T1>,
+                                   VectorArray<Intrinsic<T2>>> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::_is_same_size((ParentType const&)A.second()));
+        ParentType::ParentTypeA::operator/=(
+              A.first() - ((Array<Intrinsic<T2>> const&)A.second()));
+        return *this;
       }
 
   };
