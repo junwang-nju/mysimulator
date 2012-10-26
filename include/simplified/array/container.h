@@ -19,13 +19,15 @@ namespace mysimulator {
       ArrayContainer() : ParentType() {}
       ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
       ArrayContainer(const Type&) = delete;
-      ArrayContainer(Type&&) = delete;
-      virtual ~ArrayContainer() { this->reset(); }
+      ArrayContainer(Type&& A) : ArrayContainer() {
+        ParentType::swap((ParentType&&)A);
+      }
+      virtual ~ArrayContainer() { ParentType::reset(); }
 
       virtual void allocate(size_type size) override {
-        this->reset();
-        this->_pdata.reset(new monomer_type[size],_delete_array<T>);
-        this->_ndata=size;
+        ParentType::reset();
+        ParentType::_pdata.reset(new monomer_type[size],_delete_array<T>);
+        ParentType::_ndata=size;
       }
 
   };
@@ -57,19 +59,19 @@ namespace mysimulator {
       ArrayContainer() : ParentType(),_n128(0U) {}
       ArrayContainer(size_type size) : ArrayContainer() { allocate(size); }
       ArrayContainer(const Type&) = delete;
-      ArrayContainer(Type&&) = delete;
-      virtual ~ArrayContainer() { this->reset(); }
+      ArrayContainer(Type&& A) : ArrayContainer() { swap(A); }
+      virtual ~ArrayContainer() { ParentType::reset(); }
 
       virtual void allocate(size_type size) override {
-        this->reset();
+        ParentType::reset();
         size_type byte_size=size*sizeof(monomer_type);
         size_type alloc_size=
           (byte_size&(~0xFU))+((byte_size&0xFU)==0?0:0x10U);
         _n128=((byte_size&0xFU)==0?0:1)+(byte_size>>4);
-        this->_pdata.reset(
+        ParentType::_pdata.reset(
             reinterpret_cast<pointer>(__aligned_malloc(alloc_size)),
             __aligned_free);
-        this->_ndata=size;
+        ParentType::_ndata=size;
       }
       unsigned int size128() const { return _n128; }
 

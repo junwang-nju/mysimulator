@@ -3,7 +3,6 @@
 #define _Array_Interface_H_
 
 #include "array/container.h"
-#include "array/expression.h"
 
 namespace mysimulator {
 
@@ -18,48 +17,38 @@ namespace mysimulator {
   };
 
   template <typename T>
-  class Array<T,true> : public ArrayExpression<Array<T,true>,T>,
-                        public ArrayContainer<T> {
+  class Array<T,true> : public ArrayContainer<T> {
 
     public:
 
       typedef Array<T,true>   Type;
-      typedef ArrayExpression<Type,T> ParentTypeA;
-      typedef ArrayContainer<T>       ParentTypeB;
-      typedef typename ParentTypeB::monomer_type  monomer_type;
+      typedef ArrayContainer<T>       ParentType;
+      typedef typename ParentType::monomer_type  monomer_type;
       typedef typename T::value_type  value_type;
       typedef unsigned int size_type;
       typedef monomer_type& reference;
       typedef const monomer_type& const_reference;
 
-      Array() : ParentTypeA(), ParentTypeB() {}
-      Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
-      Array(const Type& A) : Array() { this->imprint(A); operator=(A); }
-      Array(Type&& A) : Array() {
-        ParentTypeB::swap(static_cast<ParentTypeB>(A));
-      }
-      template <typename E,typename ET>
-      Array(const ArrayExpression<E,ET>& EA) : Array(EA.size()) {
-        operator=(EA);
-      }
+      Array() : ParentType() {}
+      Array(size_type size) : ParentType(size) {}
+      Array(const Type& A) : Array() { ParentType::imprint(A); operator=(A); }
+      Array(Type&& A) : ParentType((ParentType&&)A) {}
       ~Array() { reset(); }
 
-      operator bool() const { return ParentTypeB::operator bool(); }
-      size_type size() const { return ParentTypeB::size(); }
-      reference operator[](size_type i) { return ParentTypeB::operator[](i); }
+      operator bool() const { return ParentType::operator bool(); }
+      size_type size() const { return ParentType::size(); }
+      reference operator[](size_type i) { return ParentType::operator[](i); }
       const_reference operator[](size_type i) const {
-        return ParentTypeB::operator[](i);
+        return ParentType::operator[](i);
       }
 
-      template <typename E,typename ET>
-      Type& operator=(const ArrayExpression<E,ET>& EA) {
+      Type& operator=(const Type& A) {
         assert((bool)(*this));
-        assert((bool)EA);
-        assert(size()<=EA.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]=EA[i];
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]=A[i];
         return *this;
       }
-      Type& operator=(const Type& A) { return operator=<Type,T>(A); }
       Type& operator=(const monomer_type& D) {
         assert((bool)(*this));
         for(size_type i=0;i<size();++i)   (*this)[i]=D;
@@ -75,59 +64,49 @@ namespace mysimulator {
         return operator=((value_type)((T1)D));
       }
 
-      void reset() { ParentTypeB::reset(); }
+      void reset() { ParentType::reset(); }
 
   };
 
   template <typename T>
-  class Array<T,false> : public ArrayExpression<Array<T,false>,T>,
-                         public ArrayContainer<T> {
+  class Array<T,false> : public ArrayContainer<T> {
 
     public:
 
       typedef Array<T,false>   Type;
-      typedef ArrayExpression<Type,T> ParentTypeA;
-      typedef ArrayContainer<T>       ParentTypeB;
-      typedef typename ParentTypeB::monomer_type  monomer_type;
+      typedef ArrayContainer<T>       ParentType;
+      typedef typename ParentType::monomer_type  monomer_type;
       typedef unsigned int size_type;
       typedef monomer_type& reference;
       typedef const monomer_type& const_reference;
 
-      Array() : ParentTypeA(), ParentTypeB() {}
-      Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
+      Array() : ParentType() {}
+      Array(size_type size) : ParentType(size) {}
       Array(const Type& A) : Array(A.size()) { operator=(A); }
-      Array(Type&& A) : Array() {
-        ParentTypeB::swap(static_cast<ParentTypeB>(A));
-      }
-      template <typename E,typename ET>
-      Array(const ArrayExpression<E,ET>& EA) : Array(EA.size()) {
-        operator=(EA);
-      }
+      Array(Type&& A) : ParentType((ParentType&&)A) {}
       ~Array() { reset(); }
 
-      operator bool() const { return ParentTypeB::operator bool(); }
-      size_type size() const { return ParentTypeB::size(); }
-      reference operator[](size_type i) { return ParentTypeB::operator[](i); }
+      operator bool() const { return ParentType::operator bool(); }
+      size_type size() const { return ParentType::size(); }
+      reference operator[](size_type i) { return ParentType::operator[](i); }
       const_reference operator[](size_type i) const {
-        return ParentTypeB::operator[](i);
+        return ParentType::operator[](i);
       }
 
-      template <typename E,typename ET>
-      Type& operator=(const ArrayExpression<E,ET>& EA) {
+      Type& operator=(const Type& A) {
         assert((bool)(*this));
-        assert((bool)EA);
-        assert(size()<=EA.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]=EA[i];
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]=A[i];
         return *this;
       }
-      Type& operator=(const Type& A) { return operator=<Type,T>(A); }
       Type& operator=(const monomer_type& D) {
         assert((bool)(*this));
         for(size_type i=0;i<size();++i)   (*this)[i]=D;
         return *this;
       }
 
-      void reset() { ParentTypeB::reset(); }
+      void reset() { ParentType::reset(); }
 
   };
 
@@ -149,46 +128,32 @@ namespace mysimulator {
 
   template <typename T>
   class Array<Intrinsic<T>,true>
-      : public ArrayExpression<Array<Intrinsic<T>>,T>,
-        public ArrayContainer<Intrinsic<T>> {
+      : public ArrayContainer<Intrinsic<T>> {
 
     public:
 
       typedef Array<Intrinsic<T>,true>           Type;
-      typedef ArrayExpression<Type,T>       ParentTypeA;
-      typedef ArrayContainer<Intrinsic<T>>  ParentTypeB;
-      typedef typename ParentTypeB::monomer_type  monomer_type;
+      typedef ArrayContainer<Intrinsic<T>>  ParentType;
+      typedef typename ParentType::monomer_type  monomer_type;
       typedef T  value_type;
       typedef unsigned int size_type;
       typedef monomer_type& reference;
       typedef const monomer_type& const_reference;
 
-      Array() : ParentTypeA(), ParentTypeB() {}
-      Array(size_type size) : ParentTypeA(), ParentTypeB(size) {}
+      Array() : ParentType() {}
+      Array(size_type size) : ParentType(size) {}
       Array(const Type& A) : Array(A.size()) { operator=(A); }
-      Array(Type&& A) : Array() { ParentTypeB::swap(A); }
-      template <typename E,typename ET>
-      Array(const ArrayExpression<E,ET>& EA) : Array(EA.size()) {
-        operator=(EA);
-      }
+      Array(Type&& A) : ParentType((ParentType&&)A) {}
       ~Array() { reset(); }
 
-      operator bool() const { return ParentTypeB::operator bool(); }
-      size_type size() const { return ParentTypeB::size(); }
-      reference operator[](size_type i) { return ParentTypeB::operator[](i); }
+      operator bool() const { return ParentType::operator bool(); }
+      size_type size() const { return ParentType::size(); }
+      reference operator[](size_type i) { return ParentType::operator[](i); }
       const_reference operator[](size_type i) const {
-        return ParentTypeB::operator[](i);
+        return ParentType::operator[](i);
       }
-      void reset() { ParentTypeB::reset(); }
+      void reset() { ParentType::reset(); }
 
-      template <typename E,typename ET>
-      Type& operator=(const ArrayExpression<E,ET>& EA) {
-        assert((bool)(*this));
-        assert((bool)EA);
-        assert(size()<=EA.size());
-        for(size_type i=0;i<size();++i) (*this)[i]=EA[i];
-        return *this;
-      }
       Type& operator=(const Type& A) {
         assert((bool)(*this));
         assert((bool)A);
@@ -197,6 +162,14 @@ namespace mysimulator {
         __m128i* q=reinterpret_cast<__m128i*>(A.head());
         const __m128i* e=p+this->size128();
         for(;p!=e;) _mm_store_si128(p++,*(q++));
+      }
+      template <typename ET>
+      Type& operator=(Array<ET> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i) (*this)[i]=A[i];
+        return *this;
       }
       Type& operator=(const value_type& D) {
         assert((bool)(*this));
@@ -209,47 +182,35 @@ namespace mysimulator {
       }
 
       template <typename EA,typename EB>
-      Type& operator=(
-          const ArrayExpression<
-                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
-        ArraySum<EA,EB> const& RA=static_cast<ArraySum<EA,EB> const&>(A);
+      Type& operator=(ArraySum<EA,EB> const& RA) {
         operator=(RA.first());
         return operator+=(RA.second());
       }
       template <typename EA,typename EB>
-      Type& operator=(
-          const ArrayExpression<
-                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
-        ArraySub<EA,EB> const& RA=static_cast<ArraySub<EA,EB> const&>(A);
+      Type& operator=(ArraySub<EA,EB> const& RA) {
         operator=(RA.first());
         return operator-=(RA.second());
       }
       template <typename EA,typename EB>
-      Type& operator=(
-          const ArrayExpression<
-                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>& A) {
-        ArrayMul<EA,EB> const& RA=static_cast<ArrayMul<EA,EB> const&>(A);
+      Type& operator=(ArrayMul<EA,EB> const& RA) {
         operator=(RA.first());
         return operator*=(RA.second());
       }
       template <typename EA,typename EB>
-      Type& operator=(
-          const ArrayExpression<
-                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>& A) {
-        ArrayDiv<EA,EB> const& RA=static_cast<ArrayDiv<EA,EB> const&>(A);
+      Type& operator=(ArrayDiv<EA,EB> const& RA) {
         operator=(RA.first());
         return operator/=(RA.second());
       }
 
-      template <typename E,typename ET>
-      Type& operator+=(const ArrayExpression<E,ET>& EA) {
+      template <typename ET>
+      Type& operator+=(const Array<ET>& A) {
         static_assert(
             __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG,
             "Type T cannot accept SUM result!\n");
         assert((bool)(*this));
-        assert((bool)EA);
-        assert(size()<=EA.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]+=EA[i];
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]+=A[i];
         return *this;
       }
       Type& operator+=(const value_type& D) {
@@ -263,31 +224,41 @@ namespace mysimulator {
       }
 
       template <typename EA,typename EB>
-      Type& operator+=(
-          const ArrayExpression<
-                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
-        ArraySum<EA,EB> const& RA=static_cast<ArraySum<EA,EB> const&>(A);
+      Type& operator+=(ArraySum<EA,EB> const& RA) {
         operator+=(RA.first());
         return operator+=(RA.second());
       }
       template <typename EA,typename EB>
-      Type& operator+=(
-          const ArrayExpression<
-                  ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
-        ArraySub<EA,EB> const& RA=static_cast<ArraySub<EA,EB> const&>(A);
+      Type& operator+=(ArraySub<EA,EB> const& RA) {
         operator+=(RA.first());
         return operator-=(RA.second());
       }
+      template <typename EA,typename EB>
+      Type& operator+=(ArrayMul<EA,EB> const& RA) {
+        assert((bool)(*this));
+        assert((bool)RA);
+        assert(size()<=RA.size());
+        for(size_type i=0;i<size();++i) (*this)[i]+=RA[i];
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator+=(ArrayDiv<EA,EB> const& RA) {
+        assert((bool)(*this));
+        assert((bool)RA);
+        assert(size()<=RA.size());
+        for(size_type i=0;i<size();++i) (*this)[i]+=RA[i];
+        return *this;
+      }
 
-      template <typename E,typename ET>
-      Type& operator-=(const ArrayExpression<E,ET>& EA) {
+      template <typename ET>
+      Type& operator-=(const Array<ET>& A) {
         static_assert(
             __same_type<T,typename __dual_selector<T,ET,__sub_flag>::Type>::FG,
             "Type T cannot accept SUBSTRACT result!\n");
         assert((bool)(*this));
-        assert((bool)EA);
-        assert(size()<=EA.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]=EA[i];
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]=A[i];
         return *this;
       }
       Type& operator-=(const value_type& D) {
@@ -301,31 +272,41 @@ namespace mysimulator {
       }
 
       template <typename EA,typename EB>
-      Type& operator-=(
-          const ArrayExpression<
-                  ArraySum<EA,EB>,typename ArraySum<EA,EB>::value_type>& A) {
-        ArraySum<EA,EB> const& RA=static_cast<ArraySum<EA,EB> const&>(A);
+      Type& operator-=(ArraySum<EA,EB> const& RA) {
         operator-=(RA.first());
         return operator-=(RA.second());
       }
       template <typename EA,typename EB>
-      Type& operator-=(
-          const ArrayExpression<
-          ArraySub<EA,EB>,typename ArraySub<EA,EB>::value_type>& A) {
-        ArraySub<EA,EB> const& RA=static_cast<ArraySub<EA,EB> const&>(A);
+      Type& operator-=(ArraySub<EA,EB> const& RA) {
         operator-=(RA.first());
         return operator+=(RA.second());
       }
+      template <typename EA,typename EB>
+      Type& operator-=(ArrayMul<EA,EB> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i) (*this)[i]-=A[i];
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator-=(ArrayDiv<EA,EB> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i) (*this)[i]-=A[i];
+        return *this;
+      }
 
-      template <typename E,typename ET>
-      Type& operator*=(const ArrayExpression<E,ET>& EA) {
+      template <typename ET>
+      Type& operator*=(const Array<ET>& A) {
         static_assert(
             __same_type<T,typename __dual_selector<T,ET,__mul_flag>::Type>::FG,
             "Type T cannot accept MULTIPLE result!\n");
         assert((bool)(*this));
-        assert((bool)EA);
-        assert(size()<=EA.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]*=EA[i];
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]*=A[i];
         return *this;
       }
       Type& operator*=(const value_type& D) {
@@ -339,33 +320,43 @@ namespace mysimulator {
       }
 
       template <typename EA,typename EB>
-      Type& operator*=(
-          const ArrayExpression<
-                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>& A) {
-        ArrayMul<EA,EB> const& RA=static_cast<ArrayMul<EA,EB> const&>(A);
+      Type& operator*=(ArraySum<EA,EB> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]*=A[i];
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator*=(ArraySub<EA,EB> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]*=A[i];
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator*=(ArrayMul<EA,EB> const& RA) {
         operator*=(RA.first());
         return operator*=(RA.second());
       }
       template <typename EA,typename EB>
-      Type& operator*=(
-          const ArrayExpression<
-                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>& A) {
-        ArrayDiv<EA,EB> const& RA=static_cast<ArrayDiv<EA,EB> const&>(A);
+      Type& operator*=(ArrayDiv<EA,EB> const& RA) {
         operator*=(RA.first());
         return operator/=(RA.second());
       }
 
-      template <typename E,typename ET>
-      Type& operator/=(const ArrayExpression<E,ET>& EA) {
+      template <typename ET>
+      Type& operator/=(const Array<ET>& A) {
         static_assert(
             __same_type<T,typename __dual_selector<T,ET,__div_flag>::Type>::FG,
             "Type T cannot accept DIVIDE result!\n");
         static_assert(Intrinsic<T>::IsFloatPoint,
                       "Divide only works for float-point data!\n");
         assert((bool)(*this));
-        assert((bool)EA);
-        assert(size()<=EA.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]/=EA[i];
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]/=A[i];
         return *this;
       }
       Type& operator/=(const value_type& D) {
@@ -380,18 +371,28 @@ namespace mysimulator {
       }
 
       template <typename EA,typename EB>
-      Type& operator/=(
-          const ArrayExpression<
-                  ArrayMul<EA,EB>,typename ArrayMul<EA,EB>::value_type>& A) {
-        ArrayMul<EA,EB> const& RA=static_cast<ArrayMul<EA,EB> const&>(A);
+      Type& operator/=(ArraySum<EA,EB> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]/=A[i];
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator/=(ArraySub<EA,EB> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(size()<=A.size());
+        for(size_type i=0;i<size();++i)   (*this)[i]/=A[i];
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator/=(ArrayMul<EA,EB> const& RA) {
         operator/=(RA.first());
         return operator/=(RA.second());
       }
       template <typename EA,typename EB>
-      Type& operator/=(
-          const ArrayExpression<
-                  ArrayDiv<EA,EB>,typename ArrayDiv<EA,EB>::value_type>& A) {
-        ArrayDiv<EA,EB> const& RA=static_cast<ArrayDiv<EA,EB> const&>(A);
+      Type& operator/=(ArrayDiv<EA,EB> const& RA) {
         operator/=(RA.first());
         return operator*=(RA.second());
       }
@@ -425,7 +426,7 @@ namespace mysimulator {
       value128_type set_from_unit(double D) { return _mm_set1_pd(D); }
   };
 
-  template <typename T,__ArrayOperationName RunOp>
+  template <typename T,__ExpressionOperationName RunOp>
   typename __ArrayWrapper<Intrinsic<T>>::value128_type
   __Op128(typename __ArrayWrapper<Intrinsic<T>>::value128_type const& a,
           typename __ArrayWrapper<Intrinsic<T>>::value128_type const& b) {
@@ -434,67 +435,67 @@ namespace mysimulator {
   }
 
   template <>
-  inline __m128i __Op128<int,__ArrayOperationName::Add>(
+  inline __m128i __Op128<int,__ExpressionOperationName::Add>(
       __m128i const& a,__m128i const& b) {
     return _mm_add_epi32(a,b);
   }
 
   template <>
-  inline __m128i __Op128<int,__ArrayOperationName::Substract>(
+  inline __m128i __Op128<int,__ExpressionOperationName::Substract>(
       __m128i const& a,__m128i const& b) {
     return _mm_sub_epi32(a,b);
   }
 
   template <>
-  inline __m128i __Op128<int,__ArrayOperationName::Multiple>(
+  inline __m128i __Op128<int,__ExpressionOperationName::Multiple>(
       __m128i const& a,__m128i const& b) {
     return _mm_mullo_epi32(a,b);
   }
 
   template <>
-  inline __m128 __Op128<float,__ArrayOperationName::Add>(
+  inline __m128 __Op128<float,__ExpressionOperationName::Add>(
       __m128 const& a,__m128 const& b) {
     return _mm_add_ps(a,b);
   }
 
   template <>
-  inline __m128 __Op128<float,__ArrayOperationName::Substract>(
+  inline __m128 __Op128<float,__ExpressionOperationName::Substract>(
       __m128 const& a,__m128 const& b) {
     return _mm_sub_ps(a,b);
   }
 
   template <>
-  inline __m128 __Op128<float,__ArrayOperationName::Multiple>(
+  inline __m128 __Op128<float,__ExpressionOperationName::Multiple>(
       __m128 const& a,__m128 const& b) {
     return _mm_mul_ps(a,b);
   }
 
   template <>
-  inline __m128 __Op128<float,__ArrayOperationName::Divide>(
+  inline __m128 __Op128<float,__ExpressionOperationName::Divide>(
       __m128 const& a,__m128 const& b) {
     return _mm_div_ps(a,b);
   }
 
   template <>
-  inline __m128d __Op128<double,__ArrayOperationName::Add>(
+  inline __m128d __Op128<double,__ExpressionOperationName::Add>(
       __m128d const& a,__m128d const& b) {
     return _mm_add_pd(a,b);
   }
 
   template <>
-  inline __m128d __Op128<double,__ArrayOperationName::Substract>(
+  inline __m128d __Op128<double,__ExpressionOperationName::Substract>(
       __m128d const& a,__m128d const& b) {
     return _mm_sub_pd(a,b);
   }
 
   template <>
-  inline __m128d __Op128<double,__ArrayOperationName::Multiple>(
+  inline __m128d __Op128<double,__ExpressionOperationName::Multiple>(
       __m128d const& a,__m128d const& b) {
     return _mm_mul_pd(a,b);
   }
 
   template <>
-  inline __m128d __Op128<double,__ArrayOperationName::Divide>(
+  inline __m128d __Op128<double,__ExpressionOperationName::Divide>(
       __m128d const& a,__m128d const& b) {
     return _mm_div_pd(a,b);
   }
@@ -512,7 +513,7 @@ namespace mysimulator {
     return A;
   }
 
-  template <typename T,__ArrayOperationName RunOp>
+  template <typename T,__ExpressionOperationName RunOp>
   Array<Intrinsic<T>>&
   __val_op(Array<Intrinsic<T>>& A,const T& D) {
     assert((bool)A);
@@ -525,38 +526,35 @@ namespace mysimulator {
     return A;
   }
 
-  template <typename T,__ArrayOperationName RunOp>
+  template <typename T,__ExpressionOperationName RunOp>
   Array<Intrinsic<T>>&
-  __array_op(Array<Intrinsic<T>>& A,
-             const ArrayExpression<Array<Intrinsic<T>>,T>& E) {
+  __array_op(Array<Intrinsic<T>>& A,const Array<Intrinsic<T>>& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
-    typedef Array<Intrinsic<T>> AType;
     T128 *p=reinterpret_cast<T128*>(A.head());
-    T128 *q=reinterpret_cast<T128*>(((AType const&)E).head());
+    T128 *q=reinterpret_cast<T128*>(E.head());
     const T128 *e=p+A.size128();
     for(;p!=e;) { *p=__Op128<T,RunOp>(*p,*(q++));  ++p; }
     return A;
   }
 
   template <typename T,template<typename,typename> class ArrayOp,
-            __ArrayOperationName RunOp>
+            __ExpressionOperationName RunOp>
   Array<Intrinsic<T>>&
   __two_level_op(
       Array<Intrinsic<T>>& A,
-      const ArrayExpression<ArrayOp<Intrinsic<T>,Array<Intrinsic<T>>>,T>& E) {
+      const ArrayOp<Intrinsic<T>,Array<Intrinsic<T>>>& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
     typedef ArrayOp<Intrinsic<T>,Array<Intrinsic<T>>> AType;
-    AType const& RA=static_cast<AType const&>(E);
     T128 *p=reinterpret_cast<T128*>(A.head());
     const T128 *e=p+A.size128();
-    T128 u=__ArrayWrapper<Intrinsic<T>>::set_from_unit(RA.first());
-    T128 *q=reinterpret_cast<T128*>(RA.second().head());
+    T128 u=__ArrayWrapper<Intrinsic<T>>::set_from_unit(E.first());
+    T128 *q=reinterpret_cast<T128*>(E.second().head());
     for(;p!=e;) {
       *p=__Op128<T,RunOp>(*p,__Op128<T,AType::OpName>(u,*(q++)));
       ++p;
@@ -564,21 +562,20 @@ namespace mysimulator {
     return A;
   }
   template <typename T,template<typename,typename> class ArrayOp,
-            __ArrayOperationName RunOp>
+            __ExpressionOperationName RunOp>
   Array<Intrinsic<T>>&
   __two_level_op(
       Array<Intrinsic<T>>& A,
-      const ArrayExpression<ArrayOp<Array<Intrinsic<T>>,Intrinsic<T>>,T>& E) {
+      const ArrayOp<Array<Intrinsic<T>>,Intrinsic<T>>& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
     typedef ArrayOp<Array<Intrinsic<T>>,Intrinsic<T>> AType;
-    AType const& RA=static_cast<AType const&>(E);
     T128 *p=reinterpret_cast<T128*>(A.head());
     const T128 *e=p+A.size128();
-    T128 u=__ArrayWrapper<Intrinsic<T>>::set_from_unit(RA.second());
-    T128 *q=reinterpret_cast<T128*>(RA.first().head());
+    T128 u=__ArrayWrapper<Intrinsic<T>>::set_from_unit(E.second());
+    T128 *q=reinterpret_cast<T128*>(E.first().head());
     for(;p!=e;) {
       *p=__Op128<T,RunOp>(*p,__Op128<T,AType::OpName>(*(q++),u));
       ++p;
@@ -586,22 +583,20 @@ namespace mysimulator {
     return A;
   }
   template <typename T,template<typename,typename> class ArrayOp,
-            __ArrayOperationName RunOp>
+            __ExpressionOperationName RunOp>
   Array<Intrinsic<T>>&
   __two_level_op(
       Array<Intrinsic<T>>& A,
-      const ArrayExpression<
-            ArrayOp<Array<Intrinsic<T>>,Array<Intrinsic<T>>>,T>& E) {
+      const ArrayOp<Array<Intrinsic<T>>,Array<Intrinsic<T>>>& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     typedef typename __ArrayWrapper<Intrinsic<T>>::value128_type T128;
     typedef ArrayOp<Array<Intrinsic<T>>,Array<Intrinsic<T>>> AType;
-    AType const& RA=static_cast<AType const&>(E);
     T128 *p=reinterpret_cast<T128*>(A.head());
     const T128 *e=p+A.size128();
-    T128 *q=reinterpret_cast<T128*>(RA.first().head());
-    T128 *r=reinterpret_cast<T128*>(RA.second().head());
+    T128 *q=reinterpret_cast<T128*>(E.first().head());
+    T128 *r=reinterpret_cast<T128*>(E.second().head());
     for(;p!=e;) {
       *p=__Op128<T,RunOp>(*p,__Op128<T,AType::OpName>(*(q++),*(r++)));
       ++p;
@@ -624,117 +619,109 @@ namespace mysimulator {
 
   template <>
   Array<Int>& Array<Int>::operator+=(const int& D) {
-    return __val_op<int,__ArrayOperationName::Add>(*this,D);
+    return __val_op<int,__ExpressionOperationName::Add>(*this,D);
   }
   template <>
   Array<Float>& Array<Float>::operator+=(const float& D) {
-    return __val_op<float,__ArrayOperationName::Add>(*this,D);
+    return __val_op<float,__ExpressionOperationName::Add>(*this,D);
   }
   template <>
   Array<Double>& Array<Double>::operator+=(const double& D) {
-    return __val_op<double,__ArrayOperationName::Add>(*this,D);
+    return __val_op<double,__ExpressionOperationName::Add>(*this,D);
   }
 
   template <>
   template <>
-  Array<Int>& Array<Int>::operator+=(const ArrayExpression<Array<Int>,int>& A) {
-    return __array_op<int,__ArrayOperationName::Add>(*this,A);
+  Array<Int>& Array<Int>::operator+=(const Array<Int>& A) {
+    return __array_op<int,__ExpressionOperationName::Add>(*this,A);
   }
   template <>
   template <>
-  Array<Float>& Array<Float>::operator+=(
-      const ArrayExpression<Array<Float>,float>& A) {
-    return __array_op<float,__ArrayOperationName::Add>(*this,A);
+  Array<Float>& Array<Float>::operator+=(const Array<Float>& A) {
+    return __array_op<float,__ExpressionOperationName::Add>(*this,A);
   }
   template <>
   template <>
-  Array<Double>& Array<Double>::operator+=(
-      const ArrayExpression<Array<Double>,double>& A) {
-    return __array_op<double,__ArrayOperationName::Add>(*this,A);
+  Array<Double>& Array<Double>::operator+=(const Array<Double>& A) {
+    return __array_op<double,__ExpressionOperationName::Add>(*this,A);
   }
 
   template <>
   Array<Int>& Array<Int>::operator-=(const int& D) {
-    return __val_op<int,__ArrayOperationName::Substract>(*this,D);
+    return __val_op<int,__ExpressionOperationName::Substract>(*this,D);
   }
   template <>
   Array<Float>& Array<Float>::operator-=(const float& D) {
-    return __val_op<float,__ArrayOperationName::Substract>(*this,D);
+    return __val_op<float,__ExpressionOperationName::Substract>(*this,D);
   }
   template <>
   Array<Double>& Array<Double>::operator-=(const double& D) {
-    return __val_op<double,__ArrayOperationName::Substract>(*this,D);
+    return __val_op<double,__ExpressionOperationName::Substract>(*this,D);
   }
 
   template <>
   template <>
-  Array<Int>& Array<Int>::operator-=(const ArrayExpression<Array<Int>,int>& A) {
-    return __array_op<int,__ArrayOperationName::Substract>(*this,A);
+  Array<Int>& Array<Int>::operator-=(const Array<Int>& A) {
+    return __array_op<int,__ExpressionOperationName::Substract>(*this,A);
   }
   template <>
   template <>
-  Array<Float>& Array<Float>::operator-=(
-      const ArrayExpression<Array<Float>,float>& A) {
-    return __array_op<float,__ArrayOperationName::Substract>(*this,A);
+  Array<Float>& Array<Float>::operator-=(const Array<Float>& A) {
+    return __array_op<float,__ExpressionOperationName::Substract>(*this,A);
   }
   template <>
   template <>
-  Array<Double>& Array<Double>::operator-=(
-      const ArrayExpression<Array<Double>,double>& A) {
-    return __array_op<double,__ArrayOperationName::Add>(*this,A);
+  Array<Double>& Array<Double>::operator-=(const Array<Double>& A) {
+    return __array_op<double,__ExpressionOperationName::Add>(*this,A);
   }
 
   template <>
   Array<Int>& Array<Int>::operator*=(const int& D) {
-    return __val_op<int,__ArrayOperationName::Multiple>(*this,D);
+    return __val_op<int,__ExpressionOperationName::Multiple>(*this,D);
   }
   template <>
   Array<Float>& Array<Float>::operator*=(const float& D) {
-    return __val_op<float,__ArrayOperationName::Multiple>(*this,D);
+    return __val_op<float,__ExpressionOperationName::Multiple>(*this,D);
   }
   template <>
   Array<Double>& Array<Double>::operator*=(const double& D) {
-    return __val_op<double,__ArrayOperationName::Multiple>(*this,D);
+    return __val_op<double,__ExpressionOperationName::Multiple>(*this,D);
   }
 
   template <>
   template <>
-  Array<Int>& Array<Int>::operator*=(const ArrayExpression<Array<Int>,int>& A) {
-    return __array_op<int,__ArrayOperationName::Multiple>(*this,A);
+  Array<Int>& Array<Int>::operator*=(const Array<Int>& A) {
+    return __array_op<int,__ExpressionOperationName::Multiple>(*this,A);
   }
   template <>
   template <>
-  Array<Float>& Array<Float>::operator*=(
-      const ArrayExpression<Array<Float>,float>& A) {
-    return __array_op<float,__ArrayOperationName::Multiple>(*this,A);
+  Array<Float>& Array<Float>::operator*=(const Array<Float>& A) {
+    return __array_op<float,__ExpressionOperationName::Multiple>(*this,A);
   }
   template <>
   template <>
-  Array<Double>& Array<Double>::operator*=(
-      const ArrayExpression<Array<Double>,double>& A) {
-    return __array_op<double,__ArrayOperationName::Multiple>(*this,A);
+  Array<Double>& Array<Double>::operator*=(const Array<Double>& A) {
+    return __array_op<double,__ExpressionOperationName::Multiple>(*this,A);
   }
 
   template <>
   Array<Float>& Array<Float>::operator/=(const float& D) {
-    return __val_op<float,__ArrayOperationName::Divide>(*this,D);
+    return __val_op<float,__ExpressionOperationName::Divide>(*this,D);
   }
   template <>
   Array<Double>& Array<Double>::operator/=(const double& D) {
-    return __val_op<double,__ArrayOperationName::Divide>(*this,D);
+    return __val_op<double,__ExpressionOperationName::Divide>(*this,D);
   }
 
   template <>
   template <>
-  Array<Float>& Array<Float>::operator/=(
-      const ArrayExpression<Array<Float>,float>& A) {
-    return __array_op<float,__ArrayOperationName::Divide>(*this,A);
+  Array<Float>& Array<Float>::operator/=(const Array<Float>& A) {
+    return __array_op<float,__ExpressionOperationName::Divide>(*this,A);
   }
   template <>
   template <>
-  Array<Double>& Array<Double>::operator/=(
-      const ArrayExpression<Array<Double>,double>& A) {
-    return __array_op<double,__ArrayOperationName::Divide>(*this,A);
+  Array<Double>& Array<Double>::operator/=(const Array<Double>& A) {
+    return __array_op<double,__ExpressionOperationName::Divide>(*this,A);
   }
 
   // for too-short array, direct operation may be faster
@@ -742,431 +729,430 @@ namespace mysimulator {
   // for float,  2-mer is balance
   template <>
   template <>
-  Array<Int>& Array<Int>::operator+=(
-      const ArrayExpression<ArrayMul<Int,Array<Int>>,int>& EA) {
-    return __two_level_op<int,ArrayMul,__ArrayOperationName::Add>(*this,EA);
+  Array<Int>& Array<Int>::operator+=(const ArrayMul<Int,Array<Int>>& EA) {
+    return __two_level_op<int,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator+=(
-      const ArrayExpression<ArrayMul<Float,Array<Float>>,float>& EA) {
-    return __two_level_op<float,ArrayMul,__ArrayOperationName::Add>(*this,EA);
+      const ArrayMul<Float,Array<Float>>& EA) {
+    return __two_level_op<float,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator+=(
-      const ArrayExpression<ArrayMul<Double,Array<Double>>,double>& EA) {
-    return __two_level_op<double,ArrayMul,__ArrayOperationName::Add>(*this,EA);
-  }
-
-  template <>
-  template <>
-  Array<Int>& Array<Int>::operator+=(
-      const ArrayExpression<ArrayMul<Array<Int>,Int>,int>& EA) {
-    return __two_level_op<int,ArrayMul,__ArrayOperationName::Add>(*this,EA);
-  }
-  template <>
-  template <>
-  Array<Float>& Array<Float>::operator+=(
-      const ArrayExpression<ArrayMul<Array<Float>,Float>,float>& EA) {
-    return __two_level_op<float,ArrayMul,__ArrayOperationName::Add>(*this,EA);
-  }
-  template <>
-  template <>
-  Array<Double>& Array<Double>::operator+=(
-      const ArrayExpression<ArrayMul<Array<Double>,Double>,double>& EA) {
-    return __two_level_op<double,ArrayMul,__ArrayOperationName::Add>(*this,EA);
+      const ArrayMul<Double,Array<Double>>& EA) {
+    return __two_level_op<double,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator+=(
-      const ArrayExpression<ArrayMul<Array<Int>,Array<Int>>,int>& EA) {
-    return __two_level_op<int,ArrayMul,__ArrayOperationName::Add>(*this,EA);
+      const ArrayMul<Array<Int>,Int>& EA) {
+    return __two_level_op<int,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator+=(
-      const ArrayExpression<ArrayMul<Array<Float>,Array<Float>>,float>& EA) {
-    return __two_level_op<float,ArrayMul,__ArrayOperationName::Add>(*this,EA);
+      const ArrayMul<Array<Float>,Float>& EA) {
+    return __two_level_op<float,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator+=(
-      const ArrayExpression<ArrayMul<Array<Double>,Array<Double>>,double>& EA) {
-    return __two_level_op<double,ArrayMul,__ArrayOperationName::Add>(*this,EA);
+      const ArrayMul<Array<Double>,Double>& EA) {
+    return __two_level_op<double,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
+  }
+
+  template <>
+  template <>
+  Array<Int>& Array<Int>::operator+=(
+      const ArrayMul<Array<Int>,Array<Int>>& EA) {
+    return __two_level_op<int,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
+  }
+  template <>
+  template <>
+  Array<Float>& Array<Float>::operator+=(
+      const ArrayMul<Array<Float>,Array<Float>>& EA) {
+    return __two_level_op<float,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
+  }
+  template <>
+  template <>
+  Array<Double>& Array<Double>::operator+=(
+      const ArrayMul<Array<Double>,Array<Double>>& EA) {
+    return __two_level_op<double,ArrayMul,__ExpressionOperationName::Add>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator+=(
-      const ArrayExpression<ArrayDiv<Float,Array<Float>>,float>& EA) {
-    return __two_level_op<float,ArrayDiv,__ArrayOperationName::Add>(*this,EA);
+      const ArrayDiv<Float,Array<Float>>& EA) {
+    return __two_level_op<float,ArrayDiv,__ExpressionOperationName::Add>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator+=(
-      const ArrayExpression<ArrayDiv<Double,Array<Double>>,double>& EA) {
-    return __two_level_op<double,ArrayDiv,__ArrayOperationName::Add>(*this,EA);
+      const ArrayDiv<Double,Array<Double>>& EA) {
+    return __two_level_op<double,ArrayDiv,__ExpressionOperationName::Add>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator+=(
-      const ArrayExpression<ArrayDiv<Array<Float>,Float>,float>& EA) {
-    return __two_level_op<float,ArrayDiv,__ArrayOperationName::Add>(*this,EA);
+      const ArrayDiv<Array<Float>,Float>& EA) {
+    return __two_level_op<float,ArrayDiv,__ExpressionOperationName::Add>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator+=(
-      const ArrayExpression<ArrayDiv<Array<Double>,Double>,double>& EA) {
-    return __two_level_op<double,ArrayDiv,__ArrayOperationName::Add>(*this,EA);
+      const ArrayDiv<Array<Double>,Double>& EA) {
+    return __two_level_op<double,ArrayDiv,__ExpressionOperationName::Add>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator+=(
-      const ArrayExpression<ArrayDiv<Array<Float>,Array<Float>>,float>& EA) {
-    return __two_level_op<float,ArrayDiv,__ArrayOperationName::Add>(*this,EA);
+      const ArrayDiv<Array<Float>,Array<Float>>& EA) {
+    return __two_level_op<float,ArrayDiv,__ExpressionOperationName::Add>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator+=(
-      const ArrayExpression<ArrayDiv<Array<Double>,Array<Double>>,double>& EA) {
-    return __two_level_op<double,ArrayDiv,__ArrayOperationName::Add>(*this,EA);
+      const ArrayDiv<Array<Double>,Array<Double>>& EA) {
+    return __two_level_op<double,ArrayDiv,__ExpressionOperationName::Add>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator-=(
-      const ArrayExpression<ArrayMul<Int,Array<Int>>,int>& EA) {
+      const ArrayMul<Int,Array<Int>>& EA) {
     return
-    __two_level_op<int,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<int,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator-=(
-      const ArrayExpression<ArrayMul<Float,Array<Float>>,float>& EA) {
+      const ArrayMul<Float,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<float,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator-=(
-      const ArrayExpression<ArrayMul<Double,Array<Double>>,double>& EA) {
+      const ArrayMul<Double,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<double,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator-=(
-      const ArrayExpression<ArrayMul<Array<Int>,Int>,int>& EA) {
+      const ArrayMul<Array<Int>,Int>& EA) {
     return
-    __two_level_op<int,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<int,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator-=(
-      const ArrayExpression<ArrayMul<Array<Float>,Float>,float>& EA) {
+      const ArrayMul<Array<Float>,Float>& EA) {
     return
-    __two_level_op<float,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<float,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator-=(
-      const ArrayExpression<ArrayMul<Array<Double>,Double>,double>& EA) {
+      const ArrayMul<Array<Double>,Double>& EA) {
     return
-    __two_level_op<double,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<double,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator-=(
-      const ArrayExpression<ArrayMul<Array<Int>,Array<Int>>,int>& EA) {
+      const ArrayMul<Array<Int>,Array<Int>>& EA) {
     return
-    __two_level_op<int,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<int,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator-=(
-      const ArrayExpression<ArrayMul<Array<Float>,Array<Float>>,float>& EA) {
+      const ArrayMul<Array<Float>,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<float,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator-=(
-      const ArrayExpression<ArrayMul<Array<Double>,Array<Double>>,double>& EA) {
+      const ArrayMul<Array<Double>,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArrayMul,__ArrayOperationName::Substract>(*this,EA);
-  }
-
-  template <>
-  template <>
-  Array<Float>& Array<Float>::operator-=(
-      const ArrayExpression<ArrayDiv<Float,Array<Float>>,float>& EA) {
-    return
-    __two_level_op<float,ArrayDiv,__ArrayOperationName::Substract>(*this,EA);
-  }
-  template <>
-  template <>
-  Array<Double>& Array<Double>::operator-=(
-      const ArrayExpression<ArrayDiv<Double,Array<Double>>,double>& EA) {
-    return
-    __two_level_op<double,ArrayDiv,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<double,ArrayMul,__ExpressionOperationName::Substract>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator-=(
-      const ArrayExpression<ArrayDiv<Array<Float>,Float>,float>& EA) {
+      const ArrayDiv<Float,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArrayDiv,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<float,ArrayDiv,__ExpressionOperationName::Substract>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator-=(
-      const ArrayExpression<ArrayDiv<Array<Double>,Double>,double>& EA) {
+      const ArrayDiv<Double,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArrayDiv,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<double,ArrayDiv,__ExpressionOperationName::Substract>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator-=(
-      const ArrayExpression<ArrayDiv<Array<Float>,Array<Float>>,float>& EA) {
+      const ArrayDiv<Array<Float>,Float>& EA) {
     return
-    __two_level_op<float,ArrayDiv,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<float,ArrayDiv,__ExpressionOperationName::Substract>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator-=(
-      const ArrayExpression<ArrayDiv<Array<Double>,Array<Double>>,double>& EA) {
+      const ArrayDiv<Array<Double>,Double>& EA) {
     return
-    __two_level_op<double,ArrayDiv,__ArrayOperationName::Substract>(*this,EA);
+    __two_level_op<double,ArrayDiv,__ExpressionOperationName::Substract>(*this,EA);
+  }
+
+  template <>
+  template <>
+  Array<Float>& Array<Float>::operator-=(
+      const ArrayDiv<Array<Float>,Array<Float>>& EA) {
+    return
+    __two_level_op<float,ArrayDiv,__ExpressionOperationName::Substract>(*this,EA);
+  }
+  template <>
+  template <>
+  Array<Double>& Array<Double>::operator-=(
+      const ArrayDiv<Array<Double>,Array<Double>>& EA) {
+    return
+    __two_level_op<double,ArrayDiv,__ExpressionOperationName::Substract>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator*=(
-      const ArrayExpression<ArraySum<Int,Array<Int>>,int>& EA) {
+      const ArraySum<Int,Array<Int>>& EA) {
     return
-    __two_level_op<int,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<int,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator*=(
-      const ArrayExpression<ArraySum<Float,Array<Float>>,float>& EA) {
+      const ArraySum<Float,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<float,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator*=(
-      const ArrayExpression<ArraySum<Double,Array<Double>>,double>& EA) {
+      const ArraySum<Double,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<double,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator*=(
-      const ArrayExpression<ArraySum<Array<Int>,Int>,int>& EA) {
+      const ArraySum<Array<Int>,Int>& EA) {
     return
-    __two_level_op<int,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<int,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator*=(
-      const ArrayExpression<ArraySum<Array<Float>,Float>,float>& EA) {
+      const ArraySum<Array<Float>,Float>& EA) {
     return
-    __two_level_op<float,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<float,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator*=(
-      const ArrayExpression<ArraySum<Array<Double>,Double>,double>& EA) {
+      const ArraySum<Array<Double>,Double>& EA) {
     return
-    __two_level_op<double,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<double,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator*=(
-      const ArrayExpression<ArraySum<Array<Int>,Array<Int>>,int>& EA) {
+      const ArraySum<Array<Int>,Array<Int>>& EA) {
     return
-    __two_level_op<int,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<int,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator*=(
-      const ArrayExpression<ArraySum<Array<Float>,Array<Float>>,float>& EA) {
+      const ArraySum<Array<Float>,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<float,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator*=(
-      const ArrayExpression<ArraySum<Array<Double>,Array<Double>>,double>& EA) {
+      const ArraySum<Array<Double>,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArraySum,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<double,ArraySum,__ExpressionOperationName::Multiple>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator*=(
-      const ArrayExpression<ArraySub<Int,Array<Int>>,int>& EA) {
+      const ArraySub<Int,Array<Int>>& EA) {
     return
-    __two_level_op<int,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<int,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator*=(
-      const ArrayExpression<ArraySub<Float,Array<Float>>,float>& EA) {
+      const ArraySub<Float,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<float,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator*=(
-      const ArrayExpression<ArraySub<Double,Array<Double>>,double>& EA) {
+      const ArraySub<Double,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<double,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator*=(
-      const ArrayExpression<ArraySub<Array<Int>,Int>,int>& EA) {
+      const ArraySub<Array<Int>,Int>& EA) {
     return
-    __two_level_op<int,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<int,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator*=(
-      const ArrayExpression<ArraySub<Array<Float>,Float>,float>& EA) {
+      const ArraySub<Array<Float>,Float>& EA) {
     return
-    __two_level_op<float,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<float,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator*=(
-      const ArrayExpression<ArraySub<Array<Double>,Double>,double>& EA) {
+      const ArraySub<Array<Double>,Double>& EA) {
     return
-    __two_level_op<double,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<double,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
 
   template <>
   template <>
   Array<Int>& Array<Int>::operator*=(
-      const ArrayExpression<ArraySub<Array<Int>,Array<Int>>,int>& EA) {
+      const ArraySub<Array<Int>,Array<Int>>& EA) {
     return
-    __two_level_op<int,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<int,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Float>& Array<Float>::operator*=(
-      const ArrayExpression<ArraySub<Array<Float>,Array<Float>>,float>& EA) {
+      const ArraySub<Array<Float>,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<float,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator*=(
-      const ArrayExpression<ArraySub<Array<Double>,Array<Double>>,double>& EA) {
+      const ArraySub<Array<Double>,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArraySub,__ArrayOperationName::Multiple>(*this,EA);
+    __two_level_op<double,ArraySub,__ExpressionOperationName::Multiple>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator/=(
-      const ArrayExpression<ArraySum<Float,Array<Float>>,float>& EA) {
+      const ArraySum<Float,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArraySum,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<float,ArraySum,__ExpressionOperationName::Divide>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator/=(
-      const ArrayExpression<ArraySum<Double,Array<Double>>,double>& EA) {
+      const ArraySum<Double,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArraySum,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<double,ArraySum,__ExpressionOperationName::Divide>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator/=(
-      const ArrayExpression<ArraySum<Array<Float>,Float>,float>& EA) {
+      const ArraySum<Array<Float>,Float>& EA) {
     return
-    __two_level_op<float,ArraySum,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<float,ArraySum,__ExpressionOperationName::Divide>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator/=(
-      const ArrayExpression<ArraySum<Array<Double>,Double>,double>& EA) {
+      const ArraySum<Array<Double>,Double>& EA) {
     return
-    __two_level_op<double,ArraySum,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<double,ArraySum,__ExpressionOperationName::Divide>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator/=(
-      const ArrayExpression<ArraySum<Array<Float>,Array<Float>>,float>& EA) {
+      const ArraySum<Array<Float>,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArraySum,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<float,ArraySum,__ExpressionOperationName::Divide>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator/=(
-      const ArrayExpression<ArraySum<Array<Double>,Array<Double>>,double>& EA) {
+      const ArraySum<Array<Double>,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArraySum,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<double,ArraySum,__ExpressionOperationName::Divide>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator/=(
-      const ArrayExpression<ArraySub<Float,Array<Float>>,float>& EA) {
+      const ArraySub<Float,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArraySub,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<float,ArraySub,__ExpressionOperationName::Divide>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator/=(
-      const ArrayExpression<ArraySub<Double,Array<Double>>,double>& EA) {
+      const ArraySub<Double,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArraySub,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<double,ArraySub,__ExpressionOperationName::Divide>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator/=(
-      const ArrayExpression<ArraySub<Array<Float>,Float>,float>& EA) {
+      const ArraySub<Array<Float>,Float>& EA) {
     return
-    __two_level_op<float,ArraySub,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<float,ArraySub,__ExpressionOperationName::Divide>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator/=(
-      const ArrayExpression<ArraySub<Array<Double>,Double>,double>& EA) {
+      const ArraySub<Array<Double>,Double>& EA) {
     return
-    __two_level_op<double,ArraySub,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<double,ArraySub,__ExpressionOperationName::Divide>(*this,EA);
   }
 
   template <>
   template <>
   Array<Float>& Array<Float>::operator/=(
-      const ArrayExpression<ArraySub<Array<Float>,Array<Float>>,float>& EA) {
+      const ArraySub<Array<Float>,Array<Float>>& EA) {
     return
-    __two_level_op<float,ArraySub,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<float,ArraySub,__ExpressionOperationName::Divide>(*this,EA);
   }
   template <>
   template <>
   Array<Double>& Array<Double>::operator/=(
-      const ArrayExpression<ArraySub<Array<Double>,Array<Double>>,double>& EA) {
+      const ArraySub<Array<Double>,Array<Double>>& EA) {
     return
-    __two_level_op<double,ArraySub,__ArrayOperationName::Divide>(*this,EA);
+    __two_level_op<double,ArraySub,__ExpressionOperationName::Divide>(*this,EA);
   }
 
 }

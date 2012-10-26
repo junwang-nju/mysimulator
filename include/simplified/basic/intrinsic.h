@@ -18,6 +18,7 @@ namespace mysimulator {
 
       static const bool IsFloatPoint;
       static const bool IsUnsigned;
+      static const bool IsInteger;
       static const bool IsBool;
 
     private:
@@ -74,6 +75,10 @@ namespace mysimulator {
   template<> const bool UChar::IsUnsigned=true;
 
   template<> const bool Bool::IsBool=true;
+
+  template <typename T>
+  const bool Intrinsic<T>::IsInteger=!Intrinsic<T>::IsFloatPoint &&
+                                     !Intrinsic<T>::IsBool;
 
 }
 
