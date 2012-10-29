@@ -69,6 +69,7 @@ namespace mysimulator {
 #include "array/expression-substract.h"
 #include "array/expression-multiple.h"
 #include "array/expression-divide.h"
+#include "array/expression-combination.h"
 #include <emmintrin.h>
 #include <smmintrin.h>
 
