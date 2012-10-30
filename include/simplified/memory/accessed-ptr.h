@@ -111,6 +111,9 @@ namespace mysimulator {
       bool unique() const {
         return (count!=nullptr)&&count->IsOnly()&&(!count->IsPartUsed());
       }
+      bool __aligned16() const {
+        return (bool)(*this) && ((((unsigned int)ptr)&0xFU)==0);
+      }
 
     private:
 

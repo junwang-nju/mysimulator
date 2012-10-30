@@ -80,6 +80,17 @@ namespace mysimulator {
         _ndata=num;
       }
 
+      void _refer_align16(const Type& AC) {
+        assert(AC._pdata.__aligned16());
+        refer(AC);
+      }
+      void _refer_align16(const Type& AC, size_type bg, size_type num) {
+        assert(AC._pdata.__aligned16());
+        assert(((bg*sizeof(T))&0xFU)==0);
+        assert(((num*sizeof(T))&0xFU)==0);
+        refer(AC,bg,num);
+      }
+
       void swap(Type& AC) {
         std::swap(_pdata,AC._pdata);
         std::swap(_ndata,AC._ndata);
