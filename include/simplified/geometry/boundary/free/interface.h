@@ -1,6 +1,6 @@
 
-#ifndef _Boundary_FreeSpace_Interface_H_
-#define _Boundary_FreeSpace_Interface_H_
+#ifndef _Geometry_Boundary_FreeSpace_Interface_H_
+#define _Geometry_Boundary_FreeSpace_Interface_H_
 
 namespace mysimulator {
 
