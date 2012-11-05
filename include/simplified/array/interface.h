@@ -1152,6 +1152,39 @@ namespace mysimulator {
     __two_level_op<double,ArraySub,__ExpressionOperationName::Divide>(*this,EA);
   }
 
+  template <typename T1,typename T2>
+  typename __dual_selector<T1,T2,__mul_flag>::Type
+  Dot(Array<Intrinsic<T1>> const& A,Array<Intrinsic<T2>> const& B) {
+    typename __dual_selector<T1,T2,__mul_flag>::Type S=0;
+    unsigned int n=(A.size()<=B.size()?A.size():B.size());
+    for(unsigned int i=0;i<n;++i) S+=A[i]*B[i];
+    return S;
+  }
+
+  template <>
+  double
+  Dot(Array<Double> const& A, Array<Double> const& B) {
+    unsigned int n=(A.size128()<B.size128()?A.size128():B.size128());
+    __m128d *p=(__m128d*)(A.head());
+    __m128d *q=(__m128d*)(B.head());
+    const __m128d *e=p+n;
+    double T,S=0;
+    for(;p!=e;)  { _mm_store_sd(&T,_mm_dp_pd(*(p++),*(q++),0x31)); S+=T; }
+    return S;
+  }
+
+  template <>
+  float
+  Dot(Array<Float> const& A, Array<Float> const& B) {
+    unsigned int n=(A.size128()<B.size128()?A.size128():B.size128());
+    __m128 *p=(__m128*)(A.head());
+    __m128 *q=(__m128*)(B.head());
+    const __m128 *e=p+n;
+    float T,S=0;
+    for(;p!=e;)  { _mm_store_ss(&T,_mm_dp_ps(*(p++),*(q++),0xF1)); S+=T; }
+    return S;
+  }
+
 }
 
 #endif
