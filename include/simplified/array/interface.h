@@ -1155,6 +1155,8 @@ namespace mysimulator {
   template <typename T1,typename T2>
   typename __dual_selector<T1,T2,__mul_flag>::Type
   Dot(Array<Intrinsic<T1>> const& A,Array<Intrinsic<T2>> const& B) {
+    assert((bool)A);
+    assert((bool)B);
     typename __dual_selector<T1,T2,__mul_flag>::Type S=0;
     unsigned int n=(A.size()<=B.size()?A.size():B.size());
     for(unsigned int i=0;i<n;++i) S+=A[i]*B[i];
@@ -1164,6 +1166,8 @@ namespace mysimulator {
   template <>
   double
   Dot(Array<Double> const& A, Array<Double> const& B) {
+    assert((bool)A);
+    assert((bool)B);
     unsigned int n=(A.size128()<B.size128()?A.size128():B.size128());
     __m128d *p=(__m128d*)(A.head());
     __m128d *q=(__m128d*)(B.head());
@@ -1176,6 +1180,8 @@ namespace mysimulator {
   template <>
   float
   Dot(Array<Float> const& A, Array<Float> const& B) {
+    assert((bool)A);
+    assert((bool)B);
     unsigned int n=(A.size128()<B.size128()?A.size128():B.size128());
     __m128 *p=(__m128*)(A.head());
     __m128 *q=(__m128*)(B.head());

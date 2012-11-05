@@ -544,6 +544,16 @@ namespace mysimulator {
 
   };
 
+  template <typename T1,typename T2>
+  typename __dual_selector<T1,T2,__mul_flag>::Type
+  Dot(VectorArray<Intrinsic<T1>> const& A, VectorArray<Intrinsic<T2>> const& B){
+    assert((bool)A);
+    assert((bool)B);
+    assert(A._is_same_size(B));
+    return Dot((Array<Intrinsic<T1>> const&)A,
+               (Array<Intrinsic<T2>> const&)B);
+  }
+
 }
 
 #endif

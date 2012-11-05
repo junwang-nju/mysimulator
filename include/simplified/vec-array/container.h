@@ -37,7 +37,7 @@ namespace mysimulator {
         return ParentTypeB::operator[](i);
       }
       template <typename Y>
-      bool _is_same_size(VectorArrayContainer<Y> const& A) {
+      bool _is_same_size(VectorArrayContainer<Y> const& A) const {
         if(size()!=A.size())  return false;
         for(size_type i=0;i<size();++i)
           if((*this)[i].size()!=A[i].size())  return false;
