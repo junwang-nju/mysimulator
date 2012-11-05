@@ -117,6 +117,7 @@ namespace mysimulator {
 #endif
 
 #include "basic/type/same.h"
+#include "basic/square-root.h"
 #include "array/expression-operation.h"
 #include <emmintrin.h>
 #include <smmintrin.h>
@@ -159,6 +160,7 @@ namespace mysimulator {
         __m128i* q=reinterpret_cast<__m128i*>(A.head());
         const __m128i* e=p+this->size128();
         for(;p!=e;) _mm_store_si128(p++,*(q++));
+        return *this;
       }
       template <typename ET>
       Type& operator=(Array<ET> const& A) {
@@ -392,6 +394,15 @@ namespace mysimulator {
       Type& operator/=(ArrayDiv<EA,EB> const& RA) {
         operator/=(RA.first());
         return operator*=(RA.second());
+      }
+
+      T NormSQ() const { return Dot(*this,*this); }
+
+      T Norm() const {
+        static_assert(
+            Intrinsic<T>::IsFloatPoint,
+            "Norm is related to SQRT. Only works for float-point data!\n");
+        return __SquareRoot(NormSQ());
       }
 
   };
