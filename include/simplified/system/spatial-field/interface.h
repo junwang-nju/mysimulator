@@ -31,7 +31,7 @@ namespace mysimulator {
         assert((bool)K);
         ParentType::reset();
         Array<UInt> SZ(K.size());
-        for(size_type i=0;i<K.size();++i) SZ[i]=CoordinateSize(K[i],dim);
+        for(size_type i=0;i<K.size();++i) SZ[i]=CoordinateSize<T>(K[i],dim);
         ParentType::allocate(SZ);
         SZ.reset();
       }
