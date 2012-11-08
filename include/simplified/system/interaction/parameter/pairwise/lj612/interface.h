@@ -8,12 +8,23 @@
 namespace mysimulator {
 
   template <typename T>
-  class PairLJ612Parameter : public InteractionParameter<T> {
+  class PairLJ612Parameter {
+    public:
+      typedef PairLJ612Parameter<T>   Type;
+      PairLJ612Parameter() = delete;
+      PairLJ612Parameter(const Type&) = delete;
+      Type& operator=(const Type&) = delete;
+      ~PairLJ612Parameter() {}
+  };
+
+  template <typename T>
+  class PairLJ612Parameter<Intrinsic<T>>
+      : public InteractionParameter<Intrinsic<T>> {
 
     public:
 
-      typedef PairLJ612Parameter<T>   Type;
-      typedef InteractionParameter<T> ParentType;
+      typedef PairLJ612Parameter<Intrinsic<T>>   Type;
+      typedef InteractionParameter<Intrinsic<T>> ParentType;
 
       PairLJ612Parameter() : ParentType() {}
       PairLJ612Parameter(const Type& P) : ParentType(P) {}

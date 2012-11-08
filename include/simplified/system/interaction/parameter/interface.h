@@ -7,8 +7,18 @@
 
 namespace mysimulator {
 
-  template <typename FT=double>
+  template <typename T=Double>
   class InteractionParameter {
+    public:
+      typedef InteractionParameter<T>   Type;
+      InteractionParameter() = delete;
+      InteractionParameter(const Type&) = delete;
+      Type& operator=(const Type&) = delete;
+      ~InteractionParameter() {}
+  };
+
+  template <typename FT>
+  class InteractionParameter<Intrinsic<FT>> {
 
     public:
 
@@ -23,7 +33,7 @@ namespace mysimulator {
 
     public:
 
-      typedef InteractionParameter<FT>   Type;
+      typedef InteractionParameter<Intrinsic<FT>>   Type;
       typedef unsigned int size_type;
 
       InteractionParameter() : _tag(InteractionName::UnknownInteraction),
@@ -59,9 +69,9 @@ namespace mysimulator {
       }
 
       void swap(Type&& P) {
-        swap(_tag,P._tag);
-        swap(_FParam,P._FParam);
-        swap(_IParam,P._IParam);
+        std::swap(_tag,P._tag);
+        std::swap(_FParam,P._FParam);
+        std::swap(_IParam,P._IParam);
       }
 
       virtual void allocate() = 0;
@@ -74,8 +84,8 @@ namespace mysimulator {
 namespace std {
 
   template <typename T>
-  void swap(mysimulator::InteractionParameter<T>& P1,
-            mysimulator::InteractionParameter<T>& P2) {
+  void swap(mysimulator::InteractionParameter<mysimulator::Intrinsic<T>>& P1,
+            mysimulator::InteractionParameter<mysimulator::Intrinsic<T>>& P2) {
     P1.swap(P2);
   }
 
@@ -88,7 +98,8 @@ namespace std {
 namespace mysimulator {
 
   template <typename T>
-  void Introduce(InteractionParameter<T>*& P,const InteractionName& FN) {
+  void Introduce(InteractionParameter<Intrinsic<T>>*& P,
+                 const InteractionName& FN) {
     if(P!=NULL) { delete P; P=NULL; }
     switch(FN) {
       case InteractionName::PairHarmonic:

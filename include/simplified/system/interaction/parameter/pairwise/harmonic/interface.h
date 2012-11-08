@@ -7,13 +7,24 @@
 
 namespace mysimulator {
 
+  template <typename T=Double>
+  class PairHarmonicParameter {
+    public:
+      typedef PairHarmonicParameter<T>  Type;
+      PairHarmonicParameter() = delete;
+      PairHarmonicParameter(const Type&) = delete;
+      Type& operator=(const Type&) = delete;
+      ~PairHarmonicParameter() {}
+  };
+
   template <typename T>
-  class PairHarmonicParameter : public InteractionParameter<T> {
+  class PairHarmonicParameter<Intrinsic<T>>
+      : public InteractionParameter<Intrinsic<T>> {
 
     public:
 
-      typedef PairHarmonicParameter<T>  Type;
-      typedef InteractionParameter<T>   ParentType;
+      typedef PairHarmonicParameter<Intrinsic<T>>  Type;
+      typedef InteractionParameter<Intrinsic<T>>   ParentType;
 
       PairHarmonicParameter() : ParentType() {}
       PairHarmonicParameter(const Type& P) : ParentType(P) {}

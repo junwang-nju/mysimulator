@@ -14,16 +14,5 @@ namespace mysimulator {
 
 }
 
-namespace std {
-
-  void swap(mysimulator::InteractionName& N1,
-            mysimulator::InteractionName& N2) {
-    mysimulator::InteractionName TN=N1;
-    N1=N2;
-    N2=TN;
-  }
-
-}
-
 #endif
 
