@@ -26,45 +26,34 @@ namespace mysimulator {
       typedef typename ParentType::monomer_type  monomer_type;
       typedef typename T::value_type  value_type;
       typedef unsigned int size_type;
-      typedef monomer_type& reference;
-      typedef const monomer_type& const_reference;
 
       Array() : ParentType() {}
       Array(size_type size) : ParentType(size) {}
       Array(const Type& A) : Array() { ParentType::imprint(A); operator=(A); }
       Array(Type&& A) : ParentType((ParentType&&)A) {}
-      ~Array() { reset(); }
-
-      operator bool() const { return ParentType::operator bool(); }
-      size_type size() const { return ParentType::size(); }
-      reference operator[](size_type i) { return ParentType::operator[](i); }
-      const_reference operator[](size_type i) const {
-        return ParentType::operator[](i);
-      }
+      ~Array() { ParentType::reset(); }
 
       Type& operator=(const Type& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]=A[i];
         return *this;
       }
       Type& operator=(const monomer_type& D) {
         assert((bool)(*this));
-        for(size_type i=0;i<size();++i)   (*this)[i]=D;
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]=D;
         return *this;
       }
       Type& operator=(const value_type& D) {
         assert((bool)(*this));
-        for(size_type i=0;i<size();++i)   (*this)[i]=D;
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]=D;
         return *this;
       }
       template <typename T1>
       Type& operator=(const Intrinsic<T1>& D) {
         return operator=((value_type)((T1)D));
       }
-
-      void reset() { ParentType::reset(); }
 
   };
 
@@ -77,36 +66,25 @@ namespace mysimulator {
       typedef ArrayContainer<T>       ParentType;
       typedef typename ParentType::monomer_type  monomer_type;
       typedef unsigned int size_type;
-      typedef monomer_type& reference;
-      typedef const monomer_type& const_reference;
 
       Array() : ParentType() {}
       Array(size_type size) : ParentType(size) {}
       Array(const Type& A) : Array(A.size()) { operator=(A); }
       Array(Type&& A) : ParentType((ParentType&&)A) {}
-      ~Array() { reset(); }
-
-      operator bool() const { return ParentType::operator bool(); }
-      size_type size() const { return ParentType::size(); }
-      reference operator[](size_type i) { return ParentType::operator[](i); }
-      const_reference operator[](size_type i) const {
-        return ParentType::operator[](i);
-      }
+      ~Array() { ParentType::reset(); }
 
       Type& operator=(const Type& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]=A[i];
         return *this;
       }
       Type& operator=(const monomer_type& D) {
         assert((bool)(*this));
-        for(size_type i=0;i<size();++i)   (*this)[i]=D;
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]=D;
         return *this;
       }
-
-      void reset() { ParentType::reset(); }
 
   };
 
@@ -125,8 +103,7 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  class Array<Intrinsic<T>,true>
-      : public ArrayContainer<Intrinsic<T>> {
+  class Array<Intrinsic<T>,true> : public ArrayContainer<Intrinsic<T>> {
 
     public:
 
@@ -135,27 +112,17 @@ namespace mysimulator {
       typedef typename ParentType::monomer_type  monomer_type;
       typedef T  value_type;
       typedef unsigned int size_type;
-      typedef monomer_type& reference;
-      typedef const monomer_type& const_reference;
 
       Array() : ParentType() {}
       Array(size_type size) : ParentType(size) {}
       Array(const Type& A) : Array(A.size()) { operator=(A); }
       Array(Type&& A) : ParentType((ParentType&&)A) {}
-      ~Array() { reset(); }
-
-      operator bool() const { return ParentType::operator bool(); }
-      size_type size() const { return ParentType::size(); }
-      reference operator[](size_type i) { return ParentType::operator[](i); }
-      const_reference operator[](size_type i) const {
-        return ParentType::operator[](i);
-      }
-      void reset() { ParentType::reset(); }
+      ~Array() { ParentType::reset(); }
 
       Type& operator=(const Type& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
+        assert(ParentType::size()<=A.size());
         __m128i* p=reinterpret_cast<__m128i*>(this->head());
         __m128i* q=reinterpret_cast<__m128i*>(A.head());
         const __m128i* e=p+this->size128();
@@ -166,13 +133,13 @@ namespace mysimulator {
       Type& operator=(Array<ET> const& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i) (*this)[i]=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i) (*this)[i]=A[i];
         return *this;
       }
       Type& operator=(const value_type& D) {
         assert((bool)(*this));
-        for(size_type i=0;i<size();++i) (*this)[i]=D;
+        for(size_type i=0;i<ParentType::size();++i) (*this)[i]=D;
         return *this;
       }
       template <typename T1>
@@ -208,13 +175,13 @@ namespace mysimulator {
             "Type T cannot accept SUM result!\n");
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]+=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]+=A[i];
         return *this;
       }
       Type& operator+=(const value_type& D) {
         assert((bool)(*this));
-        for(size_type i=0;i<size();++i)   (*this)[i]+=D;
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]+=D;
         return *this;
       }
       template <typename T1>
@@ -236,16 +203,16 @@ namespace mysimulator {
       Type& operator+=(ArrayMul<EA,EB> const& RA) {
         assert((bool)(*this));
         assert((bool)RA);
-        assert(size()<=RA.size());
-        for(size_type i=0;i<size();++i) (*this)[i]+=RA[i];
+        assert(ParentType::size()<=RA.size());
+        for(size_type i=0;i<ParentType::size();++i) (*this)[i]+=RA[i];
         return *this;
       }
       template <typename EA,typename EB>
       Type& operator+=(ArrayDiv<EA,EB> const& RA) {
         assert((bool)(*this));
         assert((bool)RA);
-        assert(size()<=RA.size());
-        for(size_type i=0;i<size();++i) (*this)[i]+=RA[i];
+        assert(ParentType::size()<=RA.size());
+        for(size_type i=0;i<ParentType::size();++i) (*this)[i]+=RA[i];
         return *this;
       }
 
@@ -256,13 +223,13 @@ namespace mysimulator {
             "Type T cannot accept SUBSTRACT result!\n");
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]=A[i];
         return *this;
       }
       Type& operator-=(const value_type& D) {
         assert((bool)(*this));
-        for(size_type i=0;i<size();++i)   (*this)[i]-=D;
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]-=D;
         return *this;
       }
       template <typename T1>
@@ -284,16 +251,16 @@ namespace mysimulator {
       Type& operator-=(ArrayMul<EA,EB> const& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i) (*this)[i]-=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i) (*this)[i]-=A[i];
         return *this;
       }
       template <typename EA,typename EB>
       Type& operator-=(ArrayDiv<EA,EB> const& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i) (*this)[i]-=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i) (*this)[i]-=A[i];
         return *this;
       }
 
@@ -304,13 +271,13 @@ namespace mysimulator {
             "Type T cannot accept MULTIPLE result!\n");
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]*=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]*=A[i];
         return *this;
       }
       Type& operator*=(const value_type& D) {
         assert((bool)(*this));
-        for(size_type i=0;i<size();++i)   (*this)[i]*=D;
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]*=D;
         return *this;
       }
       template <typename T1>
@@ -322,16 +289,16 @@ namespace mysimulator {
       Type& operator*=(ArraySum<EA,EB> const& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]*=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]*=A[i];
         return *this;
       }
       template <typename EA,typename EB>
       Type& operator*=(ArraySub<EA,EB> const& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]*=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]*=A[i];
         return *this;
       }
       template <typename EA,typename EB>
@@ -354,15 +321,15 @@ namespace mysimulator {
                       "Divide only works for float-point data!\n");
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]/=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]/=A[i];
         return *this;
       }
       Type& operator/=(const value_type& D) {
         static_assert(Intrinsic<T>::IsFloatPoint,
                       "Divide only works for float-point data!\n");
         assert((bool)(*this));
-        for(size_type i=0;i<size();++i)   (*this)[i]/=D;
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]/=D;
       }
       template <typename T1>
       Type& operator/=(const Intrinsic<T1>& D) {
@@ -373,16 +340,16 @@ namespace mysimulator {
       Type& operator/=(ArraySum<EA,EB> const& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]/=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]/=A[i];
         return *this;
       }
       template <typename EA,typename EB>
       Type& operator/=(ArraySub<EA,EB> const& A) {
         assert((bool)(*this));
         assert((bool)A);
-        assert(size()<=A.size());
-        for(size_type i=0;i<size();++i)   (*this)[i]/=A[i];
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i)   (*this)[i]/=A[i];
         return *this;
       }
       template <typename EA,typename EB>
@@ -1201,6 +1168,68 @@ namespace mysimulator {
     for(;p!=e;)  { _mm_store_ss(&T,_mm_dp_ps(*(p++),*(q++),0xF1)); S+=T; }
     return S;
   }
+
+  template <>
+  class Array<Unique,false> : public ArrayContainer<Unique> {
+
+    public:
+
+      typedef Array<Unique,false>    Type;
+      typedef ArrayContainer<Unique>  ParentType;
+      typedef typename ParentType::monomer_type  monomer_type;
+      typedef Unique value_type;
+      typedef unsigned int size_type;
+
+      Array() : ParentType() {}
+      Array(size_type size) : ParentType(size) {}
+      Array(const Type& A) : Array() { ParentType::imprint(A); operator=(A); }
+      Array(Type&& A) : ParentType((ParentType&&)A) {}
+      ~Array() { ParentType::reset(); }
+
+      Type& operator=(const Type& A) {
+        return _copy_array_128<monomer_type>(A);
+      }
+      Type& operator=(const Array<Double>& A) {
+        return _copy_array_128<Double>(A);
+      }
+      template <typename T>
+      Type& operator=(const Intrinsic<T>& D) { return operator=((T)D); }
+      template <typename T>
+      Type& operator=(const Array<Intrinsic<T>>& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::size()<=A.size());
+        for(size_type i=0;i<ParentType::size();++i) (*this)[i]=A[i];
+        return *this;
+      }
+
+    private:
+
+      template <typename T>
+      Type& operator=(const T& D) {
+        assert((bool)(*this));
+        __m128d *p=(__m128d*)(this->head());
+        const __m128d* e=p+this->size128();
+        Unique U;
+        (T&)U=D;
+        __m128d u=_mm_set1_pd((double)U);
+        assert((((int)(&u))&0xFU)==0);
+        for(;p!=e;)   *(p++)=u;
+        return *this;
+      }
+      template <typename T>
+      Type& _copy_array_128(Array<T> const& A) {
+        assert((bool)(*this));
+        assert((bool)A);
+        assert(ParentType::size()<=A.size());
+        __m128d *p=(__m128d*)(this->head());
+        __m128d *q=(__m128d*)(A.head());
+        const __m128d *e=p+this->size128();
+        for(;p!=e;) *(p++)=*(q++);
+        return *this;
+      }
+
+  };
 
 }
 
