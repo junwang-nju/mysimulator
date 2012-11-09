@@ -12,7 +12,6 @@ namespace mysimulator {
   void _allocate_simple(Array<T>& A,unsigned int size) {
     assert(size>0);
     typedef typename Array<T>::monomer_type MT;
-    A.reset();
     A._pdata.reset(new MT[size],_delete_array<MT>);
     A._ndata=size;
   }

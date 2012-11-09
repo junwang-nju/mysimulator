@@ -117,12 +117,13 @@ namespace mysimulator {
       }
       void allocate(size_type size,
                     ArrayKernelName KName = ArrayKernelName::Simple) {
+        reset();
         reset_kernel(KName);
         _allocator(*this,size);
       }
       void refer(const Type& A) {
-        reset_kernel(A.KernelName());
         reset();
+        reset_kernel(A.KernelName());
         _pdata = A._pdata;
         _ndata = A._ndata;
         _n128 = A._n128;
