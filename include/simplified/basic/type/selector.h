@@ -4,16 +4,17 @@
 
 namespace mysimulator {
 
-  template <typename T,bool FG>
+  template <typename T, bool FLAG>
   class __selectorA {
-    static_assert(FG==false,"Type T is not in the expected group!\n");
+    static_assert( !FLAG, "Type T is not in the expected group!\n" );
   };
 
-  template <typename T> class __selectorA<T,true>  { public: typedef T Type; };
+  template <typename T>
+  class __selectorA<T,true> { public: typedef T Type; };
 
-  template <typename T,template<typename> class _FG>
+  template <typename T, template <typename> class _FLAG>
   class __mono_selector {
-    public: typedef typename __selectorA<T,_FG<T>::FG>::Type   Type;
+    public: typedef typename __selectorA<T,_FLAG<T>::FLAG>::Type  Type;
   };
 
   template <typename T1,typename T2,unsigned int FG>
@@ -22,13 +23,14 @@ namespace mysimulator {
   };
 
   template <typename T1,typename T2>
-  class __selectorB<T1,T2,1> { public: typedef T1 Type; };
-  template <typename T1,typename T2>
-  class __selectorB<T1,T2,2> { public: typedef T2 Type; };
+  class __selectorB<T1,T2,1>  { public: typedef T1   Type; };
 
-  template <typename T1,typename T2,template<typename,typename> class _FG>
+  template <typename T1,typename T2>
+  class __selectorB<T1,T2,2>  { public: typedef T2   Type; };
+
+  template <typename T1,typename T2,template<typename,typename> class _FLAG>
   class __dual_selector {
-    public: typedef typename __selectorB<T1,T2,_FG<T1,T2>::FG>::Type  Type;
+    public: typedef typename __selectorB<T1,T2,_FLAG<T1,T2>::FLAG>::Type  Type;
   };
 
 }

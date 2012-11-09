@@ -5,7 +5,10 @@
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  class __sub { public: static const unsigned int FLAG; };
+  class __sub_flag {
+    public:
+      static const unsigned int FG;
+  };
 
 }
 
@@ -14,7 +17,7 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  const unsigned int __sub<T1,T2>::FLAG = __sum<T1,T2>::FLAG;
+  const unsigned int __sub_flag<T1,T2>::FG=__sum_flag<T1,T2>::FG;
 
 }
 

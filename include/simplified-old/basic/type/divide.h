@@ -5,7 +5,10 @@
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  class __div { public: static const unsigned int FLAG; };
+  class __div_flag {
+    public:
+      static const unsigned int FG;
+  };
 
 }
 
@@ -14,7 +17,8 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  const unsigned int __div<T1,T2>::FLAG = __mul<T1,T2>::FLAG;
+  const unsigned int __div_flag<T1,T2>::FG =
+      __mul_flag<T1,T2>::FG;
 
 }
 
