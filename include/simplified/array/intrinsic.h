@@ -115,6 +115,17 @@ namespace mysimulator {
         return *this;
       }
 
+      template <typename EA,typename EB>
+      Type& operator=(ArrayMul<EA,EB> const& E) {
+        __assign_mul_simple<Intrinsic<T>,EA,EB>(*this,E);
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator=(ArrayMul<EA,EB,value_type,true> const& E) {
+        __assign_mul_simple<Intrinsic<T>,EA,EB>(*this,E);
+        return *this;
+      }
+
       void reset() {
         _n128 = 0;
         _ndata = 0;
@@ -199,6 +210,12 @@ namespace mysimulator {
 
   template <typename T>
   typename __sse_value<T>::Type&
+  value128(Array<Intrinsic<T>,true>& A, unsigned int i) {
+    assert(A.KernelName()==ArrayKernelName::SSE);
+    return ((typename __sse_value<T>::Type*)(A.head()))[i];
+  }
+  template <typename T>
+  typename __sse_value<T>::Type
   value128(Array<Intrinsic<T>,true> const& A, unsigned int i) {
     assert(A.KernelName()==ArrayKernelName::SSE);
     return ((typename __sse_value<T>::Type*)(A.head()))[i];
@@ -265,6 +282,37 @@ namespace mysimulator {
       __assign_sub_sse<Float,EA,EB>(*this,E);
     else
       __assign_sub_simple<Float,EA,EB>(*this,E);
+    return *this;
+  }
+
+  template <>
+  template <typename EA,typename EB>
+  Array<Double>&
+  Array<Double>::operator=(ArrayMul<EA,EB,double,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_mul_sse<Double,EA,EB>(*this,E);
+    else
+      __assign_mul_simple<Double,EA,EB>(*this,E);
+    return *this;
+  }
+  template <>
+  template <typename EA,typename EB>
+  Array<Int>&
+  Array<Int>::operator=(ArrayMul<EA,EB,int,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_mul_sse<Int,EA,EB>(*this,E);
+    else
+      __assign_mul_simple<Int,EA,EB>(*this,E);
+    return *this;
+  }
+  template <>
+  template <typename EA,typename EB>
+  Array<Float>&
+  Array<Float>::operator=(ArrayMul<EA,EB,float,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_mul_sse<Float,EA,EB>(*this,E);
+    else
+      __assign_mul_simple<Float,EA,EB>(*this,E);
     return *this;
   }
 

@@ -90,5 +90,20 @@ namespace mysimulator {
 
 }
 
+#include "array/expression/multiple.h"
+
+namespace mysimulator {
+
+  template <typename T,typename EA,typename EB>
+  void __assign_mul_sse(Array<T>& A, ArrayMul<EA,EB> const& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size128()<=E.size128());
+    for(unsigned int i=0;i<A.size128();++i)
+      value128(A,i)=value128(E,i);
+  }
+
+}
+
 #endif
 

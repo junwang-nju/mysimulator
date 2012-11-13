@@ -194,7 +194,7 @@ namespace mysimulator {
                     true> const& A,
            unsigned int i) {
     return Sum128<typename ArraySumBase<E,Intrinsic<T>>::value_type>(
-                value128(A.first()),
+                value128(A.first(),i),
                 A.second128());
   }
 
@@ -208,7 +208,7 @@ namespace mysimulator {
            unsigned int i) {
     return Sum128<typename ArraySumBase<Intrinsic<T>,E>::value_type>(
                 A.first128(),
-                value128(A.second()));
+                value128(A.second(),i));
   }
 
 }

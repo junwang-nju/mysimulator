@@ -48,12 +48,12 @@ namespace mysimulator {
   template <typename T1,typename T2>
   const bool __mul<T1,T2>::_first_not_float =
     __mul<T1,T2>::_not_float && sizeof(T1)>=sizeof(T2) &&
-    ( ! Intrinsic<T1>::IsUnsigned || __sum<T1,T2>::_same_unsigned );
+    ( ! Intrinsic<T1>::IsUnsigned || __mul<T1,T2>::_same_unsigned );
 
   template <typename T1,typename T2>
   const bool __mul<T1,T2>::_second_not_float =
     __mul<T1,T2>::_not_float && sizeof(T2)>=sizeof(T1) &&
-    ( ! Intrinsic<T2>::IsUnsigned || __sum<T1,T2>::_same_unsigned );
+    ( ! Intrinsic<T2>::IsUnsigned || __mul<T1,T2>::_same_unsigned );
 
   template <typename T1,typename T2>
   const unsigned int __mul<T1,T2>::FLAG = 
