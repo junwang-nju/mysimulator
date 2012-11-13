@@ -43,6 +43,42 @@ namespace mysimulator {
     return ArraySum<Intrinsic<T>,ArraySub<EA,EB>>(A,B);
   }
 
+  template <typename T,typename E>
+  ArraySub<Array<Intrinsic<T>>,E>
+  operator-(Array<Intrinsic<T>> const& A, E const& B) {
+    return ArraySub<Array<Intrinsic<T>>,E>(A,B);
+  }
+
+  template <typename EA,typename EB,typename E>
+  ArraySub<ArraySum<EA,EB>,E>
+  operator-(ArraySum<EA,EB> const& A, E const& B) {
+    return ArraySub<ArraySum<EA,EB>,E>(A,B);
+  }
+
+  template <typename EA,typename EB,typename E>
+  ArraySub<ArraySub<EA,EB>,E>
+  operator-(ArraySub<EA,EB> const& A, E const& B) {
+    return ArraySub<ArraySub<EA,EB>,E>(A,B);
+  }
+
+  template <typename T1,typename T2>
+  ArraySub<Intrinsic<T1>,Array<Intrinsic<T2>>>
+  operator-(Intrinsic<T1> const& A, Array<Intrinsic<T2>> const& B) {
+    return ArraySub<Intrinsic<T1>,Array<Intrinsic<T2>>>(A,B);
+  }
+
+  template <typename T,typename EA,typename EB>
+  ArraySub<Intrinsic<T>,ArraySum<EA,EB>>
+  operator-(Intrinsic<T> const& A, ArraySum<EA,EB> const& B) {
+    return ArraySub<Intrinsic<T>,ArraySum<EA,EB>>(A,B);
+  }
+
+  template <typename T,typename EA,typename EB>
+  ArraySub<Intrinsic<T>,ArraySub<EA,EB>>
+  operator-(Intrinsic<T> const& A, ArraySub<EA,EB> const& B) {
+    return ArraySub<Intrinsic<T>,ArraySub<EA,EB>>(A,B);
+  }
+
 }
 
 #endif
