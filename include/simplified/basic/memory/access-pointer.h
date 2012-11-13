@@ -20,8 +20,8 @@ namespace mysimulator {
       typedef const T* const_pointer;
       typedef T& reference;
       typedef T const& const_reference;
-      typedef _memory_access_count* count_pointer;
-      typedef const _memory_access_count* const_count_pointer;
+      typedef __memory_access_count* count_pointer;
+      typedef const __memory_access_count* const_count_pointer;
       typedef void (*deleter)(void*);
 
     private:
@@ -37,7 +37,7 @@ namespace mysimulator {
 
       access_ptr() : ptr(nullptr), count(nullptr),
                      part_flag(AccessContentName::Unassigned),
-                     del(_delete_unit<T>) {}
+                     del(__delete_unit<T>) {}
       access_ptr(const Type& P) : access_ptr() { reset(P); }
       access_ptr(Type& P) : access_ptr() { swap(P); }
       ~access_ptr() { reset(); }
@@ -95,7 +95,7 @@ namespace mysimulator {
       }
       void reset( const_pointer PTR, const_count_pointer icount,
                   AccessContentName PF = AccessContentName::GlobalUsed,
-                  deleter idel = _delete_unit ) {
+                  deleter idel = __delete_unit ) {
         assert( PTR != nullptr );
         reset();
         ptr = const_cast<pointer>(PTR);
@@ -104,8 +104,8 @@ namespace mysimulator {
         del = idel;
         IncCount();
       }
-      void reset( const_pointer PTR, deleter idel = _delete_unit ) {
-        reset( PTR, new _memory_access_count, AccessContentName::GlobalUsed,
+      void reset( const_pointer PTR, deleter idel = __delete_unit ) {
+        reset( PTR, new __memory_access_count, AccessContentName::GlobalUsed,
                idel );
       }
       void reset( const Type& P, unsigned int BgIdx = 0 ) {

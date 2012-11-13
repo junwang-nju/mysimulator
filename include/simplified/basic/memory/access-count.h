@@ -3,15 +3,14 @@
 #define _Basic_Memory_Access_Count_H_
 
 #include <cassert>
-#include <cstdio>
 
 namespace mysimulator {
 
-  class _memory_access_count {
+  class __memory_access_count {
 
     public:
 
-      typedef _memory_access_count  Type;
+      typedef __memory_access_count  Type;
 
     private:
 
@@ -20,9 +19,9 @@ namespace mysimulator {
 
     public:
 
-      _memory_access_count() : count(0), part_count(0) {}
-      _memory_access_count(const Type&) = delete;
-      ~_memory_access_count() { reset(); }
+      __memory_access_count() : count(0), part_count(0) {}
+      __memory_access_count(const Type&) = delete;
+      ~__memory_access_count() { reset(); }
 
       Type& operator=(const Type&) = delete;
 

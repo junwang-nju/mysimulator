@@ -8,6 +8,7 @@
 #include "array/kernel/simple.h"
 #include "array/kernel/sse.h"
 #include "basic/memory/access-pointer.h"
+#include "array/expression/operation.h"
 
 namespace mysimulator {
 
@@ -29,6 +30,8 @@ namespace mysimulator {
       typedef void (*_copy_type)(Type&,const Type&);
       typedef void (*_mono_copy_type)(Type&,const monomer_type&);
       typedef void (*_refer_type)(Type&,const Type&,size_type,size_type);
+
+      static const bool _is_SSE_valid;
 
       ArrayKernelName           _tag;
       access_ptr<monomer_type>  _pdata;
@@ -89,6 +92,16 @@ namespace mysimulator {
       Type& operator=(const Intrinsic<T1>& D) {
         return operator=((value_type)((T1)D));
       }
+      template <typename EA,typename EB>
+      Type& operator=(ArraySum<EA,EB> const& E) {
+        __assign_sum_simple<Intrinsic<T>,EA,EB>(*this,E);
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator=(ArraySum<EA,EB,value_type,true> const& E) {
+        __assign_sum_simple<Intrinsic<T>,EA,EB>(*this,E);
+        return *this;
+      }
 
       void reset() {
         _n128 = 0;
@@ -97,19 +110,22 @@ namespace mysimulator {
         _tag = ArrayKernelName::Unknown;
       }
       void reset_kernel(ArrayKernelName KName = ArrayKernelName::Simple) {
+        assert( (_tag==ArrayKernelName::Unknown) ||
+                ! ( (KName==ArrayKernelName::SSE) &&
+                    (_tag!=ArrayKernelName::SSE) ) );
         _tag = KName;
         switch ( _tag ) {
           case ArrayKernelName::Simple:
-            _allocator = _allocate_simple<Intrinsic<T>>;
-            _copier = _copy_simple<Intrinsic<T>>;
-            _mono_copier = _mono_copy_simple<Intrinsic<T>>;
-            _referer = _refer_simple<Intrinsic<T>>;
+            _allocator = __allocate_simple<Intrinsic<T>>;
+            _copier = __copy_simple<Intrinsic<T>>;
+            _mono_copier = __mono_copy_simple<Intrinsic<T>>;
+            _referer = __refer_simple<Intrinsic<T>>;
             break;
           case ArrayKernelName::SSE:
-            _allocator = _allocate_sse<T>;
-            _copier = _copy_sse<T>;
-            _mono_copier = _mono_copy_sse<T>;
-            _referer = _refer_sse<T>;
+            _allocator = __allocate_sse<T>;
+            _copier = __copy_sse<T>;
+            _mono_copier = __mono_copy_sse<T>;
+            _referer = __refer_sse<T>;
             break;
           default:
             throw "Kernel Not Implemented OR Not Valid!\n";
@@ -130,6 +146,7 @@ namespace mysimulator {
       }
       void refer(const Type& A, size_type bg, size_type num) {
         assert ( _referer != nullptr );
+        reset();
         reset_kernel(A.KernelName());
         _referer(*this,A,bg,num);
       }
@@ -150,6 +167,60 @@ namespace mysimulator {
       }
 
   };
+
+  template <typename T>
+  const bool Array<Intrinsic<T>,true>::_is_SSE_valid = false;
+
+  template <>
+  const bool Array<Double>::_is_SSE_valid = true;
+
+  template <>
+  const bool Array<Float>::_is_SSE_valid = true;
+
+  template <>
+  const bool Array<Int>::_is_SSE_valid = true;
+
+  static_assert( sizeof(int)==sizeof(long),
+                 "Sizes of Int and Long are not Equal!\n");
+  template <>
+  const bool Array<Long>::_is_SSE_valid = true;
+
+  template <typename T>
+  typename __sse_value<T>::Type&
+  value128(Array<Intrinsic<T>,true> const& A, unsigned int i) {
+    assert(A.KernelName()==ArrayKernelName::SSE);
+    return ((typename __sse_value<T>::Type*)(A.head()))[i];
+  }
+
+  template<>
+  template <typename EA,typename EB>
+  Array<Double>&
+  Array<Double>::operator=(ArraySum<EA,EB,double,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_sum_sse<Double,EA,EB>(*this,E);
+    else
+      __assign_sum_simple<Double,EA,EB>(*this,E);
+  }
+
+  template <>
+  template <typename EA,typename EB>
+  Array<Int>&
+  Array<Int>::operator=(ArraySum<EA,EB,int,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_sum_sse<Int,EA,EB>(*this,E);
+    else
+      __assign_sum_simple<Int,EA,EB>(*this,E);
+  }
+
+  template <>
+  template <typename EA,typename EB>
+  Array<Float>&
+  Array<Float>::operator=(ArraySum<EA,EB,float,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_sum_sse<Float,EA,EB>(*this,E);
+    else
+      __assign_sum_simple<Float,EA,EB>(*this,E);
+  }
 
 }
 

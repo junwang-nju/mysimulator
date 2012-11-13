@@ -4,7 +4,7 @@
 
 namespace mysimulator {
 
-  enum class ExpressionOperationName { Add, Substract, Multiple, Divide };
+  enum class ExpressionOperationName { Sum, Substract, Multiple, Divide };
 
 }
 

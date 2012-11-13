@@ -105,11 +105,11 @@ namespace mysimulator {
         _tag = KName;
         switch ( _tag ) {
           case ArrayKernelName::Simple:
-            _allocator = _allocate_simple<T>;
-            _copier = _copy_simple<T>;
-            _mono_copier = _mono_copy_simple<T>;
-            _val_copier = _value_copy_simple<T,value_type>;
-            _referer = _refer_simple<T>;
+            _allocator = __allocate_simple<T>;
+            _copier = __copy_simple<T>;
+            _mono_copier = __mono_copy_simple<T>;
+            _val_copier = __value_copy_simple<T,value_type>;
+            _referer = __refer_simple<T>;
             break;
           default:
             throw "Kernel Not Implemented OR Not Valid!\n";

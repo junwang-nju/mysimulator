@@ -7,11 +7,11 @@
 namespace mysimulator {
 
   template <typename EA,typename EB, ExpressionOperationName EN>
-  class _TwoMemberExpression {
+  class __TwoMemberExpression {
 
     public:
 
-      typedef _TwoMemberExpression<EA,EB,EN>  Type;
+      typedef __TwoMemberExpression<EA,EB,EN>  Type;
 
       static const ExpressionOperationName OpName;
 
@@ -22,9 +22,9 @@ namespace mysimulator {
 
     public:
 
-      _TwoMemberExpression(EA const& A,EB const& B) : _A(A), _B(B) {}
-      _TwoMemberExpression(const Type& E) : _A(E._A), _B(E._B) {}
-      ~_TwoMemberExpression() {}
+      __TwoMemberExpression(EA const& A,EB const& B) : _A(A), _B(B) {}
+      __TwoMemberExpression(const Type& E) : _A(E._A), _B(E._B) {}
+      ~__TwoMemberExpression() {}
 
       Type& operator=(const Type&) = delete;
 
@@ -35,7 +35,7 @@ namespace mysimulator {
   };
 
   template <typename EA,typename EB, ExpressionOperationName EN>
-  const ExpressionOperationName _TwoMemberExpression<EA,EB,EN>::OpName = EN;
+  const ExpressionOperationName __TwoMemberExpression<EA,EB,EN>::OpName = EN;
 
 }
 

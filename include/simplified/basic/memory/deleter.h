@@ -7,10 +7,10 @@
 namespace mysimulator {
 
   template <typename T>
-  void _delete_unit(void* ptr) { if( ptr!=nullptr )  delete (T*&)ptr; }
+  void __delete_unit(void* ptr) { if( ptr!=nullptr )  delete (T*&)ptr; }
 
   template <typename T>
-  void _delete_array(void* ptr) { if( ptr!=nullptr ) delete[] (T*&)ptr; }
+  void __delete_array(void* ptr) { if( ptr!=nullptr ) delete[] (T*&)ptr; }
 
 }
 

@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   template <typename T>
-  void _allocate_sse(Array<Intrinsic<T>>& A,unsigned int size) {
+  void __allocate_sse(Array<Intrinsic<T>>& A,unsigned int size) {
     assert(size>0);
     unsigned int alloc_size=__span16_byte<T>(size);
     A._n128=(alloc_size>>4);
@@ -28,7 +28,7 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T>
-  void _copy_sse(Array<Intrinsic<T>>& A,const Array<Intrinsic<T>>& B) {
+  void __copy_sse(Array<Intrinsic<T>>& A,const Array<Intrinsic<T>>& B) {
     assert((bool)A);
     assert((bool)B);
     assert(A.size()<=B.size());
@@ -40,14 +40,14 @@ namespace mysimulator {
   }
 
   template <typename T>
-  void _mono_copy_sse(Array<Intrinsic<T>>& A,const T& D) {
+  void __mono_copy_sse(Array<Intrinsic<T>>& A,const T& D) {
     assert((bool)A);
     for(unsigned int i=0;i<A.size();++i)  A[i]=D;
   }
 
   template <typename T>
-  void _refer_sse(Array<Intrinsic<T>>& A, const Array<Intrinsic<T>>& B,
-                  unsigned int bg,unsigned int num) {
+  void __refer_sse(Array<Intrinsic<T>>& A, const Array<Intrinsic<T>>& B,
+                   unsigned int bg,unsigned int num) {
     assert((bool)B);
     assert(B.KernelName() == ArrayKernelName::SSE);
     assert(B._pdata.__aligned16());
@@ -56,6 +56,21 @@ namespace mysimulator {
     A._pdata.reset(B._pdata,bg);
     A._ndata=num;
     A._n128=__span16<T>(num);
+  }
+
+}
+
+#include "array/expression/sum.h"
+
+namespace mysimulator {
+
+  template <typename T,typename EA,typename EB>
+  void __assign_sum_sse(Array<T>& A, ArraySum<EA,EB> const& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size128()<=E.size128());
+    for(unsigned int i=0;i<A.size128();++i)
+      value128(A,i)=value128(E,i);
   }
 
 }
