@@ -171,7 +171,7 @@ namespace mysimulator {
       template <typename ET>
       Type& operator+=(const Array<ET>& A) {
         static_assert(
-            __same_type<T,typename __dual_selector<T,ET,__sum_flag>::Type>::FG,
+            __same_type<T,typename __dual_selector<T,typename ET::value_type,__sum_flag>::Type>::FG,
             "Type T cannot accept SUM result!\n");
         assert((bool)(*this));
         assert((bool)A);
