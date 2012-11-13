@@ -54,6 +54,34 @@ namespace mysimulator {
     return _mm_add_pd(a,b);
   }
 
+  template <typename T>
+  typename __sse_value<T>::Type
+  Sub128(typename __sse_value<T>::Type const& a,
+         typename __sse_value<T>::Type const& b) {
+    assert("This Operation is Not available!\n");
+    return (typename __sse_value<T>::Type)0;
+  }
+
+  template <>
+  __m128i Sub128<int>(__m128i const& a, __m128i const& b) {
+    return _mm_sub_epi32(a,b);
+  }
+
+  template <>
+  __m128i Sub128<long>(__m128i const& a, __m128i const& b) {
+    return _mm_sub_epi32(a,b);
+  }
+
+  template <>
+  __m128 Sub128<float>(__m128 const& a, __m128 const& b) {
+    return _mm_sub_ps(a,b);
+  }
+
+  template <>
+  __m128d Sub128<double>(__m128d const& a, __m128d const& b) {
+    return _mm_sub_pd(a,b);
+  }
+
 }
 
 #endif

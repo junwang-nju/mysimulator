@@ -1,26 +1,26 @@
 
-#ifndef _Array_Expression_Base_Sum_H_
-#define _Array_Expression_Base_Sum_H_
+#ifndef _Array_Expression_Base_Substract_H_
+#define _Array_Expression_Base_Substract_H_
 
 #include "basic/expression/base.h"
 #include "basic/type/selector.h"
-#include "basic/type/sum.h"
+#include "basic/type/substract.h"
 #include "array/kernel/name.h"
 
 namespace mysimulator {
 
   template <typename EA,typename EB>
-  class ArraySumBase
-      : public __TwoMemberExpression<EA,EB,ExpressionOperationName::Sum> {
+  class ArraySubBase
+      : public __TwoMemberExpression<EA,EB,ExpressionOperationName::Substract> {
 
     public:
 
-      typedef ArraySumBase<EA,EB>   Type;
-      typedef __TwoMemberExpression<EA,EB,ExpressionOperationName::Sum>
+      typedef ArraySubBase<EA,EB>   Type;
+      typedef __TwoMemberExpression<EA,EB,ExpressionOperationName::Substract>
               ParentType;
       typedef unsigned int size_type;
       typedef typename __dual_selector<typename EA::value_type,
-                                       typename EB::value_type,__sum>::Type
+                                       typename EB::value_type,__sub>::Type
               value_type;
 
     private:
@@ -37,12 +37,12 @@ namespace mysimulator {
 
     public:
 
-      ArraySumBase(EA const& A,EB const& B)
+      ArraySubBase(EA const& A, EB const& B)
         : ParentType(A,B), _tag(_combine(A,B)) {}
-      ArraySumBase(const Type& E)
+      ArraySubBase(const Type& E)
         : ParentType((ParentType const&)E),
           _tag(_combine(ParentType::first(),ParentType::second())) {}
-      ~ArraySumBase() {}
+      ~ArraySubBase() {}
       Type& operator=(const Type&) = delete;
 
       ArrayKernelName KernelName() const { return _tag; }
@@ -64,18 +64,18 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename E,typename T>
-  class ArraySumBase<E,Intrinsic<T>>
+  class ArraySubBase<E,Intrinsic<T>>
       : public __TwoMemberExpression<E,Intrinsic<T>,
-                                     ExpressionOperationName::Sum> {
+                                     ExpressionOperationName::Substract> {
 
     public:
 
-      typedef Intrinsic<T>  TType;
-      typedef ArraySumBase<E,TType>  Type;
-      typedef __TwoMemberExpression<E,TType,ExpressionOperationName::Sum>
+      typedef Intrinsic<T>    TType;
+      typedef ArraySubBase<E,TType>    Type;
+      typedef __TwoMemberExpression<E,TType,ExpressionOperationName::Substract>
               ParentType;
       typedef unsigned int size_type;
-      typedef typename __dual_selector<typename E::value_type,T,__sum>::Type
+      typedef typename __dual_selector<typename E::value_type,T,__sub>::Type
               value_type;
 
     private:
@@ -84,12 +84,12 @@ namespace mysimulator {
 
     public:
 
-      ArraySumBase(E const& A,TType const& B)
+      ArraySubBase(E const& A, TType const& B)
         : ParentType(A,B), _tag(A.KernelName()) {}
-      ArraySumBase(const Type& A)
+      ArraySubBase(const Type& A)
         : ParentType((ParentType const&)A),
           _tag(ParentType::first().KernelName()) {}
-      ~ArraySumBase() {}
+      ~ArraySubBase() {}
       Type& operator=(const Type&) = delete;
 
       ArrayKernelName KernelName() const { return _tag; }
@@ -102,32 +102,32 @@ namespace mysimulator {
   };
 
   template <typename T,typename E>
-  class ArraySumBase<Intrinsic<T>,E>
+  class ArraySubBase<Intrinsic<T>,E>
       : public __TwoMemberExpression<Intrinsic<T>,E,
-                                     ExpressionOperationName::Sum> {
+                                     ExpressionOperationName::Substract> {
 
     public:
 
       typedef Intrinsic<T>  TType;
-      typedef ArraySumBase<TType,E>   Type;
-      typedef __TwoMemberExpression<TType,E,ExpressionOperationName::Sum>
+      typedef ArraySubBase<TType,E>   Type;
+      typedef __TwoMemberExpression<TType,E,ExpressionOperationName::Substract>
               ParentType;
       typedef unsigned int size_type;
-      typedef typename __dual_selector<T,typename E::value_type,__sum>::Type
+      typedef typename __dual_selector<T,typename E::value_type,__sub>::Type
               value_type;
-
-    public:
-
-      ArrayKernelName _tag;
 
     private:
 
-      ArraySumBase(TType const& A, E const& B)
+      ArrayKernelName _tag;
+
+    public:
+
+      ArraySubBase(TType const& A, E const& B)
         : ParentType(A,B), _tag(B.KernelName()) {}
-      ArraySumBase(const Type& A)
+      ArraySubBase(const Type& A)
         : ParentType((ParentType const&)A),
           _tag(ParentType::second().KernelName()) {}
-      ~ArraySumBase() {}
+      ~ArraySubBase() {}
       Type& operator=(const Type&) = delete;
 
       ArrayKernelName KernelName() const { return _tag; }

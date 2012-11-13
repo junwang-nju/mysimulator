@@ -92,6 +92,7 @@ namespace mysimulator {
       Type& operator=(const Intrinsic<T1>& D) {
         return operator=((value_type)((T1)D));
       }
+
       template <typename EA,typename EB>
       Type& operator=(ArraySum<EA,EB> const& E) {
         __assign_sum_simple<Intrinsic<T>,EA,EB>(*this,E);
@@ -100,6 +101,17 @@ namespace mysimulator {
       template <typename EA,typename EB>
       Type& operator=(ArraySum<EA,EB,value_type,true> const& E) {
         __assign_sum_simple<Intrinsic<T>,EA,EB>(*this,E);
+        return *this;
+      }
+
+      template <typename EA,typename EB>
+      Type& operator=(ArraySub<EA,EB> const& E) {
+        __assign_sub_simple<Intrinsic<T>,EA,EB>(*this,E);
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator=(ArraySub<EA,EB,value_type,true> const& E) {
+        __assign_sub_simple<Intrinsic<T>,EA,EB>(*this,E);
         return *this;
       }
 
@@ -200,6 +212,7 @@ namespace mysimulator {
       __assign_sum_sse<Double,EA,EB>(*this,E);
     else
       __assign_sum_simple<Double,EA,EB>(*this,E);
+    return *this;
   }
 
   template <>
@@ -210,6 +223,7 @@ namespace mysimulator {
       __assign_sum_sse<Int,EA,EB>(*this,E);
     else
       __assign_sum_simple<Int,EA,EB>(*this,E);
+    return *this;
   }
 
   template <>
@@ -220,6 +234,38 @@ namespace mysimulator {
       __assign_sum_sse<Float,EA,EB>(*this,E);
     else
       __assign_sum_simple<Float,EA,EB>(*this,E);
+    return *this;
+  }
+
+  template <>
+  template <typename EA,typename EB>
+  Array<Double>&
+  Array<Double>::operator=(ArraySub<EA,EB,double,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_sub_sse<Double,EA,EB>(*this,E);
+    else
+      __assign_sub_simple<Double,EA,EB>(*this,E);
+    return *this;
+  }
+  template <>
+  template <typename EA,typename EB>
+  Array<Int>&
+  Array<Int>::operator=(ArraySub<EA,EB,int,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_sub_sse<Int,EA,EB>(*this,E);
+    else
+      __assign_sub_simple<Int,EA,EB>(*this,E);
+    return *this;
+  }
+  template <>
+  template <typename EA,typename EB>
+  Array<Float>&
+  Array<Float>::operator=(ArraySub<EA,EB,float,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_sub_sse<Float,EA,EB>(*this,E);
+    else
+      __assign_sub_simple<Float,EA,EB>(*this,E);
+    return *this;
   }
 
 }
