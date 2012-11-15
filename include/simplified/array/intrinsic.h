@@ -245,7 +245,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Double>&
   Array<Double>::operator=(ArraySum<EA,EB,double,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_sum_sse<Double,EA,EB>(*this,E);
     else
       __assign_sum_simple<Double,EA,EB>(*this,E);
@@ -256,7 +256,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Int>&
   Array<Int>::operator=(ArraySum<EA,EB,int,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_sum_sse<Int,EA,EB>(*this,E);
     else
       __assign_sum_simple<Int,EA,EB>(*this,E);
@@ -267,7 +267,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Float>&
   Array<Float>::operator=(ArraySum<EA,EB,float,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_sum_sse<Float,EA,EB>(*this,E);
     else
       __assign_sum_simple<Float,EA,EB>(*this,E);
@@ -278,7 +278,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Double>&
   Array<Double>::operator=(ArraySub<EA,EB,double,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_sub_sse<Double,EA,EB>(*this,E);
     else
       __assign_sub_simple<Double,EA,EB>(*this,E);
@@ -288,7 +288,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Int>&
   Array<Int>::operator=(ArraySub<EA,EB,int,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_sub_sse<Int,EA,EB>(*this,E);
     else
       __assign_sub_simple<Int,EA,EB>(*this,E);
@@ -298,7 +298,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Float>&
   Array<Float>::operator=(ArraySub<EA,EB,float,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_sub_sse<Float,EA,EB>(*this,E);
     else
       __assign_sub_simple<Float,EA,EB>(*this,E);
@@ -309,7 +309,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Double>&
   Array<Double>::operator=(ArrayMul<EA,EB,double,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_mul_sse<Double,EA,EB>(*this,E);
     else
       __assign_mul_simple<Double,EA,EB>(*this,E);
@@ -319,7 +319,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Int>&
   Array<Int>::operator=(ArrayMul<EA,EB,int,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_mul_sse<Int,EA,EB>(*this,E);
     else
       __assign_mul_simple<Int,EA,EB>(*this,E);
@@ -329,7 +329,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Float>&
   Array<Float>::operator=(ArrayMul<EA,EB,float,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_mul_sse<Float,EA,EB>(*this,E);
     else
       __assign_mul_simple<Float,EA,EB>(*this,E);
@@ -340,7 +340,7 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Double>&
   Array<Double>::operator=(ArrayDiv<EA,EB,double,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_div_sse<Double,EA,EB>(*this,E);
     else
       __assign_div_simple<Double,EA,EB>(*this,E);
@@ -350,11 +350,17 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Float>&
   Array<Float>::operator=(ArrayDiv<EA,EB,float,true> const& E) {
-    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+    if( _tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
       __assign_div_sse<Float,EA,EB>(*this,E);
     else
       __assign_div_simple<Float,EA,EB>(*this,E);
     return *this;
+  }
+
+  template <typename T1,typename T2>
+  typename __dual_selector<T1,T2,__mul>::Type
+  Dot(Array<Intrinsic<T1>> const& A, Array<Intrinsic<T2>> const& B) {
+    return __dot_simple<T1,T2>(A,B);
   }
 
 }

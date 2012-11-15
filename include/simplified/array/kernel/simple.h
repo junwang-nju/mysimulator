@@ -102,6 +102,17 @@ namespace mysimulator {
     for(unsigned int i=0;i<A.size();++i)  A[i]=E[i];
   }
 
+  template <typename T1,typename T2>
+  typename __dual_selector<T1,T2,__mul>::Type
+  __dot_simple(Array<Intrinsic<T1>> const& A, Array<Intrinsic<T2>> const& B) {
+    assert((bool)A);
+    assert((bool)B);
+    unsigned int n=(A.size()<B.size()?A.size():B.size());
+    typename __dual_selector<T1,T2,__mul>::Type sum=0;
+    for(unsigned int i=0;i<n;++i) sum+=A[i]*B[i];
+    return sum;
+  }
+
 }
 
 #endif
