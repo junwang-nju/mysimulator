@@ -48,7 +48,7 @@ namespace mysimulator {
       ArrayKernelName KernelName() const { return _tag; }
       size_type size() const {
         return ParentType::first().size() < ParentType::second().size() ?
-               ParentType::first().size() : ParentType::second().size;
+               ParentType::first().size() : ParentType::second().size();
       }
       value_type operator[](size_type i) const {
         return (value_type)(ParentType::first()[i]) +

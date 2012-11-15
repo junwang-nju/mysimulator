@@ -90,5 +90,19 @@ namespace mysimulator {
 
 }
 
+#include "array/expression/divide.h"
+
+namespace mysimulator {
+
+  template <typename T,typename EA,typename EB>
+  void __assign_div_simple(Array<T>& A, ArrayDiv<EA,EB> const& E) {
+    assert((bool)A);
+    assert((bool)E);
+    assert(A.size()<=E.size());
+    for(unsigned int i=0;i<A.size();++i)  A[i]=E[i];
+  }
+
+}
+
 #endif
 

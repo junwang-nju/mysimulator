@@ -113,7 +113,7 @@ namespace mysimulator {
       typedef __TwoMemberExpression<TType,E,ExpressionOperationName::Divide>
               ParentType;
       typedef unsigned int size_type;
-      typedef __dual_selector<T,typename E::value_type,__div>::Type
+      typedef typename __dual_selector<T,typename E::value_type,__div>::Type
               value_type;
 
     private:

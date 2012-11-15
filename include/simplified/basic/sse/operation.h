@@ -110,6 +110,24 @@ namespace mysimulator {
     return _mm_mul_pd(a,b);
   }
 
+  template <typename T>
+  typename __sse_value<T>::Type
+  Div128(typename __sse_value<T>::Type const& a,
+         typename __sse_value<T>::Type const& b) {
+    assert("This Operation is Not available!\n");
+    return (typename __sse_value<T>::Type)0;
+  }
+
+  template <>
+  __m128 Div128<float>(__m128 const& a, __m128 const& b) {
+    return _mm_div_ps(a,b);
+  }
+
+  template <>
+  __m128d Div128<double>(__m128d const& a,__m128d const& b) {
+    return _mm_div_pd(a,b);
+  }
+
 }
 
 #endif

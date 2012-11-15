@@ -56,7 +56,7 @@ namespace mysimulator {
       Array() : _tag(ArrayKernelName::Unknown), _pdata(), _ndata(0U),
                 _n128(0U), _allocator ( nullptr ), _copier ( nullptr ),
                 _mono_copier ( nullptr ), _referer ( nullptr ) {}
-      Array(size_type size, ArrayKernelName KN) : Array() {
+      Array(size_type size, ArrayKernelName KN=ArrayKernelName::SSE) : Array() {
         allocate(size,KN);
       }
       Array(const Type& A) : Array() {
@@ -125,6 +125,26 @@ namespace mysimulator {
         __assign_mul_simple<Intrinsic<T>,EA,EB>(*this,E);
         return *this;
       }
+
+      template <typename EA,typename EB>
+      Type& operator=(ArrayDiv<EA,EB> const& E) {
+        __assign_div_simple<Intrinsic<T>,EA,EB>(*this,E);
+        return *this;
+      }
+      template <typename EA,typename EB>
+      Type& operator=(ArrayDiv<EA,EB,value_type,true> const& E) {
+        __assign_div_simple<Intrinsic<T>,EA,EB>(*this,E);
+        return *this;
+      }
+
+      template <typename E>
+      Type& operator+=(E const& A) { return operator=((*this)+A); }
+      template <typename E>
+      Type& operator-=(E const& A) { return operator=((*this)-A); }
+      template <typename E>
+      Type& operator*=(E const& A) { return operator=((*this)*A); }
+      template <typename E>
+      Type& operator/=(E const& A) { return operator=((*this)/A); }
 
       void reset() {
         _n128 = 0;
@@ -313,6 +333,27 @@ namespace mysimulator {
       __assign_mul_sse<Float,EA,EB>(*this,E);
     else
       __assign_mul_simple<Float,EA,EB>(*this,E);
+    return *this;
+  }
+
+  template <>
+  template <typename EA,typename EB>
+  Array<Double>&
+  Array<Double>::operator=(ArrayDiv<EA,EB,double,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_div_sse<Double,EA,EB>(*this,E);
+    else
+      __assign_div_simple<Double,EA,EB>(*this,E);
+    return *this;
+  }
+  template <>
+  template <typename EA,typename EB>
+  Array<Float>&
+  Array<Float>::operator=(ArrayDiv<EA,EB,float,true> const& E) {
+    if(_tag==ArrayKernelName::SSE && E.KernelName()==ArrayKernelName::SSE )
+      __assign_div_sse<Float,EA,EB>(*this,E);
+    else
+      __assign_div_simple<Float,EA,EB>(*this,E);
     return *this;
   }
 

@@ -14,7 +14,9 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename T1,typename T2>
-  const unsigned int __div<T1,T2>::FLAG = __mul<T1,T2>::FLAG;
+  const unsigned int __div<T1,T2>::FLAG =
+      __mul<T1,T2>::FLAG && Intrinsic<T1>::IsFloatingPoint &&
+                            Intrinsic<T2>::IsFloatingPoint;
 
 }
 
