@@ -53,6 +53,14 @@ namespace mysimulator {
     return A;
   }
 
+  template <typename T,ArrayKernelName KN,bool vF>
+  T __sum_simple(Array<T,KN,vF> const& A) {
+    assert((bool)A);
+    T S=0;
+    for(unsigned int i=0;i<A.size();++i)  S+=A[i];
+    return S;
+  }
+
 }
 
 #include "array/expression/sum.h"
@@ -126,6 +134,7 @@ namespace mysimulator {
   template <typename T>
   Array<T,ArrayKernelName::Simple,true>&
   __square_root_simple(Array<T,ArrayKernelName::Simple,true>& A) {
+    assert((bool)A);
     for(unsigned int i=0;i<A.size();++i)  A[i]=__square_root(A[i]);
     return A;
   }
@@ -133,6 +142,7 @@ namespace mysimulator {
   template <typename T,ArrayKernelName KN>
   Array<T,KN,true>&
   __inv_square_root_simple(Array<T,KN,true>& A) {
+    assert((bool)A);
     for(unsigned int i=0;i<A.size();++i)  A[i]=1./__square_root(A[i]);
     return A;
   }

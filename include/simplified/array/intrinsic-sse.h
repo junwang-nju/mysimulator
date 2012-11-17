@@ -140,6 +140,8 @@ namespace mysimulator {
       template <typename E>
       Type& operator/=(E const& A) { return operator=((*this)/A); }
 
+      T Sum() const { return __sum_simple(*this); }
+
       void allocate(size_type size) { __allocate_sse(*this,size); }
       void refer(const Type& A) {
         reset();
@@ -288,13 +290,16 @@ namespace mysimulator {
                                                    B.size128_low();
     unsigned int m=A.size()<B.size()?A.size():B.size();
     typename __sse_value<VT>::Type tmp,s4;
-    s4=Set128<VT>(0);
-    for(unsigned int i=0;i<n;++i) {
-      tmp=Mul128<VT>(A.value128(i),B.value128(i));
-      s4=Sum128<VT>(s4,tmp);
+    VT S=0;
+    if(n>0) {
+      s4=Set128<VT>(0);
+      for(unsigned int i=0;i<n;++i) {
+        tmp=Mul128<VT>(A.value128(i),B.value128(i));
+        s4=Sum128<VT>(s4,tmp);
+      }
+      VT* p=(VT*)(&s4);
+      S=p[0]+p[1]+p[2]+p[3];
     }
-    VT* p=(VT*)(&s4);
-    VT S=p[0]+p[1]+p[2]+p[3];
     for(unsigned int i=(n<<4)/sizeof(VT);i<m;++i) S+=A[i]*B[i];
     return S;
   }
@@ -711,23 +716,43 @@ namespace mysimulator {
 
   Array<Float,ArrayKernelName::SSE,true>&
   __square_root(Array<Float,ArrayKernelName::SSE,true>& A) {
+    assert((bool)A);
     for(unsigned int i=0;i<A.size128();++i) _mm_sqrt_ps(A.value128(i));
     return A;
   }
   Array<Double,ArrayKernelName::SSE,true>&
   __square_root(Array<Double,ArrayKernelName::SSE,true>& A) {
+    assert((bool)A);
     for(unsigned int i=0;i<A.size128();++i) _mm_sqrt_pd(A.value128(i));
     return A;
   }
 
   Array<Float,ArrayKernelName::SSE,true>&
   __inv_square_root(Array<Float,ArrayKernelName::SSE,true>& A) {
+    assert((bool)A);
     for(unsigned int i=0;i<A.size128();++i) _mm_rsqrt_ps(A.value128(i));
     return A;
   }
   Array<Double,ArrayKernelName::SSE,true>&
   __inv_square_root(Array<Double,ArrayKernelName::SSE,true>& A) {
     return __inv_square_root_simple(A);
+  }
+
+  template <>
+  double Array<Double,ArrayKernelName::SSE,true>::Sum() const {
+    return __sum_sse(*this);
+  }
+  template <>
+  float Array<Float,ArrayKernelName::SSE,true>::Sum() const {
+    return __sum_sse(*this);
+  }
+  template <>
+  int Array<Int,ArrayKernelName::SSE,true>::Sum() const {
+    return __sum_sse(*this);
+  }
+  template <>
+  long Array<Long,ArrayKernelName::SSE,true>::Sum() const {
+    return __sum_sse(*this);
   }
 
 }

@@ -65,6 +65,22 @@ namespace mysimulator {
     A._p128=reinterpret_cast<typename __sse_value<T>::Type*>(A.head());
   }
 
+  template <typename T,ArrayKernelName KN>
+  T __sum_sse(Array<Intrinsic<T>,KN,true> const& A) {
+    T S=0;
+    if(A.size128_low()>0) {
+      typename __sse_value<T>::Type s4;
+      s4=Set128<T>(0);
+      for(unsigned int i=0;i<A.size128_low();++i)
+        s4=Sum128<T>(s4,A.value128(i));
+      T* p=(T*)(&s4);
+      S=p[0]+p[1]+p[2]+p[3];
+    }
+    for(unsigned int i=(A.size128_low()<<4)/sizeof(T);i<A.size();++i)
+      S+=A[i];
+    return S;
+  }
+
 }
 
 #include "array/expression/sum.h"
