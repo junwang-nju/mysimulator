@@ -4,7 +4,7 @@
 
 namespace mysimulator {
 
-  enum class ArrayKernelName { Simple, SSE, BLAS, Unknown };
+  enum class ArrayKernelName { Simple, SSE, BLAS, Direct2D, Direct3D, Unknown };
 
 }
 

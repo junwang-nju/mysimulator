@@ -6,13 +6,14 @@
 #include "array/expression/substract.h"
 #include "array/expression/multiple.h"
 #include "array/expression/divide.h"
+#include "array/kernel/name.h"
 
 namespace mysimulator {
 
-  template <typename T,typename E>
-  ArraySum<Array<Intrinsic<T>>,E>
-  operator+(Array<Intrinsic<T>> const& A, E const& B) {
-    return ArraySum<Array<Intrinsic<T>>,E>(A,B);
+  template <typename T,ArrayKernelName KN,typename E>
+  ArraySum<Array<Intrinsic<T>,KN,true>,E>
+  operator+(Array<Intrinsic<T>,KN,true> const& A, E const& B) {
+    return ArraySum<Array<Intrinsic<T>,KN,true>,E>(A,B);
   }
 
   template <typename EA,typename EB,typename E>
@@ -39,10 +40,10 @@ namespace mysimulator {
     return ArraySum<ArrayDiv<EA,EB>,E>(A,B);
   }
 
-  template <typename T1,typename T2>
-  ArraySum<Intrinsic<T1>,Array<Intrinsic<T2>>>
-  operator+(Intrinsic<T1> const& A, Array<Intrinsic<T2>> const& B) {
-    return ArraySum<Intrinsic<T1>,Array<Intrinsic<T2>>>(A,B);
+  template <typename T1,typename T2,ArrayKernelName KN>
+  ArraySum<Intrinsic<T1>,Array<Intrinsic<T2>,KN,true>>
+  operator+(Intrinsic<T1> const& A, Array<Intrinsic<T2>,KN,true> const& B) {
+    return ArraySum<Intrinsic<T1>,Array<Intrinsic<T2>,KN,true>>(A,B);
   }
 
   template <typename T,typename EA,typename EB>
@@ -69,10 +70,10 @@ namespace mysimulator {
     return ArraySum<Intrinsic<T>,ArrayDiv<EA,EB>>(A,B);
   }
 
-  template <typename T,typename E>
-  ArraySub<Array<Intrinsic<T>>,E>
-  operator-(Array<Intrinsic<T>> const& A, E const& B) {
-    return ArraySub<Array<Intrinsic<T>>,E>(A,B);
+  template <typename T,ArrayKernelName KN,typename E>
+  ArraySub<Array<Intrinsic<T>,KN,true>,E>
+  operator-(Array<Intrinsic<T>,KN,true> const& A, E const& B) {
+    return ArraySub<Array<Intrinsic<T>,KN,true>,E>(A,B);
   }
 
   template <typename EA,typename EB,typename E>
@@ -99,10 +100,10 @@ namespace mysimulator {
     return ArraySub<ArrayDiv<EA,EB>,E>(A,B);
   }
 
-  template <typename T1,typename T2>
-  ArraySub<Intrinsic<T1>,Array<Intrinsic<T2>>>
-  operator-(Intrinsic<T1> const& A, Array<Intrinsic<T2>> const& B) {
-    return ArraySub<Intrinsic<T1>,Array<Intrinsic<T2>>>(A,B);
+  template <typename T1,typename T2,ArrayKernelName KN>
+  ArraySub<Intrinsic<T1>,Array<Intrinsic<T2>,KN,true>>
+  operator-(Intrinsic<T1> const& A, Array<Intrinsic<T2>,KN,true> const& B) {
+    return ArraySub<Intrinsic<T1>,Array<Intrinsic<T2>,KN,true>>(A,B);
   }
 
   template <typename T,typename EA,typename EB>
@@ -129,10 +130,10 @@ namespace mysimulator {
     return ArraySub<Intrinsic<T>,ArrayDiv<EA,EB>>(A,B);
   }
 
-  template <typename T,typename E>
-  ArrayMul<Array<Intrinsic<T>>,E>
-  operator*(Array<Intrinsic<T>> const& A, E const& B) {
-    return ArrayMul<Array<Intrinsic<T>>,E>(A,B);
+  template <typename T,ArrayKernelName KN,typename E>
+  ArrayMul<Array<Intrinsic<T>,KN,true>,E>
+  operator*(Array<Intrinsic<T>,KN,true> const& A, E const& B) {
+    return ArrayMul<Array<Intrinsic<T>,KN,true>,E>(A,B);
   }
 
   template <typename EA,typename EB,typename E>
@@ -159,10 +160,10 @@ namespace mysimulator {
     return ArrayMul<ArrayDiv<EA,EB>,E>(A,B);
   }
 
-  template <typename T1,typename T2>
-  ArrayMul<Intrinsic<T1>,Array<Intrinsic<T2>>>
-  operator*(Intrinsic<T1> const& A, Array<Intrinsic<T2>> const& B) {
-    return ArrayMul<Intrinsic<T1>,Array<Intrinsic<T2>>>(A,B);
+  template <typename T1,typename T2,ArrayKernelName KN>
+  ArrayMul<Intrinsic<T1>,Array<Intrinsic<T2>,KN,true>>
+  operator*(Intrinsic<T1> const& A, Array<Intrinsic<T2>,KN,true> const& B) {
+    return ArrayMul<Intrinsic<T1>,Array<Intrinsic<T2>,KN,true>>(A,B);
   }
 
   template <typename T,typename EA,typename EB>
@@ -189,10 +190,10 @@ namespace mysimulator {
     return ArrayMul<Intrinsic<T>,ArrayDiv<EA,EB>>(A,B);
   }
 
-  template <typename T,typename E>
-  ArrayDiv<Array<Intrinsic<T>>,E>
-  operator/(Array<Intrinsic<T>> const& A, E const& B) {
-    return ArrayDiv<Array<Intrinsic<T>>,E>(A,B);
+  template <typename T,ArrayKernelName KN,typename E>
+  ArrayDiv<Array<Intrinsic<T>,KN,true>,E>
+  operator/(Array<Intrinsic<T>,KN,true> const& A, E const& B) {
+    return ArrayDiv<Array<Intrinsic<T>,KN,true>,E>(A,B);
   }
 
   template <typename EA,typename EB,typename E>
@@ -219,10 +220,10 @@ namespace mysimulator {
     return ArrayDiv<ArrayDiv<EA,EB>,E>(A,B);
   }
 
-  template <typename T1,typename T2>
-  ArrayDiv<Intrinsic<T1>,Array<Intrinsic<T2>>>
-  operator/(Intrinsic<T1> const& A, Array<Intrinsic<T2>> const& B) {
-    return ArrayDiv<Intrinsic<T1>,Array<Intrinsic<T2>>>(A,B);
+  template <typename T1,typename T2,ArrayKernelName KN>
+  ArrayDiv<Intrinsic<T1>,Array<Intrinsic<T2>,KN,true>>
+  operator/(Intrinsic<T1> const& A, Array<Intrinsic<T2>,KN,true> const& B) {
+    return ArrayDiv<Intrinsic<T1>,Array<Intrinsic<T2>,KN,true>>(A,B);
   }
 
   template <typename T,typename EA,typename EB>

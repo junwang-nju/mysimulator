@@ -5,7 +5,6 @@
 #include "basic/expression/base.h"
 #include "basic/type/selector.h"
 #include "basic/type/sum.h"
-#include "array/kernel/name.h"
 
 namespace mysimulator {
 
@@ -25,31 +24,19 @@ namespace mysimulator {
 
     private:
 
-      ArrayKernelName _tag;
-      ArrayKernelName _combine(EA const& A, EB const& B) {
-        ArrayKernelName N1=A.KernelName();
-        ArrayKernelName N2=B.KernelName();
-        if((N1==ArrayKernelName::SSE)&&(N2==ArrayKernelName::SSE))
-          return ArrayKernelName::SSE;
-        else
-          return ArrayKernelName::Simple;
-      }
+      size_type _size;
 
     public:
 
       ArraySumBase(EA const& A,EB const& B)
-        : ParentType(A,B), _tag(_combine(A,B)) {}
+        : ParentType(A,B),
+          _size(A.size()<B.size()?A.size():B.size()) {}
       ArraySumBase(const Type& E)
-        : ParentType((ParentType const&)E),
-          _tag(_combine(ParentType::first(),ParentType::second())) {}
+        : ParentType((ParentType const&)E),_size(E.size()) {}
       ~ArraySumBase() {}
       Type& operator=(const Type&) = delete;
 
-      ArrayKernelName KernelName() const { return _tag; }
-      size_type size() const {
-        return ParentType::first().size() < ParentType::second().size() ?
-               ParentType::first().size() : ParentType::second().size();
-      }
+      size_type size() const { return _size; }
       value_type operator[](size_type i) const {
         return (value_type)(ParentType::first()[i]) +
                (value_type)(ParentType::second()[i]);
@@ -71,7 +58,7 @@ namespace mysimulator {
     public:
 
       typedef Intrinsic<T>  TType;
-      typedef ArraySumBase<E,TType>  Type;
+      typedef ArraySumBase<E,TType>   Type;
       typedef __TwoMemberExpression<E,TType,ExpressionOperationName::Sum>
               ParentType;
       typedef unsigned int size_type;
@@ -80,20 +67,18 @@ namespace mysimulator {
 
     private:
 
-      ArrayKernelName _tag;
+      size_type _size;
 
     public:
 
-      ArraySumBase(E const& A,TType const& B)
-        : ParentType(A,B), _tag(A.KernelName()) {}
+      ArraySumBase(E const& A,Intrinsic<T> const& B)
+        : ParentType(A,B), _size(A.size()) {}
       ArraySumBase(const Type& A)
-        : ParentType((ParentType const&)A),
-          _tag(ParentType::first().KernelName()) {}
+        : ParentType((ParentType const&)A), _size(A.size()) {}
       ~ArraySumBase() {}
       Type& operator=(const Type&) = delete;
 
-      ArrayKernelName KernelName() const { return _tag; }
-      size_type size() const { return ParentType::first().size(); }
+      size_type size() const { return _size; }
       value_type operator[](size_type i) const {
         return (value_type)(ParentType::first()[i]) +
                (value_type)((T)ParentType::second());
@@ -109,7 +94,7 @@ namespace mysimulator {
     public:
 
       typedef Intrinsic<T>  TType;
-      typedef ArraySumBase<TType,E>   Type;
+      typedef ArraySumBase<TType,T>   Type;
       typedef __TwoMemberExpression<TType,E,ExpressionOperationName::Sum>
               ParentType;
       typedef unsigned int size_type;
@@ -118,20 +103,18 @@ namespace mysimulator {
 
     private:
 
-      ArrayKernelName _tag;
+      size_type _size;
 
     public:
 
-      ArraySumBase(TType const& A, E const& B)
-        : ParentType(A,B), _tag(B.KernelName()) {}
+      ArraySumBase(TType const& A,E const& B)
+        : ParentType(A,B), _size(B.size()) {}
       ArraySumBase(const Type& A)
-        : ParentType((ParentType const&)A),
-          _tag(ParentType::second().KernelName()) {}
+        : ParentType((ParentType const&)A), _size(A.size()) {}
       ~ArraySumBase() {}
       Type& operator=(const Type&) = delete;
 
-      ArrayKernelName KernelName() const { return _tag; }
-      size_type size() const { return ParentType::second().size(); }
+      size_type size() const { return _size; }
       value_type operator[](size_type i) const {
         return (value_type)((T)ParentType::first()) +
                (value_type)(ParentType::second()[i]);

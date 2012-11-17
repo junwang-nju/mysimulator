@@ -20,35 +20,33 @@ namespace mysimulator {
 }
 
 #include "basic/type/intrinsic.h"
-#include "array/expression/result-type.h"
+#include "basic/expression/result-type.h"
 
 namespace mysimulator {
 
   template <typename T,typename E,ExpressionOperationName EN>
   class __array_expression_sse_valid<Intrinsic<T>,E,EN> {
-    public:
-      static const bool FLAG;
+    public: static const bool FLAG;
   };
 
   template <typename T,typename E,ExpressionOperationName EN>
   const bool __array_expression_sse_valid<Intrinsic<T>,E,EN>::FLAG =
       E::_is_SSE_valid && __mono_sse_valid<typename E::value_type>::FLAG &&
       __same_type<
-        typename __array_expression_result<T,typename E::value_type,EN>::Type,
-        typename E::value_type>::FLAG;
+          typename __expression_result<T,typename E::value_type,EN>::Type,
+          typename E::value_type>::FLAG;
 
   template <typename E,typename T,ExpressionOperationName EN>
   class __array_expression_sse_valid<E,Intrinsic<T>,EN> {
-    public:
-      static const bool FLAG;
+    public: static const bool FLAG;
   };
 
   template <typename E,typename T,ExpressionOperationName EN>
   const bool __array_expression_sse_valid<E,Intrinsic<T>,EN>::FLAG =
       E::_is_SSE_valid && __mono_sse_valid<typename E::value_type>::FLAG &&
       __same_type<
-        typename __array_expression_result<typename E::value_type,T,EN>::Type,
-        typename E::value_type>::FLAG;
+          typename __expression_result<typename E::value_type,T,EN>::Type,
+          typename E::value_type>::FLAG;
 
 }
 

@@ -2,8 +2,8 @@
 #ifndef _Array_Expression_Multiple_H_
 #define _Array_Expression_Multiple_H_
 
-#include "array/expression/sse-valid.h"
 #include "array/expression/base/multiple.h"
+#include "array/expression/sse-valid.h"
 
 namespace mysimulator {
 
@@ -12,13 +12,16 @@ namespace mysimulator {
             bool _sseFLAG=__array_expression_sse_valid<
                               EA,EB,ExpressionOperationName::Multiple>::FLAG>
   class ArrayMul {
+
     public:
+
       typedef ArrayMul<EA,EB,_vType,_sseFLAG>   Type;
       ArrayMul() = delete;
-      ArrayMul(EA const&, EB const&) = delete;
+      ArrayMul(EA const&,EB const&) = delete;
       ArrayMul(const Type&) = delete;
       ~ArrayMul() {}
       Type& operator=(const Type&) = delete;
+
   };
 
   template <typename EA,typename EB>
@@ -28,7 +31,7 @@ namespace mysimulator {
     public:
 
       typedef ArrayMulBase<EA,EB>   ParentType;
-      typedef typename ParentType::value_type   value_type;
+      typedef typename ParentType::value_type value_type;
       typedef ArrayMul<EA,EB,value_type,false>  Type;
       typedef unsigned int size_type;
 
@@ -49,7 +52,7 @@ namespace mysimulator {
 }
 
 #include "basic/sse/value-type.h"
-#include "basic/memory/aligned.h"
+#include "basic/sse/operation.h"
 
 namespace mysimulator {
 
@@ -60,20 +63,36 @@ namespace mysimulator {
     public:
 
       typedef ArrayMulBase<EA,EB>   ParentType;
-      typedef typename ParentType::value_type   value_type;
+      typedef typename ParentType::value_type value_type;
       typedef ArrayMul<EA,EB,value_type,true>   Type;
       typedef unsigned int size_type;
-      typedef typename __sse_value<value_type>::Type  value128_type;
+      typedef typename __sse_value<value_type>::Type value128_type;
 
       static const bool _is_SSE_valid;
 
-      ArrayMul(EA const& A, EB const& B) : ParentType(A,B) {}
-      ArrayMul(const Type& E) : ParentType((ParentType const&)E) {}
+    private:
+
+      size_type _n128;
+      size_type _n128_low;
+
+    public:
+
+      ArrayMul(EA const& A,EB const& B)
+        : ParentType(A,B),
+          _n128(A.size128()<B.size128()?A.size128():B.size128()),
+          _n128_low(A.size128_low()<B.size128_low()?A.size128_low():
+                                                    B.size128_low()) {}
+      ArrayMul(const Type& E)
+        : ParentType((ParentType const&)E), _n128(E.size128()),
+          _n128_low(E.size128_low()) {}
       ~ArrayMul() {}
       Type& operator=(const Type&) = delete;
 
-      size_type size128() const {
-        return __span16<value_type>(ParentType::size());
+      size_type size128() const { return _n128; }
+      size_type size128_low() const { return _n128_low; }
+      value128_type value128(size_type i) const {
+        return Mul128<value_type>(ParentType::first().value128(i),
+                                  ParentType::second().value128(i));
       }
 
   };
@@ -83,12 +102,6 @@ namespace mysimulator {
   ArrayMul<EA,EB,typename ArrayMulBase<EA,EB>::value_type,true>::_is_SSE_valid
       = true;
 
-}
-
-#include "basic/sse/operation.h"
-
-namespace mysimulator {
-
   template <typename E,typename T>
   class ArrayMul<E,Intrinsic<T>,
                  typename ArrayMulBase<E,Intrinsic<T>>::value_type,true>
@@ -96,8 +109,8 @@ namespace mysimulator {
 
     public:
 
-      typedef ArrayMulBase<E,Intrinsic<T>>   ParentType;
-      typedef typename ParentType::value_type   value_type;
+      typedef ArrayMulBase<E,Intrinsic<T>>    ParentType;
+      typedef typename ParentType::value_type value_type;
       typedef ArrayMul<E,Intrinsic<T>,value_type,true>  Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
@@ -107,28 +120,33 @@ namespace mysimulator {
     private:
 
       value128_type _T;
+      size_type _n128;
+      size_type _n128_low;
 
     public:
 
       ArrayMul(E const& A,Intrinsic<T> const& B)
-        : ParentType(A,B), _T(Set128<value_type>((value_type)((T)B))) {}
+        : ParentType(A,B), _T(Set128<value_type>((value_type)((T)B))),
+          _n128(A.size128()), _n128_low(A.size128_low()) {}
       ArrayMul(const Type& A)
-        : ParentType((ParentType const&)A),
-          _T(Set128<value_type>((value_type)((T)A.second()))) {}
+        : ParentType((ParentType const&)A), _T(A.second128()),
+          _n128(A.size128()), _n128_low(A.size128_low()) {}
       ~ArrayMul() {}
       Type& operator=(const Type&) = delete;
 
-      size_type size128() const {
-        return __span16<value_type>(ParentType::size());
+      size_type size128() const { return _n128; }
+      size_type size128_low() const { return _n128_low; }
+      value128_type second128() const { return _T; }
+      value128_type value128(size_type i) const {
+        return Mul128<value_type>(ParentType::first().value128(i),
+                                  second128());
       }
-      value128_type second128() const { _T; }
 
   };
 
   template <typename E,typename T>
   const bool
-  ArrayMul<E,Intrinsic<T>,
-           typename ArrayMulBase<E,Intrinsic<T>>::value_type,
+  ArrayMul<E,Intrinsic<T>,typename ArrayMulBase<E,Intrinsic<T>>::value_type,
            true>::_is_SSE_valid = true;
 
   template <typename T,typename E>
@@ -138,78 +156,45 @@ namespace mysimulator {
 
     public:
 
-      typedef ArrayMulBase<Intrinsic<T>,E>    ParentType;
-      typedef typename ParentType::value_type   value_type;
+      typedef ArrayMulBase<Intrinsic<T>,E>  ParentType;
+      typedef typename ParentType::value_type value_type;
       typedef ArrayMul<Intrinsic<T>,E,value_type,true>  Type;
       typedef unsigned int size_type;
-      typedef typename __sse_value<value_type>::Type  value128_type;
+      typedef typename __sse_value<value_type>::Type value128_type;
 
       static const bool _is_SSE_valid;
 
     private:
 
       value128_type _T;
+      size_type _n128;
+      size_type _n128_low;
 
     public:
 
       ArrayMul(Intrinsic<T> const& A,E const& B)
-        : ParentType(A,B), _T(Set128<value_type>((value_type)((T)A))) {}
+        : ParentType(A,B), _T(Set128<value_type>((value_type)((T)A))),
+          _n128(B.size128()), _n128_low(B.size128_low()) {}
       ArrayMul(const Type& A)
-        : ParentType((ParentType const&)A),
-          _T(Set128<value_type>((value_type)((T)A.first()))) {}
+        : ParentType((ParentType const&)A), _T(A.first128()),
+          _n128(A.size128()), _n128_low(A.size128_low()) {}
       ~ArrayMul() {}
       Type& operator=(const Type&) = delete;
 
-      size_type size128() const {
-        return __span16<value_type>(ParentType::size());
-      }
+      size_type size128() const { return _n128; }
+      size_type size128_low() const { return _n128_low; }
       value128_type first128() const { return _T; }
+      value128_type value128(size_type i) const {
+        return Mul128<value_type>(first128(),
+                                  ParentType::second().value128(i));
+      }
 
   };
 
   template <typename T,typename E>
   const bool
-  ArrayMul<Intrinsic<T>,E,
-           typename ArrayMulBase<Intrinsic<T>,E>::value_type,
+  ArrayMul<Intrinsic<T>,E,typename ArrayMulBase<Intrinsic<T>,E>::value_type,
            true>::_is_SSE_valid = true;
-
-  template <typename EA,typename EB>
-  typename
-  ArrayMul<EA,EB,typename ArrayMulBase<EA,EB>::value_type,true>::value128_type
-  value128(
-      ArrayMul<EA,EB,typename ArrayMulBase<EA,EB>::value_type,true> const& E,
-      unsigned int i) {
-    return
-    Mul128<typename ArrayMulBase<EA,EB>::value_type>(
-                value128(E.first(),i),
-                value128(E.second(),i));
-  }
-
-  template <typename E,typename T>
-  typename ArrayMul<E,Intrinsic<T>,
-                    typename ArrayMulBase<E,Intrinsic<T>>::value_type,
-                    true>::value128_type
-  value128(ArrayMul<E,Intrinsic<T>,
-                    typename ArrayMulBase<E,Intrinsic<T>>::value_type,
-                    true> const& A,
-           unsigned int i) {
-    return Mul128<typename ArrayMulBase<E,Intrinsic<T>>::value_type>(
-                value128(A.first(),i),
-                A.second128());
-  }
-
-  template <typename T,typename E>
-  typename ArrayMul<Intrinsic<T>,E,
-                    typename ArrayMulBase<Intrinsic<T>,E>::value_type,
-                    true>::value128_type
-  value128(ArrayMul<Intrinsic<T>,E,
-                    typename ArrayMulBase<Intrinsic<T>,E>::value_type,
-                    true> const& A,
-           unsigned int i) {
-    return Mul128<typename ArrayMulBase<Intrinsic<T>,E>::value_type>(
-                A.first128(),
-                value128(A.second(),i));
-  }
 
 }
 

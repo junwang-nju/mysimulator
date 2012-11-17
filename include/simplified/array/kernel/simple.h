@@ -3,47 +3,54 @@
 #define _Array_Kernel_Simple_H_
 
 #include "array/def.h"
+#include "basic/memory/access-pointer.h"
 #include "basic/memory/deleter.h"
 #include <cassert>
 
 namespace mysimulator {
 
-  template <typename T>
-  void __allocate_simple(Array<T>& A,unsigned int size) {
+  template <typename T,ArrayKernelName KN,bool vF>
+  void __allocate_simple(Array<T,KN,vF>& A, unsigned int size) {
     assert(size>0);
-    typedef typename Array<T>::monomer_type MT;
+    A.reset();
+    typedef typename Array<T,KN,vF>::monomer_type MT;
     A._pdata.reset(new MT[size],__delete_array<MT>);
     A._ndata=size;
   }
 
-  template <typename T>
-  void __copy_simple(Array<T>& A, const Array<T>& B) {
+  template <typename T,ArrayKernelName KN,bool vF,
+            typename T1,ArrayKernelName KN1,bool vF1>
+  Array<T,KN,vF>& __copy_simple(Array<T,KN,vF>& A, Array<T1,KN1,vF1> const& B) {
     assert((bool)A);
     assert((bool)B);
     assert(A.size()<=B.size());
     for(unsigned int i=0;i<A.size();++i)  A[i]=B[i];
+    return A;
   }
 
-  template <typename T>
-  void __mono_copy_simple(Array<T>& A,
-                         const typename Array<T>::monomer_type& D) {
+  template <typename T,ArrayKernelName KN,bool vF>
+  Array<T,KN,vF>& __mono_copy_simple(
+      Array<T,KN,vF>& A,
+      typename Array<T,KN,vF>::monomer_type const& D) {
     assert((bool)A);
     for(unsigned int i=0;i<A.size();++i)  A[i]=D;
+    return A;
   }
 
-  template <typename T, typename VT>
-  void __value_copy_simple(Array<T>& A, const VT& D) {
-    assert((bool)A);
-    for(unsigned int i=0;i<A.size();++i)  A[i]=D;
-  }
-
-  template <typename T>
-  void __refer_simple(Array<T>& A, Array<T> const& B,
-                     unsigned int bg, unsigned int num) {
-    assert( bg + num <= A.size() );
-    assert( (bool) B );
+  template <typename T,ArrayKernelName KN,bool vF, ArrayKernelName KN1>
+  void __refer_part_simple(Array<T,KN,vF>& A, Array<T,KN1,vF> const& B,
+                           unsigned int bg,unsigned int num) {
+    assert((bool)B);
+    assert(bg+num<=B.size());
     A._pdata.reset(B._pdata,bg);
-    A._ndata = num;
+    A._ndata=num;
+  }
+
+  template <typename T,ArrayKernelName KN,bool vF,typename vT>
+  Array<T,KN,vF>& __value_copy_simple(Array<T,KN,vF>& A,vT const& D) {
+    assert((bool)A);
+    for(unsigned int i=0;i<A.size();++i)  A[i]=D;
+    return A;
   }
 
 }
@@ -52,12 +59,14 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename EA,typename EB>
-  void __assign_sum_simple(Array<T>& A, ArraySum<EA,EB> const& E) {
+  template <typename T,ArrayKernelName KN,bool vF,typename EA,typename EB>
+  Array<T,KN,vF>&
+  __copy_sum_simple(Array<T,KN,vF>& A,ArraySum<EA,EB> const& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     for(unsigned int i=0;i<A.size();++i)  A[i]=E[i];
+    return A;
   }
 
 }
@@ -66,12 +75,14 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename EA,typename EB>
-  void __assign_sub_simple(Array<T>& A, ArraySub<EA,EB> const& E) {
+  template <typename T,ArrayKernelName KN,bool vF,typename EA,typename EB>
+  Array<T,KN,vF>&
+  __copy_sub_simple(Array<T,KN,vF>& A,ArraySub<EA,EB> const& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     for(unsigned int i=0;i<A.size();++i)  A[i]=E[i];
+    return A;
   }
 
 }
@@ -80,12 +91,14 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename EA,typename EB>
-  void __assign_mul_simple(Array<T>& A, ArrayMul<EA,EB> const& E) {
+  template <typename T,ArrayKernelName KN,bool vF,typename EA,typename EB>
+  Array<T,KN,vF>&
+  __copy_mul_simple(Array<T,KN,vF>& A,ArrayMul<EA,EB> const& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     for(unsigned int i=0;i<A.size();++i)  A[i]=E[i];
+    return A;
   }
 
 }
@@ -94,23 +107,34 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,typename EA,typename EB>
-  void __assign_div_simple(Array<T>& A, ArrayDiv<EA,EB> const& E) {
+  template <typename T,ArrayKernelName KN,bool vF,typename EA,typename EB>
+  Array<T,KN,vF>&
+  __copy_div_simple(Array<T,KN,vF>& A,ArrayDiv<EA,EB> const& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size()<=E.size());
     for(unsigned int i=0;i<A.size();++i)  A[i]=E[i];
+    return A;
   }
 
-  template <typename T1,typename T2>
-  typename __dual_selector<T1,T2,__mul>::Type
-  __dot_simple(Array<Intrinsic<T1>> const& A, Array<Intrinsic<T2>> const& B) {
-    assert((bool)A);
-    assert((bool)B);
-    unsigned int n=(A.size()<B.size()?A.size():B.size());
-    typename __dual_selector<T1,T2,__mul>::Type sum=0;
-    for(unsigned int i=0;i<n;++i) sum+=A[i]*B[i];
-    return sum;
+}
+
+#include "basic/util/square-root.h"
+
+namespace mysimulator {
+
+  template <typename T>
+  Array<T,ArrayKernelName::Simple,true>&
+  __square_root_simple(Array<T,ArrayKernelName::Simple,true>& A) {
+    for(unsigned int i=0;i<A.size();++i)  A[i]=__square_root(A[i]);
+    return A;
+  }
+
+  template <typename T,ArrayKernelName KN>
+  Array<T,KN,true>&
+  __inv_square_root_simple(Array<T,KN,true>& A) {
+    for(unsigned int i=0;i<A.size();++i)  A[i]=1./__square_root(A[i]);
+    return A;
   }
 
 }
