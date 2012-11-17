@@ -24,6 +24,9 @@ namespace mysimulator {
       typedef unsigned int size_type;
 
       friend void __allocate_simple<T>(Type&,size_type);
+      template <typename T1,ArrayKernelName KN,bool vF, ArrayKernelName KN1>
+      friend void __refer_part_simple(Array<T1,KN,vF>&, Array<T1,KN1,vF> const&,
+                                      size_type,size_type);
 
     protected:
 

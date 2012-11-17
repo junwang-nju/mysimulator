@@ -184,28 +184,28 @@ namespace mysimulator {
   Array<Double,ArrayKernelName::SSE,true>&
   Array<Double,ArrayKernelName::SSE,true>::operator=(
       ArraySum<EA,EB,double,true> const& E) {
-    __copy_sum_sse(*this,E);
+    return __copy_sum_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Float,ArrayKernelName::SSE,true>&
   Array<Float,ArrayKernelName::SSE,true>::operator=(
       ArraySum<EA,EB,float,true> const& E) {
-    __copy_sum_sse(*this,E);
+    return __copy_sum_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Int,ArrayKernelName::SSE,true>&
   Array<Int,ArrayKernelName::SSE,true>::operator=(
       ArraySum<EA,EB,int,true> const& E) {
-    __copy_sum_sse(*this,E);
+    return __copy_sum_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Long,ArrayKernelName::SSE,true>&
   Array<Long,ArrayKernelName::SSE,true>::operator=(
       ArraySum<EA,EB,long,true> const& E) {
-    __copy_sum_sse(*this,E);
+    return __copy_sum_sse(*this,E);
   }
 
   template <>
@@ -213,28 +213,28 @@ namespace mysimulator {
   Array<Double,ArrayKernelName::SSE,true>&
   Array<Double,ArrayKernelName::SSE,true>::operator=(
       ArraySub<EA,EB,double,true> const& E) {
-    __copy_sub_sse(*this,E);
+    return __copy_sub_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Float,ArrayKernelName::SSE,true>&
   Array<Float,ArrayKernelName::SSE,true>::operator=(
       ArraySub<EA,EB,float,true> const& E) {
-    __copy_sub_sse(*this,E);
+    return __copy_sub_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Int,ArrayKernelName::SSE,true>&
   Array<Int,ArrayKernelName::SSE,true>::operator=(
       ArraySub<EA,EB,int,true> const& E) {
-    __copy_sub_sse(*this,E);
+    return __copy_sub_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Long,ArrayKernelName::SSE,true>&
   Array<Long,ArrayKernelName::SSE,true>::operator=(
       ArraySub<EA,EB,long,true> const& E) {
-    __copy_sub_sse(*this,E);
+    return __copy_sub_sse(*this,E);
   }
 
   template <>
@@ -242,28 +242,28 @@ namespace mysimulator {
   Array<Double,ArrayKernelName::SSE,true>&
   Array<Double,ArrayKernelName::SSE,true>::operator=(
       ArrayMul<EA,EB,double,true> const& E) {
-    __copy_mul_sse(*this,E);
+    return __copy_mul_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Float,ArrayKernelName::SSE,true>&
   Array<Float,ArrayKernelName::SSE,true>::operator=(
       ArrayMul<EA,EB,float,true> const& E) {
-    __copy_mul_sse(*this,E);
+    return __copy_mul_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Int,ArrayKernelName::SSE,true>&
   Array<Int,ArrayKernelName::SSE,true>::operator=(
       ArrayMul<EA,EB,int,true> const& E) {
-    __copy_mul_sse(*this,E);
+    return __copy_mul_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Long,ArrayKernelName::SSE,true>&
   Array<Long,ArrayKernelName::SSE,true>::operator=(
       ArrayMul<EA,EB,long,true> const& E) {
-    __copy_mul_sse(*this,E);
+    return __copy_mul_sse(*this,E);
   }
 
   template <>
@@ -271,14 +271,14 @@ namespace mysimulator {
   Array<Double,ArrayKernelName::SSE,true>&
   Array<Double,ArrayKernelName::SSE,true>::operator=(
       ArrayDiv<EA,EB,double,true> const& E) {
-    __copy_div_sse(*this,E);
+    return __copy_div_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Float,ArrayKernelName::SSE,true>&
   Array<Float,ArrayKernelName::SSE,true>::operator=(
       ArrayDiv<EA,EB,float,true> const& E) {
-    __copy_div_sse(*this,E);
+    return __copy_div_sse(*this,E);
   }
 
   template <typename EA,typename EB>
