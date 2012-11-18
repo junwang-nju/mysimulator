@@ -8,31 +8,20 @@
 
 namespace mysimulator {
 
-  template <typename T>
-  class Array2D<T,ArrayKernelName::Simple,ArrayKernelName::Simple,false>
-      : public Array<Array<T,ArrayKernelName::Simple>> {
+  template <typename T,ArrayKernelName DK,ArrayKernelName LK>
+  class Array2D<T,DK,LK,false> : public Array<Array<T,LK>> {
 
     public:
 
-      typedef Array2D<T,ArrayKernelName::Simple,ArrayKernelName::Simple,false>
-              Type;
-      typedef Array<T,ArrayKernelName::Simple>        DataType;
-      typedef Array<T,ArrayKernelName::Simple>        LineType;
+      typedef Array2D<T,DK,LK,false>                        Type;
+      typedef Array<T,DK>                               DataType;
+      typedef Array<T,LK>                               LineType;
       typedef Array<LineType,ArrayKernelName::Simple> ParentType;
       typedef unsigned int size_type;
 
-      friend void __allocate_2d<T,false>(Type&,size_type,size_type);
-      template <typename T1,bool vF,typename Y,ArrayKernelName YK>
-      friend void
-      __allocate_2d(
-          Array2D<T1,ArrayKernelName::Simple,ArrayKernelName::Simple,vF>&,
-          Array<Intrinsic<Y>,YK> const&);
-
-    protected:
+      static const ArrayKernelName  LineKernelType;
 
       DataType _data;
-
-    public:
 
       Array2D() : ParentType(), _data() {}
       Array2D(size_type n,size_type dim) : Array2D() { allocate(n,dim); }
@@ -75,13 +64,17 @@ namespace mysimulator {
         size_type w=(A[bg+num-1].head()-A[bg].head())+A[bg+num-1].size();
         _data.refer(A._data,y,w);
       }
-      template <ArrayKernelName DK,ArrayKernelName LK>
-      void imprint(Array2D<T,DK,LK,false> const& A) {
+      template <typename T1,ArrayKernelName DK1,ArrayKernelName LK1,bool vF1>
+      void imprint_structure(Array2D<T1,DK1,LK1,vF1> const& A) {
         assert((bool)A);
         Array<UInt> SZ(A.size());
         for(size_type i=0;i<SZ.size();++i)  SZ[i]=A[i].size();
         allocate(SZ);
         SZ.reset();
+      }
+      template <ArrayKernelName DK1,ArrayKernelName LK1>
+      void imprint(Array2D<T,DK1,LK1,false> const& A) {
+        imprint_structure(A);
         for(unsigned int i=0;i<A.size();++i)
         for(unsigned int j=0;j<A[i].size();++j)
           __imprint((*this)[i][j],A[i][j]);
@@ -92,6 +85,9 @@ namespace mysimulator {
       }
 
   };
+
+  template <typename T,ArrayKernelName DK,ArrayKernelName LK>
+  const ArrayKernelName Array2D<T,DK,LK,false>::LineKernelType = LK;
 
 }
 

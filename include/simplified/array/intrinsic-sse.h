@@ -27,24 +27,13 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type  value128_type;
 
-      friend void
-      __allocate_sse<T,ArrayKernelName::SSE>(Type&,size_type);
-      template <typename T1,ArrayKernelName KN1,ArrayKernelName KN>
-      friend void
-      __refer_part_sse(Array<Intrinsic<T1>,KN1,true>&,
-                       Array<Intrinsic<T1>,KN,true> const&,size_type,size_type);
-
       static const bool _is_SSE_valid;
-
-    protected:
 
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
       size_type                 _n128;
       size_type                 _n128_low;
       value128_type*            _p128;
-
-    public:
 
       Array() : _pdata(), _ndata(0U), _n128(0U), _n128_low(0U),
                 _p128(nullptr) {}
@@ -161,8 +150,8 @@ namespace mysimulator {
         assert((bool)A);
         allocate(A.size());
       }
-      template <typename Y,ArrayKernelName KY>
-      void imprint(const Array<Intrinsic<Y>,KY,true>& A) {
+      template <ArrayKernelName KY>
+      void imprint(const Array<Intrinsic<T>,KY,true>& A) {
         imprint_structure(A);
       }
       void swap(Type& A) {

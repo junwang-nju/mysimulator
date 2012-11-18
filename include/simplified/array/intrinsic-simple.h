@@ -25,22 +25,10 @@ namespace mysimulator {
       typedef const monomer_type & const_reference;
       typedef unsigned int size_type;
 
-      friend void
-      __allocate_simple<Intrinsic<T>,ArrayKernelName::Simple,true>(Type&,
-                                                                   size_type);
-      template <typename T1,ArrayKernelName KN1,bool vF1,ArrayKernelName KN>
-      friend void
-      __refer_part_simple(Array<T1,KN1,vF1>&,Array<T1,KN,vF1> const&,
-                          size_type,size_type);
-
       static const bool _is_SSE_valid;
-
-    protected:
 
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
-
-    public:
 
       Array() : _pdata(), _ndata(0U) {}
       Array(size_type size) : Array() { allocate(size); }
@@ -123,8 +111,8 @@ namespace mysimulator {
         assert((bool)A);
         allocate(A.size());
       }
-      template <typename Y,ArrayKernelName KY>
-      void imprint(const Array<Intrinsic<Y>,KY,true>& A) {
+      template <ArrayKernelName KY>
+      void imprint(const Array<Intrinsic<T>,KY,true>& A) {
         imprint_structure(A);
       }
       void swap(Type& A) {

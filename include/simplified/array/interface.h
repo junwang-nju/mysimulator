@@ -11,8 +11,8 @@
 
 namespace mysimulator {
 
-  template <typename T>
-  void __imprint(Array<T>& A, Array<T> const& B) { A.imprint(B); }
+  template <typename T,ArrayKernelName K1,ArrayKernelName K2>
+  void __imprint(Array<T,K1>& A, Array<T,K2> const& B) { A.imprint(B); }
 
 }
 

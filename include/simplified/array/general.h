@@ -23,17 +23,8 @@ namespace mysimulator {
       typedef const monomer_type &  const_reference;
       typedef unsigned int size_type;
 
-      friend void __allocate_simple<T>(Type&,size_type);
-      template <typename T1,ArrayKernelName KN,bool vF, ArrayKernelName KN1>
-      friend void __refer_part_simple(Array<T1,KN,vF>&, Array<T1,KN1,vF> const&,
-                                      size_type,size_type);
-
-    protected:
-
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
-
-    public:
 
       Array() : _pdata(), _ndata(0U) {}
       Array(size_type size) : Array() { allocate(size); }
@@ -72,7 +63,8 @@ namespace mysimulator {
         assert((bool)A);
         allocate(A.size());
       }
-      void imprint(const Type& A) {
+      template <ArrayKernelName KY,bool vY>
+      void imprint(const Array<T,KY,vY>& A) {
         imprint_structure(A);
         for(size_type i=0;i<_ndata;++i) __imprint((*this)[i],A[i]);
       }
