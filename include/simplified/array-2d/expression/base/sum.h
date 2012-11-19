@@ -4,6 +4,7 @@
 
 #include "array/expression/sum.h"
 #include "array-2d/expression/sse-state.h"
+#include "basic/memory/deleter.h"
 
 namespace mysimulator {
 
@@ -28,19 +29,24 @@ namespace mysimulator {
     private:
 
       size_type _size;
+      LineType  *_line;
 
     public:
 
       Array2DSumBase(EA const& A,EB const& B)
-        : ParentType(A,B), _size(A.size()<B.size()?A.size():B.size()) {}
+        : ParentType(A,B), _size(A.size()<B.size()?A.size():B.size()),
+          _line(nullptr) {}
       Array2DSumBase(const Type& E)
-        : ParentType((ParentType const&)E), _size(E.size()) {}
-      ~Array2DSumBase() {}
+        : ParentType((ParentType const&)E), _size(E.size()), _line(nullptr) {}
+      ~Array2DSumBase() { __delete_unit<LineType>(_line); }
       Type& operator=(const Type&) = delete;
 
       size_type size() const { return _size; }
-      LineType operator[](size_type i) const {
-        return LineType(ParentType::first()[i],ParentType::second()[i]);
+      LineType const& operator[](size_type i) const {
+        __delete_unit<LineType>(const_cast<LineType*&>(_line));
+        const_cast<LineType*&>(_line)=
+          new LineType(ParentType::first()[i],ParentType::second()[i]);
+        return *_line;
       }
 
   };
@@ -71,19 +77,23 @@ namespace mysimulator {
     private:
 
       size_type _size;
+      LineType *_line;
 
     public:
 
       Array2DSumBase(E const& A,Intrinsic<T> const& B)
-        : ParentType(A,B), _size(A.size()) {}
+        : ParentType(A,B), _size(A.size()), _line(nullptr) {}
       Array2DSumBase(const Type& A)
-        : ParentType((ParentType const&)A), _size(A.size()) {}
-      ~Array2DSumBase() {}
+        : ParentType((ParentType const&)A), _size(A.size()), _line(nullptr) {}
+      ~Array2DSumBase() { __delete_unit<LineType>(_line); }
       Type& operator=(const Type&) = delete;
 
       size_type size() const { return _size; }
-      LineType operator[](size_type i) const {
-        return LineType(ParentType::first()[i],ParentType::second());
+      LineType const& operator[](size_type i) const {
+        __delete_unit<LineType>(const_cast<LineType*&>(_line));
+        const_cast<LineType*&>(_line)=
+          new LineType(ParentType::first()[i],ParentType::second());
+        return *_line;
       }
 
   };
@@ -114,19 +124,23 @@ namespace mysimulator {
     private:
 
       size_type _size;
+      LineType *_line;
 
     public:
 
       Array2DSumBase(Intrinsic<T> const& A, E const& B)
-        : ParentType(A,B), _size(B.size()) {}
+        : ParentType(A,B), _size(B.size()), _line(nullptr) {}
       Array2DSumBase(const Type& A)
-        : ParentType((ParentType const&)A), _size(A.size()) {}
-      ~Array2DSumBase() {}
+        : ParentType((ParentType const&)A), _size(A.size()), _line(nullptr) {}
+      ~Array2DSumBase() { __delete_unit<LineType>(_line); }
       Type& operator=(const Type&) = delete;
 
       size_type size() const { return _size; }
-      LineType operator[](size_type i) const {
-        return LineType(ParentType::first(),ParentType::second()[i]);
+      LineType const& operator[](size_type i) const {
+        __delete_unit<LineType>(const_cast<LineType*&>(_line));
+        const_cast<LineType*&>(_line)=
+          new LineType(ParentType::first(),ParentType::second()[i]);
+        return *_line;
       }
 
   };
