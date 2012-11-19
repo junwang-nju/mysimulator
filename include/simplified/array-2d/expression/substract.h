@@ -16,15 +16,21 @@ namespace mysimulator {
       typedef Array2DSubBase<EA,EB>             ParentType;
       typedef typename ParentType::DataType       DataType;
 
-      Array2DSub(EA const& A, EB const& B) : ParentType(A,B) {}
-      Array2DSub(const Type& E) : ParentType((ParentType const&)E) {}
+    private:
+
+      DataType _data;
+
+    public:
+
+      Array2DSub(EA const& A, EB const& B)
+        : ParentType(A,B),
+          _data(ParentType::first().Data(),ParentType::second().Data()) {}
+      Array2DSub(const Type& E)
+        : ParentType((ParentType const&)E), _data(E._data) {}
       ~Array2DSub() {}
       Type& operator=(const Type&) = delete;
 
-      DataType Data() const {
-        return DataType(ParentType::first().Data(),
-                        ParentType::second().Data());
-      }
+      DataType const& Data() const { return _data; }
 
   };
 
@@ -54,15 +60,21 @@ namespace mysimulator {
       typedef Array2DSubBase<E,Intrinsic<T>>    ParentType;
       typedef typename ParentType::DataType       DataType;
 
-      Array2DSub(E const& A,Intrinsic<T> const& B) : ParentType(A,B) {}
-      Array2DSub(const Type& A) : ParentType((ParentType const&)A) {}
+    private:
+
+      DataType _data;
+
+    public:
+
+      Array2DSub(E const& A,Intrinsic<T> const& B)
+        : ParentType(A,B),
+          _data(ParentType::first().Data(),ParentType::second()) {}
+      Array2DSub(const Type& A)
+        : ParentType((ParentType const&)A), _data(A._data) {}
       ~Array2DSub() {}
       Type& operator=(const Type&) = delete;
 
-      DataType Data() const {
-        return DataType(ParentType::first().Data(),
-                        ParentType::second());
-      }
+      DataType const& Data() const { return _data; }
 
   };
 
@@ -76,15 +88,21 @@ namespace mysimulator {
       typedef Array2DSubBase<Intrinsic<T>,E>      ParentType;
       typedef typename ParentType::DataType         DataType;
 
-      Array2DSub(Intrinsic<T> const& A,E const& B) : ParentType(A,B) {}
-      Array2DSub(const Type& A) : ParentType((ParentType const&)A) {}
+    private:
+
+      DataType _data;
+
+    public:
+
+      Array2DSub(Intrinsic<T> const& A,E const& B)
+        : ParentType(A,B),
+          _data(ParentType::first(),ParentType::second().Data()) {}
+      Array2DSub(const Type& A)
+        : ParentType((ParentType const&)A), _data(A._data) {}
       ~Array2DSub() {}
       Type& operator=(const Type&) = delete;
 
-      DataType Data() const {
-        return DataType(ParentType::first(),
-                        ParentType::second().Data());
-      }
+      DataType const& Data() const { return _data; }
 
   };
 
