@@ -8,6 +8,7 @@
 #include "array/general-value.h"
 #include "array/intrinsic-simple.h"
 #include "array/intrinsic-sse.h"
+#include "array/direct-3d.h"
 
 namespace mysimulator {
 

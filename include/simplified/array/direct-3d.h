@@ -54,7 +54,7 @@ namespace mysimulator {
         _pdata[2]=A[2];
         return *this;
       }
-      template <typename T1,typename K1>
+      template <typename T1,ArrayKernelName K1>
       Type& operator=(Array<Intrinsic<T1>,K1> const& A) {
         _pdata[0]=A[0];
         _pdata[1]=A[1];
