@@ -106,6 +106,13 @@ namespace mysimulator {
 
     public:
 
+      ArrayMulBase(Intrinsic<T> const& A,E const& B)
+        : ParentType(A,B), _size(B.size()) {}
+      ArrayMulBase(const Type& A)
+        : ParentType((ParentType const&)A), _size(A.size()) {}
+      ~ArrayMulBase() {}
+      Type& operator=(const Type&) = delete;
+
       size_type size() const { return _size; }
       value_type operator[](size_type i) const {
         return (value_type)((T)ParentType::first()) *

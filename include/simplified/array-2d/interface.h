@@ -2,7 +2,7 @@
 #ifndef _Array_2D_Interface_H_
 #define _Array_2D_Interface_H_
 
-#include "array/def.h"
+#include "array-2d/def.h"
 
 #include "array-2d/general.h"
 #include "array-2d/general-value.h"

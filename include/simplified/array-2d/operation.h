@@ -3,8 +3,7 @@
 #define _Array_2D_Operation_H_
 
 #include "array-2d/def.h"
-#include <cstdio>
-#include <cassert>
+#include "array/interface.h"
 
 namespace mysimulator {
 
@@ -27,7 +26,11 @@ namespace mysimulator {
   void __allocate_2d(
       Array2D<T,ArrayKernelName::SSE,ArrayKernelName::SSE,vF>& A,
       unsigned int n,unsigned int dim) {
-    fprintf(stderr,"To Be Implemented!\n");
+    A.reset();
+    unsigned int rdim=__span16<T>(dim);
+    A._data.allocate(n*rdim);
+    ((Array<Array<T,ArrayKernelName::SSE>>&)A).allocate(n);
+    for(unsigned int i=0,w=0;i<n;w+=rdim,++i) A[i].refer(A._data,w,dim);
   }
 
   template <typename T,ArrayKernelName DK,ArrayKernelName LK,bool vF,
@@ -54,7 +57,17 @@ namespace mysimulator {
   void __allocate_2d(
       Array2D<T,ArrayKernelName::SSE,ArrayKernelName::SSE,vF>& A,
       Array<Intrinsic<Y>,YK> const& SZ) {
-    fprintf(stderr,"To Be Implemented!\n");
+    assert((bool)SZ);
+    Array<UInt> rSZ(SZ.size());
+    for(unsigned int i=0;i<SZ.size();++i) {
+      assert(SZ[i]>0);
+      rSZ[i]=__span16<T>(SZ[i]);
+    }
+    A.reset();
+    A._data.allocate(rSZ.Sum());
+    ((Array<Array<T,ArrayKernelName::SSE>>&)A).allocate(SZ.size());
+    for(unsigned int i=0,w=0;i<A.size();w+=rSZ[i++])
+      A[i].refer(A._data,w,SZ[i]);
   }
 
 }
