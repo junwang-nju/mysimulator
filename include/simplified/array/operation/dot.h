@@ -462,6 +462,275 @@ namespace mysimulator {
     return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
   }
 
+  template <typename EA,typename EB,typename vT,typename E>
+  typename __dual_selector<typename ArraySum<EA,EB>::value_type,
+                           typename E::value_type,__mul>::Type
+  Dot(ArraySum<EA,EB,vT,ArrayKernelName::Direct3D> const& A, E const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT,typename E>
+  typename __dual_selector<typename ArraySub<EA,EB>::value_type,
+                           typename E::value_type,__mul>::Type
+  Dot(ArraySub<EA,EB,vT,ArrayKernelName::Direct3D> const& A, E const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT,typename E>
+  typename __dual_selector<typename ArrayMul<EA,EB>::value_type,
+                           typename E::value_type,__mul>::Type
+  Dot(ArrayMul<EA,EB,vT,ArrayKernelName::Direct3D> const& A, E const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT,typename E>
+  typename __dual_selector<typename ArrayDiv<EA,EB>::value_type,
+                           typename E::value_type,__mul>::Type
+  Dot(ArrayDiv<EA,EB,vT,ArrayKernelName::Direct3D> const& A, E const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename E,typename T>
+  typename __dual_selector<typename E::value_type,T,__mul>::Type
+  Dot(E const& A, Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename E,typename EA,typename EB,typename vT>
+  typename __dual_selector<typename E::value_type,
+                           typename ArraySum<EA,EB>::value_type,__mul>::Type
+  Dot(E const& A,ArraySum<EA,EB,vT,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename E,typename EA,typename EB,typename vT>
+  typename __dual_selector<typename E::value_type,
+                           typename ArraySub<EA,EB>::value_type,__mul>::Type
+  Dot(E const& A,ArraySub<EA,EB,vT,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename E,typename EA,typename EB,typename vT>
+  typename __dual_selector<typename E::value_type,
+                           typename ArrayMul<EA,EB>::value_type,__mul>::Type
+  Dot(E const& A,ArrayMul<EA,EB,vT,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename E,typename EA,typename EB,typename vT>
+  typename __dual_selector<typename E::value_type,
+                           typename ArrayDiv<EA,EB>::value_type,__mul>::Type
+  Dot(E const& A,ArrayDiv<EA,EB,vT,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename T1,typename T2>
+  typename __dual_selector<T1,T2,__mul>::Type
+  Dot(Array<Intrinsic<T1>,ArrayKernelName::Direct3D,true> const& A,
+      Array<Intrinsic<T2>,ArrayKernelName::Direct3D,true> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename T,typename EA,typename EB,typename vT>
+  typename __dual_selector<T,typename ArraySum<EA,EB>::value_type,__mul>::Type
+  Dot(Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& A,
+      ArraySum<EA,EB,vT,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename T,typename EA,typename EB,typename vT>
+  typename __dual_selector<T,typename ArraySub<EA,EB>::value_type,__mul>::Type
+  Dot(Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& A,
+      ArraySub<EA,EB,vT,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename T,typename EA,typename EB,typename vT>
+  typename __dual_selector<T,typename ArrayMul<EA,EB>::value_type,__mul>::Type
+  Dot(Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& A,
+      ArrayMul<EA,EB,vT,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename T,typename EA,typename EB,typename vT>
+  typename __dual_selector<T,typename ArrayDiv<EA,EB>::value_type,__mul>::Type
+  Dot(Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& A,
+      ArrayDiv<EA,EB,vT,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT,typename T>
+  typename __dual_selector<typename ArraySum<EA,EB>::value_type,T,__mul>::Type
+  Dot(ArraySum<EA,EB,vT,ArrayKernelName::Direct3D> const& A,
+      Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArraySum<EA,EB>::value_type,
+                           typename ArraySum<EC,ED>::value_type,__mul>::Type
+  Dot(ArraySum<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArraySum<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArraySum<EA,EB>::value_type,
+                           typename ArraySub<EC,ED>::value_type,__mul>::Type
+  Dot(ArraySum<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArraySub<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArraySum<EA,EB>::value_type,
+                           typename ArrayMul<EC,ED>::value_type,__mul>::Type
+  Dot(ArraySum<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArrayMul<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArraySum<EA,EB>::value_type,
+                           typename ArrayDiv<EC,ED>::value_type,__mul>::Type
+  Dot(ArraySum<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArrayDiv<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT,typename T>
+  typename __dual_selector<typename ArraySub<EA,EB>::value_type,T,__mul>::Type
+  Dot(ArraySub<EA,EB,vT,ArrayKernelName::Direct3D> const& A,
+      Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArraySub<EA,EB>::value_type,
+                           typename ArraySum<EC,ED>::value_type,__mul>::Type
+  Dot(ArraySub<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArraySum<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArraySub<EA,EB>::value_type,
+                           typename ArraySub<EC,ED>::value_type,__mul>::Type
+  Dot(ArraySub<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArraySub<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArraySub<EA,EB>::value_type,
+                           typename ArrayMul<EC,ED>::value_type,__mul>::Type
+  Dot(ArraySub<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArrayMul<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArraySub<EA,EB>::value_type,
+                           typename ArrayDiv<EC,ED>::value_type,__mul>::Type
+  Dot(ArraySub<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArrayDiv<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT,typename T>
+  typename __dual_selector<typename ArrayMul<EA,EB>::value_type,T,__mul>::Type
+  Dot(ArrayMul<EA,EB,vT,ArrayKernelName::Direct3D> const& A,
+      Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArrayMul<EA,EB>::value_type,
+                           typename ArraySum<EC,ED>::value_type,__mul>::Type
+  Dot(ArrayMul<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArraySum<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArrayMul<EA,EB>::value_type,
+                           typename ArraySub<EC,ED>::value_type,__mul>::Type
+  Dot(ArrayMul<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArraySub<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArrayMul<EA,EB>::value_type,
+                           typename ArrayMul<EC,ED>::value_type,__mul>::Type
+  Dot(ArrayMul<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArrayMul<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArrayMul<EA,EB>::value_type,
+                           typename ArrayDiv<EC,ED>::value_type,__mul>::Type
+  Dot(ArrayMul<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArrayDiv<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT,typename T>
+  typename __dual_selector<typename ArrayDiv<EA,EB>::value_type,T,__mul>::Type
+  Dot(ArrayDiv<EA,EB,vT,ArrayKernelName::Direct3D> const& A,
+      Array<Intrinsic<T>,ArrayKernelName::Direct3D,true> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArrayDiv<EA,EB>::value_type,
+                           typename ArraySum<EC,ED>::value_type,__mul>::Type
+  Dot(ArrayDiv<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArraySum<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArrayDiv<EA,EB>::value_type,
+                           typename ArraySub<EC,ED>::value_type,__mul>::Type
+  Dot(ArrayDiv<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArraySub<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArrayDiv<EA,EB>::value_type,
+                           typename ArrayMul<EC,ED>::value_type,__mul>::Type
+  Dot(ArrayDiv<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArrayMul<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
+  template <typename EA,typename EB,typename vT1,
+            typename EC,typename ED,typename vT2>
+  typename __dual_selector<typename ArrayDiv<EA,EB>::value_type,
+                           typename ArrayDiv<EC,ED>::value_type,__mul>::Type
+  Dot(ArrayDiv<EA,EB,vT1,ArrayKernelName::Direct3D> const& A,
+      ArrayDiv<EC,ED,vT2,ArrayKernelName::Direct3D> const& B) {
+    return A[0]*B[0]+A[1]*B[1]+A[2]*B[2];
+  }
+
 }
 
 #endif

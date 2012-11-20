@@ -6,6 +6,7 @@
 #include "array/monomer/type.h"
 #include "array/kernel/sse.h"
 #include "array/kernel/simple.h"
+#include "array/kernel/direct-3d.h"
 #include "array/expression/operation.h"
 #include "basic/memory/access-pointer.h"
 #include "basic/type/intrinsic.h"

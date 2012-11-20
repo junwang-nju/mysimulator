@@ -37,7 +37,6 @@ namespace mysimulator {
       ~Array() { reset(); }
 
       operator bool() const { return (bool)_pdata && _ndata==3U; }
-      ArrayKernelName KernelName() const { return ArrayKernelName::Direct3D; }
       size_type size() const { return _ndata; }
       pointer head() const { return _pdata.get(); }
       const_pointer end() const { return head()+size(); }
