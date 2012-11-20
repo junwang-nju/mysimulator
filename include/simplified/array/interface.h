@@ -26,6 +26,7 @@ namespace std {
 
 #include "array/operation/dot.h"
 #include "array/operation/sum.h"
+#include "array/operation/norm.h"
 
 #endif
 
