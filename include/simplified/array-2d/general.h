@@ -3,8 +3,9 @@
 #define _Array_2D_General_H_
 
 #include "array-2d/def.h"
-#include "array-2d/operation.h"
+#include "array-2d/kernel/allocate.h"
 #include "array/interface.h"
+#include "array-2d/expression/sse-state.h"
 
 namespace mysimulator {
 
@@ -13,13 +14,17 @@ namespace mysimulator {
 
     public:
 
+      static_assert(DK==ArrayKernelName::Simple &&
+                    LK==ArrayKernelName::Simple,
+                    "Only Simple style work for General case!\n");
+
       typedef Array2D<T,DK,LK,false>                        Type;
       typedef Array<T,DK>                               DataType;
       typedef Array<T,LK>                               LineType;
       typedef Array<LineType,ArrayKernelName::Simple> ParentType;
       typedef unsigned int size_type;
 
-      static const ArrayKernelName  LineKernelType;
+      static const Array2DExpressionSSEState State;
 
       DataType _data;
 
@@ -87,7 +92,8 @@ namespace mysimulator {
   };
 
   template <typename T,ArrayKernelName DK,ArrayKernelName LK>
-  const ArrayKernelName Array2D<T,DK,LK,false>::LineKernelType = LK;
+  const Array2DExpressionSSEState Array2D<T,DK,LK,false>::State =
+      Array2DExpressionSSEState::NoSSE;
 
 }
 

@@ -3,7 +3,7 @@
 #define _Array_2D_General_Value_H_
 
 #include "array-2d/def.h"
-#include "array-2d/operation.h"
+#include "array-2d/kernel/allocate.h"
 #include "array/interface.h"
 
 namespace mysimulator {
@@ -13,6 +13,10 @@ namespace mysimulator {
 
     public:
 
+      static_assert(DK==ArrayKernelName::Simple &&
+                    LK==ArrayKernelName::Simple,
+                    "Only Simple style work for General-Value case!\n");
+
       typedef Array2D<T,DK,LK,true>                 Type;
       typedef Array<T,DK>                       DataType;
       typedef Array<T,LK>                       LineType;
@@ -20,7 +24,7 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef typename T::value_type value_type;
 
-      static const ArrayKernelName LineKernelType;
+      static const Array2DExpressionSSEState State;
 
       DataType _data;
 
@@ -56,6 +60,8 @@ namespace mysimulator {
       Type& operator=(const Intrinsic<Y>& D) {
         return operator=((value_type)((Y)D));
       }
+
+      value_type Sum() const { return _data.Sum(); }
 
       void allocate(size_type n,size_type dim) { __allocate_2d(*this,n,dim); }
       template <typename Y,ArrayKernelName YK>
@@ -97,7 +103,8 @@ namespace mysimulator {
   };
 
   template <typename T,ArrayKernelName DK,ArrayKernelName LK>
-  const ArrayKernelName Array2D<T,DK,LK,true>::LineKernelType = LK;
+  const Array2DExpressionSSEState Array2D<T,DK,LK,true>::State =
+      Array2DExpressionSSEState::NoSSE;
 
 }
 

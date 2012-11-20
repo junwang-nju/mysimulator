@@ -9,7 +9,7 @@ namespace mysimulator {
   template <typename EA,typename EB,
             typename _vType=typename ArrayMulBase<EA,EB>::value_type,
             ArrayKernelName _state=ArrayMulBase<EA,EB>::Kernel>
-  class ArrayMul {
+  class ArrayMul : public ArrayMulBase<EA,EB> {
 
     public:
 

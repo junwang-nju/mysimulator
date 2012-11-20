@@ -3,7 +3,8 @@
 #define _Array_2D_Intrinsic_H_
 
 #include "array-2d/def.h"
-#include "array-2d/operation.h"
+#include "array-2d/kernel/allocate.h"
+#include "array-2d/kernel/expression-copy.h"
 #include "array-2d/expression/operation.h"
 #include "array/interface.h"
 
@@ -130,6 +131,8 @@ namespace mysimulator {
       Type& operator*=(E const& A) { return operator=((*this)*A); }
       template <typename E>
       Type& operator/=(E const& A) { return operator=((*this)/A); }
+
+      value_type Sum() const { return __sum_2d(*this); }
 
       void allocate(size_type n,size_type dim) { __allocate_2d(*this,n,dim); }
       template <typename Y,ArrayKernelName YK>
