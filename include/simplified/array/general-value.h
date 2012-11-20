@@ -25,6 +25,8 @@ namespace mysimulator {
       typedef const monomer_type & const_reference;
       typedef unsigned int size_type;
 
+      static const ArrayKernelName State;
+
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
 
@@ -35,7 +37,6 @@ namespace mysimulator {
       ~Array() { reset(); }
 
       operator bool() const { return (bool)_pdata && _ndata>0U; }
-      ArrayKernelName KernelName() const { return ArrayKernelName::Simple; }
       size_type size() const { return _ndata; }
       pointer head() const { return _pdata.get(); }
       const_pointer end() const { return head()+size(); }
@@ -87,6 +88,10 @@ namespace mysimulator {
       }
 
   };
+
+  template <typename T>
+  const ArrayKernelName Array<T,ArrayKernelName::Simple,true>::State =
+      ArrayKernelName::Simple;
 
 }
 

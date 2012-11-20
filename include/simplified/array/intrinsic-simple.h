@@ -5,6 +5,7 @@
 #include "array/def.h"
 #include "array/monomer/type.h"
 #include "array/kernel/simple.h"
+#include "array/kernel/direct-3d.h"
 #include "array/expression/operation.h"
 #include "basic/memory/access-pointer.h"
 #include "basic/type/intrinsic.h"
@@ -25,7 +26,7 @@ namespace mysimulator {
       typedef const monomer_type & const_reference;
       typedef unsigned int size_type;
 
-      static const bool _is_SSE_valid;
+      static const ArrayKernelName State;
 
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
@@ -41,7 +42,6 @@ namespace mysimulator {
       ~Array() { reset(); }
 
       operator bool() const { return (bool)_pdata && _ndata>0U; }
-      ArrayKernelName KernelName() const { return ArrayKernelName::Simple; }
       size_type size() const { return _ndata; }
       pointer head() const { return _pdata.get(); }
       const_pointer end() const { return head()+size(); }
@@ -83,6 +83,22 @@ namespace mysimulator {
       Type& operator=(ArrayDiv<EA,EB> const& A) {
         return __copy_div_simple(*this,A);
       }
+      template <typename EA,typename EB,typename vT>
+      Type& operator=(ArraySum<EA,EB,vT,ArrayKernelName::Direct3D> const& E) {
+        return __copy_sum_direct3d(*this,E);
+      }
+      template <typename EA,typename EB,typename vT>
+      Type& operator=(ArraySub<EA,EB,vT,ArrayKernelName::Direct3D> const& E) {
+        return __copy_sub_direct3d(*this,E);
+      }
+      template <typename EA,typename EB,typename vT>
+      Type& operator=(ArrayMul<EA,EB,vT,ArrayKernelName::Direct3D> const& E) {
+        return __copy_mul_direct3d(*this,E);
+      }
+      template <typename EA,typename EB,typename vT>
+      Type& operator=(ArrayDiv<EA,EB,vT,ArrayKernelName::Direct3D> const& E) {
+        return __copy_div_direct3d(*this,E);
+      }
 
       template <typename E>
       Type& operator+=(E const& A) { return operator=((*this)+A); }
@@ -123,53 +139,8 @@ namespace mysimulator {
   };
 
   template <typename T>
-  const bool Array<Intrinsic<T>,ArrayKernelName::Simple,true>::_is_SSE_valid
-      = false;
-
-  template <typename EA,typename EB>
-  typename __dual_selector<typename EA::value_type,typename EB::value_type,
-                           __mul>::Type
-  __dot_simple(EA const& A, EB const& B) {
-    typename __dual_selector<typename EA::value_type,typename EB::value_type,
-                             __mul>::Type S=0;
-    unsigned int n=(A.size()<B.size()?A.size():B.size());
-    for(unsigned int i=0;i<n;++i)   S+=A[i]*B[i];
-    return S;
-  }
-
-  template <typename T1,typename E>
-  typename __dual_selector<T1,typename E::value_type,__mul>::Type
-  Dot(Array<Intrinsic<T1>,ArrayKernelName::Simple,true> const& A, E const& B) {
-    return __dot_simple(A,B);
-  }
-
-  template <typename EA,typename EB,typename E>
-  typename __dual_selector<typename ArraySum<EA,EB>::value_type,
-                           typename E::value_type,__mul>::Type
-  Dot(ArraySum<EA,EB> const& A, E const& B) {
-    return __dot_simple(A,B);
-  }
-
-  template <typename EA,typename EB,typename E>
-  typename __dual_selector<typename ArraySub<EA,EB>::value_type,
-                           typename E::value_type,__mul>::Type
-  Dot(ArraySub<EA,EB> const& A, E const& B) {
-    return __dot_simple(A,B);
-  }
-
-  template <typename EA,typename EB,typename E>
-  typename __dual_selector<typename ArrayMul<EA,EB>::value_type,
-                           typename E::value_type,__mul>::Type
-  Dot(ArrayMul<EA,EB> const& A, E const& B) {
-    return __dot_simple(A,B);
-  }
-
-  template <typename EA,typename EB,typename E>
-  typename __dual_selector<typename ArrayDiv<EA,EB>::value_type,
-                           typename E::value_type,__mul>::Type
-  Dot(ArrayDiv<EA,EB> const& A,E const& B) {
-    return __dot_simple(A,B);
-  }
+  const ArrayKernelName Array<Intrinsic<T>,ArrayKernelName::Simple,true>::State
+      = ArrayKernelName::Simple;
 
   Array<Double,ArrayKernelName::Simple,true>&
   __square_root(Array<Double,ArrayKernelName::Simple,true>& A) {

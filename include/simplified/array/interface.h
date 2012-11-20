@@ -8,7 +8,7 @@
 #include "array/general-value.h"
 #include "array/intrinsic-simple.h"
 #include "array/intrinsic-sse.h"
-#include "array/direct-3d.h"
+#include "array/intrinsic-direct-3d.h"
 
 namespace mysimulator {
 
@@ -23,6 +23,8 @@ namespace std {
   void swap(mysimulator::Array<T>& A, mysimulator::Array<T>& B) { A.swap(B); }
 
 }
+
+#include "array/operation/dot.h"
 
 #endif
 

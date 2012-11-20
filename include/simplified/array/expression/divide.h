@@ -3,40 +3,20 @@
 #define _Array_Expression_Divide_H_
 
 #include "array/expression/base/divide.h"
-#include "array/expression/sse-valid.h"
 
 namespace mysimulator {
 
   template <typename EA,typename EB,
             typename _vType=typename ArrayDivBase<EA,EB>::value_type,
-            bool _sseFLAG=__array_expression_sse_valid<
-                              EA,EB,ExpressionOperationName::Divide>::FLAG>
+            ArrayKernelName _state=ArrayDivBase<EA,EB>::State>
   class ArrayDiv {
-
-    public:
-
-      typedef ArrayDiv<EA,EB,_vType,_sseFLAG>   Type;
-
-      ArrayDiv() = delete;
-      ArrayDiv(EA const&,EB const&) = delete;
-      ArrayDiv(const Type&) = delete;
-      ~ArrayDiv() {}
-      Type& operator=(const Type&) = delete;
-
-  };
-
-  template <typename EA,typename EB>
-  class ArrayDiv<EA,EB,typename ArrayDivBase<EA,EB>::value_type,false>
-      : public ArrayDivBase<EA,EB> {
 
     public:
 
       typedef ArrayDivBase<EA,EB> ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArrayDiv<EA,EB,value_type,false>  Type;
+      typedef ArrayDiv<EA,EB,_vType,_state>   Type;
       typedef unsigned int size_type;
-
-      static const bool _is_SSE_valid;
 
       ArrayDiv(EA const& A,EB const& B) : ParentType(A,B) {}
       ArrayDiv(const Type& E) : ParentType((ParentType const&)E) {}
@@ -45,11 +25,6 @@ namespace mysimulator {
 
   };
 
-  template <typename EA,typename EB>
-  const bool
-  ArrayDiv<EA,EB,typename ArrayDivBase<EA,EB>::value_type,false>::_is_SSE_valid
-      = false;
-
 }
 
 #include "basic/sse/value-type.h"
@@ -57,19 +32,16 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename EA,typename EB>
-  class ArrayDiv<EA,EB,typename ArrayDivBase<EA,EB>::value_type,true>
-      : public ArrayDivBase<EA,EB> {
+  template <typename EA,typename EB,typename vT>
+  class ArrayDiv<EA,EB,vT,ArrayKernelName::SSE> : public ArrayDivBase<EA,EB> {
 
     public:
 
       typedef ArrayDivBase<EA,EB>   ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArrayDiv<EA,EB,value_type,true>   Type;
+      typedef ArrayDiv<EA,EB,vT,ArrayKernelName::SSE>   Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type  value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -98,25 +70,17 @@ namespace mysimulator {
 
   };
 
-  template <typename EA,typename EB>
-  const bool
-  ArrayDiv<EA,EB,typename ArrayDivBase<EA,EB>::value_type,true>::_is_SSE_valid
-      = true;
-
-  template <typename E,typename T>
-  class ArrayDiv<E,Intrinsic<T>,
-                 typename ArrayDivBase<E,Intrinsic<T>>::value_type,true>
+  template <typename E,typename T,typename vT>
+  class ArrayDiv<E,Intrinsic<T>,vT,ArrayKernelName::SSE>
       : public ArrayDivBase<E,Intrinsic<T>> {
 
     public:
 
       typedef ArrayDivBase<E,Intrinsic<T>>  ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArrayDiv<E,Intrinsic<T>,value_type,true> Type;
+      typedef ArrayDiv<E,Intrinsic<T>,vT,ArrayKernelName::SSE> Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type  value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -145,25 +109,17 @@ namespace mysimulator {
 
   };
 
-  template <typename E,typename T>
-  const bool
-  ArrayDiv<E,Intrinsic<T>,typename ArrayDivBase<E,Intrinsic<T>>::value_type,
-           true>::_is_SSE_valid = true;
-
-  template <typename T,typename E>
-  class ArrayDiv<Intrinsic<T>,E,
-                 typename ArrayDivBase<Intrinsic<T>,E>::value_type,true>
+  template <typename T,typename E,typename vT>
+  class ArrayDiv<Intrinsic<T>,E,vT,ArrayKernelName::SSE>
       : public ArrayDivBase<Intrinsic<T>,E> {
 
     public:
 
       typedef ArrayDivBase<Intrinsic<T>,E>  ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArrayDiv<Intrinsic<T>,E,value_type,true>  Type;
+      typedef ArrayDiv<Intrinsic<T>,E,vT,ArrayKernelName::SSE>  Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type  value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -191,11 +147,6 @@ namespace mysimulator {
       }
 
   };
-
-  template <typename T,typename E>
-  const bool
-  ArrayDiv<Intrinsic<T>,E,typename ArrayDivBase<Intrinsic<T>,E>::value_type,
-           true>::_is_SSE_valid = true;
 
 }
 

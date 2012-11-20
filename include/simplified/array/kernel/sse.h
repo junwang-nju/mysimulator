@@ -87,10 +87,10 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,ArrayKernelName KN,typename EA,typename EB>
-  Array<Intrinsic<T>,KN,true>&
-  __copy_sum_sse(Array<Intrinsic<T>,KN,true>& A,
-                 ArraySum<EA,EB,T,true> const& E) {
+  template <typename T,typename EA,typename EB>
+  Array<Intrinsic<T>,ArrayKernelName::SSE,true>&
+  __copy_sum_sse(Array<Intrinsic<T>,ArrayKernelName::SSE,true>& A,
+                 ArraySum<EA,EB,T,ArrayKernelName::SSE> const& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size128()<=E.size128());
@@ -104,10 +104,10 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,ArrayKernelName KN,typename EA,typename EB>
-  Array<Intrinsic<T>,KN,true>&
-  __copy_sub_sse(Array<Intrinsic<T>,KN,true>& A,
-                 ArraySub<EA,EB,T,true> const& E) {
+  template <typename T,typename EA,typename EB>
+  Array<Intrinsic<T>,ArrayKernelName::SSE,true>&
+  __copy_sub_sse(Array<Intrinsic<T>,ArrayKernelName::SSE,true>& A,
+                 ArraySub<EA,EB,T,ArrayKernelName::SSE> const& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size128()<=E.size128());
@@ -121,10 +121,10 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,ArrayKernelName KN,typename EA,typename EB>
-  Array<Intrinsic<T>,KN,true>&
-  __copy_mul_sse(Array<Intrinsic<T>,KN,true>& A,
-                 ArrayMul<EA,EB,T,true> const& E) {
+  template <typename T,typename EA,typename EB>
+  Array<Intrinsic<T>,ArrayKernelName::SSE,true>&
+  __copy_mul_sse(Array<Intrinsic<T>,ArrayKernelName::SSE,true>& A,
+                 ArrayMul<EA,EB,T,ArrayKernelName::SSE> const& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size128()<=E.size128());
@@ -138,15 +138,38 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename T,ArrayKernelName KN,typename EA,typename EB>
-  Array<Intrinsic<T>,KN,true>&
-  __copy_div_sse(Array<Intrinsic<T>,KN,true>& A,
-                 ArrayDiv<EA,EB,T,true> const& E) {
+  template <typename T,typename EA,typename EB>
+  Array<Intrinsic<T>,ArrayKernelName::SSE,true>&
+  __copy_div_sse(Array<Intrinsic<T>,ArrayKernelName::SSE,true>& A,
+                 ArrayDiv<EA,EB,T,ArrayKernelName::SSE> const& E) {
     assert((bool)A);
     assert((bool)E);
     assert(A.size128()<=E.size128());
     for(unsigned int i=0;i<A.size128();++i) A.value128(i)=E.value128(i);
     return A;
+  }
+
+  template <typename EA,typename EB>
+  typename EA::value_type __dot_sse(EA const& A, EB const& B) {
+    assert((bool)A);
+    assert((bool)B);
+    typedef typename EA::value_type VT;
+    unsigned int n=A.size128_low()<B.size128_low()?A.size128_low():
+                                                   B.size128_low();
+    unsigned int m=A.size()<B.size()?A.size():B.size();
+    typename __sse_value<VT>::Type tmp,s4;
+    VT S=0;
+    if(n>0) {
+      s4=Set128<VT>(0);
+      for(unsigned int i=0;i<n;++i) {
+        tmp=Mul128<VT>(A.value128(i),B.value128(i));
+        s4=Sum128<VT>(s4,tmp);
+      }
+      VT* p=(VT*)(&s4);
+      S=p[0]+p[1]+p[2]+p[3];
+    }
+    for(unsigned int i=(n<<4)/sizeof(VT);i<m;++i) S+=A[i]*B[i];
+    return S;
   }
 
 }

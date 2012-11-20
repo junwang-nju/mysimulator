@@ -3,38 +3,20 @@
 #define _Array_Expression_Sum_H_
 
 #include "array/expression/base/sum.h"
-#include "array/expression/sse-valid.h"
 
 namespace mysimulator {
 
   template <typename EA,typename EB,
             typename _vType=typename ArraySumBase<EA,EB>::value_type,
-            bool _sseFLAG=__array_expression_sse_valid<
-                              EA,EB,ExpressionOperationName::Sum>::FLAG>
-  class ArraySum {
-
-    public:
-
-      typedef ArraySum<EA,EB,_vType,_sseFLAG>   Type;
-      ArraySum() = delete;
-      ArraySum(EA const&,EB const&) = delete;
-      ArraySum(const Type&) = delete;
-      ~ArraySum() {}
-      Type& operator=(const Type&) = delete;
-  };
-
-  template <typename EA,typename EB>
-  class ArraySum<EA,EB,typename ArraySumBase<EA,EB>::value_type,false>
-      : public ArraySumBase<EA,EB> {
+            ArrayKernelName _state=ArraySumBase<EA,EB>::State>
+  class ArraySum : public ArraySumBase<EA,EB> {
 
     public:
 
       typedef ArraySumBase<EA,EB>   ParentType;
-      typedef typename ParentType::value_type   value_type;
-      typedef ArraySum<EA,EB,value_type,false>  Type;
+      typedef typename ParentType::value_type value_type;
+      typedef ArraySum<EA,EB,_vType,_state>  Type;
       typedef unsigned int size_type;
-
-      static const bool _is_SSE_valid;
 
       ArraySum(EA const& A,EB const& B) : ParentType(A,B) {}
       ArraySum(const Type& E) : ParentType((ParentType const&)E) {}
@@ -43,11 +25,6 @@ namespace mysimulator {
 
   };
 
-  template <typename EA,typename EB>
-  const bool
-  ArraySum<EA,EB,typename ArraySumBase<EA,EB>::value_type,false>::_is_SSE_valid
-      = false;
-
 }
 
 #include "basic/sse/value-type.h"
@@ -55,19 +32,16 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename EA,typename EB>
-  class ArraySum<EA,EB,typename ArraySumBase<EA,EB>::value_type,true>
-      : public ArraySumBase<EA,EB> {
+  template <typename EA,typename EB,typename vT>
+  class ArraySum<EA,EB,vT,ArrayKernelName::SSE> : public ArraySumBase<EA,EB> {
 
     public:
 
       typedef ArraySumBase<EA,EB>   ParentType;
-      typedef typename ParentType::value_type   value_type;
-      typedef ArraySum<EA,EB,value_type,true>   Type;
+      typedef typename ParentType::value_type value_type;
+      typedef ArraySum<EA,EB,vT,ArrayKernelName::SSE>   Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -96,25 +70,17 @@ namespace mysimulator {
 
   };
 
-  template <typename EA,typename EB>
-  const bool
-  ArraySum<EA,EB,typename ArraySumBase<EA,EB>::value_type,true>::_is_SSE_valid
-      = true;
-
-  template <typename E,typename T>
-  class ArraySum<E,Intrinsic<T>,
-                 typename ArraySumBase<E,Intrinsic<T>>::value_type,true>
+  template <typename E,typename T,typename vT>
+  class ArraySum<E,Intrinsic<T>,vT,ArrayKernelName::SSE>
       : public ArraySumBase<E,Intrinsic<T>> {
 
     public:
 
       typedef ArraySumBase<E,Intrinsic<T>>  ParentType;
-      typedef typename ParentType::value_type   value_type;
-      typedef ArraySum<E,Intrinsic<T>,value_type,true>    Type;
+      typedef typename ParentType::value_type value_type;
+      typedef ArraySum<E,Intrinsic<T>,vT,ArrayKernelName::SSE>    Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -143,25 +109,17 @@ namespace mysimulator {
 
   };
 
-  template <typename E,typename T>
-  const bool
-  ArraySum<E,Intrinsic<T>,typename ArraySumBase<E,Intrinsic<T>>::value_type,
-           true>::_is_SSE_valid = true;
-
-  template <typename T,typename E>
-  class ArraySum<Intrinsic<T>,E,
-                 typename ArraySumBase<Intrinsic<T>,E>::value_type,true>
+  template <typename T,typename E,typename vT>
+  class ArraySum<Intrinsic<T>,E,vT,ArrayKernelName::SSE>
       : public ArraySumBase<Intrinsic<T>,E> {
 
     public:
 
       typedef ArraySumBase<Intrinsic<T>,E>  ParentType;
-      typedef typename ParentType::value_type   value_type;
-      typedef ArraySum<Intrinsic<T>,E,value_type,true>  Type;
+      typedef typename ParentType::value_type value_type;
+      typedef ArraySum<Intrinsic<T>,E,vT,ArrayKernelName::SSE>  Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -189,11 +147,6 @@ namespace mysimulator {
       }
 
   };
-
-  template <typename T,typename E>
-  const bool
-  ArraySum<Intrinsic<T>,E,typename ArraySumBase<Intrinsic<T>,E>::value_type,
-           true>::_is_SSE_valid = true;
 
 }
 

@@ -3,39 +3,20 @@
 #define _Array_Expression_Multiple_H_
 
 #include "array/expression/base/multiple.h"
-#include "array/expression/sse-valid.h"
 
 namespace mysimulator {
 
   template <typename EA,typename EB,
             typename _vType=typename ArrayMulBase<EA,EB>::value_type,
-            bool _sseFLAG=__array_expression_sse_valid<
-                              EA,EB,ExpressionOperationName::Multiple>::FLAG>
+            ArrayKernelName _state=ArrayMulBase<EA,EB>::State>
   class ArrayMul {
-
-    public:
-
-      typedef ArrayMul<EA,EB,_vType,_sseFLAG>   Type;
-      ArrayMul() = delete;
-      ArrayMul(EA const&,EB const&) = delete;
-      ArrayMul(const Type&) = delete;
-      ~ArrayMul() {}
-      Type& operator=(const Type&) = delete;
-
-  };
-
-  template <typename EA,typename EB>
-  class ArrayMul<EA,EB,typename ArrayMulBase<EA,EB>::value_type,false>
-      : public ArrayMulBase<EA,EB> {
 
     public:
 
       typedef ArrayMulBase<EA,EB>   ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArrayMul<EA,EB,value_type,false>  Type;
+      typedef ArrayMul<EA,EB,_vType,_state>   Type;
       typedef unsigned int size_type;
-
-      static const bool _is_SSE_valid;
 
       ArrayMul(EA const& A,EB const& B) : ParentType(A,B) {}
       ArrayMul(const Type& E) : ParentType((ParentType const&)E) {}
@@ -44,11 +25,6 @@ namespace mysimulator {
 
   };
 
-  template <typename EA,typename EB>
-  const bool
-  ArrayMul<EA,EB,typename ArrayMulBase<EA,EB>::value_type,false>::_is_SSE_valid
-      = false;
-
 }
 
 #include "basic/sse/value-type.h"
@@ -56,19 +32,16 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename EA,typename EB>
-  class ArrayMul<EA,EB,typename ArrayMulBase<EA,EB>::value_type,true>
-      : public ArrayMulBase<EA,EB> {
+  template <typename EA,typename EB,typename vT>
+  class ArrayMul<EA,EB,vT,ArrayKernelName::SSE> : public ArrayMulBase<EA,EB> {
 
     public:
 
       typedef ArrayMulBase<EA,EB>   ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArrayMul<EA,EB,value_type,true>   Type;
+      typedef ArrayMul<EA,EB,vT,ArrayKernelName::SSE>   Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -97,25 +70,17 @@ namespace mysimulator {
 
   };
 
-  template <typename EA,typename EB>
-  const bool
-  ArrayMul<EA,EB,typename ArrayMulBase<EA,EB>::value_type,true>::_is_SSE_valid
-      = true;
-
-  template <typename E,typename T>
-  class ArrayMul<E,Intrinsic<T>,
-                 typename ArrayMulBase<E,Intrinsic<T>>::value_type,true>
+  template <typename E,typename T,typename vT>
+  class ArrayMul<E,Intrinsic<T>,vT,ArrayKernelName::SSE>
       : public ArrayMulBase<E,Intrinsic<T>> {
 
     public:
 
       typedef ArrayMulBase<E,Intrinsic<T>>    ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArrayMul<E,Intrinsic<T>,value_type,true>  Type;
+      typedef ArrayMul<E,Intrinsic<T>,vT,ArrayKernelName::SSE>  Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -144,25 +109,17 @@ namespace mysimulator {
 
   };
 
-  template <typename E,typename T>
-  const bool
-  ArrayMul<E,Intrinsic<T>,typename ArrayMulBase<E,Intrinsic<T>>::value_type,
-           true>::_is_SSE_valid = true;
-
-  template <typename T,typename E>
-  class ArrayMul<Intrinsic<T>,E,
-                 typename ArrayMulBase<Intrinsic<T>,E>::value_type,true>
+  template <typename T,typename E,typename vT>
+  class ArrayMul<Intrinsic<T>,E,vT,ArrayKernelName::SSE>
       : public ArrayMulBase<Intrinsic<T>,E> {
 
     public:
 
       typedef ArrayMulBase<Intrinsic<T>,E>  ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArrayMul<Intrinsic<T>,E,value_type,true>  Type;
+      typedef ArrayMul<Intrinsic<T>,E,vT,ArrayKernelName::SSE>  Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -190,11 +147,6 @@ namespace mysimulator {
       }
 
   };
-
-  template <typename T,typename E>
-  const bool
-  ArrayMul<Intrinsic<T>,E,typename ArrayMulBase<Intrinsic<T>,E>::value_type,
-           true>::_is_SSE_valid = true;
 
 }
 

@@ -2,41 +2,21 @@
 #ifndef _Array_Expression_Substract_H_
 #define _Array_Expression_Substract_H_
 
-#include "array/expression/sse-valid.h"
 #include "array/expression/base/substract.h"
 
 namespace mysimulator {
 
   template <typename EA,typename EB,
             typename _vType=typename ArraySubBase<EA,EB>::value_type,
-            bool _sseFLAG=__array_expression_sse_valid<
-                              EA,EB,ExpressionOperationName::Substract>::FLAG>
-  class ArraySub {
-
-    public:
-
-      typedef ArraySub<EA,EB,_vType,_sseFLAG>   Type;
-
-      ArraySub() = delete;
-      ArraySub(EA const&,EB const&) = delete;
-      ArraySub(const Type&) = delete;
-      ~ArraySub() {}
-      Type& operator=(const Type&) = delete;
-
-  };
-
-  template <typename EA,typename EB>
-  class ArraySub<EA,EB,typename ArraySubBase<EA,EB>::value_type,false>
-      : public ArraySubBase<EA,EB> {
+            ArrayKernelName _state=ArraySubBase<EA,EB>::State>
+  class ArraySub : public ArraySubBase<EA,EB> {
 
     public:
 
       typedef ArraySubBase<EA,EB>   ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArraySub<EA,EB,value_type,false>    Type;
+      typedef ArraySub<EA,EB,_vType,_state>   Type;
       typedef unsigned int size_type;
-
-      static const bool _is_SSE_valid;
 
       ArraySub(EA const& A, EB const& B) : ParentType(A,B) {}
       ArraySub(const Type& E) : ParentType((ParentType const&)E) {}
@@ -45,11 +25,6 @@ namespace mysimulator {
 
   };
 
-  template <typename EA,typename EB>
-  const bool
-  ArraySub<EA,EB,typename ArraySubBase<EA,EB>::value_type,false>::_is_SSE_valid
-      = false;
-
 }
 
 #include "basic/sse/value-type.h"
@@ -57,19 +32,16 @@ namespace mysimulator {
 
 namespace mysimulator {
 
-  template <typename EA,typename EB>
-  class ArraySub<EA,EB,typename ArraySubBase<EA,EB>::value_type,true>
-      : public ArraySubBase<EA,EB> {
+  template <typename EA,typename EB,typename vT>
+  class ArraySub<EA,EB,vT,ArrayKernelName::SSE> : public ArraySubBase<EA,EB> {
 
     public:
 
       typedef ArraySubBase<EA,EB>   ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArraySum<EA,EB,value_type,true>   Type;
+      typedef ArraySum<EA,EB,vT,ArrayKernelName::SSE>   Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -98,25 +70,17 @@ namespace mysimulator {
 
   };
 
-  template <typename EA,typename EB>
-  const bool
-  ArraySub<EA,EB,typename ArraySubBase<EA,EB>::value_type,true>::_is_SSE_valid
-      = true;
-
-  template <typename E,typename T>
-  class ArraySub<E,Intrinsic<T>,
-                 typename ArraySubBase<E,Intrinsic<T>>::value_type,true>
+  template <typename E,typename T,typename vT>
+  class ArraySub<E,Intrinsic<T>,vT,ArrayKernelName::SSE>
       : public ArraySubBase<E,Intrinsic<T>> {
 
     public:
 
       typedef ArraySubBase<E,Intrinsic<T>>  ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArraySub<E,Intrinsic<T>,value_type,true>    Type;
+      typedef ArraySub<E,Intrinsic<T>,vT,ArrayKernelName::SSE>    Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -145,25 +109,17 @@ namespace mysimulator {
 
   };
 
-  template <typename E,typename T>
-  const bool
-  ArraySub<E,Intrinsic<T>,typename ArraySubBase<E,Intrinsic<T>>::value_type,
-           true>::_is_SSE_valid = true;
-
-  template <typename T,typename E>
-  class ArraySub<Intrinsic<T>,E,
-                 typename ArraySubBase<Intrinsic<T>,E>::value_type,true>
+  template <typename T,typename E,typename vT>
+  class ArraySub<Intrinsic<T>,E,vT,ArrayKernelName::SSE>
       : public ArraySubBase<Intrinsic<T>,E> {
 
     public:
 
       typedef ArraySubBase<Intrinsic<T>,E>    ParentType;
       typedef typename ParentType::value_type value_type;
-      typedef ArraySub<Intrinsic<T>,E,value_type,true>  Type;
+      typedef ArraySub<Intrinsic<T>,E,vT,ArrayKernelName::SSE>  Type;
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type value128_type;
-
-      static const bool _is_SSE_valid;
 
     private:
 
@@ -191,11 +147,6 @@ namespace mysimulator {
       }
 
   };
-
-  template <typename T,typename E>
-  const bool
-  ArraySub<Intrinsic<T>,E,typename ArraySubBase<Intrinsic<T>,E>::value_type,
-           true>::_is_SSE_valid = true;
 
 }
 

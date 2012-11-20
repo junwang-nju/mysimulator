@@ -125,6 +125,17 @@ namespace mysimulator {
     return A;
   }
 
+  template <typename EA,typename EB>
+  typename __dual_selector<typename EA::value_type,typename EB::value_type,
+                           __mul>::Type
+  __dot_simple(EA const& A, EB const& B) {
+    typename __dual_selector<typename EA::value_type,typename EB::value_type,
+                             __mul>::Type S=0;
+    unsigned int n=(A.size()<B.size()?A.size():B.size());
+    for(unsigned int i=0;i<n;++i)   S+=A[i]*B[i];
+    return S;
+  }
+
 }
 
 #include "basic/util/square-root.h"

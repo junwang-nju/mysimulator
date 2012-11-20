@@ -1,6 +1,6 @@
 
-#ifndef _Array_Direct_3D_H_
-#define _Array_Direct_3D_H_
+#ifndef _Array_Intrinsic_Direct_3D_H_
+#define _Array_Intrinsic_Direct_3D_H_
 
 #include "array/def.h"
 #include "array/monomer/type.h"
@@ -24,6 +24,8 @@ namespace mysimulator {
       typedef const monomer_type * const_pointer;
       typedef const monomer_type & const_reference;
       typedef unsigned int size_type;
+
+      static const ArrayKernelName State;
 
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
@@ -125,6 +127,11 @@ namespace mysimulator {
       }
 
   };
+
+  template <typename T>
+  const ArrayKernelName
+  Array<Intrinsic<T>,ArrayKernelName::Direct3D,true>::State
+      = ArrayKernelName::Direct3D;
 
 }
 

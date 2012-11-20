@@ -5,6 +5,7 @@
 #include "basic/expression/base.h"
 #include "basic/type/selector.h"
 #include "basic/type/substract.h"
+#include "array/kernel/name.h"
 
 namespace mysimulator {
 
@@ -21,6 +22,8 @@ namespace mysimulator {
       typedef typename __dual_selector<typename EA::value_type,
                                        typename EB::value_type,__sub>::Type
               value_type;
+
+      static const ArrayKernelName  State;
 
     private:
 
@@ -45,6 +48,22 @@ namespace mysimulator {
 
 }
 
+#include "basic/type/same-check.h"
+#include "basic/sse/valid.h"
+
+namespace mysimulator {
+
+  template <typename EA,typename EB>
+  const ArrayKernelName ArraySubBase<EA,EB>::State =
+      EA::State == ArrayKernelName::Direct3D ||
+      EB::State == ArrayKernelName::Direct3D ?  ArrayKernelName::Direct3D :
+      EA::State == ArrayKernelName::SSE && EB::State == ArrayKernelName::SSE &&
+      __same_type<typename EA::value_type,typename EB::value_type>::FLAG &&
+      __mono_sse_valid<typename EA::value_type>::FLAG ? ArrayKernelName::SSE :
+      ArrayKernelName::Simple;
+
+}
+
 #include "basic/type/intrinsic.h"
 
 namespace mysimulator {
@@ -63,6 +82,8 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef typename __dual_selector<typename E::value_type,T,__sub>::Type
               value_type;
+
+      static const ArrayKernelName  State;
 
     private:
 
@@ -85,6 +106,16 @@ namespace mysimulator {
 
   };
 
+  template <typename E,typename T>
+  const ArrayKernelName ArraySubBase<E,Intrinsic<T>>::State =
+      E::State == ArrayKernelName::Direct3D ? ArrayKernelName::Direct3D :
+      E::State == ArrayKernelName::SSE &&
+      __mono_sse_valid<typename E::value_type>::FLAG &&
+      __same_type<typename ArraySubBase<E,Intrinsic<T>>::value_type,
+                  typename E::value_type>::FLAG ? ArrayKernelName::SSE :
+      ArrayKernelName::Simple;
+
+
   template <typename T,typename E>
   class ArraySubBase<Intrinsic<T>,E>
       : public __TwoMemberExpression<Intrinsic<T>,E,
@@ -99,6 +130,8 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef typename __dual_selector<T,typename E::value_type,__sub>::Type
               value_type;
+
+      static const ArrayKernelName  State;
 
     private:
 
@@ -120,6 +153,15 @@ namespace mysimulator {
       }
 
   };
+
+  template <typename T,typename E>
+  const ArrayKernelName ArraySubBase<Intrinsic<T>,E>::State =
+      E::State == ArrayKernelName::Direct3D ? ArrayKernelName::Direct3D :
+      E::State == ArrayKernelName::SSE &&
+      __mono_sse_valid<typename E::value_type>::FLAG &&
+      __same_type<typename ArraySubBase<Intrinsic<T>,E>::value_type,
+                  typename E::value_type>::FLAG ? ArrayKernelName::SSE :
+      ArrayKernelName::Simple;
 
 }
 

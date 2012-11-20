@@ -27,7 +27,7 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type  value128_type;
 
-      static const bool _is_SSE_valid;
+      static const ArrayKernelName State;
 
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
@@ -47,7 +47,6 @@ namespace mysimulator {
       ~Array() { reset(); }
 
       operator bool() const { return (bool)_pdata && _ndata>0U; }
-      ArrayKernelName KernelName() const { return ArrayKernelName::SSE; }
       size_type size() const { return _ndata; }
       size_type size128() const { return _n128; }
       size_type size128_low() const { return _n128_low; }
@@ -103,19 +102,19 @@ namespace mysimulator {
         return __copy_div_simple(*this,A);
       }
       template <typename EA,typename EB>
-      Type& operator=(ArraySum<EA,EB,T,true> const& A) {
+      Type& operator=(ArraySum<EA,EB,T,ArrayKernelName::SSE> const& A) {
         return __copy_sum_simple(*this,A);
       }
       template <typename EA,typename EB>
-      Type& operator=(ArraySub<EA,EB,T,true> const& A) {
+      Type& operator=(ArraySub<EA,EB,T,ArrayKernelName::SSE> const& A) {
         return __copy_sub_simple(*this,A);
       }
       template <typename EA,typename EB>
-      Type& operator=(ArrayMul<EA,EB,T,true> const& A) {
+      Type& operator=(ArrayMul<EA,EB,T,ArrayKernelName::SSE> const& A) {
         return __copy_mul_simple(*this,A);
       }
       template <typename EA,typename EB>
-      Type& operator=(ArrayDiv<EA,EB,T,true> const& A) {
+      Type& operator=(ArrayDiv<EA,EB,T,ArrayKernelName::SSE> const& A) {
         return __copy_div_simple(*this,A);
       }
       // mixng of int and long may not produce sse operation
@@ -165,35 +164,35 @@ namespace mysimulator {
   };
 
   template <typename T>
-  const bool Array<Intrinsic<T>,ArrayKernelName::SSE,true>::_is_SSE_valid
-      = true;
+  const ArrayKernelName Array<Intrinsic<T>,ArrayKernelName::SSE,true>::State =
+      ArrayKernelName::SSE;
 
   template <>
   template <typename EA,typename EB>
   Array<Double,ArrayKernelName::SSE,true>&
   Array<Double,ArrayKernelName::SSE,true>::operator=(
-      ArraySum<EA,EB,double,true> const& E) {
+      ArraySum<EA,EB,double,ArrayKernelName::SSE> const& E) {
     return __copy_sum_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Float,ArrayKernelName::SSE,true>&
   Array<Float,ArrayKernelName::SSE,true>::operator=(
-      ArraySum<EA,EB,float,true> const& E) {
+      ArraySum<EA,EB,float,ArrayKernelName::SSE> const& E) {
     return __copy_sum_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Int,ArrayKernelName::SSE,true>&
   Array<Int,ArrayKernelName::SSE,true>::operator=(
-      ArraySum<EA,EB,int,true> const& E) {
+      ArraySum<EA,EB,int,ArrayKernelName::SSE> const& E) {
     return __copy_sum_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Long,ArrayKernelName::SSE,true>&
   Array<Long,ArrayKernelName::SSE,true>::operator=(
-      ArraySum<EA,EB,long,true> const& E) {
+      ArraySum<EA,EB,long,ArrayKernelName::SSE> const& E) {
     return __copy_sum_sse(*this,E);
   }
 
@@ -201,28 +200,28 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Double,ArrayKernelName::SSE,true>&
   Array<Double,ArrayKernelName::SSE,true>::operator=(
-      ArraySub<EA,EB,double,true> const& E) {
+      ArraySub<EA,EB,double,ArrayKernelName::SSE> const& E) {
     return __copy_sub_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Float,ArrayKernelName::SSE,true>&
   Array<Float,ArrayKernelName::SSE,true>::operator=(
-      ArraySub<EA,EB,float,true> const& E) {
+      ArraySub<EA,EB,float,ArrayKernelName::SSE> const& E) {
     return __copy_sub_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Int,ArrayKernelName::SSE,true>&
   Array<Int,ArrayKernelName::SSE,true>::operator=(
-      ArraySub<EA,EB,int,true> const& E) {
+      ArraySub<EA,EB,int,ArrayKernelName::SSE> const& E) {
     return __copy_sub_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Long,ArrayKernelName::SSE,true>&
   Array<Long,ArrayKernelName::SSE,true>::operator=(
-      ArraySub<EA,EB,long,true> const& E) {
+      ArraySub<EA,EB,long,ArrayKernelName::SSE> const& E) {
     return __copy_sub_sse(*this,E);
   }
 
@@ -230,28 +229,28 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Double,ArrayKernelName::SSE,true>&
   Array<Double,ArrayKernelName::SSE,true>::operator=(
-      ArrayMul<EA,EB,double,true> const& E) {
+      ArrayMul<EA,EB,double,ArrayKernelName::SSE> const& E) {
     return __copy_mul_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Float,ArrayKernelName::SSE,true>&
   Array<Float,ArrayKernelName::SSE,true>::operator=(
-      ArrayMul<EA,EB,float,true> const& E) {
+      ArrayMul<EA,EB,float,ArrayKernelName::SSE> const& E) {
     return __copy_mul_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Int,ArrayKernelName::SSE,true>&
   Array<Int,ArrayKernelName::SSE,true>::operator=(
-      ArrayMul<EA,EB,int,true> const& E) {
+      ArrayMul<EA,EB,int,ArrayKernelName::SSE> const& E) {
     return __copy_mul_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Long,ArrayKernelName::SSE,true>&
   Array<Long,ArrayKernelName::SSE,true>::operator=(
-      ArrayMul<EA,EB,long,true> const& E) {
+      ArrayMul<EA,EB,long,ArrayKernelName::SSE> const& E) {
     return __copy_mul_sse(*this,E);
   }
 
@@ -259,448 +258,15 @@ namespace mysimulator {
   template <typename EA,typename EB>
   Array<Double,ArrayKernelName::SSE,true>&
   Array<Double,ArrayKernelName::SSE,true>::operator=(
-      ArrayDiv<EA,EB,double,true> const& E) {
+      ArrayDiv<EA,EB,double,ArrayKernelName::SSE> const& E) {
     return __copy_div_sse(*this,E);
   }
   template <>
   template <typename EA,typename EB>
   Array<Float,ArrayKernelName::SSE,true>&
   Array<Float,ArrayKernelName::SSE,true>::operator=(
-      ArrayDiv<EA,EB,float,true> const& E) {
+      ArrayDiv<EA,EB,float,ArrayKernelName::SSE> const& E) {
     return __copy_div_sse(*this,E);
-  }
-
-  template <typename EA,typename EB>
-  typename EA::value_type __dot_sse(EA const& A, EB const& B) {
-    assert((bool)A);
-    assert((bool)B);
-    typedef typename EA::value_type VT;
-    unsigned int n=A.size128_low()<B.size128_low()?A.size128_low():
-                                                   B.size128_low();
-    unsigned int m=A.size()<B.size()?A.size():B.size();
-    typename __sse_value<VT>::Type tmp,s4;
-    VT S=0;
-    if(n>0) {
-      s4=Set128<VT>(0);
-      for(unsigned int i=0;i<n;++i) {
-        tmp=Mul128<VT>(A.value128(i),B.value128(i));
-        s4=Sum128<VT>(s4,tmp);
-      }
-      VT* p=(VT*)(&s4);
-      S=p[0]+p[1]+p[2]+p[3];
-    }
-    for(unsigned int i=(n<<4)/sizeof(VT);i<m;++i) S+=A[i]*B[i];
-    return S;
-  }
-
-  double Dot(Array<Double,ArrayKernelName::SSE,true> const& A,
-             Array<Double,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  double Dot(Array<Double,ArrayKernelName::SSE,true> const& A,
-             ArraySum<EA,EB,double,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  double Dot(Array<Double,ArrayKernelName::SSE,true> const& A,
-             ArraySub<EA,EB,double,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  double Dot(Array<Double,ArrayKernelName::SSE,true> const& A,
-             ArrayMul<EA,EB,double,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  double Dot(Array<Double,ArrayKernelName::SSE,true> const& A,
-             ArrayDiv<EA,EB,double,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  double Dot(ArraySum<EA,EB,double,true> const& A,
-             Array<Double,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArraySum<EA,EB,double,true> const& A,
-             ArraySum<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArraySum<EA,EB,double,true> const& A,
-             ArraySub<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArraySum<EA,EB,double,true> const& A,
-             ArrayMul<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArraySum<EA,EB,double,true> const& A,
-             ArrayDiv<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  double Dot(ArraySub<EA,EB,double,true> const& A,
-             Array<Double,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArraySub<EA,EB,double,true> const& A,
-             ArraySum<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArraySub<EA,EB,double,true> const& A,
-             ArraySub<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArraySub<EA,EB,double,true> const& A,
-             ArrayMul<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArraySub<EA,EB,double,true> const& A,
-             ArrayDiv<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  double Dot(ArrayMul<EA,EB,double,true> const& A,
-             Array<Double,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArrayMul<EA,EB,double,true> const& A,
-             ArraySum<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArrayMul<EA,EB,double,true> const& A,
-             ArraySub<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArrayMul<EA,EB,double,true> const& A,
-             ArrayMul<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArrayMul<EA,EB,double,true> const& A,
-             ArrayDiv<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  double Dot(ArrayDiv<EA,EB,double,true> const& A,
-             Array<Double,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArrayDiv<EA,EB,double,true> const& A,
-             ArraySum<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArrayDiv<EA,EB,double,true> const& A,
-             ArraySub<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArrayDiv<EA,EB,double,true> const& A,
-             ArrayMul<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  double Dot(ArrayDiv<EA,EB,double,true> const& A,
-             ArrayDiv<EC,ED,double,true> const& B) {
-    return __dot_sse(A,B);
-  }
-
-  float Dot(Array<Float,ArrayKernelName::SSE,true> const& A,
-            Array<Float,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  float Dot(Array<Float,ArrayKernelName::SSE,true> const& A,
-            ArraySum<EA,EB,float,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  float Dot(Array<Float,ArrayKernelName::SSE,true> const& A,
-            ArraySub<EA,EB,float,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  float Dot(Array<Float,ArrayKernelName::SSE,true> const& A,
-            ArrayMul<EA,EB,float,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  float Dot(Array<Float,ArrayKernelName::SSE,true> const& A,
-            ArrayDiv<EA,EB,float,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  float Dot(ArraySum<EA,EB,float,true> const& A,
-            Array<Float,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArraySum<EA,EB,float,true> const& A,
-            ArraySum<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArraySum<EA,EB,float,true> const& A,
-            ArraySub<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArraySum<EA,EB,float,true> const& A,
-            ArrayMul<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArraySum<EA,EB,float,true> const& A,
-            ArrayDiv<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  float Dot(ArraySub<EA,EB,float,true> const& A,
-            Array<Float,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArraySub<EA,EB,float,true> const& A,
-            ArraySum<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArraySub<EA,EB,float,true> const& A,
-            ArraySub<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArraySub<EA,EB,float,true> const& A,
-            ArrayMul<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArraySub<EA,EB,float,true> const& A,
-            ArrayDiv<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  float Dot(ArrayMul<EA,EB,float,true> const& A,
-            Array<Float,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArrayMul<EA,EB,float,true> const& A,
-            ArraySum<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArrayMul<EA,EB,float,true> const& A,
-            ArraySub<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArrayMul<EA,EB,float,true> const& A,
-            ArrayMul<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArrayMul<EA,EB,float,true> const& A,
-            ArrayDiv<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  float Dot(ArrayDiv<EA,EB,float,true> const& A,
-            Array<Float,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArrayDiv<EA,EB,float,true> const& A,
-            ArraySum<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArrayDiv<EA,EB,float,true> const& A,
-            ArraySub<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArrayDiv<EA,EB,float,true> const& A,
-            ArrayMul<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  float Dot(ArrayDiv<EA,EB,float,true> const& A,
-            ArrayDiv<EC,ED,float,true> const& B) {
-    return __dot_sse(A,B);
-  }
-
-  int Dot(Array<Int,ArrayKernelName::SSE,true> const& A,
-          Array<Int,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  int Dot(Array<Int,ArrayKernelName::SSE,true> const& A,
-          ArraySum<EA,EB,int,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  int Dot(Array<Int,ArrayKernelName::SSE,true> const& A,
-          ArraySub<EA,EB,int,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  int Dot(Array<Int,ArrayKernelName::SSE,true> const& A,
-          ArrayMul<EA,EB,int,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  int Dot(ArraySum<EA,EB,int,true> const& A,
-          Array<Int,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArraySum<EA,EB,int,true> const& A,
-          ArraySum<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArraySum<EA,EB,int,true> const& A,
-          ArraySub<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArraySum<EA,EB,int,true> const& A,
-          ArrayMul<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  int Dot(ArraySub<EA,EB,int,true> const& A,
-          Array<Int,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArraySub<EA,EB,int,true> const& A,
-          ArraySum<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArraySub<EA,EB,int,true> const& A,
-          ArraySub<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArraySub<EA,EB,int,true> const& A,
-          ArrayMul<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  int Dot(ArrayMul<EA,EB,int,true> const& A,
-          Array<Int,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArrayMul<EA,EB,int,true> const& A,
-          ArraySum<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArrayMul<EA,EB,int,true> const& A,
-          ArraySub<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  int Dot(ArrayMul<EA,EB,int,true> const& A,
-          ArrayMul<EC,ED,int,true> const& B) {
-    return __dot_sse(A,B);
-  }
-
-  long Dot(Array<Long,ArrayKernelName::SSE,true> const& A,
-           Array<Long,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  long Dot(Array<Long,ArrayKernelName::SSE,true> const& A,
-           ArraySum<EA,EB,long,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  long Dot(Array<Long,ArrayKernelName::SSE,true> const& A,
-           ArraySub<EA,EB,long,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  long Dot(Array<Long,ArrayKernelName::SSE,true> const& A,
-           ArrayMul<EA,EB,long,true>& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  long Dot(ArraySum<EA,EB,long,true> const& A,
-           Array<Long,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArraySum<EA,EB,long,true> const& A,
-           ArraySum<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArraySum<EA,EB,long,true> const& A,
-           ArraySub<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArraySum<EA,EB,long,true> const& A,
-           ArrayMul<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  long Dot(ArraySub<EA,EB,long,true> const& A,
-           Array<Long,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArraySub<EA,EB,long,true> const& A,
-           ArraySum<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArraySub<EA,EB,long,true> const& A,
-           ArraySub<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArraySub<EA,EB,long,true> const& A,
-           ArrayMul<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB>
-  long Dot(ArrayMul<EA,EB,long,true> const& A,
-           Array<Long,ArrayKernelName::SSE,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArrayMul<EA,EB,long,true> const& A,
-           ArraySum<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArrayMul<EA,EB,long,true> const& A,
-           ArraySub<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
-  }
-  template <typename EA,typename EB,typename EC,typename ED>
-  long Dot(ArrayMul<EA,EB,long,true> const& A,
-           ArrayMul<EC,ED,long,true> const& B) {
-    return __dot_sse(A,B);
   }
 
   Array<Float,ArrayKernelName::SSE,true>&
