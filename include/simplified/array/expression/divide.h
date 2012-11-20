@@ -8,7 +8,7 @@ namespace mysimulator {
 
   template <typename EA,typename EB,
             typename _vType=typename ArrayDivBase<EA,EB>::value_type,
-            ArrayKernelName _state=ArrayDivBase<EA,EB>::State>
+            ArrayKernelName _state=ArrayDivBase<EA,EB>::Kernel>
   class ArrayDiv {
 
     public:

@@ -8,7 +8,7 @@ namespace mysimulator {
 
   template <typename EA,typename EB,
             typename _vType=typename ArraySumBase<EA,EB>::value_type,
-            ArrayKernelName _state=ArraySumBase<EA,EB>::State>
+            ArrayKernelName _state=ArraySumBase<EA,EB>::Kernel>
   class ArraySum : public ArraySumBase<EA,EB> {
 
     public:

@@ -27,7 +27,7 @@ namespace mysimulator {
       typedef unsigned int size_type;
       typedef typename __sse_value<value_type>::Type  value128_type;
 
-      static const ArrayKernelName State;
+      static const ArrayKernelName Kernel;
 
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
@@ -180,7 +180,7 @@ namespace mysimulator {
   };
 
   template <typename T>
-  const ArrayKernelName Array<Intrinsic<T>,ArrayKernelName::SSE,true>::State =
+  const ArrayKernelName Array<Intrinsic<T>,ArrayKernelName::SSE,true>::Kernel=
       ArrayKernelName::SSE;
 
   template <>

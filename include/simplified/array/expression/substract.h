@@ -8,7 +8,7 @@ namespace mysimulator {
 
   template <typename EA,typename EB,
             typename _vType=typename ArraySubBase<EA,EB>::value_type,
-            ArrayKernelName _state=ArraySubBase<EA,EB>::State>
+            ArrayKernelName _state=ArraySubBase<EA,EB>::Kernel>
   class ArraySub : public ArraySubBase<EA,EB> {
 
     public:

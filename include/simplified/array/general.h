@@ -23,7 +23,7 @@ namespace mysimulator {
       typedef const monomer_type &  const_reference;
       typedef unsigned int size_type;
 
-      static const ArrayKernelName State;
+      static const ArrayKernelName Kernel;
 
       access_ptr<monomer_type>  _pdata;
       size_type                 _ndata;
@@ -77,7 +77,7 @@ namespace mysimulator {
   };
 
   template <typename T>
-  const ArrayKernelName Array<T,ArrayKernelName::Simple,false>::State =
+  const ArrayKernelName Array<T,ArrayKernelName::Simple,false>::Kernel =
       ArrayKernelName::Simple;
 
 }

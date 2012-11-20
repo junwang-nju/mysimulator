@@ -23,7 +23,7 @@ namespace mysimulator {
                                        typename EB::value_type,__mul>::Type
               value_type;
 
-      static const ArrayKernelName State;
+      static const ArrayKernelName Kernel;
 
     private:
 
@@ -54,10 +54,10 @@ namespace mysimulator {
 namespace mysimulator {
 
   template <typename EA,typename EB>
-  const ArrayKernelName ArrayMulBase<EA,EB>::State =
-      EA::State == ArrayKernelName::Direct3D ||
-      EB::State == ArrayKernelName::Direct3D ?  ArrayKernelName::Direct3D :
-      EA::State == ArrayKernelName::SSE && EB::State == ArrayKernelName::SSE &&
+  const ArrayKernelName ArrayMulBase<EA,EB>::Kernel =
+      EA::Kernel == ArrayKernelName::Direct3D ||
+      EB::Kernel == ArrayKernelName::Direct3D ?  ArrayKernelName::Direct3D :
+      EA::Kernel == ArrayKernelName::SSE && EB::Kernel == ArrayKernelName::SSE &&
       __same_type<typename EA::value_type,typename EB::value_type>::FLAG &&
       __mono_sse_valid<typename EA::value_type>::FLAG ? ArrayKernelName::SSE :
       ArrayKernelName::Simple;
@@ -83,7 +83,7 @@ namespace mysimulator {
       typedef typename __dual_selector<typename E::value_type,T,__mul>::Type
               value_type;
 
-      static const ArrayKernelName State;
+      static const ArrayKernelName Kernel;
 
     private:
 
@@ -107,9 +107,9 @@ namespace mysimulator {
   };
 
   template <typename E,typename T>
-  const ArrayKernelName ArrayMulBase<E,Intrinsic<T>>::State =
-      E::State == ArrayKernelName::Direct3D ? ArrayKernelName::Direct3D :
-      E::State == ArrayKernelName::SSE &&
+  const ArrayKernelName ArrayMulBase<E,Intrinsic<T>>::Kernel =
+      E::Kernel == ArrayKernelName::Direct3D ? ArrayKernelName::Direct3D :
+      E::Kernel == ArrayKernelName::SSE &&
       __mono_sse_valid<typename E::value_type>::FLAG &&
       __same_type<typename ArrayMulBase<E,Intrinsic<T>>::value_type,
                   typename E::value_type>::FLAG ? ArrayKernelName::SSE :
@@ -130,7 +130,7 @@ namespace mysimulator {
       typedef typename __dual_selector<T,typename E::value_type,__mul>::Type
               value_type;
 
-      static const ArrayKernelName State;
+      static const ArrayKernelName Kernel;
 
     private:
 
@@ -154,9 +154,9 @@ namespace mysimulator {
   };
 
   template <typename T,typename E>
-  const ArrayKernelName ArrayMulBase<Intrinsic<T>,E>::State =
-      E::State == ArrayKernelName::Direct3D ? ArrayKernelName::Direct3D :
-      E::State == ArrayKernelName::SSE &&
+  const ArrayKernelName ArrayMulBase<Intrinsic<T>,E>::Kernel =
+      E::Kernel == ArrayKernelName::Direct3D ? ArrayKernelName::Direct3D :
+      E::Kernel == ArrayKernelName::SSE &&
       __mono_sse_valid<typename E::value_type>::FLAG &&
       __same_type<typename ArrayMulBase<Intrinsic<T>,E>::value_type,
                   typename E::value_type>::FLAG ? ArrayKernelName::SSE :
