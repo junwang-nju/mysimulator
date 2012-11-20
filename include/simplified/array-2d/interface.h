@@ -29,5 +29,7 @@ namespace std {
 
 }
 
+#include "array-2d/operation/sum.h"
+
 #endif
 

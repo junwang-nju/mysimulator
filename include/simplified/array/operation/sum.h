@@ -67,7 +67,18 @@ namespace mysimulator {
 
   template <typename EA,typename EB,typename vT,ArrayKernelName KN>
   vT Sum(ArraySum<EA,EB,vT,KN> const& A) {
-    return Sum(A.first())+Sum(A.second());
+    return __sum_simple(A);
+    //return Sum(A.first())+Sum(A.second()); // not safe for size reason
+  }
+
+  template <typename E,typename T,typename vT,ArrayKernelName KN>
+  vT Sum(ArraySum<E,Intrinsic<T>,vT,KN> const& A) {
+    return Sum(A.first())+((T)(A.second()))*A.size();
+  }
+
+  template <typename T,typename E,typename vT,ArrayKernelName KN>
+  vT Sum(ArraySum<Intrinsic<T>,E,vT,KN> const& A) {
+    return ((T)(A.first()))*A.size()+Sum(A.second());
   }
 
   template <typename EA,typename EB,typename vT>
@@ -108,7 +119,18 @@ namespace mysimulator {
 
   template <typename EA,typename EB,typename vT,ArrayKernelName KN>
   vT Sum(ArraySub<EA,EB,vT,KN> const& A) {
-    return Sum(A.first())-Sum(A.second());
+    return __sum_simple(A);
+    //return Sum(A.first())-Sum(A.second()); // not safe for size reason
+  }
+
+  template <typename E,typename T,typename vT,ArrayKernelName KN>
+  vT Sum(ArraySub<E,Intrinsic<T>,vT,KN> const& A) {
+    return Sum(A.first())-((T)(A.second()))*A.size();
+  }
+
+  template <typename T,typename E,typename vT,ArrayKernelName KN>
+  vT Sum(ArraySub<Intrinsic<T>,E,vT,KN> const& A) {
+    return ((T)(A.first()))*A.size()-Sum(A.second());
   }
 
   template <typename EA,typename EB,typename vT>
@@ -152,6 +174,16 @@ namespace mysimulator {
     return __sum_simple(A);
   }
 
+  template <typename E,typename T,typename vT,ArrayKernelName KN>
+  vT Sum(ArrayMul<E,Intrinsic<T>,vT,KN> const& A) {
+    return Sum(A.first())*((T)(A.second()));
+  }
+
+  template <typename T,typename E,typename vT,ArrayKernelName KN>
+  vT Sum(ArrayMul<Intrinsic<T>,E,vT,KN> const& A) {
+    return ((T)(A.first()))*Sum(A.second());
+  }
+
   template <typename EA,typename EB,typename vT>
   vT Sum(ArrayMul<EA,EB,vT,ArrayKernelName::Direct3D> const& A) {
     return __sum_direct3d(A);
@@ -191,6 +223,11 @@ namespace mysimulator {
   template <typename EA,typename EB,typename vT,ArrayKernelName KN>
   vT Sum(ArrayDiv<EA,EB,vT,KN> const& A) {
     return __sum_simple(A);
+  }
+
+  template <typename E,typename T,typename vT,ArrayKernelName KN>
+  vT Sum(ArrayDiv<E,Intrinsic<T>,vT,KN> const& A) {
+    return Sum(A.first())/((T)(A.second()));
   }
 
   template <typename EA,typename EB,typename vT>

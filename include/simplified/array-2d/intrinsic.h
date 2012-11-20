@@ -132,8 +132,6 @@ namespace mysimulator {
       template <typename E>
       Type& operator/=(E const& A) { return operator=((*this)/A); }
 
-      value_type Sum() const { return __sum_2d(*this); }
-
       void allocate(size_type n,size_type dim) { __allocate_2d(*this,n,dim); }
       template <typename Y,ArrayKernelName YK>
       void allocate(Array<Intrinsic<Y>,YK> const& Z) { __allocate_2d(*this,Z); }

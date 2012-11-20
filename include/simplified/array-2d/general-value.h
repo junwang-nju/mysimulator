@@ -37,6 +37,8 @@ namespace mysimulator {
       operator bool() const {
         return (bool)_data && ParentType::operator bool();
       }
+      DataType const& Data() const { return _data; }
+      DataType& Data() { return _data; }
       void reset() { ParentType::reset(); _data.reset(); }
 
       Type& operator=(const Type& A) {
@@ -60,8 +62,6 @@ namespace mysimulator {
       Type& operator=(const Intrinsic<Y>& D) {
         return operator=((value_type)((Y)D));
       }
-
-      value_type Sum() const { return _data.Sum(); }
 
       void allocate(size_type n,size_type dim) { __allocate_2d(*this,n,dim); }
       template <typename Y,ArrayKernelName YK>
