@@ -57,12 +57,6 @@ namespace mysimulator {
         return operator=((value_type)((T1)D));
       }
 
-      value_type Sum() const {
-        value_type S=0;
-        for(unsigned int i=0;i<size();++i)  S+=(*this)[i].Sum();
-        return S;
-      }
-
       void allocate(size_type size) { __allocate_simple<T>(*this,size); }
       void refer(const Type& A) {
         reset();

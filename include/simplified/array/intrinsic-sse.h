@@ -145,8 +145,6 @@ namespace mysimulator {
       template <typename E>
       Type& operator/=(E const& A) { return operator=((*this)/A); }
 
-      T Sum() const { return __sum_simple(*this); }
-
       void allocate(size_type size) { __allocate_sse(*this,size); }
       void refer(const Type& A) {
         reset();
@@ -308,23 +306,6 @@ namespace mysimulator {
   Array<Double,ArrayKernelName::SSE,true>&
   __inv_square_root(Array<Double,ArrayKernelName::SSE,true>& A) {
     return __inv_square_root_simple(A);
-  }
-
-  template <>
-  double Array<Double,ArrayKernelName::SSE,true>::Sum() const {
-    return __sum_sse(*this);
-  }
-  template <>
-  float Array<Float,ArrayKernelName::SSE,true>::Sum() const {
-    return __sum_sse(*this);
-  }
-  template <>
-  int Array<Int,ArrayKernelName::SSE,true>::Sum() const {
-    return __sum_sse(*this);
-  }
-  template <>
-  long Array<Long,ArrayKernelName::SSE,true>::Sum() const {
-    return __sum_sse(*this);
   }
 
 }

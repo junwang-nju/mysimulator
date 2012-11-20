@@ -99,8 +99,6 @@ namespace mysimulator {
       template <typename E>
       Type& operator/=(E const& A) { return operator=((*this)/A); }
 
-      T Sum() const { return _pdata[0]+_pdata[1]+_pdata[2]; }
-
       void allocate(size_type size=3U) {
         assert(size==3U);
         __allocate_simple(*this,3U);

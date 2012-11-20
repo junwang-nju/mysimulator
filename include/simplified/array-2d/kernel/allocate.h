@@ -41,7 +41,7 @@ namespace mysimulator {
                   "Only Integer permitted as size of allocation!\n");
     assert((bool)SZ);
     A.reset();
-    A._data.allocate(SZ.Sum());
+    A._data.allocate(Sum(SZ));
     ((Array<Array<T,LK>>&)A).allocate(SZ.size());
     for(unsigned int i=0,w=0;i<SZ.size();w+=SZ[i++])
       A[i].refer(A._data,w,SZ[i]);
@@ -64,7 +64,7 @@ namespace mysimulator {
       rSZ[i]=__span16<T>(SZ[i]);
     }
     A.reset();
-    A._data.allocate(rSZ.Sum());
+    A._data.allocate(Sum(rSZ));
     ((Array<Array<T,ArrayKernelName::SSE>>&)A).allocate(SZ.size());
     for(unsigned int i=0,w=0;i<A.size();w+=rSZ[i++])
       A[i].refer(A._data,w,SZ[i]);

@@ -74,6 +74,11 @@ namespace mysimulator {
     return A;
   }
 
+  template <typename E>
+  typename E::value_type __sum_direct3d(E const& A) {
+    return A[0]+A[1]+A[2];
+  }
+
 }
 
 #endif

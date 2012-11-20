@@ -8,11 +8,11 @@
 namespace mysimulator {
 
   template <typename T,ArrayKernelName DK,ArrayKernelName LK>
-  T __sum_2d(Array2D<Intrinsic<T>,DK,LK> const& A) { return A.Data().Sum(); }
+  T __sum_2d(Array2D<Intrinsic<T>,DK,LK> const& A) { return Sum(A.Data()); }
 
   template <typename T,ArrayKernelName DK>
   T __sum_2d(Array2D<Intrinsic<T>,DK,ArrayKernelName::SSE> const& A) {
-    return ((Array<Array<Intrinsic<T>,ArrayKernelName::SSE>> const&)A).Sum();
+    return Sum((Array<Array<Intrinsic<T>,ArrayKernelName::SSE>> const&)A);
   }
 
 }

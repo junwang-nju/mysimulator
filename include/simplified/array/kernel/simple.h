@@ -53,10 +53,10 @@ namespace mysimulator {
     return A;
   }
 
-  template <typename T,ArrayKernelName KN,bool vF>
-  T __sum_simple(Array<T,KN,vF> const& A) {
+  template <typename E>
+  typename E::value_type __sum_simple(E const& A) {
     assert((bool)A);
-    T S=0;
+    typename E::value_type S=0;
     for(unsigned int i=0;i<A.size();++i)  S+=A[i];
     return S;
   }
