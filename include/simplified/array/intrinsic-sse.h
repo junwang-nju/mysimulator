@@ -101,6 +101,22 @@ namespace mysimulator {
       Type& operator=(ArrayDiv<EA,EB> const& A) {
         return __copy_div_simple(*this,A);
       }
+      template <typename EA,typename EB,typename vT>
+      Type& operator=(ArraySum<EA,EB,vT,ArrayKernelName::Direct3D> const& E) {
+        return __copy_sum_direct3d(*this,E);
+      }
+      template <typename EA,typename EB,typename vT>
+      Type& operator=(ArraySub<EA,EB,vT,ArrayKernelName::Direct3D> const& E) {
+        return __copy_sub_direct3d(*this,E);
+      }
+      template <typename EA,typename EB,typename vT>
+      Type& operator=(ArrayMul<EA,EB,vT,ArrayKernelName::Direct3D> const& E) {
+        return __copy_mul_direct3d(*this,E);
+      }
+      template <typename EA,typename EB,typename vT>
+      Type& operator=(ArrayDiv<EA,EB,vT,ArrayKernelName::Direct3D> const& E) {
+        return __copy_div_direct3d(*this,E);
+      }
       template <typename EA,typename EB>
       Type& operator=(ArraySum<EA,EB,T,ArrayKernelName::SSE> const& A) {
         return __copy_sum_simple(*this,A);
