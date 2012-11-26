@@ -16,34 +16,72 @@ namespace mysimulator {
     public:
 
       typedef InteractionFunction<GT,DIM>   Type;
-      typedef Array2D<Float,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>
-              FXType;
-      typedef Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>
-              DXType;
+      static const ArrayKernelName _VForm = __system_vec_type<DIM>::NAME;
+      typedef Array2D<Float,ArrayKernelName::SSE,_VForm>  FVType;
+      typedef Array2D<Double,ArrayKernelName::SSE,_VForm> DVType;
+
+      InteractionName _tag;
+      Array<Float>  _pre;
+      Array<Float>  _post;
+      FVType  _vec;
+      Array<Type*>  _neighbor;  // cannot be copied
+      InteractionFuncDataState _status;
 
     private:
 
-      InteractionName _tag;
-      Array<Double> _pre;
-      Array<Double> _post;
-      DXType _vec;
-      Array<Type*> _neighbor;
-      InteractionFuncDataState _status;
+      typedef float (*_distance_sq_func)(Array<Float>&, Array<Float> const&,
+                                         Array<Float> const&, GT const&);
+      typedef void (*_pre_post_func)(Array<Float> const&,Array<Float>&,
+                                     const InteractionParameter*);
+      typedef void (*_kernel_single_func)(Array<Float> const&,
+                    const InteractionParameter*,float*);
+      typedef void (*_kernel_both_func)(Array<Float> const&,
+                    const InteractionParameter*,float*,float*);
+
+      void (*_allocate)(Array<Float>&,Array<Float>&,FVType&,unsigned int);
+      _distance_sq_func _distance_sq;
+      _pre_post_func    _pre_2_post_for_e;
+      _pre_post_func    _pre_2_post_for_g;
+      _pre_post_func    _pre_2_post_for_eg;
+      _kernel_single_func   _efunc;
+      _kernel_single_func   _gfunc;
+      _kernel_both_func     _egfunc;
+      void (*_E)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
+                 FVType&, Array<Type*> const&,const InteractionParameter*,
+                 GT const&,double&,
+                 _distance_sq_func,_pre_post_func,_kernel_single_func);
+      void (*_G)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
+                 FVType&,Array<Type*> const&,const InteractionParameter*,
+                 GT const&,DVType&,
+                 _distance_sq_func,_pre_post_func,_kernel_single_func);
+      void (*_EG)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
+                  FVType&,Array<Type*> const&,const InteractionParameter*,
+                  GT const&,double&,DVType&,
+                 _distance_sq_func,_pre_post_func,_kernel_both_func);
 
     public:
 
-      InteractionFunction() : _tag(InteractionName::Unknown), _pre(), _post(),
-                              _vec(), _neighbor(),
-                              _status(InteractionFuncDataState::NotReady) {}
-      InteractionFunction(const Type& F)
-        : _tag(F._tag), _pre(F._pre), _post(F._post), _vec(F._vec),
-          _neighbor(), _status(InteractionFuncDataState::NotReady) {}
+      InteractionFunction()
+        : _tag(InteractionName::Unknown), _pre(), _post(), _vec(), _neighbor(),
+          _status(InteractionFuncDataState::NotReady),
+          _allocate(nullptr), _distance_sq(nullptr),
+          _pre_2_post_for_e(nullptr),_pre_2_post_for_g(nullptr),
+          _pre_2_post_for_eg(nullptr), _efunc(nullptr),_gfunc(nullptr),
+          _egfunc(nullptr),_E(nullptr), _G(nullptr),_EG(nullptr) {}
+      InteractionFunction(const Type& F) : InteractionFunction() {
+        imprint(F); operator=(F);
+      }
       InteractionFunction(Type&& F) : InteractionFunction() { swap(F); }
-      virtual ~InteractionFunction() { reset(); }
+      ~InteractionFunction() { reset(); }
 
       operator bool() const {
-        return _tag != InteractionName::Unknown && (bool)_pre &&
-               (bool)_post && (bool)_vec;
+        return _tag != InteractionName::Unknown &&
+               (bool)_pre && (bool)_post && (bool)_vec &&
+               _allocate!=nullptr && _distance_sq!=nullptr &&
+               _pre_2_post_for_e!=nullptr && _pre_2_post_for_g!=nullptr &&
+               _pre_2_post_for_eg!=nullptr && _efunc!=nullptr &&
+               _gfunc!=nullptr && _egfunc!=nullptr && _E!=nullptr &&
+               _G!=nullptr && _EG.nullptr;
       }
       InteractionName Name() const { return _tag; }
       void reset() {
@@ -53,6 +91,17 @@ namespace mysimulator {
         _post.reset();
         _pre.reset();
         _tag = InteractionName::Unknown;
+        _allocate = nullptr;
+        _distance_sq = nullptr;
+        _pre_2_post_for_e   = nullptr;
+        _pre_2_post_for_g   = nullptr;
+        _pre_2_post_for_eg  = nullptr;
+        _efunc    = nullptr;
+        _gfunc    = nullptr;
+        _egfunc   = nullptr;
+        _E    = nullptr;
+        _G    = nullptr;
+        _EG   = nullptr;
       }
 
       Type& operator=(const Type& F) {
@@ -66,6 +115,19 @@ namespace mysimulator {
         return *this;
       }
 
+      void allocate(InteractionName tag) {
+        assert(tag!=InteractionName::Unknown);
+        reset();
+        _tag=tag;
+        switch(_tag) {  // not implemented
+          case InteractionName::PairHarmonic:
+            //_allocate=_pair_harmonic_allocate<DIM>; break;
+          default:
+            fprintf(stderr,"No Implemented!\n");
+        }
+        if(_allocate!=nullptr) _allocate(_pre,_post,_vec,DIM);
+      }
+      void imprint(const Type& F) { allocate(F.Name()); }
       void swap(Type& F) {
         std::swap(_tag,F._tag);
         std::swap(_pre,F._pre);
@@ -75,27 +137,31 @@ namespace mysimulator {
         std::swap(_status,F._status);
       }
 
-      virtual void SetNeighbors(Type* NB=nullptr,...) { assert(NB!=nullptr); }
-      virtual void allocate() = 0;
-      virtual void E(FXType const&, Array<UInt> const&,
-                     const InteractionParameter*, GT const&, double&) =0;
-      virtual void G(FXType const&, Array<UInt> const&,
-                     const InteractionParameter*, GT const&, DXType&) = 0;
-      virtual void EG(FXType const&, Array<UInt> const&,
-                      const InteractionParameter*, GT const&,
-                      double&, DXType&) = 0;
+      void E(FVType const& X,Array<UInt> const& ID,
+             const InteractionParameter* P, GT const& Geo, double& Energy) {
+        assert(_E!=nullptr);
+        _E(X,ID,_pre,_post,_vec,_neighbor,P,Geo,Energy,
+           _distance_sq,_pre_2_post_for_e,_efunc);
+      }
+
+      void G(FVType const& X,Array<UInt> const ID,
+             const InteractionParameter* P, GT const& Geo, DVType& Gradient) {
+        assert(_G!=nullptr);
+        _G(X,ID,_pre,_post,_vec,_neighbor,P,Geo,Gradient,
+           _distance_sq,_pre_2_post_for_g,_gfunc);
+      }
+      void EG(FVType const& X, Array<UInt> const& ID,
+              const InteractionParameter* P, GT const& Geo, double& Energy,
+              DVType& Gradient) {
+        assert(_EG!=nullptr);
+        _EG(X,ID,_pre,_post,_vec,_neighbor,P,Geo,Gradient,
+            _distance_sq,_pre_2_post_for_eg,_egfunc);
+      }
 
   };
 
-}
-
-namespace std {
-
   template <typename GT,unsigned int DIM>
-  void swap(mysimulator::InteractionFunction<GT,DIM>& F1,
-            mysimulator::InteractionFunction<GT,DIM>& F2) {
-    F1.swap(F2);
-  }
+  const ArrayKernelName InteractionFunction<GT,DIM>::_VForm;
 
 }
 
