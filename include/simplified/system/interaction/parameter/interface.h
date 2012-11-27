@@ -4,6 +4,10 @@
 
 #include "array/interface.h"
 #include "system/interaction/name.h"
+#include "system/interaction/parameter/pairwise/harmonic/_allocate.h"
+#include "system/interaction/parameter/pairwise/harmonic/_build.h"
+#include "system/interaction/parameter/pairwise/lj612/_allocate.h"
+#include "system/interaction/parameter/pairwise/lj612/_build.h"
 
 namespace mysimulator {
 
@@ -14,11 +18,14 @@ namespace mysimulator {
       typedef InteractionParameter  Type;
       typedef unsigned int size_type;
 
-    protected:
+    private:
 
       InteractionName   _tag;
       Array<Double>     _FParam;
       Array<Int>        _IParam;
+
+      void (*_allocate)(Array<Double>&,Array<Int>&);
+      void (*_build)(Array<Double>&,Array<Int>&);
 
     public:
 
@@ -42,6 +49,8 @@ namespace mysimulator {
         _tag=InteractionName::Unknown;
         _FParam.reset();
         _IParam.reset();
+        _allocate=nullptr;
+        _build=nullptr;
       }
 
       Type& operator=(const Type& P) {
@@ -53,14 +62,33 @@ namespace mysimulator {
         return *this;
       }
 
+      void allocate(InteractionName tag) {
+        reset();
+        _tag=tag;
+        switch(tag) {
+          case PairHarmonic:
+            _allocate=_allocate_pair_harmonic;
+            _build=_build_pair_harmonic;
+            break;
+          case PairLJ612:
+            _allocate=_allocate_pair_lj612;
+            _build=_build_pair_lj612;
+            break;
+          default:
+            fprintf(stderr,"No Implemented!\n");
+        }
+        if(_allocate!=nullptr) _allocate(_FParam,_IParam);
+      }
       void swap(Type& P) {
         std::swap(_tag,P._tag);
         std::swap(_FParam,P._FParam);
         std::swap(_IParam,P._IParam);
       }
 
-      virtual void allocate() = 0;
-      virtual void build() = 0;
+      void build() {
+        assert(_build!=nullptr);
+        _build(_FParam,_IParam);
+      }
 
   };
 
@@ -71,25 +99,6 @@ namespace std {
   void swap(mysimulator::InteractionParameter& P1,
             mysimulator::InteractionParameter& P2) {
     P1.swap(P2);
-  }
-
-}
-
-#include "system/interaction/parameter/pairwise/harmonic/interface.h"
-#include "system/interaction/parameter/pairwise/lj612/interface.h"
-
-namespace mysimulator {
-
-  void Introduce(InteractionParameter*& P, const InteractionName FN) {
-    if(P!=NULL) { delete P; P=NULL; }
-    switch(FN) {
-      case InteractionName::PairHarmonic: P=new PairHarmonicParameter;  break;
-      case InteractionName::PairLJ612: P=new PairLJ612Parameter; break;
-      case InteractionName::Unknown:
-      default:
-        fprintf(stderr,"Unknown Interaction!\n");
-    }
-    if(P!=NULL) P->allocate();
   }
 
 }

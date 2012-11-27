@@ -4,10 +4,17 @@
 
 namespace mysimulator {
 
-  enum class PairwisePreName {
-    PairDistanceSQ = 0,
-    PairwiseNumberPre = 1
+  class PairwisePreName {
+
+    public:
+
+      static const unsigned int PairDistanceSQ    = 0;
+      static const unsigned int PairwiseNumberPre = 1;
+
   };
+
+  const unsigned int PairwisePreName::PairDistanceSQ;
+  const unsigned int PairwisePreName::PairwiseNumberPre;
 
 }
 

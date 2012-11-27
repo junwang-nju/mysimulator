@@ -34,13 +34,14 @@ namespace mysimulator {
       typedef float (*_distance_sq_func)(Array<Float>&, Array<Float> const&,
                                          Array<Float> const&, GT const&);
       typedef void (*_pre_post_func)(Array<Float> const&,Array<Float>&,
-                                     const InteractionParameter*);
+                                     InteractionFuncDataState&,
+                                     const InteractionParameter&);
       typedef void (*_kernel_single_func)(Array<Float> const&,
-                    const InteractionParameter*,float*);
+                    const InteractionParameter&,float*);
       typedef void (*_kernel_both_func)(Array<Float> const&,
-                    const InteractionParameter*,float*,float*);
+                    const InteractionParameter&,float*,float*);
 
-      void (*_allocate)(Array<Float>&,Array<Float>&,FVType&,unsigned int);
+      void (*_allocate)(Array<Float>&,Array<Float>&,FVType&);
       _distance_sq_func _distance_sq;
       _pre_post_func    _pre_2_post_for_e;
       _pre_post_func    _pre_2_post_for_g;
@@ -49,23 +50,23 @@ namespace mysimulator {
       _kernel_single_func   _gfunc;
       _kernel_both_func     _egfunc;
       void (*_E)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
-                 FVType&, Array<Type*> const&,InteractionFuncDataState,
-                 const InteractionParameter*,GT const&,double&,
+                 FVType&, Array<Type*> const&,InteractionFuncDataState&,
+                 const InteractionParameter&,GT const&,double&,
                  _distance_sq_func,_pre_post_func,_kernel_single_func);
       void (*_G)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
-                 FVType&,Array<Type*> const&,InteractionFuncDataState,
-                 const InteractionParameter*,GT const&,DVType&,
+                 FVType&,Array<Type*> const&,InteractionFuncDataState&,
+                 const InteractionParameter&,GT const&,DVType&,
                  _distance_sq_func,_pre_post_func,_kernel_single_func);
       void (*_EG)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
-                  FVType&,Array<Type*> const&,InteractionFuncDataState,
-                  const InteractionParameter*,GT const&,double&,DVType&,
+                  FVType&,Array<Type*> const&,InteractionFuncDataState&,
+                  const InteractionParameter&,GT const&,double&,DVType&,
                  _distance_sq_func,_pre_post_func,_kernel_both_func);
 
     public:
 
       InteractionFunction()
         : _tag(InteractionName::Unknown), _pre(), _post(), _vec(), _neighbor(),
-          _status(InteractionFuncDataState::NotReady),
+          _status(),
           _allocate(nullptr), _distance_sq(nullptr),
           _pre_2_post_for_e(nullptr),_pre_2_post_for_g(nullptr),
           _pre_2_post_for_eg(nullptr), _efunc(nullptr),_gfunc(nullptr),
@@ -87,7 +88,7 @@ namespace mysimulator {
       }
       InteractionName Name() const { return _tag; }
       void reset() {
-        _status = InteractionFuncDataState::NotReady;
+        _status.reset();
         _neighbor.reset();
         _vec.reset();
         _post.reset();
@@ -113,7 +114,7 @@ namespace mysimulator {
         _pre = F._pre;
         _post = F._post;
         _vec = F._vec;
-        _status = InteractionFuncDataState::NotReady;
+        _status.reset();
         return *this;
       }
 
@@ -140,20 +141,20 @@ namespace mysimulator {
       }
 
       void E(FVType const& X,Array<UInt> const& ID,
-             const InteractionParameter* P, GT const& Geo, double& Energy) {
+             const InteractionParameter& P, GT const& Geo, double& Energy) {
         assert(_E!=nullptr);
         _E(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Energy,
            _distance_sq,_pre_2_post_for_e,_efunc);
       }
 
       void G(FVType const& X,Array<UInt> const ID,
-             const InteractionParameter* P, GT const& Geo, DVType& Gradient) {
+             const InteractionParameter& P, GT const& Geo, DVType& Gradient) {
         assert(_G!=nullptr);
         _G(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Gradient,
            _distance_sq,_pre_2_post_for_g,_gfunc);
       }
       void EG(FVType const& X, Array<UInt> const& ID,
-              const InteractionParameter* P, GT const& Geo, double& Energy,
+              const InteractionParameter& P, GT const& Geo, double& Energy,
               DVType& Gradient) {
         assert(_EG!=nullptr);
         _EG(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Gradient,
