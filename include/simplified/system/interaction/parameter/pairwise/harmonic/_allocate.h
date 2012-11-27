@@ -7,7 +7,7 @@
 
 namespace mysimulator {
 
-  void _allocate_pair_harmonic(Array<Double>& _FParam, Array<Int>>& _IParam) {
+  void _allocate_param_pair_harmonic(Array<Double>& _FParam, Array<Int>&) {
     _FParam.allocate(PairHarmonicParameterName::NumberParameter);
   }
 

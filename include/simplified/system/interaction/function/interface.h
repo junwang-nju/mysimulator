@@ -6,9 +6,20 @@
 #include "system/interaction/name.h"
 #include "system/interaction/parameter/interface.h"
 #include "system/interaction/function/data-state.h"
+#include "geometry/distance/calc.h"
 #include "array-2d/interface.h"
 
 #include "system/interaction/function/pairwise/_E.h"
+#include "system/interaction/function/pairwise/_G.h"
+#include "system/interaction/function/pairwise/_EG.h"
+
+#include "system/interaction/function/pairwise/harmonic/_allocate.h"
+#include "system/interaction/function/pairwise/harmonic/_pre_2_post_for_e.h"
+#include "system/interaction/function/pairwise/harmonic/_pre_2_post_for_g.h"
+#include "system/interaction/function/pairwise/harmonic/_pre_2_post_for_eg.h"
+#include "system/interaction/function/pairwise/harmonic/_e_func.h"
+#include "system/interaction/function/pairwise/harmonic/_g_func.h"
+#include "system/interaction/function/pairwise/harmonic/_eg_func.h"
 
 namespace mysimulator {
 
@@ -31,8 +42,9 @@ namespace mysimulator {
 
     private:
 
-      typedef float (*_distance_sq_func)(Array<Float>&, Array<Float> const&,
-                                         Array<Float> const&, GT const&);
+      typedef float (*_distance_sq_func)(
+          Array<Float,_VForm>&,Array<Float,_VForm> const&,
+          Array<Float,_VForm> const&, GT const&);
       typedef void (*_pre_post_func)(Array<Float> const&,Array<Float>&,
                                      InteractionFuncDataState&,
                                      const InteractionParameter&);
@@ -122,9 +134,22 @@ namespace mysimulator {
         assert(tag!=InteractionName::Unknown);
         reset();
         _tag=tag;
-        switch(_tag) {  // not implemented
+        switch(_tag) {
           case InteractionName::PairHarmonic:
-            //_allocate=_pair_harmonic_allocate<DIM>; break;
+            _allocate=_allocate_func_pair_harmonic<DIM>;
+            _distance_sq=
+              DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
+              float,_VForm,float,_VForm,float,_VForm,GT>;
+            _pre_2_post_for_e=_pre_2_post_for_e_pair_harmonic;
+            _pre_2_post_for_g=_pre_2_post_for_g_pair_harmonic;
+            _pre_2_post_for_eg=_pre_2_post_for_eg_pair_harmonic;
+            _efunc=_efunc_pair_harmonic;
+            _gfunc=_gfunc_pair_harmonic;
+            _egfunc=_eg_func_pair_harmonic;
+            _E=_E_pairwise;
+            _G=_G_pairwise;
+            _EG=_EG_pairwise;
+            break;
           default:
             fprintf(stderr,"No Implemented!\n");
         }
@@ -138,6 +163,17 @@ namespace mysimulator {
         std::swap(_vec,F._vec);
         std::swap(_neighbor,F._neighbor);
         std::swap(_status,F._status);
+        std::swap(_allocate,F._allocate);
+        std::swap(_distance_sq,F._distance_sq);
+        std::swap(_pre_2_post_for_e,F._pre_2_post_for_e);
+        std::swap(_pre_2_post_for_g,F._pre_2_post_for_g);
+        std::swap(_pre_2_post_for_eg,F._pre_2_post_for_eg);
+        std::swap(_efunc,F._efunc);
+        std::swap(_gfunc,F._gfunc);
+        std::swap(_egfunc,F._egfunc);
+        std::swap(_E,F._E);
+        std::swap(_G,F._G);
+        std::swap(_EG,F._EG);
       }
 
       void E(FVType const& X,Array<UInt> const& ID,

@@ -33,7 +33,7 @@ namespace mysimulator {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)_vec);
-    assert(P!=NULL);
+    assert((bool)P);
     assert((bool)Geo);
     assert((bool)Grad);
     assert(_distance_sq!=nullptr);

@@ -3,7 +3,6 @@
 #define _System_Interaction_Function_Pairwise_Harmonic_E_Func_H_
 
 #include "system/interaction/parameter/interface.h"
-#include "system/interaction/parameter/pairwise/harmonic/name.h"
 #include "system/interaction/function/pairwise/harmonic/post-name.h"
 
 namespace mysimulator {

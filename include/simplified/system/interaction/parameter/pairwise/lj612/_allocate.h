@@ -7,7 +7,7 @@
 
 namespace mysimulator {
 
-  void _allocate_pair_lj612(Array<Double>& _FParam,Array<Int>&) {
+  void _allocate_param_pair_lj612(Array<Double>& _FParam,Array<Int>&) {
     _FParam.allocate(PairLJ612ParameterName::NumberParameter);
   }
 

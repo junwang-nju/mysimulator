@@ -66,12 +66,12 @@ namespace mysimulator {
         reset();
         _tag=tag;
         switch(tag) {
-          case PairHarmonic:
-            _allocate=_allocate_pair_harmonic;
+          case InteractionName::PairHarmonic:
+            _allocate=_allocate_param_pair_harmonic;
             _build=_build_pair_harmonic;
             break;
-          case PairLJ612:
-            _allocate=_allocate_pair_lj612;
+          case InteractionName::PairLJ612:
+            _allocate=_allocate_param_pair_lj612;
             _build=_build_pair_lj612;
             break;
           default:
