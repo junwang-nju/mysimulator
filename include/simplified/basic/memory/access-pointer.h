@@ -74,7 +74,9 @@ namespace mysimulator {
 
       pointer get() const { return ptr; }
       reference operator*() { return *ptr; }
+      const_reference operator*() const { return *ptr; }
       pointer operator->() { return ptr; }
+      const_pointer operator->() const { return ptr; }
       reference operator[](int i) { return *(ptr+i); }
       const_reference operator[](int i) const { return *(ptr+i); }
 

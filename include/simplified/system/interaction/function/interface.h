@@ -21,9 +21,17 @@
 #include "system/interaction/function/pairwise/harmonic/_g_func.h"
 #include "system/interaction/function/pairwise/harmonic/_eg_func.h"
 
+#include "system/interaction/function/pairwise/lj612/_allocate.h"
+#include "system/interaction/function/pairwise/lj612/_pre_2_post_for_e.h"
+#include "system/interaction/function/pairwise/lj612/_pre_2_post_for_g.h"
+#include "system/interaction/function/pairwise/lj612/_pre_2_post_for_eg.h"
+#include "system/interaction/function/pairwise/lj612/_e_func.h"
+#include "system/interaction/function/pairwise/lj612/_g_func.h"
+#include "system/interaction/function/pairwise/lj612/_eg_func.h"
+
 namespace mysimulator {
 
-  template <typename GT,unsigned int DIM>
+  template <typename GT,unsigned int DIM=GT::Dimension>
   class InteractionFunction {
 
     public:
@@ -145,7 +153,22 @@ namespace mysimulator {
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_harmonic;
             _efunc=_efunc_pair_harmonic;
             _gfunc=_gfunc_pair_harmonic;
-            _egfunc=_eg_func_pair_harmonic;
+            _egfunc=_egfunc_pair_harmonic;
+            _E=_E_pairwise;
+            _G=_G_pairwise;
+            _EG=_EG_pairwise;
+            break;
+          case InteractionName::PairLJ612:
+            _allocate=_allocate_func_pair_lj612<DIM>;
+            _distance_sq=
+              DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
+              float,_VForm,float,_VForm,float,_VForm,GT>;
+            _pre_2_post_for_e=_pre_2_post_for_e_pair_lj612;
+            _pre_2_post_for_g=_pre_2_post_for_g_pair_lj612;
+            _pre_2_post_for_eg=_pre_2_post_for_eg_pair_lj612;
+            _efunc=_efunc_pair_lj612;
+            _gfunc=_gfunc_pair_lj612;
+            _egfunc=_egfunc_pair_Lj612;
             _E=_E_pairwise;
             _G=_G_pairwise;
             _EG=_EG_pairwise;
@@ -196,6 +219,8 @@ namespace mysimulator {
         _EG(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Gradient,
             _distance_sq,_pre_2_post_for_eg,_egfunc);
       }
+
+      void ClearStatus() { _status.reset(); }
 
   };
 

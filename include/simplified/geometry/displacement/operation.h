@@ -8,7 +8,7 @@
 
 namespace mysimulator {
 
-  template <SystemKindName KA, SystemKindName KB>
+  template <SystemKindName KA, SystemKindName KB, unsigned int DIM>
   class __Displacement {
 
     public:
@@ -18,14 +18,14 @@ namespace mysimulator {
                 typename T2,ArrayKernelName K2>
       static inline
       void Calc(Array<Intrinsic<T>,K>&,Array<Intrinsic<T1>,K1> const&,
-                Array<Intrinsic<T2>,K2> const&, FreeSpace const&) {
+                Array<Intrinsic<T2>,K2> const&, FreeSpace<DIM> const&) {
         assert("Not Implemented!\n");
       }
 
   };
 
-  template <>
-  class __Displacement<SystemKindName::Particle,SystemKindName::Particle> {
+  template <unsigned int DIM>
+  class __Displacement<SystemKindName::Particle,SystemKindName::Particle,DIM> {
 
     public:
 
@@ -34,7 +34,7 @@ namespace mysimulator {
                 typename T2,ArrayKernelName K2>
       static inline
       void Calc(Array<Intrinsic<T>,K>& A,Array<Intrinsic<T1>,K1> const& A1,
-                Array<Intrinsic<T2>,K2> const& A2, FreeSpace const&) {
+                Array<Intrinsic<T2>,K2> const& A2, FreeSpace<DIM> const&) {
         assert((bool)A);
         assert((bool)A1);
         assert((bool)A2);

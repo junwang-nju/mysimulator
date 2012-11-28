@@ -12,7 +12,7 @@ namespace mysimulator {
   void DisplacementCalc(
       Array<Intrinsic<T>,K>& A, Array<Intrinsic<T1>,K1> const& A1,
       Array<Intrinsic<T2>,K2> const& A2, BdType const& Bdy) {
-    __Displacement<KA,KB>::Calc(A,A1,A2,Bdy);
+    __Displacement<KA,KB,BdType::Dimension>::Calc(A,A1,A2,Bdy);
   }
 
 }

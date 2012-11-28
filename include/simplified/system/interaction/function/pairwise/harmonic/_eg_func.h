@@ -7,7 +7,7 @@
 
 namespace mysimulator {
 
-  void _eg_func_pair_harmonic(
+  void _egfunc_pair_harmonic(
       Array<Float> const& _post, const InteractionParameter& P,
       float* Func, float* Diff) {
     assert((bool)_post);

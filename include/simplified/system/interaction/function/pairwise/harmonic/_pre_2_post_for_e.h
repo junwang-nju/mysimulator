@@ -6,7 +6,6 @@
 #include "system/interaction/function/data-state.h"
 #include "system/interaction/function/pairwise/harmonic/pre-name.h"
 #include "system/interaction/function/pairwise/harmonic/post-name.h"
-#include "array/interface.h"
 
 namespace mysimulator {
 
