@@ -21,7 +21,7 @@ namespace mysimulator {
       Type& operator=(const Type&) { return *this; }
 
       operator bool() const { return true; }
-      void reset();
+      void reset() {}
 
       void allocate() {}
 
