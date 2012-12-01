@@ -11,8 +11,8 @@ namespace mysimulator {
       Array<Float> const& _post,const InteractionParameter& P, float* Diff) {
     assert((bool)_post);
     assert((bool)P);
-    *Diff=P[PairCore12ParameterName::TwlfEqStrength] *
-          _post[PairCore12PostName::PairCore12IvDistance14];
+    *Diff= - P[PairCore12ParameterName::TwlfEqStrength] *
+             _post[PairCore12PostName::PairCore12IvDistance14];
   }
 
 }

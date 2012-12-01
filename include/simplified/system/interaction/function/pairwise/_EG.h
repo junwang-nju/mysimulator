@@ -52,7 +52,7 @@ namespace mysimulator {
     _egfunc(_post,P,&ee,&ef);
     Energy+=ee;
     _vec[PairwiseVecName::PairScaledBondVecIJ] = 
-        ef*_vec[PairwiseVecName::PairBondVecIJ];
+        Float(ef)*_vec[PairwiseVecName::PairBondVecIJ];
     Grad[I]+=_vec[PairwiseVecName::PairScaledBondVecIJ];
     Grad[J]-=_vec[PairwiseVecName::PairScaledBondVecIJ];
   }

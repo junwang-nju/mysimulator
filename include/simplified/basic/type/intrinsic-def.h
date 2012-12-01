@@ -47,6 +47,7 @@ namespace mysimulator {
         return *this;
       }
 
+      operator bool() const { return true; }
       operator T&() { return (T&)_data; }
       operator T const&() const { return (T const&)_data; }
       T* operator &() { return &_data; }

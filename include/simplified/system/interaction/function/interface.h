@@ -239,7 +239,7 @@ namespace mysimulator {
               const InteractionParameter& P, GT const& Geo, double& Energy,
               DVType& Gradient) {
         assert(_EG!=nullptr);
-        _EG(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Gradient,
+        _EG(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Energy,Gradient,
             _distance_sq,_pre_2_post_for_eg,_egfunc);
       }
 

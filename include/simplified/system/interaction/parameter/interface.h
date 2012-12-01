@@ -79,6 +79,7 @@ namespace mysimulator {
           case InteractionName::PairCore12:
             _allocate=_allocate_param_pair_core12;
             _build=_build_pair_core12;
+            break;
           default:
             fprintf(stderr,"No Implemented!\n");
         }
