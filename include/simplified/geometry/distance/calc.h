@@ -27,7 +27,7 @@ namespace mysimulator {
             typename T2,ArrayKernelName K2,typename BdType>
   T DistanceSQ(Array<Intrinsic<T>,K>& Dsp, Array<Intrinsic<T1>,K1> const& B,
                Array<Intrinsic<T2>,K2> const& C, BdType const& Bdy) {
-    DisplacementCalc<KA,KB,BdType::Dimension>(Dsp,B,C,Bdy);
+    DisplacementCalc<KA,KB>(Dsp,B,C,Bdy);
     return __displacement_2_distance_sq(Dsp);
   }
 
@@ -36,7 +36,7 @@ namespace mysimulator {
             typename T2,ArrayKernelName K2,typename BdType>
   T Distance(Array<Intrinsic<T>,K>& Dsp, Array<Intrinsic<T1>,K1> const& B,
              Array<Intrinsic<T2>,K2> const& C, BdType const& Bdy) {
-    DisplacementCalc<KA,KB,BdType::Dimension>(Dsp,B,C,Bdy);
+    DisplacementCalc<KA,KB>(Dsp,B,C,Bdy);
     return __displacement_2_distance(Dsp);
   }
 

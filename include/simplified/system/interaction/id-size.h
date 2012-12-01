@@ -11,7 +11,7 @@ namespace mysimulator {
       case InteractionName::PairHarmonic:   return 2;
       case InteractionName::PairLJ612:      return 2;
       case InteractionName::PairLJ612Cut:   return 2;
-      case InteractionName::Core12:         return 2;
+      case InteractionName::PairCore12:     return 2;
       default:
         fprintf(stderr,"Unknown Interaction!\n");
     }

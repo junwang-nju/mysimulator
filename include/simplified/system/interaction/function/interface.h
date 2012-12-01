@@ -29,6 +29,14 @@
 #include "system/interaction/function/pairwise/lj612/_g_func.h"
 #include "system/interaction/function/pairwise/lj612/_eg_func.h"
 
+#include "system/interaction/function/pairwise/core12/_allocate.h"
+#include "system/interaction/function/pairwise/core12/_pre_2_post_for_e.h"
+#include "system/interaction/function/pairwise/core12/_pre_2_post_for_g.h"
+#include "system/interaction/function/pairwise/core12/_pre_2_post_for_eg.h"
+#include "system/interaction/function/pairwise/core12/_e_func.h"
+#include "system/interaction/function/pairwise/core12/_g_func.h"
+#include "system/interaction/function/pairwise/core12/_eg_func.h"
+
 namespace mysimulator {
 
   template <typename GT,unsigned int DIM=GT::Dimension>
@@ -154,29 +162,44 @@ namespace mysimulator {
             _efunc=_efunc_pair_harmonic;
             _gfunc=_gfunc_pair_harmonic;
             _egfunc=_egfunc_pair_harmonic;
-            _E=_E_pairwise;
-            _G=_G_pairwise;
-            _EG=_EG_pairwise;
+            _E=_E_pairwise<GT,DIM>;
+            _G=_G_pairwise<GT,DIM>;
+            _EG=_EG_pairwise<GT,DIM>;
             break;
           case InteractionName::PairLJ612:
             _allocate=_allocate_func_pair_lj612<DIM>;
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
-              float,_VForm,float,_VForm,float,_VForm,GT>;
+                         float,_VForm,float,_VForm,float,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_lj612;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_lj612;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_lj612;
             _efunc=_efunc_pair_lj612;
             _gfunc=_gfunc_pair_lj612;
             _egfunc=_egfunc_pair_Lj612;
-            _E=_E_pairwise;
-            _G=_G_pairwise;
-            _EG=_EG_pairwise;
+            _E=_E_pairwise<GT,DIM>;
+            _G=_G_pairwise<GT,DIM>;
+            _EG=_EG_pairwise<GT,DIM>;
+            break;
+          case InteractionName::PairCore12:
+            _allocate=_allocate_func_pair_core12<DIM>;
+            _distance_sq=
+              DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
+                         float,_VForm,float,_VForm,float,_VForm,GT>;
+            _pre_2_post_for_e=_pre_2_post_for_e_pair_core12;
+            _pre_2_post_for_g=_pre_2_post_for_g_pair_core12;
+            _pre_2_post_for_eg=_pre_2_post_for_eg_pair_core12;
+            _efunc=_efunc_pair_core12;
+            _gfunc=_gfunc_pair_core12;
+            _egfunc=_egfunc_pair_core12;
+            _E=_E_pairwise<GT,DIM>;
+            _G=_G_pairwise<GT,DIM>;
+            _EG=_EG_pairwise<GT,DIM>;
             break;
           default:
             fprintf(stderr,"No Implemented!\n");
         }
-        if(_allocate!=nullptr) _allocate(_pre,_post,_vec,DIM);
+        if(_allocate!=nullptr) _allocate(_pre,_post,_vec);
       }
       void imprint(const Type& F) { allocate(F.Name()); }
       void swap(Type& F) {

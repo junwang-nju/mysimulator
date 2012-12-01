@@ -17,15 +17,15 @@ namespace mysimulator {
       typedef System<GT,DIM>  Type;
       static const ArrayKernelName _VForm = __system_vec_type<DIM>::NAME;
 
-    private:
+//    private:
 
       Array<SystemKindName> _kind;
       Array2D<Float,ArrayKernelName::SSE,_VForm>  _X;
       Array2D<Float,ArrayKernelName::SSE,_VForm>  _V;
       Array2D<Double,ArrayKernelName::SSE,_VForm> _G;
-      access_ptr<Double> _E;
+      access_ptr<double> _E;
       Array<SystemInteraction<GT,DIM>>  _Interaction;
-      Array2D<UInt,ArrayKernelName::SSE>  _IGroup;
+      Array2D<UInt>  _IGroup;
 
     public:
 

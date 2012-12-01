@@ -8,7 +8,7 @@ namespace mysimulator {
     PairHarmonic,
     PairLJ612,
     PairLJ612Cut,
-    Core12,
+    PairCore12,
     Unknown
   };
 

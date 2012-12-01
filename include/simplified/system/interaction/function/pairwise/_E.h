@@ -21,8 +21,10 @@ namespace mysimulator {
       Array<InteractionFunction<GT,DIM>*> const& _neighbor,
       InteractionFuncDataState& _status,
       const InteractionParameter& P, GT const& Geo, double& Energy,
-      float (*_distance_sq)(Array<Float>&,Array<Float> const&,
-                            Array<Float> const&,GT const&),
+      float (*_distance_sq)(Array<Float,__system_vec_type<DIM>::NAME>&,
+                            Array<Float,__system_vec_type<DIM>::NAME> const&,
+                            Array<Float,__system_vec_type<DIM>::NAME> const&,
+                            GT const&),
       void (*_pre_2_post_for_e)(Array<Float> const&,Array<Float>&,
                                 InteractionFuncDataState&,
                                 const InteractionParameter&),
@@ -37,7 +39,7 @@ namespace mysimulator {
     assert(_distance_sq!=nullptr);
     assert(_pre_2_post_for_e!=nullptr);
     assert(_efunc!=nullptr);
-    if( _status.IsReady4Energy() ) {
+    if( !_status.IsReady4Energy() ) {
       unsigned int I=ID[0], J=ID[1];
       _pre[PairwisePreName::PairDistanceSQ] =
         _distance_sq(_vec[PairwiseVecName::PairBondVecIJ],X[I],X[J],Geo);

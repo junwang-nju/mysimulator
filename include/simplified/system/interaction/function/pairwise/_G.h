@@ -22,8 +22,10 @@ namespace mysimulator {
       InteractionFuncDataState& _status,
       const InteractionParameter& P, GT const& Geo,
       Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& Grad,
-      float (*_distance_sq)(Array<Float>&,Array<Float> const&,
-                            Array<Float> const&,GT const&),
+      float (*_distance_sq)(Array<Float,__system_vec_type<DIM>::NAME>&,
+                            Array<Float,__system_vec_type<DIM>::NAME> const&,
+                            Array<Float,__system_vec_type<DIM>::NAME> const&,
+                            GT const&),
       void (*_pre_2_post_for_g)(Array<Float> const&,Array<Float>&,
                                 InteractionFuncDataState&,
                                 const InteractionParameter&),
@@ -40,7 +42,7 @@ namespace mysimulator {
     assert(_pre_2_post_for_g!=nullptr);
     assert(_gfunc!=nullptr);
     unsigned int I=ID[0], J=ID[1];
-    if( _status.IsReady4Gradient() ) {
+    if( !_status.IsReady4Gradient() ) {
       _pre[PairwisePreName::PairDistanceSQ] =
         _distance_sq(_vec[PairwiseVecName::PairBondVecIJ],X[I],X[J],Geo);
       _pre_2_post_for_g(_pre,_post,_status,P);
