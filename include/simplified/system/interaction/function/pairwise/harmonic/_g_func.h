@@ -8,11 +8,11 @@
 namespace mysimulator {
 
   void _gfunc_pair_harmonic(
-      Array<Float> const& _post, const InteractionParameter& P, float* Diff) {
+      Array<Double> const& _post, const InteractionParameter& P, double* Diff) {
     assert((bool)_post);
     assert((bool)P);
-    float Dd=1.-P[PairHarmonicParameterName::EqLength]*
-                _post[PairHarmonicPostName::PairHarmonicIvLength];
+    double Dd=1.-P[PairHarmonicParameterName::EqLength]*
+                 _post[PairHarmonicPostName::PairHarmonicIvLength];
     *Diff=P[PairHarmonicParameterName::DualEqStrength]*Dd;
   }
 

@@ -8,10 +8,10 @@
 namespace mysimulator {
 
   void _gfunc_pair_lj612(
-      Array<Float> const& _post, const InteractionParameter& P, float *Diff) {
+      Array<Double> const& _post, const InteractionParameter& P, double *Diff) {
     assert((bool)_post);
     assert((bool)P);
-    float tmd=_post[PairLJ612PostName::PairLJ612IvDistance6];
+    double tmd=_post[PairLJ612PostName::PairLJ612IvDistance6];
     *Diff = tmd * _post[PairLJ612PostName::PairLJ612IvDistanceSQ] *
           ( P[PairLJ612ParameterName::DFactorB] -
             P[PairLJ612ParameterName::DFactorA] * tmd);

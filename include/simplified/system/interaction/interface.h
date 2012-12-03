@@ -133,14 +133,15 @@ namespace mysimulator {
         for(unsigned int i=0;i<_Function.size();++i) 
           _Function[i].ClearStatus();
       }
-      void UpdateEnergy(Array2D<Float,ArrayKernelName::SSE,_VForm> const& X) {
+      void UpdateEnergy(Array2D<Double,ArrayKernelName::SSE,_VForm> const& X) {
         assert((bool)X);
         assert((bool)(*this));
         *_Energy = 0;
         for(unsigned int i=0;i<_Function.size();++i)
           _Function[i].E(X,_ID[i],_Parameter[i],_Geo,*_Energy);
       }
-      void UpdateGradient(Array2D<Float,ArrayKernelName::SSE,_VForm> const& X) {
+      void UpdateGradient(
+          Array2D<Double,ArrayKernelName::SSE,_VForm> const& X) {
         assert((bool)X);
         assert((bool)(*this));
         _Gradient = 0;
@@ -148,7 +149,7 @@ namespace mysimulator {
           _Function[i].G(X,_ID[i],_Parameter[i],_Geo,_Gradient);
       }
       void UpdateEnergyGradient(
-          Array2D<Float,ArrayKernelName::SSE,_VForm> const& X) {
+          Array2D<Double,ArrayKernelName::SSE,_VForm> const& X) {
         assert((bool)X);
         assert((bool)(*this));
         *_Energy = 0;

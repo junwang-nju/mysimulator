@@ -15,20 +15,20 @@ namespace mysimulator {
 
   template <typename GT,unsigned int DIM>
   void _E_pairwise(
-      Array2D<Float,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME> const& X,
-      Array<UInt> const& ID, Array<Float>& _pre, Array<Float>& _post,
-      Array2D<Float,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec,
+      Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>const& X,
+      Array<UInt> const& ID, Array<Double>& _pre, Array<Double>& _post,
+      Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec,
       Array<InteractionFunction<GT,DIM>*> const& _neighbor,
       InteractionFuncDataState& _status,
       const InteractionParameter& P, GT const& Geo, double& Energy,
-      float (*_distance_sq)(Array<Float,__system_vec_type<DIM>::NAME>&,
-                            Array<Float,__system_vec_type<DIM>::NAME> const&,
-                            Array<Float,__system_vec_type<DIM>::NAME> const&,
-                            GT const&),
-      void (*_pre_2_post_for_e)(Array<Float> const&,Array<Float>&,
+      double (*_distance_sq)(Array<Double,__system_vec_type<DIM>::NAME>&,
+                             Array<Double,__system_vec_type<DIM>::NAME> const&,
+                             Array<Double,__system_vec_type<DIM>::NAME> const&,
+                             GT const&),
+      void (*_pre_2_post_for_e)(Array<Double> const&,Array<Double>&,
                                 InteractionFuncDataState&,
                                 const InteractionParameter&),
-      void (*_efunc)(Array<Float> const&,const InteractionParameter&,float*)) {
+      void (*_efunc)(Array<Double> const&,const InteractionParameter&,double*)){
     assert((bool)X);
     assert((bool)ID);
     assert((bool)_pre);
@@ -45,7 +45,7 @@ namespace mysimulator {
         _distance_sq(_vec[PairwiseVecName::PairBondVecIJ],X[I],X[J],Geo);
       _pre_2_post_for_e(_pre,_post,_status,P);
     }
-    float ee;
+    double ee;
     _efunc(_post,P,&ee);
     Energy+=ee;
   }

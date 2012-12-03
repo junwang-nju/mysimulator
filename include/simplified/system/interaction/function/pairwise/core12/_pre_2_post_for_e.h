@@ -10,12 +10,12 @@
 namespace mysimulator {
 
   void _pre_2_post_for_e_pair_core12(
-      Array<Float> const& _pre, Array<Float>& _post,
+      Array<Double> const& _pre, Array<Double>& _post,
       InteractionFuncDataState& _status,const InteractionParameter& P) {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)P);
-    float tmd=1./_pre[PairCore12PreName::PairDistanceSQ];
+    double tmd=1./_pre[PairCore12PreName::PairDistanceSQ];
     tmd*=tmd;
     _post[PairCore12PostName::PairCore12IvDistance12]=tmd*tmd*tmd;
     _status.SetReady4Energy();

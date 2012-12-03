@@ -8,13 +8,13 @@
 namespace mysimulator {
 
   void _egfunc_pair_harmonic(
-      Array<Float> const& _post, const InteractionParameter& P,
-      float* Func, float* Diff) {
+      Array<Double> const& _post, const InteractionParameter& P,
+      double* Func, double* Diff) {
     assert((bool)_post);
     assert((bool)P);
-    float Dd=_post[PairHarmonicPostName::PairHarmonicLength] -
-             P[PairHarmonicParameterName::EqLength];
-    float tmd=P[PairHarmonicParameterName::EqStrength]*Dd;
+    double Dd=_post[PairHarmonicPostName::PairHarmonicLength] -
+              P[PairHarmonicParameterName::EqLength];
+    double tmd=P[PairHarmonicParameterName::EqStrength]*Dd;
     *Func=tmd*Dd;
     *Diff=(tmd+tmd)*_post[PairHarmonicPostName::PairHarmonicIvLength];
   }

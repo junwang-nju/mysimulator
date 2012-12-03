@@ -11,12 +11,12 @@
 namespace mysimulator {
 
   void _pre_2_post_for_eg_pair_harmonic(
-      Array<Float> const& _pre, Array<Float>& _post,
+      Array<Double> const& _pre, Array<Double>& _post,
       InteractionFuncDataState& _status,const InteractionParameter& P) {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)P);
-    float tmd=__square_root(_pre[PairHarmonicPreName::PairDistanceSQ]);
+    double tmd=__square_root(_pre[PairHarmonicPreName::PairDistanceSQ]);
     _post[PairHarmonicPostName::PairHarmonicLength] = tmd;
     _post[PairHarmonicPostName::PairHarmonicIvLength] = 1./tmd;
     _status.SetReady4EnergyGradient();

@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   void _gfunc_pair_core12(
-      Array<Float> const& _post,const InteractionParameter& P, float* Diff) {
+      Array<Double> const& _post,const InteractionParameter& P, double* Diff) {
     assert((bool)_post);
     assert((bool)P);
     *Diff= - P[PairCore12ParameterName::TwlfEqStrength] *

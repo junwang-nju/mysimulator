@@ -12,8 +12,8 @@ namespace mysimulator {
 
   template <unsigned int DIM>
   void _allocate_func_pair_lj612(
-      Array<Float>& _pre, Array<Float>& _post,
-      Array2D<Float,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec) {
+      Array<Double>& _pre, Array<Double>& _post,
+      Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec) {
     _pre.allocate(PairLJ612PreName::PairLJ612NumberPre);
     _post.allocate(PairLJ612PostName::PairLJ612NumberPost);
     _vec.allocate(PairLJ612VecName::PairLJ612NumberVec,DIM);

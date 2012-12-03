@@ -8,8 +8,8 @@
 namespace mysimulator {
 
   void _egfunc_pair_core12(
-      Array<Float> const& _post, const InteractionParameter& P,
-      float* Func, float* Diff) {
+      Array<Double> const& _post, const InteractionParameter& P,
+      double* Func, double* Diff) {
     _efunc_pair_core12(_post,P,Func);
     _gfunc_pair_core12(_post,P,Diff);
   }

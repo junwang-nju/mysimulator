@@ -46,30 +46,29 @@ namespace mysimulator {
 
       typedef InteractionFunction<GT,DIM>   Type;
       static const ArrayKernelName _VForm = __system_vec_type<DIM>::NAME;
-      typedef Array2D<Float,ArrayKernelName::SSE,_VForm>  FVType;
       typedef Array2D<Double,ArrayKernelName::SSE,_VForm> DVType;
 
       InteractionName _tag;
-      Array<Float>  _pre;
-      Array<Float>  _post;
-      FVType  _vec;
+      Array<Double>  _pre;
+      Array<Double>  _post;
+      DVType  _vec;
       Array<Type*>  _neighbor;  // cannot be copied
       InteractionFuncDataState _status;
 
     private:
 
-      typedef float (*_distance_sq_func)(
-          Array<Float,_VForm>&,Array<Float,_VForm> const&,
-          Array<Float,_VForm> const&, GT const&);
-      typedef void (*_pre_post_func)(Array<Float> const&,Array<Float>&,
+      typedef double (*_distance_sq_func)(
+          Array<Double,_VForm>&,Array<Double,_VForm> const&,
+          Array<Double,_VForm> const&, GT const&);
+      typedef void (*_pre_post_func)(Array<Double> const&,Array<Double>&,
                                      InteractionFuncDataState&,
                                      const InteractionParameter&);
-      typedef void (*_kernel_single_func)(Array<Float> const&,
-                    const InteractionParameter&,float*);
-      typedef void (*_kernel_both_func)(Array<Float> const&,
-                    const InteractionParameter&,float*,float*);
+      typedef void (*_kernel_single_func)(Array<Double> const&,
+                    const InteractionParameter&,double*);
+      typedef void (*_kernel_both_func)(Array<Double> const&,
+                    const InteractionParameter&,double*,double*);
 
-      void (*_allocate)(Array<Float>&,Array<Float>&,FVType&);
+      void (*_allocate)(Array<Double>&,Array<Double>&,DVType&);
       _distance_sq_func _distance_sq;
       _pre_post_func    _pre_2_post_for_e;
       _pre_post_func    _pre_2_post_for_g;
@@ -77,16 +76,16 @@ namespace mysimulator {
       _kernel_single_func   _efunc;
       _kernel_single_func   _gfunc;
       _kernel_both_func     _egfunc;
-      void (*_E)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
-                 FVType&, Array<Type*> const&,InteractionFuncDataState&,
+      void (*_E)(DVType const&,Array<UInt> const&,Array<Double>&,Array<Double>&,
+                 DVType&, Array<Type*> const&,InteractionFuncDataState&,
                  const InteractionParameter&,GT const&,double&,
                  _distance_sq_func,_pre_post_func,_kernel_single_func);
-      void (*_G)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
-                 FVType&,Array<Type*> const&,InteractionFuncDataState&,
+      void (*_G)(DVType const&,Array<UInt> const&,Array<Double>&,Array<Double>&,
+                 DVType&,Array<Type*> const&,InteractionFuncDataState&,
                  const InteractionParameter&,GT const&,DVType&,
                  _distance_sq_func,_pre_post_func,_kernel_single_func);
-      void (*_EG)(FVType const&,Array<UInt> const&,Array<Float>&,Array<Float>&,
-                  FVType&,Array<Type*> const&,InteractionFuncDataState&,
+      void (*_EG)(DVType const&,Array<UInt>const&,Array<Double>&,Array<Double>&,
+                  DVType&,Array<Type*> const&,InteractionFuncDataState&,
                   const InteractionParameter&,GT const&,double&,DVType&,
                  _distance_sq_func,_pre_post_func,_kernel_both_func);
 
@@ -155,7 +154,7 @@ namespace mysimulator {
             _allocate=_allocate_func_pair_harmonic<DIM>;
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
-              float,_VForm,float,_VForm,float,_VForm,GT>;
+              double,_VForm,double,_VForm,double,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_harmonic;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_harmonic;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_harmonic;
@@ -170,7 +169,7 @@ namespace mysimulator {
             _allocate=_allocate_func_pair_lj612<DIM>;
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
-                         float,_VForm,float,_VForm,float,_VForm,GT>;
+                         double,_VForm,double,_VForm,double,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_lj612;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_lj612;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_lj612;
@@ -185,7 +184,7 @@ namespace mysimulator {
             _allocate=_allocate_func_pair_core12<DIM>;
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
-                         float,_VForm,float,_VForm,float,_VForm,GT>;
+                         double,_VForm,double,_VForm,double,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_core12;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_core12;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_core12;
@@ -222,20 +221,20 @@ namespace mysimulator {
         std::swap(_EG,F._EG);
       }
 
-      void E(FVType const& X,Array<UInt> const& ID,
+      void E(DVType const& X,Array<UInt> const& ID,
              const InteractionParameter& P, GT const& Geo, double& Energy) {
         assert(_E!=nullptr);
         _E(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Energy,
            _distance_sq,_pre_2_post_for_e,_efunc);
       }
 
-      void G(FVType const& X,Array<UInt> const ID,
+      void G(DVType const& X,Array<UInt> const ID,
              const InteractionParameter& P, GT const& Geo, DVType& Gradient) {
         assert(_G!=nullptr);
         _G(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Gradient,
            _distance_sq,_pre_2_post_for_g,_gfunc);
       }
-      void EG(FVType const& X, Array<UInt> const& ID,
+      void EG(DVType const& X, Array<UInt> const& ID,
               const InteractionParameter& P, GT const& Geo, double& Energy,
               DVType& Gradient) {
         assert(_EG!=nullptr);

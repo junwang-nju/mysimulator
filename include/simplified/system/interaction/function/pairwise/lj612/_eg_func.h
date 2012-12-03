@@ -8,11 +8,11 @@
 namespace mysimulator {
 
   void _egfunc_pair_Lj612(
-      Array<Float> const& _post, const InteractionParameter& P,
-      float* Func, float* Diff) {
+      Array<Double> const& _post, const InteractionParameter& P,
+      double* Func, double* Diff) {
     assert((bool)_post);
     assert((bool)P);
-    float tmd=_post[PairLJ612PostName::PairLJ612IvDistance6];
+    double tmd=_post[PairLJ612PostName::PairLJ612IvDistance6];
     *Func = tmd * ( P[PairLJ612ParameterName::FactorA] * tmd -
                     P[PairLJ612ParameterName::FactorB] );
     *Diff = tmd * _post[PairLJ612PostName::PairLJ612IvDistanceSQ] *

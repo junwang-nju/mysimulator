@@ -8,7 +8,7 @@
 namespace mysimulator {
 
   void _efunc_pair_core12(
-      Array<Float> const& _post, const InteractionParameter& P, float* Func) {
+      Array<Double> const& _post, const InteractionParameter& P, double* Func) {
     assert((bool)_post);
     assert((bool)P);
     *Func=P[PairCore12ParameterName::EqStrength]*

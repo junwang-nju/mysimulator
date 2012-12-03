@@ -17,7 +17,7 @@ namespace mysimulator {
 
       PDBAtomName _tag;
       __PDB_AtomPosition  _loc;
-      float _bfac;
+      double _bfac;
 
     public:
 
@@ -30,14 +30,14 @@ namespace mysimulator {
         return _tag!=PDBAtomName::Unknown && (bool)_loc;
       }
       PDBAtomName Name() const { return _tag; }
-      float& X() { return _loc.X(); }
-      float& Y() { return _loc.Y(); }
-      float& Z() { return _loc.Z(); }
-      float X() const { return _loc.X(); }
-      float Y() const { return _loc.Y(); }
-      float Z() const { return _loc.Z(); }
-      float& BFactor() { return _bfac; }
-      float BFactor() const { return _bfac; }
+      double& X() { return _loc.X(); }
+      double& Y() { return _loc.Y(); }
+      double& Z() { return _loc.Z(); }
+      double X() const { return _loc.X(); }
+      double Y() const { return _loc.Y(); }
+      double Z() const { return _loc.Z(); }
+      double& BFactor() { return _bfac; }
+      double BFactor() const { return _bfac; }
       void reset() {
         _tag=PDBAtomName::Unknown; _loc.reset(); _bfac=0.0;
       }

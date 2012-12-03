@@ -8,10 +8,10 @@
 namespace mysimulator {
 
   void _efunc_pair_harmonic(
-      Array<Float> const& _post, const InteractionParameter& P, float* Func) {
+      Array<Double> const& _post, const InteractionParameter& P, double* Func) {
     assert((bool)_post);
     assert((bool)P);
-    float Dd=_post[PairHarmonicPostName::PairHarmonicLength] -
+    double Dd=_post[PairHarmonicPostName::PairHarmonicLength] -
              P[PairHarmonicParameterName::EqLength];
     *Func = P[PairHarmonicParameterName::EqStrength]*Dd*Dd;
   }

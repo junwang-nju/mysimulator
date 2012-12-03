@@ -20,8 +20,8 @@ namespace mysimulator {
 //    private:
 
       Array<SystemKindName> _kind;
-      Array2D<Float,ArrayKernelName::SSE,_VForm>  _X;
-      Array2D<Float,ArrayKernelName::SSE,_VForm>  _V;
+      Array2D<Double,ArrayKernelName::SSE,_VForm>  _X;
+      Array2D<Double,ArrayKernelName::SSE,_VForm>  _V;
       Array2D<Double,ArrayKernelName::SSE,_VForm> _G;
       access_ptr<double> _E;
       Array<SystemInteraction<GT,DIM>>  _Interaction;

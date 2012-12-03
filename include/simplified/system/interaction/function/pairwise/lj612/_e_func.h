@@ -8,10 +8,10 @@
 namespace mysimulator {
 
   void _efunc_pair_lj612(
-      Array<Float> const& _post, const InteractionParameter& P, float* Func) {
+      Array<Double> const& _post, const InteractionParameter& P, double* Func) {
     assert((bool)_post);
     assert((bool)P);
-    float tmd=_post[PairLJ612PostName::PairLJ612IvDistance6];
+    double tmd=_post[PairLJ612PostName::PairLJ612IvDistance6];
     *Func = tmd*(P[PairLJ612ParameterName::FactorA] * tmd -
                  P[PairLJ612ParameterName::FactorB]);
   }

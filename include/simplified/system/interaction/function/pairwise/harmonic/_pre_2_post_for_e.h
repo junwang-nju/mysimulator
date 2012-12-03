@@ -10,7 +10,7 @@
 namespace mysimulator {
 
   void _pre_2_post_for_e_pair_harmonic(
-      Array<Float> const& _pre, Array<Float>& _post,
+      Array<Double> const& _pre, Array<Double>& _post,
       InteractionFuncDataState& _status,const InteractionParameter& P) {
     assert((bool)_pre);
     assert((bool)_post);

@@ -14,7 +14,7 @@ namespace mysimulator {
 
     private:
 
-      Array<Float,ArrayKernelName::Direct3D>  _Pos;
+      Array<Double,ArrayKernelName::Direct3D>  _Pos;
 
     public:
 
@@ -24,12 +24,12 @@ namespace mysimulator {
       ~__PDB_AtomPosition() { reset(); }
 
       operator bool() const { return (bool)_Pos; }
-      float& X() { assert((bool)_Pos); return _Pos[0]; }
-      float& Y() { assert((bool)_Pos); return _Pos[1]; }
-      float& Z() { assert((bool)_Pos); return _Pos[2]; }
-      float X() const { assert((bool)_Pos); return _Pos[0]; }
-      float Y() const { assert((bool)_Pos); return _Pos[1]; }
-      float Z() const { assert((bool)_Pos); return _Pos[2]; }
+      double& X() { assert((bool)_Pos); return _Pos[0]; }
+      double& Y() { assert((bool)_Pos); return _Pos[1]; }
+      double& Z() { assert((bool)_Pos); return _Pos[2]; }
+      double X() const { assert((bool)_Pos); return _Pos[0]; }
+      double Y() const { assert((bool)_Pos); return _Pos[1]; }
+      double Z() const { assert((bool)_Pos); return _Pos[2]; }
       void reset() { _Pos.reset(); }
 
       Type& operator=(const Type& P) { _Pos=P._Pos; return *this; }

@@ -12,8 +12,8 @@ namespace mysimulator {
 
   template <unsigned int DIM>
   void _allocate_func_pair_harmonic(
-      Array<Float>& _pre, Array<Float>& _post,
-      Array2D<Float,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec) {
+      Array<Double>& _pre, Array<Double>& _post,
+      Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec) {
     _pre.allocate(PairHarmonicPreName::PairHarmonicNumberPre);
     _post.allocate(PairHarmonicPostName::PairHarmonicNumberPost);
     _vec.allocate(PairHarmonicVecName::PairHarmonicNumberVec,DIM);

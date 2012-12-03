@@ -7,7 +7,7 @@
 namespace mysimulator {
 
   void _pre_2_post_for_eg_pair_lj612(
-      Array<Float> const& _pre, Array<Float>& _post,
+      Array<Double> const& _pre, Array<Double>& _post,
       InteractionFuncDataState& _status, const InteractionParameter& P) {
     _pre_2_post_for_g_pair_lj612(_pre,_post,_status,P);
   }

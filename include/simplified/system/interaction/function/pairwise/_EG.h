@@ -15,22 +15,22 @@ namespace mysimulator {
 
   template <typename GT,unsigned int DIM>
   void _EG_pairwise(
-      Array2D<Float,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME> const& X,
-      Array<UInt> const& ID, Array<Float>& _pre, Array<Float>& _post,
-      Array2D<Float,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec,
+      Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>const& X,
+      Array<UInt> const& ID, Array<Double>& _pre, Array<Double>& _post,
+      Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec,
       Array<InteractionFunction<GT,DIM>*> const& _neighbor,
       InteractionFuncDataState& _status,
       const InteractionParameter& P, GT const& Geo,double& Energy,
       Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& Grad,
-      float (*_distance_sq)(Array<Float,__system_vec_type<DIM>::NAME>&,
-                            Array<Float,__system_vec_type<DIM>::NAME> const&,
-                            Array<Float,__system_vec_type<DIM>::NAME> const&,
-                            GT const&),
-      void (*_pre_2_post_for_eg)(Array<Float> const&,Array<Float>&,
+      double (*_distance_sq)(Array<Double,__system_vec_type<DIM>::NAME>&,
+                             Array<Double,__system_vec_type<DIM>::NAME> const&,
+                             Array<Double,__system_vec_type<DIM>::NAME> const&,
+                             GT const&),
+      void (*_pre_2_post_for_eg)(Array<Double> const&,Array<Double>&,
                                  InteractionFuncDataState&,
                                  const InteractionParameter&),
-      void (*_egfunc)(Array<Float> const&,const InteractionParameter&,
-                      float*,float*)) {
+      void (*_egfunc)(Array<Double> const&,const InteractionParameter&,
+                      double*,double*)) {
     assert((bool)X);
     assert((bool)ID);
     assert((bool)_pre);
@@ -48,11 +48,11 @@ namespace mysimulator {
         _distance_sq(_vec[PairwiseVecName::PairBondVecIJ],X[I],X[J],Geo);
       _pre_2_post_for_eg(_pre,_post,_status,P);
     }
-    float ee,ef;
+    double ee,ef;
     _egfunc(_post,P,&ee,&ef);
     Energy+=ee;
     _vec[PairwiseVecName::PairScaledBondVecIJ] = 
-        Float(ef)*_vec[PairwiseVecName::PairBondVecIJ];
+        Double(ef)*_vec[PairwiseVecName::PairBondVecIJ];
     Grad[I]+=_vec[PairwiseVecName::PairScaledBondVecIJ];
     Grad[J]-=_vec[PairwiseVecName::PairScaledBondVecIJ];
   }
