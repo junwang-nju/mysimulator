@@ -74,8 +74,7 @@ namespace mysimulator {
       s4=Set128<T>(0);
       for(unsigned int i=0;i<A.size128_low();++i)
         s4=Sum128<T>(s4,A.value128(i));
-      T* p=(T*)(&s4);
-      S=p[0]+p[1]+p[2]+p[3];
+      S=SumElement128<T>(s4);
     }
     for(unsigned int i=(A.size128_low()<<4)/sizeof(T);i<A.size();++i)
       S+=A[i];
