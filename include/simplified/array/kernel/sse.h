@@ -166,8 +166,7 @@ namespace mysimulator {
         tmp=Mul128<VT>(A.value128(i),B.value128(i));
         s4=Sum128<VT>(s4,tmp);
       }
-      VT* p=(VT*)(&s4);
-      S=p[0]+p[1]+p[2]+p[3];
+      S=SumElement128<VT>(s4);
     }
     for(unsigned int i=(n<<4)/sizeof(VT);i<m;++i) S+=A[i]*B[i];
     return S;

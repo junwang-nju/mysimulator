@@ -50,7 +50,7 @@ namespace mysimulator {
     float ef;
     _gfunc(_post,P,&ef);
     _vec[PairwiseVecName::PairScaledBondVecIJ] = 
-        ef*_vec[PairwiseVecName::PairBondVecIJ];
+        Float(ef)*_vec[PairwiseVecName::PairBondVecIJ];
     Grad[I]+=_vec[PairwiseVecName::PairScaledBondVecIJ];
     Grad[J]-=_vec[PairwiseVecName::PairScaledBondVecIJ];
   }

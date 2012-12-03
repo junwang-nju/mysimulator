@@ -128,6 +128,30 @@ namespace mysimulator {
     return _mm_div_pd(a,b);
   }
 
+  template <typename T>
+  T SumElement128(typename __sse_value<T>::Type const& a) {
+    assert("This Operation is Not available!\n");
+    return 0;
+  }
+
+  template <>
+  int SumElement128<int>(__m128i const& a) {
+    const int *p=(const int*)(&a);
+    return p[0]+p[1]+p[2]+p[3];
+  }
+
+  template <>
+  float SumElement128<float>(__m128 const& a) {
+    const float *p=(const float*)(&a);
+    return p[0]+p[1]+p[2]+p[3];
+  }
+
+  template <>
+  double SumElement128<double>(__m128d const& a) {
+    const double *p=(const double*)(&a);
+    return p[0]+p[1];
+  }
+
 }
 
 #endif

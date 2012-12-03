@@ -16,8 +16,8 @@ namespace mysimulator {
     assert((bool)_post);
     assert((bool)P);
     float tmd=1./_pre[PairCore12PreName::PairDistanceSQ];
-    tmd*=tmd;
-    float tmd1=tmd*tmd*tmd;
+    float tmd1=tmd*tmd;
+    tmd1*=tmd1*tmd1;
     _post[PairCore12PostName::PairCore12IvDistance12]=tmd1;
     _post[PairCore12PostName::PairCore12IvDistance14]=tmd1*tmd;
     _status.SetReady4Gradient();
