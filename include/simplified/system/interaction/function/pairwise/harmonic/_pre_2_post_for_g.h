@@ -16,8 +16,8 @@ namespace mysimulator {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)P);
-    _post[PairHarmonicPostName::PairHarmonicIvLength] =
-      1./__square_root(_pre[PairHarmonicPreName::PairDistanceSQ]);
+    _post[PairHarmonicPostName::IvLength] =
+      1./__square_root(_pre[PairHarmonicPreName::DistanceSQ]);
     _status.SetReady4Gradient();
   }
 

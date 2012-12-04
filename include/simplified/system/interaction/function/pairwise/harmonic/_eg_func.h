@@ -12,11 +12,11 @@ namespace mysimulator {
       double* Func, double* Diff) {
     assert((bool)_post);
     assert((bool)P);
-    double Dd=_post[PairHarmonicPostName::PairHarmonicLength] -
+    double Dd=_post[PairHarmonicPostName::Length] -
               P[PairHarmonicParameterName::EqLength];
     double tmd=P[PairHarmonicParameterName::EqStrength]*Dd;
     *Func=tmd*Dd;
-    *Diff=(tmd+tmd)*_post[PairHarmonicPostName::PairHarmonicIvLength];
+    *Diff=(tmd+tmd)*_post[PairHarmonicPostName::IvLength];
   }
 
 }

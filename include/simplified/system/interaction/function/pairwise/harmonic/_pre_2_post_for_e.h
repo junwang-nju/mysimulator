@@ -15,8 +15,8 @@ namespace mysimulator {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)P);
-    _post[PairHarmonicPostName::PairHarmonicLength] =
-      __square_root(_pre[PairHarmonicPreName::PairDistanceSQ]);
+    _post[PairHarmonicPostName::Length] =
+      __square_root(_pre[PairHarmonicPreName::DistanceSQ]);
     _status.SetReady4Energy();
   }
 

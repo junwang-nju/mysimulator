@@ -12,7 +12,7 @@ namespace mysimulator {
     assert((bool)_post);
     assert((bool)P);
     *Func=P[PairCore12ParameterName::EqStrength]*
-          _post[PairCore12PostName::PairCore12IvDistance12];
+          _post[PairCore12PostName::IvDistance12];
   }
 
 }

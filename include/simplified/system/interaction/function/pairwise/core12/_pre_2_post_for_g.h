@@ -15,11 +15,11 @@ namespace mysimulator {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)P);
-    double tmd=1./_pre[PairCore12PreName::PairDistanceSQ];
+    double tmd=1./_pre[PairCore12PreName::DistanceSQ];
     double tmd1=tmd*tmd;
     tmd1*=tmd1*tmd1;
-    _post[PairCore12PostName::PairCore12IvDistance12]=tmd1;
-    _post[PairCore12PostName::PairCore12IvDistance14]=tmd1*tmd;
+    _post[PairCore12PostName::IvDistance12]=tmd1;
+    _post[PairCore12PostName::IvDistance14]=tmd1*tmd;
     _status.SetReady4Gradient();
   }
 

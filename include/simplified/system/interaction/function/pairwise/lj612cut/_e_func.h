@@ -11,13 +11,13 @@ namespace mysimulator {
       Array<Double> const& _post, const InteractionParameter& P, double* Func) {
     assert((bool)_post);
     assert((bool)P);
-    if(_post[PairLJ612CutPostName::PairLJ612CutDistanceSQ]>
+    if(_post[PairLJ612CutPostName::DistanceSQ]>
        P[PairLJ612CutParameterName::CutRSQ])  *Func=0;
     else {
       _efunc_pair_lj612(_post,P,Func);
       *Func-=P[PairLJ612CutParameterName::Vc];
       *Func-=P[PairLJ612CutParameterName::Kc]*
-             (_post[PairLJ612CutPostName::PairLJ612CutDistance]-
+             (_post[PairLJ612CutPostName::Distance]-
               P[PairLJ612CutParameterName::CutR]);
     }
 

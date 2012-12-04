@@ -12,16 +12,16 @@ namespace mysimulator {
       double* Func, double* Diff) {
     assert((bool)_post);
     assert((bool)P);
-    if(_post[PairLJ612CutPostName::PairLJ612CutDistanceSQ] >
+    if(_post[PairLJ612CutPostName::DistanceSQ] >
        P[PairLJ612CutParameterName::CutRSQ]) { *Func=0; *Diff=0; }
     else {
       _egfunc_pair_Lj612(_post,P,Func,Diff);
       *Func-=P[PairLJ612CutParameterName::Vc];
       *Func-=P[PairLJ612CutParameterName::Kc]*
-             (_post[PairLJ612CutPostName::PairLJ612CutDistance]-
+             (_post[PairLJ612CutPostName::Distance]-
               P[PairLJ612CutParameterName::CutR]);
       *Diff-=P[PairLJ612CutParameterName::Kc]*
-             _post[PairLJ612CutPostName::PairLJ612CutIvDistance];
+             _post[PairLJ612CutPostName::IvDistance];
     }
   }
 

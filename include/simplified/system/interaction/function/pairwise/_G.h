@@ -43,16 +43,16 @@ namespace mysimulator {
     assert(_gfunc!=nullptr);
     unsigned int I=ID[0], J=ID[1];
     if( !_status.IsReady4Gradient() ) {
-      _pre[PairwisePreName::PairDistanceSQ] =
-        _distance_sq(_vec[PairwiseVecName::PairBondVecIJ],X[I],X[J],Geo);
+      _pre[PairwisePreName::DistanceSQ] =
+        _distance_sq(_vec[PairwiseVecName::BondVecIJ],X[I],X[J],Geo);
       _pre_2_post_for_g(_pre,_post,_status,P);
     }
     double ef;
     _gfunc(_post,P,&ef);
-    _vec[PairwiseVecName::PairScaledBondVecIJ] = 
-        Double(ef)*_vec[PairwiseVecName::PairBondVecIJ];
-    Grad[I]+=_vec[PairwiseVecName::PairScaledBondVecIJ];
-    Grad[J]-=_vec[PairwiseVecName::PairScaledBondVecIJ];
+    _vec[PairwiseVecName::ScaledBondVecIJ] = 
+        Double(ef)*_vec[PairwiseVecName::BondVecIJ];
+    Grad[I]+=_vec[PairwiseVecName::ScaledBondVecIJ];
+    Grad[J]-=_vec[PairwiseVecName::ScaledBondVecIJ];
   }
 
 }

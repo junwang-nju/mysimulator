@@ -41,8 +41,8 @@ namespace mysimulator {
     assert(_efunc!=nullptr);
     if( !_status.IsReady4Energy() ) {
       unsigned int I=ID[0], J=ID[1];
-      _pre[PairwisePreName::PairDistanceSQ] =
-        _distance_sq(_vec[PairwiseVecName::PairBondVecIJ],X[I],X[J],Geo);
+      _pre[PairwisePreName::DistanceSQ] =
+        _distance_sq(_vec[PairwiseVecName::BondVecIJ],X[I],X[J],Geo);
       _pre_2_post_for_e(_pre,_post,_status,P);
     }
     double ee;

@@ -16,9 +16,9 @@ namespace mysimulator {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)P);
-    double tmd=__square_root(_pre[PairHarmonicPreName::PairDistanceSQ]);
-    _post[PairHarmonicPostName::PairHarmonicLength] = tmd;
-    _post[PairHarmonicPostName::PairHarmonicIvLength] = 1./tmd;
+    double tmd=__square_root(_pre[PairHarmonicPreName::DistanceSQ]);
+    _post[PairHarmonicPostName::Length] = tmd;
+    _post[PairHarmonicPostName::IvLength] = 1./tmd;
     _status.SetReady4EnergyGradient();
   }
 

@@ -8,23 +8,23 @@ namespace mysimulator {
 
     public:
 
-      static const unsigned int EqRadius;
-      static const unsigned int EqEnergyDepth;
-      static const unsigned int FactorA;
-      static const unsigned int FactorB;
-      static const unsigned int DFactorA;
-      static const unsigned int DFactorB;
-      static const unsigned int NumberParameter;
+      static const unsigned int EqRadius          = 0;
+      static const unsigned int EqEnergyDepth     = EqRadius+1;
+      static const unsigned int FactorA           = EqEnergyDepth+1;
+      static const unsigned int FactorB           = FactorA+1;
+      static const unsigned int DFactorA          = FactorB+1;
+      static const unsigned int DFactorB          = DFactorA+1;
+      static const unsigned int NumberParameter   = DFactorB+1;
 
   };
 
-  const unsigned int PairLJ612ParameterName::EqRadius             = 0;
-  const unsigned int PairLJ612ParameterName::EqEnergyDepth        = 1;
-  const unsigned int PairLJ612ParameterName::FactorA              = 2;
-  const unsigned int PairLJ612ParameterName::FactorB              = 3;
-  const unsigned int PairLJ612ParameterName::DFactorA             = 4;
-  const unsigned int PairLJ612ParameterName::DFactorB             = 5;
-  const unsigned int PairLJ612ParameterName::NumberParameter      = 6;
+  const unsigned int PairLJ612ParameterName::EqRadius;
+  const unsigned int PairLJ612ParameterName::EqEnergyDepth;
+  const unsigned int PairLJ612ParameterName::FactorA;
+  const unsigned int PairLJ612ParameterName::FactorB;
+  const unsigned int PairLJ612ParameterName::DFactorA;
+  const unsigned int PairLJ612ParameterName::DFactorB;
+  const unsigned int PairLJ612ParameterName::NumberParameter;
 
 }
 

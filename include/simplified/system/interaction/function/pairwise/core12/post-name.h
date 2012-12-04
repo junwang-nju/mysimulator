@@ -8,15 +8,15 @@ namespace mysimulator {
 
     public:
 
-      static const unsigned int PairCore12IvDistance12  = 0;
-      static const unsigned int PairCore12IvDistance14  = 1;
-      static const unsigned int PairCore12NumberPost    = 2;
+      static const unsigned int IvDistance12  = 0;
+      static const unsigned int IvDistance14  = IvDistance12+1;
+      static const unsigned int NumberPost    = IvDistance14+1;
 
   };
 
-  const unsigned int PairCore12PostName::PairCore12IvDistance12;
-  const unsigned int PairCore12PostName::PairCore12IvDistance14;
-  const unsigned int PairCore12PostName::PairCore12NumberPost;
+  const unsigned int PairCore12PostName::IvDistance12;
+  const unsigned int PairCore12PostName::IvDistance14;
+  const unsigned int PairCore12PostName::NumberPost;
 
 }
 

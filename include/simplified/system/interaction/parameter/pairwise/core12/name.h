@@ -9,8 +9,8 @@ namespace mysimulator {
     public:
 
       static const unsigned int EqStrength      = 0;
-      static const unsigned int TwlfEqStrength  = 1;
-      static const unsigned int NumberParameter = 2;
+      static const unsigned int TwlfEqStrength  = EqStrength+1;
+      static const unsigned int NumberParameter = TwlfEqStrength+1;
 
   };
 

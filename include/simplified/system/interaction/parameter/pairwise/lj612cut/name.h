@@ -6,36 +6,20 @@
 
 namespace mysimulator {
 
-  class PairLJ612CutParameterName {
+  class PairLJ612CutParameterName : public PairLJ612ParameterName {
 
     public:
 
-      static const unsigned int EqRadius
-        = PairLJ612ParameterName::EqRadius;
-      static const unsigned int EqEnergyDepth
-        = PairLJ612ParameterName::EqEnergyDepth;
-      static const unsigned int FactorA
-        = PairLJ612ParameterName::FactorA;
-      static const unsigned int FactorB
-        = PairLJ612ParameterName::FactorB;
-      static const unsigned int DFactorA
-        = PairLJ612ParameterName::DFactorA;
-      static const unsigned int DFactorB
-        = PairLJ612ParameterName::DFactorA;
-      static const unsigned int CutR              = 6;
-      static const unsigned int CutRSQ            = 7;
-      static const unsigned int Vc                = 8;
-      static const unsigned int Kc                = 9;
-      static const unsigned int NumberParameter   = 10;
+      typedef PairLJ612ParameterName  ParentType;
+
+      static const unsigned int CutR            = ParentType::NumberParameter;
+      static const unsigned int CutRSQ          = CutR+1;
+      static const unsigned int Vc              = CutRSQ+1;
+      static const unsigned int Kc              = Vc+1;
+      static const unsigned int NumberParameter = Kc+1;
 
   };
 
-  const unsigned int PairLJ612CutParameterName::EqRadius;
-  const unsigned int PairLJ612CutParameterName::EqEnergyDepth;
-  const unsigned int PairLJ612CutParameterName::FactorA;
-  const unsigned int PairLJ612CutParameterName::FactorB;
-  const unsigned int PairLJ612CutParameterName::DFactorA;
-  const unsigned int PairLJ612CutParameterName::DFactorB;
   const unsigned int PairLJ612CutParameterName::CutR;
   const unsigned int PairLJ612CutParameterName::CutRSQ;
   const unsigned int PairLJ612CutParameterName::Vc;

@@ -8,13 +8,13 @@ namespace mysimulator {
 
     public:
 
-      static const unsigned int PairDistanceSQ    = 0;
-      static const unsigned int PairwiseNumberPre = 1;
+      static const unsigned int DistanceSQ    = 0;
+      static const unsigned int NumberPre     = DistanceSQ+1;
 
   };
 
-  const unsigned int PairwisePreName::PairDistanceSQ;
-  const unsigned int PairwisePreName::PairwiseNumberPre;
+  const unsigned int PairwisePreName::DistanceSQ;
+  const unsigned int PairwisePreName::NumberPre;
 
 }
 

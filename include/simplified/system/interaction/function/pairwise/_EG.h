@@ -44,17 +44,17 @@ namespace mysimulator {
     assert(_egfunc!=nullptr);
     unsigned int I=ID[0], J=ID[1];
     if( !_status.IsReady4EnergyGradient() ) {
-      _pre[PairwisePreName::PairDistanceSQ] =
-        _distance_sq(_vec[PairwiseVecName::PairBondVecIJ],X[I],X[J],Geo);
+      _pre[PairwisePreName::DistanceSQ] =
+        _distance_sq(_vec[PairwiseVecName::BondVecIJ],X[I],X[J],Geo);
       _pre_2_post_for_eg(_pre,_post,_status,P);
     }
     double ee,ef;
     _egfunc(_post,P,&ee,&ef);
     Energy+=ee;
-    _vec[PairwiseVecName::PairScaledBondVecIJ] = 
-        Double(ef)*_vec[PairwiseVecName::PairBondVecIJ];
-    Grad[I]+=_vec[PairwiseVecName::PairScaledBondVecIJ];
-    Grad[J]-=_vec[PairwiseVecName::PairScaledBondVecIJ];
+    _vec[PairwiseVecName::ScaledBondVecIJ] = 
+        Double(ef)*_vec[PairwiseVecName::BondVecIJ];
+    Grad[I]+=_vec[PairwiseVecName::ScaledBondVecIJ];
+    Grad[J]-=_vec[PairwiseVecName::ScaledBondVecIJ];
   }
 
 }

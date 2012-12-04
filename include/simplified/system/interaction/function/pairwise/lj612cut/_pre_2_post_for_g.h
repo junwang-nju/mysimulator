@@ -14,12 +14,12 @@ namespace mysimulator {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)P);
-    double tmd=_pre[PairLJ612CutPreName::PairDistanceSQ];
-    _post[PairLJ612CutPostName::PairLJ612CutDistanceSQ]=tmd;
+    double tmd=_pre[PairLJ612CutPreName::DistanceSQ];
+    _post[PairLJ612CutPostName::DistanceSQ]=tmd;
     if(tmd<P[PairLJ612CutParameterName::CutRSQ]) {
       _pre_2_post_for_g_pair_lj612(_pre,_post,_status,P);
-      _post[PairLJ612CutPostName::PairLJ612CutIvDistance] =
-        __square_root(_post[PairLJ612CutPostName::PairLJ612CutIvDistanceSQ]);
+      _post[PairLJ612CutPostName::IvDistance] =
+        __square_root(_post[PairLJ612CutPostName::IvDistanceSQ]);
     } else _status.SetReady4EnergyGradient();
   }
 

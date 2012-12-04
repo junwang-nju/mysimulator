@@ -11,7 +11,7 @@ namespace mysimulator {
       Array<Double> const& _post, const InteractionParameter& P, double* Func) {
     assert((bool)_post);
     assert((bool)P);
-    double Dd=_post[PairHarmonicPostName::PairHarmonicLength] -
+    double Dd=_post[PairHarmonicPostName::Length] -
              P[PairHarmonicParameterName::EqLength];
     *Func = P[PairHarmonicParameterName::EqStrength]*Dd*Dd;
   }

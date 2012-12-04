@@ -11,8 +11,8 @@ namespace mysimulator {
       Array<Double> const& _post, const InteractionParameter& P, double *Diff) {
     assert((bool)_post);
     assert((bool)P);
-    double tmd=_post[PairLJ612PostName::PairLJ612IvDistance6];
-    *Diff = tmd * _post[PairLJ612PostName::PairLJ612IvDistanceSQ] *
+    double tmd=_post[PairLJ612PostName::IvDistance6];
+    *Diff = tmd * _post[PairLJ612PostName::IvDistanceSQ] *
           ( P[PairLJ612ParameterName::DFactorB] -
             P[PairLJ612ParameterName::DFactorA] * tmd);
   }

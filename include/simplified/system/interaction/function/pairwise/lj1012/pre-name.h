@@ -6,16 +6,7 @@
 
 namespace mysimulator {
 
-  class PairLJ1012PreName : public PairwisePreName {
-
-    public:
-
-      static const unsigned int PairLJ1012NumberPre =
-        PairwisePreName::PairwiseNumberPre;
-
-  };
-
-  const unsigned int PairLJ1012PreName::PairLJ1012NumberPre;
+  class PairLJ1012PreName : public PairwisePreName {};
 
 }
 

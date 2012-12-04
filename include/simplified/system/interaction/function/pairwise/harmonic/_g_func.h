@@ -12,7 +12,7 @@ namespace mysimulator {
     assert((bool)_post);
     assert((bool)P);
     double Dd=1.-P[PairHarmonicParameterName::EqLength]*
-                 _post[PairHarmonicPostName::PairHarmonicIvLength];
+                 _post[PairHarmonicPostName::IvLength];
     *Diff=P[PairHarmonicParameterName::DualEqStrength]*Dd;
   }
 

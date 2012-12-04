@@ -9,12 +9,12 @@ namespace mysimulator {
     public:
 
       static const unsigned int EqRadius          = 0;
-      static const unsigned int EqEnergyDepth     = 1;
-      static const unsigned int FactorA           = 2;
-      static const unsigned int FactorB           = 3;
-      static const unsigned int DFactorA          = 4;
-      static const unsigned int DFactorB          = 5;
-      static const unsigned int NumberParameter   = 6;
+      static const unsigned int EqEnergyDepth     = EqRadius+1;
+      static const unsigned int FactorA           = EqEnergyDepth+1;
+      static const unsigned int FactorB           = FactorA+1;
+      static const unsigned int DFactorA          = FactorB+1;
+      static const unsigned int DFactorB          = DFactorA+1;
+      static const unsigned int NumberParameter   = DFactorB+1;
 
   };
 

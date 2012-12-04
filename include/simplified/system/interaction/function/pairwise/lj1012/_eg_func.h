@@ -12,8 +12,8 @@ namespace mysimulator {
       double *Func, double *Diff) {
     assert((bool)_post);
     assert((bool)P);
-    double tmd1=_post[PairLJ1012PostName::PairLJ1012IvDistanceSQ];
-    double tmd2=_post[PairLJ1012PostName::PairLJ1012IvDistance10];
+    double tmd1=_post[PairLJ1012PostName::IvDistanceSQ];
+    double tmd2=_post[PairLJ1012PostName::IvDistance10];
     *Func=tmd2 * ( P[PairLJ1012ParameterName::FactorA] * tmd1 -
                    P[PairLJ1012ParameterName::FactorB] );
     *Diff=tmd2*tmd1*( P[PairLJ1012ParameterName::DFactorB] -

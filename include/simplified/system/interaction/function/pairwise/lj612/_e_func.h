@@ -11,7 +11,7 @@ namespace mysimulator {
       Array<Double> const& _post, const InteractionParameter& P, double* Func) {
     assert((bool)_post);
     assert((bool)P);
-    double tmd=_post[PairLJ612PostName::PairLJ612IvDistance6];
+    double tmd=_post[PairLJ612PostName::IvDistance6];
     *Func = tmd*(P[PairLJ612ParameterName::FactorA] * tmd -
                  P[PairLJ612ParameterName::FactorB]);
   }

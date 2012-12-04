@@ -14,9 +14,9 @@ namespace mysimulator {
   void _allocate_func_pair_lj612cut(
       Array<Double>& _pre, Array<Double>& _post,
       Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec) {
-    _pre.allocate(PairLJ612CutPreName::PairLJ612CutNumberPre);
-    _post.allocate(PairLJ612CutPostName::PairLJ612CutNumberPost);
-    _vec.allocate(PairLJ612CutVecName::PairLJ612CutNumberVec,DIM);
+    _pre.allocate(PairLJ612CutPreName::NumberPre);
+    _post.allocate(PairLJ612CutPostName::NumberPost);
+    _vec.allocate(PairLJ612CutVecName::NumberVec,DIM);
   }
 
 }

@@ -12,7 +12,7 @@ namespace mysimulator {
     assert((bool)_post);
     assert((bool)P);
     *Diff= - P[PairCore12ParameterName::TwlfEqStrength] *
-             _post[PairCore12PostName::PairCore12IvDistance14];
+             _post[PairCore12PostName::IvDistance14];
   }
 
 }

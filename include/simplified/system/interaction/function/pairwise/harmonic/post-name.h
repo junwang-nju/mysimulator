@@ -8,15 +8,15 @@ namespace mysimulator {
 
     public:
 
-      static const unsigned int PairHarmonicLength      = 0;
-      static const unsigned int PairHarmonicIvLength    = 1;
-      static const unsigned int PairHarmonicNumberPost  = 2;
+      static const unsigned int Length      = 0;
+      static const unsigned int IvLength    = Length+1;
+      static const unsigned int NumberPost  = IvLength+1;
 
   };
 
-  const unsigned int PairHarmonicPostName::PairHarmonicLength;
-  const unsigned int PairHarmonicPostName::PairHarmonicIvLength;
-  const unsigned int PairHarmonicPostName::PairHarmonicNumberPost;
+  const unsigned int PairHarmonicPostName::Length;
+  const unsigned int PairHarmonicPostName::IvLength;
+  const unsigned int PairHarmonicPostName::NumberPost;
 
 }
 

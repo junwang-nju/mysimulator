@@ -14,9 +14,9 @@ namespace mysimulator {
   void _allocate_func_pair_core12(
       Array<Double>& _pre, Array<Double>& _post,
       Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec) {
-    _pre.allocate(PairCore12PreName::PairCore12NumberPre);
-    _post.allocate(PairCore12PostName::PairCore12NumberPost);
-    _vec.allocate(PairCore12VecName::PairCore12NumberVec,DIM);
+    _pre.allocate(PairCore12PreName::NumberPre);
+    _post.allocate(PairCore12PostName::NumberPost);
+    _vec.allocate(PairCore12VecName::NumberVec,DIM);
   }
 
 }

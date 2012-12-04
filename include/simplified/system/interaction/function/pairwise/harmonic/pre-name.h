@@ -6,15 +6,7 @@
 
 namespace mysimulator {
 
-  class PairHarmonicPreName : public PairwisePreName {
-
-    public:
-
-      static const unsigned int PairHarmonicNumberPre =
-        PairwisePreName::PairwiseNumberPre;
-  };
-
-  const unsigned int PairHarmonicPreName::PairHarmonicNumberPre;
+  class PairHarmonicPreName : public PairwisePreName {};
 
 }
 

@@ -15,11 +15,11 @@ namespace mysimulator {
     assert((bool)_pre);
     assert((bool)_post);
     assert((bool)P);
-    double tmd=1./_pre[PairLJ1012PreName::PairDistanceSQ];
-    _post[PairLJ1012PostName::PairLJ1012IvDistanceSQ]=tmd;
+    double tmd=1./_pre[PairLJ1012PreName::DistanceSQ];
+    _post[PairLJ1012PostName::IvDistanceSQ]=tmd;
     double tmd1=tmd*tmd;
     tmd1*=tmd1;
-    _post[PairLJ1012PostName::PairLJ1012IvDistance10]=tmd1*tmd;
+    _post[PairLJ1012PostName::IvDistance10]=tmd1*tmd;
     _status.SetReady4Energy();
   }
 
