@@ -25,14 +25,14 @@ int main() {
   Array2D<InteractionName> FN;
   FN.allocate(NC,1);
   for(unsigned int i=0;i<64;++i)  FN[i][0]=InteractionName::PairHarmonic;
-  for(unsigned int i=0;i<153;++i) FN[i+64][0]=InteractionName::PairLJ612;
+  for(unsigned int i=0;i<153;++i) FN[i+64][0]=InteractionName::PairLJ1012;
   for(unsigned int i=153+64;i<NC;++i) FN[i]=InteractionName::PairCore12;
   for(unsigned int i=0;i<NC;++i) {
     S._Interaction[i].allocate(FN[i]);
     S._Interaction[i].imprint_gradient_energy(S._X);
   }
 
-  Array<Float> tdsp(3);
+  Array<Double> tdsp(3);
   for(unsigned int i=0;i<64;++i) {
     S._Interaction[i].ID(0)[0]=i;
     S._Interaction[i].ID(0)[1]=i+1;
@@ -44,7 +44,7 @@ int main() {
   }
   ifs.open("2ci2.cnt");
   unsigned int z;
-  float zf;
+  double zf;
   ifs>>z;
   ifs>>z;
   Array2D<UInt> FG;
@@ -54,8 +54,9 @@ int main() {
     ifs>>S._Interaction[i+64].ID(0)[0];
     ifs>>S._Interaction[i+64].ID(0)[1];
     FG[S._Interaction[i+64].ID(0)[0]][S._Interaction[i+64].ID(0)[1]]=1;
-    ifs>>S._Interaction[i+64].Parameter(0)[PairLJ612ParameterName::EqRadius];
-    S._Interaction[i+64].Parameter(0)[PairLJ612ParameterName::EqEnergyDepth]=1.;
+    ifs>>S._Interaction[i+64].Parameter(0)[PairLJ1012ParameterName::EqRadius];
+    S._Interaction[i+64].Parameter(0)[PairLJ1012ParameterName::EqEnergyDepth]=
+      1.;
     S._Interaction[i+64].Parameter(0).build();
   }
   for(unsigned int i=0,n=153+64;i<65;++i)
@@ -75,9 +76,12 @@ int main() {
   auto generator=bind(rdist,engine);
   for(unsigned int i=0;i<S._V.Data().size();++i)
     S._V.Data()[i]=generator();
-  S._V*=Float(0.5);
+  S._V*=Double(0.5);
 
-  float dt=0.00001;
+  double dt=0.001;
+  double gamma=0.1;
+  double temperature=0.5;
+  double rsize=sqrt(2*gamma*temperature*dt*0.5);
 
   S._G=0;
   for(unsigned int i=0;i<NC;++i) {
@@ -87,9 +91,12 @@ int main() {
   }
 
   cout.precision(12);
-  for(unsigned int rt=0;rt<100000;++rt) {
-    S._V-=Float(0.5*dt)*S._G;
-    S._X+=Float(dt)*S._V;
+  for(unsigned int rt=0;rt<100000000;++rt) {
+    //S._V-=Double(0.5*dt)*S._G;
+    S._V=Double(1-gamma*0.5*dt)*S._V-Double(0.5*dt)*S._G;
+    for(unsigned int i=0;i<S._V.Data().size();++i)
+      S._V.Data()[i]+=rsize*generator();
+    S._X+=Double(dt)*S._V;
     S._G=0;
     *S._E=0;
     for(unsigned int i=0;i<NC;++i) {
@@ -98,8 +105,12 @@ int main() {
       S._G+=S._Interaction[i].Gradient();
       *(S._E)+=S._Interaction[i].Energy();
     }
-    S._V-=Float(0.5*dt)*S._G;
-    cout<<rt<<"\t"<<*S._E<<"\t"<<0.5*NormSQ(S._V.Data())<<endl;
+    S._V-=Double(0.5*dt)*S._G;
+    for(unsigned int i=0;i<S._V.Data().size();++i)
+      S._V.Data()[i]+=rsize*generator();
+    S._V*=Double(1./(1+gamma*dt*0.5));
+    if(rt%100==0)
+      cout<<rt<<"\t"<<*S._E<<"\t"<<0.5*NormSQ(S._V.Data())<<endl;
   }
 
   return 0;
