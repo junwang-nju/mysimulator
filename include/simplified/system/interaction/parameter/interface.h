@@ -10,6 +10,8 @@
 #include "system/interaction/parameter/pairwise/lj612/_build.h"
 #include "system/interaction/parameter/pairwise/core12/_allocate.h"
 #include "system/interaction/parameter/pairwise/core12/_build.h"
+#include "system/interaction/parameter/pairwise/lj1012/_allocate.h"
+#include "system/interaction/parameter/pairwise/lj1012/_build.h"
 
 namespace mysimulator {
 
@@ -79,6 +81,10 @@ namespace mysimulator {
           case InteractionName::PairCore12:
             _allocate=_allocate_param_pair_core12;
             _build=_build_pair_core12;
+            break;
+          case InteractionName::PairLJ1012:
+            _allocate=_allocate_param_pair_lj1012;
+            _build=_build_pair_lj1012;
             break;
           default:
             fprintf(stderr,"No Implemented!\n");
