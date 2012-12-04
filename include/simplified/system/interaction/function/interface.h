@@ -76,6 +76,9 @@ namespace mysimulator {
       typedef double (*_distance_sq_func)(
           Array<Double,_VForm>&,Array<Double,_VForm> const&,
           Array<Double,_VForm> const&, GT const&);
+      typedef void (*_displacement_func)(
+          Array<Double,_VForm>&,Array<Double,_VForm> const&,
+          Array<Double,_VForm> const&, GT const&);
       typedef void (*_pre_post_func)(Array<Double> const&,Array<Double>&,
                                      InteractionFuncDataState&,
                                      const InteractionParameter&);
@@ -85,32 +88,36 @@ namespace mysimulator {
                     const InteractionParameter&,double*,double*);
 
       void (*_allocate)(Array<Double>&,Array<Double>&,DVType&);
-      _distance_sq_func _distance_sq;
-      _pre_post_func    _pre_2_post_for_e;
-      _pre_post_func    _pre_2_post_for_g;
-      _pre_post_func    _pre_2_post_for_eg;
+      _distance_sq_func   _distance_sq;
+      _displacement_func  _displacement;
+      _pre_post_func      _pre_2_post_for_e;
+      _pre_post_func      _pre_2_post_for_g;
+      _pre_post_func      _pre_2_post_for_eg;
       _kernel_single_func   _efunc;
       _kernel_single_func   _gfunc;
       _kernel_both_func     _egfunc;
       void (*_E)(DVType const&,Array<UInt> const&,Array<Double>&,Array<Double>&,
                  DVType&, Array<Type*> const&,InteractionFuncDataState&,
                  const InteractionParameter&,GT const&,double&,
-                 _distance_sq_func,_pre_post_func,_kernel_single_func);
+                 _distance_sq_func,_displacement_func,_pre_post_func,
+                 _kernel_single_func);
       void (*_G)(DVType const&,Array<UInt> const&,Array<Double>&,Array<Double>&,
                  DVType&,Array<Type*> const&,InteractionFuncDataState&,
                  const InteractionParameter&,GT const&,DVType&,
-                 _distance_sq_func,_pre_post_func,_kernel_single_func);
+                 _distance_sq_func,_displacement_func,_pre_post_func,
+                 _kernel_single_func);
       void (*_EG)(DVType const&,Array<UInt>const&,Array<Double>&,Array<Double>&,
                   DVType&,Array<Type*> const&,InteractionFuncDataState&,
                   const InteractionParameter&,GT const&,double&,DVType&,
-                 _distance_sq_func,_pre_post_func,_kernel_both_func);
+                 _distance_sq_func,_displacement_func,_pre_post_func,
+                 _kernel_both_func);
 
     public:
 
       InteractionFunction()
         : _tag(InteractionName::Unknown), _pre(), _post(), _vec(), _neighbor(),
           _status(),
-          _allocate(nullptr), _distance_sq(nullptr),
+          _allocate(nullptr), _distance_sq(nullptr), _displacement(nullptr),
           _pre_2_post_for_e(nullptr),_pre_2_post_for_g(nullptr),
           _pre_2_post_for_eg(nullptr), _efunc(nullptr),_gfunc(nullptr),
           _egfunc(nullptr),_E(nullptr), _G(nullptr),_EG(nullptr) {}
@@ -124,6 +131,7 @@ namespace mysimulator {
         return _tag != InteractionName::Unknown &&
                (bool)_pre && (bool)_post && (bool)_vec &&
                _allocate!=nullptr && _distance_sq!=nullptr &&
+               _displacement!=nullptr &&
                _pre_2_post_for_e!=nullptr && _pre_2_post_for_g!=nullptr &&
                _pre_2_post_for_eg!=nullptr && _efunc!=nullptr &&
                _gfunc!=nullptr && _egfunc!=nullptr && _E!=nullptr &&
@@ -139,6 +147,7 @@ namespace mysimulator {
         _tag = InteractionName::Unknown;
         _allocate = nullptr;
         _distance_sq = nullptr;
+        _displacement = nullptr;
         _pre_2_post_for_e   = nullptr;
         _pre_2_post_for_g   = nullptr;
         _pre_2_post_for_eg  = nullptr;
@@ -171,6 +180,10 @@ namespace mysimulator {
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
               double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_harmonic;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_harmonic;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_harmonic;
@@ -186,6 +199,10 @@ namespace mysimulator {
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
                          double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_lj612;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_lj612;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_lj612;
@@ -201,6 +218,10 @@ namespace mysimulator {
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
                          double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_core12;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_core12;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_core12;
@@ -216,6 +237,10 @@ namespace mysimulator {
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
                          double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_lj1012;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_lj1012;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_lj1012;
@@ -231,6 +256,10 @@ namespace mysimulator {
             _distance_sq=
               DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
                          double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
             _pre_2_post_for_e=_pre_2_post_for_e_pair_lj612cut;
             _pre_2_post_for_g=_pre_2_post_for_g_pair_lj612cut;
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_lj612cut;
@@ -256,6 +285,7 @@ namespace mysimulator {
         std::swap(_status,F._status);
         std::swap(_allocate,F._allocate);
         std::swap(_distance_sq,F._distance_sq);
+        std::swap(_displacement,F._displacement);
         std::swap(_pre_2_post_for_e,F._pre_2_post_for_e);
         std::swap(_pre_2_post_for_g,F._pre_2_post_for_g);
         std::swap(_pre_2_post_for_eg,F._pre_2_post_for_eg);
@@ -271,21 +301,21 @@ namespace mysimulator {
              const InteractionParameter& P, GT const& Geo, double& Energy) {
         assert(_E!=nullptr);
         _E(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Energy,
-           _distance_sq,_pre_2_post_for_e,_efunc);
+           _distance_sq,_displacement,_pre_2_post_for_e,_efunc);
       }
 
       void G(DVType const& X,Array<UInt> const ID,
              const InteractionParameter& P, GT const& Geo, DVType& Gradient) {
         assert(_G!=nullptr);
         _G(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Gradient,
-           _distance_sq,_pre_2_post_for_g,_gfunc);
+           _distance_sq,_displacement,_pre_2_post_for_g,_gfunc);
       }
       void EG(DVType const& X, Array<UInt> const& ID,
               const InteractionParameter& P, GT const& Geo, double& Energy,
               DVType& Gradient) {
         assert(_EG!=nullptr);
         _EG(X,ID,_pre,_post,_vec,_neighbor,_status,P,Geo,Energy,Gradient,
-            _distance_sq,_pre_2_post_for_eg,_egfunc);
+            _distance_sq,_displacement,_pre_2_post_for_eg,_egfunc);
       }
 
       void ClearStatus() { _status.reset(); }
