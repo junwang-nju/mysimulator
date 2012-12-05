@@ -11,6 +11,8 @@ namespace mysimulator {
     PairLJ1012,
     PairCore12,
     AngleHarmonic,
+    DihedralPeriodic,
+    DihedralDualPeriodic,
     Unknown
   };
 

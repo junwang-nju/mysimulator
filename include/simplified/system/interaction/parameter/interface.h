@@ -4,18 +4,6 @@
 
 #include "array/interface.h"
 #include "system/interaction/name.h"
-#include "system/interaction/parameter/pairwise/harmonic/_allocate.h"
-#include "system/interaction/parameter/pairwise/harmonic/_build.h"
-#include "system/interaction/parameter/pairwise/lj612/_allocate.h"
-#include "system/interaction/parameter/pairwise/lj612/_build.h"
-#include "system/interaction/parameter/pairwise/core12/_allocate.h"
-#include "system/interaction/parameter/pairwise/core12/_build.h"
-#include "system/interaction/parameter/pairwise/lj1012/_allocate.h"
-#include "system/interaction/parameter/pairwise/lj1012/_build.h"
-#include "system/interaction/parameter/pairwise/lj612cut/_allocate.h"
-#include "system/interaction/parameter/pairwise/lj612cut/_build.h"
-#include "system/interaction/parameter/angle/harmonic/_allocate.h"
-#include "system/interaction/parameter/angle/harmonic/_build.h"
 
 namespace mysimulator {
 
@@ -76,39 +64,7 @@ namespace mysimulator {
         return *this;
       }
 
-      void allocate(InteractionName tag) {
-        reset();
-        _tag=tag;
-        switch(tag) {
-          case InteractionName::PairHarmonic:
-            _allocate=_allocate_param_pair_harmonic;
-            _build=_build_pair_harmonic;
-            break;
-          case InteractionName::PairLJ612:
-            _allocate=_allocate_param_pair_lj612;
-            _build=_build_pair_lj612;
-            break;
-          case InteractionName::PairCore12:
-            _allocate=_allocate_param_pair_core12;
-            _build=_build_pair_core12;
-            break;
-          case InteractionName::PairLJ1012:
-            _allocate=_allocate_param_pair_lj1012;
-            _build=_build_pair_lj1012;
-            break;
-          case InteractionName::PairLJ612Cut:
-            _allocate=_allocate_param_pair_lj612cut;
-            _build=_build_pair_lj612cut;
-            break;
-          case InteractionName::AngleHarmonic:
-            _allocate=_allocate_param_angle_harmonic;
-            _build=_build_angle_harmonic;
-            break;
-          default:
-            fprintf(stderr,"No Implemented!\n");
-        }
-        if(_allocate!=nullptr) _allocate(_FParam,_IParam,_PParam);
-      }
+      void allocate(InteractionName);
       void swap(Type& P) {
         std::swap(_tag,P._tag);
         std::swap(_FParam,P._FParam);
@@ -122,6 +78,69 @@ namespace mysimulator {
       }
 
   };
+
+}
+
+#include "system/interaction/parameter/pairwise/harmonic/_allocate.h"
+#include "system/interaction/parameter/pairwise/harmonic/_build.h"
+#include "system/interaction/parameter/pairwise/lj612/_allocate.h"
+#include "system/interaction/parameter/pairwise/lj612/_build.h"
+#include "system/interaction/parameter/pairwise/core12/_allocate.h"
+#include "system/interaction/parameter/pairwise/core12/_build.h"
+#include "system/interaction/parameter/pairwise/lj1012/_allocate.h"
+#include "system/interaction/parameter/pairwise/lj1012/_build.h"
+#include "system/interaction/parameter/pairwise/lj612cut/_allocate.h"
+#include "system/interaction/parameter/pairwise/lj612cut/_build.h"
+#include "system/interaction/parameter/angle/harmonic/_allocate.h"
+#include "system/interaction/parameter/angle/harmonic/_build.h"
+#include "system/interaction/parameter/dihedral/periodic/_allocate.h"
+#include "system/interaction/parameter/dihedral/periodic/_build.h"
+#include "system/interaction/parameter/dihedral/dual-periodic/_allocate.h"
+#include "system/interaction/parameter/dihedral/dual-periodic/_build.h"
+
+namespace mysimulator {
+
+  void InteractionParameter::allocate(InteractionName tag) {
+    reset();
+    _tag=tag;
+    switch(tag) {
+      case InteractionName::PairHarmonic:
+        _allocate=_allocate_param_pair_harmonic;
+        _build=_build_pair_harmonic;
+        break;
+      case InteractionName::PairLJ612:
+        _allocate=_allocate_param_pair_lj612;
+        _build=_build_pair_lj612;
+        break;
+      case InteractionName::PairCore12:
+        _allocate=_allocate_param_pair_core12;
+        _build=_build_pair_core12;
+        break;
+      case InteractionName::PairLJ1012:
+        _allocate=_allocate_param_pair_lj1012;
+        _build=_build_pair_lj1012;
+        break;
+      case InteractionName::PairLJ612Cut:
+        _allocate=_allocate_param_pair_lj612cut;
+        _build=_build_pair_lj612cut;
+        break;
+      case InteractionName::AngleHarmonic:
+        _allocate=_allocate_param_angle_harmonic;
+        _build=_build_angle_harmonic;
+        break;
+      case InteractionName::DihedralPeriodic:
+        _allocate=_allocate_param_dihedral_periodic;
+        _build=_build_dihedral_periodic;
+        break;
+      case InteractionName::DihedralDualPeriodic:
+        _allocate=_allocate_param_dihedral_dual_periodic;
+        _build=_build_dihedral_dual_periodic;
+        break;
+      default:
+        fprintf(stderr,"No Implemented!\n");
+    }
+    if(_allocate!=nullptr) _allocate(_FParam,_IParam,_PParam);
+  }
 
 }
 
