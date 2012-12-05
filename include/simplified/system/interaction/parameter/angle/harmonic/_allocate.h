@@ -7,7 +7,10 @@
 
 namespace mysimulator {
 
-  void _allocate_param_angle_harmonic(Array<Double>& _FParam, Array<Int>&) {
+  class InteractionParameter;
+
+  void _allocate_param_angle_harmonic(
+      Array<Double>& _FParam, Array<Int>&, Array<InteractionParameter>&) {
     _FParam.allocate(AngleHarmonicParameterName::NumberParameter);
   }
 

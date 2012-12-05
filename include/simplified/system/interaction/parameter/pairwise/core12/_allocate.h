@@ -7,7 +7,10 @@
 
 namespace mysimulator {
 
-  void _allocate_param_pair_core12(Array<Double>& _FParam, Array<Int>&) {
+  class InteractionParameter;
+
+  void _allocate_param_pair_core12(
+      Array<Double>& _FParam, Array<Int>&, Array<InteractionParameter>&) {
     _FParam.allocate(PairCore12ParameterName::NumberParameter);
   }
 

@@ -7,7 +7,10 @@
 
 namespace mysimulator {
 
-  void _build_pair_harmonic(Array<Double>& _FParam,Array<Int>&) {
+  class InteractionParameter;
+
+  void _build_pair_harmonic(
+      Array<Double>& _FParam,Array<Int>&,Array<InteractionParameter>&) {
     assert((bool)_FParam);
     assert(_FParam.size()>=PairHarmonicParameterName::NumberParameter);
     _FParam[PairHarmonicParameterName::DualEqStrength] =

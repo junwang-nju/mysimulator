@@ -7,7 +7,10 @@
 
 namespace mysimulator {
 
-  void _build_pair_lj612cut(Array<Double>& _FParam, Array<Int>&) {
+  class InteractionParameter;
+
+  void _build_pair_lj612cut(
+      Array<Double>& _FParam, Array<Int>&, Array<InteractionParameter>&) {
     assert((bool)_FParam);
     assert(_FParam.size()>=PairLJ612CutParameterName::NumberParameter);
     double R0RC, R0RC6, R06, RC6, R0RC7;

@@ -31,32 +31,37 @@ namespace mysimulator {
       InteractionName   _tag;
       Array<Double>     _FParam;
       Array<Int>        _IParam;
+      Array<Type>       _PParam;
 
-      void (*_allocate)(Array<Double>&,Array<Int>&);
-      void (*_build)(Array<Double>&,Array<Int>&);
+      void (*_allocate)(Array<Double>&,Array<Int>&,Array<Type>&);
+      void (*_build)(Array<Double>&,Array<Int>&,Array<Type>&);
 
     public:
 
       InteractionParameter() : _tag(InteractionName::Unknown), _FParam(),
-                               _IParam() {}
+                               _IParam(), _PParam() {}
       InteractionParameter(const Type& P)
-        : _tag(P._tag), _FParam(P._FParam), _IParam(P._IParam) {}
+        : _tag(P._tag), _FParam(P._FParam), _IParam(P._IParam),
+          _PParam(P._PParam) {}
       InteractionParameter(Type&& P) : InteractionParameter() { swap(P); }
-      virtual ~InteractionParameter() { reset(); }
+      ~InteractionParameter() { reset(); }
 
       operator bool() const {
         return _tag != InteractionName::Unknown &&
-               ( (bool)_FParam || (bool)_IParam );
+               ( (bool)_FParam || (bool)_IParam || (bool)_PParam );
       }
       InteractionName Name() const { return _tag; }
       double& operator[](size_type i) { return _FParam[i]; }
       double operator[](size_type i) const { return _FParam[i]; }
       int& operator()(size_type i) { return _IParam[i]; }
       int operator()(size_type i) const { return _IParam[i]; }
+      Type& child(size_type i) { return _PParam[i]; }
+      Type const& child(size_type i) const { return _PParam[i]; }
       void reset() {
         _tag=InteractionName::Unknown;
         _FParam.reset();
         _IParam.reset();
+        _PParam.reset();
         _allocate=nullptr;
         _build=nullptr;
       }
@@ -67,6 +72,7 @@ namespace mysimulator {
         assert(Name()==P.Name());
         if((bool)_FParam)   _FParam=P._FParam;
         if((bool)_IParam)   _IParam=P._IParam;
+        if((bool)_PParam)   _PParam=P._PParam;
         return *this;
       }
 
@@ -101,17 +107,18 @@ namespace mysimulator {
           default:
             fprintf(stderr,"No Implemented!\n");
         }
-        if(_allocate!=nullptr) _allocate(_FParam,_IParam);
+        if(_allocate!=nullptr) _allocate(_FParam,_IParam,_PParam);
       }
       void swap(Type& P) {
         std::swap(_tag,P._tag);
         std::swap(_FParam,P._FParam);
         std::swap(_IParam,P._IParam);
+        std::swap(_PParam,P._PParam);
       }
 
       void build() {
         assert(_build!=nullptr);
-        _build(_FParam,_IParam);
+        _build(_FParam,_IParam,_PParam);
       }
 
   };

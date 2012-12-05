@@ -7,7 +7,10 @@
 
 namespace mysimulator {
 
-  void _build_angle_harmonic(Array<Double>& _FParam, Array<Int>&) {
+  class InteractionParameter;
+
+  void _build_angle_harmonic(
+      Array<Double>& _FParam, Array<Int>&, Array<InteractionParameter>&) {
     assert((bool)_FParam);
     assert(_FParam.size()>=AngleHarmonicParameterName::NumberParameter);
     _FParam[AngleHarmonicParameterName::DualEqStrength] =

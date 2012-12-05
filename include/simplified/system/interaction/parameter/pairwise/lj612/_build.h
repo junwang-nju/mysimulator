@@ -7,7 +7,10 @@
 
 namespace mysimulator {
 
-  void _build_pair_lj612(Array<Double>& _FParam,Array<Int>&) {
+  class InteractionParameter;
+
+  void _build_pair_lj612(
+      Array<Double>& _FParam,Array<Int>&,Array<InteractionParameter>&) {
     assert((bool)_FParam);
     assert(_FParam.size() >= PairLJ612ParameterName::NumberParameter);
     double tmd=_FParam[PairLJ612ParameterName::EqRadius];

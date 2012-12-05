@@ -7,7 +7,10 @@
 
 namespace mysimulator {
 
-  void _build_pair_core12(Array<Double>& _FParam,Array<Int>&) {
+  class InteractionParameter;
+
+  void _build_pair_core12(
+      Array<Double>& _FParam,Array<Int>&, Array<InteractionParameter>&) {
     assert((bool)_FParam);
     assert(_FParam.size()>=PairCore12ParameterName::NumberParameter);
     _FParam[PairCore12ParameterName::TwlfEqStrength] =
