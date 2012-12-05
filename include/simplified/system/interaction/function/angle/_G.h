@@ -64,13 +64,13 @@ namespace mysimulator {
         _vec[AngleVecName::BondIJ] * Double(_post[AnglePostName::IvRabSin]) -
         _vec[AngleVecName::BondKJ] * Double(_post[AnglePostName::IvRbSQCtg]);
     }
-    T ef;
+    double ef;
     _gfunc(_post,P,&ef);
     _vec[AngleVecName::ScaleNormI]=Double(-ef)*_vec[AngleVecName::NormI];
     _vec[AngleVecName::ScaleNormK]=Double(-ef)*_vec[AngleVecName::NormK];
-    _Grad[I]+=_vec[AngleVecName::ScaleNormI];
-    _Grad[K]+=_vec[AngleVecName::ScaleNormK];
-    _Grad[J]-=_vec[AngleVecName::ScaleNormI] + _vec[AngleVecName::ScaleNormK];
+    Grad[I]+=_vec[AngleVecName::ScaleNormI];
+    Grad[K]+=_vec[AngleVecName::ScaleNormK];
+    Grad[J]-=_vec[AngleVecName::ScaleNormI] + _vec[AngleVecName::ScaleNormK];
   }
 
 }

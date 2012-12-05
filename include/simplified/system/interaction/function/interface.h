@@ -53,6 +53,18 @@
 #include "system/interaction/function/pairwise/lj612cut/_g_func.h"
 #include "system/interaction/function/pairwise/lj612cut/_eg_func.h"
 
+#include "system/interaction/function/angle/_E.h"
+#include "system/interaction/function/angle/_G.h"
+#include "system/interaction/function/angle/_EG.h"
+
+#include "system/interaction/function/angle/harmonic/_allocate.h"
+#include "system/interaction/function/angle/harmonic/_pre_2_post_for_e.h"
+#include "system/interaction/function/angle/harmonic/_pre_2_post_for_g.h"
+#include "system/interaction/function/angle/harmonic/_pre_2_post_for_eg.h"
+#include "system/interaction/function/angle/harmonic/_e_func.h"
+#include "system/interaction/function/angle/harmonic/_g_func.h"
+#include "system/interaction/function/angle/harmonic/_eg_func.h"
+
 namespace mysimulator {
 
   template <typename GT,unsigned int DIM=GT::Dimension>
@@ -269,6 +281,25 @@ namespace mysimulator {
             _E=_E_pairwise<GT,DIM>;
             _G=_G_pairwise<GT,DIM>;
             _EG=_EG_pairwise<GT,DIM>;
+            break;
+          case InteractionName::AngleHarmonic:
+            _allocate=_allocate_func_angle_harmonic<DIM>;
+            _distance_sq=
+              DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
+                         double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
+            _pre_2_post_for_e=_pre_2_post_for_e_angle_harmonic;
+            _pre_2_post_for_g=_pre_2_post_for_g_angle_harmonic;
+            _pre_2_post_for_eg=_pre_2_post_for_eg_angle_harmonic;
+            _efunc=_efunc_angle_harmonic;
+            _gfunc=_gfunc_angle_harmonic;
+            _egfunc=_egfunc_angle_harmonic;
+            _E=_E_angle<GT,DIM>;
+            _G=_G_angle<GT,DIM>;
+            _EG=_EG_angle<GT,DIM>;
             break;
           default:
             fprintf(stderr,"No Implemented!\n");

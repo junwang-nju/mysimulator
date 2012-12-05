@@ -14,6 +14,8 @@
 #include "system/interaction/parameter/pairwise/lj1012/_build.h"
 #include "system/interaction/parameter/pairwise/lj612cut/_allocate.h"
 #include "system/interaction/parameter/pairwise/lj612cut/_build.h"
+#include "system/interaction/parameter/angle/harmonic/_allocate.h"
+#include "system/interaction/parameter/angle/harmonic/_build.h"
 
 namespace mysimulator {
 
@@ -91,6 +93,10 @@ namespace mysimulator {
           case InteractionName::PairLJ612Cut:
             _allocate=_allocate_param_pair_lj612cut;
             _build=_build_pair_lj612cut;
+            break;
+          case InteractionName::AngleHarmonic:
+            _allocate=_allocate_param_angle_harmonic;
+            _build=_build_angle_harmonic;
             break;
           default:
             fprintf(stderr,"No Implemented!\n");

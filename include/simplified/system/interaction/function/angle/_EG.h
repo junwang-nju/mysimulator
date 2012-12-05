@@ -14,7 +14,7 @@ namespace mysimulator {
   class InteractionParameter;
 
   template <typename GT,unsigned int DIM>
-  void _EG_pairwise(
+  void _EG_angle(
       Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>const& X,
       Array<UInt> const& ID, Array<Double>& _pre, Array<Double>& _post,
       Array2D<Double,ArrayKernelName::SSE,__system_vec_type<DIM>::NAME>& _vec,
@@ -70,9 +70,9 @@ namespace mysimulator {
     Energy+=ee;
     _vec[AngleVecName::ScaleNormI]=Double(-ef)*_vec[AngleVecName::NormI];
     _vec[AngleVecName::ScaleNormK]=Double(-ef)*_vec[AngleVecName::NormK];
-    _Grad[I]+=_vec[AngleVecName::ScaleNormI];
-    _Grad[K]+=_vec[AngleVecName::ScaleNormK];
-    _Grad[J]-=_vec[AngleVecName::ScaleNormI] + _vec[AngleVecName::ScaleNormK];
+    Grad[I]+=_vec[AngleVecName::ScaleNormI];
+    Grad[K]+=_vec[AngleVecName::ScaleNormK];
+    Grad[J]-=_vec[AngleVecName::ScaleNormI] + _vec[AngleVecName::ScaleNormK];
   }
 
 }
