@@ -29,6 +29,14 @@
 #include "system/interaction/function/pairwise/lj612/_g_func.h"
 #include "system/interaction/function/pairwise/lj612/_eg_func.h"
 
+#include "system/interaction/function/pairwise/corelj612/_allocate.h"
+#include "system/interaction/function/pairwise/corelj612/_pre_2_post_for_e.h"
+#include "system/interaction/function/pairwise/corelj612/_pre_2_post_for_g.h"
+#include "system/interaction/function/pairwise/corelj612/_pre_2_post_for_eg.h"
+#include "system/interaction/function/pairwise/corelj612/_e_func.h"
+#include "system/interaction/function/pairwise/corelj612/_g_func.h"
+#include "system/interaction/function/pairwise/corelj612/_eg_func.h"
+
 #include "system/interaction/function/pairwise/core12/_allocate.h"
 #include "system/interaction/function/pairwise/core12/_pre_2_post_for_e.h"
 #include "system/interaction/function/pairwise/core12/_pre_2_post_for_g.h"
@@ -242,7 +250,7 @@ namespace mysimulator {
             _pre_2_post_for_eg=_pre_2_post_for_eg_pair_lj612;
             _efunc=_efunc_pair_lj612;
             _gfunc=_gfunc_pair_lj612;
-            _egfunc=_egfunc_pair_Lj612;
+            _egfunc=_egfunc_pair_lj612;
             _E=_E_pairwise<GT,DIM>;
             _G=_G_pairwise<GT,DIM>;
             _EG=_EG_pairwise<GT,DIM>;
@@ -300,6 +308,25 @@ namespace mysimulator {
             _efunc=_efunc_pair_lj612cut;
             _gfunc=_gfunc_pair_lj612cut;
             _egfunc=_egfunc_pair_lj612cut;
+            _E=_E_pairwise<GT,DIM>;
+            _G=_G_pairwise<GT,DIM>;
+            _EG=_EG_pairwise<GT,DIM>;
+            break;
+          case InteractionName::PairCoreLJ612:
+            _allocate=_allocate_func_pair_corelj612<DIM>;
+            _distance_sq=
+              DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
+                         double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
+            _pre_2_post_for_e=_pre_2_post_for_e_pair_corelj612;
+            _pre_2_post_for_g=_pre_2_post_for_g_pair_corelj612;
+            _pre_2_post_for_eg=_pre_2_post_for_eg_pair_corelj612;
+            _efunc=_efunc_pair_corelj612;
+            _gfunc=_gfunc_pair_corelj612;
+            _egfunc=_egfunc_pair_corelj612;
             _E=_E_pairwise<GT,DIM>;
             _G=_G_pairwise<GT,DIM>;
             _EG=_EG_pairwise<GT,DIM>;

@@ -7,7 +7,7 @@
 
 namespace mysimulator {
 
-  void _egfunc_pair_Lj612(
+  void _egfunc_pair_lj612(
       Array<Double> const& _post, const InteractionParameter& P,
       double* Func, double* Diff) {
     assert((bool)_post);

@@ -15,7 +15,7 @@ namespace mysimulator {
     if(_post[PairLJ612CutPostName::DistanceSQ] >
        P[PairLJ612CutParameterName::CutRSQ]) { *Func=0; *Diff=0; }
     else {
-      _egfunc_pair_Lj612(_post,P,Func,Diff);
+      _egfunc_pair_lj612(_post,P,Func,Diff);
       *Func-=P[PairLJ612CutParameterName::Vc];
       *Func-=P[PairLJ612CutParameterName::Kc]*
              (_post[PairLJ612CutPostName::Distance]-
