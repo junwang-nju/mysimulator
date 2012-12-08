@@ -97,6 +97,8 @@ namespace mysimulator {
 #include "system/interaction/parameter/dihedral/periodic/_build.h"
 #include "system/interaction/parameter/dihedral/dual-periodic/_allocate.h"
 #include "system/interaction/parameter/dihedral/dual-periodic/_build.h"
+#include "system/interaction/parameter/dihedral/dual-periodic-common-phase/_allocate.h"
+#include "system/interaction/parameter/dihedral/dual-periodic-common-phase/_build.h"
 
 namespace mysimulator {
 
@@ -135,6 +137,10 @@ namespace mysimulator {
       case InteractionName::DihedralDualPeriodic:
         _allocate=_allocate_param_dihedral_dual_periodic;
         _build=_build_dihedral_dual_periodic;
+        break;
+      case InteractionName::DihedralDualPeriodicCommonPhase:
+        _allocate=_allocate_param_dihedral_dual_periodic_common_phase;
+        _build=_build_dihedral_dual_periodic_common_phase;
         break;
       default:
         fprintf(stderr,"No Implemented!\n");

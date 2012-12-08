@@ -13,6 +13,7 @@ namespace mysimulator {
     AngleHarmonic,
     DihedralPeriodic,
     DihedralDualPeriodic,
+    DihedralDualPeriodicCommonPhase,
     Unknown
   };
 

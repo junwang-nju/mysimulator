@@ -18,6 +18,7 @@ namespace mysimulator {
         return 3;
       case InteractionName::DihedralPeriodic:
       case InteractionName::DihedralDualPeriodic:
+      case InteractionName::DihedralDualPeriodicCommonPhase:
         return 4;
       default:
         fprintf(stderr,"Unknown Interaction!\n");
