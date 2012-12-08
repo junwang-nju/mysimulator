@@ -68,14 +68,24 @@
 #include "system/interaction/function/dihedral/_E.h"
 #include "system/interaction/function/dihedral/_G.h"
 #include "system/interaction/function/dihedral/_EG.h"
-
-#include "system/interaction/function/dihedral/periodic/_allocate.h"
 #include "system/interaction/function/dihedral/_pre_2_post_for_e.h"
 #include "system/interaction/function/dihedral/_pre_2_post_for_g.h"
 #include "system/interaction/function/dihedral/_pre_2_post_for_eg.h"
+
+#include "system/interaction/function/dihedral/periodic/_allocate.h"
 #include "system/interaction/function/dihedral/periodic/_e_func.h"
 #include "system/interaction/function/dihedral/periodic/_g_func.h"
 #include "system/interaction/function/dihedral/periodic/_eg_func.h"
+
+#include "system/interaction/function/dihedral/multi-periodic/_allocate.h"
+#include "system/interaction/function/dihedral/multi-periodic/_e_func.h"
+#include "system/interaction/function/dihedral/multi-periodic/_g_func.h"
+#include "system/interaction/function/dihedral/multi-periodic/_eg_func.h"
+
+#include "system/interaction/function/dihedral/multi-periodic-common-phase/_allocate.h"
+#include "system/interaction/function/dihedral/multi-periodic-common-phase/_e_func.h"
+#include "system/interaction/function/dihedral/multi-periodic-common-phase/_g_func.h"
+#include "system/interaction/function/dihedral/multi-periodic-common-phase/_eg_func.h"
 
 namespace mysimulator {
 
@@ -328,6 +338,44 @@ namespace mysimulator {
             _efunc=_efunc_dihedral_periodic;
             _gfunc=_gfunc_dihedral_periodic;
             _egfunc=_egfunc_dihedral_periodic;
+            _E=_E_dihedral<GT,DIM>;
+            _G=_G_dihedral<GT,DIM>;
+            _EG=_EG_dihedral<GT,DIM>;
+            break;
+          case InteractionName::DihedralDualPeriodic:
+            _allocate=_allocate_func_dihedral_multi_periodic<DIM>;
+            _distance_sq=
+              DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
+                         double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
+            _pre_2_post_for_e=_pre_2_post_for_e_dihedral;
+            _pre_2_post_for_g=_pre_2_post_for_g_dihedral;
+            _pre_2_post_for_eg=_pre_2_post_for_eg_dihedral;
+            _efunc=_efunc_dihedral_multi_periodic;
+            _gfunc=_gfunc_dihedral_multi_periodic;
+            _egfunc=_egfunc_dihedral_multi_periodic;
+            _E=_E_dihedral<GT,DIM>;
+            _G=_G_dihedral<GT,DIM>;
+            _EG=_EG_dihedral<GT,DIM>;
+            break;
+          case InteractionName::DihedralDualPeriodicCommonPhase:
+            _allocate=_allocate_func_dihedral_multi_periodic_common_phase<DIM>;
+            _distance_sq=
+              DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
+                         double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
+            _pre_2_post_for_e=_pre_2_post_for_e_dihedral;
+            _pre_2_post_for_g=_pre_2_post_for_g_dihedral;
+            _pre_2_post_for_eg=_pre_2_post_for_eg_dihedral;
+            _efunc=_efunc_dihedral_multi_periodic_common_phase;
+            _gfunc=_gfunc_dihedral_multi_periodic_common_phase;
+            _egfunc=_egfunc_dihedral_multi_periodic_common_phase;
             _E=_E_dihedral<GT,DIM>;
             _G=_G_dihedral<GT,DIM>;
             _EG=_EG_dihedral<GT,DIM>;

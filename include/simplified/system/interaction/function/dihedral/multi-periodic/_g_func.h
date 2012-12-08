@@ -9,16 +9,12 @@ namespace mysimulator {
 
   void _gfunc_dihedral_multi_periodic(
       Array<Double> const& _post,const InteractionParameter& P,double *Diff) {
-    double SF=0;
-    double Dih=_post[DihedralPeriodicPostName::Angle];
-    double dDih=Dih-P[DihedralPeriodicParameterName::Double::Phase];
-    InteractionParameter& RP;
+    double D,SD=0;
     for(unsigned int i=0;i<P(0);++i) {
-      RP=P.child(i);
-      SF+=RP[DihedralPeriodicParameterName::Double::SFProduct]*
-          __sin(RP(DihedralPeriodicParameterName::Int::Frequency)*dDih);
+      _gfunc_dihedral_periodic(_post,P,&D);
+      SD+=D;
     }
-    *Diff=SF;
+    *Diff=SD;
   }
 
 }
