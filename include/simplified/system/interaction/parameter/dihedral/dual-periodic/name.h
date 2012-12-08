@@ -8,15 +8,26 @@ namespace mysimulator {
 
     public:
 
-      static const unsigned int Period1         = 0;
-      static const unsigned int Period2         = Period1+1;
-      static const unsigned int NumberParameter = Period2+1;
+      class Int {
+        public:
+          static const unsigned int NumberChild     = 0;
+          static const unsigned int NumberParameter = NumberChild+1;
+      };
+
+      class Child {
+        public:
+          static const unsigned int Period1         = 0;
+          static const unsigned int Period2         = Period1+1;
+          static const unsigned int NumberParameter = Period2+1;
+      };
 
   };
 
-  const unsigned int DihedralDualPeriodicParameterName::Period1;
-  const unsigned int DihedralDualPeriodicParameterName::Period2;
-  const unsigned int DihedralDualPeriodicParameterName::NumberParameter;
+  const unsigned int DihedralDualPeriodicParameterName::Int::NumberChild;
+  const unsigned int DihedralDualPeriodicParameterName::Int::NumberParameter;
+  const unsigned int DihedralDualPeriodicParameterName::Child::Period1;
+  const unsigned int DihedralDualPeriodicParameterName::Child::Period2;
+  const unsigned int DihedralDualPeriodicParameterName::Child::NumberParameter;
 
 }
 

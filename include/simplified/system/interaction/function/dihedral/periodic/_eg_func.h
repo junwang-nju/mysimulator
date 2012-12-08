@@ -14,10 +14,9 @@ namespace mysimulator {
       double* Func, double* Diff) {
     double Dih=_post[DihedralPeriodicPostName::Angle];
     double dDih=Dih-P[DihedralPeriodicParameterName::Double::Phase];
-    *Func=P[DihedralPeriodicParameterName::Double::Strength]*
-          (1.-__cos(P(DihedralPeriodicParameterName::Int::Frequency)*dDih));
-    *Diff=P[DihedralPeriodicParameterName::Double::SFProduct]*
-          __sin(P(DihedralPeriodicParameterName::Int::Frequency)*dDih);
+    double FD=P(DihedralPeriodicParameterName::Int::Frequency)*dDih;
+    *Func=P[DihedralPeriodicParameterName::Double::Strength]*(1.-__cos(FD));
+    *Diff=P[DihedralPeriodicParameterName::Double::SFProduct]*__sin(FD);
   }
 
 }

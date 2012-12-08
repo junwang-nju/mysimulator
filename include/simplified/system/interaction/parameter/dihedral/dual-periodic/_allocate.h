@@ -11,11 +11,14 @@ namespace mysimulator {
   class InteractionParameter;
 
   void _allocate_param_dihedral_dual_periodic(
-      Array<Double>&,Array<Int>&,Array<InteractionParameter>& _PParam) {
-    _PParam.allocate(DihedralDualPeriodicParameterName::NumberParameter);
-    _PParam[DihedralDualPeriodicParameterName::Period1].allocate(
+      Array<Double>&,Array<Int>& _IParam,Array<InteractionParameter>& _PParam) {
+    _IParam.allocate(DihedralDualPeriodicParameterName::Int::NumberParameter);
+    _IParam[DihedralDualPeriodicParameterName::Int::NumberChild]=
+      DihedralDualPeriodicParameterName::Child::NumberParameter;
+    _PParam.allocate(DihedralDualPeriodicParameterName::Child::NumberParameter);
+    _PParam[DihedralDualPeriodicParameterName::Child::Period1].allocate(
         InteractionName::DihedralPeriodic);
-    _PParam[DihedralDualPeriodicParameterName::Period2].allocate(
+    _PParam[DihedralDualPeriodicParameterName::Child::Period2].allocate(
         InteractionName::DihedralPeriodic);
   }
 
