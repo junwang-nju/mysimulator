@@ -14,7 +14,8 @@ namespace mysimulator {
       class Double {
         public:
           static const unsigned int Strength        = 0;
-          static const unsigned int SFProduct       = Strength+1;
+          static const unsigned int Phase           = Strength+1;
+          static const unsigned int SFProduct       = Phase+1;
           static const unsigned int NumberParameter = SFProduct+1;
       };
   };
@@ -22,6 +23,7 @@ namespace mysimulator {
   const unsigned int DihedralPeriodicParameterName::Int::Frequency;
   const unsigned int DihedralPeriodicParameterName::Int::NumberParameter;
   const unsigned int DihedralPeriodicParameterName::Double::Strength;
+  const unsigned int DihedralPeriodicParameterName::Double::Phase;
   const unsigned int DihedralPeriodicParameterName::Double::SFProduct;
   const unsigned int DihedralPeriodicParameterName::Double::NumberParameter;
 
