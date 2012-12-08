@@ -1,0 +1,6 @@
+
+#ifndef _System_Interaction_Parameter_Pairwise_StepContinuous_Name_H_
+#define _System_Interaction_Parameter_Pairwise_StepContinuous_Name_H_
+
+#endif
+
