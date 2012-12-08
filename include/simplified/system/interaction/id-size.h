@@ -14,6 +14,7 @@ namespace mysimulator {
       case InteractionName::PairCore12:
       case InteractionName::PairCoreLJ612:
       case InteractionName::PairLJ1012:
+      case InteractionName::PairStepContinuous:
         return 2;
       case InteractionName::AngleHarmonic:
         return 3;

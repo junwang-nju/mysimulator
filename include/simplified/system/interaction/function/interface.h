@@ -61,6 +61,14 @@
 #include "system/interaction/function/pairwise/lj612cut/_g_func.h"
 #include "system/interaction/function/pairwise/lj612cut/_eg_func.h"
 
+#include "system/interaction/function/pairwise/step-continuous/_allocate.h"
+#include "system/interaction/function/pairwise/step-continuous/_pre_2_post_for_e.h"
+#include "system/interaction/function/pairwise/step-continuous/_pre_2_post_for_g.h"
+#include "system/interaction/function/pairwise/step-continuous/_pre_2_post_for_eg.h"
+#include "system/interaction/function/pairwise/step-continuous/_e_func.h"
+#include "system/interaction/function/pairwise/step-continuous/_g_func.h"
+#include "system/interaction/function/pairwise/step-continuous/_eg_func.h"
+
 #include "system/interaction/function/angle/_E.h"
 #include "system/interaction/function/angle/_G.h"
 #include "system/interaction/function/angle/_EG.h"
@@ -327,6 +335,25 @@ namespace mysimulator {
             _efunc=_efunc_pair_corelj612;
             _gfunc=_gfunc_pair_corelj612;
             _egfunc=_egfunc_pair_corelj612;
+            _E=_E_pairwise<GT,DIM>;
+            _G=_G_pairwise<GT,DIM>;
+            _EG=_EG_pairwise<GT,DIM>;
+            break;
+          case InteractionName::PairStepContinuous:
+            _allocate=_allocate_func_pair_step_continuous<DIM>;
+            _distance_sq=
+              DistanceSQ<SystemKindName::Particle,SystemKindName::Particle,
+                         double,_VForm,double,_VForm,double,_VForm,GT>;
+            _displacement=
+              DisplacementCalc<SystemKindName::Particle,
+                               SystemKindName::Particle,double,_VForm,
+                               double,_VForm,double,_VForm,GT>;
+            _pre_2_post_for_e=_pre_2_post_for_e_pair_step_continuous;
+            _pre_2_post_for_g=_pre_2_post_for_g_pair_step_continuous;
+            _pre_2_post_for_eg=_pre_2_post_for_eg_pair_step_continuous;
+            _efunc=_efunc_pair_step_continuous;
+            _gfunc=_gfunc_pair_step_continuous;
+            _egfunc=_egfunc_pair_step_continuous;
             _E=_E_pairwise<GT,DIM>;
             _G=_G_pairwise<GT,DIM>;
             _EG=_EG_pairwise<GT,DIM>;

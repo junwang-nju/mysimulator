@@ -93,6 +93,8 @@ namespace mysimulator {
 #include "system/interaction/parameter/pairwise/lj612cut/_build.h"
 #include "system/interaction/parameter/pairwise/corelj612/_allocate.h"
 #include "system/interaction/parameter/pairwise/corelj612/_build.h"
+#include "system/interaction/parameter/pairwise/step-continuous/_allocate.h"
+#include "system/interaction/parameter/pairwise/step-continuous/_build.h"
 #include "system/interaction/parameter/angle/harmonic/_allocate.h"
 #include "system/interaction/parameter/angle/harmonic/_build.h"
 #include "system/interaction/parameter/dihedral/periodic/_allocate.h"
@@ -131,6 +133,10 @@ namespace mysimulator {
       case InteractionName::PairCoreLJ612:
         _allocate=_allocate_param_pair_corelj612;
         _build=_build_pair_corelj612;
+        break;
+      case InteractionName::PairStepContinuous:
+        _allocate=_allocate_param_pair_step_continuous;
+        _build=_build_pair_step_continuous;
         break;
       case InteractionName::AngleHarmonic:
         _allocate=_allocate_param_angle_harmonic;
