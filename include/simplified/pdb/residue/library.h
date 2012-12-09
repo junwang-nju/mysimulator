@@ -97,18 +97,19 @@ namespace mysimulator {
       for(unsigned int k=0;k<ResidueKeySize;++k) {
         _mask=ResidueLibrary[i].Key[k];
         if((Key[i]|_mask)^_mask)  { fg=false; break; }
+      }
       if(fg)  return i;
     }
     return -1;
   }
 
-    int __residue_library_id(const PDBResidueName RN) {
-      for(unsigned int i=0;i<ResidueLibrarySize;++i)
-        if(ResidueLibrary[i].Value == RN)   return i;
-      return -1;
-    }
+  int __residue_library_id(const PDBResidueName RN) {
+    for(unsigned int i=0;i<ResidueLibrarySize;++i)
+      if(ResidueLibrary[i].Value == RN)   return i;
+    return -1;
+  }
 
-  PDBResidueName ResidueName() (const unsigned int Key[ResidueKeySize]) {
+  PDBResidueName ResidueName(const unsigned int Key[ResidueKeySize]) {
     int id=__residue_library_id(Key);
     return id==-1 ? PDBResidueName::Unknown : ResidueLibrary[id].Value;
   }

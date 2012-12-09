@@ -38,7 +38,8 @@ namespace mysimulator {
 
     public:
 
-      __PDB_Residue() : _tag, _Atom(), _AtomName(), _ID(-1) {}
+      __PDB_Residue() : _tag(PDBResidueName::Unknown),
+                        _Atom(), _AtomName(), _ID(-1) {}
       __PDB_Residue(const Type& R) : __PDB_Residue() {
         imprint(R); operator=(R);
       }
@@ -72,7 +73,7 @@ namespace mysimulator {
         return _AtomName[i];
       }
       unsigned int Index() const { assert(_ID>-1); return _ID; }
-      unsigned int NumberAtoms() const { return _AtomName.size(); }
+      unsigned int NumberAtom() const { return _AtomName.size(); }
       void reset() {
         _ID=-1;
         _AtomName.reset();
@@ -86,7 +87,7 @@ namespace mysimulator {
         assert(__is_same_residue(R));
         for(unsigned int i=0,w;i<_AtomName.size();++i) {
           w=(unsigned int)(_AtomName[i]);
-          *(_Atom[w])=*(R._Atom[w])
+          *(_Atom[w])=*(R._Atom[w]);
         }
         return *this;
       }
@@ -98,7 +99,7 @@ namespace mysimulator {
           return;
         }
         reset();
-        _tag = ResidueLibrary[_rlid];
+        _tag = ResidueLibrary[_rlid].Value;
         _allocate(Key);
       }
       void allocate(const PDBResidueName RN) {
@@ -135,8 +136,9 @@ namespace mysimulator {
 namespace mysimulator {
 
   void swap(mysimulator::__PDB_Residue& R1, mysimulator::__PDB_Residue& R2) {
-    R.swap(R2);
+    R1.swap(R2);
   }
+
 }
 
 #endif

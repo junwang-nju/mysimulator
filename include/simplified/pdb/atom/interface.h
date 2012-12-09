@@ -50,7 +50,7 @@ namespace mysimulator {
       }
 
       void allocate(PDBAtomName AN) { reset(); _tag=AN; _loc.allocate(); }
-      void imprint(const Type&) { allocate(); }
+      void imprint(const Type& A) { allocate(A.Name()); }
 
       void swap(__PDB_Atom& A) {
         std::swap(_tag,A._tag);

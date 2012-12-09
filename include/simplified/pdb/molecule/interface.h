@@ -19,7 +19,7 @@ namespace mysimulator {
 
     public:
 
-      __PDB_Molecule() : ParentType, _tag(-1) {}
+      __PDB_Molecule() : ParentType(), _tag(-1) {}
       __PDB_Molecule(const Type& M)
         : ParentType((ParentType const&)M), _tag(M._tag) {}
       __PDB_Molecule(Type&& M) : __PDB_Molecule() { swap(M); }
@@ -27,7 +27,7 @@ namespace mysimulator {
 
       operator bool() const { return ParentType::operator bool() && _tag>-1; }
       unsigned int Tag() const { assert(_tag>-1); return _tag; }
-      unsigned int NumberResidues() const { return ParentType::size(); }
+      unsigned int NumberResidue() const { return ParentType::size(); }
       __PDB_Residue& Residue(unsigned int i,unsigned int alt=0) {
         return ParentType::operator[](i)[alt];
       }

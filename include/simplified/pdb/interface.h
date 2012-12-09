@@ -12,8 +12,8 @@ namespace mysimulator {
 
     public:
 
-      typedef PDB                 Type;
-      typedef __PDB_Model   ParentType;
+      typedef PDB                       Type;
+      typedef Array<__PDB_Model>  ParentType;
 
     private:
 
@@ -22,9 +22,11 @@ namespace mysimulator {
 
     public:
 
-      PDB() : ParentType(), _Code("    "), _SeqMap() {}
-      PDB(const Type& F) : ParentType((ParentType const&)F), _Code(F._Code),
-                           _SeqMap(F._SeqMap) {}
+      PDB() : ParentType(), _SeqMap() {
+        strncpy(_Code,"    ",4); _Code[5]='\0';
+      }
+      PDB(const Type& F) : ParentType((ParentType const&)F),
+                           _SeqMap(F._SeqMap) { strncpy(_Code,F._Code,4); }
       PDB(Type&& F) : PDB() { swap(F); }
       ~PDB() { reset(); }
 
@@ -32,16 +34,16 @@ namespace mysimulator {
         return ParentType::operator bool() && strncmp(_Code,"    ",4)!=0 &&
                (bool)_SeqMap;
       }
-      const char* Code() const { return _code; }
-      unsigned int NumberModels() const { return ParentType::size(); }
-      unsigned int NumberResidues() const { return _SeqMap.Data().size(); }
+      const char* Code() const { return _Code; }
+      unsigned int NumberModel() const { return ParentType::size(); }
+      unsigned int NumberResidue() const { return _SeqMap.Data().size(); }
       __PDB_Residue& Residue(unsigned int nMod,unsigned int nMol,
-                             unsigned int nRes,char alt) {
+                             unsigned int nRes,char alt=' ') {
         assert((bool)(*this));
         return ParentType::operator[](nMod).Residue(nMol,nRes,alt);
       }
       __PDB_Residue const& Residue(unsigned int nMod,unsigned int nMol,
-                                   unsigned int nRes,char alt) const {
+                                   unsigned int nRes,char alt=' ') const {
         assert((bool)(*this));
         return ParentType::operator[](nMod).Residue(nMol,nRes,alt);
       }
@@ -52,18 +54,32 @@ namespace mysimulator {
         ParentType::reset(); strncpy(_Code,"    ",5); _SeqMap.reset();
       }
 
+      Type& operator=(const Type&) = delete;
+
       void BuildSeqMap() {
         assert(ParentType::operator bool());
         Array<UInt,ArrayKernelName::SSE> SZ;
         SZ.allocate(ParentType::operator[](0).NumberMolecule());
         for(unsigned int i=0;i<SZ.size();++i)
-          SZ[i]=ParentType::operator[](0)[i].NumberResidues();
+          SZ[i]=ParentType::operator[](0)[i].NumberResidue();
         _SeqMap.allocate(SZ);
         unsigned int S=Sum(SZ);
         for(unsigned int i=0;i<S;++i) _SeqMap.Data()[i]=i;
       }
 
+      void swap(Type& O) {
+        ParentType::swap((ParentType&)O);
+        std::swap(_Code,O._Code);
+        std::swap(_SeqMap,O._SeqMap);
+      }
+
   };
+
+}
+
+namespace std {
+
+  void swap(mysimulator::PDB& A, mysimulator::PDB& B) { A.swap(B); }
 
 }
 

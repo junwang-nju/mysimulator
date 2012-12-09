@@ -31,6 +31,9 @@ namespace mysimulator {
   template <>
   class __sse_value<long> { public: typedef __m128i    Type;  };
 
+  template <>
+  class __sse_value<unsigned int> { public: typedef __m128i Type; };
+
 }
 
 #endif

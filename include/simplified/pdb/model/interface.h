@@ -16,12 +16,6 @@ namespace mysimulator {
     private:
 
       Array<char>   _AltTable;
-      bool __is_same_table(const Type& M) {
-        if(_AltTable.size()!=M._AltTable.size())  return false;
-        for(unsigned int i=0;i<_AltTable.size();++i)
-          if(_AltTable[i]!=M._AltTable[i])  return false;
-        return true;
-      }
       unsigned int _AltIndex(char c) const {
         unsigned int m=_AltTable.size()+1;
         if(c==' ')  m=0;
@@ -56,11 +50,10 @@ namespace mysimulator {
       unsigned int NumberMolecule() const { return ParentType::size(); }
       void reset() { ParentType::reset(); _AltTable.reset(); }
 
-      Type& operator(const Type& M) {
+      Type& operator=(const Type& M) {
         assert((bool)(*this));
         assert((bool)M);
         assert(ParentType::size()==M.size());
-        assert(__is_same_table(M));
         ParentType::operator=((ParentType const&)M);
         return *this;
       }
