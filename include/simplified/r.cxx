@@ -111,7 +111,7 @@ int main() {
 
   double dt=0.001;
   double gamma=0.1;
-  double temperature=0.9;
+  double temperature=1.18;
   double rsize=sqrt(2*gamma*temperature*dt*0.5);
 
   S._G=0;
@@ -123,10 +123,10 @@ int main() {
 
   cout.precision(12);
   for(unsigned int rt=0;rt<100000000;++rt) {
-    S._V-=Double(0.5*dt)*S._G;
-    //S._V=Double(1-gamma*0.5*dt)*S._V-Double(0.5*dt)*S._G;
-    //for(unsigned int i=0;i<S._V.Data().size();++i)
-      //S._V.Data()[i]+=rsize*generator();
+    //S._V-=Double(0.5*dt)*S._G;
+    S._V=Double(1-gamma*0.5*dt)*S._V-Double(0.5*dt)*S._G;
+    for(unsigned int i=0;i<S._V.Data().size();++i)
+      S._V.Data()[i]+=rsize*generator();
     S._X+=Double(dt)*S._V;
     S._G=0;
     *S._E=0;
@@ -134,14 +134,18 @@ int main() {
       S._Interaction[i].ClearStatus();
       S._Interaction[i].UpdateEnergyGradient(S._X);
       S._G+=S._Interaction[i].Gradient();
-      *(S._E)+=S._Interaction[i].Energy();
+      //*(S._E)+=S._Interaction[i].Energy();
     }
     S._V-=Double(0.5*dt)*S._G;
-    //for(unsigned int i=0;i<S._V.Data().size();++i)
-      //S._V.Data()[i]+=rsize*generator();
-    //S._V*=Double(1./(1+gamma*dt*0.5));
-    if(rt%10==0)
+    for(unsigned int i=0;i<S._V.Data().size();++i)
+      S._V.Data()[i]+=rsize*generator();
+    S._V*=Double(1./(1+gamma*dt*0.5));
+    if(rt%100==0) {
+      *S._E=0;
+      for(unsigned int i=0;i<153;++i)
+        *S._E+=S._Interaction[i+64+63+62].Energy();
       cout<<rt<<"\t"<<*S._E<<"\t"<<0.5*NormSQ(S._V.Data())<<endl;
+    }
   }
 
   return 0;

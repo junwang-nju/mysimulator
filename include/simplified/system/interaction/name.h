@@ -10,6 +10,7 @@ namespace mysimulator {
     PairLJ612Cut,
     PairLJ1012,
     PairCore12,
+    PairCoreLJ612,
     AngleHarmonic,
     DihedralPeriodic,
     DihedralDualPeriodic,
