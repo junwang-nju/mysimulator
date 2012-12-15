@@ -28,8 +28,8 @@ int main() {
   for(unsigned int i=0;i<64;++i)  FN[i][0]=InteractionName::PairHarmonic;
   for(unsigned int i=0;i<63;++i)  FN[i+64][0]=InteractionName::AngleHarmonic;
   for(unsigned int i=0;i<62;++i)  FN[i+64+63][0]=InteractionName::DihedralDualPeriodicCommonPhase;
-  for(unsigned int i=0;i<153;++i) FN[i+64+63+62][0]=InteractionName::PairLJ612Cut;
-  for(unsigned int i=153+64+63+62;i<NC;++i) FN[i]=InteractionName::PairCore12;
+  for(unsigned int i=0;i<153;++i) FN[i+64+63+62][0]=InteractionName::PairLJ1012;
+  for(unsigned int i=153+64+63+62;i<NC;++i) FN[i]=InteractionName::PairCoreLJ612;
   for(unsigned int i=0;i<NC;++i) {
     S._Interaction[i].allocate(FN[i]);
     S._Interaction[i].imprint_gradient_energy(S._X);
@@ -83,11 +83,9 @@ int main() {
     ifs>>S._Interaction[i+64+63+62].ID(0)[0];
     ifs>>S._Interaction[i+64+63+62].ID(0)[1];
     FG[S._Interaction[i+64+63+62].ID(0)[0]][S._Interaction[i+64+63+62].ID(0)[1]]=1;
-    ifs>>S._Interaction[i+64+63+62].Parameter(0)[PairLJ612CutParameterName::EqRadius];
-    S._Interaction[i+64+63+62].Parameter(0)[PairLJ612CutParameterName::EqEnergyDepth]=
+    ifs>>S._Interaction[i+64+63+62].Parameter(0)[PairLJ1012ParameterName::EqRadius];
+    S._Interaction[i+64+63+62].Parameter(0)[PairLJ1012ParameterName::EqEnergyDepth]=
       1.;
-    S._Interaction[i+64+63+62].Parameter(0)[PairLJ612CutParameterName::CutR]=
-      20.;
     S._Interaction[i+64+63+62].Parameter(0).build();
   }
   for(unsigned int i=0,n=153+64+63+62;i<65;++i)
@@ -95,8 +93,8 @@ int main() {
     if(FG[i][j]==1) continue;
     S._Interaction[n].ID(0)[0]=i;
     S._Interaction[n].ID(0)[1]=j;
-    S._Interaction[n].Parameter(0)[PairCore12ParameterName::EqStrength]=
-      pow(4.,12);
+    S._Interaction[n].Parameter(0)[PairCoreLJ612ParameterName::EqRadius]=4.;
+    S._Interaction[n].Parameter(0)[PairCoreLJ612ParameterName::EqEnergyDepth]=1.;
     S._Interaction[n].Parameter(0).build();
     ++n;
     if(n>NC)  { cerr<<">NC!"<<endl; return 1; }
@@ -111,7 +109,8 @@ int main() {
 
   double dt=0.001;
   double gamma=0.1;
-  double temperature=1.18;
+  double gammaL=0.5;
+  double temperature=1.13;
   double rsize=sqrt(2*gamma*temperature*dt*0.5);
 
   S._G=0;
@@ -121,10 +120,34 @@ int main() {
     S._G+=S._Interaction[i].Gradient();
   }
 
-  cout.precision(12);
+  double DS,DS0,GM;
+  Array2D<Double,ArrayKernelName::SSE,__system_vec_type<3>::NAME> dV;
+  Array<Double,__system_vec_type<3>::NAME> tV(3);
+  unsigned int I,J;
+  dV.imprint_structure(S._X);
+  cout.precision(16);
   for(unsigned int rt=0;rt<100000000;++rt) {
     //S._V-=Double(0.5*dt)*S._G;
-    S._V=Double(1-gamma*0.5*dt)*S._V-Double(0.5*dt)*S._G;
+    //S._V=Double(1-gamma*0.5*dt)*S._V-Double(0.5*dt)*S._G;
+    dV=0;
+    for(unsigned int i=0;i<153;++i) {
+      SystemInteraction<FreeSpace<3>>& _SI=S._Interaction[i+64+63+62];
+      I=_SI.ID(0)[0];
+      J=_SI.ID(0)[1];
+      DS=_SI.Function(0)._pre[PairwisePreName::DistanceSQ];
+      DS0=_SI.Parameter(0)[PairLJ1012ParameterName::EqRadius];
+      DS0*=DS0;
+      //GM=(DS<DS0?gammaL:(DS<DS0*5?gammaL*(1-(DS-DS0)/(4*DS0)):0));
+      if(DS<DS0)  GM=gammaL;
+      else GM=-gammaL*_SI.Energy();
+      tV=(S._V[I]-S._V[J])*Double(-GM*0.5*dt);
+      for(unsigned int k=0;k<3;++k)
+        tV[k]+=sqrt(2*GM*temperature*dt*0.5)*generator();
+      dV[I]+=tV;
+      dV[J]-=tV;
+    }
+    dV+=Double(-gamma*0.5*dt)*S._V;
+    S._V+=dV-Double(0.5*dt)*S._G;
     for(unsigned int i=0;i<S._V.Data().size();++i)
       S._V.Data()[i]+=rsize*generator();
     S._X+=Double(dt)*S._V;
@@ -136,11 +159,48 @@ int main() {
       S._G+=S._Interaction[i].Gradient();
       //*(S._E)+=S._Interaction[i].Energy();
     }
+    //S._V-=Double(0.5*dt)*S._G;
+    //for(unsigned int i=0;i<S._V.Data().size();++i)
+    //  S._V.Data()[i]+=rsize*generator();
+    //S._V*=Double(1./(1+gamma*dt*0.5));
+    dV=0;
     S._V-=Double(0.5*dt)*S._G;
     for(unsigned int i=0;i<S._V.Data().size();++i)
       S._V.Data()[i]+=rsize*generator();
-    S._V*=Double(1./(1+gamma*dt*0.5));
-    if(rt%100==0) {
+    for(unsigned int i=0;i<153;++i) {
+      SystemInteraction<FreeSpace<3>>& _SI=S._Interaction[i+64+63+62];
+      I=_SI.ID(0)[0];
+      J=_SI.ID(0)[1];
+      DS=_SI.Function(0)._pre[PairwisePreName::DistanceSQ];
+      DS0=_SI.Parameter(0)[PairLJ1012ParameterName::EqRadius];
+      DS0*=DS0;
+      //GM=(DS<DS0?gammaL:(DS<DS0*5?gammaL*(1-(DS-DS0)/(4*DS0)):0));
+      if(DS<DS0)  GM=gammaL;
+      else GM=-gammaL*_SI.Energy();
+      for(unsigned int k=0;k<3;++k)
+        tV[k]=sqrt(2*GM*temperature*dt*0.5)*generator();
+      S._V[I]+=tV;
+      S._V[J]-=tV;
+    }
+    for(unsigned int i=0;i<153;++i) {
+      I=S._Interaction[i+64+63+62].ID(0)[0];
+      J=S._Interaction[i+64+63+62].ID(0)[1];
+      DS=
+        __square_root(S._Interaction[i+64+63+62].
+                      Function(0)._pre[PairwisePreName::DistanceSQ]);
+      DS0=
+        S._Interaction[i+64+63+62].
+        Parameter(0)[PairLJ1012ParameterName::EqRadius];
+      //GM=(DS<DS0?gammaL:(DS<DS0*5?gammaL*(1-(DS-DS0)/(4*DS0)):0));
+      if(DS<DS0)  GM=gammaL;
+      else GM=-gammaL*S._Interaction[i+64+63+62].Energy();
+      tV=(S._V[I]-S._V[J])*Double(-GM*0.5*dt);
+      dV[I]+=tV;
+      dV[J]-=tV;
+    }
+    dV+=Double(-gamma*0.5*dt)*S._V;
+    S._V+=dV;
+    if(rt%200==0) {
       *S._E=0;
       for(unsigned int i=0;i<153;++i)
         *S._E+=S._Interaction[i+64+63+62].Energy();
