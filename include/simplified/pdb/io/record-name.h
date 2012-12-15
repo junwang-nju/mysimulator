@@ -14,7 +14,7 @@ namespace mysimulator {
     NotImplemented
   };
 
-  PDBRecordName RecordName(const char* _rec) {
+  PDBRecordName _RecordName(const char* _rec) {
     if(strncmp(_rec,"ATOM  ",6)==0)         return PDBRecordName::ATOM;
     else if(strncmp(_rec,"MODEL ",6)==0)    return PDBRecordName::MODEL;
     else if(strncmp(_rec,"ENDMDL",6)==0)    return PDBRecordName::ENDMDL;

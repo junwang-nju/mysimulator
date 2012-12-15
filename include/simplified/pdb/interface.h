@@ -56,6 +56,10 @@ namespace mysimulator {
 
       Type& operator=(const Type&) = delete;
 
+      void SetCode(const char* code) {
+        for(unsigned int i=0;i<4;++i) _Code[i]=code[i];
+        _Code[4]='\0';
+      }
       void BuildSeqMap() {
         assert(ParentType::operator bool());
         Array<UInt,ArrayKernelName::SSE> SZ;

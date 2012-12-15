@@ -8,6 +8,11 @@ namespace mysimulator {
 
   static const unsigned int ResidueKeySize = ((NumberAtomName-1)>>5)+1;
 
+  void _AddAtom2Key(unsigned int Key[ResidueKeySize], PDBAtomName AN) {
+    unsigned int m=(unsigned int)AN;
+    Key[m>>5] |= (1<<(m&0x1F));
+  }
+
 }
 
 #include "pdb/residue/name.h"
@@ -86,6 +91,9 @@ namespace mysimulator {
     { { 0x1AF,        0x1DC13C0,        0x0       },  PDBResidueName::ntVal }
   };
 
+  static const unsigned int HeavyAtomMask[ResidueKeySize] =
+      { 0xFFFFFFFF,   0x1F,             0x0       };
+
   static const unsigned int ResidueLibrarySize =
     sizeof(ResidueLibrary) / sizeof(ResidueLibraryItem);
 
@@ -96,7 +104,10 @@ namespace mysimulator {
       fg=true;
       for(unsigned int k=0;k<ResidueKeySize;++k) {
         _mask=ResidueLibrary[i].Key[k];
-        if((Key[i]|_mask)^_mask)  { fg=false; break; }
+        if((Key[k]|_mask)^_mask)  { fg=false; break; }
+        if((Key[k]&HeavyAtomMask[k])!=(_mask&HeavyAtomMask[k])) {
+          fg=false; break;
+        }
       }
       if(fg)  return i;
     }
@@ -112,6 +123,32 @@ namespace mysimulator {
   PDBResidueName ResidueName(const unsigned int Key[ResidueKeySize]) {
     int id=__residue_library_id(Key);
     return id==-1 ? PDBResidueName::Unknown : ResidueLibrary[id].Value;
+  }
+
+  bool __key_residue_consistency(PDBResidueName RN,
+                                 const unsigned int Key[ResidueKeySize]) {
+    bool found=false;
+    bool cons=false;
+    unsigned int _mask;
+    for(unsigned int i=0;i<ResidueLibrarySize;++i) {
+      if(ResidueLibrary[i].Value!=RN) continue;
+      else {
+        found=true;
+        cons=true;
+        for(unsigned int k=0;k<ResidueKeySize;++k) {
+          _mask=ResidueLibrary[i].Key[k];
+          if((Key[k]|_mask)^_mask)  { cons=false; break; }
+        }
+        if(cons)  break;
+      }
+    }
+    if(!found)  fprintf(stderr,"Residue Type Not Found!\n");
+    return cons;
+  }
+
+  bool __key_residue_consistency(const unsigned int Key[ResidueKeySize],
+                                 PDBResidueName RN) {
+    return __key_residue_consistency(RN,Key);
   }
 
 }

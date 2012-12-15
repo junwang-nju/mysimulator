@@ -4,7 +4,7 @@
 
 namespace mysimulator {
 
-  enum class PDBResidueName {
+  enum class PDBResidueName : unsigned int {
     Ala     = 0,
     Arg,
     Asn,
@@ -68,6 +68,33 @@ namespace mysimulator {
     NumberResidueName,
     Unknown
   };
+
+  PDBResidueName RegularResidueName(PDBResidueName RN) {
+    if(RN<=PDBResidueName::ntVal)
+      return PDBResidueName(((unsigned int)RN)-40);
+    else if(RN<PDBResidueName::ctVal)
+      return PDBResidueName(((unsigned int)RN)-20);
+    else
+      return RN;
+  }
+
+  PDBResidueName NTerminusResidueName(PDBResidueName RN) {
+    if(RN<=PDBResidueName::Val)
+      return PDBResidueName(((unsigned int)RN)+40);
+    else if(RN<PDBResidueName::ctVal)
+      return PDBResidueName(((unsigned int)RN)+20);
+    else
+      return RN;
+  }
+
+  PDBResidueName CTerminusResidueName(PDBResidueName RN) {
+    if(RN<=PDBResidueName::Val)
+      return PDBResidueName(((unsigned int)RN)+20);
+    else if(RN<PDBResidueName::ntVal)
+      return PDBResidueName(((unsigned int)RN)-20);
+    else
+      return RN;
+  }
 
 }
 

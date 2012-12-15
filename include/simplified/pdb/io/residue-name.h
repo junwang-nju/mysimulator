@@ -41,11 +41,12 @@ namespace mysimulator {
 
 #include "pdb/io/record-name.h"
 #include "basic/util/string.h"
+#include <cassert>
 
 namespace mysimulator {
 
-  PDBResidueName ResidueName(const char* _rec) {
-    assert(RecordName(_rec) == PDBResidueName::ATOM);
+  PDBResidueName _ResidueName(const char* _rec) {
+    assert(_RecordName(_rec) == PDBRecordName::ATOM);
     char str[5];
     SubString(str,_rec,17,19);
     for(unsigned int i=0;i<ResidueNameLibrarySize;++i)

@@ -72,7 +72,8 @@ namespace mysimulator {
         assert((bool)_AtomName);
         return _AtomName[i];
       }
-      unsigned int Index() const { assert(_ID>-1); return _ID; }
+      int& Index() { return _ID; }
+      int Index() const { assert(_ID>-1); return _ID; }
       unsigned int NumberAtom() const { return _AtomName.size(); }
       void reset() {
         _ID=-1;
