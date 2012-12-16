@@ -78,11 +78,11 @@ namespace mysimulator {
     const SystemKindName PT=SystemKindName::Particle;
     if(M.ModelMode()==ModelSelectorName::First) {
       unsigned int n=0;
-      for(unsigned int i=0;i<F[0].size();++i) n+=F[0][0].size();
+      for(unsigned int i=0;i<F[0].size();++i) n+=F[0][i].size();
       _X.allocate(n,3);
       Dsp.allocate(3);
       for(unsigned int i=0,m=0;i<F[0].size();++i)
-      for(unsigned int j=0;j<F[0][0].size();++j,++m) {
+      for(unsigned int j=0;j<F[0][i].size();++j,++m) {
         if(M.AltMode()==AltSelectorName::Default) {
           _X[m][0]=F[0].Residue(i,j,' ').Atom(PDBAtomName::CA).X();
           _X[m][1]=F[0].Residue(i,j,' ').Atom(PDBAtomName::CA).Y();
@@ -97,16 +97,42 @@ namespace mysimulator {
         if(TSQ<DistanceSQ<PT,PT>(Dsp,_X[i],_X[j],FS))  ++n;
       C.allocate(n);
       double tmd;
-      for(unsigned int i=0,m=0;i<_X.size();++i)
-      for(unsigned int j=i+1;j<_X.size();++j) {
-        tmd=DistanceSQ<PT,PT>(Dsp,_X[i],_X[j],FS);
-        if(TSQ<tmd) {
-          C[m].I=i;
-          C[m].J=j;
-          C[m].Distance=__square_root(tmd);
-          C[m].Kind=0;
-          C[m].Weight=0.;
-          ++m;
+      unsigned int I,J;
+      for(unsigned int i=0,m=0;i<F[0].size();++i)
+      for(unsigned int j=0;j<F[0][i].size();++j) {
+        I=F.SequentialIndex(i,j);
+        for(unsigned int l=j+1;j<F[0][i].size();++l) {
+          J=F.SequentialIndex(i,l);
+          tmd=DistanceSQ<PT,PT>(Dsp,_X[I],_X[J],FS);
+          if(TSQ<tmd) {
+            C[m].I=I;
+            C[m].J=J;
+            C[m].ChainI=i;
+            C[m].ChainJ=i;
+            C[m].I4ChainI=j;
+            C[m].J4ChainJ=l;
+            C[m].Distance=__square_root(tmd);
+            C[m].Kind=0;
+            C[m].Weight=0.;
+            ++m;
+          }
+        }
+        for(unsigned int k=i+1;k<F[0].size();++k)
+        for(unsigned int l=0;l<F[0][k].size();++l) {
+          J=F.SequentialIndex(k,l);
+          tmd=DistanceSQ<PT,PT>(Dsp,_X[I],_X[J],FS);
+          if(TSQ<tmd) {
+            C[m].I=I;
+            C[m].J=J;
+            C[m].ChainI=i;
+            C[m].ChainJ=k;
+            C[m].I4ChainI=j;
+            C[m].J4ChainJ=l;
+            C[m].Distance=__square_root(tmd);
+            C[m].Kind=0;
+            C[m].Weight=0.;
+            ++m;
+          }
         }
       }
     } else
