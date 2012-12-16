@@ -31,25 +31,24 @@ namespace mysimulator {
       while((content[n++]=fgetc(fi))!=EOF) {}
       content[n-1]='\0';
       fclose(fi);
+      const unsigned int nmodel=_NumberModel(content);
+      F.allocate(nmodel);
+      const unsigned int nmol=_NumberMolecule(content);
+      Array<UInt,ArrayKernelName::SSE> nres(nmol);
+      _NumberResidue(content,nres);
+      for(unsigned int i=0;i<nmodel;++i) {
+        F[i].allocate(nmol);
+        for(unsigned int j=0;j<nmol;++j)  F[i][j].allocate(nres[j]);
+      }
+      F.BuildSeqMap();
+      nres.reset();
+      _GetMoleculeTag(content,F);
+      _GetAltAtomInf(content,F);
+      _GetResidue(content,F);
+      _GetAtom(content,F);
+      delete[] content;
     }
     delete[] fname;
-    const unsigned int nmodel=_NumberModel(content);
-    F.allocate(nmodel);
-    const unsigned int nmol=_NumberMolecule(content);
-    Array<UInt,ArrayKernelName::SSE> nres(nmol);
-    _NumberResidue(content,nres);
-    printf("%d\t%d\t%d\n",nmodel,nmol,nres[0]);
-    for(unsigned int i=0;i<nmodel;++i) {
-      F[i].allocate(nmol);
-      for(unsigned int j=0;j<nmol;++j)  F[i][j].allocate(nres[j]);
-    }
-    F.BuildSeqMap();
-    nres.reset();
-    _GetMoleculeTag(content,F);
-    _GetAltAtomInf(content,F);
-    _GetResidue(content,F);
-    _GetAtom(content,F);
-    delete[] content;
   }
 
 }

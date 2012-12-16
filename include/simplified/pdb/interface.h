@@ -87,5 +87,7 @@ namespace std {
 
 }
 
+#include "pdb/io.h"
+
 #endif
 

@@ -5,7 +5,8 @@
 namespace mysimulator {
 
   enum class ForceFieldName {
-    ResidueGo
+    ResidueGo,
+    Unknown
   };
 
 }

@@ -4,7 +4,8 @@
 
 #include "system/kind/name.h"
 #include "system/interaction/interface.h"
-#include "force-field/name.h"
+#include "force-field/interface.h"
+#include "pdb/interface.h"
 #include <cstdarg>
 
 namespace mysimulator {
@@ -48,14 +49,21 @@ namespace mysimulator {
         _kind.reset();
       }
 
-      void allocate(ForceFieldName FF, ...) {
+      void allocate(ForceField const& FF, ...) {
         reset();
-        switch(FF) {
+        va_list vl;
+        va_start(vl,FF);
+        switch(FF.Name()) {
           case ForceFieldName::ResidueGo:
+            const char* pdbfile=va_arg(vl,char*);
+            PDB F;
+            F<<pdbfile;
+            F.reset();
             break;
           default:
             fprintf(stderr,"Unknown Force Field Name!\n");
         }
+        va_end(vl);
       }
 
       void swap(Type& S) {
