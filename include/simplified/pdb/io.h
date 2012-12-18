@@ -54,5 +54,69 @@ namespace mysimulator {
 
 }
 
+#include "geometry/contact/interface.h"
+#include "geometry/contact/method/interface.h"
+#include "geometry/distance/calc.h"
+#include "basic/util/square.h"
+
+namespace mysimulator {
+
+  template <ContactMethodName CMN>
+  Contact operator &(PDB const& F, ContactMethod<CMN> const& M) {
+    Contact C;
+    fprintf(stderr,"Unknown Method to evaluate Contact!\n");
+    return C;
+  }
+
+  Contact operator&(PDB const& F,
+                    ContactMethod<ContactMethodName::CAlphaDistance> const& M) {
+    assert((bool)F);
+    Contact C;
+    Array2D<Double,ArrayKernelName::SSE> _X;
+    Array<Double,ArrayKernelName::Direct3D> Dsp;
+    FreeSpace<3> FS;
+    const SystemKindName PT=SystemKindName::Particle;
+    if(M.ModelMode()==ModelSelectorName::First) {
+      unsigned int n=0;
+      for(unsigned int i=0;i<F[0].size();++i) n+=F[0][0].size();
+      _X.allocate(n,3);
+      Dsp.allocate(3);
+      for(unsigned int i=0,m=0;i<F[0].size();++i)
+      for(unsigned int j=0;j<F[0][0].size();++j,++m) {
+        if(M.AltMode()==AltSelectorName::Default) {
+          _X[m][0]=F[0].Residue(i,j,' ').Atom(PDBAtomName::CA).X();
+          _X[m][1]=F[0].Residue(i,j,' ').Atom(PDBAtomName::CA).Y();
+          _X[m][2]=F[0].Residue(i,j,' ').Atom(PDBAtomName::CA).Z();
+        } else
+          fprintf(stderr,"Not Implemented!\n");
+      }
+      double TSQ=__square(M.Threshold());
+      n=0;
+      for(unsigned int i=0;i<_X.size();++i)
+      for(unsigned int j=i+1;j<_X.size();++j)
+        if(TSQ<DistanceSQ<PT,PT>(Dsp,_X[i],_X[j],FS))  ++n;
+      C.allocate(n);
+      double tmd;
+      for(unsigned int i=0,m=0;i<_X.size();++i)
+      for(unsigned int j=i+1;j<_X.size();++j) {
+        tmd=DistanceSQ<PT,PT>(Dsp,_X[i],_X[j],FS);
+        if(TSQ<tmd) {
+          C[m].I=i;
+          C[m].J=j;
+          C[m].Distance=__square_root(tmd);
+          C[m].Kind=0;
+          C[m].Weight=0.;
+          ++m;
+        }
+      }
+    } else
+      fprintf(stderr,"Not Implemented!\n");
+    Dsp.reset();
+    _X.reset();
+    return C;
+  }
+
+}
+
 #endif
 

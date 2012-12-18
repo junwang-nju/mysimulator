@@ -11,7 +11,7 @@ namespace mysimulator {
 
     public:
 
-      typedef ContactMethod<ContactMethodName>  Type;
+      typedef ContactMethod<CMN>  Type;
 
       ContactMethod() = delete;
       ContactMethod(const Type&) = delete;
