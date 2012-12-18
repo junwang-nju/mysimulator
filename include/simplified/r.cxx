@@ -28,7 +28,7 @@ int main() {
   for(unsigned int i=0;i<64;++i)  FN[i][0]=InteractionName::PairHarmonic;
   for(unsigned int i=0;i<63;++i)  FN[i+64][0]=InteractionName::AngleHarmonic;
   for(unsigned int i=0;i<62;++i)  FN[i+64+63][0]=InteractionName::DihedralDualPeriodicCommonPhase;
-  for(unsigned int i=0;i<153;++i) FN[i+64+63+62][0]=InteractionName::PairLJ1012;
+  for(unsigned int i=0;i<153;++i) FN[i+64+63+62][0]=InteractionName::PairLJ612Cut;
   for(unsigned int i=153+64+63+62;i<NC;++i) FN[i]=InteractionName::PairCoreLJ612;
   for(unsigned int i=0;i<NC;++i) {
     S._Interaction[i].allocate(FN[i]);
@@ -83,9 +83,11 @@ int main() {
     ifs>>S._Interaction[i+64+63+62].ID(0)[0];
     ifs>>S._Interaction[i+64+63+62].ID(0)[1];
     FG[S._Interaction[i+64+63+62].ID(0)[0]][S._Interaction[i+64+63+62].ID(0)[1]]=1;
-    ifs>>S._Interaction[i+64+63+62].Parameter(0)[PairLJ1012ParameterName::EqRadius];
-    S._Interaction[i+64+63+62].Parameter(0)[PairLJ1012ParameterName::EqEnergyDepth]=
+    ifs>>S._Interaction[i+64+63+62].Parameter(0)[PairLJ612CutParameterName::EqRadius];
+    S._Interaction[i+64+63+62].Parameter(0)[PairLJ612CutParameterName::EqEnergyDepth]=
       1.;
+    S._Interaction[i+64+63+62].Parameter(0)[PairLJ612CutParameterName::CutR]=
+      20.;
     S._Interaction[i+64+63+62].Parameter(0).build();
   }
   for(unsigned int i=0,n=153+64+63+62;i<65;++i)
@@ -109,7 +111,7 @@ int main() {
 
   double dt=0.001;
   double gamma=0.1;
-  double gammaL=0.5;
+  double gammaL=0.05;
   double temperature=1.13;
   double rsize=sqrt(2*gamma*temperature*dt*0.5);
 
@@ -135,6 +137,7 @@ int main() {
       I=_SI.ID(0)[0];
       J=_SI.ID(0)[1];
       DS=_SI.Function(0)._pre[PairwisePreName::DistanceSQ];
+      if(DS>_SI.Parameter(0)[PairLJ612CutParameterName::CutRSQ])  continue;
       DS0=_SI.Parameter(0)[PairLJ1012ParameterName::EqRadius];
       DS0*=DS0;
       //GM=(DS<DS0?gammaL:(DS<DS0*5?gammaL*(1-(DS-DS0)/(4*DS0)):0));
@@ -172,6 +175,7 @@ int main() {
       I=_SI.ID(0)[0];
       J=_SI.ID(0)[1];
       DS=_SI.Function(0)._pre[PairwisePreName::DistanceSQ];
+      if(DS>_SI.Parameter(0)[PairLJ612CutParameterName::CutRSQ])  continue;
       DS0=_SI.Parameter(0)[PairLJ1012ParameterName::EqRadius];
       DS0*=DS0;
       //GM=(DS<DS0?gammaL:(DS<DS0*5?gammaL*(1-(DS-DS0)/(4*DS0)):0));
@@ -183,17 +187,15 @@ int main() {
       S._V[J]-=tV;
     }
     for(unsigned int i=0;i<153;++i) {
+      SystemInteraction<FreeSpace<3>>& _SI=S._Interaction[i+64+63+62];
       I=S._Interaction[i+64+63+62].ID(0)[0];
       J=S._Interaction[i+64+63+62].ID(0)[1];
-      DS=
-        __square_root(S._Interaction[i+64+63+62].
-                      Function(0)._pre[PairwisePreName::DistanceSQ]);
-      DS0=
-        S._Interaction[i+64+63+62].
-        Parameter(0)[PairLJ1012ParameterName::EqRadius];
+      DS=__square_root(_SI.Function(0)._pre[PairwisePreName::DistanceSQ]);
+      if(DS>_SI.Parameter(0)[PairLJ612CutParameterName::CutRSQ])  continue;
+      DS0=_SI.Parameter(0)[PairLJ1012ParameterName::EqRadius];
       //GM=(DS<DS0?gammaL:(DS<DS0*5?gammaL*(1-(DS-DS0)/(4*DS0)):0));
       if(DS<DS0)  GM=gammaL;
-      else GM=-gammaL*S._Interaction[i+64+63+62].Energy();
+      else GM=-gammaL*_SI.Energy();
       tV=(S._V[I]-S._V[J])*Double(-GM*0.5*dt);
       dV[I]+=tV;
       dV[J]-=tV;
