@@ -10,7 +10,6 @@ namespace mysimulator {
   unsigned int _NumberModel(const char* _rec) {
     char *run = const_cast<char*>(_rec);
     unsigned int nl=0,nmodel=0;
-    PDBRecordName RN;
     while(true) {
       nl=LineSize(run);
       if(_RecordName(run)==PDBRecordName::MODEL)  ++nmodel;

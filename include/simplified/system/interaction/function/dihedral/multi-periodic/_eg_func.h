@@ -11,7 +11,7 @@ namespace mysimulator {
       Array<Double> const& _post,const InteractionParameter& P,
       double *Func, double *Diff) {
     double F,D,SF=0,SD=0;
-    for(unsigned int i=0;i<P(0);++i) {
+    for(int i=0;i<P(0);++i) {
       _egfunc_dihedral_periodic(_post,P,&F,&D);
       SF+=F;
       SD+=D;

@@ -10,7 +10,7 @@ namespace mysimulator {
   void _gfunc_dihedral_multi_periodic(
       Array<Double> const& _post,const InteractionParameter& P,double *Diff) {
     double D,SD=0;
-    for(unsigned int i=0;i<P(0);++i) {
+    for(int i=0;i<P(0);++i) {
       _gfunc_dihedral_periodic(_post,P,&D);
       SD+=D;
     }

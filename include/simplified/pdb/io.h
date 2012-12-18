@@ -49,6 +49,7 @@ namespace mysimulator {
       delete[] content;
     }
     delete[] fname;
+    return F;
   }
 
 }

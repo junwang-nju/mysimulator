@@ -11,7 +11,7 @@ namespace mysimulator {
       Array<Double> const& _post,const InteractionParameter& P,double *Diff) {
     double SF=0;
     double dDih=_post[DihedralMultiPeriodicCommonPhasePostName::Angle]-P[0];
-    for(unsigned int i=0;i<P(0);++i) {
+    for(int i=0;i<P(0);++i) {
       InteractionParameter const& RP=P.child(i);
       SF+=RP[DihedralPeriodicParameterName::Double::SFProduct]*
           __sin(RP(DihedralPeriodicParameterName::Int::Frequency)*dDih);

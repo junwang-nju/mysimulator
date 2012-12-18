@@ -10,6 +10,7 @@ namespace mysimulator {
     char* q=sub;
     for(;p!=e;)   *(q++)=*(p++);
     *q='\0';
+    return sub;
   }
 
   unsigned int LineSize(const char* s) {

@@ -17,7 +17,7 @@ namespace mysimulator {
                  __square_root(_pre[DihedralPreName::IvNormASQ] *
                                _pre[DihedralPreName::IvNormBSQ]);
     _post[DihedralPostName::Angle]= __acos(csDih) *
-                                    (_pre[DihedralPreName::CrossNormAB]>0?:1-1);
+                                    (_pre[DihedralPreName::CrossNormAB]>0?1:-1);
     _status.SetReady4Energy();
   }
 
