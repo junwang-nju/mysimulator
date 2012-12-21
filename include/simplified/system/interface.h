@@ -58,6 +58,33 @@ namespace mysimulator {
             const char* pdbfile=va_arg(vl,char*);
             PDB F;
             F<<pdbfile;
+            unsigned int n=0;
+            for(unsigned int i=0;i<F[0].size();++i) n+=F[0][i].size();
+            _kind.allocate(n);
+            _X.allocate(n,DIM);
+            _V.allocate(n,DIM);
+            _G.allocate(n,DIM);
+            _E.reset(new double,__delete_unit<double>);
+            Contact C;
+            char* field=nullptr;
+            __parse_item_for_forcefield_value(field,FF["ContactMode"].Value(),0);
+            if(strcmp(field,"CAlphaDistance")==0) {
+              ContactMethod<ContactMethodName::CAlphaDistance> M;
+              __delete_array<char>(field);  field=nullptr;
+              M.SetThreshold(
+                  atof(__parse_item_for_forcefield_value(
+                          field,FF["ContactMode"].Value(),3)));
+              __delete_array<char>(field);  field=nullptr;
+              __parse_item_for_forcefield_value(field,FF["ContactMode"].Value(),1);
+              if(strcmp(field,"FirstModel")==0)
+                M.SetModelMode(ModelSelectorName::First);
+              __delete_array<char>(field);  field=nullptr;
+              __parse_item_for_forcefield_value(field,FF["ContactMode"].Value(),2);
+              if(strcmp(field,"DefaultAtom")==0)
+                M.SetAltMode(AltSelectorName::Default);
+              __delete_array<char>(field);  field=nullptr;
+              C=F&M;
+            }
             F.reset();
             break;
           default:

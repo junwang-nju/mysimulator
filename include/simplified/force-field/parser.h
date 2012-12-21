@@ -58,6 +58,20 @@ namespace mysimulator {
     SubString(value,rec,bg,ed);
   }
 
+  char* __parse_item_for_forcefield_value(char*& item,
+                                         const char* value,unsigned int w) {
+    unsigned int n=strlen(value),bg=0,ed=0,m=0;
+    for(unsigned int i=0;i<n;++i) {
+      if(isspace(value[i])) continue;
+      else if(bg==0)  { bg=i; ed=0; }
+      else if(ed==0)  { ed=i; if(m==w) break; ++m; bg=0; }
+    }
+    __delete_array<char>(item);  item=nullptr;
+    item=new char[ed-bg+2];
+    SubString(item,value,bg,ed);
+    return item;
+  }
+
 }
 
 #include "force-field/name.h"

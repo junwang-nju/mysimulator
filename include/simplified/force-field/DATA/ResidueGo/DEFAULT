@@ -1,0 +1,8 @@
+# ResidueGo : This is the default file for ResidueGo interaction
+[ ContactMode : DATA : CAlphaDistance FirstModel DefaultAtom 8.0 ]
+[ ContactSeqSeparation : DATA : 4 ]
+[ ContactInteraction : DATA : LJ1012 1.0 ]
+[ BondInteraction : DATA : Harmonic 100.0 ]
+[ AngleInteraction : DATA : Enabled Harmonic 20.0 ]
+[ DihedralInteraction : DATA : Enabled MultiPeriodicCommonPhase 1 1.0 3 0.5 ]
+
